@@ -1,0 +1,430 @@
+{
+  "module": "doctrine_dynamics",
+  "git_head": "cff3988",
+  "seed": 42,
+  "digest_level": "content",
+  "tests": [
+    {
+      "id": "E7-window-polarity-flip-dynamics",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "n_flips": 73,
+        "n_window_rows": 35,
+        "all_pairs_structure": "73 pairwise flips from 35 window rows, non-independent",
+        "median_overshoot_years": 2.0,
+        "median_elapsed_years": 1.0,
+        "median_slip_velocity_yr_per_yr": 1.0,
+        "slip_velocity_iqr": [
+          0.5,
+          4.25
+        ],
+        "consecutive_restatement_subset": {
+          "definition": "consecutive-restatement subset: flip pairs with elapsed_years == 1 (adjacent annual restatements)",
+          "n": 38,
+          "median_slip_velocity_yr_per_yr": 1.0,
+          "iqr": [
+            1.0,
+            6.0
+          ],
+          "share_at_exactly_1": 0.5526315789473685
+        },
+        "elapsed_ge_3_subset": {
+          "definition": "flip pairs with elapsed_years >= 3",
+          "n": 32,
+          "median_slip_velocity_yr_per_yr": 0.4,
+          "iqr": [
+            0.4,
+            0.5
+          ]
+        },
+        "max_overshoot_years": 25.0
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "median_overshoot_years": 2.0
+      },
+      "ci95": [
+        1.0,
+        2.0
+      ],
+      "note": "Distribution of the window-polarity flips surfaced by doctrine_graph (later-stated contact window entirely beyond an earlier-stated one): 73 pairwise flips from 35 window rows, NON-INDEPENDENT (all-pairs structure; each row enters ~4 pairs). Overshoot = new lower bound minus violated old upper bound; slip velocity = lower-bound recession per year elapsed. Median slip velocity 1.00 yr/yr with IQR [0.50, 4.25] \u2014 only 29% of flips sit at exactly 1.0. HEADLINE (clean form): consecutive restatements (elapsed = 1 y, n = 38) recede at median 1.00 yr/yr; pairs with elapsed >= 3 y (n = 32) recede at median 0.40 yr/yr. The earlier bootstrap CI of the median ([1.0, 1.0]) is REMOVED as a degenerate bootstrap artifact over dependent ratios (r4 advisor mandatory surgery). Descriptive ledger fact, not inference; no p-value by design."
+    },
+    {
+      "id": "E8-liquid-emphasis-by-era",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "W_overall": 0.009167981784634712,
+        "W_early_<=2024": 0.012715744980626983,
+        "n_early": 8,
+        "W_late_>=2025": 0.01861211846479299,
+        "n_late": 32,
+        "k_terms": 15
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "W": 0.009167981784634712
+      },
+      "ci95": [
+        0.0072569861941183395,
+        0.014113728596488018
+      ],
+      "note": "Kendall's W of within-digest term-salience ranks, distributed across era. W \u2248 0 in every slice: salience ranks are essentially uncorrelated across digests \u2014 the doctrine is a fixed vocabulary with liquid emphasis. Per-year W in extras. Descriptive; no p-value by design."
+    },
+    {
+      "id": "E9-consecutive-salience-volatility",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "n_adjacent_pairs": 39,
+        "n_pairs_defined": 37,
+        "n_pairs_undefined_constant_vector": 2,
+        "mean_spearman": 0.16389376167203104,
+        "median_spearman": 0.24600485040408107,
+        "mean_top5_turnover": 0.4666666666666667
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "median_consecutive_spearman": 0.24600485040408107
+      },
+      "ci95": [
+        0.05400530735673737,
+        0.2939679541947705
+      ],
+      "note": "Spearman of top-15 salience vectors between adjacent reliable-year digests (corpus order), plus top-5 term turnover. Pairs where a digest's salience vector is constant (all-absent) have undefined Spearman and are excluded from the rank-correlation summaries (count disclosed). High turnover + near-zero rank correlation quantify 'liquid emphasis'. Descriptive; no p-value by design."
+    }
+  ],
+  "provenance": {
+    "inputs": [
+      "data/digests/*.json",
+      "data/videos.json",
+      "data/glossary.json",
+      "results/doctrine_results.json (read-only drift guard: flip-count cross-check)"
+    ],
+    "reverification": "n/a"
+  },
+  "grade": "Frontier",
+  "generated": "2026-09-23T01:58:41+00:00",
+  "multiple_comparison_policy": "4 primary tests (P1-P4), Holm-corrected as a family at alpha=0.05; all other tests EXPLORATORY, hypothesis-generating only.",
+  "banner": "measures genre discipline, not truth",
+  "module_note": "Round-4 novel descriptive module, approved by the r3 advisor: 'how a canon drifts while claiming immutability'. Descriptive corpus science only; nothing here speaks to origin or truth.",
+  "era_split_year": 2024,
+  "flip_era_distribution": {
+    "by_era_pair": {
+      "early->late": 37,
+      "early->early": 3,
+      "late->late": 33
+    },
+    "by_earlier_statement_era": {
+      "early": 40,
+      "late": 33
+    },
+    "median_overshoot_by_pair": {
+      "early->late": 2.0,
+      "early->early": 2.0,
+      "late->late": 1.0
+    }
+  },
+  "flip_overshoot_quantiles": {
+    "p25": 1.0,
+    "p50": 2.0,
+    "p75": 6.0,
+    "p90": 7.0
+  },
+  "slip_velocity_uncertainty": {
+    "median_yr_per_yr": 1.0,
+    "iqr": [
+      0.5,
+      4.25
+    ],
+    "share_at_exactly_1": 0.2876712328767123,
+    "share_below_1": 0.3835616438356164,
+    "share_above_1": 0.3287671232876712,
+    "all_pairs_structure": "73 pairwise flips from 35 window rows, non-independent (each row enters ~4 pairs)",
+    "removed_degenerate_ci": {
+      "value": [
+        1.0,
+        1.0
+      ],
+      "status": "REMOVED \u2014 degenerate bootstrap artifact, not an uncertainty statement (resample over dependent all-pairs ratios; discrete median collapses the interval to zero width). See r4_advisor.md \u00a72."
+    },
+    "headline_subset": "consecutive_restatement_subset"
+  },
+  "consecutive_restatement_subset": {
+    "definition": "consecutive-restatement subset: flip pairs with elapsed_years == 1 (adjacent annual restatements)",
+    "n": 38,
+    "median_slip_velocity_yr_per_yr": 1.0,
+    "iqr": [
+      1.0,
+      6.0
+    ],
+    "share_at_exactly_1": 0.5526315789473685
+  },
+  "elapsed_ge_3_subset": {
+    "definition": "flip pairs with elapsed_years >= 3",
+    "n": 32,
+    "median_slip_velocity_yr_per_yr": 0.4,
+    "iqr": [
+      0.4,
+      0.5
+    ]
+  },
+  "per_year_kendall_W": {
+    "2024": {
+      "n_digests": 4,
+      "W": 0.0558855885588559
+    },
+    "2025": {
+      "n_digests": 16,
+      "W": 0.015732173272568244
+    },
+    "2026": {
+      "n_digests": 15,
+      "W": 0.024668553103188075
+    }
+  },
+  "EXPLORATORY_consecutive_pairs": [
+    {
+      "from_year": 2016,
+      "to_year": 2018,
+      "spearman": 0.36447170081744834,
+      "top5_turnover": 0.8
+    },
+    {
+      "from_year": 2018,
+      "to_year": 2021,
+      "spearman": -0.5102040816326531,
+      "top5_turnover": 1.0
+    },
+    {
+      "from_year": 2021,
+      "to_year": 2023,
+      "spearman": 0.05400530735673737,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2023,
+      "to_year": 2024,
+      "spearman": -0.21989465885060427,
+      "top5_turnover": 1.0
+    },
+    {
+      "from_year": 2024,
+      "to_year": 2024,
+      "spearman": -0.19503559724504227,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2024,
+      "to_year": 2024,
+      "spearman": 0.6813851438692469,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2024,
+      "to_year": 2024,
+      "spearman": 0.47915742374995485,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2024,
+      "to_year": 2025,
+      "spearman": -0.08964214570007951,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.2486995315651212,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": -0.09074125794328125,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.591358328163286,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.1467327578080739,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.5116669034231138,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.27449539229096104,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.27372113909547047,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.2055891698575221,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.36392309006145257,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.3387783906370779,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": -0.47627427927115024,
+      "top5_turnover": 0.8
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.03168938192118969,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": -0.257255309842697,
+      "top5_turnover": 0.8
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.2862270015157475,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2025,
+      "spearman": 0.04642950255411795,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2025,
+      "to_year": 2026,
+      "spearman": 0.5427266498809432,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.36371503919635945,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.23836564731139803,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.2332942049405409,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.4563324671475279,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.2883652659957289,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.2939679541947705,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.24600485040408107,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": -0.07118851407277471,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": null,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": null,
+      "top5_turnover": 0.0
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": -0.1788221745466616,
+      "top5_turnover": 0.19999999999999996
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": -0.13064189298985698,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.1274202410387576,
+      "top5_turnover": 0.4
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2026,
+      "spearman": 0.30094661034052045,
+      "top5_turnover": 0.6
+    },
+    {
+      "from_year": 2026,
+      "to_year": 2027,
+      "spearman": 0.2942999988228,
+      "top5_turnover": 0.6
+    }
+  ],
+  "cross_references": {
+    "doctrine_graph": "results/doctrine_results.json (flip detection, Kendall W machinery)",
+    "slip_chain": "predictions_results.json.documented_slip_chain"
+  }
+}

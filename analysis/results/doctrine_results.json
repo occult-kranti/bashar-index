@@ -1,0 +1,339 @@
+{
+  "module": "doctrine_graph",
+  "git_head": "cff3988",
+  "seed": 42,
+  "digest_level": "content",
+  "tests": [
+    {
+      "id": "E6-kendall-W-term-rank-stability",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "kendall_W": 0.009167981784634712,
+        "m_raters": 75,
+        "k_terms": 15
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "W": 0.009167981784634712
+      },
+      "ci95": [
+        0.007374486931485871,
+        0.014102285275968414
+      ],
+      "note": "Kendall's W (tie-corrected) of within-digest term salience ranks (high/med/low/absent) across 75 digests for the top-15 terms; bootstrap CI over digests. Descriptive: low W = salience ranking varies by document; no p-value by design (descriptive module)."
+    }
+  ],
+  "provenance": {
+    "inputs": [
+      "data/glossary.json",
+      "data/digests/*.json",
+      "data/teachings.md",
+      "data/videos.json"
+    ],
+    "reverification": "n/a"
+  },
+  "grade": "Frontier",
+  "generated": "2026-09-23T01:53:52+00:00",
+  "multiple_comparison_policy": "4 primary tests (P1-P4), Holm-corrected as a family at alpha=0.05; all other tests EXPLORATORY, hypothesis-generating only.",
+  "banner": "measures genre discipline, not truth",
+  "advisor_ruling_2b": "Consistency is descriptive corpus science, not evidence about origin; no origin-language appears in this output.",
+  "graph": {
+    "nodes": 126,
+    "edges": 635,
+    "glossary_related_edges": 248,
+    "cooccurrence_edges": 476,
+    "graphml": "results/doctrine_graph.graphml",
+    "density": 0.08063492063492063,
+    "n_components": 1
+  },
+  "EXPLORATORY_contradiction_flags": [
+    {
+      "id": "arity-laws-4-vs-5",
+      "kind": "arity_conflict",
+      "terms": [
+        "Four Laws of Creation",
+        "Five Laws of Creation"
+      ],
+      "digests_citing_4": [],
+      "digests_citing_5": [
+        "0htF1V0v6ec",
+        "mgSgI0ElfTI",
+        "os4a7-7bnLw"
+      ],
+      "teachings_md_mentions_4": 4,
+      "teachings_md_mentions_5": 1,
+      "years_4": [],
+      "years_5": [],
+      "glossary_documents_conflict": true,
+      "detail": "The corpus carries both arities: the glossary lists 'Four Laws of Creation' (the older/parallel form) and 'Five Laws of Creation' (the stated immutable set) as separate entries; teachings.md and digests cite both. This is the known 4-vs-5-Laws conflict, flagged programmatically."
+    },
+    {
+      "id": "alias-shalanaya-yahyel",
+      "kind": "alias_conflict",
+      "terms": [
+        "Shalanaya (Shalinaya)",
+        "Yahyel (Ya'yel)"
+      ],
+      "digests_citing_shalanaya": [],
+      "digests_citing_yahyel": [
+        "5Js8U9sJ5-8",
+        "5lOHuqDbpoc",
+        "94agFEADfyk",
+        "Dw9XHTMrgBE",
+        "ETuHIzyRhyY",
+        "Fp1YFz-8d4Y",
+        "HoYNcoMTk-4",
+        "IKJzZ-KVPdQ",
+        "PjIvEohms5I",
+        "Rcjd1TkZUMY",
+        "U-DHIk0lIQ4",
+        "eCxOH-AK1rc",
+        "egu6iDTj2ys",
+        "hTlU_M_R0eE",
+        "hmX3hlNJBjU",
+        "jQbxp4e6bfg",
+        "ja8BrsruFOo",
+        "kPWOUEtUx2Y",
+        "kvU9mCJr-eo",
+        "lLFUTAVah30",
+        "os4a7-7bnLw",
+        "pfB4F7uAjwE",
+        "tskKYl3w0J8",
+        "vrv3J-ri804",
+        "wwkC86EEu1s",
+        "y0-_YOFU8eQ",
+        "ygzBrMyMAQA",
+        "zOcZDBhRaOQ"
+      ],
+      "teachings_md_mentions_shalanaya": 6,
+      "teachings_md_mentions_yahyel": 11,
+      "digests_citing_both": [],
+      "glossary_note": "The fifth and most human-looking hybrid race, also called the Shalanaya/Shalinaya ('those who will come first'), which Bashar says will be the first civilization to make open contact with Earth. Fan sources attribute man",
+      "detail": "The corpus uses both names: digests cite 'Yahyel' broadly while 'Shalanaya/Shalinaya' survives in teachings.md and the glossary. The glossary records them as one race while noting fan sources that split them \u2014 the known Shalanaya/Yahyel identity conflict, flagged programmatically."
+    },
+    {
+      "id": "window-polarity-flips",
+      "kind": "polarity_flip",
+      "n_flips": 73,
+      "examples": [
+        {
+          "earlier": {
+            "made": 2021,
+            "window": [
+              2023,
+              2040
+            ]
+          },
+          "later": {
+            "made": 2025,
+            "window": [
+              2050,
+              2050
+            ]
+          }
+        },
+        {
+          "earlier": {
+            "made": 2021,
+            "window": [
+              2025,
+              2025
+            ]
+          },
+          "later": {
+            "made": 2024,
+            "window": [
+              2026,
+              2027
+            ]
+          }
+        },
+        {
+          "earlier": {
+            "made": 2021,
+            "window": [
+              2025,
+              2025
+            ]
+          },
+          "later": {
+            "made": 2024,
+            "window": [
+              2027,
+              2027
+            ]
+          }
+        },
+        {
+          "earlier": {
+            "made": 2021,
+            "window": [
+              2025,
+              2025
+            ]
+          },
+          "later": {
+            "made": 2024,
+            "window": [
+              2027,
+              2029
+            ]
+          }
+        },
+        {
+          "earlier": {
+            "made": 2021,
+            "window": [
+              2025,
+              2025
+            ]
+          },
+          "later": {
+            "made": 2025,
+            "window": [
+              2026,
+              2026
+            ]
+          }
+        },
+        {
+          "earlier": {
+            "made": 2021,
+            "window": [
+              2025,
+              2025
+            ]
+          },
+          "later": {
+            "made": 2025,
+            "window": [
+              2026,
+              2026
+            ]
+          }
+        }
+      ],
+      "detail": "Later-stated contact window lies entirely beyond an earlier-stated window: the promised event moved past its own previously stated deadline. Descriptive ledger fact, not inference."
+    },
+    {
+      "id": "glossary-related-asymmetry",
+      "kind": "order_alias_conflict",
+      "n_asymmetric_pairs": 77,
+      "examples": [
+        [
+          "Bashar",
+          "Essassani"
+        ],
+        [
+          "April Rochelle",
+          "First Contact (film)"
+        ],
+        [
+          "April Rochelle",
+          "Ask Bashar"
+        ],
+        [
+          "Erica Jordan",
+          "Darryl Anka"
+        ],
+        [
+          "Eshakani (unverified)",
+          "Essassani"
+        ],
+        [
+          "Eshakani (unverified)",
+          "Density"
+        ],
+        [
+          "Shalanaya (Shalinaya)",
+          "Yahyel (Ya'yel)"
+        ],
+        [
+          "Shalanaya (Shalinaya)",
+          "Open contact"
+        ],
+        [
+          "Hybrid children",
+          "Hybridization program"
+        ],
+        [
+          "Hybrid children",
+          "Zeta Reticuli / Greys"
+        ]
+      ],
+      "detail": "related-term edges that are not reciprocated in the glossary itself; bookkeeping-level inconsistency."
+    }
+  ],
+  "EXPLORATORY_era_movers": [
+    {
+      "term": "Highest excitement",
+      "early_score": 0.625,
+      "late_score": 1.78125,
+      "delta": 1.15625
+    },
+    {
+      "term": "frequency",
+      "early_score": 1.875,
+      "late_score": 0.75,
+      "delta": -1.125
+    },
+    {
+      "term": "formula",
+      "early_score": 0.375,
+      "late_score": 1.46875,
+      "delta": 1.09375
+    },
+    {
+      "term": "Permission slip",
+      "early_score": 0.75,
+      "late_score": 1.75,
+      "delta": 1.0
+    },
+    {
+      "term": "Open contact",
+      "early_score": 1.125,
+      "late_score": 2.03125,
+      "delta": 0.90625
+    },
+    {
+      "term": "Synchronicity",
+      "early_score": 1.25,
+      "late_score": 2.0625,
+      "delta": 0.8125
+    },
+    {
+      "term": "consciousness",
+      "early_score": 1.0,
+      "late_score": 0.25,
+      "delta": -0.75
+    },
+    {
+      "term": "parallel reality",
+      "early_score": 1.125,
+      "late_score": 1.59375,
+      "delta": 0.46875
+    },
+    {
+      "term": "channeling",
+      "early_score": 0.75,
+      "late_score": 0.375,
+      "delta": -0.375
+    },
+    {
+      "term": "disclosure",
+      "early_score": 0.625,
+      "late_score": 0.96875,
+      "delta": 0.34375
+    }
+  ],
+  "era_doc_counts": {
+    "early": 8,
+    "late": 32
+  },
+  "known_conflicts_check": {
+    "laws_4_vs_5_flagged": true,
+    "shalanaya_yahyel_flagged": true
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "module": "predictions",
+  "git_head": "cff3988",
+  "seed": 42,
+  "digest_level": "content",
+  "tests": [
+    {
+      "id": "P1",
+      "family": "primary",
+      "exploratory": false,
+      "statistic": {
+        "jt_J": 1285.0,
+        "p_normal_approx": 0.865023484014247
+      },
+      "p": 0.9483051694830517,
+      "p_holm": 0.9483051694830517,
+      "effect": {
+        "somers_D": -0.3094736842105263
+      },
+      "ci95": [
+        -0.6345094456701599,
+        0.053471835565435055
+      ],
+      "note": "One-sided Jonckheere\u2013Terpstra on per-claim c_i across ordinal Delta bins (n=88); permutation p (10k, seed 42). Pooled C per bin is descriptive only. Ratchet signature REJECTED (p=0.9483, Somers D=-0.309); the observed direction is flat-to-falling, consistent with the pre-registered null shape (r2_design \u00a71a: honest forecasting predicts flat or falling conditionality near resolution). The negative trend is weak, era-fragile, and carried by the 5-10y bin (n=3); see p1_direction_summary for the E2/E3 distinction. A rejected H1 is a null result for the ratchet hypothesis, NOT a confirmed alternative (advisor ruling \u00a72).",
+      "significant_holm": false
+    },
+    {
+      "id": "P2",
+      "family": "primary",
+      "exploratory": false,
+      "statistic": {
+        "theil_sen_slope_L": 0.0,
+        "theil_sen_slope_U": 0.0
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "drift_rate_L": 0.0,
+        "drift_rate_U": 0.0
+      },
+      "ci95": [
+        -1.2,
+        1.0
+      ],
+      "note": "CI-based per design: drift >= 1.0 means the deadline recedes at least as fast as time passes (ratchet signature). n=25 restated contact-window bounds; slope_U 95% CI [-1.50, 3.00]. Each point is a restatement of a contact window in a reliable-date video (deduplicated per video/bounds)."
+    },
+    {
+      "id": "E1-within-era-JT",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "jt_J": 1285.0
+      },
+      "p": 0.951004899510049,
+      "p_holm": null,
+      "effect": {
+        "somers_D": -0.3094736842105263
+      },
+      "ci95": [
+        -0.6335011123470523,
+        0.05316368806511373
+      ],
+      "note": "Advisor amendment (a): JT restricted to post-2015 claims, n=88. Controls the era confound: Delta correlates with calendar date and hedge vocabulary densified over decades. HONEST NOTE: the restriction is vacuous here \u2014 every reliable-date claim in the corpus is already post-2015, so this is identical to P1; the operative era control is E3 (partial Spearman controlling date_made)."
+    },
+    {
+      "id": "E2-spearman",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "spearman_rho": -0.21367676431185825,
+        "n": 88
+      },
+      "p": 0.0456131236415718,
+      "p_holm": null,
+      "effect": {
+        "rho_C_vs_negDelta": -0.21367676431185825
+      },
+      "ci95": [
+        -0.39686502350190067,
+        -0.01610318901333661
+      ],
+      "note": "Per-claim Spearman of c_i vs -(Delta); bootstrap CI over claims (10k)."
+    },
+    {
+      "id": "E3-partial-spearman-era-controlled",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "partial_rho": -0.20308494058626841,
+        "n": 88,
+        "naive_p_two_sided_rank_residuals": 0.059219161619869655
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "partial_rho_c_negDelta_given_date_made": -0.20308494058626841
+      },
+      "ci95": [
+        -0.38583704164110927,
+        -0.0045597707100553065
+      ],
+      "note": "Advisor amendment (a): partial Spearman controlling date_made via rank residualization; bootstrap CI (10k, seed 42). This is the era-controlled companion to P1. Naive asymptotic two-sided p on the rank residuals is reported in the statistic block (~0.059); asymptotics on residualized ranks are approximate, so the bootstrap CI is the operative uncertainty statement. Do NOT conflate with E2's UNCONTROLLED Spearman p=0.0456: E2 does not control era, E3 does (r3 audit)."
+    }
+  ],
+  "provenance": {
+    "inputs": [
+      "data/digests/*.json",
+      "data/videos.json"
+    ],
+    "reverification": "n/a"
+  },
+  "grade": "Frontier",
+  "generated": "2026-09-23T01:31:23+00:00",
+  "multiple_comparison_policy": "4 primary tests (P1-P4), Holm-corrected as a family at alpha=0.05; all other tests EXPLORATORY, hypothesis-generating only.",
+  "ledger_rows": 164,
+  "ledger_csv": "results/ledger.csv",
+  "n_P1": 88,
+  "n_P2": 25,
+  "bin_stats": {
+    ">10y": {
+      "n": 11,
+      "pooled_C": 0.006993006993006993,
+      "median_c_i": 0.0,
+      "ci": [
+        0.0,
+        0.024
+      ]
+    },
+    "5-10y": {
+      "n": 3,
+      "pooled_C": 0.08108108108108109,
+      "median_c_i": 0.11764705882352941,
+      "ci": [
+        0.0,
+        0.14285714285714285
+      ]
+    },
+    "1-5y": {
+      "n": 30,
+      "pooled_C": 0.03428571428571429,
+      "median_c_i": 0.0,
+      "ci": [
+        0.01590909090909091,
+        0.056826298701298655
+      ]
+    },
+    "<1y": {
+      "n": 25,
+      "pooled_C": 0.00684931506849315,
+      "median_c_i": 0.0,
+      "ci": [
+        0.0,
+        0.017543859649122806
+      ]
+    },
+    "post-deadline": {
+      "n": 19,
+      "pooled_C": 0.014492753623188406,
+      "median_c_i": 0.0,
+      "ci": [
+        0.0,
+        0.03910888377697446
+      ]
+    }
+  },
+  "freeze_note": "Design and the 50-phrase escape-hatch lexicon (verbatim from r2_design.md \u00a71a) are frozen at git HEAD cff3988 (design round 2, loop 1); the lexicon may not be edited after the first scoring run.",
+  "stated_n_rule": "Advisor ruling (b): n is stated before interpretation for every test; where n < 10 the claim is directional + CI only \u2014 the ledger is the finding, the statistic is the annotation.",
+  "excluded_from_time_series": 38,
+  "documented_slip_chain": "2020 -> 2023-33 -> 2025-33 -> 2026/27 -> 2028-29 (see ledger rows and F1/F3)",
+  "p1_direction_summary": "P1 ratchet signature REJECTED (one-sided JT permutation p=0.9483; Somers D=-0.309). Observed direction is flat-to-falling conditionality, consistent with the pre-registered null shape (r2_design \u00a71a). The negative trend is weak, era-fragile, and carried by the 5-10y bin (n=3): E2 UNCONTROLLED Spearman rho=-0.214, p=0.0456; E3 ERA-CONTROLLED partial rho=-0.203, bootstrap 95% CI [-0.386, -0.0046] (upper bound grazes zero), naive asymptotic two-sided p on rank residuals=0.0592. A rejected H1 is a null result for the ratchet hypothesis, not evidence that the corpus hedges honestly (advisor ruling \u00a72).",
+  "provenance_correction_r3": "r3 audit discrepancy 3, amended: the previous version of this document listed data/analysis.json and data/teachings.md as inputs; this module never read either. Design \u00a71a said the lexicon would also be counted on analysis.json.predictions[].examples[].text. Audit (string match, seed-independent): all 58 examples are already represented verbatim in the digests' predictions_and_dates rows and in results/ledger.csv \u2014 wiring analysis.json in would add zero claims, so P1/P2 statistics are unchanged either way. Provenance is therefore amended to list only inputs actually read (deviation from design \u00a71a recorded here). teachings.md is read by doctrine_graph.py, never by this module."
+}

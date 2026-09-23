@@ -1,0 +1,550 @@
+{
+  "module": "rubric_calibration",
+  "git_head": "cff3988",
+  "seed": 42,
+  "digest_level": "content",
+  "tests": [
+    {
+      "id": "E10-retroactive-rubric-calibration",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "n_ledger_rows": 164,
+        "n_resolved_scored": 2,
+        "score_tally": {
+          "failure": 2
+        },
+        "n_open_windows_disclosed": 55,
+        "exclusions": {
+          "excluded_event_logistics": 8,
+          "excluded_no_deadline": 13,
+          "excluded_not_contact": 83,
+          "excluded_historical_reference": 3
+        },
+        "historical_pass_rate": 0.0
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "historical_pass_rate_full_plus_partial": 0.0
+      },
+      "ci95": [
+        0.0,
+        0.841886116991581
+      ],
+      "note": "Frozen 2027 rubric applied unchanged to resolved historical dated claims (window upper <= 2025): 2 resolved claims, scores {'failure': 2}; historical pass rate 0/2 (Clopper\u2013Pearson 95% [0.000, 0.842] \u2014 descriptive annotation only; ledger rows are doctrinally correlated, no independence claimed). The calibration establishes the rubric's historical SPECIFICITY (no false positives on the past); sensitivity is UNKNOWABLE from history because no true open-contact event exists to detect. Scoring was blind-ish: outcomes looked up from a frozen public-record fact table, never judged from claim text. HARD NO-TUNING CLAUSE (r4 advisor constraint, binding): the frozen 2027 rubric may not be edited after this calibration is scored, whatever it shows. A rubric that misclassifies the past is a finding about the rubric, published as such \u2014 never a license to tune the rubric into agreement with history; a rubric fitted to the past is worthless for 2027."
+    }
+  ],
+  "provenance": {
+    "inputs": [
+      "results/ledger.csv",
+      "frozen rubric text: analysis/README.md \u00a72027 prospective rubric (verbatim, unedited)"
+    ],
+    "reverification": "deterministic; no stochastic steps"
+  },
+  "grade": "Frontier",
+  "generated": "2026-09-23T01:58:43+00:00",
+  "multiple_comparison_policy": "4 primary tests (P1-P4), Holm-corrected as a family at alpha=0.05; all other tests EXPLORATORY, hypothesis-generating only.",
+  "banner": "measures genre discipline, not truth",
+  "module_note": "Round-5 novel module, approved by the r4 advisor with the no-tuning constraint. Retroactive calibration baseline for the 2027 watch. EXPLORATORY, descriptive; no p-value by design.",
+  "no_tuning_clause": "HARD NO-TUNING CLAUSE (r4 advisor constraint, binding): the frozen 2027 rubric may not be edited after this calibration is scored, whatever it shows. A rubric that misclassifies the past is a finding about the rubric, published as such \u2014 never a license to tune the rubric into agreement with history; a rubric fitted to the past is worthless for 2027.",
+  "frozen_rubric_verbatim": {
+    "claim_under_test": "'open contact' within the window currently stated as 2027 (in-corpus slips logged as ratchet events, never edits to the rubric)",
+    "full": "a national government or the UN formally confirms non-human intelligence and initiates a public diplomatic/communication exchange, OR a non-human craft/entity is publicly presented and independently verified by >=2 major scientific institutions",
+    "partial": "an official government statement using explicit non-human-origin language (not 'unknown') about materials or craft, verified by a national laboratory or peer-reviewed analysis; or a mass-witnessed (>=1,000 independent witnesses), multi-instrument (>=2 independent instrument classes, e.g. radar + optical \u2014 not two cameras) event officially unresolved and endorsed as anomalous by >=2 national space/defense agencies",
+    "failure": "neither criterion met by the stated deadline"
+  },
+  "scoring_protocol": "Pre-specified in this module before tabulation: eligibility screen S1\u2013S5 (deterministic, ordered), blind-ish lookup scoring against a frozen public-record fact table, pass rate = (full + partial)/n_resolved.",
+  "corpus_cutoff": "2026-06-30",
+  "public_record_near_miss_review": [
+    {
+      "event": "2017 NYT AATIP/ATI disclosure + Navy videos",
+      "criteria_failed": "language was 'unknown/unidentified', never explicit non-human-origin; no national-laboratory or peer-reviewed verification -> fails tightened partial; no diplomatic exchange -> fails full"
+    },
+    {
+      "event": "2021 ODNI UAP preliminary assessment",
+      "criteria_failed": "'unidentified', officially unresolved but NOT endorsed as anomalous by >=2 national space/defense agencies; no instrument-class-verified mass event -> fails partial"
+    },
+    {
+      "event": "2022\u20132023 US congressional UAP hearings (incl. Grusch testimony)",
+      "criteria_failed": "sworn testimony is not an official government statement of non-human origin; no national-lab or peer-reviewed verification of materials -> fails partial"
+    },
+    {
+      "event": "2024 AARO Historical Record Report vol. 1",
+      "criteria_failed": "affirmatively reports NO non-human-origin evidence \u2014 the opposite of the required explicit language -> fails partial and full"
+    },
+    {
+      "event": "Historical mass-sighting waves (e.g. 1952 Washington, 1997 Phoenix)",
+      "criteria_failed": "no official endorsement as anomalous by >=2 national space/defense agencies; no explicit non-human-origin statement -> fail partial"
+    }
+  ],
+  "scored_claims": [
+    {
+      "ledger_row": 70,
+      "video_id": "QBk2MQ1MVZo",
+      "date_made": "2026",
+      "year_reliable": true,
+      "window": "2020",
+      "window_lower": 2020,
+      "window_upper": 2020,
+      "claim": "Original contact window start mentioned; later narrowed to 2027",
+      "score": "failure",
+      "rubric_facts_at_deadline": {
+        "full_gov_or_un_confirms_nhi_with_exchange": false,
+        "full_craft_verified_by_2plus_scientific_institutions": false,
+        "partial_explicit_nonhuman_language_lab_verified": false,
+        "partial_mass_witness_multiinstrument_2plus_agencies": false
+      }
+    },
+    {
+      "ledger_row": 115,
+      "video_id": "jdzErS12DvU",
+      "date_made": "2021",
+      "year_reliable": true,
+      "window": "2025",
+      "window_lower": 2025,
+      "window_upper": 2025,
+      "claim": "Possible early markers of contact window opening",
+      "score": "failure",
+      "rubric_facts_at_deadline": {
+        "full_gov_or_un_confirms_nhi_with_exchange": false,
+        "full_craft_verified_by_2plus_scientific_institutions": false,
+        "partial_explicit_nonhuman_language_lab_verified": false,
+        "partial_mass_witness_multiinstrument_2plus_agencies": false
+      }
+    }
+  ],
+  "open_windows_disclosed": [
+    {
+      "ledger_row": 0,
+      "window": "2025-2033",
+      "window_lower": 2025,
+      "window_upper": 2033,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 1,
+      "window": "2050",
+      "window_lower": 2050,
+      "window_upper": 2050,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 7,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 9,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 22,
+      "window": "Late 2026 - early 2027",
+      "window_lower": 2026,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 23,
+      "window": "2028-2029",
+      "window_lower": 2028,
+      "window_upper": 2029,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 25,
+      "window": "2050",
+      "window_lower": 2050,
+      "window_upper": 2050,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 27,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 28,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 30,
+      "window": "late 2026, early 2027",
+      "window_lower": 2026,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 32,
+      "window": "Next 5 years (from May 2026, so by 2031)",
+      "window_lower": 2026,
+      "window_upper": 2031,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 40,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 48,
+      "window": "2023\u20132033",
+      "window_lower": 2023,
+      "window_upper": 2033,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 50,
+      "window": "2033\u20132040",
+      "window_lower": 2033,
+      "window_upper": 2040,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 51,
+      "window": "2037",
+      "window_lower": 2037,
+      "window_upper": 2037,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 54,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 55,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 58,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 63,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 64,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 67,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 68,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 69,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 71,
+      "window": "2033",
+      "window_lower": 2033,
+      "window_upper": 2033,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 73,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 75,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 76,
+      "window": "2027-2028 (approximately)",
+      "window_lower": 2027,
+      "window_upper": 2028,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 77,
+      "window": "Post-2027 decades",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 78,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 84,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 85,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 86,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 88,
+      "window": "2020-2050",
+      "window_lower": 2020,
+      "window_upper": 2050,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 91,
+      "window": "~2 years from interview date (i.e. ~2027)",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 95,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 96,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 98,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 112,
+      "window": "2025-2033",
+      "window_lower": 2025,
+      "window_upper": 2033,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 113,
+      "window": "2050",
+      "window_lower": 2050,
+      "window_upper": 2050,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 114,
+      "window": "2023-2040",
+      "window_lower": 2023,
+      "window_upper": 2040,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 116,
+      "window": "2033",
+      "window_lower": 2033,
+      "window_upper": 2033,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 120,
+      "window": "within 5 years of interview (c. 2027-2029)",
+      "window_lower": 2027,
+      "window_upper": 2029,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 128,
+      "window": "Within 5 years (from August 2025 = ~2030)",
+      "window_lower": 2025,
+      "window_upper": 2030,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 132,
+      "window": "2025-2033",
+      "window_lower": 2025,
+      "window_upper": 2033,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 133,
+      "window": "2050",
+      "window_lower": 2050,
+      "window_upper": 2050,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 134,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 137,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 149,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 151,
+      "window": "by 2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 152,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 153,
+      "window": "2027 (1-2 years from interview)",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 155,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 158,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 161,
+      "window": "2026",
+      "window_lower": 2026,
+      "window_upper": 2026,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    },
+    {
+      "ledger_row": 162,
+      "window": "2027",
+      "window_lower": 2027,
+      "window_upper": 2027,
+      "status": "open at corpus cutoff 2026-06-30; no rubric full/partial criterion met in the elapsed portion of the window to date"
+    }
+  ],
+  "canonical_slip_chain_windows": [
+    {
+      "window": "2020",
+      "status": "resolved",
+      "score": "failure",
+      "note": "original window start; elapsed without any rubric criterion met; restated as 2023\u201333 (ratchet event)"
+    },
+    {
+      "window": "2023\u20132033",
+      "status": "open",
+      "score": null,
+      "note": "lower bound elapsed: no criterion met in elapsed portion; window runs to 2033"
+    },
+    {
+      "window": "2025\u20132033",
+      "status": "open",
+      "score": null,
+      "note": "re-issued window; no criterion met to date"
+    },
+    {
+      "window": "2026/27",
+      "status": "open",
+      "score": null,
+      "note": "current canonical window; the 2027 preregistered watch applies"
+    },
+    {
+      "window": "2028\u20132029",
+      "status": "open",
+      "score": null,
+      "note": "in-corpus re-issue (ratchet event), logged not edited"
+    }
+  ],
+  "cluster_2016_disposition": {
+    "n_rows": 13,
+    "screen_counts": {
+      "excluded_event_logistics": 5,
+      "excluded_not_contact": 8
+    },
+    "note": "The 2016 cluster (First Contact documentary premieres; 'everything will change by fall 2016') passes through the eligibility screen and is excluded as event logistics / not-open-contact \u2014 the rubric's scope discipline is part of what is being calibrated."
+  },
+  "calibration_interpretation": "Historical pass rate 0/2 under the frozen rubric. Baseline for the 2027 watch: any full or partial score at the 2030 deadline would be unprecedented against this corpus's entire dated-claim history. The rubric is stringent \u2014 it has never been satisfied by any event in the public record (see near-miss review) \u2014 so a 2027 pass is a high-credibility signal, and a 2027 failure continues the documented base rate. The rubric is NOT modified in response to this calibration (no-tuning clause).",
+  "cross_references": {
+    "rubric_source": "analysis/README.md \u00a72027 prospective rubric (frozen, tightened per advisor ruling d)",
+    "ledger": "results/ledger.csv",
+    "slip_chain": "predictions_results.json.documented_slip_chain"
+  }
+}

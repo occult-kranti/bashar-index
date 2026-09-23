@@ -1,0 +1,79 @@
+{
+  "module": "acquisition",
+  "git_head": "cff3988",
+  "seed": 42,
+  "digest_level": "transcript",
+  "tests": [],
+  "provenance": {
+    "inputs": [
+      "data/videos.json",
+      "data/digests/*.json"
+    ],
+    "reverification": "n/a"
+  },
+  "grade": "Speculative",
+  "generated": "2026-09-23T01:20:55+00:00",
+  "multiple_comparison_policy": "4 primary tests (P1-P4), Holm-corrected as a family at alpha=0.05; all other tests EXPLORATORY, hypothesis-generating only.",
+  "mode": "pilot",
+  "targets_total_planned": 75,
+  "pilot_ids": [
+    {
+      "video_id": "94agFEADfyk",
+      "digest_source": "https://youtubetotranscript.com/transcript?v=94agFEADfyk",
+      "content_type": "Full session (re-upload)",
+      "year": 2026
+    },
+    {
+      "video_id": "9FrwPg8FYvM",
+      "digest_source": "https://youtubetotranscript.com/transcript?v=9FrwPg8FYvM",
+      "content_type": "Full session (re-upload)",
+      "year": 2025
+    },
+    {
+      "video_id": "D8El0NsIF04",
+      "digest_source": "https://youtubetotranscript.com/transcript?v=D8El0NsIF04",
+      "content_type": "Clip / excerpt",
+      "year": 2024
+    },
+    {
+      "video_id": "DvWNnqnBAjc",
+      "digest_source": "https://youtubetotranscript.com/transcript?v=DvWNnqnBAjc",
+      "content_type": "Full session (re-upload)",
+      "year": 2026
+    },
+    {
+      "video_id": "Dw9XHTMrgBE",
+      "digest_source": "https://youtubetotranscript.com/transcript?v=Dw9XHTMrgBE",
+      "content_type": "Full session (re-upload)",
+      "year": 2025
+    }
+  ],
+  "attempts": [
+    {
+      "video_id": "94agFEADfyk",
+      "ok": false,
+      "elapsed_s": 45,
+      "stderr_tail": "timeout after 45s"
+    }
+  ],
+  "transcripts_fetched": 0,
+  "blocked": true,
+  "blockage_note": "network/egress blocked or source unreachable (first failure: 94agFEADfyk: timeout after 45s)",
+  "honesty": "No transcript text was fabricated. Where fetching failed, the failure is logged per-ID above. Stylometry (Q3) remains BLOCKED until real transcripts pass the WER audit.",
+  "wer_audit_spec": {
+    "gates": {
+      "overall_wer_max": 0.15,
+      "function_word_wer_max": 0.1
+    },
+    "sample": "12 transcripts (4 interviews, 4 sessions, 4 archive.org)",
+    "hallucination_screen": "mandatory: flag low-audio-energy spans with high text output and exclude them (Whisper invents fluent text in low-signal regions)",
+    "realism_note": "Advisor ruling (e): on 1984-96 cassette audio the 15%/10% gates are optimistic; the pass-only-spans fallback induces era/audio-quality selection bias \u2014 the era-extension arm may degrade to descriptive. Stated in advance.",
+    "status": "not run \u2014 no transcripts acquired"
+  },
+  "next_steps": [
+    "run `python acquisition.py` in an environment with egress to youtubetotranscript.com / youtube.com",
+    "archive raw text + .meta.json with SHA-256 manifest per \u00a74 layout",
+    "WER audit (jiwer) on the 12-transcript stratified sample",
+    "6+6 matched-pair pilot -> empirical DeltaCE variance -> real bootstrap power analysis BEFORE the stylometry power statement"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "family": "P1-P4",
+  "alpha": 0.05,
+  "git_head": "cff3988",
+  "generated": "2026-09-23T01:33:06+00:00",
+  "tests": [
+    {
+      "module": "demand",
+      "id": "P3",
+      "p": 7.496757064537865e-175,
+      "ci95": [
+        0.21070200784255194,
+        0.3002126087826097
+      ],
+      "effect": {
+        "cramers_v": 0.21200993605007945,
+        "bias_corrected_v": 0.2059931898671588
+      },
+      "note": "Chi2 on 20-tag x 4-type table of summed per-video topic-share points (75 videos; per-question tags are not stored in-repo \u2014 see data_deviation). H4 segmentation confirmed only if p<0.05 AND V>0.2 (design threshold): confirmed=True. Cluster bootstrap CI over videos. Permutation null within year strata (reliable-year videos, n=40): chi2=572.1, permutation p=0.0001, asymptotic p=4.042e-86, V=0.218. The headline asymptotic p (1e-175) is DECORATIVE as count inference \u2014 cells are pipeline-estimated share points with massive pseudo-replication \u2014 and must never be quoted without this caveat (advisor ruling \u00a73). The operative evidence is: V=0.212 clears the pre-registered 0.2 threshold narrowly (bias-corrected 0.206 does not), the cluster bootstrap CI clears it entirely, and the within-year-strata permutation p=0.0001 is robust to the row-independence problem. P3 confirms digest-level topical segmentation by packaging format, NOT question-level demand.",
+      "p_holm_global": 2.2490271193613594e-174,
+      "significant_holm_global": true
+    },
+    {
+      "module": "demand",
+      "id": "P4",
+      "p": 0.7410279603184489,
+      "ci95": [
+        -0.6016580150798356,
+        0.3031888375469789
+      ],
+      "effect": {
+        "slope": -0.14923458876642834
+      },
+      "note": "Binomial GLM of disclosure-topic share on year, reliable-year videos 2024-2026 (n=34 videos, 556 questions). One-sided slope>0 plus monotone fitted shares: monotone=False; confirmed=False. Frozen base rate: 16.8%.",
+      "p_holm_global": 1.0,
+      "significant_holm_global": false
+    },
+    {
+      "module": "predictions",
+      "id": "P1",
+      "p": 0.9483051694830517,
+      "ci95": [
+        -0.6345094456701599,
+        0.053471835565435055
+      ],
+      "effect": {
+        "somers_D": -0.3094736842105263
+      },
+      "note": "One-sided Jonckheere\u2013Terpstra on per-claim c_i across ordinal Delta bins (n=88); permutation p (10k, seed 42). Pooled C per bin is descriptive only. Ratchet signature REJECTED (p=0.9483, Somers D=-0.309); the observed direction is flat-to-falling, consistent with the pre-registered null shape (r2_design \u00a71a: honest forecasting predicts flat or falling conditionality near resolution). The negative trend is weak, era-fragile, and carried by the 5-10y bin (n=3); see p1_direction_summary for the E2/E3 distinction. A rejected H1 is a null result for the ratchet hypothesis, NOT a confirmed alternative (advisor ruling \u00a72).",
+      "p_holm_global": 1.0,
+      "significant_holm_global": false
+    },
+    {
+      "module": "predictions",
+      "id": "P2",
+      "p": null,
+      "ci95": [
+        -1.2,
+        1.0
+      ],
+      "effect": {
+        "drift_rate_L": 0.0,
+        "drift_rate_U": 0.0
+      },
+      "note": "CI-based per design: drift >= 1.0 means the deadline recedes at least as fast as time passes (ratchet signature). n=25 restated contact-window bounds; slope_U 95% CI [-1.50, 3.00]. Each point is a restatement of a contact window in a reliable-date video (deduplicated per video/bounds).",
+      "p_holm_global": null,
+      "ci_verdict": "CI does not certify drift >= 1.0"
+    }
+  ],
+  "policy": "Holm step-down across the 4 primary tests; P2 is CI-based and enters with its CI verdict (design \u00a72)."
+}

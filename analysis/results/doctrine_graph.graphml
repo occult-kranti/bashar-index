@@ -1,0 +1,2896 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d3" for="edge" attr.name="cooc" attr.type="long"/>
+<key id="d2" for="edge" attr.name="kind" attr.type="string"/>
+<key id="d1" for="node" attr.name="docs" attr.type="long"/>
+<key id="d0" for="node" attr.name="source" attr.type="string"/>
+<graph edgedefault="undirected"><node id="Bashar">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Darryl Anka">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Bashar Communications">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="April Rochelle">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Zia Films">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Erica Jordan">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Essassani">
+  <data key="d0">glossary</data>
+  <data key="d1">22</data>
+</node>
+<node id="Sassani">
+  <data key="d0">glossary</data>
+  <data key="d1">9</data>
+</node>
+<node id="Eshakani (unverified)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Yahyel (Ya'yel)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Shalanaya (Shalinaya)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Five Hybrid Races">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Sixth Hybrid Race">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Hybrid children">
+  <data key="d0">glossary</data>
+  <data key="d1">25</data>
+</node>
+<node id="Hybridization program">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Zeta Reticuli / Greys">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Grey Federation">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="First Contact Specialist">
+  <data key="d0">glossary</data>
+  <data key="d1">8</data>
+</node>
+<node id="Future self / oversoul relation">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Oversoul">
+  <data key="d0">glossary</data>
+  <data key="d1">11</data>
+</node>
+<node id="All That Is / The One">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Five Laws of Creation">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Four Laws of Creation">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Basic Principles">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="The Formula (Follow Your Excitement Formula)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Highest excitement">
+  <data key="d0">glossary</data>
+  <data key="d1">37</data>
+</node>
+<node id="Seven Sequential Steps of Manifestation">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Allowance">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Physical mind">
+  <data key="d0">glossary</data>
+  <data key="d1">33</data>
+</node>
+<node id="Higher mind / Higher self">
+  <data key="d0">glossary</data>
+  <data key="d1">13</data>
+</node>
+<node id="Imagination ('I-magi-nation')">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Beliefs → emotions → actions">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Fear-based beliefs">
+  <data key="d0">glossary</data>
+  <data key="d1">8</data>
+</node>
+<node id="Worthiness / deservability">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Permission slip">
+  <data key="d0">glossary</data>
+  <data key="d1">45</data>
+</node>
+<node id="State of being">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Definitions">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Neutral props">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Judgment vs preference">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Parallel realities">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Splitting Prism">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Parallel Reality Wheel">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Earth Zero / zero template">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Time / one moment">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Synchronicity">
+  <data key="d0">glossary</data>
+  <data key="d1">47</data>
+</node>
+<node id="Positive / negative synchronicity">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Ecstasy as birthright">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Unconditional love">
+  <data key="d0">glossary</data>
+  <data key="d1">13</data>
+</node>
+<node id="Abundance">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Referential Preferential You">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Density">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Nine Levels of Consciousness">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="The Shift / New Earth">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="2012 threshold">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Hands-off quarantine">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Window of Discovery (2018–2020)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Fall 2016">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Contact Fulcrum (2027)">
+  <data key="d0">glossary</data>
+  <data key="d1">12</data>
+</node>
+<node id="Roswell cycle">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Shifting Window of Contact">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Open contact">
+  <data key="d0">glossary</data>
+  <data key="d1">31</data>
+</node>
+<node id="Protocols of First Contact">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Interstellar Alliance">
+  <data key="d0">glossary</data>
+  <data key="d1">12</data>
+</node>
+<node id="Interstellar Alliance Social Experiment">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Guide to Open Contact (Window, Door, Gate)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Galactic citizen">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="The Triad (Earth–Essassani–Sirius)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Sirius">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Orion">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Anunnaki">
+  <data key="d0">glossary</data>
+  <data key="d1">9</data>
+</node>
+<node id="Lyrans">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Pleiadians">
+  <data key="d0">glossary</data>
+  <data key="d1">9</data>
+</node>
+<node id="Arcturians">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Interstellar Enneagram">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Epsilon / Eclipse / Epiphany">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Willa Hillicrissing">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Willa's World">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Five Levels of Mastery">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Shards of a Shattered Mirror">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Cybo">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Shivai (thin)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Sacred Circuitry">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Holotope">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Sedona Vortex Array">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Interdimensional portals / vortices">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Extraterrestrial Contact Act">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="UFO Witness Declaration">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="30 Days of Disclosure">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Eye of the Needle (2020)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="No More Secrets">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Reset (2020–2050)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Three-Year Collapse (2025–2027)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Ask Bashar">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="BasharTV">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Debunking the Debunkers">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Discernment">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Hermetic paradigm (academic reading)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Seth parallel">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="1973 sightings">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="First Contact (film)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Blueprint for Change">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="The Masters of Limitation">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="The Compass">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="Evaluation of the material (official stance)">
+  <data key="d0">glossary</data>
+  <data key="d1">0</data>
+</node>
+<node id="definition">
+  <data key="d0">digests</data>
+  <data key="d1">44</data>
+</node>
+<node id="parallel reality">
+  <data key="d0">digests</data>
+  <data key="d1">38</data>
+</node>
+<node id="frequency">
+  <data key="d0">digests</data>
+  <data key="d1">27</data>
+</node>
+<node id="vibration">
+  <data key="d0">digests</data>
+  <data key="d1">24</data>
+</node>
+<node id="formula">
+  <data key="d0">digests</data>
+  <data key="d1">21</data>
+</node>
+<node id="belief system">
+  <data key="d0">digests</data>
+  <data key="d1">20</data>
+</node>
+<node id="disclosure">
+  <data key="d0">digests</data>
+  <data key="d1">13</data>
+</node>
+<node id="consciousness">
+  <data key="d0">digests</data>
+  <data key="d1">12</data>
+</node>
+<node id="channeling">
+  <data key="d0">digests</data>
+  <data key="d1">10</data>
+</node>
+<node id="grays">
+  <data key="d0">digests</data>
+  <data key="d1">9</data>
+</node>
+<node id="passion">
+  <data key="d0">digests</data>
+  <data key="d1">9</data>
+</node>
+<node id="vibrational frequency">
+  <data key="d0">digests</data>
+  <data key="d1">9</data>
+</node>
+<node id="soul">
+  <data key="d0">digests</data>
+  <data key="d1">9</data>
+</node>
+<node id="life path">
+  <data key="d0">digests</data>
+  <data key="d1">9</data>
+</node>
+<node id="channeling state">
+  <data key="d0">digests</data>
+  <data key="d1">9</data>
+</node>
+<node id="ascension">
+  <data key="d0">digests</data>
+  <data key="d1">8</data>
+</node>
+<node id="Akashic records">
+  <data key="d0">digests</data>
+  <data key="d1">8</data>
+</node>
+<node id="soul family">
+  <data key="d0">digests</data>
+  <data key="d1">8</data>
+</node>
+<node id="spirit guides">
+  <data key="d0">digests</data>
+  <data key="d1">8</data>
+</node>
+<node id="path of least resistance">
+  <data key="d0">digests</data>
+  <data key="d1">7</data>
+</node>
+<node id="law of attraction">
+  <data key="d0">digests</data>
+  <data key="d1">7</data>
+</node>
+<node id="2027">
+  <data key="d0">digests</data>
+  <data key="d1">7</data>
+</node>
+<edge source="Bashar" target="Darryl Anka">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Bashar" target="Essassani">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Bashar" target="First Contact Specialist">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Bashar" target="Future self / oversoul relation">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="Zia Films">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="Bashar Communications">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="1973 sightings">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="Erica Jordan">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="Shards of a Shattered Mirror">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="First Contact (film)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="Blueprint for Change">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Darryl Anka" target="The Masters of Limitation">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Bashar Communications" target="April Rochelle">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Bashar Communications" target="BasharTV">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="April Rochelle" target="First Contact (film)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="April Rochelle" target="Ask Bashar">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Zia Films" target="First Contact (film)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Zia Films" target="Erica Jordan">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Essassani" target="Sassani">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Essassani" target="Epsilon / Eclipse / Epiphany">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Essassani" target="The Triad (Earth–Essassani–Sirius)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Essassani" target="Orion">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Essassani" target="Eshakani (unverified)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Essassani" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Essassani" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Essassani" target="Fear-based beliefs">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Essassani" target="Highest excitement">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">17</data>
+</edge>
+<edge source="Essassani" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">13</data>
+</edge>
+<edge source="Essassani" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">22</data>
+</edge>
+<edge source="Essassani" target="Physical mind">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">15</data>
+</edge>
+<edge source="Essassani" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">22</data>
+</edge>
+<edge source="Essassani" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Essassani" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Essassani" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">17</data>
+</edge>
+<edge source="Essassani" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Essassani" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Essassani" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="Essassani" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Essassani" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Essassani" target="Hybrid children">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">14</data>
+</edge>
+<edge source="Essassani" target="Interstellar Alliance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Essassani" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Essassani" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Essassani" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Essassani" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Essassani" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Essassani" target="Parallel realities">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Essassani" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Essassani" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Essassani" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Essassani" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Essassani" target="First Contact Specialist">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Essassani" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Essassani" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Sassani" target="Five Hybrid Races">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sassani" target="Zeta Reticuli / Greys">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sassani" target="Cybo">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sassani" target="Shivai (thin)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sassani" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Sassani" target="Highest excitement">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Sassani" target="Hybrid children">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Sassani" target="Oversoul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Sassani" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Sassani" target="Physical mind">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Sassani" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sassani" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Sassani" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sassani" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Sassani" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Sassani" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Sassani" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sassani" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sassani" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sassani" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Sassani" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sassani" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sassani" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Sassani" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Sassani" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Eshakani (unverified)" target="Density">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Yahyel (Ya'yel)" target="Shalanaya (Shalinaya)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Yahyel (Ya'yel)" target="Five Hybrid Races">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Yahyel (Ya'yel)" target="Open contact">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Yahyel (Ya'yel)" target="Sedona Vortex Array">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Yahyel (Ya'yel)" target="Pleiadians">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Shalanaya (Shalinaya)" target="Open contact">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Five Hybrid Races" target="Sixth Hybrid Race">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Five Hybrid Races" target="Hybridization program">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sixth Hybrid Race" target="Hybrid children">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sixth Hybrid Race" target="Reset (2020–2050)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Hybrid children" target="Hybridization program">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Hybrid children" target="Zeta Reticuli / Greys">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Hybrid children" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Hybrid children" target="Highest excitement">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">20</data>
+</edge>
+<edge source="Hybrid children" target="Oversoul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Hybrid children" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">25</data>
+</edge>
+<edge source="Hybrid children" target="Physical mind">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="Hybrid children" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Hybrid children" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">25</data>
+</edge>
+<edge source="Hybrid children" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Hybrid children" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Hybrid children" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">11</data>
+</edge>
+<edge source="Hybrid children" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">23</data>
+</edge>
+<edge source="Hybrid children" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">15</data>
+</edge>
+<edge source="Hybrid children" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Hybrid children" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Hybrid children" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">20</data>
+</edge>
+<edge source="Hybrid children" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">13</data>
+</edge>
+<edge source="Hybrid children" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Hybrid children" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">13</data>
+</edge>
+<edge source="Hybrid children" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Hybrid children" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">15</data>
+</edge>
+<edge source="Hybrid children" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Hybrid children" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Hybrid children" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Hybrid children" target="Interstellar Alliance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Hybrid children" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Hybrid children" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Hybrid children" target="Reset (2020–2050)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Hybrid children" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Hybrid children" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Hybrid children" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Hybrid children" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Hybrid children" target="First Contact Specialist">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Hybridization program" target="Zeta Reticuli / Greys">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Hybridization program" target="Anunnaki">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Zeta Reticuli / Greys" target="Grey Federation">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Grey Federation" target="Parallel realities">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="First Contact Specialist" target="Open contact">
+  <data key="d2">glossary_related</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="First Contact Specialist" target="Interstellar Alliance">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="First Contact Specialist" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="First Contact Specialist" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="First Contact Specialist" target="Physical mind">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="First Contact Specialist" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="First Contact Specialist" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="First Contact Specialist" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="First Contact Specialist" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="First Contact Specialist" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="First Contact Specialist" target="Highest excitement">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="First Contact Specialist" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="First Contact Specialist" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="First Contact Specialist" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="First Contact Specialist" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="First Contact Specialist" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Future self / oversoul relation" target="Oversoul">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Future self / oversoul relation" target="Seth parallel">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Oversoul" target="All That Is / The One">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Oversoul" target="Seth parallel">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Oversoul" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Oversoul" target="Highest excitement">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Oversoul" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Oversoul" target="Physical mind">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Oversoul" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Oversoul" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">10</data>
+</edge>
+<edge source="Oversoul" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Oversoul" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Oversoul" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Oversoul" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Oversoul" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Oversoul" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Oversoul" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Oversoul" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Oversoul" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Oversoul" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Oversoul" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Oversoul" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Oversoul" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Oversoul" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="All That Is / The One" target="Five Laws of Creation">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="All That Is / The One" target="Hermetic paradigm (academic reading)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Five Laws of Creation" target="Four Laws of Creation">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Five Laws of Creation" target="Basic Principles">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Five Laws of Creation" target="Time / one moment">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Basic Principles" target="The Formula (Follow Your Excitement Formula)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Basic Principles" target="Ecstasy as birthright">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Basic Principles" target="Abundance">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Formula (Follow Your Excitement Formula)" target="Highest excitement">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Formula (Follow Your Excitement Formula)" target="Fear-based beliefs">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Formula (Follow Your Excitement Formula)" target="Synchronicity">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Formula (Follow Your Excitement Formula)" target="Seven Sequential Steps of Manifestation">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Formula (Follow Your Excitement Formula)" target="State of being">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Formula (Follow Your Excitement Formula)" target="The Compass">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Highest excitement" target="Higher mind / Higher self">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Highest excitement" target="Synchronicity">
+  <data key="d2">glossary_related</data>
+  <data key="d3">33</data>
+</edge>
+<edge source="Highest excitement" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="First Contact (film)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Highest excitement" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">34</data>
+</edge>
+<edge source="Highest excitement" target="Physical mind">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">25</data>
+</edge>
+<edge source="Highest excitement" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Highest excitement" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">10</data>
+</edge>
+<edge source="Highest excitement" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Highest excitement" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">15</data>
+</edge>
+<edge source="Highest excitement" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">32</data>
+</edge>
+<edge source="Highest excitement" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">17</data>
+</edge>
+<edge source="Highest excitement" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">29</data>
+</edge>
+<edge source="Highest excitement" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Highest excitement" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">16</data>
+</edge>
+<edge source="Highest excitement" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Highest excitement" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">11</data>
+</edge>
+<edge source="Highest excitement" target="Density">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Highest excitement" target="Fear-based beliefs">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Highest excitement" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="Highest excitement" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Highest excitement" target="Parallel realities">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Highest excitement" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">15</data>
+</edge>
+<edge source="Highest excitement" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Highest excitement" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Highest excitement" target="Interstellar Alliance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Highest excitement" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Highest excitement" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="2027">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Highest excitement" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Highest excitement" target="Abundance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Highest excitement" target="State of being">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Highest excitement" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Seven Sequential Steps of Manifestation" target="Beliefs → emotions → actions">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Seven Sequential Steps of Manifestation" target="Allowance">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Physical mind" target="Higher mind / Higher self">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Physical mind" target="Fear-based beliefs">
+  <data key="d2">glossary_related</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Physical mind" target="Imagination ('I-magi-nation')">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Physical mind" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Physical mind" target="First Contact (film)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Physical mind" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">30</data>
+</edge>
+<edge source="Physical mind" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Physical mind" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">31</data>
+</edge>
+<edge source="Physical mind" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">11</data>
+</edge>
+<edge source="Physical mind" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Physical mind" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">13</data>
+</edge>
+<edge source="Physical mind" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">28</data>
+</edge>
+<edge source="Physical mind" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">16</data>
+</edge>
+<edge source="Physical mind" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Physical mind" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Physical mind" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">23</data>
+</edge>
+<edge source="Physical mind" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Physical mind" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">15</data>
+</edge>
+<edge source="Physical mind" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Physical mind" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">11</data>
+</edge>
+<edge source="Physical mind" target="Density">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Physical mind" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">14</data>
+</edge>
+<edge source="Physical mind" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Physical mind" target="Parallel realities">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Physical mind" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">13</data>
+</edge>
+<edge source="Physical mind" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Physical mind" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Physical mind" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Physical mind" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Physical mind" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Physical mind" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Physical mind" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Physical mind" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Physical mind" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Physical mind" target="Interstellar Alliance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Physical mind" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Higher mind / Higher self" target="Imagination ('I-magi-nation')">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Imagination ('I-magi-nation')" target="Hermetic paradigm (academic reading)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Beliefs → emotions → actions" target="Fear-based beliefs">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Beliefs → emotions → actions" target="Definitions">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Beliefs → emotions → actions" target="State of being">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Fear-based beliefs" target="Worthiness / deservability">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Fear-based beliefs" target="Positive / negative synchronicity">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Fear-based beliefs" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Fear-based beliefs" target="Permission slip">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Fear-based beliefs" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Fear-based beliefs" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Fear-based beliefs" target="Parallel realities">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Fear-based beliefs" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Fear-based beliefs" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Worthiness / deservability" target="Unconditional love">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Permission slip" target="Sacred Circuitry">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Permission slip" target="Holotope">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Permission slip" target="Parallel Reality Wheel">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Permission slip" target="Referential Preferential You">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Permission slip" target="Cybo">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Permission slip" target="Eye of the Needle (2020)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Permission slip" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Permission slip" target="First Contact (film)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Permission slip" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Permission slip" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">41</data>
+</edge>
+<edge source="Permission slip" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">12</data>
+</edge>
+<edge source="Permission slip" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Permission slip" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="Permission slip" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">38</data>
+</edge>
+<edge source="Permission slip" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="Permission slip" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Permission slip" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Permission slip" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">32</data>
+</edge>
+<edge source="Permission slip" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Permission slip" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">18</data>
+</edge>
+<edge source="Permission slip" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Permission slip" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Permission slip" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">12</data>
+</edge>
+<edge source="Permission slip" target="Density">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Permission slip" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">22</data>
+</edge>
+<edge source="Permission slip" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Permission slip" target="Parallel realities">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Permission slip" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">18</data>
+</edge>
+<edge source="Permission slip" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Permission slip" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Permission slip" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Permission slip" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Permission slip" target="Interstellar Alliance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">10</data>
+</edge>
+<edge source="Permission slip" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Permission slip" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Permission slip" target="Reset (2020–2050)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Permission slip" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Permission slip" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Permission slip" target="2027">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Permission slip" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Permission slip" target="Abundance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Permission slip" target="State of being">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="State of being" target="Parallel realities">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="State of being" target="Splitting Prism">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="State of being" target="Referential Preferential You">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="State of being" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="State of being" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Definitions" target="Neutral props">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Definitions" target="Judgment vs preference">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Definitions" target="Abundance">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Definitions" target="The Compass">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Neutral props" target="Judgment vs preference">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Judgment vs preference" target="Discernment">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Parallel realities" target="Splitting Prism">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Parallel realities" target="Parallel Reality Wheel">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Parallel realities" target="Time / one moment">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Parallel realities" target="Earth Zero / zero template">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Parallel realities" target="Willa Hillicrissing">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Parallel realities" target="Synchronicity">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Parallel realities" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Parallel realities" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Splitting Prism" target="The Shift / New Earth">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Splitting Prism" target="Eye of the Needle (2020)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Splitting Prism" target="Parallel Reality Wheel">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Earth Zero / zero template" target="Time / one moment">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Synchronicity" target="Positive / negative synchronicity">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Synchronicity" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Synchronicity" target="First Contact (film)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Synchronicity" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Synchronicity" target="Unconditional love">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">12</data>
+</edge>
+<edge source="Synchronicity" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Synchronicity" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">18</data>
+</edge>
+<edge source="Synchronicity" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">37</data>
+</edge>
+<edge source="Synchronicity" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">21</data>
+</edge>
+<edge source="Synchronicity" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Synchronicity" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Synchronicity" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">33</data>
+</edge>
+<edge source="Synchronicity" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Synchronicity" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">20</data>
+</edge>
+<edge source="Synchronicity" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Synchronicity" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Synchronicity" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">12</data>
+</edge>
+<edge source="Synchronicity" target="Density">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Synchronicity" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">22</data>
+</edge>
+<edge source="Synchronicity" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Synchronicity" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="Synchronicity" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Synchronicity" target="Abundance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Synchronicity" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Synchronicity" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Synchronicity" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Synchronicity" target="Interstellar Alliance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Synchronicity" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Synchronicity" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Synchronicity" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Synchronicity" target="Reset (2020–2050)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Synchronicity" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Synchronicity" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Synchronicity" target="2027">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Ecstasy as birthright" target="Unconditional love">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Unconditional love" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Unconditional love" target="Sirius">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Unconditional love" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Unconditional love" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Unconditional love" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">12</data>
+</edge>
+<edge source="Unconditional love" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Unconditional love" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Unconditional love" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Unconditional love" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Unconditional love" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Unconditional love" target="Contact Fulcrum (2027)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Unconditional love" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Unconditional love" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Unconditional love" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Unconditional love" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Abundance" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Density" target="The Shift / New Earth">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Density" target="Arcturians">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Density" target="Nine Levels of Consciousness">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Density" target="Open contact">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Density" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="The Shift / New Earth" target="2012 threshold">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Shift / New Earth" target="Reset (2020–2050)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="2012 threshold" target="Hands-off quarantine">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Hands-off quarantine" target="Open contact">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Hands-off quarantine" target="Interstellar Alliance">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Window of Discovery (2018–2020)" target="Fall 2016">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Window of Discovery (2018–2020)" target="Contact Fulcrum (2027)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Window of Discovery (2018–2020)" target="Shifting Window of Contact">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Window of Discovery (2018–2020)" target="No More Secrets">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="Roswell cycle">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="Open contact">
+  <data key="d2">glossary_related</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="Shifting Window of Contact">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="Three-Year Collapse (2025–2027)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Contact Fulcrum (2027)" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Shifting Window of Contact" target="Open contact">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Open contact" target="Protocols of First Contact">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Open contact" target="Sedona Vortex Array">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Open contact" target="Extraterrestrial Contact Act">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Open contact" target="30 Days of Disclosure">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Open contact" target="No More Secrets">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Open contact" target="Reset (2020–2050)">
+  <data key="d2">glossary_related</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Open contact" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Open contact" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Open contact" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Open contact" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">21</data>
+</edge>
+<edge source="Open contact" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Open contact" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Open contact" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="Open contact" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">13</data>
+</edge>
+<edge source="Open contact" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">11</data>
+</edge>
+<edge source="Open contact" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Open contact" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Open contact" target="2027">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Open contact" target="Interstellar Alliance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Open contact" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Open contact" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Open contact" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">11</data>
+</edge>
+<edge source="Open contact" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Open contact" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Open contact" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Open contact" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Open contact" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Protocols of First Contact" target="Interstellar Alliance">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Protocols of First Contact" target="Guide to Open Contact (Window, Door, Gate)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Interstellar Alliance" target="Interstellar Alliance Social Experiment">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Interstellar Alliance" target="Galactic citizen">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Interstellar Alliance" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Interstellar Alliance" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Interstellar Alliance" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="Interstellar Alliance" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Interstellar Alliance" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Interstellar Alliance" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Interstellar Alliance" target="Pleiadians">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Interstellar Alliance" target="Reset (2020–2050)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Interstellar Alliance" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Interstellar Alliance" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Interstellar Alliance" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Interstellar Alliance" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Interstellar Alliance Social Experiment" target="Guide to Open Contact (Window, Door, Gate)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Interstellar Alliance Social Experiment" target="30 Days of Disclosure">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Guide to Open Contact (Window, Door, Gate)" target="Galactic citizen">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Triad (Earth–Essassani–Sirius)" target="Sirius">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="The Triad (Earth–Essassani–Sirius)" target="Arcturians">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sirius" target="Sacred Circuitry">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sirius" target="Interstellar Enneagram">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sirius" target="Anunnaki">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sirius" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sirius" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Sirius" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Sirius" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sirius" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Sirius" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Orion" target="Pleiadians">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Orion" target="Interstellar Enneagram">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Orion" target="Anunnaki">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Anunnaki" target="Lyrans">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Anunnaki" target="First Contact (film)">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Anunnaki" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Anunnaki" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Anunnaki" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="Anunnaki" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Anunnaki" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Anunnaki" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="Anunnaki" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Anunnaki" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Pleiadians" target="Interstellar Enneagram">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Pleiadians" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Pleiadians" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Pleiadians" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Pleiadians" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="Pleiadians" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Pleiadians" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Pleiadians" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Pleiadians" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="Pleiadians" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Willa Hillicrissing" target="Willa's World">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Willa Hillicrissing" target="Shards of a Shattered Mirror">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Willa Hillicrissing" target="Five Levels of Mastery">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Willa's World" target="Five Levels of Mastery">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Holotope" target="Ask Bashar">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Sedona Vortex Array" target="Interdimensional portals / vortices">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Extraterrestrial Contact Act" target="UFO Witness Declaration">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="UFO Witness Declaration" target="30 Days of Disclosure">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Reset (2020–2050)" target="Three-Year Collapse (2025–2027)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Reset (2020–2050)" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Reset (2020–2050)" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Reset (2020–2050)" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="Ask Bashar" target="BasharTV">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Debunking the Debunkers" target="Discernment">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Debunking the Debunkers" target="Evaluation of the material (official stance)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Discernment" target="Evaluation of the material (official stance)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="Hermetic paradigm (academic reading)" target="Seth parallel">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="1973 sightings" target="First Contact (film)">
+  <data key="d2">glossary_related</data>
+</edge>
+<edge source="First Contact (film)" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="First Contact (film)" target="definition">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="First Contact (film)" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="First Contact (film)" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="First Contact (film)" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="definition" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="definition" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="definition" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">21</data>
+</edge>
+<edge source="definition" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="definition" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="definition" target="parallel reality">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">31</data>
+</edge>
+<edge source="definition" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="definition" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">19</data>
+</edge>
+<edge source="definition" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="definition" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="definition" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="definition" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="definition" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">17</data>
+</edge>
+<edge source="definition" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="definition" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="definition" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="definition" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="definition" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="definition" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="definition" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="parallel reality" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">16</data>
+</edge>
+<edge source="parallel reality" target="frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">16</data>
+</edge>
+<edge source="parallel reality" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="parallel reality" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">14</data>
+</edge>
+<edge source="parallel reality" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="parallel reality" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="parallel reality" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">15</data>
+</edge>
+<edge source="parallel reality" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="parallel reality" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="parallel reality" target="2027">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="parallel reality" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="parallel reality" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="parallel reality" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="frequency" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="frequency" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="frequency" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="frequency" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="frequency" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="frequency" target="vibration">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">17</data>
+</edge>
+<edge source="frequency" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="frequency" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">8</data>
+</edge>
+<edge source="frequency" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="frequency" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="frequency" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="frequency" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="frequency" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="frequency" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="frequency" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="frequency" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="vibration" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="vibration" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">10</data>
+</edge>
+<edge source="vibration" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="vibration" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="vibration" target="formula">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">9</data>
+</edge>
+<edge source="vibration" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="vibration" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="vibration" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="vibration" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="vibration" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">6</data>
+</edge>
+<edge source="vibration" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="vibration" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="formula" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="formula" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="formula" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="formula" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="formula" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="formula" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="formula" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="formula" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">7</data>
+</edge>
+<edge source="formula" target="belief system">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">10</data>
+</edge>
+<edge source="formula" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="formula" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="formula" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="formula" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="belief system" target="ascension">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">5</data>
+</edge>
+<edge source="belief system" target="grays">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="belief system" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="belief system" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="belief system" target="channeling state">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="belief system" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="belief system" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="belief system" target="passion">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="belief system" target="disclosure">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="belief system" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="belief system" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="disclosure" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="disclosure" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="disclosure" target="consciousness">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">4</data>
+</edge>
+<edge source="disclosure" target="2027">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="disclosure" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="disclosure" target="vibrational frequency">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="consciousness" target="Akashic records">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="consciousness" target="channeling">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="channeling" target="life path">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="channeling" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="grays" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="grays" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="passion" target="soul">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="soul" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="life path" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="channeling state" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="ascension" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="ascension" target="path of least resistance">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="ascension" target="soul family">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="soul family" target="spirit guides">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+<edge source="path of least resistance" target="law of attraction">
+  <data key="d2">cooccurrence</data>
+  <data key="d3">3</data>
+</edge>
+</graph></graphml>

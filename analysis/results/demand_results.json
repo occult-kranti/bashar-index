@@ -1,0 +1,208 @@
+{
+  "module": "demand",
+  "git_head": "cff3988",
+  "seed": 42,
+  "digest_level": "content",
+  "tests": [
+    {
+      "id": "P3",
+      "family": "primary",
+      "exploratory": false,
+      "statistic": {
+        "chi2": 1012.009015333832,
+        "dof": 57,
+        "n_percentage_points": 7505.0
+      },
+      "p": 7.496757064537865e-175,
+      "p_holm": 1.499351412907573e-174,
+      "effect": {
+        "cramers_v": 0.21200993605007945,
+        "bias_corrected_v": 0.2059931898671588
+      },
+      "ci95": [
+        0.21070200784255194,
+        0.3002126087826097
+      ],
+      "note": "Chi2 on 20-tag x 4-type table of summed per-video topic-share points (75 videos; per-question tags are not stored in-repo \u2014 see data_deviation). H4 segmentation confirmed only if p<0.05 AND V>0.2 (design threshold): confirmed=True. Cluster bootstrap CI over videos. Permutation null within year strata (reliable-year videos, n=40): chi2=572.1, permutation p=0.0001, asymptotic p=4.042e-86, V=0.218. The headline asymptotic p (1e-175) is DECORATIVE as count inference \u2014 cells are pipeline-estimated share points with massive pseudo-replication \u2014 and must never be quoted without this caveat (advisor ruling \u00a73). The operative evidence is: V=0.212 clears the pre-registered 0.2 threshold narrowly (bias-corrected 0.206 does not), the cluster bootstrap CI clears it entirely, and the within-year-strata permutation p=0.0001 is robust to the row-independence problem. P3 confirms digest-level topical segmentation by packaging format, NOT question-level demand.",
+      "permutation_p_within_year_strata": 9.999000099990002e-05,
+      "confirmed_by_threshold": true,
+      "significant_holm": true
+    },
+    {
+      "id": "P4",
+      "family": "primary",
+      "exploratory": false,
+      "statistic": {
+        "slope_log_odds_per_year": -0.14923458876642834,
+        "se": 0.23082827873133024,
+        "z": -0.6465177905698812
+      },
+      "p": 0.7410279603184489,
+      "p_holm": 0.7410279603184489,
+      "effect": {
+        "slope": -0.14923458876642834
+      },
+      "ci95": [
+        -0.6016580150798356,
+        0.3031888375469789
+      ],
+      "note": "Binomial GLM of disclosure-topic share on year, reliable-year videos 2024-2026 (n=34 videos, 556 questions). One-sided slope>0 plus monotone fitted shares: monotone=False; confirmed=False. Frozen base rate: 16.8%.",
+      "monotone_fitted_shares": false,
+      "confirmed_by_threshold": false,
+      "base_rate_frozen": 16.8,
+      "significant_holm": false
+    },
+    {
+      "id": "E4-kw-video-cluster-sensitivity",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "n_tags_kw_p_lt_0.05": 17,
+        "min_kw_p": 3.249969749688622e-10
+      },
+      "p": null,
+      "p_holm": null,
+      "effect": {
+        "share_of_20_tags_kw_significant": 0.85
+      },
+      "ci95": null,
+      "note": "Video-level Kruskal\u2013Wallis per tag across content types (row-independence sensitivity). Full table in EXPLORATORY_kw_by_tag."
+    },
+    {
+      "id": "E5-sample99-crosscheck",
+      "family": "exploratory",
+      "exploratory": true,
+      "statistic": {
+        "chi2": 30.824439368770765,
+        "dof": 19,
+        "n": 99,
+        "sampled_content_types": [
+          "Full session (re-upload)",
+          "Interview with Darryl Anka"
+        ],
+        "unsampled_content_types": [
+          "Clip / excerpt",
+          "Official highlight clip"
+        ],
+        "n_expected_cells_lt_5": 40
+      },
+      "p": 0.0306969303069693,
+      "p_holm": null,
+      "effect": {
+        "cramers_v": 0.5579945998143054
+      },
+      "ci95": [
+        0.5552266992335454,
+        0.7716205223159281
+      ],
+      "note": "Chi2 on the 99 sampled question examples only. The sample covers just two content types (full sessions + interviews); clip/highlight columns are structurally zero, which is what made the asymptotic test raise (zero expected cell) in round 3 \u2014 that exception was silently swallowed and the promised check went missing. Now: table restricted to sampled types; asymptotic p replaced by a Monte-Carlo permutation p (type labels permuted across the 99 examples, both margins fixed, 10k, seed 42); V bootstrap-CI'd over examples. Sparse-table warning stands: expected cells < 5 throughout; directional cross-check only."
+    }
+  ],
+  "provenance": {
+    "inputs": [
+      "data/analysis.json",
+      "data/videos.json",
+      "data/digests/*.json"
+    ],
+    "reverification": "n/a"
+  },
+  "grade": "Frontier",
+  "generated": "2026-09-23T01:31:33+00:00",
+  "multiple_comparison_policy": "4 primary tests (P1-P4), Holm-corrected as a family at alpha=0.05; all other tests EXPLORATORY, hypothesis-generating only.",
+  "data_deviation": "Per-question tag assignments keyed to video_id are NOT stored in the repo (analysis.json.questions carries aggregate counts + 99 sampled examples; digests' qa_topics carry no tag field). P3/P4 therefore run on per-video 20-tag topic-share vectors (digests.topic_percentages, all 75 videos) with per-video question counts as GLM weights. All cells are pipeline-estimated share points, not raw question counts.",
+  "questions_accounted_for": 949,
+  "questions_expected": 949,
+  "videos_total": 75,
+  "videos_reliable_year": 40,
+  "EXPLORATORY_kw_by_tag": {
+    "formula_excitement": {
+      "H": 18.677581015286506,
+      "p": 0.00031873922409180464
+    },
+    "beliefs_emotions_fear": {
+      "H": 8.989260983854031,
+      "p": 0.0294340088752012
+    },
+    "parallel_realities_shifting": {
+      "H": 3.9916970930300812,
+      "p": 0.2623620907865184
+    },
+    "physical_vs_higher_mind": {
+      "H": 2.624763602231068,
+      "p": 0.4531646978323115
+    },
+    "permission_slips_tools": {
+      "H": 13.226053809519952,
+      "p": 0.004172399908051487
+    },
+    "et_contact_disclosure_2027": {
+      "H": 13.55701336570081,
+      "p": 0.0035745609088907926
+    },
+    "essassani_hybrids_other_civilizations": {
+      "H": 9.016431110401637,
+      "p": 0.029073221763090327
+    },
+    "earth_shift_timelines_ascension": {
+      "H": 16.38611312553127,
+      "p": 0.0009449241874683585
+    },
+    "abundance_money_career": {
+      "H": 16.489583489114672,
+      "p": 0.0008998157817037785
+    },
+    "relationships_family_sexuality": {
+      "H": 47.13704188847284,
+      "p": 3.249969749688622e-10
+    },
+    "health_body_healing_death": {
+      "H": 23.32987595038013,
+      "p": 3.4468455633792085e-05
+    },
+    "time_simultaneity_reincarnation": {
+      "H": 14.931626485447458,
+      "p": 0.0018760209154065606
+    },
+    "channeling_mechanics_darryl": {
+      "H": 19.731976363789748,
+      "p": 0.00019289425489709116
+    },
+    "consciousness_oversoul_higherself": {
+      "H": 2.887731957678063,
+      "p": 0.40926054546757995
+    },
+    "synchronicity_dreams_meditation": {
+      "H": 31.42194354751674,
+      "p": 6.927605084639799e-07
+    },
+    "politics_society_economy_ai": {
+      "H": 19.164902023811337,
+      "p": 0.00025275168001344145
+    },
+    "physics_energy_frequency_dimensions": {
+      "H": 8.78411258876109,
+      "p": 0.032303294147966115
+    },
+    "spirituality_god_love_service": {
+      "H": 26.163506282849337,
+      "p": 8.814398026630141e-06
+    },
+    "ancient_history_atlantis_orion_sirius": {
+      "H": 32.61554287200401,
+      "p": 3.881756329480589e-07
+    },
+    "misc_life_guidance": {
+      "H": 23.33763021106387,
+      "p": 3.43403456702812e-05
+    }
+  },
+  "residual_direction_descriptive": {
+    "note": "Design-predicted pattern check (descriptive, not a 5th test), corrected per r3 audit discrepancy 4: et_contact_disclosure_2027 is OVER-represented in free interviews (+6.9) and clips/excerpts (+3.1) standardized Pearson residuals, but UNDER-represented in official highlight clips (-3.0) and full sessions (-6.4). The round-3 sentence ('free clips/highlights/interviews skew to disclosure') contradicted F4 on the highlight column and is retracted: the free-packaging skew to disclosure is carried by interviews and clips, not by official highlights.",
+    "disclosure_row_standardized_residuals": {
+      "Full session (re-upload)": -6.407492111293883,
+      "Interview with Darryl Anka": 6.875762093216188,
+      "Clip / excerpt": 3.118456499304093,
+      "Official highlight clip": -2.9768865443011596
+    }
+  }
+}
