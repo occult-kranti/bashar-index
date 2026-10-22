@@ -11,6 +11,7 @@ An independent research site that indexes the public channeling sessions of **Ba
 | `index.html` | The whole site — one self-contained page, no external requests. |
 | `data/` | The research data package: digests, catalogue, topic analysis, diagrams (JSON + SVG), glossary, timeline, manifests. See `data/README.md`. |
 | `src/` | The Python that builds the page (`build.py`, `css.py`, `js.py`, `svglib.py`, `diagrams_a.py`, `diagrams_b.py`), the analysis pipeline (`topics.py`) and the digest schema (`DIGEST_SPEC.md`). |
+| `experiments/frequency-of-place/` | **The frequency of a place**: a design for Bashar's copper-sphere experiment (thin hollow copper sphere on a flat table, measured at two places), with the physics model (`fp_model.py`, `sphere_modes.py`, `fp_results.json`), inline diagrams, two rendered views and an interactive network chart of the literature and the 2025–26 AI-laboratory releases. Built by `src/experiments/` from `data/experiments/frequency-of-place/`. |
 
 ## Rebuilding
 
@@ -28,6 +29,7 @@ python3 src/build.py       # regenerates index.html
 - Diagrams are original SVG redrawings of concepts described in sessions, each with a confidence grade. No handout artwork is reproduced.
 - Upload dates on re-upload channels are unreliable; the site flags these (`~`) and excludes them from year-based views.
 - All claims are reported as claims, not endorsed. The site includes critical and skeptical coverage.
+- The experiment page is a design with model numbers, not a measurement; it states what each outcome would mean and gives no verdict.
 
 ## Not affiliated
 

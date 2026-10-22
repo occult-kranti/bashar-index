@@ -1,0 +1,4088 @@
+{
+"nodes": [
+{
+"id": "org-openai",
+"label": "OpenAI",
+"kind": "org",
+"org": "OpenAI",
+"date": "",
+"url": "https://openai.com/research/",
+"field": "",
+"verified": "",
+"summary": "OpenAI for Science; GPT-5.x, Astra, Sol models; openai/math release",
+"side": "lab"
+},
+{
+"id": "org-anthropic",
+"label": "Anthropic",
+"kind": "org",
+"org": "Anthropic",
+"date": "",
+"url": "https://www.anthropic.com/science",
+"field": "",
+"verified": "",
+"summary": "Anthropic Science blog, Claude Science, AI for Science program",
+"side": "lab"
+},
+{
+"id": "org-deepmind",
+"label": "Google DeepMind",
+"kind": "org",
+"org": "Google DeepMind",
+"date": "",
+"url": "https://deepmind.google/",
+"field": "",
+"verified": "",
+"summary": "AlphaEvolve, Gemini Deep Think, Aletheia",
+"side": "lab"
+},
+{
+"id": "org-epoch",
+"label": "Epoch AI",
+"kind": "org",
+"org": "Epoch AI",
+"date": "",
+"url": "https://epoch.ai/",
+"field": "",
+"verified": "",
+"summary": "FrontierMath benchmark maintainer (OpenAI-funded)",
+"side": "lab"
+},
+{
+"id": "org-harmonic",
+"label": "Harmonic (Aristotle)",
+"kind": "org",
+"org": "Harmonic",
+"date": "",
+"url": "https://harmonic.fun/",
+"field": "",
+"verified": "",
+"summary": "Aristotle Lean autoformalizer used to check Erd\u0151s proofs",
+"side": "lab"
+},
+{
+"id": "org-academia",
+"label": "Independent academics",
+"kind": "org",
+"org": "other",
+"date": "",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "University authors using lab models as tools (Knuth, Aaronson, Buckmaster, Colbrook, Henkel...)",
+"side": "lab"
+},
+{
+"id": "m-gpt5",
+"label": "GPT-5 / GPT-5 Thinking",
+"kind": "model",
+"org": "OpenAI",
+"date": "2025-08",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Base GPT-5 (Aug 2025) incl. Thinking mode",
+"side": "lab"
+},
+{
+"id": "m-gpt5-pro",
+"label": "GPT-5 Pro",
+"kind": "model",
+"org": "OpenAI",
+"date": "2025-08",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Long-reasoning GPT-5 variant",
+"side": "lab"
+},
+{
+"id": "m-gpt52-pro",
+"label": "GPT-5.2 Pro / GPT-5.2",
+"kind": "model",
+"org": "OpenAI",
+"date": "2025-12",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "GPT-5.2 (incl. Pro and internally scaffolded versions)",
+"side": "lab"
+},
+{
+"id": "m-gpt54-pro",
+"label": "GPT-5.4 Pro",
+"kind": "model",
+"org": "OpenAI",
+"date": "2026-03",
+"url": "https://en.wikipedia.org/wiki/GPT-5.4",
+"field": "",
+"verified": "",
+"summary": "Released 5 Mar 2026",
+"side": "lab"
+},
+{
+"id": "m-gpt55",
+"label": "GPT-5.5 Pro / Codex",
+"kind": "model",
+"org": "OpenAI",
+"date": "2026-04",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "GPT-5.5 family incl. Codex agent",
+"side": "lab"
+},
+{
+"id": "m-gpt56-sol",
+"label": "GPT-5.6 Sol",
+"kind": "model",
+"org": "OpenAI",
+"date": "2026-06",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "GPT-5.6 'Sol'",
+"side": "lab"
+},
+{
+"id": "m-astra",
+"label": "GPT-6 Astra (internal/public)",
+"kind": "model",
+"org": "OpenAI",
+"date": "2026-08",
+"url": "https://openai.com/index/gpt-6-astra/",
+"field": "",
+"verified": "",
+"summary": "Astra-class model; internal version behind Ten Advances and Lean work",
+"side": "lab"
+},
+{
+"id": "m-oai-internal",
+"label": "OpenAI unreleased internal model",
+"kind": "model",
+"org": "OpenAI",
+"date": "2026-05",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Unnamed general reasoning model behind unit-distance disproof, Navier-Stokes claim and 722-paper release",
+"side": "lab"
+},
+{
+"id": "m-claude-opus-45",
+"label": "Claude Opus 4.5",
+"kind": "model",
+"org": "Anthropic",
+"date": "2025-11",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Used in vibe physics and Numina-Lean-Agent",
+"side": "lab"
+},
+{
+"id": "m-claude-opus-46",
+"label": "Claude Opus 4.6",
+"kind": "model",
+"org": "Anthropic",
+"date": "2026-02",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Hybrid reasoning model behind Knuth's Claude's Cycles",
+"side": "lab"
+},
+{
+"id": "m-claude-fable-5",
+"label": "Claude Fable 5 / 5.1",
+"kind": "model",
+"org": "Anthropic",
+"date": "2026-06",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Fable 5 (BootLoops) and Fable 5.1 (Claude Science nine loops)",
+"side": "lab"
+},
+{
+"id": "m-claude-mythos",
+"label": "Claude Mythos 5",
+"kind": "model",
+"org": "Anthropic",
+"date": "2026-05",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Named in quantum-circuit work and Erd\u0151s #90",
+"side": "lab"
+},
+{
+"id": "m-claude-internal",
+"label": "Claude internal research model",
+"kind": "model",
+"org": "Anthropic",
+"date": "2026-08",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Unreleased research Claude behind zeta result, ECDSA origins, forced-Euler work",
+"side": "lab"
+},
+{
+"id": "m-gemini-deep-think",
+"label": "Gemini Deep Think / Gemini 3 Pro",
+"kind": "model",
+"org": "Google DeepMind",
+"date": "2025-07",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "IMO gold; Aletheia backbone; Gemini 3 Pro on FrontierMath/FrontierScience",
+"side": "lab"
+},
+{
+"id": "m-alphaevolve",
+"label": "AlphaEvolve",
+"kind": "model",
+"org": "Google DeepMind",
+"date": "2025-05",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Evolutionary coding agent",
+"side": "lab"
+},
+{
+"id": "m-aletheia",
+"label": "Aletheia",
+"kind": "model",
+"org": "Google DeepMind",
+"date": "2026-02",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Math research agent on Gemini Deep Think",
+"side": "lab"
+},
+{
+"id": "m-aristotle",
+"label": "Aristotle (Harmonic)",
+"kind": "model",
+"org": "Harmonic",
+"date": "2025-12",
+"url": "",
+"field": "",
+"verified": "",
+"summary": "Lean autoformalization/verification agent",
+"side": "lab"
+},
+{
+"id": "t-erdos-combinatorics",
+"label": "Erd\u0151s problems / additive & extremal combinatorics",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "combinatorics",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-graph-theory",
+"label": "Graph theory / colouring / Hamiltonian cycles",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "combinatorics",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-discrete-convex-geometry",
+"label": "Discrete & convex geometry",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "geometry",
+"verified": "",
+"summary": "unit distances, Mahler, Ehrhart, sphere packing",
+"side": "lab"
+},
+{
+"id": "t-analytic-number-theory",
+"label": "Analytic number theory (zeta, L-functions)",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "number theory",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-algebraic-geometry",
+"label": "Algebraic geometry / Hodge / Diophantine",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "number theory",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-operator-algebras-groups",
+"label": "Operator algebras & group theory",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "algebra",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-tcs",
+"label": "Theoretical CS / complexity / lattices",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "TCS",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-quantum-info",
+"label": "Quantum information & quantum computing",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics/TCS",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-cryptography",
+"label": "Cryptography",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "TCS",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-amplitudes",
+"label": "QFT / scattering amplitudes / Feynman integrals",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-qcd-resummation",
+"label": "QCD resummation / SCET",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-gr-cosmology",
+"label": "General relativity & cosmology",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-plasma",
+"label": "Plasma / fusion modelling",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-fluid-pde",
+"label": "Fluid PDE: Navier-Stokes / Euler blow-up",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "PDE",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-kinetic-statmech",
+"label": "Kinetic PDE & statistical mechanics",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "mathematical physics",
+"verified": "",
+"summary": "Vlasov-Maxwell, Heisenberg ferromagnet, spin glasses",
+"side": "lab"
+},
+{
+"id": "t-spectral-theory",
+"label": "Spectral theory / eigenvalue problems",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "analysis",
+"verified": "",
+"summary": "Laplacian & Hodge Laplacian spectra, Neumann eigenfunctions",
+"side": "lab"
+},
+{
+"id": "t-inverse-spectral",
+"label": "Inverse spectral problems",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "analysis",
+"verified": "",
+"summary": "spectrum determines metric/shape; overdetermined boundary problems",
+"side": "lab"
+},
+{
+"id": "t-wave-helmholtz",
+"label": "Wave / Helmholtz equations",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "PDE",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-rigorous-numerics-lean",
+"label": "Rigorous numerics & Lean formalization",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "foundations",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-optimization-algorithms",
+"label": "Convex optimization & online algorithms",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "optimization",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-probability-statistics",
+"label": "Probability, random walks, statistics",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "probability",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-biology",
+"label": "Biology / ecology / genetics",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "biology",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-benchmarks",
+"label": "Benchmarks & evaluation",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "meta",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "t-research-practice",
+"label": "Research practice, verification norms, disputes",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "meta",
+"verified": "",
+"summary": "",
+"side": "lab"
+},
+{
+"id": "oai-bubeck-convex-opt",
+"label": "GPT-5 Pro step-size bound 1.5/L",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2025-08",
+"url": "https://allthings.how/what-does-gpt-5s-new-math-claim-actually-mean/",
+"field": "convex optimization",
+"verified": "self-reported; superseded by human 1.75/L",
+"summary": "GPT-5 Pro improved a gradient-descent step-size bound from 1/L to 1.5/L; humans already had 1.75/L",
+"side": "lab"
+},
+{
+"id": "oai-aaronson-qma",
+"label": "Limits to black-box amplification in QMA",
+"kind": "paper",
+"org": "other",
+"date": "2025-09",
+"url": "https://arxiv.org/abs/2509.21131",
+"field": "quantum complexity",
+"verified": "self-reported (key step from GPT-5)",
+"summary": "GPT-5-Thinking suggested resolvent-trace function controlling top eigenvalue of E(theta)",
+"side": "lab"
+},
+{
+"id": "oai-erdos-overclaim-oct2025",
+"label": "Oct-2025 Erd\u0151s overclaim (retracted)",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2025-10",
+"url": "https://the-decoder.com/leading-openai-researcher-announced-a-gpt-5-math-breakthrough-that-never-happened/",
+"field": "combinatorics (literature search)",
+"verified": "disputed/retracted",
+"summary": "'GPT-5 solved 10 Erd\u0151s problems' was literature search; Bloom: 'dramatic misinterpretation'; Hassabis: 'embarrassing'",
+"side": "lab"
+},
+{
+"id": "oai-science-acceleration-gpt5",
+"label": "Early science acceleration experiments with GPT-5",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2025-11",
+"url": "https://arxiv.org/abs/2511.16072",
+"field": "multi-field",
+"verified": "self-reported; 4 math results human-verified",
+"summary": "Case studies: Erd\u0151s #848, Kerr SL(2,R) symmetry, convex body chasing, tree inequalities, immunology, fusion",
+"side": "lab"
+},
+{
+"id": "oai-frontierscience",
+"label": "FrontierScience benchmark",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2025-12",
+"url": "https://openai.com/index/frontierscience",
+"field": "physics/chem/bio evals",
+"verified": "self-reported eval",
+"summary": "Olympiad + Research tracks; GPT-5.2 77%/25%",
+"side": "lab"
+},
+{
+"id": "oai-erdos-728-gpt52pro",
+"label": "Erd\u0151s #728 via GPT-5.2 Pro",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-01",
+"url": "https://www.quantamagazine.org/why-the-legendary-erdos-problems-are-falling-to-ai-20260803/",
+"field": "combinatorics",
+"verified": "Lean-verified via Aristotle",
+"summary": "Barreto & Price with GPT-5.2 Pro; Tao: 'more or less autonomously'; #333 was a 1977 rediscovery",
+"side": "lab"
+},
+{
+"id": "oai-gluon-single-minus",
+"label": "Single-minus gluon tree amplitudes are nonzero",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-02",
+"url": "https://arxiv.org/abs/2602.12176",
+"field": "QFT/amplitudes",
+"verified": "author-verified; preprint",
+"summary": "GPT-5.2 Pro conjectured all-n half-collinear formula; scaffolded GPT-5.2 gave formal proof",
+"side": "lab"
+},
+{
+"id": "oai-first-proof",
+"label": "First Proof submissions",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-02",
+"url": "https://openai.com/index/first-proof-submissions/",
+"field": "research mathematics",
+"verified": "self-reported; contested",
+"summary": "Internal model: 5 of 10 likely correct; one withdrawn",
+"side": "lab"
+},
+{
+"id": "oai-graviton-single-minus",
+"label": "Single-minus graviton tree amplitudes are nonzero",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-03",
+"url": "https://openai.com/index/extending-single-minus-amplitudes-to-gravitons/",
+"field": "QFT/gravity amplitudes",
+"verified": "author-verified; preprint",
+"summary": "GPT-5.2 Pro extended gluon result to gravitons; w(1+infinity) symmetry",
+"side": "lab"
+},
+{
+"id": "oai-unit-distance-disproof",
+"label": "Erd\u0151s unit-distance conjecture disproved",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-05",
+"url": "https://openai.com/index/model-disproves-discrete-geometry-conjecture/",
+"field": "discrete geometry",
+"verified": "independently verified (Gowers et al.)",
+"summary": "n^(1+delta) unit distances via algebraic number theory; Sawin delta=0.014",
+"side": "lab"
+},
+{
+"id": "oai-ten-advances",
+"label": "Ten advances in mathematics and TCS",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-08",
+"url": "https://openai.com/index/ten-advances-in-mathematics/",
+"field": "sphere packing, codes, groups, operator algebras, complexity, Ramsey",
+"verified": "Lean-verified (self)",
+"summary": "Astra internal: Cohn-Elkies sphere packing, Connes rigidity disproof, non-sofic groups, Erd\u0151s 146/180/183",
+"side": "lab"
+},
+{
+"id": "oai-navier-stokes-euler",
+"label": "Navier-Stokes & Euler blow-up (OpenAI)",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-09",
+"url": "https://openai.com/index/navier-stokes-solution/",
+"field": "fluid PDE",
+"verified": "Lean-verified (self); priority disputed",
+"summary": "Forced NS finite-time singularity by ~10,000 agents; unforced Euler; dispute with Alp\u00f6ge-Buckmaster",
+"side": "lab"
+},
+{
+"id": "oai-agmai-advisory",
+"label": "Advisory Group on Mathematics and AI",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-09",
+"url": "https://openai.com/index/advisory-group-on-mathematics-and-ai/",
+"field": "research practice",
+"verified": "n/a",
+"summary": "Gowers, Hairer, Witten, Wood et al. at IAS advise on dissemination",
+"side": "lab"
+},
+{
+"id": "oai-722-release",
+"label": "722-manuscript bulk release (openai/math)",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-10",
+"url": "https://github.com/openai/math",
+"field": "17 disciplines",
+"verified": "~22% Lean-verified; 3 retracted; rest self-reported",
+"summary": "372 families; 16 PDE, 25 math-phys families; Fields medalist declaration; Simons $5M",
+"side": "lab"
+},
+{
+"id": "oai-quasi-riemann",
+"label": "Quasi-Riemann Hypothesis / Landau-Siegel exclusion",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-10",
+"url": "https://github.com/openai/math/blob/main/preprints/The-Quasi-Riemann-Hypothesis-September-30-2026/paper.pdf",
+"field": "analytic number theory",
+"verified": "Lean-verified (per catalogue)",
+"summary": "Zero-free region Re(s) > 7/8 for all Dirichlet L-functions",
+"side": "lab"
+},
+{
+"id": "oai-hadwiger-counterexample",
+"label": "Counterexample to Hadwiger's conjecture",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-10",
+"url": "https://hub.valency.io/works/W_2a49kety",
+"field": "graph theory",
+"verified": "Lean-verified (self)",
+"summary": "Graphs with alpha<=2 and chromatic number > Hadwiger number",
+"side": "lab"
+},
+{
+"id": "oai-integer-multiplication",
+"label": "Integer multiplication below n log n",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-10",
+"url": "https://github.com/openai/math/blob/main/preprints/Integer-multiplication-below-n-log-n-September-23-2026/paper.pdf",
+"field": "algorithms",
+"verified": "unverified",
+"summary": "Would refute Sch\u00f6nhage-Strassen conjecture; huge constants",
+"side": "lab"
+},
+{
+"id": "oai-mahler-conjectures",
+"label": "Symmetric & general Mahler conjectures",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-10",
+"url": "https://github.com/openai/math/blob/main/reasoning_traces/symmetric-and-general-mahler-conjectures.pdf",
+"field": "convex geometry",
+"verified": "partially Lean-verified",
+"summary": "Volume-product conjectures in all dimensions",
+"side": "lab"
+},
+{
+"id": "oai-vlasov-maxwell",
+"label": "3D relativistic Vlasov-Maxwell",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-10",
+"url": "https://github.com/openai/math/blob/main/reasoning_traces/relativistic-vlasov-maxwell.pdf",
+"field": "kinetic PDE",
+"verified": "unverified",
+"summary": "One of ten traced results; PDE family of the dump",
+"side": "lab"
+},
+{
+"id": "oai-heisenberg-ferromagnet",
+"label": "Quantum Heisenberg ferromagnet & M\u00e9zard-Parisi",
+"kind": "paper",
+"org": "OpenAI",
+"date": "2026-10",
+"url": "https://github.com/openai/math/blob/main/reasoning_traces/spontaneous-magnetization-quantum-heisenberg-ferromagnet.pdf",
+"field": "statistical mechanics",
+"verified": "unverified",
+"summary": "Claimed proofs of long-range order and diluted spin-glass free energy",
+"side": "lab"
+},
+{
+"id": "epoch-frontiermath",
+"label": "FrontierMath (Tier 4)",
+"kind": "paper",
+"org": "Epoch AI",
+"date": "2026-06",
+"url": "https://epoch.ai/benchmarks/frontiermath-tier-4-v1/",
+"field": "math benchmark",
+"verified": "third-party eval; OpenAI funding/access caveat",
+"summary": "350 problems; Gemini 3 Pro 19% Tier 4; grader fixes Jan 2026",
+"side": "lab"
+},
+{
+"id": "horizonmath",
+"label": "HorizonMath",
+"kind": "paper",
+"org": "other",
+"date": "2026-03",
+"url": "https://arxiv.org/abs/2603.15617",
+"field": "math discovery benchmark",
+"verified": "auto-verified; ICML AI4Math best paper",
+"summary": "113 open problems; 6 novel solutions by GPT-5.4 Pro and GPT-5.6 Sol",
+"side": "lab"
+},
+{
+"id": "tao-erdos-ai-wiki",
+"label": "AI contributions to Erd\u0151s problems (Tao wiki)",
+"kind": "paper",
+"org": "other",
+"date": "2026-06",
+"url": "https://github.com/teorth/erdosproblems/wiki/AI-contributions-to-Erd%C5%91s-problems",
+"field": "combinatorics/number theory",
+"verified": "per-entry; many Lean",
+"summary": "Catalogue of AI Erd\u0151s results across GPT-5.x, Claude Mythos/Fable, Aletheia, AlphaProof",
+"side": "lab"
+},
+{
+"id": "anth-ai-for-science-program",
+"label": "Anthropic AI for Science program",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2025-05",
+"url": "https://www.anthropic.com/news/ai-for-science-program",
+"field": "life sciences",
+"verified": "n/a",
+"summary": "API credits for researchers",
+"side": "lab"
+},
+{
+"id": "anth-vibe-physics",
+"label": "C-parameter Sudakov shoulder resummation (vibe physics)",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-01",
+"url": "https://arxiv.org/abs/2601.02484",
+"field": "QCD/SCET",
+"verified": "self-validated by author; not peer-reviewed",
+"summary": "Claude Opus 4.5 did all calculations over two weeks under Schwartz's supervision",
+"side": "lab"
+},
+{
+"id": "anth-field-notes-feb2026",
+"label": "Anthropic field notes, Feb 2026",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-02",
+"url": "https://www.anthropic.com/research/roundup-feb-2026",
+"field": "meta",
+"verified": "n/a",
+"summary": "Cites OpenAI gluon result, First Proof, SAIR, Genesis Mission",
+"side": "lab"
+},
+{
+"id": "knuth-claude-cycles",
+"label": "Claude's Cycles (Knuth)",
+"kind": "paper",
+"org": "other",
+"date": "2026-02",
+"url": "https://cs.stanford.edu/~knuth/papers/claude-cycles.pdf",
+"field": "combinatorics",
+"verified": "Lean-verified (odd m)",
+"summary": "Claude Opus 4.6 decomposed m^3 digraph into 3 Hamiltonian cycles",
+"side": "lab"
+},
+{
+"id": "numina-lean-agent",
+"label": "Numina-Lean-Agent",
+"kind": "paper",
+"org": "other",
+"date": "2026-01",
+"url": "https://arxiv.org/abs/2601.14027",
+"field": "formal mathematics",
+"verified": "Lean-verified",
+"summary": "Claude Opus 4.5 + Claude Code solved all Putnam 2025 in Lean",
+"side": "lab"
+},
+{
+"id": "anth-science-blog",
+"label": "Anthropic Science blog launch",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-03",
+"url": "https://www.anthropic.com/research/introducing-anthropic-science",
+"field": "meta",
+"verified": "n/a",
+"summary": "Collection page linking physics, math, bio posts",
+"side": "lab"
+},
+{
+"id": "anth-riemann-zeta",
+"label": "Claude: 67.2% of zeta zeros on the critical line",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-08",
+"url": "https://www.anthropic.com/research/riemann-zeta",
+"field": "analytic number theory",
+"verified": "Lean-verified; internal validation",
+"summary": "Raised Montgomery-type lower bound from 41.6% to 67.2%",
+"side": "lab"
+},
+{
+"id": "alpoge-buckmaster-forced-blowup",
+"label": "Forced blow-up: IPM, Boussinesq, Euler (Alp\u00f6ge-Buckmaster)",
+"kind": "paper",
+"org": "other",
+"date": "2026-09",
+"url": "https://cims.nyu.edu/~tristanb/statement.pdf",
+"field": "fluid PDE",
+"verified": "Lean-verified; exposition & priority disputed",
+"summary": "Claude + Codex extended C\u00f3rdoba-Mart\u00ednez-Zoroa to smooth forcing and 3D Euler",
+"side": "lab"
+},
+{
+"id": "anth-nine-loops",
+"label": "Nine-loop N=4 SYM hexagon amplitude",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-09",
+"url": "https://www.anthropic.com/research/yes-claude-can-do-nine-loops",
+"field": "scattering amplitudes",
+"verified": "independently verified (Dixon)",
+"summary": "Claude Fable 5.1 in Claude Science bootstrapped nine loops unsupervised",
+"side": "lab"
+},
+{
+"id": "anth-claude-shaped-science",
+"label": "Claude-shaped science (BootLoops)",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-10",
+"url": "https://www.anthropic.com/research/claude-shaped-science",
+"field": "multi-field",
+"verified": "mostly under verification",
+"summary": "36 manuscripts in 18 fields: Feynman integrals, random walks, cosmology, ecology, pop-gen",
+"side": "lab"
+},
+{
+"id": "anth-quantum-circuits",
+"label": "Efficient quantum circuits with Claude",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-10",
+"url": "https://arxiv.org/abs/2610.22367",
+"field": "quantum computing",
+"verified": "evaluator-verified; Lean identities",
+"summary": "Claude Mythos 5: 17x fewer gates for ECC point addition; 12x for DQI decoder",
+"side": "lab"
+},
+{
+"id": "anth-ecdsa-origins",
+"label": "ECDSA curve seed origins",
+"kind": "paper",
+"org": "Anthropic",
+"date": "2026-10",
+"url": "https://www.anthropic.com/research/ecdsa-curve-origins",
+"field": "cryptography",
+"verified": "reproducible code",
+"summary": "NIST seeds are lrand48 outputs seeded by 1997-98 timestamps; LLL recovery",
+"side": "lab"
+},
+{
+"id": "gdm-alphaevolve",
+"label": "AlphaEvolve (blog)",
+"kind": "paper",
+"org": "Google DeepMind",
+"date": "2025-05",
+"url": "https://deepmind.google/blog/alphaevolve-a-gemini-powered-coding-agent-for-designing-advanced-algorithms/",
+"field": "optimization/combinatorics",
+"verified": "self-reported; checkable constructions",
+"summary": "Gemini evolutionary coding agent; improved open constructions",
+"side": "lab"
+},
+{
+"id": "gdm-imo-gold",
+"label": "Gemini Deep Think IMO gold",
+"kind": "paper",
+"org": "Google DeepMind",
+"date": "2025-07",
+"url": "https://deepmind.google/blog/advanced-version-of-gemini-with-deep-think-officially-achieves-gold-medal-standard-at-the-international-mathematical-olympiad/",
+"field": "olympiad math",
+"verified": "IMO-graded",
+"summary": "35/42 official gold standard",
+"side": "lab"
+},
+{
+"id": "gdm-alphaevolve-tao",
+"label": "Mathematical exploration and discovery at scale",
+"kind": "paper",
+"org": "Google DeepMind",
+"date": "2025-11",
+"url": "https://arxiv.org/abs/2511.02864",
+"field": "analysis/combinatorics/geometry/number theory",
+"verified": "self-reported",
+"summary": "AlphaEvolve on 67 problems with Tao, G\u00f3mez-Serrano, Wagner",
+"side": "lab"
+},
+{
+"id": "gdm-gemini-erdos",
+"label": "Semi-autonomous discovery with Gemini (Erd\u0151s)",
+"kind": "paper",
+"org": "Google DeepMind",
+"date": "2026-01",
+"url": "https://arxiv.org/abs/2601.22401",
+"field": "combinatorics/number theory",
+"verified": "partially verified",
+"summary": "700 open conjectures; 5 novel + 8 literature",
+"side": "lab"
+},
+{
+"id": "gdm-aletheia",
+"label": "Towards Autonomous Mathematics Research (Aletheia)",
+"kind": "paper",
+"org": "Google DeepMind",
+"date": "2026-02",
+"url": "https://arxiv.org/abs/2602.10177",
+"field": "combinatorics/algebra",
+"verified": "self-reported; some Lean",
+"summary": "Autonomous eigenweights paper; 4 Erd\u0151s problems; autonomy levels",
+"side": "lab"
+},
+{
+"id": "hodge-laplacian-3spheres",
+"label": "Hodge Laplacian on 1-forms of homogeneous 3-spheres",
+"kind": "paper",
+"org": "other",
+"date": "2026-05",
+"url": "https://arxiv.org/abs/2605.05406",
+"field": "spectral geometry",
+"verified": "self-reported; AI-found formal proof",
+"summary": "Full Berger-sphere 1-form spectrum; spectrum determines metric up to isometry",
+"side": "lab"
+},
+{
+"id": "schiffer-colbrook-stepaniants",
+"label": "Computer-assisted counterexample to Pompeiu & Schiffer",
+"kind": "paper",
+"org": "other",
+"date": "2026-08",
+"url": "https://arxiv.org/abs/2608.01579",
+"field": "spectral theory / rigorous numerics",
+"verified": "rigorous certificate; not peer-reviewed",
+"summary": "Non-circular planar domain with boundary-constant Neumann eigenfunction; GPT-5.5 Codex debugging aid",
+"side": "lab"
+},
+{
+"id": "schiffer-caolabora-dediospont",
+"label": "Counterexamples to Schiffer's conjecture",
+"kind": "paper",
+"org": "other",
+"date": "2026-08",
+"url": "https://arxiv.org/abs/2608.05114",
+"field": "spectral theory / bifurcation",
+"verified": "Lean check claimed; not peer-reviewed",
+"summary": "Infinitely many N-fold symmetric counterexamples; GPT-5.5/5.6 & Claude as tools",
+"side": "lab"
+},
+{
+"id": "experiment",
+"label": "This experiment: the frequency of a place",
+"kind": "experiment",
+"org": "",
+"date": "2026-10",
+"url": "#design",
+"field": "experimental acoustics",
+"verified": "design only",
+"summary": "Complete vibration spectrum of a thin hollow copper sphere at two places on a flat table; the spectrum of each place; a drive test with controls.",
+"side": "lab"
+},
+{
+"id": "t-sphere-modes",
+"label": "Free vibration of an elastic sphere",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-A1",
+"label": "On the Vibrations of an Elastic Sphere",
+"kind": "literature",
+"org": "Proc. London Math. Soc. s1-13, 189-212",
+"date": "1882",
+"url": "https://doi.org/10.1112/plms/s1-13.1.189",
+"field": "A",
+"verified": "fetched",
+"summary": "H. Lamb \u00b7 Proc. London Math. Soc. s1-13, 189-212 1882",
+"side": "physics"
+},
+{
+"id": "lit-A2",
+"label": "What can we learn about GW physics with an elastic spherical antenna?",
+"kind": "literature",
+"org": "Phys. Rev. D 52, 591",
+"date": "1995",
+"url": "https://arxiv.org/abs/gr-qc/0006102",
+"field": "A",
+"verified": "fetched",
+"summary": "J. A. Lobo \u00b7 Phys. Rev. D 52, 591 1995",
+"side": "physics"
+},
+{
+"id": "lit-A3",
+"label": "Longitudinal versus transverse spheroidal vibrational modes of an elastic sphere",
+"kind": "literature",
+"org": "Phys. Rev. B 72, 205433",
+"date": "2005",
+"url": "https://arxiv.org/abs/cond-mat/0506353",
+"field": "A",
+"verified": "fetched",
+"summary": "L. Saviot, D. B. Murray \u00b7 Phys. Rev. B 72, 205433 2005",
+"side": "physics"
+},
+{
+"id": "lit-A6",
+"label": "Basic study on the oscillation of a homogeneous elastic sphere",
+"kind": "literature",
+"org": "Geophys. Mag. 31, 15",
+"date": "1962",
+"url": "https://gbank.gsj.jp/ld/resource/geolis/196200965",
+"field": "A",
+"verified": "search snippet",
+"summary": "Y. Sato, T. Usami \u00b7 Geophys. Mag. 31, 15 1962",
+"side": "physics"
+},
+{
+"id": "lit-A7",
+"label": "Novel Method of Measuring Elastic and Anelastic Properties of Solids",
+"kind": "literature",
+"org": "Rev. Sci. Instrum. 35, 1113",
+"date": "1964",
+"url": "https://en.wikipedia.org/wiki/Resonant_ultrasound_spectroscopy",
+"field": "A",
+"verified": "search snippet",
+"summary": "D. B. Fraser, R. C. LeCraw \u00b7 Rev. Sci. Instrum. 35, 1113 1964",
+"side": "physics"
+},
+{
+"id": "lit-A8",
+"label": "Elastic Constants and Their Measurement",
+"kind": "literature",
+"org": "McGraw-Hill (ISBN 0070556032)",
+"date": "1973",
+"url": "https://discovery.nypl.org/research/research-catalog/bib/b10188514",
+"field": "A",
+"verified": "fetched",
+"summary": "E. Schreiber, O. L. Anderson, N. Soga \u00b7 McGraw-Hill (ISBN 0070556032) 1973",
+"side": "physics"
+},
+{
+"id": "lit-A9",
+"label": "On the Determination of Elastic and Anelastic Properties of Isotropic Spheres",
+"kind": "literature",
+"org": "US Army CRREL Research Report 299",
+"date": "1972",
+"url": "https://apps.dtic.mil/sti/pdfs/AD0741355.pdf",
+"field": "A",
+"verified": "fetched",
+"summary": "M. L. Smith \u00b7 US Army CRREL Research Report 299 1972",
+"side": "physics"
+},
+{
+"id": "lit-A13",
+"label": "Sphericity determination using resonant ultrasound spectroscopy (US Patent 5,355,731)",
+"kind": "literature",
+"org": "US Patent",
+"date": "1994",
+"url": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/5355731",
+"field": "A",
+"verified": "fetched",
+"summary": "A. Migliori et al. (Regents of Univ. California) \u00b7 US Patent 1994",
+"side": "physics"
+},
+{
+"id": "lit-A14",
+"label": "A new closed-form model for isotropic elastic sphere including new solutions for the free ",
+"kind": "literature",
+"org": "arXiv:1311.0741",
+"date": "2013",
+"url": "https://arxiv.org/abs/1311.0741",
+"field": "A",
+"verified": "fetched",
+"summary": "E. Hanukah \u00b7 arXiv:1311.0741 2013",
+"side": "physics"
+},
+{
+"id": "lit-I1",
+"label": "On the Vibrations of a Spherical Shell",
+"kind": "literature",
+"org": "Proc. London Math. Soc. s1-14, 50-56",
+"date": "1882",
+"url": "https://doi.org/10.1112/plms/s1-14.1.50",
+"field": "I",
+"verified": "fetched (record)",
+"summary": "H. Lamb \u00b7 Proc. London Math. Soc. s1-14, 50-56 1882",
+"side": "physics"
+},
+{
+"id": "lit-I2",
+"label": "On the low-frequency vibrational modes of C60 (summary of Lamb's thin-shell results)",
+"kind": "literature",
+"org": "arXiv:mtrl-th/9604002",
+"date": "1995",
+"url": "https://arxiv.org/abs/mtrl-th/9604002",
+"field": "I",
+"verified": "fetched",
+"summary": "D. P. Clougherty, J. P. Gorman \u00b7 arXiv:mtrl-th/9604002 1995",
+"side": "physics"
+},
+{
+"id": "t-thin-shells",
+"label": "Thin spherical shell vibration",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-I3",
+"label": "Axisymmetric Modes of Vibration of Thin Spherical Shell",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 33(12), 1749-1758",
+"date": "1961",
+"url": "https://ceae-server.colorado.edu/v2016/books/bmk/ch01s04ach37.html",
+"field": "I",
+"verified": "search snippet",
+"summary": "W. E. Baker \u00b7 J. Acoust. Soc. Am. 33(12), 1749-1758 1961",
+"side": "physics"
+},
+{
+"id": "lit-I4",
+"label": "Nonaxisymmetric Modes of Vibration of Thin Spherical Shells",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 34, 862",
+"date": "1962",
+"url": "https://ceae-server.colorado.edu/v2016/books/bmk/ch01s04ach37.html",
+"field": "I",
+"verified": "search snippet",
+"summary": "A. Silbiger \u00b7 J. Acoust. Soc. Am. 34, 862 1962",
+"side": "physics"
+},
+{
+"id": "lit-I5",
+"label": "Effect of Bending on Vibrations of Spherical Shells",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 36(1), 74-81",
+"date": "1964",
+"url": "https://ceae-server.colorado.edu/v2016/books/bmk/ch01s04ach37.html",
+"field": "I",
+"verified": "search snippet",
+"summary": "A. Kalnins \u00b7 J. Acoust. Soc. Am. 36(1), 74-81 1964",
+"side": "physics"
+},
+{
+"id": "lit-I7",
+"label": "Free vibrations of thin elastic spherical shells",
+"kind": "literature",
+"org": "Int. J. Solids Struct. 20, 667-687",
+"date": "1984",
+"url": "https://cot.unhas.ac.id/journals/index.php/epiije/article/download/1372/998",
+"field": "I",
+"verified": "search snippet",
+"summary": "F. I. Niordson \u00b7 Int. J. Solids Struct. 20, 667-687 1984",
+"side": "physics"
+},
+{
+"id": "lit-I8",
+"label": "Vibrations of complete spherical shells with imperfections",
+"kind": "literature",
+"org": "J. Vib. Acoust. 129(3), 363-370 (IMAC-XXIII preprint LA-UR-04-6904)",
+"date": "2007",
+"url": "https://www.osti.gov/servlets/purl/977882",
+"field": "I",
+"verified": "fetched",
+"summary": "T. A. Duffey, J. E. Pepin, A. N. Robertson, M. L. Steinzig, K. Coleman \u00b7 J. Vib. Acoust. 129(3), 363-370 (IMAC-XXIII preprint LA-UR-04-6904) 2007",
+"side": "physics"
+},
+{
+"id": "lit-I10",
+"label": "Abaqus Benchmarks Guide 1.4.1: Free vibrations of a spherical shell",
+"kind": "literature",
+"org": "Abaqus 2016 documentation",
+"date": "2016",
+"url": "https://ceae-server.colorado.edu/v2016/books/bmk/ch01s04ach37.html",
+"field": "I",
+"verified": "fetched",
+"summary": "Dassault Systemes \u00b7 Abaqus 2016 documentation 2016",
+"side": "physics"
+},
+{
+"id": "lit-I11",
+"label": "Vibrations of Shells and Plates, 3rd ed.",
+"kind": "literature",
+"org": "Marcel Dekker / CRC Press (ISBN 9780824756291)",
+"date": "2004",
+"url": "https://www.routledge.com/products/9780824756291",
+"field": "I",
+"verified": "fetched (TOC)",
+"summary": "W. Soedel \u00b7 Marcel Dekker / CRC Press (ISBN 9780824756291) 2004",
+"side": "physics"
+},
+{
+"id": "lit-I14",
+"label": "Vibrations of a spherical shell. Comparison of 3-D elasticity and Kirchhoff shell theory r",
+"kind": "literature",
+"org": "Comput. Assist. Mech. Eng. Sci. 2(3), 187-206",
+"date": "1995",
+"url": "https://cames.ippt.pan.pl/index.php/cames/article/view/1472",
+"field": "I",
+"verified": "fetched (record)",
+"summary": "Y.-C. Chang, L. Demkowicz \u00b7 Comput. Assist. Mech. Eng. Sci. 2(3), 187-206 1995",
+"side": "physics"
+},
+{
+"id": "lit-I16",
+"label": "Three-dimensional and shell-theory analysis of elastic waves in a hollow sphere, Parts I-I",
+"kind": "literature",
+"org": "J. Appl. Mech. 36, 431-439; 440-444",
+"date": "1969",
+"url": "https://ascelibrary.com/doi/10.1061/%28ASCE%29EM.1943-7889.0000934",
+"field": "I",
+"verified": "search snippet",
+"summary": "A. H. Shah, C. V. Ramkrishnan, S. K. Datta \u00b7 J. Appl. Mech. 36, 431-439; 440-444 1969",
+"side": "physics"
+},
+{
+"id": "t-rus",
+"label": "Resonant ultrasound spectroscopy",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-B1",
+"label": "Resonant Ultrasound Spectroscopy: Applications to Physics, Materials Measurements, and Non",
+"kind": "literature",
+"org": "Wiley (ISBN 0471123609)",
+"date": "1997",
+"url": "https://find.library.upatras.gr/Record/121849?lng=en",
+"field": "B",
+"verified": "fetched",
+"summary": "A. Migliori, J. L. Sarrao \u00b7 Wiley (ISBN 0471123609) 1997",
+"side": "physics"
+},
+{
+"id": "lit-B2",
+"label": "Resonant ultrasound spectroscopic techniques for measurement of the elastic moduli of soli",
+"kind": "literature",
+"org": "Physica B 183, 1-24",
+"date": "1993",
+"url": "https://doi.org/10.1016/0921-4526(93)90048-B",
+"field": "B",
+"verified": "search snippet",
+"summary": "A. Migliori, J. L. Sarrao, W. M. Visscher, T. M. Bell, M. Lei, Z. Fisk, R. G. Leisure \u00b7 Physica B 183, 1-24 1993",
+"side": "physics"
+},
+{
+"id": "lit-B3",
+"label": "On the normal modes of free vibration of inhomogeneous and anisotropic elastic objects",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 90, 2154",
+"date": "1991",
+"url": "https://doi.org/10.1121/1.401643",
+"field": "B",
+"verified": "search snippet",
+"summary": "W. M. Visscher, A. Migliori, T. M. Bell, R. A. Reinert \u00b7 J. Acoust. Soc. Am. 90, 2154 1991",
+"side": "physics"
+},
+{
+"id": "lit-B4",
+"label": "Resonant Ultrasound Spectroscopy",
+"kind": "literature",
+"org": "Physics Today 49(1), 26-31",
+"date": "1996",
+"url": "https://aip.brightspotcdn.com/PTO.v49.i1.26_1.online.pdf",
+"field": "B",
+"verified": "fetched",
+"summary": "J. Maynard \u00b7 Physics Today 49(1), 26-31 1996",
+"side": "physics"
+},
+{
+"id": "lit-B7",
+"label": "Rapid method for computing the mechanical resonances of irregular objects",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 153, 119-123",
+"date": "2023",
+"url": "https://doi.org/10.1121/10.0016813",
+"field": "B",
+"verified": "fetched",
+"summary": "A. Shragai, F. Theuss, G. Grissonnanche, B. J. Ramshaw \u00b7 J. Acoust. Soc. Am. 153, 119-123 2023",
+"side": "physics"
+},
+{
+"id": "lit-B13",
+"label": "Contactless mode-selective resonance ultrasound spectroscopy: Electromagnetic acoustic res",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 106, 660-665",
+"date": "1999",
+"url": "https://ir.library.osaka-u.ac.jp/repo/ouka/all/84152/161595_1.pdf",
+"field": "B,C",
+"verified": "fetched",
+"summary": "H. Ogi, H. Ledbetter, S. Kim, M. Hirao \u00b7 J. Acoust. Soc. Am. 106, 660-665 1999",
+"side": "physics"
+},
+{
+"id": "lit-A12",
+"label": "The resonant ultrasound spectroscopy method for determining the Poisson's ratio of spheres",
+"kind": "literature",
+"org": "Materials Letters 143, 31-34",
+"date": "2015",
+"url": "https://lakeslab.ep.wisc.edu/RUSspheresPreprint.pdf",
+"field": "A",
+"verified": "fetched",
+"summary": "D. Li, L. Dong, R. S. Lakes \u00b7 Materials Letters 143, 31-34 2015",
+"side": "physics"
+},
+{
+"id": "lit-I42",
+"label": "RUScal: Software for the analysis of resonant ultrasound spectroscopy measurements",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 151(5), 3547-3563",
+"date": "2022",
+"url": "https://doi.org/10.1121/10.0011397",
+"field": "I",
+"verified": "fetched (record)",
+"summary": "J. Torres, A. Flores-Betancourt, R. P. Hermann \u00b7 J. Acoust. Soc. Am. 151(5), 3547-3563 2022",
+"side": "physics"
+},
+{
+"id": "lit-I44",
+"label": "Resonant Ultrasound Spectroscopy for Irregularly-Shaped Samples and its Application to Ura",
+"kind": "literature",
+"org": "Phys. Rev. Lett. 132, 066003",
+"date": "2024",
+"url": "https://arxiv.org/abs/2303.03473",
+"field": "I",
+"verified": "fetched (abstract)",
+"summary": "F. Theuss et al., B. J. Ramshaw \u00b7 Phys. Rev. Lett. 132, 066003 2024",
+"side": "physics"
+},
+{
+"id": "t-copper",
+"label": "Copper elastic constants and their temperature dependence",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-B9",
+"label": "Temperature Variation of the Elastic Constants of Cubic Elements. I. Copper",
+"kind": "literature",
+"org": "Phys. Rev. 98, 969-977",
+"date": "1955",
+"url": "https://doi.org/10.1103/PhysRev.98.969",
+"field": "B",
+"verified": "fetched",
+"summary": "W. C. Overton Jr., J. Gaffney \u00b7 Phys. Rev. 98, 969-977 1955",
+"side": "physics"
+},
+{
+"id": "lit-B11",
+"label": "Elastic Properties of Metals and Alloys. II. Copper",
+"kind": "literature",
+"org": "J. Phys. Chem. Ref. Data 3, 897",
+"date": "1974",
+"url": "https://srd.nist.gov/jpcrdreprint/1.3253150.pdf",
+"field": "B",
+"verified": "fetched",
+"summary": "H. M. Ledbetter, E. R. Naimon \u00b7 J. Phys. Chem. Ref. Data 3, 897 1974",
+"side": "physics"
+},
+{
+"id": "lit-B12",
+"label": "Elastic constants and internal friction of polycrystalline copper",
+"kind": "literature",
+"org": "J. Mater. Res. 10, 1352-1353",
+"date": "1995",
+"url": "https://doi.org/10.1557/JMR.1995.1352",
+"field": "B",
+"verified": "fetched",
+"summary": "H. Ledbetter, C. Fortunko, P. Heyliger \u00b7 J. Mater. Res. 10, 1352-1353 1995",
+"side": "physics"
+},
+{
+"id": "t-noncontact",
+"label": "Non-contact excitation and detection (LDV, EMAT, air-coupled)",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-C1",
+"label": "Laser Doppler Vibrometry: Development of advanced solutions answering to technology's need",
+"kind": "literature",
+"org": "Mech. Syst. Signal Process. 20, 1265-1285",
+"date": "2006",
+"url": "http://hdl.handle.net/11566/52472",
+"field": "C",
+"verified": "fetched",
+"summary": "P. Castellini, M. Martarelli, E. P. Tomasini \u00b7 Mech. Syst. Signal Process. 20, 1265-1285 2006",
+"side": "physics"
+},
+{
+"id": "lit-C2",
+"label": "An international review of laser Doppler vibrometry: Making light work of vibration measur",
+"kind": "literature",
+"org": "Opt. Lasers Eng. 99, 11-22",
+"date": "2017",
+"url": "https://doi.org/10.1016/j.optlaseng.2016.10.023",
+"field": "C",
+"verified": "fetched",
+"summary": "S. J. Rothberg et al. \u00b7 Opt. Lasers Eng. 99, 11-22 2017",
+"side": "physics"
+},
+{
+"id": "lit-C4",
+"label": "EMATs for Science and Industry: Noncontacting Ultrasonic Measurements",
+"kind": "literature",
+"org": "Kluwer/Springer (ISBN 978-1-4020-7494-3)",
+"date": "2003",
+"url": "https://doi.org/10.1007/978-1-4757-3743-1",
+"field": "C",
+"verified": "fetched",
+"summary": "M. Hirao, H. Ogi \u00b7 Kluwer/Springer (ISBN 978-1-4020-7494-3) 2003",
+"side": "physics"
+},
+{
+"id": "lit-C6",
+"label": "NDE applications of air-coupled ultrasonic transducers",
+"kind": "literature",
+"org": "Proc. IEEE Ultrasonics Symposium, 697-709",
+"date": "1995",
+"url": "https://ieee-uffc.org/files/ieeeuffcorg/2024-04/NDE_applications_of_air-coupled_ultrasonic_transducers.pdf",
+"field": "C",
+"verified": "fetched",
+"summary": "W. A. Grandia, C. M. Fortunko \u00b7 Proc. IEEE Ultrasonics Symposium, 697-709 1995",
+"side": "physics"
+},
+{
+"id": "lit-C8",
+"label": "Air-coupled ultrasound using broadband shock waves from piezoelectric spark igniters",
+"kind": "literature",
+"org": "arXiv:2403.08641",
+"date": "2024",
+"url": "https://arxiv.org/abs/2403.08641",
+"field": "C",
+"verified": "fetched",
+"summary": "K. G. Scheuer, R. G. DeCorby \u00b7 arXiv:2403.08641 2024",
+"side": "physics"
+},
+{
+"id": "t-modal",
+"label": "Experimental modal analysis of plates",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-D1",
+"label": "Modal Testing: Theory, Practice and Application, 2nd ed.",
+"kind": "literature",
+"org": "Research Studies Press (ISBN 0863802184)",
+"date": "2000",
+"url": "https://katalog.btu.edu.tr/vufind/Record/82064?lng=en",
+"field": "D",
+"verified": "fetched",
+"summary": "D. J. Ewins \u00b7 Research Studies Press (ISBN 0863802184) 2000",
+"side": "physics"
+},
+{
+"id": "lit-D2",
+"label": "Vibration of Plates",
+"kind": "literature",
+"org": "NASA SP-160",
+"date": "1969",
+"url": "https://ntrs.nasa.gov/citations/19700009156",
+"field": "D",
+"verified": "fetched",
+"summary": "A. W. Leissa \u00b7 NASA SP-160 1969",
+"side": "physics"
+},
+{
+"id": "lit-D3",
+"label": "The free vibration of rectangular plates",
+"kind": "literature",
+"org": "J. Sound Vib. 31, 257-293",
+"date": "1973",
+"url": "https://doi.org/10.1016/S0022-460X(73)80371-2",
+"field": "D",
+"verified": "fetched",
+"summary": "A. W. Leissa \u00b7 J. Sound Vib. 31, 257-293 1973",
+"side": "physics"
+},
+{
+"id": "lit-D5",
+"label": "Experimental Modal Analysis: A Simple Non-Mathematical Presentation",
+"kind": "literature",
+"org": "Sound & Vibration 35(1), 20-31",
+"date": "2001",
+"url": "https://www.uml.edu/docs/s-v-Jan2001_Modal_Analysis_tcm18-189939.pdf",
+"field": "D,general",
+"verified": "fetched",
+"summary": "P. Avitabile \u00b7 Sound & Vibration 35(1), 20-31 2001",
+"side": "physics"
+},
+{
+"id": "lit-D6",
+"label": "The effects of accelerometer inertia on measurements of beam vibration",
+"kind": "literature",
+"org": "Proc. Inst. Acoust. 12(1), 957-974",
+"date": "1990",
+"url": "https://www.ioa.org.uk/system/files/publications/BR%20MACE%20THE%20EFFECTS%20OF%20ACCELEROMETER%20INERTIA%20ON%20MEASUREMENTS%20OF%20BEAM%20VIBRATION.pdf",
+"field": "D",
+"verified": "fetched",
+"summary": "B. R. Mace \u00b7 Proc. Inst. Acoust. 12(1), 957-974 1990",
+"side": "physics"
+},
+{
+"id": "lit-D8",
+"label": "The Theory of Sound (2nd ed., Dover reprint)",
+"kind": "literature",
+"org": "Dover (ISBN 0486602923)",
+"date": "1945",
+"url": "https://www.jamstec.go.jp/opac/en/book/21732?target=l",
+"field": "D,general",
+"verified": "fetched",
+"summary": "J. W. S. Rayleigh \u00b7 Dover (ISBN 0486602923) 1945",
+"side": "physics"
+},
+{
+"id": "t-contact",
+"label": "Contact mechanics and rolling of a ball on a flat",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-E6",
+"label": "Contact Mechanics",
+"kind": "literature",
+"org": "Cambridge University Press (ISBN 0521255767)",
+"date": "1985",
+"url": "https://ci.nii.ac.jp/ncid/BA00227815?l=en",
+"field": "E",
+"verified": "fetched",
+"summary": "K. L. Johnson \u00b7 Cambridge University Press (ISBN 0521255767) 1985",
+"side": "physics"
+},
+{
+"id": "lit-E7",
+"label": "Principles and Techniques for Designing Precision Machines, Appendix C: Contact Mechanics",
+"kind": "literature",
+"org": "MIT PhD thesis, pp. 417-426",
+"date": "1999",
+"url": "https://ocw.iti.hr/courses/mechanical-engineering/2-76-multi-scale-system-design-fall-2004/readings/lec12cont_read.pdf",
+"field": "E",
+"verified": "fetched",
+"summary": "L. C. Hale \u00b7 MIT PhD thesis, pp. 417-426 1999",
+"side": "physics"
+},
+{
+"id": "lit-I18",
+"label": "Stresses and small displacements of shallow spherical shells, I and II",
+"kind": "literature",
+"org": "J. Math. Phys. (MIT) 25, 80-85; 279-300",
+"date": "1947",
+"url": "https://link.aps.org/accepted/10.1103/PhysRevLett.109.144302",
+"field": "I",
+"verified": "search snippet",
+"summary": "E. Reissner \u00b7 J. Math. Phys. (MIT) 25, 80-85; 279-300 1947",
+"side": "physics"
+},
+{
+"id": "lit-I20",
+"label": "Indentation of Ellipsoidal and Cylindrical Elastic Shells",
+"kind": "literature",
+"org": "Phys. Rev. Lett. 109, 144302",
+"date": "2012",
+"url": "https://link.aps.org/accepted/10.1103/PhysRevLett.109.144302",
+"field": "I",
+"verified": "fetched",
+"summary": "D. Vella, A. Ajdari, A. Vaziri, A. Boudaoud \u00b7 Phys. Rev. Lett. 109, 144302 2012",
+"side": "physics"
+},
+{
+"id": "lit-I22",
+"label": "Deflection solutions for concentrated force on spherical shell",
+"kind": "literature",
+"org": "ICCET 2015 (Atlantis Press), 253-256",
+"date": "2015",
+"url": "https://www.atlantis-press.com/article/25845196.pdf",
+"field": "I",
+"verified": "fetched",
+"summary": "Wang Fan, Wang Xing \u00b7 ICCET 2015 (Atlantis Press), 253-256 2015",
+"side": "physics"
+},
+{
+"id": "lit-I34",
+"label": "Rolling resistance",
+"kind": "literature",
+"org": "Wikipedia",
+"date": "2025",
+"url": "https://en.wikipedia.org/wiki/Rolling_resistance",
+"field": "I",
+"verified": "fetched",
+"summary": "Wikipedia contributors \u00b7 Wikipedia 2025",
+"side": "physics"
+},
+{
+"id": "lit-I36",
+"label": "The mechanism of rolling friction. II. The elastic range (and Part I with Eldredge)",
+"kind": "literature",
+"org": "Proc. R. Soc. Lond. A 229, 198-220; 181-198",
+"date": "1955",
+"url": "https://www.smf.phy.cam.ac.uk/system/files/documents/Taborpublications.pdf",
+"field": "I",
+"verified": "fetched (bibliography)",
+"summary": "D. Tabor; K. R. Eldredge, D. Tabor \u00b7 Proc. R. Soc. Lond. A 229, 198-220; 181-198 1955",
+"side": "physics"
+},
+{
+"id": "t-location",
+"label": "Location effects: gravity, redshift, NMR, air",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-F1",
+"label": "Optical Clocks and Relativity",
+"kind": "literature",
+"org": "Science 329, 1630-1633",
+"date": "2010",
+"url": "https://doi.org/10.1126/science.1192720",
+"field": "F",
+"verified": "fetched",
+"summary": "C. W. Chou, D. B. Hume, T. Rosenband, D. J. Wineland \u00b7 Science 329, 1630-1633 2010",
+"side": "physics"
+},
+{
+"id": "lit-F2",
+"label": "Resolving the gravitational redshift across a millimetre-scale atomic sample",
+"kind": "literature",
+"org": "Nature 602, 420-424",
+"date": "2022",
+"url": "https://doi.org/10.1038/s41586-021-04349-7",
+"field": "F",
+"verified": "fetched",
+"summary": "T. Bothwell et al. \u00b7 Nature 602, 420-424 2022",
+"side": "physics"
+},
+{
+"id": "lit-F3",
+"label": "Vertical gravity gradient determination for the needs of contemporary absolute gravity mea",
+"kind": "literature",
+"org": "Reports on Geodesy 92(1), 23-35",
+"date": "2012",
+"url": "https://yadda.icm.edu.pl/baztech/element/bwmeta1.element.baztech-50441301-2fcb-4e73-8da2-6853629d193f/c/Dykowski.pdf",
+"field": "F",
+"verified": "fetched",
+"summary": "P. Dykowski \u00b7 Reports on Geodesy 92(1), 23-35 2012",
+"side": "physics"
+},
+{
+"id": "lit-F5",
+"label": "The variation of the specific heat ratio and the speed of sound in air with temperature, p",
+"kind": "literature",
+"org": "J. Acoust. Soc. Am. 93, 2510-2516",
+"date": "1993",
+"url": "https://doi.org/10.1121/1.405827",
+"field": "F",
+"verified": "fetched (via pyfar docs)",
+"summary": "O. Cramer \u00b7 J. Acoust. Soc. Am. 93, 2510-2516 1993",
+"side": "physics"
+},
+{
+"id": "lit-F6",
+"label": "NMR nomenclature. Nuclear spin properties and conventions for chemical shifts (IUPAC Recom",
+"kind": "literature",
+"org": "Pure Appl. Chem. 73, 1795-1818",
+"date": "2001",
+"url": "https://www.princeton.edu/~nmr/IUPAC_NMR.pdf",
+"field": "F",
+"verified": "fetched",
+"summary": "R. K. Harris, E. D. Becker, S. M. Cabral de Menezes, R. Goodfellow, P. Granger \u00b7 Pure Appl. Chem. 73, 1795-1818 2001",
+"side": "physics"
+},
+{
+"id": "lit-F8",
+"label": "Metallic Shifts in NMR: A review of the theory and comprehensive critical data compilation",
+"kind": "literature",
+"org": "Progress in Materials Science 20, Pergamon",
+"date": "1977",
+"url": "https://dk.fchpt.stuba.sk/Record/fchpt.2272?lng=es",
+"field": "F",
+"verified": "fetched",
+"summary": "G. C. Carter, L. H. Bennett, D. J. Kahan \u00b7 Progress in Materials Science 20, Pergamon 1977",
+"side": "physics"
+},
+{
+"id": "t-inverse-spectral",
+"label": "Inverse spectral problems (\"hearing the shape\")",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-G1",
+"label": "Can One Hear the Shape of a Drum?",
+"kind": "literature",
+"org": "Amer. Math. Monthly 73(4, Part II), 1-23",
+"date": "1966",
+"url": "https://www.maa.org/programs/maa-awards/writing-awards/can-one-hear-the-shape-of-a-drum",
+"field": "G",
+"verified": "fetched",
+"summary": "M. Kac \u00b7 Amer. Math. Monthly 73(4, Part II), 1-23 1966",
+"side": "physics"
+},
+{
+"id": "lit-G2",
+"label": "One cannot hear the shape of a drum",
+"kind": "literature",
+"org": "Bull. Amer. Math. Soc. 27, 134-138",
+"date": "1992",
+"url": "https://doi.org/10.1090/S0273-0979-1992-00289-6",
+"field": "G",
+"verified": "fetched",
+"summary": "C. Gordon, D. L. Webb, S. Wolpert \u00b7 Bull. Amer. Math. Soc. 27, 134-138 1992",
+"side": "physics"
+},
+{
+"id": "lit-G4",
+"label": "The vibrational frequencies of the elastic body and its geometric quantities",
+"kind": "literature",
+"org": "arXiv:1512.07552",
+"date": "2015",
+"url": "https://arxiv.org/abs/1512.07552",
+"field": "G,general",
+"verified": "fetched",
+"summary": "G. Liu \u00b7 arXiv:1512.07552 2015",
+"side": "physics"
+},
+{
+"id": "lit-G5",
+"label": "Geometric invariants of spectrum of the Navier-Lame operator",
+"kind": "literature",
+"org": "arXiv:2007.09730",
+"date": "2021",
+"url": "https://arxiv.org/abs/2007.09730",
+"field": "G,general",
+"verified": "fetched",
+"summary": "G. Liu \u00b7 arXiv:2007.09730 2021",
+"side": "physics"
+},
+{
+"id": "lit-H7",
+"label": "Can a neural network hear the shape of a drum?",
+"kind": "literature",
+"org": "arXiv:2203.08073 / APS March Meeting 2022",
+"date": "2022",
+"url": "https://arxiv.org/abs/2203.08073",
+"field": "H",
+"verified": "fetched",
+"summary": "Y. Zhao, M. M. Fogler \u00b7 arXiv:2203.08073 / APS March Meeting 2022 2022",
+"side": "physics"
+},
+{
+"id": "lit-H8",
+"label": "Instant recovery of shape from spectrum via latent space connections",
+"kind": "literature",
+"org": "3DV 2020 (arXiv:2003.06523)",
+"date": "2020",
+"url": "https://arxiv.org/abs/2003.06523",
+"field": "H",
+"verified": "fetched",
+"summary": "R. Marin, A. Rampini, U. Castellani, E. Rodola, M. Ovsjanikov, S. Melzi \u00b7 3DV 2020 (arXiv:2003.06523) 2020",
+"side": "physics"
+},
+{
+"id": "t-ml-eigen",
+"label": "Learned PDE and eigenvalue solvers",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-H1",
+"label": "Fourier Neural Operator for Parametric Partial Differential Equations",
+"kind": "literature",
+"org": "ICLR 2021",
+"date": "2021",
+"url": "https://iclr.cc/virtual/2021/poster/3281",
+"field": "H",
+"verified": "fetched",
+"summary": "Z. Li, N. B. Kovachki, K. Azizzadenesheli, B. Liu, K. Bhattacharya, A. Stuart, A. Anandkumar \u00b7 ICLR 2021 2021",
+"side": "physics"
+},
+{
+"id": "lit-H2",
+"label": "Learning nonlinear operators via DeepONet based on the universal approximation theorem of ",
+"kind": "literature",
+"org": "Nature Machine Intelligence 3, 218-229",
+"date": "2021",
+"url": "https://doi.org/10.1038/s42256-021-00302-5",
+"field": "H",
+"verified": "fetched",
+"summary": "L. Lu, P. Jin, G. Pang, Z. Zhang, G. E. Karniadakis \u00b7 Nature Machine Intelligence 3, 218-229 2021",
+"side": "physics"
+},
+{
+"id": "lit-H3",
+"label": "Physics-informed neural networks: A deep learning framework for solving forward and invers",
+"kind": "literature",
+"org": "J. Comput. Phys. 378, 686-707",
+"date": "2019",
+"url": "https://doi.org/10.1016/j.jcp.2018.10.045",
+"field": "H",
+"verified": "fetched",
+"summary": "M. Raissi, P. Perdikaris, G. E. Karniadakis \u00b7 J. Comput. Phys. 378, 686-707 2019",
+"side": "physics"
+},
+{
+"id": "lit-H4",
+"label": "Spectral Inference Networks: Unifying Deep and Spectral Learning",
+"kind": "literature",
+"org": "ICLR 2019",
+"date": "2019",
+"url": "https://iclr.cc/virtual/2019/poster/962",
+"field": "H",
+"verified": "fetched",
+"summary": "D. Pfau, S. Petersen, A. Agarwal, D. Barrett, K. Stachenfeld \u00b7 ICLR 2019 2019",
+"side": "physics"
+},
+{
+"id": "lit-H5",
+"label": "Neural Spectral Methods: Self-supervised learning in the spectral domain",
+"kind": "literature",
+"org": "ICLR 2024",
+"date": "2024",
+"url": "https://iclr.cc/virtual/2024/poster/19557",
+"field": "H",
+"verified": "fetched",
+"summary": "Y. Du, N. Chalapathi, A. Krishnapriyan \u00b7 ICLR 2024 2024",
+"side": "physics"
+},
+{
+"id": "lit-H6",
+"label": "STNet: Spectral Transformation Network for Solving Operator Eigenvalue Problem",
+"kind": "literature",
+"org": "NeurIPS 2025, pp. 50791-50817",
+"date": "2025",
+"url": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/48d467d310502791a97d05d1631c5b0f-Abstract-Conference.html",
+"field": "H",
+"verified": "fetched",
+"summary": "H. Wang, Y. Jiang, J. Wang, X. Li, J. Luo, H. Dong \u00b7 NeurIPS 2025, pp. 50791-50817 2025",
+"side": "physics"
+},
+{
+"id": "t-ml-rus",
+"label": "Machine learning for RUS inversion",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-H10",
+"label": "Deep-Learning-Assisted Resonant Ultrasound Spectroscopy for Cubic Solids",
+"kind": "literature",
+"org": "Phys. Rev. Applied 20, 034048",
+"date": "2023",
+"url": "https://doi.org/10.1103/PhysRevApplied.20.034048",
+"field": "H",
+"verified": "fetched",
+"summary": "H. Fukuda, A. Nagakubo, O. B. Wright, K. Kyotani, H. Ogi \u00b7 Phys. Rev. Applied 20, 034048 2023",
+"side": "physics"
+},
+{
+"id": "lit-H11",
+"label": "A modulated fingerprint assisted machine learning method for retrieving elastic moduli fro",
+"kind": "literature",
+"org": "Sci. Rep. 13, 5919",
+"date": "2023",
+"url": "https://doi.org/10.1038/s41598-023-33046-w",
+"field": "H",
+"verified": "fetched",
+"summary": "J. Liu, X. Zhao, K. Zhao, V. G. Goncharov, J. Delhommelle, J. Lin, X. Guo \u00b7 Sci. Rep. 13, 5919 2023",
+"side": "physics"
+},
+{
+"id": "lit-H12",
+"label": "Physics-informed learning for the inverse problem in resonant ultrasound spectroscopy",
+"kind": "literature",
+"org": "arXiv:2608.27590",
+"date": "2026",
+"url": "https://arxiv.org/abs/2608.27590",
+"field": "H",
+"verified": "fetched",
+"summary": "A. Cubillos Munoz, M. Rivas, J. Rincon \u00b7 arXiv:2608.27590 2026",
+"side": "physics"
+},
+{
+"id": "t-exp-design",
+"label": "AI-assisted experimental design and symbolic regression",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-H13",
+"label": "AI Feynman: A physics-inspired method for symbolic regression",
+"kind": "literature",
+"org": "Science Advances 6, eaay2631",
+"date": "2020",
+"url": "https://doi.org/10.1126/sciadv.aay2631",
+"field": "H",
+"verified": "fetched",
+"summary": "S.-M. Udrescu, M. Tegmark \u00b7 Science Advances 6, eaay2631 2020",
+"side": "physics"
+},
+{
+"id": "lit-H14",
+"label": "Deep Adaptive Design: Amortizing Sequential Bayesian Experimental Design",
+"kind": "literature",
+"org": "ICML 2021, PMLR 139, 3384-3395",
+"date": "2021",
+"url": "https://proceedings.mlr.press/v139/foster21a.html",
+"field": "H",
+"verified": "fetched",
+"summary": "A. Foster, D. R. Ivanova, I. Malik, T. Rainforth \u00b7 ICML 2021, PMLR 139, 3384-3395 2021",
+"side": "physics"
+},
+{
+"id": "lit-H15",
+"label": "AutoSciLab: A Self-Driving Laboratory for Interpretable Scientific Discovery",
+"kind": "literature",
+"org": "AAAI 2025 (arXiv:2412.12347)",
+"date": "2025",
+"url": "https://arxiv.org/abs/2412.12347",
+"field": "H",
+"verified": "fetched",
+"summary": "S. Desai, S. Addamane, J. Y. Tsao, I. Brener, L. P. Swiler, R. Dingreville, P. P. Iyer \u00b7 AAAI 2025 (arXiv:2412.12347) 2025",
+"side": "physics"
+},
+{
+"id": "t-bench",
+"label": "Flat-table bench: surface plates, levels, DAQ, software",
+"kind": "topic",
+"org": "",
+"date": "",
+"url": "",
+"field": "physics",
+"verified": "",
+"summary": "",
+"side": "physics"
+},
+{
+"id": "lit-I28",
+"label": "Surface Plates - Accuracy and Calibration (EDU-15004A)",
+"kind": "literature",
+"org": "Mitutoyo America",
+"date": "2018",
+"url": "https://www.mitutoyo.com/webfoo/wp-content/uploads/15004A.pdf",
+"field": "I",
+"verified": "fetched",
+"summary": "Mitutoyo Institute of Metrology \u00b7 Mitutoyo America 2018",
+"side": "physics"
+},
+{
+"id": "lit-I30",
+"label": "Starrett Catalog 33 p. 411: granite surface plate grades and repeat-reading tolerances",
+"kind": "literature",
+"org": "catalogue",
+"date": "2019",
+"url": "https://www.starrett.com/dms/flipbooks/Cat-33/inc/html/411.html",
+"field": "I",
+"verified": "fetched",
+"summary": "The L.S. Starrett Company \u00b7 catalogue 2019",
+"side": "physics"
+},
+{
+"id": "lit-I32",
+"label": "Taylor Hobson introduces Talyvel 6 wireless electronic level",
+"kind": "literature",
+"org": "product news",
+"date": "2015",
+"url": "https://incompliancemag.com/taylor-hobson-introduces-talyvel-6-wireless-electronic-level-for-precision-angular-and-level-measurement/",
+"field": "I",
+"verified": "fetched",
+"summary": "In Compliance Magazine \u00b7 product news 2015",
+"side": "physics"
+},
+{
+"id": "lit-I33",
+"label": "Wyler BlueLEVEL-2D product sheet",
+"kind": "literature",
+"org": "datasheet",
+"date": "2021",
+"url": "https://symetrie.fr/wp-content/uploads/2021/03/SYMETRIE_BlueLEVEL-2D-WYLER-Fiche-produit-EN_compressed.pdf",
+"field": "I",
+"verified": "fetched",
+"summary": "Wyler AG / Symetrie \u00b7 datasheet 2021",
+"side": "physics"
+},
+{
+"id": "lit-I37",
+"label": "pyEMA / sdypy-EMA: experimental and operational modal analysis",
+"kind": "literature",
+"org": "GitHub (MIT)",
+"date": "2025",
+"url": "https://github.com/ladisk/pyEMA",
+"field": "I",
+"verified": "fetched",
+"summary": "LADISK, University of Ljubljana \u00b7 GitHub (MIT) 2025",
+"side": "physics"
+},
+{
+"id": "lit-I38",
+"label": "sdypy: Structural Dynamics Python",
+"kind": "literature",
+"org": "GitHub (MIT)",
+"date": "2025",
+"url": "https://github.com/sdypy/sdypy",
+"field": "I",
+"verified": "fetched",
+"summary": "SDyPy organisation \u00b7 GitHub (MIT) 2025",
+"side": "physics"
+},
+{
+"id": "lit-I40",
+"label": "nidaqmx-python: NI-DAQmx Python API",
+"kind": "literature",
+"org": "GitHub / Read the Docs (v1.6.0)",
+"date": "2025",
+"url": "https://github.com/ni/nidaqmx-python",
+"field": "I",
+"verified": "fetched",
+"summary": "National Instruments \u00b7 GitHub / Read the Docs (v1.6.0) 2025",
+"side": "physics"
+},
+{
+"id": "lit-I45",
+"label": "The Spherical Resonator",
+"kind": "literature",
+"org": "IEEE Trans. Nucl. Sci. NS-32(5) (PAC 1985)",
+"date": "1985",
+"url": "https://epaper.kek.jp/p85/PDF/PAC1985_2980.PDF",
+"field": "I",
+"verified": "fetched",
+"summary": "W. J. Gallagher, W. J. Gallagher \u00b7 IEEE Trans. Nucl. Sci. NS-32(5) (PAC 1985) 1985",
+"side": "physics"
+}
+],
+"edges": [
+{
+"source": "oai-bubeck-convex-opt",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-bubeck-convex-opt",
+"target": "m-gpt5-pro",
+"rel": "produced_by"
+},
+{
+"source": "oai-bubeck-convex-opt",
+"target": "t-optimization-algorithms",
+"rel": "about"
+},
+{
+"source": "oai-bubeck-convex-opt",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "oai-aaronson-qma",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "oai-aaronson-qma",
+"target": "m-gpt5",
+"rel": "produced_by"
+},
+{
+"source": "oai-aaronson-qma",
+"target": "t-quantum-info",
+"rel": "about"
+},
+{
+"source": "oai-aaronson-qma",
+"target": "t-tcs",
+"rel": "about"
+},
+{
+"source": "oai-aaronson-qma",
+"target": "t-spectral-theory",
+"rel": "about"
+},
+{
+"source": "oai-aaronson-qma",
+"target": "experiment",
+"rel": "adjacent_to_experiment"
+},
+{
+"source": "oai-erdos-overclaim-oct2025",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-erdos-overclaim-oct2025",
+"target": "m-gpt5",
+"rel": "produced_by"
+},
+{
+"source": "oai-erdos-overclaim-oct2025",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "oai-erdos-overclaim-oct2025",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "oai-erdos-overclaim-oct2025",
+"rel": "cites"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "m-gpt5",
+"rel": "produced_by"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "m-gpt5-pro",
+"rel": "produced_by"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-graph-theory",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-gr-cosmology",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-plasma",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-optimization-algorithms",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-probability-statistics",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-biology",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "t-wave-helmholtz",
+"rel": "about"
+},
+{
+"source": "oai-science-acceleration-gpt5",
+"target": "experiment",
+"rel": "adjacent_to_experiment"
+},
+{
+"source": "oai-frontierscience",
+"target": "oai-science-acceleration-gpt5",
+"rel": "cites"
+},
+{
+"source": "oai-first-proof",
+"target": "oai-science-acceleration-gpt5",
+"rel": "cites"
+},
+{
+"source": "oai-frontierscience",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-frontierscience",
+"target": "m-gpt52-pro",
+"rel": "produced_by"
+},
+{
+"source": "oai-frontierscience",
+"target": "m-gemini-deep-think",
+"rel": "produced_by"
+},
+{
+"source": "oai-frontierscience",
+"target": "m-claude-opus-45",
+"rel": "produced_by"
+},
+{
+"source": "oai-frontierscience",
+"target": "t-benchmarks",
+"rel": "about"
+},
+{
+"source": "oai-frontierscience",
+"target": "t-biology",
+"rel": "about"
+},
+{
+"source": "oai-erdos-728-gpt52pro",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-erdos-728-gpt52pro",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "oai-erdos-728-gpt52pro",
+"target": "m-gpt52-pro",
+"rel": "produced_by"
+},
+{
+"source": "oai-erdos-728-gpt52pro",
+"target": "m-aristotle",
+"rel": "produced_by"
+},
+{
+"source": "oai-erdos-728-gpt52pro",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "oai-erdos-728-gpt52pro",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "oai-erdos-728-gpt52pro",
+"rel": "cites"
+},
+{
+"source": "oai-gluon-single-minus",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-gluon-single-minus",
+"target": "m-gpt52-pro",
+"rel": "produced_by"
+},
+{
+"source": "oai-gluon-single-minus",
+"target": "t-amplitudes",
+"rel": "about"
+},
+{
+"source": "anth-field-notes-feb2026",
+"target": "oai-gluon-single-minus",
+"rel": "cites"
+},
+{
+"source": "anth-vibe-physics",
+"target": "oai-gluon-single-minus",
+"rel": "cites"
+},
+{
+"source": "oai-first-proof",
+"target": "oai-gluon-single-minus",
+"rel": "cites"
+},
+{
+"source": "oai-first-proof",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-first-proof",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-first-proof",
+"target": "t-benchmarks",
+"rel": "about"
+},
+{
+"source": "oai-first-proof",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "anth-field-notes-feb2026",
+"target": "oai-first-proof",
+"rel": "cites"
+},
+{
+"source": "gdm-aletheia",
+"target": "oai-first-proof",
+"rel": "cites"
+},
+{
+"source": "oai-graviton-single-minus",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-graviton-single-minus",
+"target": "m-gpt52-pro",
+"rel": "produced_by"
+},
+{
+"source": "oai-graviton-single-minus",
+"target": "t-amplitudes",
+"rel": "about"
+},
+{
+"source": "oai-graviton-single-minus",
+"target": "t-gr-cosmology",
+"rel": "about"
+},
+{
+"source": "oai-graviton-single-minus",
+"target": "oai-gluon-single-minus",
+"rel": "cites"
+},
+{
+"source": "anth-vibe-physics",
+"target": "oai-graviton-single-minus",
+"rel": "cites"
+},
+{
+"source": "oai-unit-distance-disproof",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-unit-distance-disproof",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-unit-distance-disproof",
+"target": "t-discrete-convex-geometry",
+"rel": "about"
+},
+{
+"source": "oai-unit-distance-disproof",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "oai-unit-distance-disproof",
+"target": "t-analytic-number-theory",
+"rel": "about"
+},
+{
+"source": "oai-ten-advances",
+"target": "oai-unit-distance-disproof",
+"rel": "cites"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "oai-unit-distance-disproof",
+"rel": "cites"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "oai-unit-distance-disproof",
+"rel": "cites"
+},
+{
+"source": "oai-ten-advances",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-ten-advances",
+"target": "m-astra",
+"rel": "produced_by"
+},
+{
+"source": "oai-ten-advances",
+"target": "t-discrete-convex-geometry",
+"rel": "about"
+},
+{
+"source": "oai-ten-advances",
+"target": "t-operator-algebras-groups",
+"rel": "about"
+},
+{
+"source": "oai-ten-advances",
+"target": "t-tcs",
+"rel": "about"
+},
+{
+"source": "oai-ten-advances",
+"target": "t-quantum-info",
+"rel": "about"
+},
+{
+"source": "oai-ten-advances",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "oai-ten-advances",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "m-astra",
+"rel": "produced_by"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "t-fluid-pde",
+"rel": "about"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "alpoge-buckmaster-forced-blowup",
+"rel": "cites"
+},
+{
+"source": "oai-navier-stokes-euler",
+"target": "experiment",
+"rel": "adjacent_to_experiment"
+},
+{
+"source": "oai-agmai-advisory",
+"target": "oai-navier-stokes-euler",
+"rel": "cites"
+},
+{
+"source": "oai-722-release",
+"target": "oai-navier-stokes-euler",
+"rel": "cites"
+},
+{
+"source": "anth-nine-loops",
+"target": "oai-navier-stokes-euler",
+"rel": "cites"
+},
+{
+"source": "oai-agmai-advisory",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-agmai-advisory",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-agmai-advisory",
+"rel": "cites"
+},
+{
+"source": "oai-722-release",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-722-release",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-722-release",
+"target": "t-tcs",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-algebraic-geometry",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-analytic-number-theory",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-kinetic-statmech",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-operator-algebras-groups",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-fluid-pde",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-discrete-convex-geometry",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-probability-statistics",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-ten-advances",
+"rel": "cites"
+},
+{
+"source": "oai-quasi-riemann",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-quasi-riemann",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-quasi-riemann",
+"target": "t-analytic-number-theory",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-quasi-riemann",
+"rel": "cites"
+},
+{
+"source": "oai-hadwiger-counterexample",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-hadwiger-counterexample",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-hadwiger-counterexample",
+"target": "t-graph-theory",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-hadwiger-counterexample",
+"rel": "cites"
+},
+{
+"source": "oai-integer-multiplication",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-integer-multiplication",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-integer-multiplication",
+"target": "t-tcs",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-integer-multiplication",
+"rel": "cites"
+},
+{
+"source": "oai-mahler-conjectures",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-mahler-conjectures",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-mahler-conjectures",
+"target": "t-discrete-convex-geometry",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-mahler-conjectures",
+"rel": "cites"
+},
+{
+"source": "oai-vlasov-maxwell",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-vlasov-maxwell",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-vlasov-maxwell",
+"target": "t-kinetic-statmech",
+"rel": "about"
+},
+{
+"source": "oai-vlasov-maxwell",
+"target": "t-fluid-pde",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-vlasov-maxwell",
+"rel": "cites"
+},
+{
+"source": "oai-heisenberg-ferromagnet",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "oai-heisenberg-ferromagnet",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "oai-heisenberg-ferromagnet",
+"target": "t-kinetic-statmech",
+"rel": "about"
+},
+{
+"source": "oai-722-release",
+"target": "oai-heisenberg-ferromagnet",
+"rel": "cites"
+},
+{
+"source": "epoch-frontiermath",
+"target": "org-epoch",
+"rel": "authored_by"
+},
+{
+"source": "epoch-frontiermath",
+"target": "org-openai",
+"rel": "authored_by"
+},
+{
+"source": "epoch-frontiermath",
+"target": "m-gpt52-pro",
+"rel": "produced_by"
+},
+{
+"source": "epoch-frontiermath",
+"target": "m-gemini-deep-think",
+"rel": "produced_by"
+},
+{
+"source": "epoch-frontiermath",
+"target": "t-benchmarks",
+"rel": "about"
+},
+{
+"source": "horizonmath",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "horizonmath",
+"target": "m-gpt54-pro",
+"rel": "produced_by"
+},
+{
+"source": "horizonmath",
+"target": "m-gpt56-sol",
+"rel": "produced_by"
+},
+{
+"source": "horizonmath",
+"target": "t-benchmarks",
+"rel": "about"
+},
+{
+"source": "horizonmath",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-gpt52-pro",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-gpt54-pro",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-gpt55",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-oai-internal",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-claude-mythos",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-claude-fable-5",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-aletheia",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-alphaevolve",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "m-aristotle",
+"rel": "produced_by"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "gdm-alphaevolve-tao",
+"rel": "cites"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "gdm-gemini-erdos",
+"rel": "cites"
+},
+{
+"source": "tao-erdos-ai-wiki",
+"target": "gdm-aletheia",
+"rel": "cites"
+},
+{
+"source": "anth-ai-for-science-program",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-ai-for-science-program",
+"target": "t-biology",
+"rel": "about"
+},
+{
+"source": "anth-vibe-physics",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-vibe-physics",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "anth-vibe-physics",
+"target": "m-claude-opus-45",
+"rel": "produced_by"
+},
+{
+"source": "anth-vibe-physics",
+"target": "m-gpt52-pro",
+"rel": "produced_by"
+},
+{
+"source": "anth-vibe-physics",
+"target": "m-gemini-deep-think",
+"rel": "produced_by"
+},
+{
+"source": "anth-vibe-physics",
+"target": "t-qcd-resummation",
+"rel": "about"
+},
+{
+"source": "anth-vibe-physics",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "anth-vibe-physics",
+"target": "gdm-alphaevolve",
+"rel": "cites"
+},
+{
+"source": "anth-vibe-physics",
+"target": "gdm-imo-gold",
+"rel": "cites"
+},
+{
+"source": "anth-vibe-physics",
+"target": "numina-lean-agent",
+"rel": "cites"
+},
+{
+"source": "anth-science-blog",
+"target": "anth-vibe-physics",
+"rel": "cites"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "anth-vibe-physics",
+"rel": "cites"
+},
+{
+"source": "anth-nine-loops",
+"target": "anth-vibe-physics",
+"rel": "cites"
+},
+{
+"source": "anth-field-notes-feb2026",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-field-notes-feb2026",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "anth-field-notes-feb2026",
+"target": "t-amplitudes",
+"rel": "about"
+},
+{
+"source": "knuth-claude-cycles",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "knuth-claude-cycles",
+"target": "m-claude-opus-46",
+"rel": "produced_by"
+},
+{
+"source": "knuth-claude-cycles",
+"target": "m-gpt54-pro",
+"rel": "produced_by"
+},
+{
+"source": "knuth-claude-cycles",
+"target": "t-graph-theory",
+"rel": "about"
+},
+{
+"source": "knuth-claude-cycles",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "anth-science-blog",
+"target": "knuth-claude-cycles",
+"rel": "cites"
+},
+{
+"source": "numina-lean-agent",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "numina-lean-agent",
+"target": "m-claude-opus-45",
+"rel": "produced_by"
+},
+{
+"source": "numina-lean-agent",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "anth-science-blog",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-science-blog",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "anth-science-blog",
+"target": "t-biology",
+"rel": "about"
+},
+{
+"source": "anth-science-blog",
+"target": "anth-ai-for-science-program",
+"rel": "cites"
+},
+{
+"source": "anth-riemann-zeta",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-riemann-zeta",
+"target": "m-claude-internal",
+"rel": "produced_by"
+},
+{
+"source": "anth-riemann-zeta",
+"target": "t-analytic-number-theory",
+"rel": "about"
+},
+{
+"source": "anth-riemann-zeta",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "anth-riemann-zeta",
+"rel": "cites"
+},
+{
+"source": "anth-nine-loops",
+"target": "anth-riemann-zeta",
+"rel": "cites"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "m-claude-internal",
+"rel": "produced_by"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "m-gpt56-sol",
+"rel": "produced_by"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "m-astra",
+"rel": "produced_by"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "t-fluid-pde",
+"rel": "about"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "alpoge-buckmaster-forced-blowup",
+"target": "experiment",
+"rel": "adjacent_to_experiment"
+},
+{
+"source": "anth-nine-loops",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-nine-loops",
+"target": "m-claude-fable-5",
+"rel": "produced_by"
+},
+{
+"source": "anth-nine-loops",
+"target": "t-amplitudes",
+"rel": "about"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "m-claude-fable-5",
+"rel": "produced_by"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "t-amplitudes",
+"rel": "about"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "t-probability-statistics",
+"rel": "about"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "t-gr-cosmology",
+"rel": "about"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "t-biology",
+"rel": "about"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "anth-nine-loops",
+"rel": "cites"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "anth-quantum-circuits",
+"rel": "cites"
+},
+{
+"source": "anth-claude-shaped-science",
+"target": "anth-ecdsa-origins",
+"rel": "cites"
+},
+{
+"source": "anth-quantum-circuits",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-quantum-circuits",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "anth-quantum-circuits",
+"target": "m-claude-mythos",
+"rel": "produced_by"
+},
+{
+"source": "anth-quantum-circuits",
+"target": "t-quantum-info",
+"rel": "about"
+},
+{
+"source": "anth-quantum-circuits",
+"target": "t-cryptography",
+"rel": "about"
+},
+{
+"source": "anth-quantum-circuits",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "anth-ecdsa-origins",
+"target": "org-anthropic",
+"rel": "authored_by"
+},
+{
+"source": "anth-ecdsa-origins",
+"target": "m-claude-internal",
+"rel": "produced_by"
+},
+{
+"source": "anth-ecdsa-origins",
+"target": "t-cryptography",
+"rel": "about"
+},
+{
+"source": "gdm-alphaevolve",
+"target": "org-deepmind",
+"rel": "authored_by"
+},
+{
+"source": "gdm-alphaevolve",
+"target": "m-alphaevolve",
+"rel": "produced_by"
+},
+{
+"source": "gdm-alphaevolve",
+"target": "t-optimization-algorithms",
+"rel": "about"
+},
+{
+"source": "gdm-alphaevolve",
+"target": "t-discrete-convex-geometry",
+"rel": "about"
+},
+{
+"source": "gdm-imo-gold",
+"target": "org-deepmind",
+"rel": "authored_by"
+},
+{
+"source": "gdm-imo-gold",
+"target": "m-gemini-deep-think",
+"rel": "produced_by"
+},
+{
+"source": "gdm-imo-gold",
+"target": "t-benchmarks",
+"rel": "about"
+},
+{
+"source": "oai-first-proof",
+"target": "gdm-imo-gold",
+"rel": "cites"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "org-deepmind",
+"rel": "authored_by"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "m-alphaevolve",
+"rel": "produced_by"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "m-gemini-deep-think",
+"rel": "produced_by"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "t-discrete-convex-geometry",
+"rel": "about"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "t-optimization-algorithms",
+"rel": "about"
+},
+{
+"source": "gdm-alphaevolve-tao",
+"target": "gdm-alphaevolve",
+"rel": "cites"
+},
+{
+"source": "gdm-gemini-erdos",
+"target": "org-deepmind",
+"rel": "authored_by"
+},
+{
+"source": "gdm-gemini-erdos",
+"target": "m-gemini-deep-think",
+"rel": "produced_by"
+},
+{
+"source": "gdm-gemini-erdos",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "gdm-gemini-erdos",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "gdm-gemini-erdos",
+"target": "oai-erdos-overclaim-oct2025",
+"rel": "cites"
+},
+{
+"source": "gdm-aletheia",
+"target": "org-deepmind",
+"rel": "authored_by"
+},
+{
+"source": "gdm-aletheia",
+"target": "m-aletheia",
+"rel": "produced_by"
+},
+{
+"source": "gdm-aletheia",
+"target": "m-gemini-deep-think",
+"rel": "produced_by"
+},
+{
+"source": "gdm-aletheia",
+"target": "t-erdos-combinatorics",
+"rel": "about"
+},
+{
+"source": "gdm-aletheia",
+"target": "t-research-practice",
+"rel": "about"
+},
+{
+"source": "gdm-aletheia",
+"target": "gdm-gemini-erdos",
+"rel": "cites"
+},
+{
+"source": "hodge-laplacian-3spheres",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "hodge-laplacian-3spheres",
+"target": "t-spectral-theory",
+"rel": "about"
+},
+{
+"source": "hodge-laplacian-3spheres",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "hodge-laplacian-3spheres",
+"target": "experiment",
+"rel": "adjacent_to_experiment"
+},
+{
+"source": "schiffer-colbrook-stepaniants",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "schiffer-colbrook-stepaniants",
+"target": "m-gpt55",
+"rel": "produced_by"
+},
+{
+"source": "schiffer-colbrook-stepaniants",
+"target": "t-spectral-theory",
+"rel": "about"
+},
+{
+"source": "schiffer-colbrook-stepaniants",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "schiffer-colbrook-stepaniants",
+"target": "t-wave-helmholtz",
+"rel": "about"
+},
+{
+"source": "schiffer-colbrook-stepaniants",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "schiffer-colbrook-stepaniants",
+"target": "experiment",
+"rel": "adjacent_to_experiment"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "org-academia",
+"rel": "authored_by"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "m-gpt55",
+"rel": "produced_by"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "m-gpt56-sol",
+"rel": "produced_by"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "m-claude-fable-5",
+"rel": "produced_by"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "t-spectral-theory",
+"rel": "about"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "t-wave-helmholtz",
+"rel": "about"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "t-rigorous-numerics-lean",
+"rel": "about"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "schiffer-colbrook-stepaniants",
+"rel": "cites"
+},
+{
+"source": "schiffer-caolabora-dediospont",
+"target": "experiment",
+"rel": "adjacent_to_experiment"
+},
+{
+"source": "experiment",
+"target": "t-spectral-theory",
+"rel": "about"
+},
+{
+"source": "experiment",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "experiment",
+"target": "t-wave-helmholtz",
+"rel": "about"
+},
+{
+"source": "t-sphere-modes",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-A1",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A2",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A3",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A6",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A7",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A8",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A9",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A13",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-A14",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-I1",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "lit-I2",
+"target": "t-sphere-modes",
+"rel": "about"
+},
+{
+"source": "t-thin-shells",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-I3",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I4",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I5",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I7",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I8",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I10",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I11",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I14",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "lit-I16",
+"target": "t-thin-shells",
+"rel": "about"
+},
+{
+"source": "t-rus",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-B1",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-B2",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-B3",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-B4",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-B7",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-B13",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-A12",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-I42",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "lit-I44",
+"target": "t-rus",
+"rel": "about"
+},
+{
+"source": "t-copper",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-B9",
+"target": "t-copper",
+"rel": "about"
+},
+{
+"source": "lit-B11",
+"target": "t-copper",
+"rel": "about"
+},
+{
+"source": "lit-B12",
+"target": "t-copper",
+"rel": "about"
+},
+{
+"source": "t-noncontact",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-C1",
+"target": "t-noncontact",
+"rel": "about"
+},
+{
+"source": "lit-C2",
+"target": "t-noncontact",
+"rel": "about"
+},
+{
+"source": "lit-C4",
+"target": "t-noncontact",
+"rel": "about"
+},
+{
+"source": "lit-C6",
+"target": "t-noncontact",
+"rel": "about"
+},
+{
+"source": "lit-C8",
+"target": "t-noncontact",
+"rel": "about"
+},
+{
+"source": "t-modal",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-D1",
+"target": "t-modal",
+"rel": "about"
+},
+{
+"source": "lit-D2",
+"target": "t-modal",
+"rel": "about"
+},
+{
+"source": "lit-D3",
+"target": "t-modal",
+"rel": "about"
+},
+{
+"source": "lit-D5",
+"target": "t-modal",
+"rel": "about"
+},
+{
+"source": "lit-D6",
+"target": "t-modal",
+"rel": "about"
+},
+{
+"source": "lit-D8",
+"target": "t-modal",
+"rel": "about"
+},
+{
+"source": "t-contact",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-E6",
+"target": "t-contact",
+"rel": "about"
+},
+{
+"source": "lit-E7",
+"target": "t-contact",
+"rel": "about"
+},
+{
+"source": "lit-I18",
+"target": "t-contact",
+"rel": "about"
+},
+{
+"source": "lit-I20",
+"target": "t-contact",
+"rel": "about"
+},
+{
+"source": "lit-I22",
+"target": "t-contact",
+"rel": "about"
+},
+{
+"source": "lit-I34",
+"target": "t-contact",
+"rel": "about"
+},
+{
+"source": "lit-I36",
+"target": "t-contact",
+"rel": "about"
+},
+{
+"source": "t-location",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-F1",
+"target": "t-location",
+"rel": "about"
+},
+{
+"source": "lit-F2",
+"target": "t-location",
+"rel": "about"
+},
+{
+"source": "lit-F3",
+"target": "t-location",
+"rel": "about"
+},
+{
+"source": "lit-F5",
+"target": "t-location",
+"rel": "about"
+},
+{
+"source": "lit-F6",
+"target": "t-location",
+"rel": "about"
+},
+{
+"source": "lit-F8",
+"target": "t-location",
+"rel": "about"
+},
+{
+"source": "t-inverse-spectral",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-G1",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "lit-G2",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "lit-G4",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "lit-G5",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "lit-H7",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "lit-H8",
+"target": "t-inverse-spectral",
+"rel": "about"
+},
+{
+"source": "t-ml-eigen",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-H1",
+"target": "t-ml-eigen",
+"rel": "about"
+},
+{
+"source": "lit-H2",
+"target": "t-ml-eigen",
+"rel": "about"
+},
+{
+"source": "lit-H3",
+"target": "t-ml-eigen",
+"rel": "about"
+},
+{
+"source": "lit-H4",
+"target": "t-ml-eigen",
+"rel": "about"
+},
+{
+"source": "lit-H5",
+"target": "t-ml-eigen",
+"rel": "about"
+},
+{
+"source": "lit-H6",
+"target": "t-ml-eigen",
+"rel": "about"
+},
+{
+"source": "t-ml-rus",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-H10",
+"target": "t-ml-rus",
+"rel": "about"
+},
+{
+"source": "lit-H11",
+"target": "t-ml-rus",
+"rel": "about"
+},
+{
+"source": "lit-H12",
+"target": "t-ml-rus",
+"rel": "about"
+},
+{
+"source": "t-exp-design",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-H13",
+"target": "t-exp-design",
+"rel": "about"
+},
+{
+"source": "lit-H14",
+"target": "t-exp-design",
+"rel": "about"
+},
+{
+"source": "lit-H15",
+"target": "t-exp-design",
+"rel": "about"
+},
+{
+"source": "t-bench",
+"target": "experiment",
+"rel": "feeds_experiment"
+},
+{
+"source": "lit-I28",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I30",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I32",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I33",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I37",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I38",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I40",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I42",
+"target": "t-bench",
+"rel": "about"
+},
+{
+"source": "lit-I45",
+"target": "t-bench",
+"rel": "about"
+}
+]
+}
