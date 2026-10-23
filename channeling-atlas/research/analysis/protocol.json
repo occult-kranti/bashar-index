@@ -1,6 +1,6 @@
 {
   "asOf": "2026-10-23",
-  "stage": "analysis_reviewed_awaiting_publication",
+  "stage": "published",
   "question": "How do sampled YouTube accounts differ in video length, title themes and text similarity, and what can available transcripts support?",
   "units": [
     "account route",
@@ -55,7 +55,9 @@
   },
   "publication": {
     "site": "preserve existing private audience",
-    "github": "append isolated channeling-atlas research directory to user-specified occult-kranti/bashar-index; retain existing content"
+    "github": "append isolated channeling-atlas research directory to user-specified occult-kranti/bashar-index; retain existing content",
+    "phase1SiteCommit": "0639c825fce92df7fb7827f6a915aac00411d7e8",
+    "phase1GithubCommit": "10706f45bdda84ba29e91f8d8923306ec38d56ec"
   },
   "doneWhen": [
     "input audit and provenance preserved",
@@ -70,8 +72,9 @@
   ],
   "analysisSnapshotSha256": "f3b1eec291a8b4e82aac31fb75c679ae61ad030527915fe90e9579410a7acbcc",
   "nextPhase": {
-    "state": "not_started",
+    "state": "completed",
     "scope": "LaTeX research manuscript, further peer-reviewed literature and three further panel rounds",
-    "startsAfter": "Analysis dashboard, report, bundle and GitHub publication complete"
+    "startsAfter": "Analysis dashboard, report, bundle and GitHub publication complete",
+    "completionLedger": "research/paper/reviews/coordinator-completion.json"
   }
 }

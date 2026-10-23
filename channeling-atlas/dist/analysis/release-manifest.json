@@ -19,8 +19,8 @@
     },
     {
       "path": "research/analysis/build_report.py",
-      "bytes": 16246,
-      "sha256": "ed88777ea304d83e77b2338ea1389162414505a26e32a134f11be7b6a9a5c21e"
+      "bytes": 19581,
+      "sha256": "18b1e5503fb6cbc0b04b23bb09aba71d637cbc3171e5cf4abfb6dea6bcde9ba4"
     },
     {
       "path": "research/analysis/claude-audit.json",
@@ -241,6 +241,21 @@
       "path": "research/analysis/literature/round2-review.md",
       "bytes": 6212,
       "sha256": "077af97acf459a7afc6f725efd9542d92aa4f39443e492a0f741a2debf0bdae3"
+    },
+    {
+      "path": "research/analysis/literature/round3-independent-check.json",
+      "bytes": 2176,
+      "sha256": "d38bd83ddc70ba9e3f4f2ce2c2a78265329fd0ec61d51afda08adb7e7dc171a2"
+    },
+    {
+      "path": "research/analysis/literature/round3-input-snapshot.json",
+      "bytes": 1962,
+      "sha256": "cef126b3d876f52556bbbe887b36f19080b4570481489ff1530094703d615727"
+    },
+    {
+      "path": "research/analysis/literature/round3-phase1-review.md",
+      "bytes": 8944,
+      "sha256": "5ecbf4c81ff149b98dca7bd3be73d58979d8a3c8d8028b1ed45e993a4274c435"
     },
     {
       "path": "research/analysis/literature/search-log.json",
@@ -639,8 +654,8 @@
     },
     {
       "path": "research/analysis/protocol.json",
-      "bytes": 2780,
-      "sha256": "5772490873bd9864ea54df4d4c708b19ee5ed1304400294319157f4f2c39d020"
+      "bytes": 2965,
+      "sha256": "3bd8a46a8b97947dbdcd86560a11688587a48f02a83a3ea118aa2306c68bf35d"
     },
     {
       "path": "research/analysis/requirements.txt",
@@ -858,9 +873,109 @@
       "sha256": "7da57d1584440b56f33fd0b9308cebdc79b5726fa9f31aacd0d3f9cc211de095"
     },
     {
+      "path": "dist/analysis/paper/POOLING-REPRODUCTION.md",
+      "bytes": 2563,
+      "sha256": "8161c1950b609bb74a70b7d75ce31d13669c07c3c674a6e8f2405e00e2e2ea0b"
+    },
+    {
+      "path": "dist/analysis/paper/annotated-bibliography.md",
+      "bytes": 22037,
+      "sha256": "f9601170cfc20139c38e718314be6ad42e43c0655308a0a66d9ad22733d64385"
+    },
+    {
+      "path": "dist/analysis/paper/artifact-manifest.json",
+      "bytes": 4265,
+      "sha256": "087991b3e16ebb573b5e1f4759a04c3cf0895303d6abb70046c04a60fb4a261a"
+    },
+    {
+      "path": "dist/analysis/paper/bibliography.csv",
+      "bytes": 29971,
+      "sha256": "e229e2f73c44b5f64cfaa9087b4b966ff01960c5cfc1830026f22911e3cb891b"
+    },
+    {
+      "path": "dist/analysis/paper/caption-lengths.csv",
+      "bytes": 1872,
+      "sha256": "1107980cf16922b6509ead194b2c71f8813273a5de760e9594366ad2019ad669"
+    },
+    {
+      "path": "dist/analysis/paper/chunk-weighted-embeddings.npz",
+      "bytes": 86580,
+      "sha256": "01c493575502e61635cd69fff9661c2dcb895db8a416844713c81ac21c9845ca"
+    },
+    {
+      "path": "dist/analysis/paper/chunk-weighting-documents.csv",
+      "bytes": 2412,
+      "sha256": "10429be2a43b7815928d7afc3b27ab58381462be295ec52f27aeff606774e931"
+    },
+    {
+      "path": "dist/analysis/paper/chunk-weighting-pairs.csv",
+      "bytes": 5664,
+      "sha256": "d6bf86d0012dfefd078dfcd74b53a13a21679ea096734b36fb5229c0f4f74140"
+    },
+    {
+      "path": "dist/analysis/paper/chunk-weighting.json",
+      "bytes": 35057,
+      "sha256": "8170ec9c1b47e5b65d57edd52475e1f4cf77b4d2bbd34807a3400fc4d1be5a67"
+    },
+    {
+      "path": "dist/analysis/paper/coverage.png",
+      "bytes": 95470,
+      "sha256": "48e57b26296e805c0eef139e699f68bf3a4068ab9a864321423bd37de7cfaadc"
+    },
+    {
+      "path": "dist/analysis/paper/duration.png",
+      "bytes": 75902,
+      "sha256": "fb0c60415090689d0b421c36ca7e83efb143c943aeb59e9da9088bf96373d038"
+    },
+    {
+      "path": "dist/analysis/paper/figure-captions.json",
+      "bytes": 2701,
+      "sha256": "f774b5d9f1d5da4d4240b2efaf833d2e1815ebf21beca294ef35cf600b2df749"
+    },
+    {
+      "path": "dist/analysis/paper/focal-durations.csv",
+      "bytes": 1404,
+      "sha256": "b3f9e56ab042fa2971b7203ef1d6e9b38bfb806cec3423202eef169c686be275"
+    },
+    {
+      "path": "dist/analysis/paper/leave-one-publisher-out.csv",
+      "bytes": 799,
+      "sha256": "21636b8c020af6b1596f9e4d8ecede62cba8da801a9d6f0b4f49606bbc13bbb7"
+    },
+    {
+      "path": "dist/analysis/paper/macro-index.json",
+      "bytes": 1455,
+      "sha256": "2f2250cce467b40d3ae330a09036729f35c4438f9cadd627448c9637ed39b195"
+    },
+    {
+      "path": "dist/analysis/paper/matched-pair-cosines.csv",
+      "bytes": 2824,
+      "sha256": "c707431bb5db012afa4aab51f6cde6cf7bb257745ae86fcaab0c67d3403f0161"
+    },
+    {
+      "path": "dist/analysis/paper/matched-similarity.png",
+      "bytes": 141118,
+      "sha256": "15d955af3888c6cb77d7e1314962555a733708262541ec2fdd7f7d06bf2b30c1"
+    },
+    {
+      "path": "dist/analysis/paper/paper-results.json",
+      "bytes": 62577,
+      "sha256": "45175aa2e4422828b70ca68fe878ca275217887f9fb925ff8ab7c5a576ff8604"
+    },
+    {
+      "path": "dist/analysis/paper/release.json",
+      "bytes": 385,
+      "sha256": "877b2a94426ad2a64a0e5c42e91d9d73ca4c7ded3d93157912bb12a39ca679c0"
+    },
+    {
+      "path": "dist/analysis/paper/sensitivity.png",
+      "bytes": 135480,
+      "sha256": "d7a740b1aa672eb9c9fa82e377797bd7d7ff2f70295fc94c04585bd3f7f26750"
+    },
+    {
       "path": "dist/analysis/report.html",
-      "bytes": 24290,
-      "sha256": "cfae30b7c0ec49e2291f6246f147559bafe8ea5dee358ad5ef47cbf1222cb766"
+      "bytes": 34592,
+      "sha256": "5b329c653bc4c6b2ff2e61bec8c67e1083d6e7374e7863e1c02312609728760b"
     },
     {
       "path": "dist/analysis/semantic-title-pairs.csv",
@@ -889,8 +1004,8 @@
     },
     {
       "path": "dist/app.js",
-      "bytes": 104809,
-      "sha256": "4425ca0110d9170be8f5f3ca1b0df361af3f0d9f29f136fc7c538d0869ca82ab"
+      "bytes": 106573,
+      "sha256": "65d901ce77e6ab046de8e0338726aca830720f57f9deb9c05ef5c9036310d6c2"
     },
     {
       "path": "dist/data.json",

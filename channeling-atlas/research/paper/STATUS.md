@@ -1,5 +1,11 @@
-# Manuscript work in progress
+# Reviewed working draft — 23 October 2026
 
-Analysis rounds 1–3 are published. Paper round 4 is built and independently reviewed: a 10-page working draft, PDF SHA a395941231d063d3faab18f0ea90766438ed9c1135a612102b92f1edb6ee9bc1. This checkpoint preserves that draft and derived figures; known corrections are being implemented in round 5. Round 6 remains pending. Do not treat the round 4 PDF as the final reviewed release or a submission-ready paper.
+All three analysis rounds and all three subsequent manuscript rounds are complete. The first dashboard release preceded paper work. The six final workstream receipts and source hashes are recorded in `reviews/coordinator-completion.json`.
 
-Human authorship, institutional ethics determination, human topic validation, and final checklist answers remain TBD.
+The final 12-page PDF contains 23 cited references from a 28-source scholarly register. References end on page 11; the checklist and appendices follow. The Overleaf source package was extracted into a clean directory and compiled successfully with identical extracted page text. The offline analysis reproduced all 23 checked analytical outputs, including four figure PDF/PNG pairs, byte for byte.
+
+Human authorship and affiliations, human construct validation, institutional ethics determination, release-rights review and final submission-checklist answers remain TBD. The draft is not submitted or accepted; model-agent review is not independent human peer review.
+
+## Changes after round 4
+
+Round 5 corrected plot clipping/overlap, units and denominators, manual-caption terminology, collection times, source-access claims, historical framing, and the name-and-genre mask description. It added a token-weighted chunk-pooling experiment and closer scholarly precedents. Round 6 clarified one source-listing attribution and corrected one author-name TeX escape, then verified unchanged numeric outputs and the complete artifact.
