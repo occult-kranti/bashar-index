@@ -1,5 +1,12 @@
 # The Bashar Index
 
+The ongoing Channeling Atlas extension now includes a
+[research evidence explorer](channeling-atlas/dist/expansion/index.html),
+[rewritten paper](channeling-atlas/research/expansion/paper/channeling-atlas-expansion-paper.pdf),
+and [source-linked Q&A database](channeling-atlas/research/expansion/README.md).
+Its collection status and limits are documented separately from the original
+Bashar Index below.
+
 An independent research site that indexes the public channeling sessions of **Bashar** (channeled by Darryl Anka): a 684-session catalogue (1984–2027), 75 structured digests of public recordings, a topic analysis with clustering, a glossary, a timeline, 56 redrawn concept diagrams, podcast appearances, and a skeptics section.
 
 **Live site:** served from this repository via GitHub Pages (`index.html` at the root).

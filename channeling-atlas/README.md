@@ -1,5 +1,20 @@
 # Channeling Atlas
 
+## Expansion: uploads, questions and collection coverage
+
+The new [evidence explorer](dist/expansion/index.html) and
+[rewritten working paper](research/expansion/paper/channeling-atlas-expansion-paper.pdf)
+extend the preserved release below. Start with the
+[expansion handoff](research/expansion/README.md) for executable methods, the
+[SQLite Q&A database](research/expansion/qa/qa-candidates.sqlite), source registers,
+new plots and review records. The extension contains 949 source-addressable
+AI-digest Q&A paraphrase candidates from 67 Q&A-bearing uploads in one Darryl
+Anka-related practitioner context. It does not supply cross-medium transcript
+answers. The new collector and 590-query plan are implemented; the recorded
+YouTube preflight is blocked by the environment's outbound policy, with zero
+successful new source collections. Planned work and retained evidence are shown
+separately. The earlier scientific data/PDF and rounds 1–6 remain preserved.
+
 ## Current analytical release — 23 October 2026
 
 The analysis merges the original atlas with the supplied Claude archive: **925 unique uploads**, **881 usable durations**, **178 publishing groups with measured lengths**, and a **30-document English-caption pilot**. These are convenience-sample records, not counts of unique or currently active human mediums. The historical discovery and service-audit layers described below remain available.

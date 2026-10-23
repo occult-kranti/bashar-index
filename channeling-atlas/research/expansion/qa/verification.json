@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "checks": 4156,
+  "candidateCount": 949,
+  "sourceDigests": 75,
+  "videosWithQACandidates": 67,
+  "sourceHashPointersVerified": 949,
+  "sqliteIntegrity": "ok",
+  "captionWindowTests": "synthetic fixture only; no real raw captions used",
+  "summarySha256": "7cc9705a73bed33523397b0e4812bb47974dfc21a8a48c83d294c53948a46128"
+}
