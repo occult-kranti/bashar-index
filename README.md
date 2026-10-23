@@ -4,6 +4,21 @@ An independent research site that indexes the public channeling sessions of **Ba
 
 **Live site:** served from this repository via GitHub Pages (`index.html` at the root).
 
+## Channeling Atlas handoff and roadmap
+
+The expanded cross-channel research project is in [`channeling-atlas/`](channeling-atlas/README.md). Its [handoff](channeling-atlas/README.md#handoff-resume-here) records the reviewed baseline, exact data/PDF hashes, safe rebuild commands, source boundaries and the separate GitHub/Sites repository layouts.
+
+The completed 23 October 2026 release contains a 925-upload analysis, per-account duration statistics, a caption/embedding pilot, a reviewed working paper and six build/review rounds. Read the [prioritized roadmap](channeling-atlas/README.md#roadmap-next-research-phase) before continuing: identity and sampling audit; dated activity/services refresh; caption and speaker validation; session deduplication; matched model comparisons; then a new dashboard/paper release.
+
+| Branch | Purpose |
+|---|---|
+| `main` | Reviewed integration and documentation |
+| [`release/channeling-atlas-2026-10-23`](https://github.com/occult-kranti/bashar-index/tree/release/channeling-atlas-2026-10-23) | Scientific baseline pinned to `bbe4801` |
+| [`research/channeling-atlas-next`](https://github.com/occult-kranti/bashar-index/tree/research/channeling-atlas-next) | Next work, starting with the handoff |
+| [`experiment-frequency-of-place`](https://github.com/occult-kranti/bashar-index/tree/experiment-frequency-of-place) | Existing experiment preserved for separate review |
+
+See the [branch register](channeling-atlas/research/maintenance/branch-register.json). The root Bashar Index and nested Channeling Atlas have separate build pipelines. Run Atlas commands from `channeling-atlas/`; preserve the original root application. Human validation, authorship, ethics determination and submission readiness remain TBD in the working paper.
+
 ## What is here
 
 | Path | Contents |
