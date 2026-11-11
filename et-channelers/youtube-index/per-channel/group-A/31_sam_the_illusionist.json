@@ -1,0 +1,37 @@
+{
+ "person": "Sam the Illusionist",
+ "role": "channeler",
+ "status": "credits_exhausted",
+ "channel": {
+  "title": "SAM THE ILLUSIONIST",
+  "handle": "@SAMTHEILLUSIONIST",
+  "channel_id": null,
+  "url": "https://www.youtube.com/@SAMTHEILLUSIONIST",
+  "subscriber_count_text": "118K subscribers",
+  "video_count_text": "548 videos",
+  "description_short": "Channels 'Pleiadians', 'Galactic Federation', 'RA', Metatron, Archangel Michael, Buddha; urgency-style titles, e.g. '1 HOUR AGO: Pleiadians ISSUED Emergency Warning in Exclusive Broadcast' (90K views) (per research notes).",
+  "rss_url": null,
+  "observed_at": "2026-10-23",
+  "source": "research notes",
+  "note": "Firecrawl credits ran out before this channel could be fetched; counts from research notes (channel page as displayed 2026-10-23); channel ID not recorded. Notes cite 'How I Woke Up & Started Channeling & RA Tells My Past Lives' (98K views, 5 years ago) and 'The Rise Of The New Planet' (51K, 4 years ago) without IDs; a fan tribute channel exists (UC77sjb1hrR5hqr5ng_nMdyA)."
+ },
+ "secondary_channels": [
+  {
+   "title": "Sam the Illusionist tribute channel",
+   "url": "https://www.youtube.com/channel/UC77sjb1hrR5hqr5ng_nMdyA",
+   "note": "fan re-upload/tribute channel; subs not recorded"
+  }
+ ],
+ "videos": [],
+ "summary": {
+  "recent_videos_read": 0,
+  "channeling_videos_in_recent": 0,
+  "entities_seen": [],
+  "top_channeling_video_ids": []
+ },
+ "sources": [
+  "https://www.youtube.com/@SAMTHEILLUSIONIST",
+  "https://www.getyourselfoptimized.com/help-from-higher-dimensions-with-sam-the-illusionist/",
+  "https://samtheillusionist.com/session-144"
+ ]
+}

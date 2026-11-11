@@ -1,0 +1,30 @@
+{
+ "person": "Steve Nobel",
+ "role": "channeler",
+ "status": "credits_exhausted",
+ "channel": {
+  "title": "Steve Nobel",
+  "handle": "@SteveNobel",
+  "channel_id": null,
+  "url": "https://www.youtube.com/@SteveNobel",
+  "subscriber_count_text": "198K subscribers",
+  "video_count_text": "721 videos",
+  "description_short": "Guided 'transmissions'/meditations attributed to Pleiadian, Sirian, Arcturian, Venusian star races and angelic sources (The Soul Matrix); recent videos 2K-13K views (per research notes).",
+  "rss_url": null,
+  "observed_at": "2026-10-23",
+  "source": "research notes",
+  "note": "Firecrawl credits ran out before this channel could be fetched; counts from research notes (channel page as displayed 2026-10-23); channel ID not recorded. Notes cite transmission titles 'Pleiadian Frequency Light Shields Transmission', 'Starseeds Receive Ascension Codes from Pleadian Star Races', 'The Venusian Starseed Transmission' (one of them is https://www.youtube.com/watch?v=57oYov3qUXc)."
+ },
+ "secondary_channels": [],
+ "videos": [],
+ "summary": {
+  "recent_videos_read": 0,
+  "channeling_videos_in_recent": 0,
+  "entities_seen": [],
+  "top_channeling_video_ids": []
+ },
+ "sources": [
+  "https://www.youtube.com/@SteveNobel",
+  "https://thesoulmatrix.com/"
+ ]
+}

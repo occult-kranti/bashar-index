@@ -1,0 +1,28 @@
+{
+  "person": "Tolec",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "TransformationalShiftEvents",
+    "handle": "@TransformationalShiftEvents",
+    "channel_id": "UCFuGvM2B9d4nD25drHFlt0A",
+    "url": "https://www.youtube.com/channel/UCFuGvM2B9d4nD25drHFlt0A",
+    "subscriber_count_text": "19.1K subscribers",
+    "video_count_text": "188 videos",
+    "description_short": "Andromeda Council — a high level interdimensional, intergalactic & interstellar governance and development body of benevolent, peaceful star systems & worlds of both the Andromeda and Milky Way galaxies (quoted in research notes)",
+    "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCFuGvM2B9d4nD25drHFlt0A",
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [
+    [null, "Tolec on - 12 Andromeda Council Biospheres", "30.7K views", "14 years ago", null, true, "Andromeda Council", "from research notes (video_id not captured); Tolec relays Andromeda Council information as its 'representative' (telepathic, not trance)"],
+    [null, "The Facts about Life as a 4th Dimensional Human", "75K views", "15 years ago", null, true, "Andromeda Council", "from research notes (video_id not captured); Andromeda Council-attributed teaching; entity inferred from channel framing, not in title"]
+  ],
+  "earliest_known_video": {"video_id": null, "title": "The Facts about Life as a 4th Dimensional Human", "date": null, "url": null, "source": "research notes ('15 years ago' relative to 2026-10-23, c. 2011; 75K views)"},
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata and listed videos from research notes (channel page observed 2026-10-23; last uploads 2022–2023 were Native cultural festivals). Entity: Andromeda Council (Tolec as human 'representative'); channel disclaims an imitator 'AndromedanCouncil' channel; andromedacouncil.com now redirects to an unrelated site.",
+    "https://www.youtube.com/channel/UCFuGvM2B9d4nD25drHFlt0A",
+    "https://web.archive.org/web/20110909182133/https://andromedacouncil.com/"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+ "person": "Billy Meier",
+ "role": "contactee",
+ "status": "credits_exhausted",
+ "channel": {
+  "title": null,
+  "handle": null,
+  "channel_id": null,
+  "url": null,
+  "subscriber_count_text": null,
+  "video_count_text": null,
+  "description_short": null,
+  "rss_url": null,
+  "observed_at": "2026-10-23",
+  "source": "research notes",
+  "note": "Firecrawl credits ran out before this channel could be fetched; research notes record FIGU (Semjase Silver Star Center, Hinterschmidrueti), Contact Report volumes, photographs/films and the 1987 film 'Contact'; no YouTube channel recorded for FIGU or Meier."
+ },
+ "secondary_channels": [],
+ "videos": [],
+ "summary": {
+  "recent_videos_read": 0,
+  "channeling_videos_in_recent": 0,
+  "entities_seen": [],
+  "top_channeling_video_ids": []
+ },
+ "sources": [
+  "https://en.wikipedia.org/wiki/Billy_Meier"
+ ]
+}

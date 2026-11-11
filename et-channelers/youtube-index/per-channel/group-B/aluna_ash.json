@@ -1,0 +1,32 @@
+{
+  "person": "Aluna Ash",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+    "title": "Aluna Ash 9D",
+    "handle": "@alunaash9d373",
+    "channel_id": "UC72GjwWG1T6ytrlCPr7by7Q",
+    "url": "https://www.youtube.com/@alunaash9d373",
+    "subscriber_count_text": "1.58K subscribers",
+    "video_count_text": "1 video",
+    "description_short": "Back up channel for Aluna Ash Clairvoyant 9D",
+    "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC72GjwWG1T6ytrlCPr7by7Q",
+    "observed_at": "2026-10-23",
+    "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [
+    {
+      "title": "Ashlee Campbell (Aluna Ash)",
+      "url": "https://www.youtube.com/channel/UC8Jo5fT6vgmRbDh6IpL7K2A",
+      "note": "MAIN channel (@AshleeCampbell): 84.2K subscribers, 26 public videos (most removed/private), last uploads c. 2023 ('Lunar Eclipse | May 5th 2023'); per research notes observed 2026-10-23. Provider call for this channel failed on 2026-10-23 (Firecrawl credits exhausted) — re-run needed for its recent uploads."
+    }
+  ],
+  "videos": [
+    ["dWPc8lU-OPc", "Next Wave & Gaia's Grid System 11/1", "3.3K views", "7 years ago", "9:30", false, null, "clairvoyant energy update; no entity named"]
+  ],
+  "sources": [
+    "https://www.youtube.com/@alunaash9d373",
+    "https://www.youtube.com/channel/UC8Jo5fT6vgmRbDh6IpL7K2A",
+    "research notes (youtube_era_channelers.md): '9D' branding; collective sources not named; Pleiadian attribution unverified; Patreon live meditations"
+  ]
+}

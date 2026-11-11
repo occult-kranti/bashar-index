@@ -1,0 +1,32 @@
+{
+  "person": "Krista Raisa",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "note": "Entity per notes: the Orion Council. Counts (25.2K subscribers, 256 videos, 1,192,654 views) are from the Socialblade page cited in the notes, not from YouTube directly; channel_id not recorded. Firecrawl credits ran out before this channel could be queried (no search or provider call was executed for it). Channel fields below come only from the research notes; videos not read.",
+  "channel": {
+    "title": "Ezoterra",
+    "handle": "@orioncouncil",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@orioncouncil",
+    "subscriber_count_text": "25.2K subscribers",
+    "video_count_text": "256 videos",
+    "description_short": "Trance medium for 'The Orion Council' — 'messages of light from amphibious, spiritual ascension guides' (kristaraisa.com). Channel created 2010-09-30 (legacy user URL /user/staycurly); 1,192,654 total views per Socialblade.",
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos_compact": [],
+  "sources": [
+    "https://socialblade.com/youtube/user/staycurly",
+    "https://www.kristaraisa.com/",
+    "https://youtu.be/dcoSl38P5Qs"
+  ],
+  "earliest_known_video": {
+    "video_id": "dcoSl38P5Qs",
+    "title": "Orion Council Channeled Message June 15 2015",
+    "date": "2015-06-15",
+    "url": "https://youtu.be/dcoSl38P5Qs",
+    "source": "research notes"
+  }
+}

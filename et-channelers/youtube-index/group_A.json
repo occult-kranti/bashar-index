@@ -1,0 +1,3731 @@
+[
+ {
+  "person": "Darryl Anka",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "Bashar Channeled by Darryl Anka",
+   "handle": "@BasharChanneledbyDarrylAnka",
+   "channel_id": "UCiDZy_rfSodwFaVL_imGWgQ",
+   "url": "https://www.youtube.com/@BasharChanneledbyDarrylAnka",
+   "subscriber_count_text": "229,000 subscribers",
+   "video_count_text": "322 videos",
+   "description_short": "Official Bashar Communications channel: 'Highlights' excerpts and Shorts from Bashar sessions channeled by Darryl Anka; full sessions sold on BasharTV (per research notes).",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCiDZy_rfSodwFaVL_imGWgQ",
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; handle/ID from bashar.org links (corpus official_channels.md); 229,000 subs / 9,676,276 views / 322 videos from us.youtubers.me stats page (undated, seen 2026-10-23); thoughtleaders.io shows 258K subs in FAQ but 'nearing 190,000' in description text; first upload 2017-06-19."
+  },
+  "secondary_channels": [
+   {
+    "title": "Bashar Channeled by Darryl Anka 2025",
+    "url": "https://www.youtube.com/@bashardarrylanka2025",
+    "note": "look-alike/clip channel; 30 subscribers, 17 uploads, created 2024-01-16, no longer tracked (Social Blade, data to 2026-07-28)"
+   },
+   {
+    "title": "Divine Light Vibes",
+    "url": null,
+    "note": "third-party Bashar clip channel named in corpus official_channels.md; URL/subs not retrieved (credits exhausted)"
+   },
+   {
+    "title": "Path of Knowledge",
+    "url": null,
+    "note": "third-party Bashar clip channel named in corpus official_channels.md; URL/subs not retrieved (credits exhausted)"
+   },
+   {
+    "title": "Divine Insights",
+    "url": null,
+    "note": "re-upload/clip channel named in task brief; not verified (credits exhausted)"
+   },
+   {
+    "title": "Bashar Spiritual Insights",
+    "url": null,
+    "note": "re-upload/clip channel named in task brief; not verified (credits exhausted)"
+   },
+   {
+    "title": "Mammoth Awakening",
+    "url": null,
+    "note": "re-upload/clip channel named in task brief; not verified (credits exhausted)"
+   }
+  ],
+  "videos": [
+   {
+    "video_id": "fZmY4xS_qXE",
+    "title": "Official highlights clip, January 2026 (title not recorded): 'Welcome to the first transmission of your new year of 2026, the year of disclosure.'",
+    "url": "https://www.youtube.com/watch?v=fZmY4xS_qXE",
+    "view_count_text": null,
+    "published_text": null,
+    "published_date": null,
+    "length_text": null,
+    "is_channeling": true,
+    "entity": "Bashar",
+    "note": "from research notes via youtubetotranscript.com; metadata not available"
+   },
+   {
+    "video_id": "T5QtncJq1Jc",
+    "title": "Official highlights clip, 2025 (title not recorded): open contact 'imminent within two years'; hybrids and Pleiadians to be introduced first",
+    "url": "https://www.youtube.com/watch?v=T5QtncJq1Jc",
+    "view_count_text": null,
+    "published_text": null,
+    "published_date": null,
+    "length_text": null,
+    "is_channeling": true,
+    "entity": "Bashar",
+    "note": "from research notes via youtubetotranscript.com; metadata not available"
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 2,
+   "channeling_videos_in_recent": 2,
+   "entities_seen": [
+    "Bashar"
+   ],
+   "top_channeling_video_ids": [
+    "fZmY4xS_qXE",
+    "T5QtncJq1Jc"
+   ],
+   "earliest_known_video": {
+    "video_id": null,
+    "title": "Finding your highest excitement (first Bashar video on YouTube per Baroni 2012; not on the official channel, which began uploading 2017-06-19)",
+    "date": "2006-09",
+    "url": null,
+    "source": "research notes (https://www.cesnur.org/2012/el-baroni.htm)"
+   }
+  },
+  "sources": [
+   "https://www.bashar.org/",
+   "https://us.youtubers.me/bashar-channeled-by-darryl-anka/youtuber-stats",
+   "https://app.thoughtleaders.io/youtube/bashar-channeled-by-darryl-anka",
+   "https://socialblade.com/youtube/handle/bashardarrylanka2025",
+   "https://youtubetotranscript.com/transcript?v=fZmY4xS_qXE",
+   "https://youtubetotranscript.com/transcript?v=T5QtncJq1Jc"
+  ]
+ },
+ {
+  "person": "Athina Król",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "Athina Król",
+   "handle": "@AthinaKrol",
+   "channel_id": "UCuXxdyss-NVCA3PQIAklk3g",
+   "url": "https://www.youtube.com/@AthinaKrol",
+   "subscriber_count_text": "5.41K subscribers",
+   "video_count_text": "152 videos",
+   "description_short": "Multidimensional trance channel (Ashtar, Goddess Isis, Galactic Councils, Atlantean Council of Light); Australia; channel joined 2007-06-10; 116,294 views (About tab, 2026-10-23).",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCuXxdyss-NVCA3PQIAklk3g",
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Channel metadata copied from research notes (earlier youtube-com provider call + About-tab scrape, 2026-10-23); the 30-video list could not be re-fetched because Firecrawl credits ran out. Videos below are the ones the notes record with IDs."
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "MDdyY1WYmHY",
+    "title": "How to know your SOUL PURPOSE: Channeling Ashtar About Why You Came to Earth",
+    "url": "https://www.youtube.com/watch?v=MDdyY1WYmHY",
+    "view_count_text": "4.2K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "53:26",
+    "is_channeling": true,
+    "entity": "Ashtar",
+    "note": "metadata as recorded in SCHEMA.md example / notes (podcast release 2026-09-30)"
+   },
+   {
+    "video_id": "8pG8QV-18xQ",
+    "title": "Ashtar Live: The Return of the Sovereign Human: Breaking Free from Energetic Interference",
+    "url": "https://www.youtube.com/watch?v=8pG8QV-18xQ",
+    "view_count_text": null,
+    "published_text": null,
+    "published_date": "2026-09-02",
+    "length_text": null,
+    "is_channeling": true,
+    "entity": "Ashtar",
+    "note": "live trance channelling; published 2026-09-02T12:43:42Z per earlier video_details call"
+   },
+   {
+    "video_id": "mf80ocecqnU",
+    "title": "Pleiadian Light Codes",
+    "url": "https://www.youtube.com/watch?v=mf80ocecqnU",
+    "view_count_text": null,
+    "published_text": null,
+    "published_date": null,
+    "length_text": null,
+    "is_channeling": true,
+    "entity": "Pleiadians",
+    "note": "title as recorded in notes (~2026-10-17); channeled light-code transmission"
+   },
+   {
+    "video_id": "EhoFej0S6QY",
+    "title": "This is What 'ALWAYS' Happens Before Reality Splits! The Next 3 Years Will Reveal UNTHINKABLE…",
+    "url": "https://www.youtube.com/watch?v=EhoFej0S6QY",
+    "view_count_text": null,
+    "published_text": null,
+    "published_date": null,
+    "length_text": null,
+    "is_channeling": false,
+    "entity": null,
+    "note": "Aug 2026 teaching/prediction video; channeling not indicated in title"
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 4,
+   "channeling_videos_in_recent": 3,
+   "entities_seen": [
+    "Ashtar",
+    "Pleiadians"
+   ],
+   "top_channeling_video_ids": [
+    "MDdyY1WYmHY",
+    "8pG8QV-18xQ",
+    "mf80ocecqnU"
+   ],
+   "earliest_known_video": {
+    "video_id": "8pG8QV-18xQ",
+    "title": "Ashtar Live: The Return of the Sovereign Human (first Ashtar-branded public content found; channel's older uploads not enumerated)",
+    "date": "2026-09-02",
+    "url": "https://www.youtube.com/watch?v=8pG8QV-18xQ",
+    "source": "research notes"
+   }
+  },
+  "sources": [
+   "https://www.youtube.com/@AthinaKr%C3%B3l/about",
+   "https://www.youtube.com/@AthinaKrol",
+   "https://athinakrol.podbean.com/",
+   "https://www.youtube.com/watch?v=8pG8QV-18xQ"
+  ]
+ },
+ {
+  "person": "Tyler Ellison",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+   "title": "The Galactic Guide",
+   "handle": "@thegalacticguide111",
+   "channel_id": "UCLw58p9pkhoNAXd9PpjMxdg",
+   "url": "https://www.youtube.com/@thegalacticguide111",
+   "subscriber_count_text": "8.13K subscribers",
+   "video_count_text": "1.6K videos",
+   "description_short": "Welcome to the official channel of Tyler Ellison, internationally known as the channeler of RYOKAH, a hybrid ET being from the Sassani civilization. Through channeling sessions, spiritual teachings, energy",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCLw58p9pkhoNAXd9PpjMxdg",
+   "observed_at": "2026-10-23",
+   "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "svK99fsGskw",
+    "title": "Your Heart Is a Stargate! Creating Heaven on Earth & Your True Self | Ryokah Transmission from Japan",
+    "url": "https://www.youtube.com/watch?v=svK99fsGskw",
+    "view_count_text": "876 views",
+    "published_text": "2 days ago",
+    "published_date": null,
+    "length_text": "15:38",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "wTGFWgT7LOU",
+    "title": "The Violet Flame, St. Germain, Yeshua & the Arcturian Connection | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=wTGFWgT7LOU",
+    "view_count_text": "680 views",
+    "published_text": "4 days ago",
+    "published_date": null,
+    "length_text": "5:06",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "gKSetgXL_WA",
+    "title": "Mantis Beings & Are We Projecting Reality from a Spaceship? | Ryokah",
+    "url": "https://www.youtube.com/watch?v=gKSetgXL_WA",
+    "view_count_text": "835 views",
+    "published_text": "6 days ago",
+    "published_date": null,
+    "length_text": "7:54",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "saN-YsXrPdY",
+    "title": "Ryokah Reveals: Stasis Pods, Walk-Ins & Hidden Dimensions of Reality! 👽✨",
+    "url": "https://www.youtube.com/watch?v=saN-YsXrPdY",
+    "view_count_text": "920 views",
+    "published_text": "8 days ago",
+    "published_date": null,
+    "length_text": "11:29",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "cjkbIxWT1ic",
+    "title": "The Mother & Father Within You | Ryokah Channeled by Tyler Ellison",
+    "url": "https://www.youtube.com/watch?v=cjkbIxWT1ic",
+    "view_count_text": "1.5K views",
+    "published_text": "11 days ago",
+    "published_date": null,
+    "length_text": "7:28",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "FFkIIZMjsms",
+    "title": "Activate Your Inner Sun — The Three Solar Centers | Ryokah Channeled by Tyler Ellison",
+    "url": "https://www.youtube.com/watch?v=FFkIIZMjsms",
+    "view_count_text": "2.9K views",
+    "published_text": "13 days ago",
+    "published_date": null,
+    "length_text": "10:49",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "deYYCY2BJ8k",
+    "title": "Your Dreams May Be Contact  | RYOKAH Channeled by Tyler Ellison",
+    "url": "https://www.youtube.com/watch?v=deYYCY2BJ8k",
+    "view_count_text": "938 views",
+    "published_text": "2 weeks ago",
+    "published_date": null,
+    "length_text": "14:32",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "-ib3Kk5dnOY",
+    "title": "The Heart Is the Doorway to True Connection | Ryokah",
+    "url": "https://www.youtube.com/watch?v=-ib3Kk5dnOY",
+    "view_count_text": "1.1K views",
+    "published_text": "2 weeks ago",
+    "published_date": null,
+    "length_text": "11:27",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "2CrP2BjCpEM",
+    "title": "RYOKAH: Dreams, Multidimensional Contact & UFO Photography | Channeled by Tyler Ellison",
+    "url": "https://www.youtube.com/watch?v=2CrP2BjCpEM",
+    "view_count_text": "1K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "15:03",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "-0w7wdn_t9I",
+    "title": "Judgment, Hidden Energy Centers & ET Contact Through Dreams | RYOKAH Channeled by Tyler Ellison",
+    "url": "https://www.youtube.com/watch?v=-0w7wdn_t9I",
+    "view_count_text": "1.2K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "18:38",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "PhwgH5Oe3f0",
+    "title": "What Will 2027 Bring? RYOKAH on Open Contact, ETs & Parallel Realities",
+    "url": "https://www.youtube.com/watch?v=PhwgH5Oe3f0",
+    "view_count_text": "2.1K views",
+    "published_text": "4 weeks ago",
+    "published_date": null,
+    "length_text": "17:52",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "AAQGmDFl-Io",
+    "title": "WHAT DOES YOUR HIGHER SELF WANT YOU TO KNOW? | RYOKAH Channeled by Tyler Ellison",
+    "url": "https://www.youtube.com/watch?v=AAQGmDFl-Io",
+    "view_count_text": "3.4K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "18:51",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "XYjbRR0HCKc",
+    "title": "Mystery Schools & Following Synchronicities, Psychic Entanglements, Attraction & Self-Love | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=XYjbRR0HCKc",
+    "view_count_text": "1.1K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "16:35",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "2O_395sjiIA",
+    "title": "Ryokah Transmission: The Inner Sun & When Spiritual Practice Becomes Too Intense | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=2O_395sjiIA",
+    "view_count_text": "1.1K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "16:13",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "1X4g9tZ5BeI",
+    "title": "ADHD/manifestation, Following your highest path, ET contact, Blue Avian guides | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=1X4g9tZ5BeI",
+    "view_count_text": "1.2K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "17:24",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "jEL0cLBQkBE",
+    "title": "Pleiadian–Andromedan Hybrids, Your Highest Path, Contact with Sasquatch & Nature Beings | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=jEL0cLBQkBE",
+    "view_count_text": "1.1K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "16:49",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "wZYqkkB_m9M",
+    "title": "The Decision to Shift Creates the Shift ✨ | Ryokah Channeled by Tyler Ellison",
+    "url": "https://www.youtube.com/watch?v=wZYqkkB_m9M",
+    "view_count_text": "1.4K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "18:41",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "SUjQUoceVUc",
+    "title": "Kundalini energy, Divine Feminine & Masculine, YHVH, Being bothered by opinions | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=SUjQUoceVUc",
+    "view_count_text": "891 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "22:50",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "eV6glC4CEp4",
+    "title": "ET Contact, Hyperspace, Arcturian Messages, Shifting Your Reality | RYOKAH of the Sassani",
+    "url": "https://www.youtube.com/watch?v=eV6glC4CEp4",
+    "view_count_text": "1.4K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "17:10",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "v6fqqYT4VzU",
+    "title": "Forgiveness, Solar Activations & Higher Earth, Humanity's Hidden History | RYOKAH of the Sassani",
+    "url": "https://www.youtube.com/watch?v=v6fqqYT4VzU",
+    "view_count_text": "741 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "16:36",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "xUIV5xn-bcM",
+    "title": "Can You Get Lost In Another Dimension & Enhancing Remote Viewing | RYOKAH of the Sassani",
+    "url": "https://www.youtube.com/watch?v=xUIV5xn-bcM",
+    "view_count_text": "539 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "10:52",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "G7VKSxLrJUM",
+    "title": "Auras, Nature Spirit Experience, Changes in the Body, Spiritual Events | RYOKAH of the Sassani",
+    "url": "https://www.youtube.com/watch?v=G7VKSxLrJUM",
+    "view_count_text": "730 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "21:57",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "Y1xqp13J1aM",
+    "title": "Manifesting with Tarot Transmission & How Visualization Works in Magick | RYOKAH of the Sassani",
+    "url": "https://www.youtube.com/watch?v=Y1xqp13J1aM",
+    "view_count_text": "686 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "20:36",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "JtsSZexyC3Y",
+    "title": "Activating the Heart Chakra Transmission & Practice | RYOKAH of The Sassani",
+    "url": "https://www.youtube.com/watch?v=JtsSZexyC3Y",
+    "view_count_text": "935 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "22:24",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "yx7phtsqLzs",
+    "title": "Channeling through art, Connecting to a Sassani counterpart, The Planet Tyrantis | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=yx7phtsqLzs",
+    "view_count_text": "715 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "21:24",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "IVTWGzTaiyY",
+    "title": "Ryokah Transmission, Psychic Surgery, The Yin-Yang symbol, Healing through lucid dreaming | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=IVTWGzTaiyY",
+    "view_count_text": "664 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "18:06",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "kNPYE1aIDG4",
+    "title": "Passing to the Other Side, Sasssani's understanding of Humor, Teaching Chakras to Children | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=kNPYE1aIDG4",
+    "view_count_text": "648 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "19:30",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "8VSC9CbKpao",
+    "title": "Astral Projection, Spirit Animals, Healing the Eyes & Psychic Attack Protection |RYOKAH",
+    "url": "https://www.youtube.com/watch?v=8VSC9CbKpao",
+    "view_count_text": "550 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "15:26",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "6UBN31UDu1A",
+    "title": "Energy Body Activation, The Anunnaki & Humanity's Story, Message from a Sassani Counterpart | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=6UBN31UDu1A",
+    "view_count_text": "807 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "19:25",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   },
+   {
+    "video_id": "JJD85m0URJY",
+    "title": "Vision of an Egyptian with a Sun, Rubber band analogy, Step into your true power, Anubis | RYOKAH",
+    "url": "https://www.youtube.com/watch?v=JJD85m0URJY",
+    "view_count_text": "672 views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "25:47",
+    "is_channeling": true,
+    "entity": "Ryokah",
+    "note": ""
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 30,
+   "channeling_videos_in_recent": 30,
+   "entities_seen": [
+    "Ryokah"
+   ],
+   "top_channeling_video_ids": [
+    "AAQGmDFl-Io",
+    "FFkIIZMjsms",
+    "PhwgH5Oe3f0",
+    "cjkbIxWT1ic",
+    "wZYqkkB_m9M",
+    "eV6glC4CEp4",
+    "-0w7wdn_t9I",
+    "1X4g9tZ5BeI"
+   ],
+   "earliest_known_video": {
+    "video_id": "6nG7HqatH8k",
+    "title": "HUCOLO Saturday webinar with Tyler Ellison channeling Ryok (first dated public Ryok session; third-party HUCOLO TV upload, not on this channel)",
+    "date": "2019-05-26",
+    "url": "https://www.youtube.com/watch?v=6nG7HqatH8k",
+    "source": "research notes"
+   }
+  },
+  "sources": [
+   "https://www.youtube.com/@thegalacticguide111",
+   "https://socialblade.com/youtube/channel/UCLw58p9pkhoNAXd9PpjMxdg",
+   "https://www.thegalacticguide.com/"
+  ]
+ },
+ {
+  "person": "Lyssa Royal Holt",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+   "title": "SOLi School | Lyssa Royal Holt",
+   "handle": "@SOLiSchoolLyssaRoyalHolt",
+   "channel_id": "UCeuLbnOjJBUfqqm2KEqkpLA",
+   "url": "https://www.youtube.com/@SOLiSchoolLyssaRoyalHolt",
+   "subscriber_count_text": "9.26K subscribers",
+   "video_count_text": "143 videos",
+   "description_short": "The official channel of The Seed of Life Institute and the SOLi School, focusing on the work of international author, channel, and seminar leader Lyssa Royal Holt. For further information please see",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCeuLbnOjJBUfqqm2KEqkpLA",
+   "observed_at": "2026-10-23",
+   "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "UMrZXFgMpdo",
+    "title": "Sirian Healing | Hamón, through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=UMrZXFgMpdo",
+    "view_count_text": "759 views",
+    "published_text": "13 days ago",
+    "published_date": null,
+    "length_text": "4:36",
+    "is_channeling": true,
+    "entity": "Hamón",
+    "note": ""
+   },
+   {
+    "video_id": "2v8rXyVBrQ4",
+    "title": "Working with DOUBT during ET CONTACT",
+    "url": "https://www.youtube.com/watch?v=2v8rXyVBrQ4",
+    "view_count_text": "552 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "2:20",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity named in title"
+   },
+   {
+    "video_id": "EQhsu6FhI58",
+    "title": "Humanity's Essential Healing Journey (Excerpt from Session 335) | Hamón through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=EQhsu6FhI58",
+    "view_count_text": "714 views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "8:00",
+    "is_channeling": true,
+    "entity": "Hamón",
+    "note": ""
+   },
+   {
+    "video_id": "yXhR2MrI-qQ",
+    "title": "Navigating Reality Amidst the Chaos Makers",
+    "url": "https://www.youtube.com/watch?v=yXhR2MrI-qQ",
+    "view_count_text": "751 views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "5:41",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity named in title"
+   },
+   {
+    "video_id": "xE9QCiHLLEQ",
+    "title": "UFO Info Release - Synchronicity and Acceleration | Sasha through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=xE9QCiHLLEQ",
+    "view_count_text": "1K views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "3:20",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "C3Aef0jgozo",
+    "title": "THE HYBRIDS  - Official Trailer",
+    "url": "https://www.youtube.com/watch?v=C3Aef0jgozo",
+    "view_count_text": "981 views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "1:30",
+    "is_channeling": false,
+    "entity": null,
+    "note": "trailer"
+   },
+   {
+    "video_id": "U5Cl8X8-tAc",
+    "title": "Mind vs. Consciousness | School of the 9 Serpents",
+    "url": "https://www.youtube.com/watch?v=U5Cl8X8-tAc",
+    "view_count_text": "844 views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "6:00",
+    "is_channeling": false,
+    "entity": null,
+    "note": "teaching clip"
+   },
+   {
+    "video_id": "ax1lXiWH5FM",
+    "title": "The Net of Illusion | Sasha through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=ax1lXiWH5FM",
+    "view_count_text": "1.2K views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "6:06",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "fGEdTgyu-B0",
+    "title": "Channel Panel Chat with Daniel Scranton, Lyssa Royal Holt, Wendy Kennedy & Rob Gauthier",
+    "url": "https://www.youtube.com/watch?v=fGEdTgyu-B0",
+    "view_count_text": "1.1K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "1:25:20",
+    "is_channeling": false,
+    "entity": null,
+    "note": "panel conversation between channelers"
+   },
+   {
+    "video_id": "AFJPOnf_66A",
+    "title": "\"Nothing Alien\" by Mono, Featuring Sasha | We Are Opening to Contact!",
+    "url": "https://www.youtube.com/watch?v=AFJPOnf_66A",
+    "view_count_text": "2.7K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "4:47",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": "music video featuring channeled Sasha excerpt"
+   },
+   {
+    "video_id": "ZYe4w8DQ4_I",
+    "title": "3rd to 4th Density Shift! | Sasha through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=ZYe4w8DQ4_I",
+    "view_count_text": "706 views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "4:16",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "z_XhefJS_Vc",
+    "title": "Pleiadian Channel Panel! Lyssa Royal Holt (Sasha) & Rob Gauthier (Aridif)",
+    "url": "https://www.youtube.com/watch?v=z_XhefJS_Vc",
+    "view_count_text": "647 views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "6:04",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": "panel; Aridif channeled by Rob Gauthier"
+   },
+   {
+    "video_id": "AiZ-x4k-NK4",
+    "title": "Channel Panel! Lyssa Royal Holt, Daniel Scranton, Rob Gauthier, Wendy Kennedy,, JJ Brighton & More",
+    "url": "https://www.youtube.com/watch?v=AiZ-x4k-NK4",
+    "view_count_text": "4.8K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "1:43:20",
+    "is_channeling": true,
+    "entity": null,
+    "note": "multi-channeler Channel Panel event; entities not named in title"
+   },
+   {
+    "video_id": "c7la3HKV3RM",
+    "title": "Lessons from Our Orion Heritage | Sasha through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=c7la3HKV3RM",
+    "view_count_text": "1.4K views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "6:10",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "Qpm2XsRx1No",
+    "title": "ET Motivations for Contact | Sasha, through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=Qpm2XsRx1No",
+    "view_count_text": "560 views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "3:33",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "ecJlp6WCB90",
+    "title": "What is School of the 9 Serpents? | Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=ecJlp6WCB90",
+    "view_count_text": "659 views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "5:24",
+    "is_channeling": false,
+    "entity": null,
+    "note": "course information"
+   },
+   {
+    "video_id": "czqpDOHGVkU",
+    "title": "Building the Contact Field - Part 4 with Sasha",
+    "url": "https://www.youtube.com/watch?v=czqpDOHGVkU",
+    "view_count_text": "563 views",
+    "published_text": "8 months ago",
+    "published_date": null,
+    "length_text": "2:10",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "aEGCLoVC72g",
+    "title": "Channel Training Course Starts Soon - Join the 18th Year!",
+    "url": "https://www.youtube.com/watch?v=aEGCLoVC72g",
+    "view_count_text": "289 views",
+    "published_text": "8 months ago",
+    "published_date": null,
+    "length_text": "3:29",
+    "is_channeling": false,
+    "entity": null,
+    "note": "course announcement"
+   },
+   {
+    "video_id": "oD4wx_BMc60",
+    "title": "2026: Year of the Fire \"Hose\" | Germane through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=oD4wx_BMc60",
+    "view_count_text": "2.2K views",
+    "published_text": "9 months ago",
+    "published_date": null,
+    "length_text": "13:18",
+    "is_channeling": true,
+    "entity": "Germane",
+    "note": ""
+   },
+   {
+    "video_id": "R9gOmrTkxtM",
+    "title": "\"Disclosure\" vs. True Contact | Lyssa Royal Holt & Sasha",
+    "url": "https://www.youtube.com/watch?v=R9gOmrTkxtM",
+    "view_count_text": "710 views",
+    "published_text": "9 months ago",
+    "published_date": null,
+    "length_text": "1:58",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "kT8cew6cfrs",
+    "title": "2025 - A Year in Review | Lyssa Royal Holt and Germane",
+    "url": "https://www.youtube.com/watch?v=kT8cew6cfrs",
+    "view_count_text": "1.2K views",
+    "published_text": "9 months ago",
+    "published_date": null,
+    "length_text": "1:30:21",
+    "is_channeling": true,
+    "entity": "Germane",
+    "note": ""
+   },
+   {
+    "video_id": "KYydFmj0pz0",
+    "title": "3I Atlas - Alien Tech? | Sasha through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=KYydFmj0pz0",
+    "view_count_text": "1.1K views",
+    "published_text": "9 months ago",
+    "published_date": null,
+    "length_text": "2:35",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "9O3feBIC45Y",
+    "title": "Channel Training and Deep Personal Evolution | Lyssa Royal Holt & Germane",
+    "url": "https://www.youtube.com/watch?v=9O3feBIC45Y",
+    "view_count_text": "1.1K views",
+    "published_text": "10 months ago",
+    "published_date": null,
+    "length_text": "1:31:06",
+    "is_channeling": true,
+    "entity": "Germane",
+    "note": ""
+   },
+   {
+    "video_id": "3VlMXmklJkA",
+    "title": "The Founders & Collective Consciousness in ET Contact (Sasha, Lyssa Royal Holt)",
+    "url": "https://www.youtube.com/watch?v=3VlMXmklJkA",
+    "view_count_text": "953 views",
+    "published_text": "10 months ago",
+    "published_date": null,
+    "length_text": "3:46",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "QHQNUyLdaik",
+    "title": "Building the Contact Field, Pt 2 from Sasha (Lyssa Royal Holt)",
+    "url": "https://www.youtube.com/watch?v=QHQNUyLdaik",
+    "view_count_text": "573 views",
+    "published_text": "10 months ago",
+    "published_date": null,
+    "length_text": "3:20",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "PCj1kZQQBqM",
+    "title": "Building a Contact Field - Part 1 from Sasha (Lyssa Royal Holt)",
+    "url": "https://www.youtube.com/watch?v=PCj1kZQQBqM",
+    "view_count_text": "722 views",
+    "published_text": "11 months ago",
+    "published_date": null,
+    "length_text": "2:14",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "An4UIad3-mU",
+    "title": "Contact Comes in Waves of Integration | Sasha through Lyssa Royal Holt",
+    "url": "https://www.youtube.com/watch?v=An4UIad3-mU",
+    "view_count_text": "1.1K views",
+    "published_text": "11 months ago",
+    "published_date": null,
+    "length_text": "5:58",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "lp2ihxxchdE",
+    "title": "Contact, Channeling, the Lemurian Era, and More | Lyssa, Reuben Langdon & Akira Iwase",
+    "url": "https://www.youtube.com/watch?v=lp2ihxxchdE",
+    "view_count_text": "1.1K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "50:03",
+    "is_channeling": false,
+    "entity": null,
+    "note": "interview/conversation"
+   },
+   {
+    "video_id": "ar995Ho4Me8",
+    "title": "Awakening and the Purge (Lemurian Life Expo 2025) | Sasha",
+    "url": "https://www.youtube.com/watch?v=ar995Ho4Me8",
+    "view_count_text": "736 views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "1:20",
+    "is_channeling": true,
+    "entity": "Sasha",
+    "note": ""
+   },
+   {
+    "video_id": "1UufR6Wn9z8",
+    "title": "Card of the Month - October 2025 (Germane/Lyssa Royal Holt)",
+    "url": "https://www.youtube.com/watch?v=1UufR6Wn9z8",
+    "view_count_text": "616 views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "6:09",
+    "is_channeling": true,
+    "entity": "Germane",
+    "note": ""
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 30,
+   "channeling_videos_in_recent": 22,
+   "entities_seen": [
+    "Hamón",
+    "Sasha",
+    "Germane"
+   ],
+   "top_channeling_video_ids": [
+    "AiZ-x4k-NK4",
+    "AFJPOnf_66A",
+    "oD4wx_BMc60",
+    "c7la3HKV3RM",
+    "ax1lXiWH5FM",
+    "kT8cew6cfrs",
+    "9O3feBIC45Y",
+    "KYydFmj0pz0"
+   ]
+  },
+  "sources": [
+   "https://www.youtube.com/@SOLiSchoolLyssaRoyalHolt",
+   "https://www.lyssaroyal.net/"
+  ]
+ },
+ {
+  "person": "Barbara Marciniak",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes list pleiadians.com (books, Pleiadian Times newsletter, workshop recordings, Sellfy store) and no YouTube channel; likely no official channel, unverified."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.pleiadians.com/"
+  ]
+ },
+ {
+  "person": "Barbara Hand Clow",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record a Gaia TV profile (https://www.gaia.com/person/barbara-hand-clow) and publisher pages; no YouTube channel recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.gaia.com/person/barbara-hand-clow",
+   "https://www.innertraditions.com/books/the-pleiadian-agenda"
+  ]
+ },
+ {
+  "person": "Lee Carroll",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record kryon.com (free transcription index of 224 channellings 2003-2022, livestreams 2020-2022) but no YouTube handle; an official 'Kryon' channel was to be located by search."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.kryon.com/k_25.html",
+   "https://en.wikipedia.org/wiki/Lee_Carroll"
+  ]
+ },
+ {
+  "person": "Sheldan Nidle",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record paoweb.com (weekly updates, Galactic Activation Webinars, DVD catalog; monthly webinars continue after Nidle's death on 2025-08-26 under Colleen Marshall and Miles Simons) but no YouTube handle."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.paoweb.com/",
+   "https://www.paoweb.com/paointro.htm",
+   "https://en.wikipedia.org/wiki/Ground_Crew_Project"
+  ]
+ },
+ {
+  "person": "Blossom Goodchild",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+   "title": "Blossom Goodchild",
+   "handle": "@isjaabmo",
+   "channel_id": "UCtYNUevWytubYiElIY44pbg",
+   "url": "https://www.youtube.com/channel/UCtYNUevWytubYiElIY44pbg",
+   "subscriber_count_text": "51.1K subscribers",
+   "video_count_text": "572 videos",
+   "description_short": "",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCtYNUevWytubYiElIY44pbg",
+   "observed_at": "2026-10-23",
+   "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "vvV4JcA5U7o",
+    "title": "Blossom Goodchild  10 17 26 A Message From Blossom",
+    "url": "https://www.youtube.com/watch?v=vvV4JcA5U7o",
+    "view_count_text": "14K views",
+    "published_text": "5 days ago",
+    "published_date": null,
+    "length_text": "5:22",
+    "is_channeling": false,
+    "entity": null,
+    "note": "personal message from Blossom (not a channelling)"
+   },
+   {
+    "video_id": "ierU5o3ffX4",
+    "title": "Blossom Goodchild 10 10 26 More on Activations and Codes",
+    "url": "https://www.youtube.com/watch?v=ierU5o3ffX4",
+    "view_count_text": "13K views",
+    "published_text": "12 days ago",
+    "published_date": null,
+    "length_text": "14:15",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "L7JhaiplwI4",
+    "title": "The 'Lady'... popping back to say hello!",
+    "url": "https://www.youtube.com/watch?v=L7JhaiplwI4",
+    "view_count_text": "14K views",
+    "published_text": "2 weeks ago",
+    "published_date": null,
+    "length_text": "36:17",
+    "is_channeling": true,
+    "entity": "The Lady",
+    "note": "direct-voice channelling experiment series; unnamed energy referred to as 'The Lady'"
+   },
+   {
+    "video_id": "QwoqvS12ljE",
+    "title": "Blossom Goodchild   09 26 26  More on Pyramid Activation",
+    "url": "https://www.youtube.com/watch?v=QwoqvS12ljE",
+    "view_count_text": "13K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "11:05",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "sTCKpkq8mdU",
+    "title": "PYRAMIDS! Great direct voice channel from FOL.",
+    "url": "https://www.youtube.com/watch?v=sTCKpkq8mdU",
+    "view_count_text": "25K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "39:27",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "direct voice channel from FOL (named in title)"
+   },
+   {
+    "video_id": "nQkjRGTQtZE",
+    "title": "Blossom Goodchild  09 12 26 Feeling The Upward Slant!",
+    "url": "https://www.youtube.com/watch?v=nQkjRGTQtZE",
+    "view_count_text": "14K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "10:47",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "uk8xSWqcF48",
+    "title": "We've Got This  - Verily | Blossom Goodchild",
+    "url": "https://www.youtube.com/watch?v=uk8xSWqcF48",
+    "view_count_text": "11K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "5:00",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "short; 'Verily' phrase; FOL inferred"
+   },
+   {
+    "video_id": "MGWmcbwh5-M",
+    "title": "It is all too, too RIDICULOUS!",
+    "url": "https://www.youtube.com/watch?v=MGWmcbwh5-M",
+    "view_count_text": "27K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "37:02",
+    "is_channeling": true,
+    "entity": null,
+    "note": "30-40 min direct-voice channelling experiment series (inferred from format); entity not named"
+   },
+   {
+    "video_id": "OilVC8h6FYU",
+    "title": "Blossom Goodchild   08 22 26 Verily,  we've got this!",
+    "url": "https://www.youtube.com/watch?v=OilVC8h6FYU",
+    "view_count_text": "10K views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "11:46",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "WkP__OwgwPY",
+    "title": "WHITE CLOUD. GEE ... WHAT A GUY!",
+    "url": "https://www.youtube.com/watch?v=WkP__OwgwPY",
+    "view_count_text": "10K views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "31:20",
+    "is_channeling": true,
+    "entity": "White Cloud",
+    "note": "direct-voice session with White Cloud (Native American spirit energy, non-ET)"
+   },
+   {
+    "video_id": "btAyXGkLRTM",
+    "title": "Blossom Goodchild   07 25 26   A Short Break",
+    "url": "https://www.youtube.com/watch?v=btAyXGkLRTM",
+    "view_count_text": "7.4K views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "6:15",
+    "is_channeling": false,
+    "entity": null,
+    "note": "announcement of a short break"
+   },
+   {
+    "video_id": "Hdf8evaBI_E",
+    "title": "Some you win. Some you lose.",
+    "url": "https://www.youtube.com/watch?v=Hdf8evaBI_E",
+    "view_count_text": "10K views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "27:33",
+    "is_channeling": true,
+    "entity": null,
+    "note": "direct-voice channelling experiment series (inferred from format); entity not named"
+   },
+   {
+    "video_id": "zxMNe2Y7was",
+    "title": "Blossom Goodchild  07 11 26   Connections With One Another",
+    "url": "https://www.youtube.com/watch?v=zxMNe2Y7was",
+    "view_count_text": "8.8K views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "12:02",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "8iDPl0Eweo0",
+    "title": "Mind blowingly Blessed Am I!",
+    "url": "https://www.youtube.com/watch?v=8iDPl0Eweo0",
+    "view_count_text": "15K views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "37:20",
+    "is_channeling": true,
+    "entity": null,
+    "note": "direct-voice channelling experiment series (inferred from format); entity not named"
+   },
+   {
+    "video_id": "mxkKo_E8yHA",
+    "title": "Blossom Goodchild   06 26 26   CHOICES",
+    "url": "https://www.youtube.com/watch?v=mxkKo_E8yHA",
+    "view_count_text": "11K views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "14:20",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "sHNyAuZRY6I",
+    "title": "Blossom Goodchild   06 20 26   When You Know Love   You Know Love",
+    "url": "https://www.youtube.com/watch?v=sHNyAuZRY6I",
+    "view_count_text": "9.2K views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "12:23",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "0IKgPUk-QaY",
+    "title": "Experiments some times fail!",
+    "url": "https://www.youtube.com/watch?v=0IKgPUk-QaY",
+    "view_count_text": "11K views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "31:42",
+    "is_channeling": true,
+    "entity": null,
+    "note": "direct-voice channelling experiment that failed (per title)"
+   },
+   {
+    "video_id": "VEL_Bf53Wv4",
+    "title": "Blossom Goodchild 06 06 26   We Are Nailing It!",
+    "url": "https://www.youtube.com/watch?v=VEL_Bf53Wv4",
+    "view_count_text": "14K views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "12:01",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "ZPg12BIdedk",
+    "title": "White Cloud Meditation. 45mins.",
+    "url": "https://www.youtube.com/watch?v=ZPg12BIdedk",
+    "view_count_text": "6K views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "44:14",
+    "is_channeling": true,
+    "entity": "White Cloud",
+    "note": "guided meditation with White Cloud (non-ET)"
+   },
+   {
+    "video_id": "vnKypN7qahY",
+    "title": "Blossom   05 23 26 Big Upgrade Enclosed",
+    "url": "https://www.youtube.com/watch?v=vnKypN7qahY",
+    "view_count_text": "15K views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "11:01",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "Oq6WS7vJO3g",
+    "title": "Experiment 7 with Blossom Goodchild.",
+    "url": "https://www.youtube.com/watch?v=Oq6WS7vJO3g",
+    "view_count_text": "11K views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "56:26",
+    "is_channeling": true,
+    "entity": null,
+    "note": "direct-voice channelling 'Experiment 7'; entity not named"
+   },
+   {
+    "video_id": "jpnLrdo5rls",
+    "title": "Blossom Goodchild  - 05 09 26 -  Could This Be It?",
+    "url": "https://www.youtube.com/watch?v=jpnLrdo5rls",
+    "view_count_text": "15K views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "11:22",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "0mgOzd4LAVw",
+    "title": "Channel experiment No. 6",
+    "url": "https://www.youtube.com/watch?v=0mgOzd4LAVw",
+    "view_count_text": "11K views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "1:06:25",
+    "is_channeling": true,
+    "entity": null,
+    "note": "direct-voice 'Channel experiment No. 6'; entity not named"
+   },
+   {
+    "video_id": "fL7HgC9M5pk",
+    "title": "Blossom  Goodchild -  04 26 26 - Where To Find Love In The Game",
+    "url": "https://www.youtube.com/watch?v=fL7HgC9M5pk",
+    "view_count_text": "7.6K views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "11:22",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "-rdfCWf8WnA",
+    "title": "An Energy gives their responce when asked about Tartaria",
+    "url": "https://www.youtube.com/watch?v=-rdfCWf8WnA",
+    "view_count_text": "12K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "21:13",
+    "is_channeling": true,
+    "entity": null,
+    "note": "unnamed 'Energy' answers a question about Tartaria (direct voice)"
+   },
+   {
+    "video_id": "KL0tu4tpk8w",
+    "title": "Channelling Experiment NO. 5",
+    "url": "https://www.youtube.com/watch?v=KL0tu4tpk8w",
+    "view_count_text": "10K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "44:20",
+    "is_channeling": true,
+    "entity": null,
+    "note": "direct-voice 'Channelling Experiment NO. 5'; entity not named"
+   },
+   {
+    "video_id": "FsUh3xtojeM",
+    "title": "MyEaster Bonnet!",
+    "url": "https://www.youtube.com/watch?v=FsUh3xtojeM",
+    "view_count_text": "5.3K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "3:13",
+    "is_channeling": false,
+    "entity": null,
+    "note": "personal/light-hearted post"
+   },
+   {
+    "video_id": "JMuAWLmb24A",
+    "title": "Blossom   03 26 26 The Many Aspects of Self",
+    "url": "https://www.youtube.com/watch?v=JMuAWLmb24A",
+    "view_count_text": "8.4K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "12:30",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "weekly dated channelling (MM DD YY title); Federation of Light inferred from channel format, not named in title"
+   },
+   {
+    "video_id": "wrb5jXJYRz4",
+    "title": "Experiment 4 ... Just!",
+    "url": "https://www.youtube.com/watch?v=wrb5jXJYRz4",
+    "view_count_text": "14K views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "1:00:52",
+    "is_channeling": true,
+    "entity": null,
+    "note": "direct-voice 'Experiment 4'; entity not named"
+   },
+   {
+    "video_id": "26C14liKtK0",
+    "title": "The Process of Channeling  Blossom Goodchild The Federation of Light 03 14 26",
+    "url": "https://www.youtube.com/watch?v=26C14liKtK0",
+    "view_count_text": "7.6K views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "11:39",
+    "is_channeling": true,
+    "entity": "Federation of Light",
+    "note": "FOL named in title"
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 30,
+   "channeling_videos_in_recent": 27,
+   "entities_seen": [
+    "Federation of Light",
+    "The Lady",
+    "White Cloud"
+   ],
+   "top_channeling_video_ids": [
+    "MGWmcbwh5-M",
+    "sTCKpkq8mdU",
+    "8iDPl0Eweo0",
+    "vnKypN7qahY",
+    "jpnLrdo5rls",
+    "L7JhaiplwI4",
+    "nQkjRGTQtZE",
+    "VEL_Bf53Wv4"
+   ]
+  },
+  "sources": [
+   "https://www.youtube.com/channel/UCtYNUevWytubYiElIY44pbg",
+   "https://www.blossomgoodchild.com/",
+   "https://www.blossomgoodchild.com/the-federation-of-light/"
+  ]
+ },
+ {
+  "person": "Suzanne Ward",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; matthewbooks.com lists a YouTube channel among its platforms (per research notes) but the handle/ID was not recorded; monthly Matthew messages are text-first."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.matthewbooks.com/",
+   "https://www.matthewbooks.com/matthews-messages/"
+  ]
+ },
+ {
+  "person": "Mike Quinsey",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record treeofthegoldenlight.com, galacticchannelings.com syndication and BBS Radio; no YouTube channel recorded; whether he is still living/when messages ceased is unverified."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://galacticchannelings.com/english/interview-mike.html",
+   "https://goldenageofgaia.com/2011/07/14/arraiel-biography-of-mike-quinsey/"
+  ]
+ },
+ {
+  "person": "Wendy Kennedy",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+   "title": "hgrfrequencies",
+   "handle": "@hgrfrequencies",
+   "channel_id": "UCLQruf49jF7P5fIZoe6lM1g",
+   "url": "https://www.youtube.com/channel/UCLQruf49jF7P5fIZoe6lM1g",
+   "subscriber_count_text": "31.5K subscribers",
+   "video_count_text": "75 videos",
+   "description_short": "Wendy Kennedy - Internationally recognized intuitive, empath and channel sharing galactic wisdom for an earthly life.",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCLQruf49jF7P5fIZoe6lM1g",
+   "observed_at": "2026-10-23",
+   "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "9F_9Ed-yWX4",
+    "title": "Your Soul's Unique Signature!",
+    "url": "https://www.youtube.com/watch?v=9F_9Ed-yWX4",
+    "view_count_text": "2K views",
+    "published_text": "2 days ago",
+    "published_date": null,
+    "length_text": "2:12",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "BRsg_krdt8s",
+    "title": "Healers and empaths, are you feeling depleted?",
+    "url": "https://www.youtube.com/watch?v=BRsg_krdt8s",
+    "view_count_text": "1.6K views",
+    "published_text": "5 days ago",
+    "published_date": null,
+    "length_text": "0:44",
+    "is_channeling": false,
+    "entity": null,
+    "note": "promo short"
+   },
+   {
+    "video_id": "-6d2Fl9LPiQ",
+    "title": "Accessing the Akashic Realm!",
+    "url": "https://www.youtube.com/watch?v=-6d2Fl9LPiQ",
+    "view_count_text": "759 views",
+    "published_text": "8 days ago",
+    "published_date": null,
+    "length_text": "0:20",
+    "is_channeling": false,
+    "entity": null,
+    "note": "promo short"
+   },
+   {
+    "video_id": "bFHerJEI2KM",
+    "title": "Every Moment Provides You The Opportunity For Soul Growth!",
+    "url": "https://www.youtube.com/watch?v=bFHerJEI2KM",
+    "view_count_text": "3K views",
+    "published_text": "12 days ago",
+    "published_date": null,
+    "length_text": "2:56",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "KCwf2rA25dY",
+    "title": "Wendy and The 9DPC - Insights on The integration of the Divine Feminine!",
+    "url": "https://www.youtube.com/watch?v=KCwf2rA25dY",
+    "view_count_text": "3K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "2:28",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "9DPC named in title"
+   },
+   {
+    "video_id": "Igx_CrpL6WY",
+    "title": "The Integration of the Divine Feminine Starts Tomorrow!",
+    "url": "https://www.youtube.com/watch?v=Igx_CrpL6WY",
+    "view_count_text": "651 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "0:20",
+    "is_channeling": false,
+    "entity": null,
+    "note": "event promo"
+   },
+   {
+    "video_id": "gEwadFOWogU",
+    "title": "Integration - Judgement vs Preference",
+    "url": "https://www.youtube.com/watch?v=gEwadFOWogU",
+    "view_count_text": "2.6K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "1:31",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "lacM0fN1Gb0",
+    "title": "The Integration of the Divine Feminine.",
+    "url": "https://www.youtube.com/watch?v=lacM0fN1Gb0",
+    "view_count_text": "4.3K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "2:15",
+    "is_channeling": false,
+    "entity": null,
+    "note": "program promo/teaching"
+   },
+   {
+    "video_id": "MfoMxpgMhXU",
+    "title": "The Integration of the Divine Feminine: Restoring Intuition, Balance and Inner Harmony.",
+    "url": "https://www.youtube.com/watch?v=MfoMxpgMhXU",
+    "view_count_text": "844 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "0:11",
+    "is_channeling": false,
+    "entity": null,
+    "note": "program promo short"
+   },
+   {
+    "video_id": "ES-3AqahJn0",
+    "title": "The Rise - Full Replay Now Available",
+    "url": "https://www.youtube.com/watch?v=ES-3AqahJn0",
+    "view_count_text": "2.8K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "2:39",
+    "is_channeling": false,
+    "entity": null,
+    "note": "replay promo"
+   },
+   {
+    "video_id": "6xcWVdQtZLQ",
+    "title": "Join us for The Rise: Remembering Ancient Civilizations & Your Soul History",
+    "url": "https://www.youtube.com/watch?v=6xcWVdQtZLQ",
+    "view_count_text": "459 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "0:20",
+    "is_channeling": false,
+    "entity": null,
+    "note": "event promo"
+   },
+   {
+    "video_id": "KhR-xNGm13k",
+    "title": "Frequency Integration - Wendy Kennedy and The 9DPC",
+    "url": "https://www.youtube.com/watch?v=KhR-xNGm13k",
+    "view_count_text": "4.7K views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "2:10",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "9DPC named in title"
+   },
+   {
+    "video_id": "wutHVo-ck3I",
+    "title": "Forging A New Path Within Replay!",
+    "url": "https://www.youtube.com/watch?v=wutHVo-ck3I",
+    "view_count_text": "3.3K views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "3:29",
+    "is_channeling": false,
+    "entity": null,
+    "note": "replay promo"
+   },
+   {
+    "video_id": "NKf550OqLaQ",
+    "title": "Join Wendy and The 9DPC for The Journey of Ascension Program!",
+    "url": "https://www.youtube.com/watch?v=NKf550OqLaQ",
+    "view_count_text": "344 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "0:36",
+    "is_channeling": false,
+    "entity": null,
+    "note": "program promo mentioning the 9DPC"
+   },
+   {
+    "video_id": "Ghv5_mUWaXc",
+    "title": "Wendy Kennedy on Sue Fredrick's Mystical Conversations Podcast",
+    "url": "https://www.youtube.com/watch?v=Ghv5_mUWaXc",
+    "view_count_text": "564 views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "3:18",
+    "is_channeling": false,
+    "entity": null,
+    "note": "podcast appearance"
+   },
+   {
+    "video_id": "1Jy9bkU01yA",
+    "title": "Wendy Kennedy appearing at The Gaia Channeling Conference!",
+    "url": "https://www.youtube.com/watch?v=1Jy9bkU01yA",
+    "view_count_text": "940 views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "1:01",
+    "is_channeling": false,
+    "entity": null,
+    "note": "Gaia conference promo"
+   },
+   {
+    "video_id": "9udydVMzXTE",
+    "title": "The Channel Panel: Embracing Contact Conference. May 8–10, 2026 Escondido, CA",
+    "url": "https://www.youtube.com/watch?v=9udydVMzXTE",
+    "view_count_text": "1.7K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "4:21",
+    "is_channeling": false,
+    "entity": null,
+    "note": "Channel Panel conference promo"
+   },
+   {
+    "video_id": "hEJ_ntRZ8xk",
+    "title": "Are you ready to activate your divine mission?",
+    "url": "https://www.youtube.com/watch?v=hEJ_ntRZ8xk",
+    "view_count_text": "6.1K views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "3:34",
+    "is_channeling": false,
+    "entity": null,
+    "note": "promo"
+   },
+   {
+    "video_id": "Dcptu3qBzUQ",
+    "title": "A Higher Perspective on the Epstein Files!",
+    "url": "https://www.youtube.com/watch?v=Dcptu3qBzUQ",
+    "view_count_text": "12K views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "8:55",
+    "is_channeling": true,
+    "entity": null,
+    "note": "'Higher Perspective' commentary format (likely 9DPC channeling); entity not named in title"
+   },
+   {
+    "video_id": "yIaozFAVm0c",
+    "title": "A Pleiadian Perspective on 2026!",
+    "url": "https://www.youtube.com/watch?v=yIaozFAVm0c",
+    "view_count_text": "37K views",
+    "published_text": "9 months ago",
+    "published_date": null,
+    "length_text": "5:54",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "'Pleiadian Perspective' series"
+   },
+   {
+    "video_id": "tQX7Vu9M1Zk",
+    "title": "A Pleiadian Perspective on 2025!",
+    "url": "https://www.youtube.com/watch?v=tQX7Vu9M1Zk",
+    "view_count_text": "5.1K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "2:34",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "'Pleiadian Perspective' series"
+   },
+   {
+    "video_id": "P9qDr3YWPcI",
+    "title": "Wendy Kennedy In Person Workshop at The Channel Panel, 2025, Sedona, AZ Jan 3 - 5.",
+    "url": "https://www.youtube.com/watch?v=P9qDr3YWPcI",
+    "view_count_text": "1.5K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "4:36",
+    "is_channeling": false,
+    "entity": null,
+    "note": "workshop promo"
+   },
+   {
+    "video_id": "cIeRnfRzVPY",
+    "title": "Take Back Your Power!",
+    "url": "https://www.youtube.com/watch?v=cIeRnfRzVPY",
+    "view_count_text": "3.9K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "1:59",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "MlQRT2Cwws0",
+    "title": "Lemurian Life Expo",
+    "url": "https://www.youtube.com/watch?v=MlQRT2Cwws0",
+    "view_count_text": "2.5K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "7:25",
+    "is_channeling": false,
+    "entity": null,
+    "note": "expo appearance"
+   },
+   {
+    "video_id": "Z6YHvQ4P-TA",
+    "title": "Higher Frequencies",
+    "url": "https://www.youtube.com/watch?v=Z6YHvQ4P-TA",
+    "view_count_text": "53K views",
+    "published_text": "5 years ago",
+    "published_date": null,
+    "length_text": "1:37:08",
+    "is_channeling": false,
+    "entity": null,
+    "note": "97-min video; title does not indicate content"
+   },
+   {
+    "video_id": "_aJyqXD4e_o",
+    "title": "Pleiadian Insights: Empowerment & Your Divine Spark",
+    "url": "https://www.youtube.com/watch?v=_aJyqXD4e_o",
+    "view_count_text": "24K views",
+    "published_text": "5 years ago",
+    "published_date": null,
+    "length_text": "7:29",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "'Pleiadian Insights' series"
+   },
+   {
+    "video_id": "aWeE95lTkTY",
+    "title": "Pleiadian Insights: The Ps on Feeling Persecuted",
+    "url": "https://www.youtube.com/watch?v=aWeE95lTkTY",
+    "view_count_text": "14K views",
+    "published_text": "5 years ago",
+    "published_date": null,
+    "length_text": "6:41",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "'The Ps' = 9DPC"
+   },
+   {
+    "video_id": "QBdEIDpjNlI",
+    "title": "Moving Beyond the Control Mechanism with the Power & Gift of Compassion",
+    "url": "https://www.youtube.com/watch?v=QBdEIDpjNlI",
+    "view_count_text": "15K views",
+    "published_text": "5 years ago",
+    "published_date": null,
+    "length_text": "5:10",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "SPdzBzsbZJs",
+    "title": "Pleiadian Perspective on June 2020 Solstice Energies",
+    "url": "https://www.youtube.com/watch?v=SPdzBzsbZJs",
+    "view_count_text": "17K views",
+    "published_text": "6 years ago",
+    "published_date": null,
+    "length_text": "8:30",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "'Pleiadian Perspective' series"
+   },
+   {
+    "video_id": "-D60ajIZaWg",
+    "title": "Pleiadian Perspective on Current Events - June 2020",
+    "url": "https://www.youtube.com/watch?v=-D60ajIZaWg",
+    "view_count_text": "23K views",
+    "published_text": "6 years ago",
+    "published_date": null,
+    "length_text": "16:40",
+    "is_channeling": true,
+    "entity": "9D Pleiadian Collective",
+    "note": "'Pleiadian Perspective' series"
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 30,
+   "channeling_videos_in_recent": 9,
+   "entities_seen": [
+    "9D Pleiadian Collective"
+   ],
+   "top_channeling_video_ids": [
+    "yIaozFAVm0c",
+    "_aJyqXD4e_o",
+    "-D60ajIZaWg",
+    "SPdzBzsbZJs",
+    "aWeE95lTkTY",
+    "Dcptu3qBzUQ",
+    "tQX7Vu9M1Zk",
+    "KhR-xNGm13k"
+   ]
+  },
+  "sources": [
+   "https://www.youtube.com/channel/UCLQruf49jF7P5fIZoe6lM1g",
+   "https://higherfrequencies.net/"
+  ]
+ },
+ {
+  "person": "Patricia Cori",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record patriciacori.com, Inner Traditions author page, Coast to Coast AM/CNN appearances and a Project Camelot interview (2018-01-05); no YouTube channel recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.innertraditions.com/author/patricia-cori",
+   "https://www.patriciacori.com/wp-content/uploads/2018/05/pcoribio2018.pdf"
+  ]
+ },
+ {
+  "person": "Tom Kenyon",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record tomkenyon.com (store, Hathor Planetary Messages) and workshops; no YouTube channel recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://tomkenyon.com/who-are-the-hathors",
+   "https://tomkenyon.com/store/hathor-material/"
+  ]
+ },
+ {
+  "person": "Laura Knight-Jadczyk",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record cassiopaea.org, the Cassiopaea Forum session-transcript board, cassiopaea.substack.com and SOTT; no YouTube channel recorded (text/board-based 'superluminal communication')."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://cassiopaea.org/",
+   "https://cassiopaea.substack.com/about"
+  ]
+ },
+ {
+  "person": "Alex Collier",
+  "role": "contactee",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record alexcollier.org paid webinars (Webinar 266 on 2026-10-09; Q&A 85-87) and 1994-98 video/TV interviews; no YouTube handle recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.alexcollier.org/",
+   "https://www.bibliotecapleyades.net/andromeda/esp_andromedacom_0.htm"
+  ]
+ },
+ {
+  "person": "Shaun Swanson",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+   "title": "Ishuwa Yahyel: First ET Contact",
+   "handle": "@ShaunSwanson",
+   "channel_id": "UCN4Y40KeOLSYxEiwtr-kEbg",
+   "url": "https://www.youtube.com/@ShaunSwanson",
+   "subscriber_count_text": "3.79K subscribers",
+   "video_count_text": "84 videos",
+   "description_short": "Welcome to Ishuwa of the Yahyel, channeled by Shaun Swanson. The Yahyel may become the first ETs to arrive here. First ET Contact. They are human extraterrestrials and part of our galactic family.   T",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCN4Y40KeOLSYxEiwtr-kEbg",
+   "observed_at": "2026-10-23",
+   "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "SPiLHHvhGeM",
+    "title": "Message from a Yahyel ET on How to Experience Unconditional Love Each Day",
+    "url": "https://www.youtube.com/watch?v=SPiLHHvhGeM",
+    "view_count_text": "538 views",
+    "published_text": "5 days ago",
+    "published_date": null,
+    "length_text": "44:19",
+    "is_channeling": true,
+    "entity": "Yahyel",
+    "note": "'a Yahyel ET' (Ishuwa)"
+   },
+   {
+    "video_id": "qa9694ghfzE",
+    "title": "How ET Hybrid Children Are Created & When They Arrive (Ishuwa Channeling)",
+    "url": "https://www.youtube.com/watch?v=qa9694ghfzE",
+    "view_count_text": "1.1K views",
+    "published_text": "12 days ago",
+    "published_date": null,
+    "length_text": "8:54",
+    "is_channeling": true,
+    "entity": "Ishuwa",
+    "note": ""
+   },
+   {
+    "video_id": "mTy1wr1cge0",
+    "title": "Simple Secret for Feeling Fully Accepted - Ishuwa Yahyel ET Channeling",
+    "url": "https://www.youtube.com/watch?v=mTy1wr1cge0",
+    "view_count_text": "473 views",
+    "published_text": "2 weeks ago",
+    "published_date": null,
+    "length_text": "12:16",
+    "is_channeling": true,
+    "entity": "Ishuwa",
+    "note": ""
+   },
+   {
+    "video_id": "cYfjt_1Y0Ro",
+    "title": "Yahyel Message on First ET Arrival: \"You Will Know Who We Are\"",
+    "url": "https://www.youtube.com/watch?v=cYfjt_1Y0Ro",
+    "view_count_text": "3.7K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "27:24",
+    "is_channeling": true,
+    "entity": "Yahyel",
+    "note": ""
+   },
+   {
+    "video_id": "bt6ocxMr6KY",
+    "title": "Do I Have a Yahyel ET Counterpart?",
+    "url": "https://www.youtube.com/watch?v=bt6ocxMr6KY",
+    "view_count_text": "295 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "4:10",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "6r_xQBy0D-M",
+    "title": "ET Channeling: How to Stop Fearing What Others Think of You",
+    "url": "https://www.youtube.com/watch?v=6r_xQBy0D-M",
+    "view_count_text": "299 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "13:33",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "_OTORW0d1kE",
+    "title": "\"Hurry, Get Up\" — The Voice That Woke Her Up After 12 Hours",
+    "url": "https://www.youtube.com/watch?v=_OTORW0d1kE",
+    "view_count_text": "257 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "2:29",
+    "is_channeling": false,
+    "entity": null,
+    "note": "contactee experience account"
+   },
+   {
+    "video_id": "1I6D3iQeZAM",
+    "title": "ET Contactee Excited to Learn Who Visited Her",
+    "url": "https://www.youtube.com/watch?v=1I6D3iQeZAM",
+    "view_count_text": "335 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "5:59",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Q&A clip (inferred); entity not named"
+   },
+   {
+    "video_id": "_6b8-yqs6ZY",
+    "title": "How ETs Instill Seeds for Sculpted Landscapes",
+    "url": "https://www.youtube.com/watch?v=_6b8-yqs6ZY",
+    "view_count_text": "201 views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "4:05",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "Rnu3aayU_Is",
+    "title": "Are Extraterrestrials Hiding From Us?",
+    "url": "https://www.youtube.com/watch?v=Rnu3aayU_Is",
+    "view_count_text": "305 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "17:32",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "8BKnSOtQC5k",
+    "title": "An ET Explains Why Your Body Is Like A Spaceship",
+    "url": "https://www.youtube.com/watch?v=8BKnSOtQC5k",
+    "view_count_text": "252 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "12:37",
+    "is_channeling": true,
+    "entity": null,
+    "note": "'An ET' = Ishuwa per channel"
+   },
+   {
+    "video_id": "-leIq8XP15k",
+    "title": "ET & Human DNA Origins: The Yahyel Reveal a Shared Galactic Lineage",
+    "url": "https://www.youtube.com/watch?v=-leIq8XP15k",
+    "view_count_text": "290 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "10:06",
+    "is_channeling": true,
+    "entity": "Yahyel",
+    "note": ""
+   },
+   {
+    "video_id": "QUSBm-G7SBY",
+    "title": "ET Contact: Overcoming Fear of the Unknown & Preparing for the Galactic Reunion",
+    "url": "https://www.youtube.com/watch?v=QUSBm-G7SBY",
+    "view_count_text": "232 views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "7:30",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "jAMnXP9Razg",
+    "title": "Spielberg's Disclosure Day: Is Humanity Ready for Real ET Contact?",
+    "url": "https://www.youtube.com/watch?v=jAMnXP9Razg",
+    "view_count_text": "295 views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "8:59",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "vyvSdXoshgI",
+    "title": "How Extraterrestrials Master the Mirror of Reality",
+    "url": "https://www.youtube.com/watch?v=vyvSdXoshgI",
+    "view_count_text": "395 views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "55:42",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "Dppkg_nQYf4",
+    "title": "How to Experience Your Most Enjoyable Life Everyday (Channeled Wisdom)",
+    "url": "https://www.youtube.com/watch?v=Dppkg_nQYf4",
+    "view_count_text": "190 views",
+    "published_text": "3 months ago",
+    "published_date": null,
+    "length_text": "2:51",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "FqsMWTPpOpE",
+    "title": "The ET Guide to De-Programming Your Mind From Earth's Illusions",
+    "url": "https://www.youtube.com/watch?v=FqsMWTPpOpE",
+    "view_count_text": "250 views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "39:05",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "js-b1MjC8KE",
+    "title": "ET Reunion: The Yahyel Reveal the Secret to Physical ET Arrival",
+    "url": "https://www.youtube.com/watch?v=js-b1MjC8KE",
+    "view_count_text": "260 views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "17:00",
+    "is_channeling": true,
+    "entity": "Yahyel",
+    "note": ""
+   },
+   {
+    "video_id": "5HamFW7TP8g",
+    "title": "The Yahyel ET Guide to Unconditional Love & Emotional Mastery",
+    "url": "https://www.youtube.com/watch?v=5HamFW7TP8g",
+    "view_count_text": "213 views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "9:11",
+    "is_channeling": true,
+    "entity": "Yahyel",
+    "note": ""
+   },
+   {
+    "video_id": "TYq8FyfykpE",
+    "title": "How an Advanced ET Civilization Lives in Total Unity",
+    "url": "https://www.youtube.com/watch?v=TYq8FyfykpE",
+    "view_count_text": "221 views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "5:01",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "g3YluqJJmGo",
+    "title": "Hybrid Children, Autistic Children, Helping Humanity",
+    "url": "https://www.youtube.com/watch?v=g3YluqJJmGo",
+    "view_count_text": "229 views",
+    "published_text": "4 months ago",
+    "published_date": null,
+    "length_text": "5:37",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "uvpZXUdqNQo",
+    "title": "The ET Message We All Need to Hear Right Now",
+    "url": "https://www.youtube.com/watch?v=uvpZXUdqNQo",
+    "view_count_text": "198 views",
+    "published_text": "5 months ago",
+    "published_date": null,
+    "length_text": "10:49",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "0PBKVwaVKRk",
+    "title": "Sharing Yahyel Stories the Telepathic TV Way (Ishuwa)",
+    "url": "https://www.youtube.com/watch?v=0PBKVwaVKRk",
+    "view_count_text": "226 views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "3:44",
+    "is_channeling": true,
+    "entity": "Ishuwa",
+    "note": ""
+   },
+   {
+    "video_id": "-ZkOuLa0nPc",
+    "title": "Are the Yahyel ETs Our Closest Relatives? - Ishuwa on Human-ET DNA",
+    "url": "https://www.youtube.com/watch?v=-ZkOuLa0nPc",
+    "view_count_text": "303 views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "9:43",
+    "is_channeling": true,
+    "entity": "Ishuwa",
+    "note": ""
+   },
+   {
+    "video_id": "W-gARtlVBO0",
+    "title": "Is AI a Threat or Our Next Evolutionary Step?",
+    "url": "https://www.youtube.com/watch?v=W-gARtlVBO0",
+    "view_count_text": "171 views",
+    "published_text": "6 months ago",
+    "published_date": null,
+    "length_text": "10:47",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "JODWsBKf-As",
+    "title": "Unexpected Ecstasy for Humanity",
+    "url": "https://www.youtube.com/watch?v=JODWsBKf-As",
+    "view_count_text": "222 views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "6:31",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "OLYh6CFR3j4",
+    "title": "No Police, No Prisons, No Poverty: The ET Blueprint for a Joy-Based Society",
+    "url": "https://www.youtube.com/watch?v=OLYh6CFR3j4",
+    "view_count_text": "242 views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "8:12",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "aW5iIZlBL38",
+    "title": "What the Whales Told Me Under the Waters of Maui",
+    "url": "https://www.youtube.com/watch?v=aW5iIZlBL38",
+    "view_count_text": "281 views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "7:24",
+    "is_channeling": false,
+    "entity": null,
+    "note": "personal experience account (whales, Maui)"
+   },
+   {
+    "video_id": "xC-eb0TqbCw",
+    "title": "Awakening Your ET Connection",
+    "url": "https://www.youtube.com/watch?v=xC-eb0TqbCw",
+    "view_count_text": "163 views",
+    "published_text": "7 months ago",
+    "published_date": null,
+    "length_text": "4:43",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   },
+   {
+    "video_id": "344hy8HSnIE",
+    "title": "Activating the ET Communication Highway: Micro Galaxies Within",
+    "url": "https://www.youtube.com/watch?v=344hy8HSnIE",
+    "view_count_text": "152 views",
+    "published_text": "8 months ago",
+    "published_date": null,
+    "length_text": "8:56",
+    "is_channeling": true,
+    "entity": null,
+    "note": "Ishuwa of the Yahyel channeling per channel description; entity not named in title"
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 30,
+   "channeling_videos_in_recent": 28,
+   "entities_seen": [
+    "Yahyel",
+    "Ishuwa"
+   ],
+   "top_channeling_video_ids": [
+    "cYfjt_1Y0Ro",
+    "qa9694ghfzE",
+    "SPiLHHvhGeM",
+    "mTy1wr1cge0",
+    "vyvSdXoshgI",
+    "1I6D3iQeZAM",
+    "Rnu3aayU_Is",
+    "-ZkOuLa0nPc"
+   ],
+   "earliest_known_video": {
+    "video_id": "K8iHVWQ09aQ",
+    "title": "(video whose description states 'Shaun Swanson began channeling in 1995'; exact title/date not recorded in notes)",
+    "date": null,
+    "url": "https://www.youtube.com/watch?v=K8iHVWQ09aQ",
+    "source": "research notes"
+   }
+  },
+  "sources": [
+   "https://www.youtube.com/@ShaunSwanson",
+   "https://ishuwa.com/about.html"
+  ]
+ },
+ {
+  "person": "Andrew Bayuk",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "Elan Interactions",
+   "handle": "@ElanInteractions",
+   "channel_id": null,
+   "url": "https://www.youtube.com/@ElanInteractions",
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": "'Elan Interactions' (website created Sept 2020; YouTube @ElanInteractions; podcast) republishing Andrew Bayuk's early-1990s Elan (Essassani) channelings, per research notes.",
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; handle from research notes (anka_bashar.md, majors_1985_2015.md); subscriber/video counts not recorded. Bayuk 'stepped away from channeling completely' after the early 1990s, so uploads are archival."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": [],
+   "earliest_known_video": {
+    "video_id": null,
+    "title": "A rare video from 1992 (Elan session, per infinitelymystical.com)",
+    "date": "1992",
+    "url": "https://www.infinitelymystical.com/elan.html",
+    "source": "research notes"
+   }
+  },
+  "sources": [
+   "https://www.youtube.com/@ElanInteractions",
+   "https://www.infinitelymystical.com/elan.html",
+   "https://iasos.com/metaphys/elan/"
+  ]
+ },
+ {
+  "person": "Daniel Scranton",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+   "title": "Daniel Scranton",
+   "handle": "@DanielScranton",
+   "channel_id": "UCb6-5YT9N1EWA4c_yXBQE1w",
+   "url": "https://www.youtube.com/@DanielScranton",
+   "subscriber_count_text": "56.7K subscribers",
+   "video_count_text": "6.3K videos",
+   "description_short": "Daniel has been a verbal channel since 2010. He has done dozens of live and online group events and private sessions with people all over the globe.  The Creators are a group of guides who have contra",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCb6-5YT9N1EWA4c_yXBQE1w",
+   "observed_at": "2026-10-23",
+   "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "EnbKQSDW8gc",
+    "title": "Donate to Support this YouTube Channel/Channeler ∞If You Can...Thanks!",
+    "url": "https://www.youtube.com/watch?v=EnbKQSDW8gc",
+    "view_count_text": "28 views",
+    "published_text": "1 hour ago",
+    "published_date": null,
+    "length_text": "2:13",
+    "is_channeling": false,
+    "entity": null,
+    "note": "donation appeal"
+   },
+   {
+    "video_id": "dTKNeJ0hGMo",
+    "title": "Ancient Arcturian Practices ∞The 9D Arcturian Council, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=dTKNeJ0hGMo",
+    "view_count_text": "5.9K views",
+    "published_text": "23 hours ago",
+    "published_date": null,
+    "length_text": "16:04",
+    "is_channeling": true,
+    "entity": "The 9D Arcturian Council",
+    "note": ""
+   },
+   {
+    "video_id": "T350BmG4zwM",
+    "title": "Buckle Up…You Are the Humans We’ve Been Waiting For ∞Ashanti: The ET/Human Hybrid, Channeled by DS",
+    "url": "https://www.youtube.com/watch?v=T350BmG4zwM",
+    "view_count_text": "9.4K views",
+    "published_text": "1 day ago",
+    "published_date": null,
+    "length_text": "20:32",
+    "is_channeling": true,
+    "entity": "Ashanti (ET/Human Hybrid)",
+    "note": "Sassani hybrid"
+   },
+   {
+    "video_id": "VBzS4yJqhqk",
+    "title": "2027-2030: ET Contact, The New Human & The New Earth ∞A 4-Channeler All Day Event",
+    "url": "https://www.youtube.com/watch?v=VBzS4yJqhqk",
+    "view_count_text": "2.6K views",
+    "published_text": "2 days ago",
+    "published_date": null,
+    "length_text": "1:03:57",
+    "is_channeling": true,
+    "entity": null,
+    "note": "4-channeler all-day event recording; entities not named in title"
+   },
+   {
+    "video_id": "CjL1LlD0jSQ",
+    "title": "We Will Keep Telling You this Until You Get It ∞The Creators, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=CjL1LlD0jSQ",
+    "view_count_text": "8.9K views",
+    "published_text": "2 days ago",
+    "published_date": null,
+    "length_text": "14:00",
+    "is_channeling": true,
+    "entity": "The Creators",
+    "note": ""
+   },
+   {
+    "video_id": "qlSZT5Q6PQo",
+    "title": "This Has Never Been Seen Before on Earth ∞St. Germain, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=qlSZT5Q6PQo",
+    "view_count_text": "17K views",
+    "published_text": "3 days ago",
+    "published_date": null,
+    "length_text": "14:14",
+    "is_channeling": true,
+    "entity": "St. Germain",
+    "note": "non-ET ascended master"
+   },
+   {
+    "video_id": "eCy1wqEoKQI",
+    "title": "Are You Lucid Dreaming Yet? ∞The Creators, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=eCy1wqEoKQI",
+    "view_count_text": "6.6K views",
+    "published_text": "2 weeks ago",
+    "published_date": null,
+    "length_text": "13:50",
+    "is_channeling": true,
+    "entity": "The Creators",
+    "note": ""
+   },
+   {
+    "video_id": "Z3tuGeaqYzg",
+    "title": "What Will Happen in October 2026 & an Enormous 2027 ∞9D Arcturian Council, Channeled Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=Z3tuGeaqYzg",
+    "view_count_text": "43K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "15:36",
+    "is_channeling": true,
+    "entity": "The 9D Arcturian Council",
+    "note": ""
+   },
+   {
+    "video_id": "UzE7YhIDK2w",
+    "title": "What Will the ETs Bring to Humanity? ∞Ashanti: The ET/Human Hybrid, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=UzE7YhIDK2w",
+    "view_count_text": "5.2K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "15:40",
+    "is_channeling": true,
+    "entity": "Ashanti (ET/Human Hybrid)",
+    "note": ""
+   },
+   {
+    "video_id": "DIdAN9anTlw",
+    "title": "Do This & See What Happens Next ∞St. Germain, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=DIdAN9anTlw",
+    "view_count_text": "7.4K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "14:09",
+    "is_channeling": true,
+    "entity": "St. Germain",
+    "note": "non-ET ascended master"
+   },
+   {
+    "video_id": "L-zre5Onp6U",
+    "title": "Humanity is Facing this Now & That’s Important ∞The Creators, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=L-zre5Onp6U",
+    "view_count_text": "6.4K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "15:40",
+    "is_channeling": true,
+    "entity": "The Creators",
+    "note": ""
+   },
+   {
+    "video_id": "VQUVsn-PLGw",
+    "title": "My ET Contact Experience, UFO/Spaceship Encounter & How I met the ET/Human Hybrid Ashanti",
+    "url": "https://www.youtube.com/watch?v=VQUVsn-PLGw",
+    "view_count_text": "7K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "31:31",
+    "is_channeling": false,
+    "entity": null,
+    "note": "Daniel's personal ET-contact account"
+   },
+   {
+    "video_id": "ewYappZ4C9U",
+    "title": "Questions You Need to Ask Yourself ∞The Creators, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=ewYappZ4C9U",
+    "view_count_text": "6.4K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "15:09",
+    "is_channeling": true,
+    "entity": "The Creators",
+    "note": ""
+   },
+   {
+    "video_id": "QI8YoSZ8dgA",
+    "title": "Preparing for E.T. Contact ∞The 9D Arcturian Council, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=QI8YoSZ8dgA",
+    "view_count_text": "5.9K views",
+    "published_text": "4 weeks ago",
+    "published_date": null,
+    "length_text": "13:39",
+    "is_channeling": true,
+    "entity": "The 9D Arcturian Council",
+    "note": ""
+   },
+   {
+    "video_id": "RRDmhaCfM6w",
+    "title": "ETs Will Be Walking Amongst You Soon ∞Ashanti: The ET/Human Hybrid, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=RRDmhaCfM6w",
+    "view_count_text": "6.8K views",
+    "published_text": "4 weeks ago",
+    "published_date": null,
+    "length_text": "19:59",
+    "is_channeling": true,
+    "entity": "Ashanti (ET/Human Hybrid)",
+    "note": ""
+   },
+   {
+    "video_id": "9P6ccqXMxio",
+    "title": "What the Equinox Energies Will Bring ∞The 9D Arcturian Council, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=9P6ccqXMxio",
+    "view_count_text": "7.8K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "15:34",
+    "is_channeling": true,
+    "entity": "The 9D Arcturian Council",
+    "note": ""
+   },
+   {
+    "video_id": "6NP7pGh4vMQ",
+    "title": "Secret (& Not-So-Secret) Agendas ∞St. Germain, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=6NP7pGh4vMQ",
+    "view_count_text": "6.9K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "14:46",
+    "is_channeling": true,
+    "entity": "St. Germain",
+    "note": "non-ET ascended master"
+   },
+   {
+    "video_id": "FAPVjnxsWVQ",
+    "title": "2027-2030 Channeling Event w/JJ Brighton, Pamela Aaralyn, Anjie Hipple & Daniel Scranton ∞Dec. 6th",
+    "url": "https://www.youtube.com/watch?v=FAPVjnxsWVQ",
+    "view_count_text": "3.5K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "1:03:57",
+    "is_channeling": true,
+    "entity": null,
+    "note": "multi-channeler event recording (JJ Brighton, Pamela Aaralyn, Anjie Hipple, Daniel Scranton)"
+   },
+   {
+    "video_id": "H6wQo8yWof8",
+    "title": "Watch the Transformations Coming Right Before Your Eyes ∞The 9D Arcturian Council",
+    "url": "https://www.youtube.com/watch?v=H6wQo8yWof8",
+    "view_count_text": "9.6K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "17:15",
+    "is_channeling": true,
+    "entity": "The 9D Arcturian Council",
+    "note": ""
+   },
+   {
+    "video_id": "1XnCFCcbunc",
+    "title": "2027-2030 Channeling Event w/JJ Brighton, Pamela Aaralyn, Anjie Hipple & Daniel Scranton ∞Dec. 6th",
+    "url": "https://www.youtube.com/watch?v=1XnCFCcbunc",
+    "view_count_text": "7.5K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "1:03:57",
+    "is_channeling": true,
+    "entity": null,
+    "note": "multi-channeler event recording (duplicate upload of the Dec. 6th event)"
+   },
+   {
+    "video_id": "npNLA4vpzfs",
+    "title": "ET Contact Will Change Everything for Humanity ∞Ashanti ET/Human Hybrid Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=npNLA4vpzfs",
+    "view_count_text": "6.7K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "19:30",
+    "is_channeling": true,
+    "entity": "Ashanti (ET/Human Hybrid)",
+    "note": ""
+   },
+   {
+    "video_id": "zGm2LRy_qX8",
+    "title": "We Have Seen All the Timelines for Humanity ∞The Creators, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=zGm2LRy_qX8",
+    "view_count_text": "7.5K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "14:58",
+    "is_channeling": true,
+    "entity": "The Creators",
+    "note": ""
+   },
+   {
+    "video_id": "VRTkaFg8jeE",
+    "title": "Where Humanity is Headed ∞St. Germain, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=VRTkaFg8jeE",
+    "view_count_text": "6.3K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "14:44",
+    "is_channeling": true,
+    "entity": "St. Germain",
+    "note": "non-ET ascended master"
+   },
+   {
+    "video_id": "Ec1NDvFSQD4",
+    "title": "Is Instant Manifestation Possible Now? ∞The Creators, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=Ec1NDvFSQD4",
+    "view_count_text": "6.7K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "13:58",
+    "is_channeling": true,
+    "entity": "The Creators",
+    "note": ""
+   },
+   {
+    "video_id": "jUOpXuqijsA",
+    "title": "An Official Announcement from All Arcturians ∞The 9D Arcturian Council, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=jUOpXuqijsA",
+    "view_count_text": "14K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "14:16",
+    "is_channeling": true,
+    "entity": "The 9D Arcturian Council",
+    "note": ""
+   },
+   {
+    "video_id": "7rqFK3bP0VA",
+    "title": "The Best is Yet to Come for Humans of Earth ∞Ashanti: The ET/Human Hybrid Channeled: Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=7rqFK3bP0VA",
+    "view_count_text": "6K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "17:51",
+    "is_channeling": true,
+    "entity": "Ashanti (ET/Human Hybrid)",
+    "note": ""
+   },
+   {
+    "video_id": "XE-yFOjv-QY",
+    "title": "A Different World with Different Circumstances to Come ∞St. Germain, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=XE-yFOjv-QY",
+    "view_count_text": "6.6K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "14:39",
+    "is_channeling": true,
+    "entity": "St. Germain",
+    "note": "non-ET ascended master"
+   },
+   {
+    "video_id": "q-D7f7r8OvU",
+    "title": "The Creators Guarantee This…If You Pay Attention ∞The Creators, Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=q-D7f7r8OvU",
+    "view_count_text": "6.3K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "14:32",
+    "is_channeling": true,
+    "entity": "The Creators",
+    "note": ""
+   },
+   {
+    "video_id": "Cqv6afSPO2U",
+    "title": "Another Gigantic Leap Forward for Humanity ∞Ashanti:The Human/ET Hybrid Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=Cqv6afSPO2U",
+    "view_count_text": "6.3K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "19:50",
+    "is_channeling": true,
+    "entity": "Ashanti (ET/Human Hybrid)",
+    "note": ""
+   },
+   {
+    "video_id": "HKc8QcG2-No",
+    "title": "The Fourth Pillar of The Arcturians' Teachings ∞9D Arcturian Council Channeled by Daniel Scranton",
+    "url": "https://www.youtube.com/watch?v=HKc8QcG2-No",
+    "view_count_text": "6K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "18:15",
+    "is_channeling": true,
+    "entity": "The 9D Arcturian Council",
+    "note": ""
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 30,
+   "channeling_videos_in_recent": 28,
+   "entities_seen": [
+    "The 9D Arcturian Council",
+    "Ashanti (ET/Human Hybrid)",
+    "The Creators",
+    "St. Germain"
+   ],
+   "top_channeling_video_ids": [
+    "Z3tuGeaqYzg",
+    "qlSZT5Q6PQo",
+    "jUOpXuqijsA",
+    "H6wQo8yWof8",
+    "T350BmG4zwM",
+    "CjL1LlD0jSQ",
+    "9P6ccqXMxio",
+    "1XnCFCcbunc"
+   ]
+  },
+  "sources": [
+   "https://www.youtube.com/@DanielScranton",
+   "https://danielscranton.com/"
+  ]
+ },
+ {
+  "person": "Pamela Aaralyn",
+  "role": "channeler",
+  "status": "ok",
+  "channel": {
+   "title": "Pamela Aaralyn Channeling",
+   "handle": "@PamelaAaralyn",
+   "channel_id": "UCAYe0uHU6q4_JnU1hPzjoBA",
+   "url": "https://www.youtube.com/@PamelaAaralyn",
+   "subscriber_count_text": "88.4K subscribers",
+   "video_count_text": "841 videos",
+   "description_short": "Pamela Aaralyn is a world renowned trance channel, mystic and spiritual teacher. Pamela is a galactic historian , remote viewer and can bi-locate where she interacts with “Humans from the Future” acro",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCAYe0uHU6q4_JnU1hPzjoBA",
+   "observed_at": "2026-10-23",
+   "source": "youtube-com/channel_videos"
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "NxYRldsuB3s",
+    "title": "Trump’s Future, Vance’s Rise & Who Could Lead MAGA in 2028",
+    "url": "https://www.youtube.com/watch?v=NxYRldsuB3s",
+    "view_count_text": "13K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "3:24",
+    "is_channeling": false,
+    "entity": null,
+    "note": "prediction short; method not stated in title"
+   },
+   {
+    "video_id": "dRbLEaSOP2k",
+    "title": "The 2027 Money Shift: Gold, Silver, Housing & What Happens Next",
+    "url": "https://www.youtube.com/watch?v=dRbLEaSOP2k",
+    "view_count_text": "13K views",
+    "published_text": "3 weeks ago",
+    "published_date": null,
+    "length_text": "5:47",
+    "is_channeling": false,
+    "entity": null,
+    "note": "prediction short; method not stated in title"
+   },
+   {
+    "video_id": "mgY-vfhLQBU",
+    "title": "2027-2030 ET Contact, The New Human and The New Earth ",
+    "url": "https://www.youtube.com/watch?v=mgY-vfhLQBU",
+    "view_count_text": "22K views",
+    "published_text": "1 month ago",
+    "published_date": null,
+    "length_text": "1:03:57",
+    "is_channeling": true,
+    "entity": null,
+    "note": "multi-channeler event with Daniel Scranton et al.; entities not named in title"
+   },
+   {
+    "video_id": "ZUReRry2ZQE",
+    "title": "Pamela Aaralyn & The Council of 9 at The Channel Panel 2026: How The World Was Created by Source",
+    "url": "https://www.youtube.com/watch?v=ZUReRry2ZQE",
+    "view_count_text": "9.1K views",
+    "published_text": "2 months ago",
+    "published_date": null,
+    "length_text": "16:32",
+    "is_channeling": true,
+    "entity": "Galactic Council of 9",
+    "note": "Channel Panel 2026"
+   },
+   {
+    "video_id": "Ma4I-p6uXps",
+    "title": "Humans from the Past: Before the Fall of Isis: Cleopatra II on the Need for Spiritual Unity NOW!",
+    "url": "https://www.youtube.com/watch?v=Ma4I-p6uXps",
+    "view_count_text": "8K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "6:44",
+    "is_channeling": true,
+    "entity": "Cleopatra II (Humans from the Past)",
+    "note": "bi-location/trance format"
+   },
+   {
+    "video_id": "gFzaqEmi4mM",
+    "title": "Humans from the Future Year 2200- The Truth on First Alien Contact and the State of the World",
+    "url": "https://www.youtube.com/watch?v=gFzaqEmi4mM",
+    "view_count_text": "40K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "45:47",
+    "is_channeling": true,
+    "entity": "Humans from the Future (year 2200)",
+    "note": "bi-location format"
+   },
+   {
+    "video_id": "3qEpsfJpSB8",
+    "title": "Facing the Future- Why World Predictions Are a Call to Action, Not Fear",
+    "url": "https://www.youtube.com/watch?v=3qEpsfJpSB8",
+    "view_count_text": "7.4K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "11:09",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "eIjQhtcqUJM",
+    "title": "Pamela Aaralyn and Heart Coherence Collaborative: Navigating Dark Night of the Soul and Harder Times",
+    "url": "https://www.youtube.com/watch?v=eIjQhtcqUJM",
+    "view_count_text": "4.1K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "7:23",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "S-kLtbtv-p4",
+    "title": "Channeling the Council of 9- Why Earth Feels So Heavy- Lyran Feline Ambassador Explains the Veil",
+    "url": "https://www.youtube.com/watch?v=S-kLtbtv-p4",
+    "view_count_text": "14K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "6:46",
+    "is_channeling": true,
+    "entity": "Galactic Council of 9",
+    "note": "Lyran Feline Ambassador speaks"
+   },
+   {
+    "video_id": "ZFazjsJpP_w",
+    "title": "The Galactic Council (of Earth)- Pamela Aaralyn, Wendy Kennedy & Rob Gauthier- Galactic Contact",
+    "url": "https://www.youtube.com/watch?v=ZFazjsJpP_w",
+    "view_count_text": "9.9K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "2:48",
+    "is_channeling": false,
+    "entity": null,
+    "note": "event promo/panel clip with Wendy Kennedy & Rob Gauthier"
+   },
+   {
+    "video_id": "EcTjaxLp6kc",
+    "title": "Channeling the Galactic Council of 9- Crypto Predictions Aren’t Important to Spiritual Development!",
+    "url": "https://www.youtube.com/watch?v=EcTjaxLp6kc",
+    "view_count_text": "8.4K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "2:37",
+    "is_channeling": true,
+    "entity": "Galactic Council of 9",
+    "note": ""
+   },
+   {
+    "video_id": "ry6uh05xiDI",
+    "title": "Overtone Healing + Ancient Lemurian Call to Healing",
+    "url": "https://www.youtube.com/watch?v=ry6uh05xiDI",
+    "view_count_text": "4.2K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "4:37",
+    "is_channeling": false,
+    "entity": null,
+    "note": "overtone/sound healing"
+   },
+   {
+    "video_id": "BZqK9UVX_es",
+    "title": "Channeling the Galactic Council of 9- Unlocking Soul Fragments: How to  Heal & Manifest Abundance",
+    "url": "https://www.youtube.com/watch?v=BZqK9UVX_es",
+    "view_count_text": "10K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "7:16",
+    "is_channeling": true,
+    "entity": "Galactic Council of 9",
+    "note": ""
+   },
+   {
+    "video_id": "pxXCyEcit4I",
+    "title": "The 411 on Ascension: The 7 Parallel Realms of Earth-  A Galactic Council of 9 Channeled Teaching",
+    "url": "https://www.youtube.com/watch?v=pxXCyEcit4I",
+    "view_count_text": "6.8K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "7:20",
+    "is_channeling": true,
+    "entity": "Galactic Council of 9",
+    "note": ""
+   },
+   {
+    "video_id": "wYzp4vqCGUk",
+    "title": "Channeling Dolores Cannon- The Reincarnation Trap: Why Did We Come Here? What Are We Learning?",
+    "url": "https://www.youtube.com/watch?v=wYzp4vqCGUk",
+    "view_count_text": "19K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "41:27",
+    "is_channeling": true,
+    "entity": "Dolores Cannon",
+    "note": "channeled deceased teacher (non-ET)"
+   },
+   {
+    "video_id": "aF6ySMSVBRE",
+    "title": "Unlocking the Third Eye- Healing Fear- Staying Protected- Ancient Mystery School Teachings",
+    "url": "https://www.youtube.com/watch?v=aF6ySMSVBRE",
+    "view_count_text": "7.3K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "8:03",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "JNhQPA1VAS0",
+    "title": "The Galactic Council of 9- Divine Feminine Rising-Balancing Power & Spirituality in a Shifting World",
+    "url": "https://www.youtube.com/watch?v=JNhQPA1VAS0",
+    "view_count_text": "4.2K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "3:16",
+    "is_channeling": true,
+    "entity": "Galactic Council of 9",
+    "note": ""
+   },
+   {
+    "video_id": "KzTRkv8mPIU",
+    "title": "Channeling the Galactic Council of 9- Reveals The Shocking Truth About Our Moon – Real or Hologram?",
+    "url": "https://www.youtube.com/watch?v=KzTRkv8mPIU",
+    "view_count_text": "11K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "7:41",
+    "is_channeling": true,
+    "entity": "Galactic Council of 9",
+    "note": ""
+   },
+   {
+    "video_id": "7QFeltrttmw",
+    "title": "Channeling Future Humans from 2040: The Mandela Effect & Your Guide to Jumping Timelines",
+    "url": "https://www.youtube.com/watch?v=7QFeltrttmw",
+    "view_count_text": "15K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "11:03",
+    "is_channeling": true,
+    "entity": "Humans from the Future (year 2040)",
+    "note": ""
+   },
+   {
+    "video_id": "gavPrc6lmw0",
+    "title": "Will Earth Ascend to 5D? Unveiling the Secrets of Earth School & Multidimensionality",
+    "url": "https://www.youtube.com/watch?v=gavPrc6lmw0",
+    "view_count_text": "7.1K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "4:52",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "QaERT0_D5yM",
+    "title": "Unlocking the Silence: Why Your Spirit Guides Aren't Speaking & How to Connect with Them",
+    "url": "https://www.youtube.com/watch?v=QaERT0_D5yM",
+    "view_count_text": "7.6K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "7:56",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "V3kRiKMocpU",
+    "title": "Trance Channeling Mother Mary: Healing & Transcending Grief",
+    "url": "https://www.youtube.com/watch?v=V3kRiKMocpU",
+    "view_count_text": "5.5K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "4:12",
+    "is_channeling": true,
+    "entity": "Mother Mary",
+    "note": "non-ET"
+   },
+   {
+    "video_id": "kwgE8oJmWjA",
+    "title": "Bilocation- Humans From the Future 2075- Neuralink, Cell Phon,  Plasma Engines & Future Technology",
+    "url": "https://www.youtube.com/watch?v=kwgE8oJmWjA",
+    "view_count_text": "12K views",
+    "published_text": "1 year ago",
+    "published_date": null,
+    "length_text": "4:58",
+    "is_channeling": true,
+    "entity": "Humans from the Future (year 2075)",
+    "note": "bi-location format"
+   },
+   {
+    "video_id": "gyDSfRbroms",
+    "title": "Trance Channeling a Tall White Eridanian- The Truth About ET Intervention & Earth's Divine Blueprint",
+    "url": "https://www.youtube.com/watch?v=gyDSfRbroms",
+    "view_count_text": "15K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "10:16",
+    "is_channeling": true,
+    "entity": "Tall White Eridanian",
+    "note": ""
+   },
+   {
+    "video_id": "8KD0JEvOifY",
+    "title": "🌟 Urgent Message for Lightworkers: How to Keep Your Light Shining Amidst the Coming Chaos! 🌟",
+    "url": "https://www.youtube.com/watch?v=8KD0JEvOifY",
+    "view_count_text": "12K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "3:45",
+    "is_channeling": false,
+    "entity": null,
+    "note": "no entity or channeling indicated in title"
+   },
+   {
+    "video_id": "9JkblzaPgwE",
+    "title": "Sibling Rivalry in the Stars: Twins Neela and Luka Unveil the Shocking Truth Behind Pleiadian Wars",
+    "url": "https://www.youtube.com/watch?v=9JkblzaPgwE",
+    "view_count_text": "12K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "48:40",
+    "is_channeling": true,
+    "entity": "Neela and Luka (Pleiadian twins)",
+    "note": ""
+   },
+   {
+    "video_id": "4ygkRh9yAEQ",
+    "title": "Unveiling Our Angelic Origins: Trance Channeling Metatron- Human DNA & the True Human Creation Story",
+    "url": "https://www.youtube.com/watch?v=4ygkRh9yAEQ",
+    "view_count_text": "13K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "17:45",
+    "is_channeling": true,
+    "entity": "Metatron",
+    "note": "non-ET angelic"
+   },
+   {
+    "video_id": "hWYJEukiU2M",
+    "title": "Unlocking Happiness: Healing Painful Blocks- Insights Channeled from Shirdi Sai Baba & Enoch",
+    "url": "https://www.youtube.com/watch?v=hWYJEukiU2M",
+    "view_count_text": "8.1K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "16:41",
+    "is_channeling": true,
+    "entity": "Shirdi Sai Baba & Enoch",
+    "note": "non-ET"
+   },
+   {
+    "video_id": "bns8ZsvOdFk",
+    "title": "Channeling Lyran ETs- Time Travel & Portal Technology- Secrets of Bermuda Triangle, Mt Shasta & More",
+    "url": "https://www.youtube.com/watch?v=bns8ZsvOdFk",
+    "view_count_text": "19K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "21:21",
+    "is_channeling": true,
+    "entity": "Lyran ETs",
+    "note": ""
+   },
+   {
+    "video_id": "T6AlmM809bo",
+    "title": "Channeling Mary Magdalene- Unlocking the Timeless Wisdom of True Divine Love",
+    "url": "https://www.youtube.com/watch?v=T6AlmM809bo",
+    "view_count_text": "11K views",
+    "published_text": "2 years ago",
+    "published_date": null,
+    "length_text": "15:00",
+    "is_channeling": true,
+    "entity": "Mary Magdalene",
+    "note": "non-ET"
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 30,
+   "channeling_videos_in_recent": 20,
+   "entities_seen": [
+    "Galactic Council of 9",
+    "Cleopatra II (Humans from the Past)",
+    "Humans from the Future (year 2200)",
+    "Dolores Cannon",
+    "Humans from the Future (year 2040)",
+    "Mother Mary",
+    "Humans from the Future (year 2075)",
+    "Tall White Eridanian",
+    "Neela and Luka (Pleiadian twins)",
+    "Metatron",
+    "Shirdi Sai Baba & Enoch",
+    "Lyran ETs",
+    "Mary Magdalene"
+   ],
+   "top_channeling_video_ids": [
+    "gFzaqEmi4mM",
+    "mgY-vfhLQBU",
+    "wYzp4vqCGUk",
+    "bns8ZsvOdFk",
+    "7QFeltrttmw",
+    "gyDSfRbroms",
+    "S-kLtbtv-p4",
+    "4ygkRh9yAEQ"
+   ]
+  },
+  "sources": [
+   "https://www.youtube.com/@PamelaAaralyn",
+   "https://www.pamelaaaralyn.com/about"
+  ]
+ },
+ {
+  "person": "Jamye Price",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "Jamye Price",
+   "handle": "@JamyePrice",
+   "channel_id": null,
+   "url": "https://www.youtube.com/@JamyePrice",
+   "subscriber_count_text": "31.2K subscribers",
+   "video_count_text": "484 videos",
+   "description_short": "Monthly 'Ascension Energies and Light Language' videos (4-7K views each); channels Areon, the Lyran Council of Time (per research notes).",
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; counts from research notes (YouTube channel page as displayed 2026-10-23); channel ID not recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.youtube.com/@JamyePrice",
+   "https://jamyeprice.com/about-jamye-price/"
+  ]
+ },
+ {
+  "person": "L/L Research",
+  "role": "organisation",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record llresearch.org (1,700+ transcripts, Spiral Practice workshops, C/C Channeling Circle transcripts 2024) and lawofone.info; no YouTube handle recorded. Current channels: Jim McCarty, Gary L. Bean, Austin Bridges, Trisha Bean, 'Kathy B.' (Q'uo)."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.llresearch.org/channeling",
+   "https://www.llresearch.org/about/team",
+   "https://www.lawofone.info/"
+  ]
+ },
+ {
+  "person": "Aaron Abke",
+  "role": "context",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "Aaron Abke",
+   "handle": "@aaronabke",
+   "channel_id": "UC867Q451mPjjD52peYqpF4A",
+   "url": "https://www.youtube.com/@aaronabke",
+   "subscriber_count_text": "374K subscribers",
+   "video_count_text": "1,195 videos",
+   "description_short": "Law of One / Ra Material interpreter and spiritual teacher (not a channel); channel created 2016-11-04; 42,752,720 views (vidIQ stats reported 2026-10-20/22).",
+   "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC867Q451mPjjD52peYqpF4A",
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; counts from vidIQ via research notes; handle @aaronabke from notes."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://vidiq.com/youtube-stats/channel/UC867Q451mPjjD52peYqpF4A",
+   "https://know-thyself-conference.heysummit.com/speakers/aaron-abke/"
+  ]
+ },
+ {
+  "person": "Billy Meier",
+  "role": "contactee",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record FIGU (Semjase Silver Star Center, Hinterschmidrueti), Contact Report volumes, photographs/films and the 1987 film 'Contact'; no YouTube channel recorded for FIGU or Meier."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://en.wikipedia.org/wiki/Billy_Meier"
+  ]
+ },
+ {
+  "person": "Aetherius Society",
+  "role": "organisation",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record books, Cosmic Voice magazine and the Operations (Starlight, Space Power, Sunbeam, Prayer Power); no YouTube channel recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://en.wikipedia.org/wiki/Aetherius_Society",
+   "https://wrldrels.org/?p=3129"
+  ]
+ },
+ {
+  "person": "Robert Shapiro",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record explorerrace.com, benevolentmagic.com and Light Technology Publishing (Sedona); no YouTube channel recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "http://explorerrace.com/about.php",
+   "https://books.org/books/explorer-race-vol-1/zoosh/9780929385389/"
+  ]
+ },
+ {
+  "person": "Nancy Lieder",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes record zetatalk.com, the ZetaTalk Newsletter and Ning Q&A chats (poleshift.ning.com); no YouTube channel recorded."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.zetatalk.com/",
+   "https://www.zetatalk.com/nancybio.htm"
+  ]
+ },
+ {
+  "person": "Judy Satori",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": null,
+   "handle": null,
+   "channel_id": null,
+   "url": null,
+   "subscriber_count_text": null,
+   "video_count_text": null,
+   "description_short": null,
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; research notes: 'YouTube presence exists (videos \"The Different Kinds of Light Language\") but channel handle/subscriber count not verified'; example video https://www.youtube.com/watch?v=bumKPM45uU0."
+  },
+  "secondary_channels": [],
+  "videos": [
+   {
+    "video_id": "bumKPM45uU0",
+    "title": "The Different Kinds of Light Language (title as recorded in notes)",
+    "url": "https://www.youtube.com/watch?v=bumKPM45uU0",
+    "view_count_text": null,
+    "published_text": null,
+    "published_date": null,
+    "length_text": null,
+    "is_channeling": false,
+    "entity": null,
+    "note": "Light Language explainer; not a channeled session per title; metadata not available"
+   }
+  ],
+  "summary": {
+   "recent_videos_read": 1,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.eomega.org/people/judy-satori",
+   "https://www.youtube.com/watch?v=bumKPM45uU0"
+  ]
+ },
+ {
+  "person": "Steve Nobel",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "Steve Nobel",
+   "handle": "@SteveNobel",
+   "channel_id": null,
+   "url": "https://www.youtube.com/@SteveNobel",
+   "subscriber_count_text": "198K subscribers",
+   "video_count_text": "721 videos",
+   "description_short": "Guided 'transmissions'/meditations attributed to Pleiadian, Sirian, Arcturian, Venusian star races and angelic sources (The Soul Matrix); recent videos 2K-13K views (per research notes).",
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; counts from research notes (channel page as displayed 2026-10-23); channel ID not recorded. Notes cite transmission titles 'Pleiadian Frequency Light Shields Transmission', 'Starseeds Receive Ascension Codes from Pleadian Star Races', 'The Venusian Starseed Transmission' (one of them is https://www.youtube.com/watch?v=57oYov3qUXc)."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.youtube.com/@SteveNobel",
+   "https://thesoulmatrix.com/"
+  ]
+ },
+ {
+  "person": "Elizabeth April",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "Elizabeth April",
+   "handle": "@ElizabethApril",
+   "channel_id": null,
+   "url": "https://www.youtube.com/@ElizabethApril",
+   "subscriber_count_text": "564K subscribers",
+   "video_count_text": "333 videos",
+   "description_short": "Remote viewer and conscious channel of 'the Galactic Federation' (Gaia: Heera, a Zeta Reticule being; Khan the Mantis); recent videos 143K-473K views, e.g. 'I Remote Viewed Barack & Michelle Obama…' 473K (per research notes).",
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; counts from research notes (channel page as displayed 2026-10-23); channel ID not recorded. Notes cite prediction videos https://www.youtube.com/watch?v=YtOm3XP0tTo and https://www.youtube.com/watch?v=50hlRmXD_iM (titles not recorded verbatim)."
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.youtube.com/@ElizabethApril",
+   "https://elizabethapril.com/about-us/",
+   "https://www.gaia.com/portal/ea"
+  ]
+ },
+ {
+  "person": "Sam the Illusionist",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+   "title": "SAM THE ILLUSIONIST",
+   "handle": "@SAMTHEILLUSIONIST",
+   "channel_id": null,
+   "url": "https://www.youtube.com/@SAMTHEILLUSIONIST",
+   "subscriber_count_text": "118K subscribers",
+   "video_count_text": "548 videos",
+   "description_short": "Channels 'Pleiadians', 'Galactic Federation', 'RA', Metatron, Archangel Michael, Buddha; urgency-style titles, e.g. '1 HOUR AGO: Pleiadians ISSUED Emergency Warning in Exclusive Broadcast' (90K views) (per research notes).",
+   "rss_url": null,
+   "observed_at": "2026-10-23",
+   "source": "research notes",
+   "note": "Firecrawl credits ran out before this channel could be fetched; counts from research notes (channel page as displayed 2026-10-23); channel ID not recorded. Notes cite 'How I Woke Up & Started Channeling & RA Tells My Past Lives' (98K views, 5 years ago) and 'The Rise Of The New Planet' (51K, 4 years ago) without IDs; a fan tribute channel exists (UC77sjb1hrR5hqr5ng_nMdyA)."
+  },
+  "secondary_channels": [
+   {
+    "title": "Sam the Illusionist tribute channel",
+    "url": "https://www.youtube.com/channel/UC77sjb1hrR5hqr5ng_nMdyA",
+    "note": "fan re-upload/tribute channel; subs not recorded"
+   }
+  ],
+  "videos": [],
+  "summary": {
+   "recent_videos_read": 0,
+   "channeling_videos_in_recent": 0,
+   "entities_seen": [],
+   "top_channeling_video_ids": []
+  },
+  "sources": [
+   "https://www.youtube.com/@SAMTHEILLUSIONIST",
+   "https://www.getyourselfoptimized.com/help-from-higher-dimensions-with-sam-the-illusionist/",
+   "https://samtheillusionist.com/session-144"
+  ]
+ }
+]

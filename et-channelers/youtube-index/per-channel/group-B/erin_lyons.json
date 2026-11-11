@@ -1,0 +1,24 @@
+{
+  "person": "Erin Lyons",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "Erin Lyons TV",
+    "handle": "@erinlyonstv",
+    "channel_id": "UCRA05_dP0kO1d0SmBtC0yxQ",
+    "url": "https://www.youtube.com/channel/UCRA05_dP0kO1d0SmBtC0yxQ",
+    "subscriber_count_text": "92.6K subscribers",
+    "video_count_text": "1.2K videos",
+    "description_short": "former Wall Street banker turned psychic channeler & healer (phrase quoted in research notes from channel page)",
+    "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCRA05_dP0kO1d0SmBtC0yxQ",
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23; recent videos 17K–41K views). Conscious channeling of 'universal wisdom & healing'; communicates with 'angelic kingdoms, galactic beings' — no named species.",
+    "https://www.youtube.com/channel/UCRA05_dP0kO1d0SmBtC0yxQ",
+    "https://music.youtube.com/podcast/Fn3Sm10yNW4"
+  ]
+}

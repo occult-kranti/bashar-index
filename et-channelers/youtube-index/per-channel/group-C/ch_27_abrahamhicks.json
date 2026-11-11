@@ -1,0 +1,24 @@
+{
+  "person": "Abraham-Hicks (Esther Hicks)",
+  "role": "context",
+  "status": "credits_exhausted",
+  "note": "Non-ET context figure. The only YouTube figure in the notes is '741,000 YouTube subscribers' from the Skeptical Inquirer article of 2023-08-23 (observed_at set to that date); handle/channel_id not recorded (the official channel is believed to be @AbrahamHicks — unverified). Firecrawl credits ran out before this channel could be queried (no search or provider call was executed for it). Channel fields below come only from the research notes; videos not read.",
+  "channel": {
+    "title": null,
+    "handle": null,
+    "channel_id": null,
+    "url": null,
+    "subscriber_count_text": "741,000 subscribers (as reported by Skeptical Inquirer, 2023-08-23)",
+    "video_count_text": null,
+    "description_short": "Esther Hicks channels 'Abraham', 'a collective consciousness'; began 1985 after reading the Seth material.",
+    "rss_url": null,
+    "observed_at": "2023-08-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos_compact": [],
+  "sources": [
+    "https://skepticalinquirer.org/2023/08/abraham-hicks-motivational-speaking-spirits/",
+    "https://en.wikipedia.org/wiki/Esther_Hicks"
+  ]
+}

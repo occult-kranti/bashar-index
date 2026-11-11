@@ -1,0 +1,24 @@
+{
+  "person": "Lauren Galey",
+  "role": "context",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "New Earth One Network",
+    "handle": "@laurengaley",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@laurengaley",
+    "subscriber_count_text": "31.6K subscribers",
+    "video_count_text": "2.3K videos",
+    "description_short": "Quantum Conversations podcast for over 20 years (phrase quoted in research notes from channel page)",
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23). Host/interviewer and course-platform founder (Acoustic Health); no channeling claim verified — Arcturian content on her platform comes from guests (Gene Ang, Anrita Melchizedek).",
+    "https://www.youtube.com/@laurengaley",
+    "https://acoustichealth.com/master-classes-courses-by-instructor/"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "person": "Micheila Sheldan",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "Micheila Sheldan",
+    "handle": "@MicheilaSheldan",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@MicheilaSheldan",
+    "subscriber_count_text": "10.9K subscribers",
+    "video_count_text": "31 videos",
+    "description_short": "Micheila has the ability to channel a variety of beings, including extraterrestrials (quoted in research notes from channel page); 'intuitive channel… primarily clairaudient'",
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [
+    [null, "Origins of Desire | Council of Light | 1.21.22", null, null, null, true, "Council of Light", "from research notes (video_id not captured); last dated upload, channel dormant since", "2022-01-21"],
+    [null, "Service of The Heart | The Pleiadian Collective | 7.10.21", "13K views", null, null, true, "The Pleiadian Collective", "from research notes (video_id not captured)", "2021-07-10"]
+  ],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata and the two listed videos are from research notes (channel page observed 2026-10-23). Entities claimed: The Council of Light, The Pleiadian Collective, Mary Magdalene, angelic guides.",
+    "https://www.youtube.com/@MicheilaSheldan",
+    "https://www.micheilasheldan.com/"
+  ]
+}

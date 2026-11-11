@@ -1,0 +1,36 @@
+{
+  "person": "Gosia Duszak (Cosmic Agency)",
+  "role": "contactee",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "Cosmic Agency",
+    "handle": "@CosmicAgency",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@CosmicAgency",
+    "subscriber_count_text": "108K subscribers",
+    "video_count_text": "639 videos",
+    "description_short": "In 2017, alongside Robert, I began direct contact (not telepathic) with an extraterrestrial Taygetan (Pleiadian) crew (quoted in research notes from channel page)",
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [
+    {
+      "title": "Swaruu Oficial",
+      "url": "https://www.youtube.com/@SwaruuOficial",
+      "note": "Mari (Minerva) Swaruu's channel, opened Dec 2022; 77.2K subscribers, 1K videos, no uploads for ~1 year as of 2026-10-23 (research notes). Not fetched via provider."
+    },
+    {
+      "title": "Agencia Cósmica",
+      "url": null,
+      "note": "Spanish-language sister channel run with Robert; URL not captured in notes."
+    }
+  ],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23; recent videos 2K–6K views). Text-chat contact with Taygetan crew (Swaruu of Erra, Anéeka of Temmer, Yazhi Swaruu, Athena Swaruu, Mari Swaruu, Dhor Káal'el); explicitly not channeling.",
+    "https://www.youtube.com/@CosmicAgency",
+    "https://www.youtube.com/@SwaruuOficial",
+    "https://swaruu.org/en/transcripts/taygetan-pleiadian-extraterrestrial-disclosure-contact-journey-so-far"
+  ]
+}

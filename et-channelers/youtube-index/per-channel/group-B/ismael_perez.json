@@ -1,0 +1,24 @@
+{
+  "person": "Ismael Perez",
+  "role": "context",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "THE REAL ISMAEL PEREZ",
+    "handle": "@THEREALISMAELPEREZ",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@THEREALISMAELPEREZ",
+    "subscriber_count_text": "116K subscribers",
+    "video_count_text": "2.5K videos",
+    "description_short": null,
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23; recent videos 35K–38K views). Not a trance channel: lecture/'galactic history' narration and claimed remote viewing ('Emerald Order', 'Radiant Guardians').",
+    "https://www.youtube.com/@THEREALISMAELPEREZ",
+    "https://galacticanthropology.org/tag/ismael-perez/"
+  ]
+}

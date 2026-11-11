@@ -1,0 +1,25 @@
+{
+  "person": "Rachel Chamness (Sound Waves Heal)",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "note": "Entity per notes: Alpar-a-be-am, a Blue Avian ('Kir' being). Notes cite the playlist https://www.youtube.com/playlist?list=PLd6XKP8MGvLg2Ea6rKRMwUn1VVEkrgrAX (an Alpar episode showed 285 views); subscriber/video counts not recorded. Firecrawl credits ran out before this channel could be queried (no search or provider call was executed for it). Channel fields below come only from the research notes; videos not read.",
+  "channel": {
+    "title": "Sound Waves Heal",
+    "handle": "@soundwavesheal",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@soundwavesheal",
+    "subscriber_count_text": null,
+    "video_count_text": null,
+    "description_short": "Podcast '5D Channels and Chats with Rachel Chamness'; trance-channels the Blue Avian 'Alpar-a-be-am' (Alparabeam) from planet Kir.",
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos_compact": [],
+  "sources": [
+    "https://www.soundwavesheal.com/message-from-blue-avian/",
+    "https://www.youtube.com/playlist?list=PLd6XKP8MGvLg2Ea6rKRMwUn1VVEkrgrAX",
+    "https://sites.libsyn.com/486576"
+  ]
+}

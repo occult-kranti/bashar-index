@@ -1,0 +1,23 @@
+{
+  "person": "Ivan Teller",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "Ivan Teller",
+    "handle": "@IvanTeller",
+    "channel_id": "UC3QuoqlYLakumu4bc0a9pOA",
+    "url": "https://www.youtube.com/@IvanTeller",
+    "subscriber_count_text": "10.1K subscribers",
+    "video_count_text": "5.4K videos",
+    "description_short": "Daily Alien Videos and Weekly Extraterrestrial Channeling Events (phrase quoted in research notes from channel page)",
+    "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC3QuoqlYLakumu4bc0a9pOA",
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23; recent videos 79–309 views). Channels many ET groups (conscious channeling, paid webinars); Oct 2026 uploads are a near-daily 'Cancer Update… Webinar' series (health crisis).",
+    "https://www.youtube.com/@IvanTeller"
+  ]
+}

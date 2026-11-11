@@ -1,0 +1,196 @@
+# Canonical IDs for the compiled dataset
+
+Use these ids verbatim in every JSON file so cross-references resolve. Add a new id only if a person/entity is missing; use the same slug rule (lowercase ASCII, hyphens).
+
+## Person ids (id | display name as it appears in the notes)
+- aaron-abke | Aaron Abke
+- alex-collier | Alex Collier
+- aluna-ash | Aluna Ash
+- amur | Amur
+- andrew-bayuk | Andrew Bayuk
+- anon48079295 | anon48079295
+- anon64752597 | anon64752597
+- anon84896414 | anon84896414
+- anrita-melchizedek | Anrita Melchizedek
+- arcturus-signal | Arcturus SIGNAL
+- ashley-cunningham | Ashley Cunningham
+- ashtar-athena-sheran | Ashtar-Athena Sheran
+- ashtar-command-lower-decks | Ashtar Command: Lower Decks
+- athina-krol | Athina Król
+- aurora-ray | Aurora Ray
+- barbara-hand-clow | Barbara Hand Clow
+- barbara-marciniak | Barbara Marciniak
+- billy-meier | Billy Meier
+- blossom-goodchild | Blossom Goodchild
+- brad-johnson | Brad Johnson
+- carla-l-rueckert | Carla L. Rueckert
+- channeler-junko | チャネラー純子
+- channeling-arcturians | Channeling Arcturians
+- corey-goode | Corey Goode
+- daniel-scranton | Daniel Scranton
+- darryl-anka | Darryl Anka
+- debbie-solaris | Debbie Solaris
+- don-elkins | Don Elkins
+- dorothy-martin | Dorothy Martin (Sister Thedra; Sananda/Clarion 1954)
+- edson-tozzi | Edson Tozzi
+- elena-danaan | Elena Danaan
+- elizabeth-april | Elizabeth April
+- elizabeth-klarer | Elizabeth Klarer
+- elizabeth-trutwin | Elizabeth Trutwin
+- elsa-farrus-rusinol | Elsa Farrús Rusiñol
+- erena-velazquez | Erena Velazquez
+- erin-lyons | Erin Lyons
+- ethel-p-hill | Ethel P. Hill
+- eugenio-siragusa | Eugenio Siragusa
+- fernanda-and-flavia | Fernanda and Flavia
+- gary-l-bean-and-austin-bridges | Gary L. Bean and Austin Bridges
+- george-hunt-williamson | George Hunt Williamson
+- george-king | George King
+- george-van-tassel | George Van Tassel
+- gigi-young | Gigi Young
+- cosmic-agency-gosia | Gosia Duszak — Cosmic Agency / Agencia Cósmica
+- grace-solaris | Grace Solaris
+- herbert-viktor-speer-medialer-friedenskreis-berlin | Herbert Viktor Speer (Medialer Friedenskreis Berlin
+- ismael-perez | Ismael Perez
+- ivan-teller | Ivan Teller
+- ivo-a-benda | Ivo A. Benda
+- j-z-knight | J. Z. Knight
+- jach-pursel | Jach Pursel
+- james-mcconnell | James McConnell
+- jamye-price | Jamye Price
+- jane-roberts | Jane Roberts
+- jim-mccarty | Jim McCarty
+- jordan-younger | Jordan Younger
+- juan-manuel-giordano | Juan Manuel Giordano
+- judy-satori | Judy Satori
+- kayleigh-o-keefe | Kayleigh O'Keefe
+- kevin-ryerson | Kevin Ryerson
+- krista-raisa | Krista Raisa
+- laura-knight-jadczyk | Laura Knight-Jadczyk
+- lauren-galey | Lauren Galey
+- lee-carroll | Lee Carroll
+- leslie-muller | Leslie Muller
+- liquidlightcodes | LiquidLightCodes
+- lorie-ladd | Lorie Ladd
+- louise-kay | Louise Kay
+- lyssa-royal-holt | Lyssa Royal Holt
+- magenta-pixie | Magenta Pixie
+- marysol-ximenez-carrillo | Marysol Ximenez-Carrillo
+- megan-rose | Megan Rose
+- micheila-sheldan | Micheila Sheldan
+- mike-quinsey | Mike Quinsey
+- monica-de-medeiros | Mônica de Medeiros
+- mr-black | Mr.Black
+- mulberry | Mulberry
+- nancy-lieder | Nancy Lieder
+- neva-gabriel | Neva Gabriel
+- nora-herold | Nora Herold
+- norma-milanovich | Norma Milanovich
+- orfeo-angelucci | Orfeo Angelucci
+- pamela-aaralyn | Pamela Aaralyn
+- pat-rodegast | Pat Rodegast
+- patricia-cori | Patricia Cori
+- paul-hamden | Paul Hamden
+- paul-white-gold-eagle | Paul White Gold Eagle
+- pavlina-klemm | Pavlina Klemm
+- per-staffan-sananda-website-aggregator-sweden-ashtar-sheran-posts | Per Staffan (sananda.website aggregator, Sweden) — "Ashtar Sheran" posts
+- pleiadian-council-whispers | Pleiadian Council Whispers
+- princex | PrinceX
+- rachel-chamness | Rachel Chamness
+- riz-mirza | Riz Mirza
+- rob-gauthier | Rob Gauthier
+- robert-shapiro | Robert Shapiro
+- robert-short | Robert Short
+- s-vi-britannia | S_vi_Britannia
+- sam-the-illusionist | Sam the Illusionist
+- sarah-evans | Sarah Evans
+- sharon-stewart | Sharon Stewart
+- shaun-swanson | Shaun Swanson
+- sheldan-nidle | Sheldan Nidle
+- steve-nobel | Steve Nobel
+- susan-leland | Susan Leland
+- suzanne-lie-ph-d | Suzanne Lie, Ph.D.
+- suzanne-ward | Suzanne Ward
+- thebrokenmold | TheBrokenMold
+- thequantumbarbie | @thequantumbarbie
+- thomas-massari | Thomas Massari (channeling teacher of Darryl Anka)
+- tobey-wheelock | Tobey Wheelock
+- tolec | Tolec
+- tom-kenyon | Tom Kenyon
+- toni-ghazi | Toni Ghazi
+- tracey-milne | Tracey Milne
+- truman-bethurum | Truman Bethurum
+- tuella | Tuella
+- tyler-ellison | Tyler Ellison
+- umbrasui | UmbraSui
+- unnamed-korean-shaman | unnamed Korean shaman
+- unnamed-non-english-blogger | unnamed non-English blogger
+- unnamed-reiki-crystal-healer | unnamed reiki/crystal healer
+- vaynord | Vaynord
+- wendy-kennedy | Wendy Kennedy
+- wieteke-koolhof | Wieteke Koolhof
+- william | William
+- yafi-channeling | Yafi Channeling
+- yvonne-cole | Yvonne Cole
+
+## Entity ids (id | display name | type)
+- ra | Ra | collective (social memory complex)
+- confederation | Confederation of Planets in the Service of the Infinite Creator | collective
+- quo | Q'uo | collective (principle of Hatonn, Latwii, Ra)
+- hatonn | Hatonn | collective
+- latwii | Latwii | collective
+- laitos | Laitos (with Oxal, L/Leema, Yadda, Nona, Yom, Monka) | collective
+- ashtar | Ashtar / Ashtar Command (Ashtar Sheran; Ashtar Galactic Command) | individual/command
+- vrillon | Vrillon / "Ashtar Galactic Command" 1977 broadcast | hoax/broadcast
+- aetherius | Master Aetherius and the Cosmic Masters | individual/collective
+- clarion-sananda | Sananda / "Clarion" beings (Dorothy Martin, 1954) | individual
+- aura-rhanes | Aura Rhanes / Clarion (Truman Bethurum) | individual
+- akon-meton | Akon / Meton (Elizabeth Klarer) | individual/species
+- pleiadians | Pleiadians (Marciniak lineage and general) | species/collective
+- semjase-plejaren | Semjase / Plejaren (Billy Meier) | individual/species
+- taygetans-swaruu | Taygetans / Swaruu of Erra (Cosmic Agency) | species/individual
+- pleiadian-collective-9d | 9th Dimensional Pleiadian Collective ("The Ps", Wendy Kennedy) | collective
+- satya | Satya (Barbara Hand Clow) | individual
+- bashar | Bashar | individual
+- essassani | Essassani / Sassani civilisation | species
+- yahyel | Yahyel / Shalanaya | species
+- hybrid-children | Hybrid children / five hybrid races | species
+- ryokah | Ryok / Ryokah (Tyler Ellison) | individual/collective
+- ishuwa | Ishuwa of the Yahyel (Shaun Swanson) | individual
+- elan | Elan of the Essassani (Andrew Bayuk) | individual
+- germane-sasha | Germane / Sasha / Hamón (Lyssa Royal) | individuals
+- zeta-greys | Zeta Reticuli / Greys | species
+- zetas-zetatalk | The Zetas (ZetaTalk, Nancy Lieder) | collective
+- arcturians | Arcturians (general; Milanovich; Lie) | species/collective
+- arcturian-council | 9D Arcturian Council (Daniel Scranton) | collective
+- sirians | Sirians (general) | species
+- sirian-high-council | Sirian High Council ("The Speakers", Patricia Cori) | collective
+- salusa | SaLuSa (and Ker-On, Atmos, Diane, Ela; Mike Quinsey) | individual/group
+- andromedans | Andromedans (Alex Collier; Andromeda Council/Tolec) | species/collective
+- lyrans | Lyrans / Vega | species
+- areon | Lyran Council of Time / Areon (Jamye Price) | collective
+- orion | Orion (Orion group; Orion Council) | collective
+- reptilians-draco | Reptilians / Draco (incl. Chitauri) | species
+- mantis | Mantis / Mantid beings | species
+- anunnaki | Anunnaki / Enki (Ea) | species/individual
+- cassiopaeans | Cassiopaeans | collective
+- hathors | Hathors (Tom Kenyon) | collective
+- elohim | Elohim (Raëlism; Grace Solaris) | species
+- blue-avians | Blue Avians / Sphere Being Alliance (Corey Goode) | species
+- galactic-federation | Galactic Federation (of Light / of Worlds) | organisation/term
+- federation-of-light | The Federation of Light (Blossom Goodchild) | collective
+- thor-han | Thor Han Eredyon (Elena Danaan) | individual
+- val-nek | Val Nek (Megan Rose) | individual
+- kryon | Kryon (Lee Carroll) | individual (ET-adjacent)
+- zoosh | Zoosh / the Explorer Race (Robert Shapiro) | individual
+- council-of-nine | Council of Nine / "The Nine" (Puharich; Schlemmer; Magenta Pixie) | collective
+- matthew | Matthew Ward (with ET contributors) | individual
+- treb | TReb Bor yit-NE (Rob Gauthier) | individual
+- red-eagle | Red Eagle (Riz Mirza) | individual (non-ET)
+- seth | Seth (Jane Roberts) | non-ET context
+- abraham | Abraham (Esther Hicks) | non-ET context
+- ramtha | Ramtha (J. Z. Knight) | non-ET context
+- lazaris | Lazaris (Jach Pursel) | non-ET context
+- emmanuel | Emmanuel (Pat Rodegast) | non-ET context
+- the-guides-selig | The Guides (Paul Selig) | non-ET context
+- the-zs | The Z's (Lee Harris) | non-ET context
