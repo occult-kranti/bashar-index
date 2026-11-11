@@ -1,0 +1,93 @@
+rank,person_id,person_name,role,status,channel_title,handle,channel_url,subscribers,total_videos,videos_in_index,crawled,sample_mean_min,est_basis,est_hours,next_action
+1,daniel-scranton,Daniel Scranton,channeler,ok,Daniel Scranton,@DanielScranton,https://www.youtube.com/@DanielScranton,56700,6300,30,yes,20.8,channel sample,2185,list the remaining videos
+2,ivan-teller,Ivan Teller,channeler,metadata-only,Ivan Teller,@IvanTeller,https://www.youtube.com/@IvanTeller,10100,5400,0,no,,pooled mean,1784,read the channel video list
+3,ismael-perez,Ismael Perez,context,metadata-only,THE REAL ISMAEL PEREZ,@THEREALISMAELPEREZ,https://www.youtube.com/@THEREALISMAELPEREZ,116000,2500,0,no,,pooled mean,826,read the channel video list
+4,lauren-galey,Lauren Galey,context,metadata-only,New Earth One Network,@laurengaley,https://www.youtube.com/@laurengaley,31600,2300,0,no,,pooled mean,760,read the channel video list
+5,brad-johnson,Brad Johnson,channeler,metadata-only,The Prime Mentor: Brad Johnson,@ThePrimeMentorYT,https://www.youtube.com/channel/UCQeHcVNo6CPWpgJaqEObrqA,75300,1800,1,no,,pooled mean,595,read the channel video list
+6,monica-de-medeiros,Mônica de Medeiros,context,ok,Mônica de Medeiros - Casa do Consolador,@MonicadeMedeirosCdC,https://www.youtube.com/@MonicadeMedeirosCdC,523000,1800,28,yes,29.4,channel sample,881,list the remaining videos
+7,riz-mirza,Riz Mirza,channeler,ok,Psychic Medium & Trance Channel RIZ & Lady O,@METAMYSTICPODCAST,https://www.youtube.com/channel/UCxySqZJLubIeMuaS6fvJQZg,564000,1800,30,yes,20.6,channel sample,618,list the remaining videos
+8,lorie-ladd,Lorie Ladd,channeler,ok,Lorie Ladd,@LorieLadd,https://www.youtube.com/@LorieLadd,187000,1700,30,yes,42.4,channel sample,1201,list the remaining videos
+9,tyler-ellison,Tyler Ellison,channeler,ok,The Galactic Guide,@thegalacticguide111,https://www.youtube.com/@thegalacticguide111,8130,1600,30,yes,16.4,channel sample,438,list the remaining videos
+10,erin-lyons,Erin Lyons,channeler,metadata-only,Erin Lyons TV,@erinlyonstv,https://www.youtube.com/channel/UCRA05_dP0kO1d0SmBtC0yxQ,92600,1200,0,no,,pooled mean,396,read the channel video list
+11,aaron-abke,Aaron Abke,context,metadata-only,Aaron Abke,@aaronabke,https://www.youtube.com/@aaronabke,374000,1195,0,no,,pooled mean,395,read the channel video list
+12,aurora-ray,Aurora Ray,channeler,ok,Aurora Ray,@AuroraRay,https://www.youtube.com/@AuroraRay,49500,1100,30,yes,28.1,channel sample,515,list the remaining videos
+13,elsa-farrus-rusinol,Elsa Farrús Rusiñol,channeler,ok,elsa farrus rusiñol,@elsafarrusrusinol2135,https://www.youtube.com/channel/UCzgKzmZcMPsMaUh7Zl57Tgg,242000,1100,30,yes,7.0,channel sample,128,list the remaining videos
+14,magenta-pixie,Magenta Pixie,channeler,metadata-only,Magenta Pixie,@MagentaPixie,https://www.youtube.com/@MagentaPixie,143000,1100,0,no,,pooled mean,363,read the channel video list
+15,pamela-aaralyn,Pamela Aaralyn,channeler,ok,Pamela Aaralyn Channeling,@PamelaAaralyn,https://www.youtube.com/@PamelaAaralyn,88400,841,30,yes,14.0,channel sample,196,list the remaining videos
+16,steve-nobel,Steve Nobel,channeler,metadata-only,Steve Nobel,@SteveNobel,https://www.youtube.com/@SteveNobel,198000,721,0,no,,pooled mean,238,read the channel video list
+17,cosmic-agency-gosia,Gosia Duszak (Cosmic Agency),contactee,metadata-only,Cosmic Agency,@CosmicAgency,https://www.youtube.com/@CosmicAgency,108000,639,0,no,,pooled mean,211,read the channel video list
+18,blossom-goodchild,Blossom Goodchild,channeler,ok,Blossom Goodchild,@isjaabmo,https://www.youtube.com/channel/UCtYNUevWytubYiElIY44pbg,51100,572,30,yes,23.7,channel sample,226,list the remaining videos
+19,sam-the-illusionist,Sam the Illusionist,channeler,metadata-only,SAM THE ILLUSIONIST,@SAMTHEILLUSIONIST,https://www.youtube.com/@SAMTHEILLUSIONIST,118000,548,0,no,,pooled mean,181,read the channel video list
+20,rob-gauthier,Rob Gauthier,channeler,metadata-only,Rob Gauthier: The ET Whisperer,@E.T.whisperer,https://www.youtube.com/channel/UC8JooeMCjTYIKhO7UXLbMtg,20700,547,0,no,,pooled mean,181,read the channel video list
+21,jamye-price,Jamye Price,channeler,metadata-only,Jamye Price,@JamyePrice,https://www.youtube.com/@JamyePrice,31200,484,0,no,,pooled mean,160,read the channel video list
+22,debbie-solaris,Debbie Solaris,channeler,metadata-only,Debbie Solaris,@debbiesolarisgalactichistorian,https://www.youtube.com/@debbiesolarisgalactichistorian,29900,467,1,no,,pooled mean,154,read the channel video list
+23,louise-kay,Louise Kay,channeler,metadata-only,Louise Kay,@LouiseKay,https://www.youtube.com/@LouiseKay,28900,455,0,no,,pooled mean,150,read the channel video list
+24,gigi-young,Gigi Young,context,metadata-only,Gigi Young,@GigiYoung,https://www.youtube.com/@GigiYoung,147000,425,0,no,,pooled mean,140,read the channel video list
+25,elena-danaan,Elena Danaan,contactee,metadata-only,Elena Danaan Official,@ElenaDanaan,https://www.youtube.com/@ElenaDanaan,212000,382,0,no,,pooled mean,126,read the channel video list
+26,elizabeth-april,Elizabeth April,channeler,metadata-only,Elizabeth April,@ElizabethApril,https://www.youtube.com/@ElizabethApril,564000,333,0,no,,pooled mean,110,read the channel video list
+27,darryl-anka,Darryl Anka,channeler,metadata-only,Bashar Channeled by Darryl Anka,@BasharChanneledbyDarrylAnka,https://www.youtube.com/@BasharChanneledbyDarrylAnka,229000,322,2,no,,pooled mean,106,read the channel video list
+28,anrita-melchizedek,Anrita Melchizedek,channeler,metadata-only,Anrita Melchizedek,@AnritaMelchizedek222,https://www.youtube.com/channel/UCv_L3ZeWBzAl0Mf1LctCHjw,28300,273,0,no,,pooled mean,90,read the channel video list
+29,pavlina-klemm,Pavlina Klemm,channeler,ok,Pavlina Klemm,@pavlina-klemm,https://www.youtube.com/@pavlina-klemm,47800,273,30,yes,17.1,channel sample,78,list the remaining videos
+30,suzanne-lie-ph-d,Suzanne Lie,channeler,metadata-only,Suzanne Lie & The Arcturians,@suzannelie,https://www.youtube.com/channel/UCm_HEdtHNzUQeamPqmHXDDg,18200,269,0,no,,pooled mean,89,read the channel video list
+31,pleiadian-council-whispers,Pleiadian Council Whispers,channeler,metadata-only,Pleiadian Council Whispers,@Pleiadian_Council_Whispers,https://www.youtube.com/@Pleiadian_Council_Whispers,10400,262,1,no,,pooled mean,87,read the channel video list
+32,krista-raisa,Krista Raisa,channeler,metadata-only,Ezoterra,@orioncouncil,https://www.youtube.com/@orioncouncil,25200,256,0,no,,pooled mean,85,read the channel video list
+33,tracey-milne,Tracey Milne,channeler,metadata-only,Tracey Milne AAHP,@traceymilneaahp6448,https://www.youtube.com/channel/UCyUnXlV50x3eHjqlwrInTFQ,8380,231,1,no,,pooled mean,76,read the channel video list
+34,wieteke-koolhof,Wieteke Koolhof,channeler,metadata-only,Design4awareness,@Design4awareness,https://www.youtube.com/@Design4awareness,5810,202,0,no,,pooled mean,67,read the channel video list
+35,tolec,Tolec,channeler,metadata-only,TransformationalShiftEvents,@TransformationalShiftEvents,https://www.youtube.com/channel/UCFuGvM2B9d4nD25drHFlt0A,19100,188,2,no,,pooled mean,62,read the channel video list
+36,ashley-cunningham,Ashley Cunningham,channeler,metadata-only,Channeling With Love (Ashley Cunningham),@AshleyCunningham,https://www.youtube.com/channel/UCuRp4CDUsdK99u22kWWd5dg,2240,160,0,no,,pooled mean,53,read the channel video list
+37,athina-krol,Athina Król,channeler,metadata-only,Athina Król,@AthinaKrol,https://www.youtube.com/@AthinaKrol,5410,152,4,no,,pooled mean,50,read the channel video list
+38,lyssa-royal-holt,Lyssa Royal Holt,channeler,ok,SOLi School | Lyssa Royal Holt,@SOLiSchoolLyssaRoyalHolt,https://www.youtube.com/@SOLiSchoolLyssaRoyalHolt,9260,143,30,yes,17.8,channel sample,42,list the remaining videos
+39,megan-rose,Megan Rose,channeler,ok,Megan Rose,@meganrosecontact,https://www.youtube.com/channel/UCBzuc3GzJtl0sHgvlB_eczA,74800,142,30,yes,22.2,channel sample,53,list the remaining videos
+40,nora-herold,Nora Herold,channeler,metadata-only,Nora Herold,@noraherold,https://www.youtube.com/@noraherold,6150,121,0,no,,pooled mean,40,read the channel video list
+41,channeler-junko,チャネラー純子 Channeler Junko,channeler,ok,チャネラー純子　　宇宙語・ライトランゲージ,@benzaiten1111,https://www.youtube.com/@benzaiten1111,29800,111,30,yes,19.0,channel sample,35,list the remaining videos
+42,shaun-swanson,Shaun Swanson,channeler,ok,Ishuwa Yahyel: First ET Contact,@ShaunSwanson,https://www.youtube.com/@ShaunSwanson,3790,84,30,yes,12.8,channel sample,18,list the remaining videos
+43,wendy-kennedy,Wendy Kennedy,channeler,ok,hgrfrequencies,@hgrfrequencies,https://www.youtube.com/channel/UCLQruf49jF7P5fIZoe6lM1g,31500,75,30,yes,6.9,channel sample,9,list the remaining videos
+44,micheila-sheldan,Micheila Sheldan,channeler,metadata-only,Micheila Sheldan,@MicheilaSheldan,https://www.youtube.com/@MicheilaSheldan,10900,31,2,no,,pooled mean,10,read the channel video list
+45,leslie-muller,Leslie Muller,channeler,metadata-only,Leslie Muller,@NewEarthTeachings,https://www.youtube.com/@NewEarthTeachings,8,25,0,no,,pooled mean,8,read the channel video list
+46,ashtar-command-lower-decks,Ashtar Command: Lower Decks,channeler,metadata-only,Ashtar Command: Lower Decks,@Anmahatdra_Lyrhaan,https://www.youtube.com/@Anmahatdra_Lyrhaan,3480,19,1,no,,pooled mean,6,read the channel video list
+47,kayleigh-o-keefe,Kayleigh O'Keefe,channeler,metadata-only,Kayleigh OKeefe,@KayleighOKeefe,https://www.youtube.com/@KayleighOKeefe,4100,3,1,no,,pooled mean,1,read the channel video list
+48,aluna-ash,Aluna Ash,channeler,ok,Aluna Ash 9D,@alunaash9d373,https://www.youtube.com/@alunaash9d373,1580,1,1,yes,,pooled mean,0,none
+,esther-hicks,Abraham-Hicks (Esther Hicks),context,metadata-only,,,,741000,,0,no,,,,read the channel video list
+,andrew-bayuk,Andrew Bayuk,channeler,metadata-only,Elan Interactions,@ElanInteractions,https://www.youtube.com/@ElanInteractions,,,0,no,,,,read the channel video list
+,fernanda-and-flavia,Fernanda and Flavia (Lightworkers613),channeler,metadata-only,Lightworkers613,,https://www.youtube.com/channel/UCg6ojvQWvbiAomEtV7ruxLA,,,0,no,,,,read the channel video list
+,paul-white-gold-eagle,Paul White Gold Eagle (Prime Disclosure),channeler,metadata-only,Paul White Gold Eagle,@PaulWhiteGoldEagle,https://www.youtube.com/@PaulWhiteGoldEagle,,,0,no,,,,read the channel video list
+,rachel-chamness,Rachel Chamness (Sound Waves Heal),channeler,metadata-only,Sound Waves Heal,@soundwavesheal,https://www.youtube.com/@soundwavesheal,,,0,no,,,,read the channel video list
+,sarah-evans,Sarah Evans (Into the Blue Channeling),channeler,metadata-only,Sarah Evans,@sarahevansandco,https://www.youtube.com/@sarahevansandco,,,0,no,,,,read the channel video list
+,corey-goode,Corey Goode,contactee,not_found,,,,,,0,no,,,,search again or confirm there is no channel
+,edson-tozzi,Edson Tozzi (Brazil),channeler,not_found,,,,,,0,no,,,,search again or confirm there is no channel
+,grace-solaris,Grace Solaris,channeler,not_found,,,,,,0,no,,,,search again or confirm there is no channel
+,judy-satori,Judy Satori,channeler,not_found,,,,,,1,no,,,,search again or confirm there is no channel
+,lee-carroll,Lee Carroll,channeler,not_found,,,,,,0,no,,,,search again or confirm there is no channel
+,suzanne-ward,Suzanne Ward,channeler,not_found,,,,,,0,no,,,,search again or confirm there is no channel
+,toni-ghazi,Toni Ghazi,channeler,not_found,,,,,,0,no,,,,search again or confirm there is no channel
+,channeling-arcturians,"""Channeling Arcturians"" (Erica of the Sassani)",channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,aetherius-society,Aetherius Society,organisation,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,alex-collier,Alex Collier,contactee,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,arcturus-signal,Arcturus SIGNAL,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,ashtar-command-crew,Ashtar Command Crew,organisation,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,barbara-hand-clow,Barbara Hand Clow,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,barbara-marciniak,Barbara Marciniak,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,billy-meier,Billy Meier,contactee,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,elizabeth-trutwin,Elizabeth Trutwin,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,erena-velazquez,Erena Velazquez,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,ivo-a-benda,Ivo A. Benda (Universe People / Vesmírní lidé),organisation,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,james-mcconnell,James McConnell (Ancient Awakenings),channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,jordan-younger,Jordan Younger (The Balanced Blonde),context,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,juan-manuel-giordano,Juan Manuel Giordano (Argentina; Tameana),channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,j-z-knight,JZ Knight / Ramtha,context,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,l-l-research,L/L Research,organisation,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,laura-knight-jadczyk,Laura Knight-Jadczyk,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,liquidlightcodes,LiquidLightCodes,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,mike-quinsey,Mike Quinsey,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,nancy-lieder,Nancy Lieder,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,neva-gabriel,Neva Gabriel (Brazil),channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,patricia-cori,Patricia Cori,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,paul-hamden,Paul Hamden,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,paul-selig,Paul Selig,context,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,robert-shapiro,Robert Shapiro,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,jane-roberts,Seth material / Jane Roberts,context,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,sharon-stewart,Sharon Stewart,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,sheldan-nidle,Sheldan Nidle,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,susan-leland,"Susan Leland (""Ashtar On The Road"")",channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,tom-kenyon,Tom Kenyon,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)
+,yafi-channeling,Yafi Channeling,channeler,no_youtube,,,,,,0,no,,,,search for a channel (the search never ran)

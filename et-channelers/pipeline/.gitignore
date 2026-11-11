@@ -1,0 +1,18 @@
+# Nothing the pipeline downloads or produces belongs in Git. The default data folder is
+# ~/et-channelers-private (outside this checkout); these rules are a second line of defence.
+*.opus
+*.m4a
+*.mp3
+*.wav
+*.flac
+*.webm
+*.ogg
+*.part
+*.ytdl
+.work/
+.jobs/
+private_data/
+audio/
+transcripts_manifest.part-*.jsonl
+__pycache__/
+*.pyc

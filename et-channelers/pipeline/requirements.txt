@@ -1,0 +1,8 @@
+# Tested with Python 3.13. The scripts in this folder use only the standard library, except transcribe.py,
+# which needs numpy. These packages are the external tools they drive. ffmpeg and ffprobe must also be on PATH.
+yt-dlp>=2026.10.26            # public metadata and audio download (tested with 2026.10.26)
+yt-dlp-ejs>=0.8.0             # challenge solver scripts yt-dlp loads for YouTube (tested with 0.8.0)
+deno>=2.9                     # JavaScript runtime yt-dlp needs for YouTube (pip package; tested with 2.9.8; node or bun also work)
+faster-whisper>=1.2.1         # speech-to-text on CTranslate2 (tested with 1.2.1)
+numpy                         # audio samples passed from ffmpeg to the model (also installed by faster-whisper)
+youtube-transcript-api>=1.2.5 # captions lane, used by channeling-atlas/scripts/acquire_youtube.py (tested with 1.2.5)

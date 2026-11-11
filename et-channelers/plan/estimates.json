@@ -1,0 +1,45 @@
+{
+  "source": "youtube-index/youtube_index.json, observed 2026-10-23",
+  "entries": 92,
+  "entries_with_total": 48,
+  "entries_without_total": 44,
+  "total_videos_known": 40652,
+  "videos_by_status": {
+    "metadata-only": 23010,
+    "ok": 17642
+  },
+  "channels_over_1000_videos": 14,
+  "median_videos_per_channel": 403.5,
+  "sample": {
+    "crawled_channels_with_10plus_durations": 15,
+    "videos_with_duration": 449,
+    "pooled_mean_min": 19.8,
+    "pooled_median_min": 13.1,
+    "share_under_5_min": 0.203,
+    "share_over_60_min": 0.078,
+    "channel_mean_min_q1": 14.0,
+    "channel_mean_min_median": 19.0,
+    "channel_mean_min_q3": 23.7
+  },
+  "hours": {
+    "central": 14223,
+    "low": 9464,
+    "high": 16048,
+    "method": "central = sum over channels of total videos x that channel's mean length (its own sample if 10+ videos were read, else the pooled mean); low/high = total videos x the first/third quartile of channel mean lengths"
+  },
+  "caveats": [
+    "Lengths were read only for the most recent uploads of the 16 crawled channels (449 videos), so means lean towards recent uploads.",
+    "44 entries have no video count and are not in any total.",
+    "Shorts and clips pull the mean down; full sessions pull it up."
+  ],
+  "storage_gb_central": {
+    "opus_mono_24kbps": 154,
+    "opus_mono_32kbps": 205
+  },
+  "asr_gpu_hours_central_if_speedup": {
+    "15x": 948,
+    "30x": 474,
+    "60x": 237,
+    "120x": 119
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "videos": 75,
+  "approx_words": 1186510,
+  "words_per_minute_assumed": 140,
+  "est_hours": 141.3,
+  "method": "sum of approx_word_count in data/videos.json divided by an assumed 140 words per minute"
+}

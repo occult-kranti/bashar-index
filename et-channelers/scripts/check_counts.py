@@ -52,6 +52,22 @@ def _chan_refs(c):
     return out
 
 
+# --- Stage 9: the plan for the rest is generated from the same index
+sys.path.insert(0, str(ROOT / "pipeline"))
+import inventory  # noqa: E402  (stdlib only; reads youtube_index.json)
+
+inv_rows, inv_est = inventory.build()
+inv_csv = rows("plan/channel_inventory.csv")
+readme = (ROOT / "README.md").read_text(encoding="utf-8")
+roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8")
+b75 = json.load(open(ROOT / "plan/bashar75_estimate.json", encoding="utf-8"))
+hours, speedups = inv_est["hours"], inv_est["asr_gpu_hours_central_if_speedup"]
+roadmap_strings = [f"{inv_est['total_videos_known']:,}", f"{hours['central']:,} h", f"{hours['low']:,} to {hours['high']:,} h",
+                   f"{inv_est['storage_gb_central']['opus_mono_24kbps']} GB / {inv_est['storage_gb_central']['opus_mono_32kbps']} GB",
+                   f"{b75['est_hours']} h", f"{inv_est['median_videos_per_channel']:,}"]
+roadmap_strings += [f"{v:,} h" for v in speedups.values()]
+roadmap_strings += [f"{round(b75['est_hours'] / float(k[:-1]), 1)} h" for k in speedups]
+
 handle_refs = {_norm(u) for e in handles for u in (e.get("yt") or [])}
 
 checks = [
@@ -106,6 +122,19 @@ checks = [
     ("other-videos manifest rows", len(mother), 15),
     ("  retrieved", sum(r["transcript_status"] == "retrieved" for r in mother), 9),
     ("distinct videos with a transcript retrieved", sum(r["transcript_status"] == "retrieved" for r in m75 + mother), 64),
+    # --- Stage 9: inventory and plan
+    ("inventory entries (pipeline/inventory.py)", len(inv_rows), 92),
+    ("  entries with a channel video count", inv_est["entries_with_total"], 48),
+    ("  total videos on those channels", inv_est["total_videos_known"], 40652),
+    ("  channels over 1,000 videos", inv_est["channels_over_1000_videos"], 14),
+    ("plan/channel_inventory.csv rows", len(inv_csv), 92),
+    ("  csv person ids == index person ids", sorted(r["person_id"] for r in inv_csv), sorted(c["person"] for c in channels)),
+    ("  csv total videos == generated total", sum(int(r["total_videos"]) for r in inv_csv if r["total_videos"]), inv_est["total_videos_known"]),
+    ("plan/estimates.json == generated estimates", json.load(open(ROOT / "plan/estimates.json", encoding="utf-8")), inv_est),
+    ("README inventory table is the generated one", inventory.render_block(inv_rows, inv_est) in readme, True),
+    ("README at-a-glance quotes the video total", f"| {inv_est['total_videos_known']:,} |" in readme, True),
+    ("ROADMAP quotes the generated figures (missing ones)", [x for x in roadmap_strings if x not in roadmap], []),
+    ("Bashar-75 estimate: videos", b75["videos"], 75),
 ]
 
 bad = 0
