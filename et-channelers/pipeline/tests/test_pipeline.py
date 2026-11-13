@@ -79,6 +79,8 @@ if "--flat-playlist" in args:
 work = Path(args[args.index("-o") + 1]).parent
 vid = re.search(r"v=([A-Za-z0-9_-]{11})", url).group(1)
 note("START", vid, "%.4f" % time.time())
+note("PROXYENV", vid, ",".join(sorted(k for k in os.environ if k.lower().endswith("_proxy"))) or "none")
+note("ARGS", vid, " ".join(args))
 time.sleep(float(os.environ.get("FAKE_SLEEP", "0.3")))
 counter = state / (vid + ".count")
 n = int(counter.read_text()) + 1 if counter.exists() else 1
@@ -89,6 +91,11 @@ if vid.startswith("RATE"):
     fail(vid, "ERROR: unable to download video data: HTTP Error 429: Too Many Requests")
 if vid.startswith("FORB"):
     fail(vid, "ERROR: unable to download video data: HTTP Error 403: Forbidden")
+if vid.startswith("SESS"):
+    fail(vid, "ERROR: [youtube] %s: Video unavailable. This content isn't available, try again later. The current "
+              "session has been rate-limited by YouTube for up to an hour. It is recommended to use `-t sleep`" % vid)
+if vid.startswith("NOFM"):
+    fail(vid, "ERROR: [youtube] %s: Requested format is not available. Use --list-formats for a list of available formats" % vid)
 if vid.startswith("GONE"):
     fail(vid, "ERROR: [youtube] %s: Video unavailable. This video has been removed by the uploader" % vid)
 if vid.startswith("LOGI"):
@@ -265,6 +272,10 @@ class TestCommon(unittest.TestCase):
             "Sign in to confirm your age": "login_required",
             "Join this channel to get access to members-only content": "login_required",
             "Video unavailable": "unavailable",
+            "Video unavailable. This content isn't available, try again later. The current session has been "
+            "rate-limited by YouTube for up to an hour": "rate_limited",
+            "Requested format is not available. Use --list-formats for a list of available formats": "no_formats",
+            "This video is not available in your country": "unavailable",
             "Private video. Sign in if you've been granted access": "unavailable",
             "Connection reset by peer": "network",
             "something strange": "other",
@@ -673,6 +684,67 @@ class TestDownload(PipelineCase):
         self.assertNotEqual(p.returncode, 0)
         self.assertIn("inside a Git checkout", p.stderr)
         self.assertFalse((repo / "data").exists())
+
+    def test_a_rate_limited_session_stops_the_run_and_is_not_filed_as_removed(self):
+        ids = [mk("SESS", i) for i in range(6)]
+        self.write_queue([(v, "chanA", 60) for v in ids])
+        done = self.download("--all", "--workers", "1")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        recs = self.audio_manifest()
+        self.assertEqual(len(recs), 3)                                   # three refusals, then it stops
+        self.assertEqual({r["error_class"] for r in recs}, {"rate_limited"})
+        self.assertEqual(len(self.fake_events("START")), 3)             # never retried into the limit
+        calls = len(self.fake_events("START"))
+        self.download("--all", "--workers", "1")                         # and tried again on the next run
+        self.assertGreater(len(self.fake_events("START")), calls)
+
+    def test_no_usable_formats_is_a_setup_fault_not_a_missing_video(self):
+        ids = [mk("NOFM", i) for i in range(4)]
+        self.write_queue([(v, "chanA", 60) for v in ids])
+        done = self.download("--all", "--workers", "1")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual({r["error_class"] for r in self.audio_manifest()}, {"no_formats"})
+        calls = len(self.fake_events("START"))
+        self.download("--all", "--workers", "1")                         # not skipped as if the video were gone
+        self.assertEqual(len(self.fake_events("START")), 2 * calls)
+
+    def test_a_run_of_setup_faults_stops_with_its_own_exit_code(self):
+        ids = [mk("NOFM", i) for i in range(12)]
+        self.write_queue([(v, "chanA", 60) for v in ids])
+        done = self.download("--all", "--workers", "1", "--stop-after-failures", "5")
+        self.assertEqual(done.returncode, 6, done.stderr)
+        self.assertIn("point at the setup", done.stderr)
+        self.assertEqual(len(self.audio_manifest()), 5)
+
+    def test_setup_faults_separated_by_successes_do_not_stop_the_run(self):
+        ids = [mk("NOFM", 1), mk("GOOD", 1), mk("NOFM", 2), mk("GOOD", 2), mk("NOFM", 3), mk("GOOD", 3)]
+        self.write_queue([(v, "chanA", 60) for v in ids])
+        done = self.download("--all", "--workers", "1", "--stop-after-failures", "2")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(len(self.audio_manifest()), 6)
+
+    def test_removed_videos_do_not_count_as_setup_faults(self):
+        ids = [mk("GONE", i) for i in range(6)]
+        self.write_queue([(v, "chanA", 60) for v in ids])
+        done = self.download("--all", "--workers", "1", "--stop-after-failures", "3")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(len(self.audio_manifest()), 6)
+
+    def test_pace_follows_the_downloaders_own_advice_and_tools_connect_directly(self):
+        import argparse
+        import download_audio
+        args = argparse.Namespace(ytdlp="yt-dlp", format="bestaudio", limit_rate="", ffmpeg="ffmpeg",
+                                  sample_rate=16000, bitrate="24k")
+        cmd = download_audio.ytdlp_cmd(args, {"url": "https://www.youtube.com/watch?v=" + mk("VID", 1)}, Path("w"))
+        self.assertEqual(cmd[cmd.index("--sleep-requests") + 1], "0.75")
+        help_text = " ".join(self.cli("download_audio.py", "--help").stdout.split())   # argparse wraps lines
+        self.assertIn("(default 10:", help_text)
+        self.write_queue([(mk("GOOD", 1), "chanA", 60)])
+        done = self.download("--all", env={"HTTPS_PROXY": "http://127.0.0.1:9", "http_proxy": "http://127.0.0.1:9",
+                                           "ALL_PROXY": "socks5://127.0.0.1:9"})
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual({e[2] for e in self.fake_events("PROXYENV")}, {"none"})   # the tool never saw a proxy
+        self.assertEqual(common.direct_env({"HTTP_PROXY": "x", "Https_Proxy": "y", "PATH": "/bin"}), {"PATH": "/bin"})
 
     def test_command_lines_use_no_cookies_proxies_or_logins(self):
         import argparse

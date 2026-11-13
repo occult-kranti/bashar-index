@@ -23,7 +23,12 @@ from pathlib import Path
 from types import SimpleNamespace
 
 ET_ROOT = Path(__file__).resolve().parents[1]  # the et-channelers/ folder
-ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")
+ID_RE = re.compile(r"^[A-Za-z0-9_-]{11}$")  # a YouTube video id
+# Items that do not come from YouTube get "<lane>-<16 hex>": pod = podcast enclosure, web = file hosted
+# by the creator, ia = Internet Archive. The manifests keep the field name "video_id" for every lane.
+LANES = ("pod", "web", "ia")
+LANE_ID_RE = re.compile(r"^(?:%s)-[0-9a-f]{16}$" % "|".join(LANES))
+ITEM_RE = re.compile(r"^(?:[A-Za-z0-9_-]{11}|(?:%s)-[0-9a-f]{16})$" % "|".join(LANES))
 AUDIO_EXT = (".opus", ".m4a", ".mp3", ".wav", ".flac", ".webm", ".ogg")
 HARD_BLOCKS = {"bot_check", "rate_limited", "forbidden"}
 
@@ -75,6 +80,19 @@ def stable_shard(key: str, n: int) -> int:
     return int(hashlib.sha1(key.encode("utf-8")).hexdigest(), 16) % max(1, n)
 
 
+def item_id(lane: str, *key_parts) -> str:
+    """Stable id for a non-YouTube item, e.g. item_id("pod", feed_url, guid) -> 'pod-0123456789abcdef'."""
+    if lane not in LANES:
+        raise ValueError(f"unknown lane {lane!r}")
+    joined = "\n".join(str(part).strip() for part in key_parts)
+    return f"{lane}-{hashlib.sha256(joined.encode('utf-8')).hexdigest()[:16]}"
+
+
+def lane_of(item: str) -> str:
+    """'youtube' for an 11-character id, otherwise the lane prefix ('pod', 'web', 'ia')."""
+    return item.split("-", 1)[0] if LANE_ID_RE.match(item or "") else "youtube"
+
+
 def parse_shard(text):
     """'2/8' -> (2, 8). None -> (0, 1). Shards are 0-based, so 8 shards are 0/8 .. 7/8."""
     if not text:
@@ -114,6 +132,9 @@ def layout(root) -> SimpleNamespace:
         transcripts=root / "transcripts",
         qa=root / "qa",
         public=root / "public_export",
+        sources=root / "sources",          # feed lookups and review tables
+        feeds=root / "feeds",              # parsed episode lists, one file per feed
+        pubtext=root / "transcripts_publisher",  # transcripts the publisher wrote (not speech-to-text)
     )
 
 
@@ -195,11 +216,24 @@ def latest_by_key(records, key="video_id"):
 
 
 # ---------------------------------------------------------------- running tools
+PROXY_VARS = ("http_proxy", "https_proxy", "ftp_proxy", "all_proxy", "socks_proxy")
+
+
+def direct_env(env=None):
+    """A copy of the environment without proxy settings, so every tool this pipeline starts connects
+    directly. The rule 'no proxies' is enforced here, not just stated."""
+    env = dict(os.environ if env is None else env)
+    for name in list(env):
+        if name.lower() in PROXY_VARS:
+            del env[name]
+    return env
+
+
 def run_cmd(cmd, timeout):
     """(returncode, stdout, stderr); 124 on timeout, 127 if the executable is missing."""
     try:
         done = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8",
-                              errors="replace", timeout=timeout)
+                              errors="replace", timeout=timeout, env=direct_env())
         return done.returncode, done.stdout, done.stderr
     except subprocess.TimeoutExpired:
         return 124, "", f"timed out after {timeout}s"
@@ -222,13 +256,21 @@ def classify_error(text: str) -> str:
     t = (text or "").lower()
     if "not a bot" in t or ("sign in to confirm" in t and "bot" in t):
         return "bot_check"
-    if "http error 429" in t or "too many requests" in t:
+    # YouTube's session limit arrives as "Video unavailable. This content isn't available, try again
+    # later" plus yt-dlp's "rate-limited by YouTube for up to an hour". It must be tested before the
+    # "unavailable" phrases below, or the video would be filed as removed and never tried again.
+    if "http error 429" in t or "too many requests" in t or "rate-limited" in t or "rate limited" in t \
+            or "try again later" in t:
         return "rate_limited"
     if "http error 403" in t or "403: forbidden" in t:
         return "forbidden"
     if "confirm your age" in t or "age-restricted" in t or "members-only" in t \
             or "join this channel" in t or "login required" in t:
         return "login_required"
+    # "Requested format is not available" means yt-dlp found no usable formats at all: usually a missing
+    # JavaScript runtime or a player change, not a property of this one video. Never skip it for good.
+    if "requested format is not available" in t or "no video formats found" in t:
+        return "no_formats"
     if any(k in t for k in ("video unavailable", "private video", "has been removed",
                             "not available", "no longer available", "has been terminated")):
         return "unavailable"
@@ -274,6 +316,61 @@ class Breaker:
             self.count += 1
             if self.count >= self.limit:
                 self.tripped.set()
+
+
+class HostGates:
+    """Politeness for plain HTTP lanes: each host gets its own start-rate limit and its own breaker,
+    so one publisher that answers 403 / 429 is left alone while the other hosts carry on."""
+
+    def __init__(self, interval=1.0, stop_after=3, clock=time.monotonic, sleep=time.sleep):
+        self.interval, self.stop_after = interval, stop_after
+        self._clock, self._sleep = clock, sleep
+        self._limiters, self._breakers, self._lock = {}, {}, threading.Lock()
+
+    def _get(self, host):
+        with self._lock:
+            if host not in self._limiters:
+                self._limiters[host] = RateLimiter(self.interval, clock=self._clock, sleep=self._sleep)
+                self._breakers[host] = Breaker(self.stop_after)
+            return self._limiters[host], self._breakers[host]
+
+    def wait(self, host):
+        self._get(host)[0].wait()
+
+    def blocked(self, host) -> bool:
+        return self._get(host)[1].tripped.is_set()
+
+    def success(self, host):
+        self._get(host)[1].success()
+
+    def hard_block(self, host):
+        self._get(host)[1].hard_block()
+
+    def blocked_hosts(self):
+        with self._lock:
+            return sorted(h for h, b in self._breakers.items() if b.tripped.is_set())
+
+
+def host_of(url: str) -> str:
+    """Lower-case host of a URL without the port, '' if there is none."""
+    from urllib.parse import urlsplit
+    try:
+        return (urlsplit(url).hostname or "").lower()
+    except ValueError:
+        return ""
+
+
+def http_error_class(status: int) -> str:
+    """Map an HTTP status to the error classes used in the manifests."""
+    if status == 429:
+        return "rate_limited"
+    if status in (401, 403):
+        return "forbidden"
+    if status in (404, 410, 451):
+        return "unavailable"
+    if 500 <= status < 600 or status == 408:
+        return "network"
+    return "other"
 
 
 class Progress:

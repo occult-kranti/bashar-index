@@ -2,6 +2,65 @@
 
 Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos indexed, 75 Bashar recordings partly read" to "every video on every tracked channel as private audio plus a timestamped transcript", and then to analysis and a paper. The tooling is in [`pipeline/`](pipeline/README.md); the channel table is in the [README](README.md#plan-for-the-rest) and in [`plan/channel_inventory.csv`](plan/channel_inventory.csv). Everything here is an AI-written plan and has not been reviewed by a person; figures marked "estimate" are arithmetic on a sample, not measurements.
 
+## 0. Update 2026-11-13: the lanes that work from a cloud server
+
+Sections 1 to 6 below are the 2026-11-11 plan and are kept as written. This section records what changed.
+
+**YouTube from a cloud server still does not work.** A second pilot on 2026-11-13 from a GitHub Codespace got
+three bot checks in three requests, and the captions endpoint was refused the same way. Nothing here tries to
+get past that. The YouTube lane is for the owner's own computer, and is now one command (`pipeline/run_all.py`).
+
+**What does work is collecting the same recordings and their texts from where the makers publish them.** The
+pipeline gained four lanes (podcast episodes, creator-hosted files, publisher texts, YouTube captions), a
+catalogue, and a tool that uploads to a private store, checks the copy and frees the disk. See
+[`pipeline/README.md`](pipeline/README.md) and [`sources/README.md`](sources/README.md).
+
+Snapshot at 2026-11-13T17:46:25Z (the current table is [`plan/coverage.csv`](plan/coverage.csv); jobs were still
+running when this was written):
+
+| Measure | Count |
+|---|---|
+| People tracked (92 in the index plus 4 from the ArchiveShelf inventory) | 96 |
+| People with at least one listed downloadable source | 15 |
+| People with audio downloaded | 12 |
+| Audio files downloaded and encoded | 200 (131.3 h) |
+| Texts obtained from the source (publisher's own transcript) | 2633 (1,791,948 words) |
+| YouTube caption tracks | 0 |
+| Transcripts made here by speech-to-text | 1 (1,642 words) |
+| Audio files still waiting for a transcript | 199 |
+| Items linked to an indexed YouTube video | 995 |
+
+Sources found so far: podcast feeds for 10 people (Aaron Abke, Aetherius Society, Athina Król, Elizabeth
+April, L/L Research, Lorie Ladd, Louise Kay, Pavlina Klemm, Steve Nobel, Suzanne Lie) and Sounds True; 1,306
+free-audio files on kryon.com (2002 to 2020); the 106 Ra Contact session texts and 104 original session
+recordings on llresearch.org; 4,958 posts on danielscranton.com, each the published text of one message; and
+257 Sam the Illusionist session texts that the ArchiveShelf project had already collected.
+
+**Measured limits of the cloud machine (2 CPU cores, 15 GB free).**
+
+* Encoding is the bottleneck for downloads: about 35 times real time per core at libopus complexity 10, about
+  140 times at complexity 5 (4.3 against 13.1 CPU-seconds for a 10-minute file, 4.6% more bytes). The new lane
+  uses 5.
+* Speech-to-text with `base.en` ran at 7.0 times real time on the idle machine and 1.3 times while downloads
+  were running. The whole set needs a GPU or the machine to itself.
+* The disk cannot hold everything, so the downloader stops at a free-space floor and `sync_archive.py` exists.
+
+**Open, in order.**
+
+1. Put the collected audio and texts in a private store. The owner's `archiveshelf` repository was public on
+   2026-11-13 and the cloud session's token could not write to it; `sync_archive.py` refuses a store that is
+   not private. Make the repository private, then run `sync_archive.py push`.
+2. Run the YouTube lane on the owner's computer with `run_all.py` (audio and captions for the queued videos).
+3. Confirm or reject the 63 candidate feeds (`<root>/sources/feed_candidates.csv`). Likely own shows held back
+   only because the title does not carry the name: Erin Lyons, Paul Hamden, Lauren Galey, and a second Aaron
+   Abke show.
+4. Transcribe on a GPU; compare a sample against the publisher's text where both exist (Ra, Daniel Scranton)
+   to measure word error rate without a human transcriber.
+5. Find sources for the 81 people who have none yet.
+6. Merge the three bodies of work: ArchiveShelf as a filtered snapshot without its history (four independent
+   reads agreed its history would put 257 third-party transcripts into this public repository), and one
+   registry of people, channels and items across this index, ArchiveShelf and channels-ET.
+
 ## 1. Where things stand
 
 | Item | State (2026-11-11) |

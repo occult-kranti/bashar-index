@@ -28,7 +28,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (AUDIO_EXT, ID_RE, add_root_arg, append_jsonl, atomic_write_text, ensure_outside_git,  # noqa: E402
+from common import (AUDIO_EXT, ITEM_RE, add_root_arg, append_jsonl, atomic_write_text, ensure_outside_git,  # noqa: E402
                     latest_by_key, layout, lpt_assign, normalise_text, parse_shard, probe_duration, read_jsonl,
                     sha256_file, sha256_text, stable_shard, utc_now)
 
@@ -136,7 +136,7 @@ def find_jobs(a, audio_dir, out_dir):
     i, n = parse_shard(a.shard)
     jobs = []
     for f in sorted(audio_dir.rglob("*")):
-        if f.suffix.lower() not in AUDIO_EXT or not ID_RE.match(f.stem) or stable_shard(f.stem, n) != i:
+        if f.suffix.lower() not in AUDIO_EXT or not ITEM_RE.match(f.stem) or stable_shard(f.stem, n) != i:
             continue
         if any(part.startswith(".") for part in f.relative_to(audio_dir).parts):
             continue  # scratch folders such as .work
@@ -205,6 +205,9 @@ def main():
     ap.add_argument("--devices", default="", help="GPU ids, one process each, e.g. 0,1")
     ap.add_argument("--cpu-threads", type=int, default=0, help="threads per process (0 = library default)")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--only", default="", help="comma-separated audio folders (person ids)")
+    ap.add_argument("--order", choices=("as-is", "round-robin"), default="as-is",
+                    help="round-robin: one file per folder in turn, shortest first")
     ap.add_argument("--shard", help="i/n")
     ap.add_argument("--retry-failed", action="store_true")
     ap.add_argument("--stub-delay", type=float, default=0.05, help=argparse.SUPPRESS)
@@ -224,6 +227,17 @@ def main():
 
     merge_parts(out_dir)
     jobs = find_jobs(a, audio_dir, out_dir)
+    if a.only:
+        wanted = {x.strip() for x in a.only.split(",") if x.strip()}
+        jobs = [j for j in jobs if j["channel_dir"] in wanted]
+    if a.order == "round-robin":  # one file per folder in turn, shortest first, so every person gets text early
+        groups, mixed, depth = {}, [], 0
+        for job in sorted(jobs, key=lambda j: (j["weight"], j["video_id"])):
+            groups.setdefault(job["channel_dir"], []).append(job)
+        while any(len(g) > depth for g in groups.values()):
+            mixed += [groups[c][depth] for c in sorted(groups) if len(groups[c]) > depth]
+            depth += 1
+        jobs = mixed
     if a.limit:
         jobs = jobs[:a.limit]
     hours = sum(j["weight"] for j in jobs) / 3600

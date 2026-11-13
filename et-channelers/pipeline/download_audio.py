@@ -43,12 +43,14 @@ from common import (HARD_BLOCKS, Breaker, Progress, RateLimiter, add_root_arg, a
                     read_csv, read_jsonl, run_cmd, sha256_file, stable_shard, utc_now)
 
 SKIP_LATER = {"unavailable", "login_required"}
+SYSTEMIC = {"other", "no_formats", "transcode"}  # failures that say something is wrong with the setup
 SCRATCH_SUFFIXES = (".part", ".ytdl", ".temp", ".tmp")
 
 
 def ytdlp_cmd(args, row, work):
     cmd = [args.ytdlp, "--ignore-config", "--no-playlist", "--no-warnings", "--no-progress",
            "-f", args.format, "--retries", "2", "--fragment-retries", "2", "--socket-timeout", "30",
+           "--sleep-requests", str(getattr(args, "sleep_requests", 0.75)),
            "-o", str(work / "%(id)s.%(ext)s")]
     if args.limit_rate:
         cmd += ["--limit-rate", args.limit_rate]
@@ -56,9 +58,13 @@ def ytdlp_cmd(args, row, work):
 
 
 def ffmpeg_cmd(args, src, dst):
-    return [args.ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src),
-            "-vn", "-map", "0:a:0", "-ac", "1", "-ar", str(args.sample_rate),
-            "-c:a", "libopus", "-b:a", args.bitrate, "-f", "opus", str(dst)]
+    cmd = [args.ffmpeg, "-nostdin", "-hide_banner", "-loglevel", "error", "-y", "-i", str(src),
+           "-vn", "-map", "0:a:0", "-ac", "1", "-ar", str(args.sample_rate),
+           "-c:a", "libopus", "-b:a", args.bitrate]
+    effort = getattr(args, "opus_complexity", None)
+    if effort is not None:  # libopus default is 10; 5 costs a third of the CPU for about 5% more bytes
+        cmd += ["-compression_level", str(effort)]
+    return cmd + ["-f", "opus", str(dst)]
 
 
 def find_raw(work, video_id):
@@ -101,6 +107,8 @@ def fetch_one(args, row, audio_root, limiter, breaker, versions):
                                sha256=sha256_file(final), duration_s=probe_duration(final, args.ffprobe),
                                source_ext=raw.suffix, source_bytes=raw.stat().st_size, error_class="", error_tail="")
                     breaker.success()
+                    if getattr(args, "systemic", None) is not None:
+                        args.systemic.success()
                     return rec
                 part.unlink(missing_ok=True)
                 rec.update(status="error", error_class="transcode", error_tail=first_line(err2)[-300:])
@@ -110,6 +118,8 @@ def fetch_one(args, row, audio_root, limiter, breaker, versions):
             if klass in HARD_BLOCKS:
                 breaker.hard_block()
                 return rec  # never retry into a block
+            if klass in SYSTEMIC and getattr(args, "systemic", None) is not None:
+                args.systemic.hard_block()  # a run of these means the tool is broken, not the videos
             if klass != "network" or attempt == args.attempts:
                 return rec
             time.sleep(min(60.0, args.backoff * 2 ** (attempt - 1)))
@@ -118,6 +128,11 @@ def fetch_one(args, row, audio_root, limiter, breaker, versions):
         shutil.rmtree(work, ignore_errors=True)
         if rec.get("status"):
             append_jsonl(audio_root / "audio_manifest.jsonl", rec)
+
+
+def stopped(args):
+    systemic = getattr(args, "systemic", None)
+    return systemic is not None and systemic.tripped.is_set()
 
 
 def run_queue(todo, args, audio_root, limiter, breaker, versions, progress):
@@ -130,7 +145,7 @@ def run_queue(todo, args, audio_root, limiter, breaker, versions, progress):
     inflight, running, attempted = collections.Counter(), {}, 0
     with cf.ThreadPoolExecutor(max_workers=workers) as pool:
         while True:
-            while len(running) < workers and not breaker.tripped.is_set():
+            while len(running) < workers and not breaker.tripped.is_set() and not stopped(args):
                 ready = [(q[0][0], chan) for chan, q in pending.items() if q and inflight[chan] < cap]
                 if not ready:
                     break
@@ -162,11 +177,18 @@ def main():
     ap.add_argument("--limit", type=int, default=0, help="process at most N videos")
     ap.add_argument("--all", action="store_true", help="process the whole queue")
     ap.add_argument("--shard", help="i/n: only videos whose stable hash falls in shard i of n")
-    ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--per-channel", type=int, default=2, help="max simultaneous downloads per channel")
-    ap.add_argument("--min-interval", type=float, default=1.5, help="seconds between download starts, all workers")
+    ap.add_argument("--min-interval", type=float, default=10.0,
+                    help="seconds between download starts, all workers (default 10: yt-dlp's own advice is one "
+                         "video every 10 to 20 seconds to stay under YouTube's session limit)")
+    ap.add_argument("--sleep-requests", type=float, default=0.75,
+                    help="seconds yt-dlp waits between its own requests for one video")
     ap.add_argument("--limit-rate", default="", help="yt-dlp bandwidth cap per download, e.g. 2M")
     ap.add_argument("--stop-after-blocks", type=int, default=3)
+    ap.add_argument("--stop-after-failures", type=int, default=8,
+                    help="stop (exit code 6) after this many setup-type failures in a row: no formats, "
+                         "encoder errors, unrecognised errors. 0 = never")
     ap.add_argument("--attempts", type=int, default=3)
     ap.add_argument("--backoff", type=float, default=5.0)
     ap.add_argument("--timeout", type=int, default=3600)
@@ -215,8 +237,15 @@ def main():
     versions = {"ytdlp": tool_version(args.ytdlp, "--version"), "ffmpeg": tool_version(args.ffmpeg, "-version")}
 
     limiter, breaker = RateLimiter(args.min_interval), Breaker(args.stop_after_blocks)
+    args.systemic = Breaker(args.stop_after_failures) if args.stop_after_failures else None
     attempted = run_queue(todo, args, audio_root, limiter, breaker, versions, Progress(len(todo), "audio"))
     print(f"attempted {attempted} of {len(todo)}; manifest {audio_root / 'audio_manifest.jsonl'}", file=sys.stderr)
+    if stopped(args) and not breaker.tripped.is_set():
+        print(f"STOPPED: {args.stop_after_failures} failures in a row that point at the setup, not at the videos "
+              "(no usable formats, encoder errors or unrecognised errors). Run pipeline/doctor.py, update yt-dlp, "
+              "read the last lines of audio_manifest.jsonl, then rerun: these videos will be tried again.",
+              file=sys.stderr)
+        sys.exit(6)
     if breaker.tripped.is_set():
         print("STOPPED: repeated 403 / 429 / bot-check responses. Wait, use fewer --workers or a larger "
               "--min-interval, then rerun: finished items are skipped.", file=sys.stderr)

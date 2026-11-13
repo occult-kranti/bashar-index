@@ -4,6 +4,61 @@ Code to take a list of YouTube videos to private audio files and timestamped tra
 
 **Status in one paragraph.** The code is written and covered by automated tests that use stand-in downloader and encoder tools. The parts that can run offline were also run for real: ffmpeg encoded mono Opus, faster-whisper `tiny.en` transcribed a public speech clip, and yt-dlp accepted every flag the scripts use. A real YouTube pilot was tried once from a cloud server and was refused on all 3 videos (two bot checks and one HTTP 403), so the scripts stopped, as designed. No audio has been downloaded. The download has to be run from the owner's own computer. Nothing was run on Windows or on a GPU.
 
+## Lanes (added 2026-11-13)
+
+YouTube refuses audio and caption requests from cloud servers, so the pipeline now collects from every place a
+recording or its text is published, and labels each item with the lane it came from. All lanes write the same
+manifests, so `transcribe.py`, `verify.py`, `catalog.py` and `export_public.py` work on all of them.
+
+| Lane | Source | Script | Works from a cloud server? |
+|---|---|---|---|
+| YouTube audio | the video itself, through yt-dlp | `download_audio.py` | **No.** Tried twice from cloud machines (2026-11-11 and 2026-11-13): every request got "confirm you're not a bot". Run it on your own computer. |
+| YouTube captions | YouTube's own caption tracks | `fetch_captions.py` | **No**, same reason. Written and tested against a stand-in; not yet run against YouTube. |
+| Podcast episodes | the enclosure of each item in the maker's own feed | `find_feeds.py`, `fetch_feeds.py`, `select_episodes.py`, `download_enclosures.py` | Yes |
+| Creator files | audio the maker hosts on their own site | `select_episodes.py`, `download_enclosures.py` | Yes |
+| Publisher texts | transcripts the publisher wrote (site pages, feed transcript links) | `fetch_publisher_text.py` | Yes |
+
+Items that do not come from YouTube get the id `pod-<16 hex>` (podcast episode) or `web-<16 hex>` (creator file
+or page). Where the same recording is also an indexed YouTube video, the item records that id as `twin_of` and
+how the link was made (`link`, `title`, `page-embed`, `creator-index`). A podcast edition can differ from the
+video (intro, adverts), so it is never counted as a YouTube download.
+
+Text is counted in three kinds that are never mixed: **publisher texts** and **captions** come from the source;
+**machine transcripts** are made here by speech-to-text from downloaded audio. `catalog.py` writes the
+per-person table with those columns to `../plan/coverage.csv`.
+
+### One command on your own computer
+
+`run_all.py` starts the lanes side by side with a watcher that uploads finished items to your private store,
+checks each copy, and deletes the local file. Without `--go` it only prints the plan.
+
+```powershell
+python et-channelers\pipeline\run_all.py --store gh:YOU/PRIVATE-REPO@audio-v1            # show the plan
+python et-channelers\pipeline\run_all.py --store gh:YOU/PRIVATE-REPO@audio-v1 --go      # run it
+python et-channelers\pipeline\run_all.py --store dir:D:\et-archive --lanes youtube,captions --set bashar75 --go
+```
+
+`--store gh:OWNER/REPO@TAG` puts tar bundles on a release of a **private** GitHub repository through the `gh`
+command you are logged in with. The repository's visibility is read before anything is downloaded and the run
+stops (exit code 5) unless it is private; there is no flag to override that. `--store dir:/folder` copies into
+any folder outside a Git checkout (an external disk, or a folder your Drive client syncs). Exit codes: 3 a
+source refused requests, 4 the disk floor was reached, 5 the store was refused, 6 a run of setup faults.
+`sync_archive.py` can also be run by itself (`push`, `status`, `pull`).
+
+### What changed in the YouTube lane on 2026-11-13
+
+An independent read of the code found three faults, now fixed and covered by tests:
+
+* YouTube's session rate limit arrives as "Video unavailable. This content isn't available, try again later".
+  It was filed as a removed video and skipped for good. It is now a hard block that stops the run.
+* "Requested format is not available" (yt-dlp found no formats at all, usually a setup fault) was also filed as
+  a removed video. It is now its own class, tried again on later runs, and eight in a row stop the run.
+* The default pace was a start every 1.5 seconds with 4 workers. It is now 2 workers and a start every 10
+  seconds, with yt-dlp's `--sleep-requests 0.75`, which is yt-dlp's own advice for staying under the limit.
+
+Proxy settings in the environment are now removed before any tool is started, so "no proxies" is enforced, not
+only stated. Python 3.10 or newer is needed (the code uses 3.10 syntax; the earlier "3.9" was wrong).
+
 ## Rules for the data
 
 | Data | Where it lives | May it go into Git? |
@@ -19,7 +74,7 @@ The recordings belong to their rights holders (the Bashar sessions: Darryl Anka 
 
 ## Setup
 
-You need Python 3.9 or newer, ffmpeg (with the libopus encoder), and for transcription an NVIDIA GPU is strongly recommended.
+You need Python 3.10 or newer, ffmpeg (with the libopus encoder), and for transcription an NVIDIA GPU is strongly recommended.
 
 ```powershell
 # Windows PowerShell (macOS/Linux: use python3, source .../bin/activate, brew/apt for ffmpeg)
