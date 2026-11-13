@@ -43,7 +43,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, host_of, item_id,  # noqa: E402
-                    layout, parse_duration, read_csv, read_jsonl, sha256_file, stable_shard, utc_now, write_csv)
+                    layout, listed_videos, parse_duration, read_csv, read_jsonl, sha256_file, stable_shard, utc_now,
+                    write_csv)
 from feeds import title_similarity, tokens  # noqa: E402
 from fetch_feeds import REGISTRY, read_registry  # noqa: E402
 from find_feeds import fold, load_targets  # noqa: E402
@@ -63,8 +64,10 @@ DEFAULTS = {"relation": "own,host,file", "only": "", "min_seconds": 0, "max_seco
             "accept": "verified,name-match"}
 
 
-def known_videos():
-    """{person_id: [{video_id, title, duration_s}]} from the committed index and the Bashar-75 list."""
+def known_videos(paths=None):
+    """{person_id: [{video_id, title, duration_s}]} from the committed index, the Bashar-75 list and, when
+    the private folder holds them, the channel listings discover.py wrote (videos and live streams;
+    shorts carry no length and are never the twin of an episode)."""
     out = {}
     if INDEX.exists():
         for channel in json.loads(INDEX.read_text(encoding="utf-8"))["channels"]:
@@ -80,6 +83,17 @@ def known_videos():
                 out.setdefault("darryl-anka", []).append({"video_id": row["video_id"], "title": row.get("title") or "",
                                                           "duration_s": None})
                 have.add(row["video_id"])
+    if paths is not None:
+        have = {v["video_id"]: v for group in out.values() for v in group}
+        for row in listed_videos(paths.root):
+            vid = row.get("video_id") or ""
+            if not ID_RE.match(vid) or (row.get("tab") or "videos") == "shorts" or not row.get("person_id"):
+                continue
+            if vid in have:                                   # the index knew the title; the listing knows the length
+                have[vid]["duration_s"] = have[vid]["duration_s"] or row.get("duration_s")
+                continue
+            have[vid] = {"video_id": vid, "title": row.get("title") or "", "duration_s": row.get("duration_s")}
+            out.setdefault(row["person_id"], []).append(have[vid])
     return out
 
 
@@ -196,7 +210,7 @@ def collect(paths, opts=None):
     kinds = {x.strip() for x in o["relation"].split(",") if x.strip()}
     only = {x.strip() for x in str(o["only"]).split(",") if x.strip()}
     rules = matchers(load_targets())
-    videos = known_videos()
+    videos = known_videos(paths)
     used, rows, seen_urls, seen_titles, seen_ids = {}, [], set(), set(), set()
     dropped = collections.Counter({k: 0 for k in ("trailer", "host_no_tracked_person", "host_ambiguous", "duplicate",
                                                   "too_short", "too_long", "before_since", "feed_not_in_registry")})

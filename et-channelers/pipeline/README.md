@@ -14,6 +14,7 @@ manifests, so `transcribe.py`, `verify.py`, `catalog.py` and `export_public.py` 
 |---|---|---|---|
 | YouTube audio | the video itself, through yt-dlp | `download_audio.py` | **No.** Tried twice from cloud machines (2026-11-11 and 2026-11-13): every request got "confirm you're not a bot". Run it on your own computer. |
 | YouTube captions | YouTube's own caption tracks | `fetch_captions.py` | **No**, same reason. Written and tested against a stand-in; not yet run against YouTube. |
+| YouTube channel listing | what each channel lists on its Videos, Live and Shorts tabs: ids, titles, lengths. No media | `discover.py` | **Yes** (found 2026-11-13: listing asks for no video stream, and YouTube answers it). It sets the size of the job and the laptop queue. |
 | Podcast episodes | the enclosure of each item in the maker's own feed | `find_feeds.py`, `fetch_feeds.py`, `select_episodes.py`, `download_enclosures.py` | Yes |
 | Creator files | audio the maker hosts on their own site | `select_episodes.py`, `download_enclosures.py` | Yes |
 | Publisher texts | transcripts the publisher wrote (site pages, feed transcript links) | `fetch_publisher_text.py` | Yes |
@@ -26,6 +27,62 @@ video (intro, adverts), so it is never counted as a YouTube download.
 Text is counted in three kinds that are never mixed: **publisher texts** and **captions** come from the source;
 **machine transcripts** are made here by speech-to-text from downloaded audio. `catalog.py` writes the
 per-person table with those columns to `../plan/coverage.csv`.
+
+### The one list of everyone tracked
+
+`targets.py` joins the three bodies of work that named people and channels (this index, the ArchiveShelf
+channel intake in [`../sources/archiveshelf_intake.csv`](../sources/archiveshelf_intake.csv), and people added
+since) and writes [`../plan/targets.csv`](../plan/targets.csv): one row per person with where the name came
+from, the channel and what it lists, what is registered outside YouTube, what is in the archive, and a state.
+
+| State | Meaning |
+|---|---|
+| `captured` | every listed piece of work is in the archive, and the person's channel has been listed, so "every" includes its videos |
+| `partly captured` | some of it is |
+| `planned: source found` | a feed, files or pages are registered and nothing is fetched yet |
+| `planned: YouTube only` | a channel is known and nothing else: it waits for a home connection |
+| `planned: no source yet` | no channel or site is known |
+| `unresolved` | a name nobody has tied to a channel (three truncated names from ArchiveShelf's screenshot) |
+| `excluded` | left out at the owner's request |
+
+A video and the podcast episode or page that carries the same content are **one piece of work**: the pair is
+listed once and is captured as soon as either side is here. [`../plan/bashar_host_channels.csv`](../plan/bashar_host_channels.csv)
+lists the channels behind the 75 Bashar recordings (the official channel, 16 interview shows, the re-upload and
+clip channels) with what was read in October and what is in the archive now.
+
+`list_site_pages.py --only <person>` names the families of addresses in a person's own sitemap (`/post/…`,
+`/blog/…`), and with `--match` and `--merge` registers the chosen ones in `publisher_pages.csv`.
+
+### Three mistakes found on 2026-11-13 (evening), and what stops them now
+
+| What happened | Now |
+|---|---|
+| The podcast lookup accepted two shows by **other people called Michelle Robinson** (a yoga teacher and a media host): author and title matched the name | When a show gives a website of its own that is not one of the person's known sites, the name counts only if that website links to the person's YouTube channel (`--check-links` asks). A show set aside this way still counts as a claimant, and once a namesake is known the name alone settles nothing for the others. Both rows were removed before anything was downloaded |
+| A **German** podcast (Pavlina Klemm) had one episode transcribed with the English-only model, which wrote confident English nonsense that was counted as a transcript | `transcribe.py` reads each feed's stated language. A recording in another language than the run's is left out and named with the command that fits it (`--model base --language de --only pavlina-klemm`). The bad transcript was marked as an error and redone |
+| "Captured" was said of people whose **YouTube channel had not even been counted** | The channel listing is part of the catalogue: every listed video, live stream and short is an item, and a twin that is here covers its video |
+
+Also fixed: with several worker processes `--order round-robin` was undone by a longest-first split (each
+process now gets every person in turn), and the catalogue could not see the transcripts of a multi-process run
+until it ended.
+
+### Speech-to-text on this machine: what was measured
+
+The Codespace's two CPUs are two threads of one core. Measured on 300 seconds of podcast speech and on a
+1981 tape (Ra Contact session 45, 22 minutes) against the publisher's own transcript:
+
+| Engine (CPU, int8) | Podcast speech, times real time | Old tape, times real time | Tape word error rate | Words that differ from `base.en` on the podcast |
+|---|---|---|---|---|
+| faster-whisper `base.en`, one process, 2 threads | 9.2 | 40.1 | 0.729 | – |
+| faster-whisper `base.en`, **two processes, 1 thread each** | 10.3 together | 44.4 together | 0.729 | none |
+| faster-whisper `tiny.en` | 16.5 | 76.0 | 0.749 | 5.1% |
+| faster-whisper `distil-small.en` | 4.0 | 15.9 | 0.726 | 7.0% |
+| Parakeet TDT 0.6b v3 (onnx-asr, with silero VAD) | 3.2 | 7.7 | 0.831 | 4.9% |
+
+So the bulk run uses `base.en` with `--workers 2 --cpu-threads 1` (12% more than one process). `tiny.en` is 1.8
+times faster and a little less accurate; the larger models are too slow here. The tape's error rate is mostly
+quiet passages the voice detector drops (553 of 866 words recovered): for the Ra sessions the published
+transcript is the text to use. At this speed the 476 hours held take about two days of machine time; a
+machine with eight real cores or a GPU would take hours.
 
 ### One command on your own computer
 
@@ -141,9 +198,11 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 |---|---|---|
 | [`inventory.py`](inventory.py) | channel and video totals and hour/disk estimates from the committed index; rewrites the table in the README | `--update-readme`, `--refresh-bashar75` |
 | [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--min-seconds`, `--max-seconds`, `--order`, `--shards N`, `--export-ids` |
-| [`discover.py`](discover.py) | every video on a channel via yt-dlp flat listing, one atomic file per channel, coverage against the expected count | `--only id,id`, `--workers`, `--min-interval`, `--retry-failed` |
+| [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing, one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
+| [`targets.py`](targets.py) | the one list of everyone tracked, with origin, channel, sources, capture counts and state; and the channels behind the 75 Bashar recordings | `--no-private`, `--out` |
+| [`list_site_pages.py`](list_site_pages.py) | names the address families in a person's own sitemap and registers the chosen pages | `--only`, `--match`, `--exclude`, `--merge` |
 | [`download_audio.py`](download_audio.py) | yt-dlp downloads a small audio stream to a scratch folder, ffmpeg re-encodes it to mono 16 kHz Opus, scratch is deleted | `--limit N` (pilot), `--all`, `--workers`, `--per-channel`, `--min-interval`, `--shard i/n`, `--bitrate`, `--limit-rate`, `--retry-failed` |
-| [`transcribe.py`](transcribe.py) | faster-whisper with batching and VAD; one process per GPU; longest files first so processes finish together | `--model`, `--model-revision`, `--devices 0,1`, `--workers`, `--batch-size`, `--language en\|auto`, `--compute-type`, `--shard i/n` |
+| [`transcribe.py`](transcribe.py) | faster-whisper with batching and VAD; one process per GPU; longest files first so processes finish together, or every person in turn with `--order round-robin`; leaves out speech in a language the run was not asked for | `--model`, `--model-revision`, `--devices 0,1`, `--workers`, `--cpu-threads`, `--batch-size`, `--language`, `--order`, `--only`, `--compute-type`, `--shard i/n` |
 | [`verify.py`](verify.py) | file sizes, optional re-hash, audio-versus-listing length, transcript sanity, audio without transcript; builds the QA sheet | `--hash`, `--qa-sample N` |
 | [`export_public.py`](export_public.py) | the publishable table: durations, sizes, hashes, language, word counts, model and revision, speed | `--out` |
 | [`doctor.py`](doctor.py) | checks the machine | `--root`, `--need-gb` |
@@ -193,6 +252,7 @@ Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (a
 ## Known limits
 
 * Audio at 24 kbps is a planning choice. Compare word error rate against a higher bitrate on the QA sample before committing to the full set.
-* `--language en` is right for the Bashar sessions; some tracked channels are not in English, so use `--language auto` for the wider set.
+* `--language en` is right for the Bashar sessions. A podcast feed states its language, and recordings in another language are left out of an English run and named; audio from YouTube carries no such statement, so for channels that are not in English pass `--language` yourself or use `--language auto` with a multilingual model.
+* The channel listing has no upload dates and no lengths for shorts; YouTube's own "N videos" can differ by a few from what the three tabs list (members-only and scheduled items).
 * The yt-dlp listing returns what is public today, which can differ from the counts in the index (observed 2026-10-23); `discover_manifest.jsonl` records the coverage per channel.
 * The stand-in tools cannot reproduce YouTube's behaviour. Treat the first real runs on your machine as the real test, and read the first lines of `audio_manifest.jsonl` after the pilot.

@@ -54,6 +54,14 @@ CANDIDATE_FIELDS = ["person_id", "person_name", "query", "grade", "reason", "pod
 # People whose sessions are re-uploaded by many third parties: a matching author name proves nothing.
 STRICT = {"darryl-anka", "esther-hicks", "jane-roberts", "lee-carroll", "j-z-knight", "l-l-research",
           "carla-l-rueckert", "barbara-marciniak", "paul-selig"}  # ids as written in the index
+# Companies that host podcasts or link pages for anyone: a show's page there says nothing about whose show it is.
+PODCAST_HOSTS = ("anchor.fm", "podbean.com", "buzzsprout.com", "libsyn.com", "spreaker.com", "soundcloud.com",
+                 "spotify.com", "art19.com", "acast.com", "simplecast.com", "transistor.fm", "captivate.fm",
+                 "redcircle.com", "megaphone.fm", "podomatic.com", "blubrry.com", "rss.com", "iheart.com",
+                 "apple.com", "omny.fm", "audioboom.com", "fireside.fm", "castos.com", "pinecast.com",
+                 "zencastr.com", "podpage.com", "podcastics.com", "ivoox.com", "linktr.ee", "youtube.com",
+                 "patreon.com", "substack.com", "facebook.com", "instagram.com")
+EXTRA_CHANNELS = ET_ROOT / "sources" / "extra_channels.csv"
 _FOLD = str.maketrans({"ł": "l", "Ł": "l", "ø": "o", "Ø": "o", "đ": "d", "Đ": "d", "ß": "ss", "æ": "ae", "Æ": "ae",
                        "œ": "oe", "Œ": "oe", "ı": "i"})
 _NOISE = {"the", "and", "with", "of", "podcast", "show", "official", "channel", "tv", "radio", "a", "by", "s"}
@@ -77,7 +85,9 @@ def load_targets():
             info = channel.get("channel") or {}
             names = [channel.get("person_name"), info.get("title"), (info.get("handle") or "").lstrip("@")]
             targets[channel["person"]] = {"person_id": channel["person"], "person_name": channel.get("person_name") or "",
-                                          "names": [n for n in names if n], "role": channel.get("role") or ""}
+                                          "names": [n for n in names if n], "role": channel.get("role") or "",
+                                          "channel_ids": [info["channel_id"]] if info.get("channel_id") else [],
+                                          "handles": [info["handle"]] if info.get("handle") else []}
     if EXTRA_TARGETS.exists():
         for row in read_csv(EXTRA_TARGETS):
             if not row.get("person_id"):
@@ -87,6 +97,14 @@ def load_targets():
             for name in [row.get("name")] + (row.get("aliases") or "").split("|") + (row.get("weak_aliases") or "").split("|"):
                 if name and name.strip() and name.strip() not in entry["names"]:
                     entry["names"].append(name.strip())
+    for row in read_csv(EXTRA_CHANNELS) if EXTRA_CHANNELS.exists() else []:
+        entry = targets.get(row.get("person_id") or "")
+        if entry is None:
+            continue
+        handle = row.get("handle") or "".join(re.findall(r"youtube\.com/(@[\w.-]+)", row.get("channel_url") or "")[:1])
+        for key, value in (("channel_ids", row.get("channel_id")), ("handles", handle)):
+            if value and value not in entry.setdefault(key, []):
+                entry[key].append(value)
     return [targets[k] for k in sorted(targets)]
 
 
@@ -106,9 +124,44 @@ def apple_search(term, limit=10, timeout=30):
     return json.loads(body.decode("utf-8", "replace")).get("results", [])
 
 
-def grade(target, result, strict, domains, site_host="", site_links_show=False):
+def on_podcast_host(host) -> bool:
+    host = (host or "").lower().removeprefix("www.")
+    return any(host == d or host.endswith("." + d) for d in PODCAST_HOSTS)
+
+
+def channel_needles(target):
+    """Lower-case strings that, found on a web page, show that the page links to this person's YouTube channel."""
+    out = [cid.lower() for cid in target.get("channel_ids") or () if cid]
+    for handle in target.get("handles") or ():
+        bare = handle.strip().lstrip("@").lower()
+        if len(bare) >= 4:
+            out += [f"youtube.com/@{bare}", f"youtube.com/c/{bare}", f"youtube.com/user/{bare}", f"youtube.com/{bare}"]
+    return out
+
+
+def site_mentions_channel(site_host, needles, cache, timeout=40):
+    """True or False when the site's home page was read and does or does not link to the channel; None
+    when it could not be read. One request per site per run (the cache is shared with site_links_show)."""
+    if site_host not in cache:
+        try:
+            _, _, body = get_bytes(f"https://{site_host}/", timeout=timeout, max_bytes=6 * 1024 * 1024)
+            cache[site_host] = body.decode("utf-8", "replace").lower()
+        except FetchError:
+            cache[site_host] = ""
+    page = cache[site_host]
+    if not page:
+        return None
+    return any(re.search(re.escape(needle) + r"(?![\w.-])", page) for needle in needles)
+
+
+def grade(target, result, strict, domains, site_host="", site_links_show=False, site_is_persons=None):
     """(grade, reason) for one Apple result against one tracked person. Grades: verified, name-match,
     candidate, unrelated. 'name-match' may still be demoted later if too many feeds claim the name.
+
+    A name is not a person. "Michelle Robinson" the medium, the yoga teacher and the media host each
+    have a podcast under that name. So when the show gives a website of its own (not a hosting company's
+    page) and that website is not one of this person's known sites, the name counts only if that website
+    links to the person's YouTube channel (site_is_persons, found by --check-links).
 
     Two things verify a feed, and both come from the maker's side, not from the feed:
       * the feed is served from a domain listed in official_sites.csv;
@@ -133,6 +186,11 @@ def grade(target, result, strict, domains, site_host="", site_links_show=False):
     if author_is_person and title_has_name:
         if target["person_id"] in strict:
             return "candidate", "author and title match, but this person is widely re-uploaded: needs official-site evidence"
+        elsewhere = bool(site_host) and not claims_site and not on_podcast_host(site_host)
+        if elsewhere and (official or channel_needles(target)) and site_is_persons is not True:
+            checked = "does not link" if site_is_persons is False else "could not be checked for a link"
+            return "candidate", (f"same name, but the show gives {site_host} as its website, which is not one of this person's "
+                                 f"known sites and {checked} to their YouTube channel: possibly a namesake")
         return "name-match", "author is the person and the title carries the name"
     if claims_site:
         return "candidate", "the feed names the official site as its website, but the site was not found linking back: confirm by hand"
@@ -291,6 +349,7 @@ def main():
                 print(f"[feeds] {n}/{len(wanted)} feed websites read", file=sys.stderr, flush=True)
     best, pages = {}, {}
     site_checks = {(r["person_id"], r["feed_url"]): r for r in records if r.get("kind") == "site_check"}
+    channel_checks = {(r["person_id"], r["site_host"]): r for r in records if r.get("kind") == "site_channel_check"}
     for rec in records:
         if rec.get("kind") != "result" or rec["person_id"] not in by_id:
             continue
@@ -307,8 +366,27 @@ def main():
             append_jsonl(raw_path, site_checks[key])
         linked = bool((site_checks.get(key) or {}).get("linked_from"))
         verdict, reason = grade(target, shown, strict, domains, site_host, linked)
+        if verdict == "candidate" and grade(target, shown, strict, domains, site_host, linked, True)[0] == "name-match":
+            # only the namesake question stands between this feed and a name match: ask the show's own website
+            asked = (rec["person_id"], site_host.removeprefix("www."))
+            if args.check_links and asked not in channel_checks:
+                channel_checks[asked] = {"kind": "site_channel_check", "person_id": asked[0], "site_host": asked[1],
+                                         "links_channel": site_mentions_channel(asked[1], channel_needles(target), pages),
+                                         "at": utc_now()}
+                append_jsonl(raw_path, channel_checks[asked])
+            if asked in channel_checks:
+                verdict, reason = grade(target, shown, strict, domains, site_host, linked, channel_checks[asked]["links_channel"])
+                if verdict == "name-match":
+                    reason += f"; the show's website {asked[1]} links to the person's YouTube channel"
         if verdict == "unrelated":
             continue
+        bare = site_host.removeprefix("www.")
+        official = domains.get(rec["person_id"], ())
+        # _claim: the name fits (whatever the website says). _tied: something besides the name ties the show
+        # to the tracked person: its website is one of theirs, or links to their channel.
+        claim = grade(target, shown, strict, domains, site_host, linked, True)[0] == "name-match"
+        tied = (bool(bare) and any(bare == d or bare.endswith("." + d) for d in official)) \
+            or (channel_checks.get((rec["person_id"], bare)) or {}).get("links_channel") is True
         if linked and verdict == "verified":
             reason = f"{site_checks[key]['linked_from'][0]} links to this show"
         row = {"person_id": rec["person_id"], "person_name": target["person_name"], "query": rec["query"],
@@ -316,19 +394,29 @@ def main():
                "author": clean_author(rec["author"]), "episodes": rec.get("episodes") or "",
                "feed_url": clean_address(rec["feed_url"]), "site_host": site_host,
                "site_link": clean_address((links.get(rec["feed_url"]) or {}).get("link") or ""),
-               "apple_id": rec.get("apple_id") or "", "genre": clean_cell(rec.get("genre", ""), 60)}
+               "apple_id": rec.get("apple_id") or "", "genre": clean_cell(rec.get("genre", ""), 60),
+               "_claim": claim, "_tied": tied}
         if not row["feed_url"]:
             continue                                 # not an http(s) address: nothing to read
         best.setdefault((rec["person_id"], rec["feed_url"]), row)
     rows = list(best.values())
+    # Every show that fits the name is a claimant, including one already set aside as a namesake: setting one
+    # aside must not bring the count under the limit and wave the others through. And once somebody else
+    # with this name is known to have a podcast, the name alone settles nothing for the rest.
     claimants = {}
     for row in rows:
-        if row["grade"] == "name-match":
+        if row["_claim"]:
             claimants.setdefault(row["person_id"], []).append(row)
     for person, group in claimants.items():
-        if len(group) > args.max_claimants:
-            for row in group:
+        namesakes = sum(1 for row in group if "possibly a namesake" in row["reason"])
+        for row in group:
+            if row["grade"] != "name-match" or row["_tied"]:
+                continue
+            if len(group) > args.max_claimants:
                 row["grade"], row["reason"] = "candidate", f"{len(group)} feeds claim this author: cannot tell the maker's own feed from re-uploads"
+            elif namesakes:
+                row["grade"], row["reason"] = "candidate", (f"another person with this name has a podcast ({namesakes} found), and "
+                                                            "nothing but the name ties this show to the tracked person")
     order = {"verified": 0, "name-match": 1, "candidate": 2}
     rows.sort(key=lambda r: (r["person_id"], order[r["grade"]], r["podcast_title"].lower()))
     write_csv(paths.sources / "feed_candidates.csv", rows, CANDIDATE_FIELDS)

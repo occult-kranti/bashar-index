@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """List every video on each tracked channel. Public metadata only: no media, no cookies, no login.
 
-Uses yt-dlp in flat-playlist mode on <channel>/videos. One file per channel is written atomically,
-so an interrupted run never leaves half a channel, and videos_all.jsonl is rebuilt from those files.
-A run stops early after a few 403 / 429 / bot-check responses instead of pushing through them.
+Uses yt-dlp in flat-playlist mode on the channel's three public tabs: Videos, Live and Shorts (a
+channel's own count of "N videos" covers all three). Each row says which tab it came from. A channel
+that has no Live or Shorts tab simply contributes nothing for it. One file per channel is written
+atomically, so an interrupted run never leaves half a channel, and videos_all.jsonl is rebuilt from
+those files. A run stops early after a few 403 / 429 / bot-check responses instead of pushing through.
+
+This is the one YouTube step that also answers from a cloud server: listing asks for no video stream.
 
     python3 pipeline/discover.py --workers 3 --min-interval 3
     python3 pipeline/discover.py --only tyler-ellison,darryl-anka --workers 1
@@ -15,6 +19,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures as cf
 import json
+import re
 import shutil
 import sys
 import time
@@ -27,6 +32,8 @@ from common import (ET_ROOT, HARD_BLOCKS, ID_RE, Breaker, Progress, RateLimiter,
 
 INDEX = ET_ROOT / "youtube-index" / "youtube_index.json"
 EXTRA_CHANNELS = ET_ROOT / "sources" / "extra_channels.csv"   # tracked channels the 2026-10-23 index does not have
+TABS = ("videos", "streams", "shorts")
+NO_SUCH_TAB = re.compile(r"does not have a \w+ tab", re.I)
 
 
 def extra_entries(path=EXTRA_CHANNELS):
@@ -41,38 +48,57 @@ def extra_entries(path=EXTRA_CHANNELS):
 
 
 def channel_url(entry):
+    """The address of the channel's Videos tab, or None when the entry has no channel."""
     url = ((entry.get("channel") or {}).get("url") or "").rstrip("/")
     if not url:
         return None
     return url if url.endswith("/videos") else url + "/videos"
 
 
+def list_tab(args, url):
+    """(entries, '') for one tab, or (None, error text). A channel that has no such tab is an empty list."""
+    code, out, err = run_cmd([args.ytdlp, "--ignore-config", "--flat-playlist", "-J", "--no-warnings",
+                              "--playlist-items", f"1:{args.max_per_channel}", "--socket-timeout", "30",
+                              "--extractor-retries", "2", "--extractor-args", "youtubetab:approximate_date",
+                              "--sleep-requests", str(args.page_pause), url], args.timeout)
+    if code != 0:
+        return ([], "") if NO_SUCH_TAB.search(err or "") else (None, err or f"exit code {code}")
+    try:
+        return ((json.loads(out) or {}).get("entries") or []), ""
+    except ValueError as exc:
+        return None, f"the listing could not be read: {exc}"
+
+
 def discover_one(args, entry, limiter, breaker, paths):
     person = entry["person"]
     url = channel_url(entry)
+    base = url.removesuffix("/videos")
     expected = entry.get("video_count") if isinstance(entry.get("video_count"), int) else None
     record = {"person_id": person, "channel_url": url, "expected_total": expected, "started": utc_now()}
-    if breaker.tripped.is_set():
-        return None
-    limiter.wait()
     t0 = time.time()
-    code, out, err = run_cmd([args.ytdlp, "--ignore-config", "--flat-playlist", "-J", "--no-warnings",
-                              "--playlist-items", f"1:{args.max_per_channel}", "--socket-timeout", "30",
-                              "--extractor-retries", "2", url], args.timeout)
-    record["elapsed_s"] = round(time.time() - t0, 1)
+    rows, seen, per_tab = [], set(), {}
     try:
-        if code != 0:
-            raise RuntimeError(err or f"exit code {code}")
-        entries = (json.loads(out).get("entries")) or []
-        rows = []
-        for e in entries:
-            vid = e.get("id")
-            if vid and ID_RE.match(vid):
-                rows.append({"video_id": vid, "title": e.get("title"), "duration_s": e.get("duration"),
-                             "view_count": e.get("view_count"), "person_id": person})
+        for tab in args.tab_list:
+            if breaker.tripped.is_set():
+                return None                      # nothing recorded: the channel is listed again on the next run
+            limiter.wait()
+            entries, problem = list_tab(args, f"{base}/{tab}")
+            if entries is None:
+                raise RuntimeError(problem)
+            per_tab[tab] = 0
+            for e in entries:
+                vid = e.get("id")
+                if vid and ID_RE.match(vid) and vid not in seen:
+                    seen.add(vid)
+                    per_tab[tab] += 1
+                    row = {"video_id": vid, "title": e.get("title"), "duration_s": e.get("duration"),
+                           "view_count": e.get("view_count"), "person_id": person, "tab": tab}
+                    if e.get("upload_date"):
+                        row["upload_date_approx"] = e["upload_date"]      # worked out from "3 years ago": a guide, not a date
+                    rows.append(row)
         text = "".join(json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n" for r in rows)
         atomic_write_text(paths.discover / "channels" / f"{person}.jsonl", text)
-        record.update(status="ok", n_videos=len(rows),
+        record.update(status="ok", n_videos=len(rows), tabs=per_tab,
                       coverage=round(len(rows) / expected, 3) if expected else None)
         breaker.success()
     except Exception as exc:  # noqa: BLE001 - every failure is recorded, none is fatal
@@ -80,6 +106,7 @@ def discover_one(args, entry, limiter, breaker, paths):
         record.update(status="error", error_class=klass, error_tail=str(exc)[-300:])
         if klass in HARD_BLOCKS:
             breaker.hard_block()
+    record["elapsed_s"] = round(time.time() - t0, 1)
     append_jsonl(paths.discover / "discover_manifest.jsonl", record)
     return record
 
@@ -103,12 +130,18 @@ def main():
     ap.add_argument("--min-interval", type=float, default=3.0, help="seconds between request starts, all workers")
     ap.add_argument("--stop-after-blocks", type=int, default=3)
     ap.add_argument("--max-per-channel", type=int, default=20000)
+    ap.add_argument("--tabs", default=",".join(TABS), help="which tabs to list: videos, streams (live), shorts")
+    ap.add_argument("--page-pause", type=float, default=0.3,
+                    help="seconds between the page requests inside one listing (a long channel is many pages)")
     ap.add_argument("--timeout", type=int, default=600)
     ap.add_argument("--only", help="comma-separated person ids")
     ap.add_argument("--limit-channels", type=int, default=0)
     ap.add_argument("--retry-failed", action="store_true")
     args = ap.parse_args()
 
+    args.tab_list = [t for t in (x.strip() for x in args.tabs.split(",")) if t]
+    if not args.tab_list or set(args.tab_list) - set(TABS):
+        sys.exit("--tabs takes any of: " + ", ".join(TABS))
     paths = layout(args.root)
     entries = [e for e in json.loads(args.index.read_text(encoding="utf-8"))["channels"] if channel_url(e)]
     known = {e["person"] for e in entries}
@@ -117,8 +150,13 @@ def main():
         wanted = set(args.only.split(","))
         entries = [e for e in entries if e["person"] in wanted]
     done = latest_by_key(read_jsonl(paths.discover / "discover_manifest.jsonl"), "person_id")
-    todo = [e for e in entries if done.get(e["person"], {}).get("status") != "ok"
-            or not (paths.discover / "channels" / f"{e['person']}.jsonl").exists()]
+    def listed(person):
+        """Finished for every tab asked for. A record from before tabs existed covered the Videos tab only."""
+        rec = done.get(person, {})
+        return rec.get("status") == "ok" and set(args.tab_list) <= set(rec.get("tabs") or {"videos": 0}) \
+            and (paths.discover / "channels" / f"{person}.jsonl").exists()
+
+    todo = [e for e in entries if not listed(e["person"])]
     if not args.retry_failed:
         todo = [e for e in todo if done.get(e["person"], {}).get("error_class") not in ("unavailable",)]
     if args.limit_channels:
@@ -134,6 +172,13 @@ def main():
                 progress.tick(rec["status"] == "ok")
     total = rebuild_all(paths)
     print(f"videos_all.jsonl: {total} videos", file=sys.stderr)
+    by_tab = {}
+    for rec in latest_by_key(read_jsonl(paths.discover / "discover_manifest.jsonl"), "person_id").values():
+        if rec.get("status") == "ok":
+            for tab, count in (rec.get("tabs") or {}).items():
+                by_tab[tab] = by_tab.get(tab, 0) + count
+    if by_tab:
+        print("by tab: " + ", ".join(f"{by_tab[t]} {t}" for t in TABS if t in by_tab), file=sys.stderr)
     if breaker.tripped.is_set():
         print("STOPPED: repeated 403 / 429 / bot-check responses. Wait, lower --workers or raise --min-interval, "
               "then rerun; finished channels are skipped.", file=sys.stderr)

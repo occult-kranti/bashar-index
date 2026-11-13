@@ -7,7 +7,8 @@ Writes   <root>/transcripts/<channel_dir>/<video_id>.json   segments with timest
          <root>/transcripts/transcripts_manifest.jsonl      one line per video (model, speed, hashes)
 
 One process per GPU (--devices 0,1) or per CPU worker (--workers N). Videos are split longest-first
-so the processes finish together, and reruns skip finished videos.
+so the processes finish together (with --order round-robin they are dealt out in turn instead, so every
+folder gets text early), and reruns skip finished videos.
 
     python3 pipeline/transcribe.py --limit 3 --model small.en --device cpu      # smoke test
     python3 pipeline/transcribe.py --model large-v3 --devices 0                  # one GPU
@@ -130,10 +131,27 @@ def merge_parts(out_dir):
         part.unlink()
 
 
+def declared_languages(root, audio_meta):
+    """{item id: 'de'} for recordings that came from a podcast feed which states its language."""
+    stated = {}
+    for rec in read_jsonl(layout(root).feeds / "feeds_manifest.jsonl"):
+        if rec.get("feed_key") and rec.get("language"):
+            stated[rec["feed_key"]] = str(rec["language"]).strip()[:2].lower()
+    return {ident: stated[rec["feed_key"]] for ident, rec in audio_meta.items() if rec.get("feed_key") in stated}
+
+
+def wanted_language(a):
+    """The one language this run can produce, or 'auto'. A model whose name ends in .en knows English only."""
+    return "en" if str(a.model).rstrip("/").endswith(".en") else (a.language or "auto").strip()[:2].lower() \
+        if (a.language or "auto") != "auto" else "auto"
+
+
 def find_jobs(a, audio_dir, out_dir):
     audio_meta = latest_by_key(read_jsonl(audio_dir / "audio_manifest.jsonl"))
     done = latest_by_key(manifest_records(out_dir))
     stored = archived_ids(a.root, "asr")   # transcripts already uploaded and removed here
+    languages, want, other = declared_languages(a.root, audio_meta), wanted_language(a), {}
+    only = {x.strip() for x in (a.only or "").split(",") if x.strip()}
     i, n = parse_shard(a.shard)
     jobs = []
     for f in sorted(audio_dir.rglob("*")):
@@ -142,6 +160,15 @@ def find_jobs(a, audio_dir, out_dir):
         if any(part.startswith(".") for part in f.relative_to(audio_dir).parts):
             continue  # scratch folders such as .work
         chan = f.parent.name if f.parent != audio_dir else "unsorted"
+        if only and chan not in only:
+            continue
+        spoken = languages.get(f.stem, "")
+        if want != "auto" and spoken and spoken != want:
+            # An English-only model given German speech still writes confident English words. The feed
+            # says what language it is in, so such a file waits for a run that asks for that language.
+            other.setdefault((spoken, chan), 0)
+            other[(spoken, chan)] += 1
+            continue
         prev = done.get(f.stem)
         if prev and prev["status"] == "ok" and (f.stem in stored or (out_dir / chan / f"{f.stem}.json").exists()):
             continue
@@ -149,6 +176,10 @@ def find_jobs(a, audio_dir, out_dir):
             continue
         weight = audio_meta.get(f.stem, {}).get("duration_s") or f.stat().st_size / 3000.0  # ~24 kbps bytes per second
         jobs.append({"video_id": f.stem, "channel_dir": chan, "path": str(f), "weight": float(weight)})
+    for (spoken, chan), count in sorted(other.items()):
+        how = "--model base.en" if spoken == "en" else f"a multilingual model: --model base --language {spoken}"
+        print(f"left out: {count} recording(s) in {chan} are in '{spoken}' according to their feed, and this run is for "
+              f"'{want}'. Run them with {how} --only {chan}", file=sys.stderr)
     return jobs
 
 
@@ -200,7 +231,9 @@ def main():
     ap.add_argument("--compute-type", default="auto", help="auto, float16, int8_float16, int8 ...")
     ap.add_argument("--batch-size", type=int, default=16)
     ap.add_argument("--no-batch", action="store_true", help="use plain sequential decoding")
-    ap.add_argument("--language", default="en", help="'en' or 'auto'")
+    ap.add_argument("--language", default="en",
+                    help="'en', another two-letter code, or 'auto'. Recordings whose podcast feed states a different "
+                         "language are left out and named, so they can be run with a model that knows it")
     ap.add_argument("--beam-size", type=int, default=5)
     ap.add_argument("--workers", type=int, default=1, help="processes (ignored when --devices is given)")
     ap.add_argument("--devices", default="", help="GPU ids, one process each, e.g. 0,1")
@@ -228,9 +261,6 @@ def main():
 
     merge_parts(out_dir)
     jobs = find_jobs(a, audio_dir, out_dir)
-    if a.only:
-        wanted = {x.strip() for x in a.only.split(",") if x.strip()}
-        jobs = [j for j in jobs if j["channel_dir"] in wanted]
     if a.order == "round-robin":  # one file per folder in turn, shortest first, so every person gets text early
         groups, mixed, depth = {}, [], 0
         for job in sorted(jobs, key=lambda j: (j["weight"], j["video_id"])):
@@ -258,7 +288,13 @@ def main():
     if not a.cpu_threads and not devices:
         a.cpu_threads = max(1, (os.cpu_count() or workers) // workers)
     procs = []
-    for k, part in enumerate(lpt_assign(jobs, workers, lambda j: j["weight"])):
+    if a.order == "round-robin":
+        # Dealing the list out like cards keeps the rotation inside every process. Splitting by length
+        # (below) would put the longest recordings first and the last person's files hours away.
+        parts = [jobs[k::workers] for k in range(workers)]
+    else:
+        parts = lpt_assign(jobs, workers, lambda j: j["weight"])
+    for k, part in enumerate(parts):
         if not part:
             continue
         jobs_file = out_dir / ".jobs" / f"worker-{k}.json"

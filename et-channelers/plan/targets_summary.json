@@ -1,0 +1,107 @@
+{
+ "generated": "2026-11-13T23:03:13Z",
+ "targets": 103,
+ "by_state": {
+  "captured": 0,
+  "partly captured": 19,
+  "planned: source found": 0,
+  "planned: YouTube only": 43,
+  "planned: no source yet": 36,
+  "unresolved": 3,
+  "excluded": 2
+ },
+ "by_origin": {
+  "added": 2,
+  "archiveshelf": 9,
+  "bashar-index": 87,
+  "both": 5
+ },
+ "by_origin_and_state": [
+  {
+   "origin": "added",
+   "state": "partly captured",
+   "targets": 2
+  },
+  {
+   "origin": "archiveshelf",
+   "state": "excluded",
+   "targets": 2
+  },
+  {
+   "origin": "archiveshelf",
+   "state": "partly captured",
+   "targets": 1
+  },
+  {
+   "origin": "archiveshelf",
+   "state": "planned: YouTube only",
+   "targets": 3
+  },
+  {
+   "origin": "archiveshelf",
+   "state": "unresolved",
+   "targets": 3
+  },
+  {
+   "origin": "bashar-index",
+   "state": "partly captured",
+   "targets": 12
+  },
+  {
+   "origin": "bashar-index",
+   "state": "planned: YouTube only",
+   "targets": 39
+  },
+  {
+   "origin": "bashar-index",
+   "state": "planned: no source yet",
+   "targets": 36
+  },
+  {
+   "origin": "both",
+   "state": "partly captured",
+   "targets": 4
+  },
+  {
+   "origin": "both",
+   "state": "planned: YouTube only",
+   "targets": 1
+  }
+ ],
+ "with_channel": 60,
+ "with_channel_listing": 23,
+ "with_official_site": 50,
+ "totals": {
+  "podcast_feeds": 14,
+  "creator_files": 1410,
+  "publisher_pages": 9536,
+  "items_listed": 29573,
+  "items_captured": 8275,
+  "captured_audio_files": 823,
+  "captured_source_texts": 8155,
+  "captured_source_words": 12682271,
+  "captured_machine_transcripts": 28,
+  "audio_awaiting_transcript": 791,
+  "captured_audio_hours": 476.2,
+  "videos_listed": 12369,
+  "live_listed": 1230,
+  "shorts_listed": 6507,
+  "listed_video_hours": 4847.5
+ },
+ "bashar": {
+  "host_channels": 38,
+  "recordings": 75,
+  "interviews": 21,
+  "transcripts_read_earlier": 55,
+  "captured_here": 0,
+  "by_kind": {
+   "re-upload channel": 10,
+   "official channel": 1,
+   "interview show": 16,
+   "clip channel": 11
+  },
+  "by_state": {
+   "planned: YouTube only": 38
+  }
+ }
+}

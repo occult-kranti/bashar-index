@@ -12,6 +12,13 @@ never in this repository. The scripts that read these files are in [`../pipeline
 | `publisher_pages.csv` | a page that holds the published text of one session or message | `fetch_publisher_text.py` | from the publisher's sitemap or index page |
 | `extra_targets.csv` | extra names and aliases, and people the 2026-10-23 index does not have. `weak_aliases` holds phrases (such as "Law of One") that must not assign an interview episode to a person by themselves | `find_feeds.py`, `select_episodes.py` | by hand |
 
+Two more lists hold names rather than sources: `archiveshelf_intake.csv` is a snapshot of the ArchiveShelf
+project's channel intake (12 channels and two names left out at the owner's request; three of the twelve are
+truncated names from a screenshot that nobody has tied to a channel yet), and `extra_channels.csv` gives the
+YouTube channel of each person the 2026-10-23 index does not have. `targets.py` joins all of them into
+[`../plan/targets.csv`](../plan/targets.csv). Pages get into `publisher_pages.csv` through
+`list_site_pages.py`, which reads the sitemap of a site listed in `official_sites.csv`.
+
 ## How a feed is graded
 
 `find_feeds.py` never downloads audio. It grades each feed Apple returns for a person's name:
@@ -19,7 +26,7 @@ never in this repository. The scripts that read these files are in [`../pipeline
 | Grade | Rule | Queued for download? |
 |---|---|---|
 | `verified` | the feed is served from a domain in `official_sites.csv`, or a page on that official site links to the show (its Apple id or its feed address) | yes |
-| `name-match` | the feed's author is the person and its title carries the person's or channel's name, and at most two feeds make that claim | yes |
+| `name-match` | the feed's author is the person and its title carries the person's or channel's name, at most two feeds make that claim, and nothing points to a namesake: if the show gives a website of its own that is not one of the person's known sites, that website must link to the person's YouTube channel | yes |
 | `candidate` | something matches but not enough to tell the maker's own feed from a re-upload, a namesake or a guest appearance | no, until someone confirms it |
 
 A feed naming the maker's site as its own website proves nothing: fan re-upload feeds usually do. That

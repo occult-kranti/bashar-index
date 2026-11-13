@@ -345,6 +345,99 @@ class TestGrading(unittest.TestCase):
         self.assertEqual(self.grade("Anyone", "Anything", target, domains={"l-l-research": {"llresearch.org"}},
                                     feed="https://www.llresearch.org/podcast/rss.xml"), "verified")
 
+    def test_a_namesake_with_a_website_of_their_own_is_not_the_person(self):
+        # the case that happened: three people called Michelle Robinson each have a podcast
+        medium = {"person_id": "michelle-robinson", "person_name": "Michelle Robinson",
+                  "names": ["Michelle Robinson", "Michelle Robinson Medium"],
+                  "channel_ids": ["UCH-hyX-_JxweSbM7pOrv29Q"], "handles": ["@MichelleRobinsonMedium"]}
+        domains = {"michelle-robinson": {"michellerobinsonmedium.com"}}
+        yoga = {"artistName": "Michelle Robinson", "collectionName": "AUM@home : Yoga Practices with Michelle Robinson",
+                "feedUrl": "https://rss.buzzsprout.com/1995621.rss"}
+        verdict, reason = find_feeds.grade(medium, yoga, set(), domains, "www.aumbienceyoga.com")
+        self.assertEqual(verdict, "candidate")
+        self.assertIn("namesake", reason)
+        self.assertIn("could not be checked", reason)
+        verdict, reason = find_feeds.grade(medium, yoga, set(), domains, "www.aumbienceyoga.com", False, False)
+        self.assertEqual(verdict, "candidate")
+        self.assertIn("does not link", reason)
+        # her own show on a second site of hers that links back to her channel is accepted
+        self.assertEqual(find_feeds.grade(medium, yoga, set(), domains, "michelle-talks.example", False, True)[0], "name-match")
+        # a hosting company's page says nothing either way, and a site that is hers needs no second proof
+        self.assertEqual(find_feeds.grade(medium, yoga, set(), domains, "michelle.podbean.com")[0], "name-match")
+        self.assertEqual(find_feeds.grade(medium, yoga, set(), domains, "www.michellerobinsonmedium.com")[0], "name-match")
+        self.assertEqual(find_feeds.grade(medium, yoga, set(), domains, "")[0], "name-match")
+        # nothing is known about the person to compare with: the name is all there is, as before
+        unknown = {"person_id": "x", "person_name": "Michelle Robinson", "names": ["Michelle Robinson"]}
+        self.assertEqual(find_feeds.grade(unknown, yoga, set(), {}, "www.aumbienceyoga.com")[0], "name-match")
+
+    def graded(self, person, shows, checks=()):
+        """Run the grading step on a made-up lookup. shows: (feed address, title, the show's website)."""
+        import io
+        import contextlib
+        tmp = Path(tempfile.mkdtemp(prefix="etgrade-"))
+        self.addCleanup(shutil.rmtree, tmp, True)
+        raw = tmp / "private" / "sources" / "apple_candidates.jsonl"
+        name = next(t for t in find_feeds.load_targets() if t["person_id"] == person)["person_name"]
+        for n, (url, title, site) in enumerate(shows):
+            common.append_jsonl(raw, {"kind": "result", "person_id": person, "query": name, "feed_url": url,
+                                      "podcast_title": title, "author": name, "episodes": 5, "apple_id": 100 + n, "genre": ""})
+            common.append_jsonl(raw, {"kind": "feed_link", "feed_url": url, "status": "ok", "link": site})
+        for site, links in checks:
+            common.append_jsonl(raw, {"kind": "site_channel_check", "person_id": person, "site_host": site, "links_channel": links})
+        argv = sys.argv
+        sys.argv = ["find_feeds.py", "--root", str(tmp / "private")]
+        try:
+            with contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+                find_feeds.main()
+        finally:
+            sys.argv = argv
+        rows = common.read_csv(tmp / "private" / "sources" / "feed_candidates.csv")
+        return {r["feed_url"]: (r["grade"], r["reason"]) for r in rows}
+
+    def test_setting_a_namesake_aside_does_not_wave_the_others_through(self):
+        # Three shows carry the name; more than two means nobody is promoted on the name. One of the three
+        # is set aside as a namesake. The other two must not pass just because the count dropped to two.
+        got = self.graded("brad-johnson", [
+            ("https://a.example/feed", "Brad Johnson Podcast", ""),
+            ("https://b.example/feed", "On the road with film producer Brad Johnson", "https://soundcloud.com/x"),
+            ("https://c.example/feed", "The Brad Johnson Show", "https://bradjohnsonshow.example/")])
+        self.assertEqual({grade for grade, _ in got.values()}, {"candidate"}, got)
+        self.assertIn("namesake", got["https://c.example/feed"][1])
+        self.assertIn("3 feeds claim this author", got["https://a.example/feed"][1])
+
+    def test_once_a_namesake_is_known_the_name_alone_settles_nothing(self):
+        shows = [("https://a.example/feed", "Michelle Robinson Speaks", "https://michelle.podbean.com/"),
+                 ("https://b.example/feed", "Yoga with Michelle Robinson", "https://yoga.example/")]
+        got = self.graded("michelle-robinson", shows, checks=[("yoga.example", False)])
+        self.assertEqual(got["https://b.example/feed"][0], "candidate")
+        self.assertEqual(got["https://a.example/feed"][0], "candidate")
+        self.assertIn("another person with this name has a podcast", got["https://a.example/feed"][1])
+        # a show whose own website links to her channel is hers, whatever the namesakes do
+        shows.append(("https://c.example/feed", "Messages with Michelle Robinson", "https://her-second-site.example/"))
+        got = self.graded("michelle-robinson", shows, checks=[("yoga.example", False), ("her-second-site.example", True)])
+        self.assertEqual(got["https://c.example/feed"][0], "name-match")
+        self.assertIn("links to the person's YouTube channel", got["https://c.example/feed"][1])
+        self.assertEqual(got["https://a.example/feed"][0], "candidate")
+
+    def test_a_page_is_asked_whether_it_links_to_the_channel(self):
+        target = {"channel_ids": ["UCH-hyX-_JxweSbM7pOrv29Q"], "handles": ["@MichelleRobinsonMedium"]}
+        needles = find_feeds.channel_needles(target)
+        pages = {"byhandle.example": '<a href="https://www.youtube.com/@michellerobinsonmedium">watch</a>',
+                 "byid.example": '<a href="https://youtube.com/channel/uch-hyx-_jxwesbm7porv29q/videos">watch</a>',
+                 "other.example": '<a href="https://www.youtube.com/@michellerobinsonmedia">someone else</a>',
+                 "longer.example": '<a href="https://www.youtube.com/@michellerobinsonmediumship">someone else</a>',
+                 "unreadable.example": ""}
+        asked = {host: find_feeds.site_mentions_channel(host, needles, pages) for host in pages}
+        self.assertEqual(asked, {"byhandle.example": True, "byid.example": True, "other.example": False,
+                                 "longer.example": False, "unreadable.example": None})
+        self.assertEqual(find_feeds.channel_needles({"handles": ["@abc"]}), [])      # too short to mean anything
+
+    def test_the_committed_lists_know_each_added_persons_channel(self):
+        by_id = {t["person_id"]: t for t in find_feeds.load_targets()}
+        self.assertIn("UCH-hyX-_JxweSbM7pOrv29Q", by_id["michelle-robinson"]["channel_ids"])
+        self.assertIn("@MichelleRobinsonMedium", by_id["michelle-robinson"]["handles"])
+        self.assertTrue(by_id["darryl-anka"]["channel_ids"])                         # from the index
+
     def test_a_lookalike_domain_is_not_official(self):
         self.assertEqual(self.grade("Some Fan", "Athina Król Messages", domains={"athina-krol": {"athinakrol.com"}},
                                     site="notathinakrol.com"), "candidate")
@@ -1536,6 +1629,281 @@ class TestCatalogTextKinds(LaneCase):
         summary = json.loads((self.root / "public_export" / "coverage.json").read_text(encoding="utf-8"))
         self.assertEqual(summary["people_with_text_from_source"], 1)
         self.assertEqual(summary["people_with_text_made_here"], 1)
+
+    def test_transcripts_of_a_run_that_is_still_going_are_counted(self):
+        ident = common.item_id("pod", "f", "9")
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": ident, "channel_dir": "daniel-scranton", "lane": "pod", "status": "ok",
+                             "path": f"daniel-scranton/{ident}.opus", "bytes": 10, "duration_s": 1800.0})
+        # a two-process run writes one manifest per process and merges them only when it ends
+        common.append_jsonl(self.root / "transcripts" / "transcripts_manifest.part-1.jsonl",
+                            {"video_id": ident, "channel_dir": "daniel-scranton", "status": "ok", "model": "base.en",
+                             "n_words": 4100})
+        self.assertEqual(self.cli("catalog.py", "--root", self.root).returncode, 0)
+        row = next(r for r in common.read_csv(self.root / "public_export" / "coverage.csv") if r["person_id"] == "daniel-scranton")
+        self.assertEqual((row["asr_transcripts"], row["asr_words"], row["audio_awaiting_transcript"]), ("1", "4100", "0"))
+
+    def test_a_video_and_its_twin_are_one_piece_of_work(self):
+        # darryl-anka: the 75 recordings are listed as videos. One of them also arrives as a podcast
+        # episode (its twin). The pair is listed once and counts as captured once the episode is here.
+        video = (ET / "transcripts" / "scripts" / "all_ids.txt").read_text(encoding="utf-8").split()[0]
+        common.write_csv(self.root / "jobs" / "queue.csv",
+                         [{"video_id": video, "url": f"https://www.youtube.com/watch?v={video}", "channel_dir": "darryl-anka",
+                           "title": "", "duration_s": ""}], ["video_id", "url", "channel_dir", "title", "duration_s"])
+        before = self.coverage_row("darryl-anka")
+        twin = common.item_id("pod", "darryl-anka", "guid-1")
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": twin, "channel_dir": "darryl-anka", "lane": "pod", "status": "ok", "twin_of": video,
+                             "path": f"darryl-anka/{twin}.opus", "bytes": 10, "duration_s": 3600.0})
+        after = self.coverage_row("darryl-anka")
+        self.assertEqual(int(after["items_listed"]), int(before["items_listed"]) + 1)       # two items ...
+        self.assertEqual(after["distinct_listed"], before["distinct_listed"])               # ... one piece of work
+        self.assertEqual((before["distinct_captured"], after["distinct_captured"]), ("0", "1"))
+        self.assertEqual(after["items_outside_youtube"], "1")
+
+    def coverage_row(self, person):
+        self.assertEqual(self.cli("catalog.py", "--root", self.root).returncode, 0)
+        return next(r for r in common.read_csv(self.root / "public_export" / "coverage.csv") if r["person_id"] == person)
+
+
+# --------------------------------------------------------------------------- the one list of everyone tracked
+class TestTargets(LaneCase):
+    def targets(self, *extra, catalogue=True):
+        if catalogue:
+            self.assertEqual(self.cli("catalog.py", "--root", self.root).returncode, 0)
+        out = self.tmp / "plan"
+        p = self.cli("targets.py", "--root", self.root, "--out", out, *extra)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        rows = common.read_csv(out / "targets.csv")
+        return {r["person_id"] or r["person_name"]: r for r in rows}, rows, out
+
+    def listing(self, person, rows):
+        """A channel listing as discover.py leaves it. rows: (video id, tab, seconds)."""
+        common.atomic_write_text(self.root / "discover" / "channels" / f"{person}.jsonl", "".join(
+            json.dumps({"video_id": v, "title": f"video {v}", "duration_s": d, "person_id": person, "tab": tab}) + "\n"
+            for v, tab, d in rows))
+        common.append_jsonl(self.root / "discover" / "discover_manifest.jsonl",
+                            {"person_id": person, "status": "ok", "n_videos": len(rows), "tabs": {"videos": 0}})
+
+    def test_all_three_bodies_of_work_are_in_one_list_and_nobody_twice(self):
+        by, rows, _ = self.targets()
+        named = [r["person_id"] for r in rows if r["person_id"]]
+        self.assertEqual(len(named), len(set(named)))
+        self.assertEqual(by["darryl-anka"]["origin"], "bashar-index")
+        self.assertEqual(by["sam-the-illusionist"]["origin"], "both")           # in the index and in ArchiveShelf's intake
+        self.assertEqual(by["kristin-davies"]["origin"], "archiveshelf")
+        self.assertEqual((by["stewart-pearce"]["origin"], by["michelle-robinson"]["origin"]), ("added", "added"))
+        self.assertIn("257 session transcripts", by["sam-the-illusionist"]["earlier_work"])
+        self.assertIn("recordings digested", by["darryl-anka"]["earlier_work"])
+        self.assertEqual({r["state"] for r in rows} - set(__import__("targets").STATES), set())
+        # names nobody has tied to a channel stay in the list, marked as such, and so do the two left out on request
+        self.assertEqual(sorted(r["person_name"] for r in rows if r["state"] == "unresolved"),
+                         ["LightingClarity", "Pleiadian Laark…", "Rachel & Kevin P…"])
+        self.assertEqual(sorted(r["person_name"] for r in rows if r["state"] == "excluded"), ["Jamie Butler", "Vivek Samtani"])
+        # an index entry whose channel was not found is still a known person, not an unresolved name
+        self.assertNotEqual(by["grace-solaris"]["identity"], "unresolved")
+
+    def test_the_state_says_what_the_plan_rests_on(self):
+        by, _, _ = self.targets()
+        self.assertEqual(by["l-l-research"]["state"], "planned: source found")   # files, pages and a feed are registered
+        self.assertEqual(by["darryl-anka"]["state"], "planned: YouTube only")
+        self.assertEqual(by["grace-solaris"]["state"], "planned: no source yet")
+        self.assertIn("home connection", by["darryl-anka"]["next_step"])
+        row = common.read_csv(ET / "sources" / "creator_files.csv")[0]
+        ident = common.item_id("web", row["media_url"])
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": ident, "channel_dir": row["person_id"], "lane": "web", "status": "ok",
+                             "path": f"{row['person_id']}/{ident}.opus", "bytes": 10, "duration_s": 3600.0})
+        by, _, _ = self.targets()
+        got = by[row["person_id"]]
+        self.assertEqual((got["state"], got["captured_audio_files"], got["captured_audio_hours"], got["audio_awaiting_transcript"]),
+                         ("partly captured", "1", "1.0", "1"))
+
+    def test_nobody_is_captured_while_their_channel_is_uncounted_or_unfetched(self):
+        pages = [r for r in common.read_csv(ET / "sources" / "publisher_pages.csv") if r["person_id"] == "michelle-robinson"]
+        for row in pages:
+            common.append_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl",
+                                {"video_id": common.item_id("web", row["page_url"]), "channel_dir": "michelle-robinson",
+                                 "status": "ok", "kind": "page", "n_words": 900})
+        by, _, _ = self.targets()
+        mine = by["michelle-robinson"]
+        self.assertEqual((mine["items_listed"], mine["items_captured"]), (str(len(pages)), str(len(pages))))
+        self.assertEqual(mine["state"], "partly captured")              # every page is here, but she has a channel nobody counted
+        self.assertEqual(mine["videos_listed"], "")
+        self.listing("michelle-robinson", [("MRVIDEO0001", "videos", 1800), ("MRVIDEO0002", "videos", 5400),
+                                           ("MRSHORT0001", "shorts", None)])
+        by, _, _ = self.targets()
+        mine = by["michelle-robinson"]
+        self.assertEqual((mine["videos_listed"], mine["shorts_listed"], mine["listed_video_hours"]), ("2", "1", "2.0"))
+        self.assertEqual((mine["items_listed"], mine["state"]), (str(len(pages) + 3), "partly captured"))
+        for vid in ("MRVIDEO0001", "MRVIDEO0002", "MRSHORT0001"):
+            common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                                {"video_id": vid, "channel_dir": "michelle-robinson", "status": "ok",
+                                 "path": f"michelle-robinson/{vid}.opus", "bytes": 10, "duration_s": 60.0})
+        by, _, _ = self.targets()
+        self.assertEqual(by["michelle-robinson"]["state"], "captured")
+
+    def test_the_bashar_channels_say_what_kind_each_is_and_what_is_here(self):
+        _, _, out = self.targets()
+        hosts = common.read_csv(out / "bashar_host_channels.csv")
+        listed = common.read_csv(ET / "draft-package" / "csv" / "bashar_videos_in_repo_by_channel.csv")
+        self.assertEqual(sum(int(h["bashar_recordings"]) for h in hosts), len(listed))
+        self.assertEqual(len(hosts), len({r["channel"] for r in listed}))
+        kinds = {h["channel"]: h["kind"] for h in hosts}
+        self.assertEqual(kinds["Bashar Channeled by Darryl Anka"], "official channel")
+        self.assertEqual(kinds["Next Level Soul Podcast"], "interview show")
+        self.assertEqual({h["state"] for h in hosts}, {"planned: YouTube only"})
+        self.assertTrue(all(h["captured_here"] == "0" for h in hosts))
+        # an interview that arrives as the show's podcast episode counts for the channel that carries the video
+        interview = next(r for r in listed if r["channel"] == "Emilio Ortiz")
+        twin = common.item_id("pod", "darryl-anka", "emilio-ortiz-episode")
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": twin, "channel_dir": "darryl-anka", "lane": "pod", "status": "ok", "bytes": 10,
+                             "twin_of": interview["video_id"], "path": f"darryl-anka/{twin}.opus", "duration_s": 4000.0})
+        _, _, out = self.targets()
+        emilio = next(h for h in common.read_csv(out / "bashar_host_channels.csv") if h["channel"] == "Emilio Ortiz")
+        self.assertEqual((emilio["captured_here"], emilio["state"]), ("1", "captured"))
+        summary = json.loads((out / "targets_summary.json").read_text(encoding="utf-8"))
+        self.assertEqual((summary["bashar"]["recordings"], summary["bashar"]["captured_here"]), (len(listed), 1))
+
+    def test_the_summary_adds_up_and_nothing_private_is_written(self):
+        by, rows, out = self.targets()
+        summary = json.loads((out / "targets_summary.json").read_text(encoding="utf-8"))
+        self.assertEqual(summary["targets"], len(rows))
+        self.assertEqual(sum(summary["by_state"].values()), len(rows))
+        self.assertEqual(sum(x["targets"] for x in summary["by_origin_and_state"]), len(rows))
+        text = (out / "targets.csv").read_text(encoding="utf-8") + (out / "bashar_host_channels.csv").read_text(encoding="utf-8")
+        self.assertNotIn("watch?v=", text)                               # channels are named, single recordings are not
+        self.assertNotIn(".mp3", text)
+
+    def test_without_the_private_folder_the_committed_snapshot_is_used(self):
+        p = self.cli("targets.py", "--no-private", "--out", self.tmp / "plan2")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        rows = common.read_csv(self.tmp / "plan2" / "targets.csv")
+        self.assertTrue(all(r["videos_listed"] == "" for r in rows))
+        self.assertGreater(len(rows), 100)
+        hosts = common.read_csv(self.tmp / "plan2" / "bashar_host_channels.csv")
+        self.assertTrue(all(h["captured_here"] == "" for h in hosts))     # unknown, which is not the same as none
+
+
+class TestChannelListingInTheCatalogue(LaneCase):
+    def listing(self, person, rows):
+        common.atomic_write_text(self.root / "discover" / "channels" / f"{person}.jsonl", "".join(
+            json.dumps({"video_id": v, "title": title, "duration_s": d, "person_id": person, "tab": tab}) + "\n"
+            for v, tab, d, title in rows))
+
+    def coverage(self, person):
+        self.assertEqual(self.cli("catalog.py", "--root", self.root).returncode, 0)
+        return next(r for r in common.read_csv(self.root / "public_export" / "coverage.csv") if r["person_id"] == person)
+
+    def test_every_listed_video_counts_and_a_captured_twin_covers_its_video(self):
+        self.listing("stewart-pearce", [("SPVIDEO0001", "videos", 3600, "Deep Dialogue one"),
+                                        ("SPVIDEO0002", "streams", 1800, "A live evening"),
+                                        ("SPSHORT0001", "shorts", None, "A short")])
+        row = self.coverage("stewart-pearce")
+        self.assertEqual((row["youtube_listed"], row["youtube_shorts"], row["youtube_captured"]), ("3", "1", "0"))
+        self.assertIn("YouTube only", row["next_step"])
+        twin = common.item_id("pod", "stewart-pearce", "g1")
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": twin, "channel_dir": "stewart-pearce", "lane": "pod", "status": "ok", "bytes": 10,
+                             "twin_of": "SPVIDEO0001", "path": f"stewart-pearce/{twin}.opus", "duration_s": 3590.0})
+        row = self.coverage("stewart-pearce")
+        self.assertEqual((row["items_listed"], row["distinct_listed"], row["distinct_captured"]), ("4", "3", "1"))
+        self.assertEqual(row["youtube_captured"], "1")                    # the episode is the video's content
+        rows = {r["item_id"]: r for r in common.read_csv(self.root / "catalog" / "catalog.csv")}
+        self.assertEqual((rows["SPSHORT0001"]["tab"], rows["SPVIDEO0002"]["tab"], rows["SPVIDEO0001"]["relation"]),
+                         ("shorts", "streams", "youtube"))
+
+    def test_the_twin_matcher_knows_the_listed_videos_but_not_the_shorts(self):
+        self.listing("stewart-pearce", [("SPVIDEO0001", "videos", 3600, "Deep Dialogue one"),
+                                        ("SPSHORT0001", "shorts", None, "Deep Dialogue one")])
+        known = select_episodes.known_videos(common.layout(self.root))
+        self.assertEqual([v["video_id"] for v in known["stewart-pearce"]], ["SPVIDEO0001"])
+        self.assertEqual(known["stewart-pearce"][0]["duration_s"], 3600)
+        self.assertNotIn("stewart-pearce", select_episodes.known_videos())    # the committed lists alone do not have them
+        episode = {"title": "Deep Dialogue One", "duration_s": 3650, "youtube_ids": []}
+        self.assertEqual(select_episodes.find_twin(episode, known["stewart-pearce"], 0.72, 0.12)[:2], ("SPVIDEO0001", "title"))
+
+
+# --------------------------------------------------------------------------- pages on a maker's own site
+class TestListSitePages(LaneCase):
+    def setUp(self):
+        super().setUp()
+        import list_site_pages
+        self.mod = list_site_pages
+        self.served, self.asked = {}, []
+        self.sites = self.tmp / "official_sites.csv"
+        self.pages = self.tmp / "publisher_pages.csv"
+        base = "https://maker.example"
+        common.write_csv(self.sites, [{"person_id": "maker", "domain": "maker.example", "evidence": "declared on the channel page"}],
+                         ["person_id", "domain", "evidence"])
+        self.serve(base + "/robots.txt", f"User-agent: *\nDisallow: /post/private-\nSitemap: {base}/sitemap_index.xml\n")
+        self.serve(base + "/sitemap_index.xml", f"<sitemapindex><sitemap><loc>{base}/posts.xml</loc></sitemap>"
+                                                f"<sitemap><loc>https://elsewhere.example/sitemap.xml</loc></sitemap></sitemapindex>")
+        self.serve(base + "/posts.xml", "<urlset>" + "".join(f"<url><loc>{base}/post/message-{i}</loc></url>" for i in range(5))
+                   + f"<url><loc>{base}/post/private-notes</loc></url><url><loc>{base}/blog/categories/angels</loc></url>"
+                     f"<url><loc>{base}/about</loc></url><url><loc>{base}/post/cover.jpg</loc></url>"
+                     f"<url><loc>https://elsewhere.example/post/not-theirs</loc></url></urlset>")
+
+    def serve(self, url, body):
+        self.served[url] = body.encode("utf-8")
+
+    def run_tool(self, *extra):
+        import contextlib
+        import io
+        import fetch_publisher_text as fpt
+        case = self
+
+        def fake_get(url, timeout=60, max_bytes=0):
+            case.asked.append(url)
+            if url not in case.served:
+                raise feeds.FetchError(404, "HTTP Error 404", url)
+            return url, "text/xml", case.served[url]
+        saved = (self.mod.get_bytes, fpt.get_bytes, sys.argv)
+        self.mod.get_bytes = fpt.get_bytes = fake_get
+        sys.argv = ["list_site_pages.py", "--root", str(self.root), "--official-sites", str(self.sites), "--pages", str(self.pages),
+                    "--min-interval", "0", *extra]
+        out, code = io.StringIO(), 0
+        try:
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                try:
+                    self.mod.main()
+                except SystemExit as stop:
+                    code = stop.code or 0
+        finally:
+            self.mod.get_bytes, fpt.get_bytes, sys.argv = saved
+        return code, out.getvalue()
+
+    def test_a_dry_run_names_the_families_and_changes_nothing(self):
+        code, out = self.run_tool("--only", "maker")
+        self.assertEqual(code, 0)
+        self.assertIn("/post/…", out)
+        self.assertIn("/blog/…", out)
+        self.assertIn("nothing registered", out)
+        self.assertFalse(self.pages.exists())
+        self.assertNotIn("https://elsewhere.example/sitemap.xml", self.asked)    # only the person's own site is read
+
+    def test_merge_adds_the_matching_pages_once_and_obeys_robots(self):
+        code, out = self.run_tool("--only", "maker", "--match", "^/post/", "--merge")
+        self.assertEqual(code, 0, out)
+        rows = common.read_csv(self.pages)
+        self.assertEqual(sorted(r["page_url"] for r in rows), [f"https://maker.example/post/message-{i}" for i in range(5)])
+        self.assertEqual({r["person_id"] for r in rows}, {"maker"})
+        self.assertEqual(rows[0]["title"], "message 0")
+        self.assertIn("maker.example's own sitemap", rows[0]["evidence"])
+        code, out = self.run_tool("--only", "maker", "--match", "^/post/", "--merge")
+        self.assertIn("0 added", out)
+        self.assertEqual(len(common.read_csv(self.pages)), 5)
+
+    def test_someone_without_an_official_site_is_refused(self):
+        code, _ = self.run_tool("--only", "nobody")
+        self.assertNotEqual(code, 0)
+
+    def test_address_families_and_titles(self):
+        fam = self.mod.family
+        self.assertEqual([fam("https://x.example/"), fam("https://x.example/about"), fam("https://x.example/post/a-b"),
+                          fam("https://x.example/2024/05/hello/")], ["/", "/<page>", "/post/…", "/<year>/…"])
+        self.assertEqual(self.mod.slug_title("https://x.example/2009/09/awakening-with_suzanne.html"), "awakening with suzanne")
 
 
 # --------------------------------------------------------------------------- official sites from channel pages
