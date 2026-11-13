@@ -193,6 +193,21 @@ class TestFeedParsing(unittest.TestCase):
             self.assertEqual(find(lookalike), [], lookalike)
         self.assertEqual(find("https://www.youtube.com/watch?v=TooLongToBeAnId"), [])   # 15 characters is not an id
 
+    def test_a_blog_feed_with_cover_images_is_not_a_podcast(self):
+        post = ('<item><title>A written post</title><guid>p1</guid>'
+                '<enclosure url="https://static.example/cover.jpg" length="1" type="image/jpeg"/></item>')
+        untyped_picture = '<item><title>Another</title><guid>p2</guid><enclosure url="https://static.example/c.png"/></item>'
+        document = '<item><title>A paper</title><guid>p3</guid><enclosure url="https://x.example/a.pdf" type="application/pdf"/></item>'
+        parsed = feeds.parse_feed(feed_xml([post, untyped_picture, document]), "https://blog.example/blog-feed.xml", "elena-danaan")
+        self.assertEqual((parsed["feed"]["items"], parsed["feed"]["episodes"]), (3, 0))
+        real = feeds.parse_feed(feed_xml([item("g", "Talk", "https://cdn.example/a.mp3"),
+                                          '<item><title>No type</title><guid>g2</guid><enclosure url="https://cdn.example/b.m4a"/></item>',
+                                          '<item><title>Video</title><guid>g3</guid><enclosure url="https://cdn.example/play?id=9" type="video/mp4"/></item>']),
+                                "https://f.example/rss", "athina-krol")
+        self.assertEqual(real["feed"]["episodes"], 3)
+        self.assertTrue(feeds.is_media("application/octet-stream", "https://c.example/a.mp3"))
+        self.assertFalse(feeds.is_media("application/octet-stream", "https://c.example/a.bin"))
+
     def test_durations_and_dates(self):
         self.assertEqual(feeds.parse_duration_text("43:34"), 2614)
         self.assertEqual(feeds.parse_duration_text("894.6"), 894)
@@ -1521,6 +1536,280 @@ class TestCatalogTextKinds(LaneCase):
         summary = json.loads((self.root / "public_export" / "coverage.json").read_text(encoding="utf-8"))
         self.assertEqual(summary["people_with_text_from_source"], 1)
         self.assertEqual(summary["people_with_text_made_here"], 1)
+
+
+# --------------------------------------------------------------------------- official sites from channel pages
+def channel_page(channel_id, name, same_as, subscribers=35100):
+    data = {"@context": "https://schema.org", "@type": "ProfilePage", "url": f"https://www.youtube.com/channel/{channel_id}",
+            "mainEntity": {"@type": "Person", "name": name, "alternateName": "@handle",
+                           "url": f"https://www.youtube.com/channel/{channel_id}", "sameAs": same_as,
+                           "interactionStatistic": [{"@type": "InteractionCounter", "interactionType": "https://schema.org/SubscribeAction",
+                                                     "userInteractionCount": subscribers}]}}
+    return f'<html><head><script type="application/ld+json" nonce="x">{json.dumps(data)}</script></head><body>videos</body></html>'
+
+
+class TestDiscoverSites(LaneCase):
+    def setUp(self):
+        super().setUp()
+        import discover_sites
+        self.mod = discover_sites
+        self.pages, self.asked = {}, []
+        self.index = self.tmp / "index.json"
+        self.sites = self.tmp / "official_sites.csv"
+
+    def run_tool(self, people, *extra):
+        self.index.write_text(json.dumps({"channels": [
+            {"person": p, "channel": {"url": f"https://www.youtube.com/@{p}"}} for p in people]}))
+        mod, case = self.mod, self
+
+        def fake_get(url, timeout=60, max_bytes=0):
+            case.asked.append(url)
+            final, body = case.pages.get(url, (url, ""))
+            if body is None:
+                raise feeds.FetchError(429, "HTTP Error 429: Too Many Requests", url)
+            return final, "text/html", body.encode("utf-8")
+        saved = (mod.get_bytes, mod.Robots.allowed, sys.argv)
+        mod.get_bytes = fake_get
+        mod.Robots.allowed = lambda self_, url: True
+        sys.argv = ["discover_sites.py", "--root", str(self.root), "--index", str(self.index), "--extra-channels",
+                    str(self.tmp / "none.csv"), "--official-sites", str(self.sites), "--min-interval", "0", *extra]
+        import io
+        import contextlib
+        out, err, code = io.StringIO(), io.StringIO(), 0
+        try:
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                try:
+                    mod.main()
+                except SystemExit as stop:
+                    code = stop.code or 0
+        finally:
+            mod.get_bytes, mod.Robots.allowed, sys.argv = saved
+        return code, out.getvalue(), err.getvalue()
+
+    def test_declared_links_are_read_and_only_the_makers_own_site_is_kept(self):
+        page = channel_page("UC0ycS7cUA44tvG9T8VErW_w", "The Angels of Atlantis",
+                            ["https://www.facebook.com/TheAngels", "https://www.instagram.com/angels/", "www.theangelsofatlantis.com"])
+        facts = self.mod.read_channel_page(page)
+        self.assertEqual(facts["channel_id"], "UC0ycS7cUA44tvG9T8VErW_w")
+        self.assertEqual(facts["subscribers"], 35100)
+        self.assertEqual(self.mod.website_domains(facts["same_as"]), ["theangelsofatlantis.com"])
+        self.assertEqual(self.mod.website_domains(["https://linktr.ee/x", "https://m.facebook.com/y", "https://open.spotify.com/show/z",
+                                                   "https://maker.example/about", "maker.example"]), ["maker.example"])
+        self.assertEqual(self.mod.read_channel_page("<html><body>Before you continue</body></html>"), {})
+        self.assertEqual(self.mod.read_channel_page('<script type="application/ld+json">{not json</script>'), {})
+
+    def test_dry_run_asks_for_nothing(self):
+        code, out, err = self.run_tool(["alice"])
+        self.assertIn("dry run", err)
+        self.assertEqual(self.asked, [])
+
+    def test_sites_are_recorded_with_the_channel_as_evidence_and_never_twice(self):
+        self.pages["https://www.youtube.com/@alice"] = ("https://www.youtube.com/@alice",
+                                                        channel_page("UC" + "a" * 22, "Alice", ["https://alice.example", "https://x.com/alice"]))
+        self.pages["https://www.youtube.com/@bob"] = ("https://www.youtube.com/@bob",
+                                                      channel_page("UC" + "b" * 22, "Bob", ["https://www.instagram.com/bob"]))
+        code, out, err = self.run_tool(["alice", "bob"], "--all", "--merge")
+        self.assertEqual(code, 0, err)
+        rows = common.read_csv(self.sites)
+        self.assertEqual([(r["person_id"], r["domain"]) for r in rows], [("alice", "alice.example")])
+        self.assertIn("UC" + "a" * 22, rows[0]["evidence"])
+        records = common.latest_by_key(common.read_jsonl(self.root / "sources" / "channel_pages.jsonl"), "person_id")
+        self.assertEqual(records["bob"]["websites"], [])                      # a profile on a platform is not a site
+        self.asked.clear()
+        code, out, err = self.run_tool(["alice", "bob"], "--all", "--merge")
+        self.assertEqual(self.asked, [])                                      # already read: not asked again
+        self.assertEqual(len(common.read_csv(self.sites)), 1)                 # and not listed twice
+
+    def test_a_consent_page_is_a_refusal_and_three_stop_the_run(self):
+        people = [f"p{i}" for i in range(6)]
+        for p in people:
+            self.pages[f"https://www.youtube.com/@{p}"] = ("https://consent.youtube.com/m?continue=x", "<html>Before you continue</html>")
+        code, out, err = self.run_tool(people, "--all")
+        self.assertEqual(code, 3)
+        self.assertEqual(len(self.asked), 3)
+        self.assertIn("STOPPED", err)
+        records = common.read_jsonl(self.root / "sources" / "channel_pages.jsonl")
+        self.assertEqual({r["error_class"] for r in records}, {"bot_check"})
+
+    def test_a_rate_limit_stops_the_run_too(self):
+        people = [f"q{i}" for i in range(5)]
+        for p in people:
+            self.pages[f"https://www.youtube.com/@{p}"] = (f"https://www.youtube.com/@{p}", None)
+        code, out, err = self.run_tool(people, "--all")
+        self.assertEqual(code, 3)
+        self.assertEqual(len(self.asked), 3)
+
+    def test_only_youtube_addresses_are_ever_read(self):
+        self.index.write_text(json.dumps({"channels": [{"person": "x", "channel": {"url": "https://evil.example/@x"}},
+                                                       {"person": "y", "channel": {"url": "https://www.youtube.com/@y/videos"}}]}))
+        entries = self.mod.targets(self.index, self.tmp / "none.csv")
+        self.assertEqual(entries, [{"person_id": "y", "channel_url": "https://www.youtube.com/@y"}])
+
+
+# --------------------------------------------------------------------------- what an official site publishes
+class TestReconSites(LaneCase):
+    def setUp(self):
+        super().setUp()
+        import recon_sites
+        self.mod = recon_sites
+        self.pages, self.asked = {}, []
+        self.sites = self.tmp / "official_sites.csv"
+        self.registry = self.tmp / "registry.csv"
+
+    def serve(self, url, body, status=200):
+        self.pages[url] = (status, body if isinstance(body, bytes) else body.encode("utf-8"))
+
+    def run_tool(self, rows, *extra):
+        common.write_csv(self.sites, rows, ["person_id", "domain", "evidence"])
+        mod, case = self.mod, self
+
+        def fake_get(url, timeout=60, max_bytes=0):
+            case.asked.append(url)
+            status, body = case.pages.get(url, (404, b""))
+            if status != 200:
+                raise feeds.FetchError(status, f"HTTP Error {status}", url)
+            return url, "text/html", body
+        saved = (mod.get_bytes, sys.argv)
+        import fetch_publisher_text as fpt
+        saved_fpt = fpt.get_bytes
+        mod.get_bytes = fpt.get_bytes = fake_get
+        sys.argv = ["recon_sites.py", "--root", str(self.root), "--official-sites", str(self.sites), "--registry",
+                    str(self.registry), "--workers", "1", *extra]
+        import io
+        import contextlib
+        out, err, code = io.StringIO(), io.StringIO(), 0
+        try:
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                try:
+                    mod.main()
+                except SystemExit as stop:
+                    code = stop.code or 0
+        finally:
+            mod.get_bytes, sys.argv = saved
+            fpt.get_bytes = saved_fpt
+        return code, out.getvalue(), err.getvalue()
+
+    def a_site(self, domain="maker.example"):
+        base = f"https://{domain}"
+        self.serve(base + "/robots.txt", f"User-agent: *\nDisallow: /members/\nSitemap: {base}/sitemap_index.xml\n")
+        self.serve(base + "/", f'''<html><head>
+            <link rel="alternate" type="application/rss+xml" title="Posts" href="/feed/">
+            <link rel="alternate" type="application/rss+xml" title="Comments" href="/comments/feed/">
+            </head><body><a href="https://anchor.fm/s/abc123/podcast/rss">Podcast</a>
+            <a href="https://podcasts.apple.com/us/podcast/the-show/id1234567890">Apple</a></body></html>''')
+        self.serve(base + "/feed/", feed_xml(["<item><title>Post one</title><guid>p1</guid></item>",
+                                              "<item><title>Post two</title><guid>p2</guid></item>"], title="Maker blog"))
+        self.serve("https://anchor.fm/s/abc123/podcast/rss",
+                   feed_xml([item("g1", "Episode one", "https://cdn.example/1.mp3")], title="The Show", author="Maker"))
+        self.serve("https://anchor.fm/robots.txt", "User-agent: *\nAllow: /\n")
+        self.serve("https://itunes.apple.com/robots.txt", "")
+        self.serve("https://itunes.apple.com/lookup?id=1234567890&entity=podcast",
+                   json.dumps({"results": [{"feedUrl": "https://anchor.fm/s/abc123/podcast/rss", "collectionName": "The Show",
+                                            "artistName": "Maker", "trackCount": 1}]}))
+        self.serve(base + "/sitemap_index.xml", f"<sitemapindex><sitemap><loc>{base}/post-sitemap.xml</loc></sitemap></sitemapindex>")
+        self.serve(base + "/post-sitemap.xml", "<urlset>" + "".join(
+            f"<url><loc>{base}/2026/01/message-{i}/</loc></url>" for i in range(30)) + f"<url><loc>{base}/about/</loc></url></urlset>")
+        return base
+
+    def test_page_links_are_read(self):
+        declared, hosted, apple = self.mod.links_on(
+            '<link rel="alternate" type="application/rss+xml" href="/feed/">'
+            '<a href="https://feed.podbean.com/show/feed.xml">x</a> https://podcasts.apple.com/gb/podcast/a-show/id987654321',
+            "https://maker.example/")
+        self.assertEqual(declared, ["https://maker.example/feed/"])
+        self.assertEqual(hosted, ["https://feed.podbean.com/show/feed.xml"])
+        self.assertEqual(apple, ["987654321"])
+        pages, children = self.mod.sitemap_locs(b"<urlset><url><loc> https://a/1 </loc></url></urlset>")
+        self.assertEqual((pages, children), (["https://a/1"], []))
+        pages, children = self.mod.sitemap_locs(b"<sitemapindex><sitemap><loc>https://a/s1.xml</loc></sitemap></sitemapindex>")
+        self.assertEqual((pages, children), ([], ["https://a/s1.xml"]))
+
+    def test_dry_run_asks_for_nothing(self):
+        code, out, err = self.run_tool([{"person_id": "maker", "domain": "maker.example"}])
+        self.assertIn("dry run", err)
+        self.assertEqual(self.asked, [])
+
+    def test_a_site_is_described_by_what_it_publishes(self):
+        self.a_site()
+        code, out, err = self.run_tool([{"person_id": "maker", "domain": "maker.example"}], "--all")
+        self.assertEqual(code, 0, err)
+        row = common.read_csv(self.root / "sources" / "site_recon.csv")[0]
+        self.assertEqual((row["status"], row["podcast_feeds"], row["post_feeds"], row["post_feed_items"]), ("ok", "1", "1", "2"))
+        self.assertEqual((row["sitemap_urls"], row["sitemap_post_like"]), ("31", "30"))
+        self.assertNotIn("https://maker.example/comments/feed/", self.asked)          # a comments feed is not a source
+        rec = common.read_jsonl(self.root / "sources" / "site_recon.jsonl")[0]
+        self.assertNotIn("Post one", json.dumps(rec))                                 # addresses and counts, no content
+
+    def linked_shows(self, domain, shows):
+        """An official site whose home page links the given (feed address, title, author) shows."""
+        base = f"https://{domain}"
+        self.serve(base + "/robots.txt", "User-agent: *\nAllow: /\n")
+        self.serve(base + "/", "<html><body>" + "".join(f'<a href="{url}">listen</a>' for url, _, _ in shows) + "</body></html>")
+        for url, title, author in shows:
+            self.serve(url, feed_xml([item("g1", "Episode one", "https://cdn.example/1.mp3")], title=title, author=author))
+            self.serve("https://" + url.split("/")[2] + "/robots.txt", "")
+
+    def test_the_makers_own_show_linked_from_their_site_is_recorded_once(self):
+        self.linked_shows("athinakrol.example", [("https://anchor.fm/s/abc123/podcast/rss", "Spirit Channel with Athina Król", "Athina Krol")])
+        rows = [{"person_id": "athina-krol", "domain": "athinakrol.example"}]
+        code, out, err = self.run_tool(rows, "--all", "--merge")
+        self.assertEqual(code, 0, err)
+        registry = common.read_csv(self.registry)
+        self.assertEqual(len(registry), 1)
+        self.assertEqual((registry[0]["verification"], registry[0]["relation"]), ("verified", "own"))
+        self.assertIn("linked from the official site athinakrol.example", registry[0]["evidence"])
+        self.run_tool(rows, "--all", "--merge", "--refresh")
+        self.assertEqual(len(common.read_csv(self.registry)), 1)
+
+    def test_a_show_the_person_was_a_guest_on_is_not_taken_as_their_own(self):
+        # the real case: a maker's site links an interviewer's show with hundreds of episodes
+        self.linked_shows("athinakrol.example", [("https://www.spreaker.com/show/4221459/episodes/feed",
+                                                  "Inner Journey with Greg Friedman", "Greg Friedman")])
+        code, out, err = self.run_tool([{"person_id": "athina-krol", "domain": "athinakrol.example"}], "--all", "--merge")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(common.read_csv(self.registry), [])
+        self.assertIn("1 linked show(s) left out", out)
+        row = common.read_csv(self.root / "sources" / "site_recon.csv")[0]
+        self.assertEqual(row["podcast_feeds"], "1")                                   # still listed for a person to look at
+
+    def test_a_feed_served_from_the_official_domain_is_the_makers_own_whatever_it_is_called(self):
+        base = "https://athinakrol.example"
+        self.serve(base + "/robots.txt", "")
+        self.serve(base + "/", f'<html><head><link rel="alternate" type="application/rss+xml" href="{base}/feed/podcast/"></head></html>')
+        self.serve(base + "/feed/podcast/", feed_xml([item("g1", "Episode", "https://cdn.example/1.mp3")], title="Sessions", author="Studio"))
+        self.run_tool([{"person_id": "athina-krol", "domain": "athinakrol.example"}], "--all", "--merge")
+        registry = common.read_csv(self.registry)
+        self.assertEqual([r["feed_url"] for r in registry], [base + "/feed/podcast/"])
+
+    def test_a_blog_feed_on_the_official_site_is_a_feed_of_posts_not_a_podcast(self):
+        base = "https://elenadanaan.example"
+        self.serve(base + "/robots.txt", "")
+        self.serve(base + "/", f'<html><head><link rel="alternate" type="application/rss+xml" href="{base}/blog-feed.xml"></head></html>')
+        posts = "".join(f'<item><title>Post {i}</title><guid>p{i}</guid><enclosure url="https://static.example/{i}.jpg" type="image/jpeg"/></item>'
+                        for i in range(7))
+        self.serve(base + "/blog-feed.xml", feed_xml([posts], title="Elena Danaan", author="Elena Danaan"))
+        self.run_tool([{"person_id": "elena-danaan", "domain": "elenadanaan.example"}], "--all", "--merge")
+        self.assertEqual(common.read_csv(self.registry), [])
+        row = common.read_csv(self.root / "sources" / "site_recon.csv")[0]
+        self.assertEqual((row["podcast_feeds"], row["post_feeds"], row["post_feed_items"]), ("0", "1", "7"))
+
+    def test_robots_rules_and_refusals_are_respected(self):
+        base = "https://closed.example"
+        self.serve(base + "/robots.txt", "User-agent: *\nDisallow: /\n")
+        self.serve(base + "/", "<html>should never be read</html>")
+        code, out, err = self.run_tool([{"person_id": "closed", "domain": "closed.example"}], "--all")
+        self.assertEqual(code, 0, err)
+        self.assertNotIn(base + "/", self.asked)
+        row = common.read_csv(self.root / "sources" / "site_recon.csv")[0]
+        self.assertEqual(row["status"], "error")
+        self.assertIn("robots.txt does not allow", row["note"])
+
+    def test_a_site_that_is_down_is_noted_and_the_rest_go_on(self):
+        self.a_site("up.example")
+        code, out, err = self.run_tool([{"person_id": "down", "domain": "down.example"}, {"person_id": "up", "domain": "up.example"}], "--all")
+        self.assertEqual(code, 0, err)
+        rows = {r["person_id"]: r for r in common.read_csv(self.root / "sources" / "site_recon.csv")}
+        self.assertEqual((rows["down"]["status"], rows["up"]["status"]), ("error", "ok"))
 
 
 if __name__ == "__main__":
