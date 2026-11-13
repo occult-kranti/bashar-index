@@ -59,6 +59,34 @@ An independent read of the code found three faults, now fixed and covered by tes
 Proxy settings in the environment are now removed before any tool is started, so "no proxies" is enforced, not
 only stated. Python 3.10 or newer is needed (the code uses 3.10 syntax; the earlier "3.9" was wrong).
 
+### Review of 2026-11-13: what was wrong and what changed
+
+Before this work was merged, four reviewers each took one risk (lost files, conduct toward the hosts,
+private material leaking, wrong numbers) and had to show a concrete failure, not a suspicion. Every finding
+below was first reproduced as a failing test, then fixed.
+
+| Found | Now |
+|---|---|
+| Running the same command again downloaded everything that had already been uploaded and deleted, then deleted it without uploading | every step reads the sync ledger: an item with a checked copy in a store is finished |
+| A ledger line was trusted without looking: a file that changed after its upload, or a store that had been emptied, still led to the local copy being deleted | before a delete the file's SHA-256 is taken again and compared with the ledger, and the store is asked whether it still holds the item; if not, the item is sent again first |
+| With the store folder the same as the private folder, the second run deleted every recording | refused at start; a store path that is the same file as the local one (a link) is refused too |
+| The first push to a new GitHub release always failed | the release is made before anything is uploaded; a GitHub outage is reported as one, and creates nothing |
+| The repository's visibility was read once per run | read at the start of every pass |
+| Captions: a refusal after the first track counted as success; "Your IP is likely being blocked" was not a block; `en.*` asked YouTube for a machine translation per language | all three fixed; named English tracks only |
+| A robots.txt that could not be read marked every page of that site as refused, for good | a third answer, "could not be read": nothing is fetched this run and the pages are tried again next run |
+| A refusal was charged to the first address of a redirect chain, so one refusing media host stopped every show behind the same redirector, or none | charged to the host that refused, remembered per feed; items that failed before go to the back of the queue |
+| A host answering only errors was asked again for every item | left alone for the run after six in a row |
+| A podcast item's id depended on the feed's address, so a feed that moved would be downloaded and counted twice | ids are made from the person and the episode's own guid (`migrate_ids.py` renamed the 503 files already held) |
+| A feed that names the maker's site as its website was graded `verified` | only the official site linking the show, or the feed being served from the official domain, verifies |
+| Title matching joined "Day 10" with "Day 11", and one video could be the twin of many episodes | numbers must agree, both lengths must be known and close, one video has one twin; the rest are `twin_candidate` and are not counted |
+| The coverage table was built from whatever queue file existed | built from the source lists; the queue is only a work order |
+| The guard did not recognise what these lanes write | item files, saved pages, the private catalogue, queues, manifests and bundles are flagged |
+| The runner's defaults undid the slower YouTube pace | 2 workers, one start per 10 seconds, captions never faster than audio |
+
+Not fixed, by choice: the GitHub release is an ordinary one, not a draft (a draft would stay hidden if the
+repository were made public, but `gh` behaviour with drafts was not tested here). Use a repository made for
+this purpose, with no public past.
+
 ## Rules for the data
 
 | Data | Where it lives | May it go into Git? |

@@ -28,7 +28,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (AUDIO_EXT, ITEM_RE, add_root_arg, append_jsonl, atomic_write_text, ensure_outside_git,  # noqa: E402
+from common import (AUDIO_EXT, ITEM_RE, add_root_arg, append_jsonl, archived_ids, atomic_write_text, ensure_outside_git,  # noqa: E402
                     latest_by_key, layout, lpt_assign, normalise_text, parse_shard, probe_duration, read_jsonl,
                     sha256_file, sha256_text, stable_shard, utc_now)
 
@@ -133,6 +133,7 @@ def merge_parts(out_dir):
 def find_jobs(a, audio_dir, out_dir):
     audio_meta = latest_by_key(read_jsonl(audio_dir / "audio_manifest.jsonl"))
     done = latest_by_key(manifest_records(out_dir))
+    stored = archived_ids(a.root, "asr")   # transcripts already uploaded and removed here
     i, n = parse_shard(a.shard)
     jobs = []
     for f in sorted(audio_dir.rglob("*")):
@@ -142,7 +143,7 @@ def find_jobs(a, audio_dir, out_dir):
             continue  # scratch folders such as .work
         chan = f.parent.name if f.parent != audio_dir else "unsorted"
         prev = done.get(f.stem)
-        if prev and prev["status"] == "ok" and (out_dir / chan / f"{f.stem}.json").exists():
+        if prev and prev["status"] == "ok" and (f.stem in stored or (out_dir / chan / f"{f.stem}.json").exists()):
             continue
         if prev and prev["status"] == "error" and not a.retry_failed:
             continue

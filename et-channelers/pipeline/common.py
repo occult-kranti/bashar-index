@@ -144,15 +144,32 @@ def add_root_arg(parser):
                              "(default: $ET_PRIVATE_DIR or ~/et-channelers-private)")
 
 
-def ensure_outside_git(path) -> Path:
-    resolved = Path(path).expanduser().resolve()
+def _inside_git(resolved: Path):
     for parent in (resolved, *resolved.parents):
         if (parent / ".git").exists():
-            raise SystemExit(
-                f"refusing to use {resolved}: it is inside a Git checkout ({parent}). "
-                "Raw audio, captions and transcripts must stay out of the repository; "
-                "pass --root with a folder elsewhere.")
-    return resolved
+            return parent
+    return None
+
+
+def ensure_outside_git(path) -> Path:
+    """The resolved folder, or exit if it, or any linked sub-folder directly inside it, is in a Git
+    checkout. The second check matters: <root>/audio linked into a repository would otherwise let every
+    lane write recordings into that repository while --root itself looks fine."""
+    resolved = Path(path).expanduser().resolve()
+    where = _inside_git(resolved)
+    if where is None and resolved.is_dir():
+        for child in resolved.iterdir():
+            if child.is_symlink():
+                where = _inside_git(child.resolve())
+                if where is not None:
+                    resolved = child
+                    break
+    if where is not None:
+        raise SystemExit(
+            f"refusing to use {resolved}: it is inside a Git checkout ({where}). "
+            "Raw audio, captions and transcripts must stay out of the repository; "
+            "pass --root with a folder elsewhere.")
+    return Path(path).expanduser().resolve()
 
 
 # ---------------------------------------------------------------- files
@@ -208,6 +225,22 @@ def read_jsonl(path):
     return records
 
 
+def archived_ids(root, kind) -> set:
+    """Ids whose `kind` ("audio", "asr", "pubtext", "captions") has a checked copy in a store, according
+    to the ledger sync_archive.py keeps. Such an item is finished even when its local file was deleted
+    to free the disk, so no step fetches or makes it again."""
+    stored = {}
+    for rec in read_jsonl(Path(root) / "sync" / "sync_manifest.jsonl"):
+        if rec.get("kind") != kind:
+            continue
+        key = (rec.get("video_id"), rec.get("store"))
+        if rec.get("withdrawn"):
+            stored.pop(key, None)
+        elif rec.get("verified"):
+            stored[key] = True
+    return {video_id for video_id, _ in stored}
+
+
 def latest_by_key(records, key="video_id"):
     out = {}
     for record in records:
@@ -254,7 +287,8 @@ def probe_duration(path, ffprobe="ffprobe"):
 def classify_error(text: str) -> str:
     """Map yt-dlp / network error text to a short class. HARD_BLOCKS stop the whole run."""
     t = (text or "").lower()
-    if "not a bot" in t or ("sign in to confirm" in t and "bot" in t):
+    if "not a bot" in t or ("sign in to confirm" in t and "bot" in t) \
+            or "ip is likely being blocked" in t or "captcha" in t:
         return "bot_check"
     # YouTube's session limit arrives as "Video unavailable. This content isn't available, try again
     # later" plus yt-dlp's "rate-limited by YouTube for up to an hour". It must be tested before the
@@ -322,33 +356,52 @@ class HostGates:
     """Politeness for plain HTTP lanes: each host gets its own start-rate limit and its own breaker,
     so one publisher that answers 403 / 429 is left alone while the other hosts carry on."""
 
-    def __init__(self, interval=1.0, stop_after=3, clock=time.monotonic, sleep=time.sleep):
-        self.interval, self.stop_after = interval, stop_after
+    def __init__(self, interval=1.0, stop_after=3, stop_after_failures=0, clock=time.monotonic, sleep=time.sleep):
+        self.interval, self.stop_after, self.stop_after_failures = interval, stop_after, stop_after_failures
         self._clock, self._sleep = clock, sleep
-        self._limiters, self._breakers, self._lock = {}, {}, threading.Lock()
+        self._limiters, self._breakers, self._down, self._lock = {}, {}, {}, threading.Lock()
 
     def _get(self, host):
         with self._lock:
             if host not in self._limiters:
                 self._limiters[host] = RateLimiter(self.interval, clock=self._clock, sleep=self._sleep)
                 self._breakers[host] = Breaker(self.stop_after)
-            return self._limiters[host], self._breakers[host]
+                self._down[host] = Breaker(self.stop_after_failures or 10 ** 9)
+            return self._limiters[host], self._breakers[host], self._down[host]
 
     def wait(self, host):
         self._get(host)[0].wait()
 
+    def set_interval(self, host, seconds):
+        """Never go faster than `seconds` between starts on this host (a robots.txt Crawl-delay)."""
+        limiter = self._get(host)[0]
+        limiter.interval = max(limiter.interval, float(seconds))
+
     def blocked(self, host) -> bool:
-        return self._get(host)[1].tripped.is_set()
+        """True when the host refused (403 / 429) or failed (errors, timeouts) too many times in a row."""
+        _, refused, down = self._get(host)
+        return refused.tripped.is_set() or down.tripped.is_set()
 
     def success(self, host):
-        self._get(host)[1].success()
+        _, refused, down = self._get(host)
+        refused.success()
+        down.success()
 
     def hard_block(self, host):
         self._get(host)[1].hard_block()
 
+    def failure(self, host):
+        """A network-class failure (5xx, timeout, dropped connection). Enough in a row and the host is
+        left alone for the rest of the run instead of being asked again for every queued item."""
+        self._get(host)[2].hard_block()
+
     def blocked_hosts(self):
         with self._lock:
             return sorted(h for h, b in self._breakers.items() if b.tripped.is_set())
+
+    def down_hosts(self):
+        with self._lock:
+            return sorted(h for h, b in self._down.items() if b.tripped.is_set())
 
 
 def host_of(url: str) -> str:

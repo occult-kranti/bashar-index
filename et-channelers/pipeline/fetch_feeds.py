@@ -52,7 +52,7 @@ def fetch_one(row, feeds_dir, gates, timeout):
     t0 = time.time()
     try:
         final_url, _, body = get_bytes(row["feed_url"], timeout=timeout)
-        parsed = parse_feed(body, row["feed_url"])
+        parsed = parse_feed(body, row["feed_url"], row["person_id"])
     except FetchError as err:
         klass = http_error_class(err.status) if err.status else "network"
         if klass in ("rate_limited", "forbidden"):

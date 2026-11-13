@@ -8,7 +8,9 @@
 
 Exit 0 = clean, 1 = findings. It prints the file and the rule that matched, never the matched text.
 Rules: audio/video files, caption files, JSON that looks like a speech-to-text dump, files over 5 MB,
-scratch folders, and credential patterns (GitHub, Google, AWS, Slack tokens and private keys).
+scratch folders, credential patterns (GitHub, Google, AWS, Slack tokens and private keys), and what the
+collection lanes write to the private folder: files named after an item id, saved page sources, the
+private catalogue, download queues, collection manifests and archive bundles.
 Run it before every push. As a Git hook:  echo 'python3 et-channelers/scripts/guard_no_raw_media.py --staged' > .git/hooks/pre-commit
 """
 from __future__ import annotations
@@ -27,6 +29,16 @@ MEDIA = {".opus", ".m4a", ".mp3", ".wav", ".flac", ".webm", ".ogg", ".oga", ".aa
          ".mov", ".avi", ".m4v", ".part", ".ytdl"}
 CAPTIONS = {".vtt", ".srt", ".ttml", ".srv1", ".srv2", ".srv3", ".json3", ".sbv", ".ass", ".lrc"}
 SCRATCH_DIRS = {".work", "private_data", "captions_raw"}
+# What the pipeline's lanes write under the private root. None of it belongs in the repository.
+LANE_ID = re.compile(r"^(?:pod|web|ia)-[0-9a-f]{16}$")
+YOUTUBE_ID = re.compile(r"^[A-Za-z0-9_-]{11}$")
+ITEM_SUFFIXES = {".txt", ".json", ".source", ".vtt", ".srt", ".opus"}
+ITEM_DIRS = {"audio", "transcripts", "captions", "transcripts_publisher"}
+TEXT_DIRS = {"transcripts_publisher", "captions"}
+BUNDLE = re.compile(r"^(?:(?:audio|asr|pubtext|captions)-\d{8}T\d{6}-[0-9a-f]{8}|manifests)\.tar$")
+MANIFEST_NAME = re.compile(r"(?:_manifest(?:\.part-\d+)?\.jsonl|^apple_candidates\.jsonl)$")
+PRIVATE_CSV_HEADERS = (("item_id,person_id,lane,relation,title", "private-catalogue"),
+                       ("video_id,url,channel_dir", "download-queue"))
 MAX_BYTES = 5_000_000
 SCAN_BYTES = 2_000_000
 SECRETS = [
@@ -69,6 +81,16 @@ def check(path: Path):
         hits.append("caption-file")
     if any(part in SCRATCH_DIRS for part in path.parts):
         hits.append("scratch-or-private-folder")
+    stem = path.name.split(".")[0]                       # 'pod-…​.en.vtt' and 'abc.en-orig.vtt' keep the id first
+    parts = set(path.parts[:-1])
+    if suffix == ".source":
+        hits.append("saved-page-source")
+    if LANE_ID.match(stem) or (YOUTUBE_ID.match(stem) and suffix in ITEM_SUFFIXES and parts & ITEM_DIRS):
+        hits.append("collected-item-file")
+    elif parts & TEXT_DIRS and suffix in ITEM_SUFFIXES:
+        hits.append("collected-item-file")
+    if BUNDLE.match(path.name):
+        hits.append("archive-bundle")
     try:
         size = path.stat().st_size
     except OSError:
@@ -86,6 +108,14 @@ def check(path: Path):
     text = head.decode("utf-8", errors="ignore")
     if suffix in (".json", ".jsonl") and '"avg_logprob"' in text[:200_000]:
         hits.append("speech-to-text-json")
+    if suffix == ".csv":
+        first = text.lstrip("\ufeff").split("\n", 1)[0].strip()
+        for header, name in PRIVATE_CSV_HEADERS:
+            if first.startswith(header):
+                hits.append(name)
+    if MANIFEST_NAME.search(path.name) and ('"video_id"' in text[:200_000] or '"feed_url"' in text[:200_000]
+                                            or '"feed_key"' in text[:200_000]):
+        hits.append("collection-manifest")
     for name, pattern in SECRETS:
         if pattern.search(text):
             hits.append(name)

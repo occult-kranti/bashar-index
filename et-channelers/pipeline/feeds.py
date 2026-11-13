@@ -142,9 +142,23 @@ def _int(text):
         return None
 
 
-def parse_feed(data: bytes, feed_url: str) -> dict:
+def episode_key(guid: str, enclosure_url: str) -> str:
+    """What identifies an episode wherever its feed lives: the <guid> its publisher gave it, or, when
+    there is none, the path of its media file without host and query (hosts and tracking prefixes change)."""
+    guid = (guid or "").strip()
+    if guid:
+        return guid
+    path = urllib.parse.urlsplit(enclosure_url).path
+    return "path:" + re.sub(r"^.*?/(?=[^/]+/[^/]+$)", "", path)   # last folder and file name
+
+
+def parse_feed(data: bytes, feed_url: str, person_id: str = "") -> dict:
     """Parse RSS bytes into {"feed": {...}, "episodes": [...]}. Episodes without an enclosure are counted
-    but not returned. Show notes are not kept: only ids, titles, dates, sizes and links."""
+    but not returned. Show notes are not kept: only ids, titles, dates, sizes and links.
+
+    An episode's id is made from the person it belongs to and the episode's own guid, not from the feed's
+    address, so a feed that moves (http to https, a new host) keeps its ids and nothing is downloaded or
+    counted twice. `legacy_id` is the id the first version of this lane used (feed address + guid)."""
     if b"<!ENTITY" in data[:4096]:
         raise ValueError("feed declares XML entities; refusing to parse it")
     root = ET.fromstring(data)
@@ -158,8 +172,9 @@ def parse_feed(data: bytes, feed_url: str) -> dict:
         url = (enclosure.get("url") or "").strip() if enclosure is not None else ""
         if not re.match(r"^https?://", url, re.I):
             continue
-        guid = _text(item, "guid") or url
-        ident = item_id("pod", feed_url, guid)
+        own_guid = _text(item, "guid")
+        guid = own_guid or url
+        ident = item_id("pod", person_id or feed_url, episode_key(own_guid, url))
         if ident in seen:
             continue  # the same guid listed twice
         seen.add(ident)
@@ -170,6 +185,7 @@ def parse_feed(data: bytes, feed_url: str) -> dict:
                        for t in item.findall("podcast:transcript", NS) if (t.get("url") or "").strip()]
         episodes.append({
             "video_id": ident,
+            "legacy_id": item_id("pod", feed_url, guid),
             "guid": guid,
             "position": position,
             "title": re.sub(r"\s+", " ", _text(item, "title") or _text(item, "itunes:title")),
@@ -221,8 +237,8 @@ _STOP = frozenset("a an and the of to in on for with by at from is are was be yo
 
 def tokens(text: str):
     """Lower-case content words of a title, used to compare an episode with a video."""
-    words = re.findall(r"[a-z0-9]+", (text or "").lower().replace("’", "'").replace("'", ""))
-    return [w for w in words if w not in _STOP and (len(w) > 1 or w.isdigit())]
+    words = re.findall(r"[^\W_]+", (text or "").lower().replace("’", "'").replace("'", ""), re.UNICODE)
+    return [w for w in words if w not in _STOP and (len(w) > 1 or w.isdigit() or not w.isascii())]
 
 
 def title_similarity(a: str, b: str) -> float:

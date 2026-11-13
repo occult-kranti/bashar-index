@@ -1,9 +1,9 @@
-person_id,name,aliases,role
-darryl-anka,Darryl Anka,Bashar,channeler
-lee-carroll,Lee Carroll,Kryon,channeler
-esther-hicks,Esther Hicks,Abraham Hicks|Abraham-Hicks,channeler
-l-l-research,L/L Research,Law of One|LL Research|L L Research,channeler
-sounds-true,Sounds True,Insights at the Edge,publisher
-kristin-davies,Kristin Davies,Kristin Davies Medium,channeler
-saraharyana,Saraharyana,Sarah Aryana,channeler
-arkayla,Arkayla,,channeler
+person_id,name,aliases,weak_aliases,role
+darryl-anka,Darryl Anka,Bashar,,channeler
+lee-carroll,Lee Carroll,Kryon,,channeler
+esther-hicks,Esther Hicks,Abraham Hicks|Abraham-Hicks,,channeler
+l-l-research,L/L Research,LL Research|L L Research,Law of One,channeler
+sounds-true,Sounds True,,Insights at the Edge|Sounds True,publisher
+kristin-davies,Kristin Davies,Kristin Davies Medium,,channeler
+saraharyana,Saraharyana,Sarah Aryana,,channeler
+arkayla,Arkayla,,,channeler

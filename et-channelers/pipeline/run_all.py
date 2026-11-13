@@ -55,13 +55,14 @@ def build_plan(args, root):
         prepare.append(("queue: choose episodes", cmd))
     if "youtube" in args.lanes:
         parallel.append(("youtube", py + [str(HERE / "download_audio.py"), *base, "--all", "--workers", str(args.workers),
-                                          "--min-interval", str(args.min_interval)]))
+                                          "--min-interval", str(args.min_interval), "--min-free-gb", str(args.min_free_gb)]))
     if "captions" in args.lanes:
-        parallel.append(("captions", py + [str(HERE / "fetch_captions.py"), *base, "--all", "--workers", "2",
-                                           "--min-interval", str(max(2.0, args.min_interval))]))
+        # captions and audio hit the same site: one caption worker, never faster than the audio lane
+        parallel.append(("captions", py + [str(HERE / "fetch_captions.py"), *base, "--all", "--workers", "1",
+                                           "--min-interval", str(max(5.0, args.min_interval))]))
     if "enclosures" in args.lanes:
-        parallel.append(("enclosures", py + [str(HERE / "download_enclosures.py"), *base, "--all", "--workers",
-                                             str(args.workers), "--min-free-gb", str(args.min_free_gb)]))
+        parallel.append(("enclosures", py + [str(HERE / "download_enclosures.py"), *base, "--all", "--workers", "3",
+                                             "--min-free-gb", str(args.min_free_gb)]))
     if "texts" in args.lanes:
         parallel.append(("texts", py + [str(HERE / "fetch_publisher_text.py"), *base, "--all"]))
     if args.transcribe:
@@ -88,8 +89,9 @@ def main():
     ap.add_argument("--lanes", default=",".join(LANES), help="comma-separated: " + ", ".join(LANES))
     ap.add_argument("--set", default="all", choices=("bashar75", "indexed", "channeling", "all"), help="which YouTube videos")
     ap.add_argument("--per-channel", type=int, default=0, help="sample at most K items per person (0 = everything)")
-    ap.add_argument("--workers", type=int, default=3)
-    ap.add_argument("--min-interval", type=float, default=3.0, help="seconds between YouTube download starts")
+    ap.add_argument("--workers", type=int, default=2, help="YouTube downloads at once (the enclosure lane uses 3)")
+    ap.add_argument("--min-interval", type=float, default=10.0,
+                    help="seconds between YouTube download starts (default 10, yt-dlp's own advice)")
     ap.add_argument("--min-free-gb", type=float, default=5.0)
     ap.add_argument("--delete", choices=("none", "audio", "all"), default="audio",
                     help="local copies to remove once the stored copy is checked (default audio)")
@@ -116,7 +118,7 @@ def main():
         print("dry run: add --go to run this plan")
         return
     try:
-        print("store: " + open_store(args.store, args.gh).check_private())
+        print("store: " + open_store(args.store, args.gh, root).check_private())
     except StoreError as err:
         print(f"STOPPED: {err}", file=sys.stderr)
         sys.exit(5)

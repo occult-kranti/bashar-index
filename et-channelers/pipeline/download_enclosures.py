@@ -44,7 +44,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, ensure_outside_git, host_of,  # noqa: E402
+from common import (ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, archived_ids, ensure_outside_git, host_of,  # noqa: E402
                     http_error_class, lane_of, latest_by_key, layout, parse_shard, probe_duration, read_csv,
                     read_jsonl, run_cmd, stable_shard, sha256_file, utc_now)
 from download_audio import ffmpeg_cmd, first_line, tool_version  # noqa: E402
@@ -56,9 +56,9 @@ TEXT_TYPES = ("text/html", "text/plain", "application/json", "application/xml", 
 
 
 class Problem(Exception):
-    def __init__(self, klass, message, status=0):
+    def __init__(self, klass, message, status=0, final_host=""):
         super().__init__(message)
-        self.klass, self.status = klass, status
+        self.klass, self.status, self.final_host = klass, status, final_host
 
 
 def save_stream(url, dest, args):
@@ -67,16 +67,18 @@ def save_stream(url, dest, args):
     try:
         response = open_url(url, timeout=args.socket_timeout)
     except FetchError as err:
-        raise Problem(http_error_class(err.status) if err.status else "network", str(err), err.status) from None
+        raise Problem(http_error_class(err.status) if err.status else "network", str(err), err.status,
+                      host_of(err.final_url or "")) from None
     digest, received = hashlib.sha256(), 0
+    answered_by = host_of(response.geturl())
     with response:
         ctype = (response.headers.get("Content-Type") or "").split(";")[0].strip().lower()
         if ctype in TEXT_TYPES:
-            raise Problem("not_audio", f"server sent {ctype}, not a media file", response.status)
+            raise Problem("not_audio", f"server sent {ctype}, not a media file", response.status, answered_by)
         declared = response.headers.get("Content-Length")
         declared = int(declared) if declared and declared.isdigit() else None
         if declared and declared > args.max_bytes:
-            raise Problem("too_large", f"file is {declared} bytes, over the {args.max_bytes} byte cap", response.status)
+            raise Problem("too_large", f"file is {declared} bytes, over the {args.max_bytes} byte cap", response.status, answered_by)
         try:
             with open(dest, "wb") as handle:
                 while True:
@@ -85,17 +87,17 @@ def save_stream(url, dest, args):
                         break
                     received += len(block)
                     if received > args.max_bytes:
-                        raise Problem("too_large", f"more than {args.max_bytes} bytes received", response.status)
+                        raise Problem("too_large", f"more than {args.max_bytes} bytes received", response.status, answered_by)
                     if time.monotonic() > deadline:
-                        raise Problem("network", f"timed out after {args.timeout}s with {received} bytes", response.status)
+                        raise Problem("network", f"timed out after {args.timeout}s with {received} bytes", response.status, answered_by)
                     digest.update(block)
                     handle.write(block)
         except (OSError, http.client.HTTPException) as err:
-            raise Problem("network", f"{type(err).__name__}: {err}"[:300], response.status) from None
+            raise Problem("network", f"{type(err).__name__}: {err}"[:300], response.status, answered_by) from None
         if declared is not None and received != declared:
-            raise Problem("network", f"connection closed early: {received} of {declared} bytes", response.status)
+            raise Problem("network", f"connection closed early: {received} of {declared} bytes", response.status, answered_by)
         if received < args.min_bytes:
-            raise Problem("not_audio", f"only {received} bytes received", response.status)
+            raise Problem("not_audio", f"only {received} bytes received", response.status, answered_by)
         return {"http_status": response.status, "content_type": ctype, "final_host": host_of(response.geturl()),
                 "source_bytes": received, "source_sha256": digest.hexdigest()}
 
@@ -113,8 +115,13 @@ def fetch_one(args, row, audio_root, gates, versions):
            "tool": versions["client"], "encoder": versions["ffmpeg"],
            "target": f"opus mono {args.sample_rate} Hz {args.bitrate} complexity {args.opus_complexity}"}
     try:
+        # An enclosure address usually starts at a tracking redirector and ends at the show's media host.
+        # Refusals are charged to the host that refused, remembered per feed, so one show's refusing host
+        # neither stops the other shows behind the same first hop nor gets asked again for every episode.
+        group = row.get("feed_key") or host
         for attempt in range(1, args.attempts + 1):
-            if gates.blocked(host):
+            media = args.media_host.get(group, "")
+            if gates.blocked(host) or (media and gates.blocked(media)):
                 return None  # not attempted, not recorded: the next run picks it up
             shutil.rmtree(work, ignore_errors=True)
             work.mkdir(parents=True, exist_ok=True)
@@ -129,16 +136,25 @@ def fetch_one(args, row, audio_root, gates, versions):
                 except Exception as err:  # noqa: BLE001 - never let one item end the run
                     raise Problem("other", f"{type(err).__name__}: {err}"[:300]) from None
             except Problem as err:
+                refuser = err.final_host or host
+                if err.final_host:
+                    args.media_host[group] = err.final_host
                 rec.update(attempts=attempt, elapsed_s=round(time.time() - t0, 1), status="error",
-                           http_status=err.status, error_class=err.klass, error_tail=str(err)[-300:])
+                           http_status=err.status, error_class=err.klass, error_tail=str(err)[-300:],
+                           final_host=refuser)
                 if err.klass in HARD:
-                    gates.hard_block(host)
+                    gates.hard_block(refuser)
                     return rec  # never retry into a block
-                if err.klass != "network" or attempt == args.attempts:
+                if err.klass == "network":
+                    gates.failure(refuser)
+                if err.klass != "network" or attempt == args.attempts or gates.blocked(refuser):
                     return rec
                 time.sleep(min(60.0, args.backoff * 2 ** (attempt - 1)))
                 continue
-            gates.success(host)
+            args.media_host[group] = facts["final_host"] or host
+            gates.success(facts["final_host"] or host)
+            if facts["final_host"] and facts["final_host"] != host:
+                gates.success(host)
             rec.update(attempts=attempt, **facts)
             target.mkdir(parents=True, exist_ok=True)
             part = target / f"{ident}.opus.part"
@@ -206,6 +222,9 @@ def main():
     ap.add_argument("--per-host", type=int, default=2, help="max simultaneous downloads from one host")
     ap.add_argument("--min-interval", type=float, default=1.0, help="seconds between download starts on one host")
     ap.add_argument("--stop-after-blocks", type=int, default=3)
+    ap.add_argument("--stop-after-failures", type=int, default=6,
+                    help="leave a host alone for the rest of the run after this many errors or timeouts in a row "
+                         "from it (0 = never)")
     ap.add_argument("--attempts", type=int, default=3)
     ap.add_argument("--backoff", type=float, default=5.0)
     ap.add_argument("--timeout", type=int, default=1800, help="overall seconds allowed per item")
@@ -235,16 +254,22 @@ def main():
     i, n = parse_shard(args.shard)
     queue = [r for r in queue if stable_shard(r["video_id"], n) == i]
     done = latest_by_key(read_jsonl(audio_root / "audio_manifest.jsonl"))
+    stored = archived_ids(root, "audio")   # uploaded, checked and then deleted here: finished, not missing
     todo = []
     for r in queue:
         prev = done.get(r["video_id"])
         if prev and prev["status"] == "ok":
             f = audio_root / prev["path"]
-            if f.exists() and f.stat().st_size == prev["bytes"]:
+            if r["video_id"] in stored or (f.exists() and f.stat().st_size == prev["bytes"]):
                 continue
         elif prev and prev.get("error_class") in SKIP_LATER and not args.retry_failed:
             continue
         todo.append(r)
+
+    def tried_before(r):
+        prev = done.get(r["video_id"])
+        return bool(prev) and prev.get("status") == "error"
+    todo.sort(key=tried_before)     # stable: new items keep their order and come first
 
     known = [int(float(r["duration_s"])) for r in todo if r.get("duration_s")]
     kbps = float("".join(c for c in args.bitrate if c.isdigit() or c == ".") or 24)
@@ -263,21 +288,26 @@ def main():
         sys.exit(f"{args.ffmpeg} not found. Install it first (see pipeline/README.md).")
     versions = {"client": f"python-urllib {platform.python_version()}", "ffmpeg": tool_version(args.ffmpeg, "-version")}
 
-    gates = HostGates(args.min_interval, args.stop_after_blocks)
+    gates = HostGates(args.min_interval, args.stop_after_blocks, args.stop_after_failures)
+    args.media_host = {}
     args.disk_full = False
     audio_root.mkdir(parents=True, exist_ok=True)
     attempted = run_queue(todo, args, audio_root, gates, versions, Progress(len(todo), "enclosures"))
     print(f"attempted {attempted} of {len(todo)}; manifest {audio_root / 'audio_manifest.jsonl'}", file=sys.stderr)
+    refused, down = gates.blocked_hosts(), gates.down_hosts()
+    if refused:
+        print("STOPPED for these hosts after repeated 403 / 429 answers: " + ", ".join(refused)
+              + ". Wait, then rerun: finished items are skipped.", file=sys.stderr)
+    if down:
+        print("STOPPED for these hosts, which were not answering (errors or timeouts): " + ", ".join(down)
+              + ". Try again later: finished items are skipped.", file=sys.stderr)
+    if refused or down:
+        sys.exit(3)
     if args.disk_full:
         print(f"STOPPED: less than {args.min_free_gb} GB free on the data drive. Move finished audio off this "
               "machine (see sync_archive.py) or pass a lower --min-free-gb, then rerun: finished items are skipped.",
               file=sys.stderr)
         sys.exit(4)
-    if gates.blocked_hosts():
-        print("STOPPED for these hosts after repeated 403 / 429 answers: " + ", ".join(gates.blocked_hosts())
-              + ". Wait, then rerun: finished items are skipped.", file=sys.stderr)
-        sys.exit(3)
-
 
 if __name__ == "__main__":
     main()

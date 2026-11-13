@@ -49,7 +49,7 @@ def fetch_one(args, row, out_root, limiter, breaker):
     target = out_root / row["channel_dir"]
     rec = {"video_id": video_id, "channel_dir": row["channel_dir"], "started": utc_now()}
     try:
-        if breaker.tripped.is_set():
+        if breaker.tripped.is_set() or (args.systemic is not None and args.systemic.tripped.is_set()):
             return None
         shutil.rmtree(work, ignore_errors=True)
         work.mkdir(parents=True, exist_ok=True)
@@ -58,22 +58,29 @@ def fetch_one(args, row, out_root, limiter, breaker):
         code, _, err = run_cmd(ytdlp_cmd(args, row, work), args.timeout)
         rec["elapsed_s"] = round(time.time() - t0, 1)
         tracks = sorted(work.glob(f"{video_id}.*.vtt"))
-        if code != 0 and not tracks:
+        saved = []
+        if tracks:
+            target.mkdir(parents=True, exist_ok=True)
+        for track in tracks:                         # keep whatever arrived, even if a later track failed
+            shutil.move(str(track), target / track.name)
+            saved.append(track.name[len(video_id) + 1:-4])
+        if code != 0:
+            # yt-dlp fetches tracks one by one and stops at the first that fails. A refusal after the
+            # first track is still a refusal: record an error so the video is asked for again later,
+            # and count it, or the whole queue would be requested straight through a rate limit.
             klass = classify_error(err)
-            rec.update(status="error", error_class=klass, error_tail=(err or "").strip()[-300:])
+            rec.update(status="error", error_class=klass, error_tail=(err or "").strip()[-300:], tracks_saved=saved)
             if klass in HARD_BLOCKS:
                 breaker.hard_block()
+            elif klass in ("other", "no_formats") and args.systemic is not None:
+                args.systemic.hard_block()
             return rec
         breaker.success()
+        if args.systemic is not None:
+            args.systemic.success()
         if not tracks:
             rec.update(status="error", error_class="no_captions", error_tail="the video has no caption track in the requested languages")
             return rec
-        target.mkdir(parents=True, exist_ok=True)
-        saved = []
-        for track in tracks:
-            lang = track.name[len(video_id) + 1:-4]
-            shutil.move(str(track), target / track.name)
-            saved.append(lang)
         # prefer a track the uploader wrote ("en") over YouTube's generated one ("en-orig", "en-en" ...)
         best = sorted(saved, key=lambda lang: (len(lang), lang))[0]
         text = cues_to_text((target / f"{video_id}.{best}.vtt").read_text(encoding="utf-8", errors="replace"))
@@ -97,7 +104,11 @@ def main():
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--min-interval", type=float, default=5.0, help="seconds between request starts, all workers")
     ap.add_argument("--stop-after-blocks", type=int, default=3)
-    ap.add_argument("--languages", default="en.*,en", help="yt-dlp --sub-langs value")
+    ap.add_argument("--languages", default="en,en-orig,en-US,en-GB",
+                    help="yt-dlp --sub-langs value. Named tracks only: a pattern such as en.* also asks YouTube "
+                         "for a machine translation into English of every other language, one request each")
+    ap.add_argument("--stop-after-failures", type=int, default=8,
+                    help="stop (exit code 6) after this many unrecognised failures in a row. 0 = never")
     ap.add_argument("--timeout", type=int, default=300)
     ap.add_argument("--retry-failed", action="store_true")
     ap.add_argument("--ytdlp", default="yt-dlp")
@@ -128,6 +139,7 @@ def main():
     if not shutil.which(args.ytdlp):
         sys.exit(f"{args.ytdlp} not found. Install it first (see pipeline/README.md).")
     limiter, breaker, progress = RateLimiter(args.min_interval), Breaker(args.stop_after_blocks), Progress(len(todo), "captions")
+    args.systemic = Breaker(args.stop_after_failures) if args.stop_after_failures else None
     attempted = 0
     with cf.ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
         for rec in pool.map(lambda r: fetch_one(args, r, out_root, limiter, breaker), todo):
@@ -139,6 +151,11 @@ def main():
         print("STOPPED: repeated 403 / 429 / bot-check responses. Wait, use fewer --workers or a larger "
               "--min-interval, then rerun: finished items are skipped.", file=sys.stderr)
         sys.exit(3)
+    if args.systemic is not None and args.systemic.tripped.is_set():
+        print(f"STOPPED: {args.stop_after_failures} unrecognised failures in a row. That points at the setup, not at "
+              "the videos: run pipeline/doctor.py, update yt-dlp, read the last lines of captions_manifest.jsonl, "
+              "then rerun.", file=sys.stderr)
+        sys.exit(6)
 
 
 if __name__ == "__main__":

@@ -30,13 +30,14 @@ import html
 import json
 import re
 import sys
+import threading
 import time
 import urllib.robotparser
 from html.parser import HTMLParser
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (ET_ROOT, ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, atomic_write_text,  # noqa: E402
+from common import (ET_ROOT, ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, archived_ids, atomic_write_text,  # noqa: E402
                     ensure_outside_git, host_of, http_error_class, item_id, latest_by_key, layout, normalise_text,
                     read_csv, read_jsonl, sha256_text, utc_now)
 from feeds import USER_AGENT, YOUTUBE_ID_IN_TEXT, FetchError, get_bytes, parse_date, safe_url  # noqa: E402
@@ -146,27 +147,49 @@ def to_text(body: bytes, content_type: str, declared: str, url: str):
 
 
 class Robots:
-    """robots.txt per host, read once. A host whose robots.txt cannot be read is treated as allowed
-    only if it answered 4xx (no file); network trouble means 'do not fetch from it this run'."""
+    """robots.txt per site, read once per run. Three answers:
+        True   the address may be fetched (the rules allow it, or the site has no robots.txt)
+        False  the rules disallow it
+        None   robots.txt could not be read this run (timeout, 5xx, or the site answered 401/403/429).
+               Nothing is fetched from that site this run, and the items are tried again next run:
+               an unread robots.txt is not a refusal, and it is not permission either.
+    """
 
     def __init__(self, timeout=30):
-        self.timeout, self.cache = timeout, {}
+        self.timeout, self.cache, self.lock = timeout, {}, threading.Lock()
 
-    def allowed(self, url) -> bool:
+    def _rules(self, root):
+        with self.lock:
+            if root not in self.cache:
+                try:
+                    _, _, body = get_bytes(root + "/robots.txt", timeout=self.timeout, max_bytes=2 * 1024 * 1024)
+                    parser = urllib.robotparser.RobotFileParser()
+                    parser.parse(body.decode("utf-8", "replace").splitlines())
+                    self.cache[root] = parser
+                except FetchError as err:
+                    missing = 400 <= err.status < 500 and err.status not in (401, 403, 429)
+                    self.cache[root] = True if missing else None
+            return self.cache[root]
+
+    def allowed(self, url):
         base = re.match(r"^(https?://[^/]+)", url, re.I)
         if not base:
             return False
-        root = base.group(1).lower()
-        if root not in self.cache:
-            parser = urllib.robotparser.RobotFileParser()
-            try:
-                _, _, body = get_bytes(root + "/robots.txt", timeout=self.timeout, max_bytes=2 * 1024 * 1024)
-                parser.parse(body.decode("utf-8", "replace").splitlines())
-                self.cache[root] = parser
-            except FetchError as err:
-                self.cache[root] = True if 400 <= err.status < 500 else False
-        rule = self.cache[root]
-        return rule if isinstance(rule, bool) else rule.can_fetch(USER_AGENT, url)
+        rules = self._rules(base.group(1).lower())
+        if rules is None or isinstance(rules, bool):
+            return rules
+        return rules.can_fetch(USER_AGENT, url)
+
+    def crawl_delay(self, url):
+        base = re.match(r"^(https?://[^/]+)", url, re.I)
+        rules = self._rules(base.group(1).lower()) if base else None
+        if rules is None or isinstance(rules, bool):
+            return None
+        try:
+            delay = rules.crawl_delay(USER_AGENT)
+            return float(delay) if delay else None
+        except (TypeError, ValueError):
+            return None
 
 
 def load_jobs(paths, kinds, only):
@@ -203,9 +226,22 @@ def fetch_one(job, out_dir, gates, robots, args):
            "source_host": host, "source_url": job["url"], "started": utc_now()}
     if gates.blocked(host):
         return None
-    if not robots.allowed(safe_url(job["url"])):
+    try:
+        address = safe_url(job["url"])
+    except (FetchError, ValueError) as err:          # a port out of range, embedded credentials, and so on
+        rec.update(status="error", error_class="bad_address", error_tail=str(err)[-300:])
+        return rec
+    verdict = robots.allowed(address)
+    if verdict is None:
+        rec.update(status="error", error_class="network",
+                   error_tail="robots.txt could not be read, so nothing was fetched from this site on this run")
+        return rec
+    if not verdict:
         rec.update(status="error", error_class="robots", error_tail="robots.txt does not allow this address")
         return rec
+    delay = robots.crawl_delay(address)
+    if delay:
+        gates.set_interval(host, min(delay, 60.0))
     gates.wait(host)
     try:
         _, ctype, body = get_bytes(job["url"], timeout=args.timeout, max_bytes=MAX_TEXT_BYTES)
@@ -286,10 +322,12 @@ def main():
     only = {x.strip() for x in args.only.split(",") if x.strip()}
     jobs = load_jobs(paths, {x.strip() for x in args.kinds.split(",") if x.strip()}, only)
     done = latest_by_key(read_jsonl(manifest))
+    stored = archived_ids(paths.root, "pubtext")
     todo = []
     for job in jobs:
         prev = done.get(job["video_id"])
-        if prev and prev["status"] == "ok" and (out_dir / job["channel_dir"] / f"{job['video_id']}.txt").exists():
+        if prev and prev["status"] == "ok" and (job["video_id"] in stored
+                                                or (out_dir / job["channel_dir"] / f"{job['video_id']}.txt").exists()):
             continue
         if prev and prev["status"] == "error" and prev.get("error_class") not in ("network", "rate_limited", "forbidden") \
                 and not args.retry_failed:

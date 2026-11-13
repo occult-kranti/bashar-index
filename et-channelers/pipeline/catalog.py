@@ -34,6 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, item_id, lane_of,  # noqa: E402
                     latest_by_key, layout, read_csv, read_jsonl, utc_now, write_csv)
 from find_feeds import load_targets  # noqa: E402
+from select_episodes import collect  # noqa: E402
 
 INDEX = ET_ROOT / "youtube-index" / "youtube_index.json"
 BASHAR_IDS = ET_ROOT / "transcripts" / "scripts" / "all_ids.txt"
@@ -72,10 +73,14 @@ def main():
     args = ap.parse_args()
     paths = layout(ensure_outside_git(args.root))
 
-    audio = latest_by_key(read_jsonl(paths.audio / "audio_manifest.jsonl"))
-    asr = latest_by_key(read_jsonl(paths.transcripts / "transcripts_manifest.jsonl"))
-    pub = latest_by_key(read_jsonl(paths.pubtext / "publisher_text_manifest.jsonl"))
-    caps = latest_by_key(read_jsonl(paths.captions / "captions_manifest.jsonl"))
+    def current(path):
+        """Latest line per item, without ids that migrate_ids.py renamed."""
+        return {k: v for k, v in latest_by_key(read_jsonl(path)).items() if v.get("status") != "superseded"}
+
+    audio = current(paths.audio / "audio_manifest.jsonl")
+    asr = current(paths.transcripts / "transcripts_manifest.jsonl")
+    pub = current(paths.pubtext / "publisher_text_manifest.jsonl")
+    caps = current(paths.captions / "captions_manifest.jsonl")
 
     # which person a YouTube video belongs to: the index says so, and the Bashar-75 list is all Darryl Anka
     yt_person, indexed = {}, {}
@@ -99,12 +104,22 @@ def main():
                                         "title": "", "published": "", "duration_s": "", "twin_of": "", "twin_method": "",
                                         "source_host": "", "source_url": "", "text_id": ident, "folder": person})
 
-    queue = paths.jobs / "queue_enclosures.csv"
-    for row in read_csv(queue) if queue.exists() else []:
+    # What exists is what the source lists hold (every accepted feed's episodes, every creator file),
+    # not what the current queue file happens to contain: a queue built with --only, --per-channel or
+    # --limit is a work order, and counting from it made "listed", "remaining" and "complete" wrong.
+    listed, _, _ = collect(paths)
+    for row in listed:
         e = entry(row["video_id"], row["channel_dir"])
-        e.update(relation=row.get("relation", ""), title=row.get("title", ""), published=row.get("published", ""),
-                 duration_s=row.get("duration_s", ""), twin_of=row.get("twin_of", ""),
-                 twin_method=row.get("twin_method", ""), source_url=row.get("url", ""), folder=row["channel_dir"])
+        e.update(relation=row["relation"], title=row["title"], published=row["published"],
+                 duration_s="" if row["duration_s"] is None else row["duration_s"], twin_of=row["twin_of"],
+                 twin_method=row["twin_method"], source_url=row["url"], folder=row["channel_dir"])
+    queue = paths.jobs / "queue_enclosures.csv"
+    for row in read_csv(queue) if queue.exists() else []:       # anything queued that the lists no longer hold
+        if row["video_id"] not in items:
+            e = entry(row["video_id"], row["channel_dir"])
+            e.update(relation=row.get("relation", ""), title=row.get("title", ""), published=row.get("published", ""),
+                     duration_s=row.get("duration_s", ""), twin_of=row.get("twin_of", ""),
+                     twin_method=row.get("twin_method", ""), source_url=row.get("url", ""), folder=row["channel_dir"])
     queue = paths.jobs / "queue.csv"
     for row in read_csv(queue) if queue.exists() else []:
         e = entry(row["video_id"], row["channel_dir"])
@@ -119,9 +134,10 @@ def main():
     for row in read_csv(CREATOR_FILES) if CREATOR_FILES.exists() else []:
         page = (row.get("official_page") or "").strip()
         ident = item_id("web", (row.get("media_url") or "").strip())
-        if page in page_ids and ident in items:
-            items[ident]["text_id"] = page_ids[page]
-            paired_pages.add(page_ids[page])
+        if page in page_ids:
+            if ident in items:
+                items[ident]["text_id"] = page_ids[page]
+            paired_pages.add(page_ids[page])       # the page's text belongs to this recording: count it once, there
 
     for ident, rec in audio.items():
         e = entry(ident, rec.get("channel_dir", ""))
@@ -134,6 +150,11 @@ def main():
     for ident, rec in caps.items():
         e = entry(ident, rec.get("channel_dir", ""))
         e["relation"] = e["relation"] or "youtube"
+    for row in page_rows:
+        page = (row.get("page_url") or "").strip()
+        if page and page_ids[page] not in paired_pages and page_ids[page] not in items:
+            e = entry(page_ids[page], row.get("person_id", ""))
+            e.update(relation="page", title=row.get("title", ""), source_url=page, source_host="")
     furniture = boilerplate_ids(pub)
     for ident, rec in pub.items():
         if ident in paired_pages:
@@ -187,13 +208,16 @@ def main():
         got = [r for r in mine if r["audio_status"] == "ok"]
         asr_done = [r for r in mine if r["asr_status"] == "ok"]
         waiting = sum(1 for r in got if not r["has_text"])
-        wants_audio = [r for r in mine if r["relation"] in ("own", "host", "file", "youtube")]
+        remaining = [r for r in mine if r["relation"] in ("own", "host", "file", "youtube") and r["audio_status"] != "ok"]
+        pages_left = sum(1 for r in mine if r["relation"] == "page" and r["publisher_text_status"] != "ok")
         if not mine and not feeds.get(person):
             step = "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
-        elif len(got) < len(wants_audio):
-            only_youtube = all(r["relation"] == "youtube" for r in wants_audio if r["audio_status"] != "ok")
+        elif remaining:
+            only_youtube = all(r["relation"] == "youtube" for r in remaining)
             step = ("YouTube only: run the YouTube lane on a home connection" if only_youtube
-                    else f"download the remaining {len(wants_audio) - len(got)} listed items")
+                    else f"download the remaining {len(remaining)} listed items")
+        elif pages_left:
+            step = f"fetch the remaining {pages_left} publisher pages"
         elif waiting:
             step = f"transcribe {waiting} recordings that have no text yet"
         elif mine:

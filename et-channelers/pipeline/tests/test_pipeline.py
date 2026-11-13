@@ -1060,6 +1060,67 @@ class TestGuard(unittest.TestCase):
         self.assertIn("scratch-or-private-folder", out)
         self.assertIn("file-over-5MB", out)
 
+    def test_what_the_collection_lanes_write_is_flagged(self):
+        pod, web, yt = "pod-0123456789abcdef", "web-fedcba9876543210", "kvU9mCJr-eo"
+        files = {
+            f"transcripts_publisher/sam-the-illusionist/{web}.txt": "four thousand words of a session\n",
+            f"transcripts_publisher/sam-the-illusionist/{web}.source": "<html>the page as fetched</html>",
+            f"transcripts/athina-krol/{pod}.txt": "machine transcript text\n",
+            f"transcripts/athina-krol/{pod}.json": '{"segments": []}',
+            f"captions/chanY/{yt}.txt": "caption text\n",
+            f"elsewhere/{pod}.txt": "an item file anywhere is still an item file\n",
+            "catalog/catalog.csv": "item_id,person_id,lane,relation,title,published\npod-1,a,pod,own,A private title,\n",
+            "jobs/queue_enclosures.csv": "video_id,url,channel_dir,title\npod-1,https://x/1.mp3,a,T\n",
+            "audio/audio_manifest.jsonl": '{"video_id":"pod-1","channel_dir":"a","source_url":"https://x/1.mp3"}\n',
+            "sources/apple_candidates.jsonl": '{"kind":"result","person_id":"a","feed_url":"https://x/feed"}\n',
+            "sync/audio-20261113T180000-0a1b2c3d.tar": "bundle bytes",
+            "sync/manifests.tar": "bundle bytes",
+        }
+        for rel, text in files.items():
+            f = self.tmp / rel
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text(text)
+        p = self.run_guard(self.tmp)
+        self.assertEqual(p.returncode, 1, p.stdout)
+        flagged = {line.split(": ")[0].replace(str(self.tmp) + "/", "") for line in p.stdout.splitlines() if ": " in line}
+        self.assertEqual(flagged, set(files), f"not flagged: {sorted(set(files) - flagged)}")
+        for rule in ("collected-item-file", "saved-page-source", "private-catalogue", "download-queue",
+                     "collection-manifest", "archive-bundle"):
+            self.assertIn(rule, p.stdout)
+        self.assertNotIn("A private title", p.stdout)                   # the rule is named, the content is not shown
+
+    def test_public_lists_and_counts_are_not_flagged(self):
+        files = {
+            "plan/coverage.csv": "person_id,person_name,role,items_listed\nathina-krol,Athina,channeler,225\n",
+            "sources/podcast_feeds.csv": "person_id,relation,feed_url\nathina-krol,own,https://feed.example/x.xml\n",
+            "sources/publisher_pages.csv": "person_id,title,page_url\nl-l-research,Session 1,https://site.example/1\n",
+            "transcripts/bashar75_manifest.csv": "video_id,status,error\nkvU9mCJr-eo,ok,\n",
+            "transcripts/scripts/all_ids.txt": "kvU9mCJr-eo\n",
+            "transcripts/findings/note.md": "a findings note\n",
+            "plan/estimates.json": "{}",
+        }
+        for rel, text in files.items():
+            f = self.tmp / rel
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text(text)
+        p = self.run_guard(self.tmp)
+        self.assertEqual(p.returncode, 0, p.stdout)
+
+    def test_a_linked_subfolder_into_a_checkout_is_refused(self):
+        repo = self.tmp / "repo"
+        (repo / ".git").mkdir(parents=True)
+        (repo / "audio").mkdir()
+        root = self.tmp / "private"
+        root.mkdir()
+        (root / "audio").symlink_to(repo / "audio", target_is_directory=True)
+        with self.assertRaises(SystemExit) as stop:
+            common.ensure_outside_git(root)
+        self.assertIn("inside a Git checkout", str(stop.exception))
+        (root / "audio").unlink()
+        (root / "audio").symlink_to(self.tmp / "elsewhere", target_is_directory=True)   # a link to a plain folder is fine
+        (self.tmp / "elsewhere").mkdir()
+        self.assertEqual(common.ensure_outside_git(root), root.resolve())
+
     def test_the_repository_itself_is_clean(self):
         p = subprocess.run([sys.executable, "-I", str(GUARD)], capture_output=True, text=True)
         self.assertEqual(p.returncode, 0, p.stdout)

@@ -38,7 +38,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (HARD_BLOCKS, Breaker, Progress, RateLimiter, add_root_arg, append_jsonl,  # noqa: E402
+from common import (HARD_BLOCKS, Breaker, Progress, RateLimiter, add_root_arg, append_jsonl, archived_ids,  # noqa: E402
                     classify_error, ensure_outside_git, latest_by_key, layout, parse_shard, probe_duration,
                     read_csv, read_jsonl, run_cmd, sha256_file, stable_shard, utc_now)
 
@@ -146,6 +146,10 @@ def run_queue(todo, args, audio_root, limiter, breaker, versions, progress):
     with cf.ThreadPoolExecutor(max_workers=workers) as pool:
         while True:
             while len(running) < workers and not breaker.tripped.is_set() and not stopped(args):
+                floor = getattr(args, "min_free_gb", 0)
+                if floor and shutil.disk_usage(audio_root).free < floor * 1e9:
+                    args.disk_full = True      # finish what is in flight, start nothing new
+                    break
                 ready = [(q[0][0], chan) for chan, q in pending.items() if q and inflight[chan] < cap]
                 if not ready:
                     break
@@ -189,6 +193,8 @@ def main():
     ap.add_argument("--stop-after-failures", type=int, default=8,
                     help="stop (exit code 6) after this many setup-type failures in a row: no formats, "
                          "encoder errors, unrecognised errors. 0 = never")
+    ap.add_argument("--min-free-gb", type=float, default=2.0,
+                    help="stop starting new videos when the data drive has less free space than this (exit code 4)")
     ap.add_argument("--attempts", type=int, default=3)
     ap.add_argument("--backoff", type=float, default=5.0)
     ap.add_argument("--timeout", type=int, default=3600)
@@ -208,12 +214,13 @@ def main():
     i, n = parse_shard(args.shard)
     queue = [r for r in queue if stable_shard(r["video_id"], n) == i]
     done = latest_by_key(read_jsonl(audio_root / "audio_manifest.jsonl"))
+    stored = archived_ids(root, "audio")   # uploaded, checked and then deleted here: finished, not missing
     todo = []
     for r in queue:
         prev = done.get(r["video_id"])
         if prev and prev["status"] == "ok":
             f = audio_root / prev["path"]
-            if f.exists() and f.stat().st_size == prev["bytes"]:
+            if r["video_id"] in stored or (f.exists() and f.stat().st_size == prev["bytes"]):
                 continue
         elif prev and prev.get("error_class") in SKIP_LATER and not args.retry_failed:
             continue
@@ -238,6 +245,8 @@ def main():
 
     limiter, breaker = RateLimiter(args.min_interval), Breaker(args.stop_after_blocks)
     args.systemic = Breaker(args.stop_after_failures) if args.stop_after_failures else None
+    args.disk_full = False
+    audio_root.mkdir(parents=True, exist_ok=True)
     attempted = run_queue(todo, args, audio_root, limiter, breaker, versions, Progress(len(todo), "audio"))
     print(f"attempted {attempted} of {len(todo)}; manifest {audio_root / 'audio_manifest.jsonl'}", file=sys.stderr)
     if stopped(args) and not breaker.tripped.is_set():
@@ -250,6 +259,10 @@ def main():
         print("STOPPED: repeated 403 / 429 / bot-check responses. Wait, use fewer --workers or a larger "
               "--min-interval, then rerun: finished items are skipped.", file=sys.stderr)
         sys.exit(3)
+    if args.disk_full:
+        print(f"STOPPED: less than {args.min_free_gb} GB free on the data drive. Move finished audio off this "
+              "machine (sync_archive.py) or pass a lower --min-free-gb, then rerun.", file=sys.stderr)
+        sys.exit(4)
 
 
 if __name__ == "__main__":

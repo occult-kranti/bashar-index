@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import time
 import unicodedata
@@ -83,7 +84,7 @@ def load_targets():
                 continue
             entry = targets.setdefault(row["person_id"], {"person_id": row["person_id"], "names": [],
                                                           "person_name": row.get("name") or "", "role": row.get("role") or ""})
-            for name in [row.get("name")] + (row.get("aliases") or "").split("|"):
+            for name in [row.get("name")] + (row.get("aliases") or "").split("|") + (row.get("weak_aliases") or "").split("|"):
                 if name and name.strip() and name.strip() not in entry["names"]:
                     entry["names"].append(name.strip())
     return [targets[k] for k in sorted(targets)]
@@ -105,10 +106,15 @@ def apple_search(term, limit=10, timeout=30):
     return json.loads(body.decode("utf-8", "replace")).get("results", [])
 
 
-def grade(target, result, strict, domains, site_host=""):
+def grade(target, result, strict, domains, site_host="", site_links_show=False):
     """(grade, reason) for one Apple result against one tracked person. Grades: verified, name-match,
     candidate, unrelated. 'name-match' may still be demoted later if too many feeds claim the name.
-    site_host is the host of the feed's own <link>, known only after --check-links read the feed."""
+
+    Two things verify a feed, and both come from the maker's side, not from the feed:
+      * the feed is served from a domain listed in official_sites.csv;
+      * a page on that official site links to the show (site_links_show, found by --check-links).
+    site_host is the host of the feed's own <link>. A feed can name any site as its website, and fan
+    re-upload feeds usually name the maker's, so that claim never promotes a feed by itself."""
     person = set(name_tokens(target["person_name"]))
     author = set(name_tokens(result.get("artistName", "")))
     title = set(name_tokens(result.get("collectionName", "")))
@@ -119,19 +125,67 @@ def grade(target, result, strict, domains, site_host=""):
     official = domains.get(target["person_id"], ())
     if feed_host and any(feed_host == d or feed_host.endswith("." + d) for d in official):
         return "verified", f"the feed itself is served from the official domain {feed_host}"
-    if site_host and any(site_host == d or site_host.endswith("." + d) for d in official):
-        return "verified", f"feed website {site_host} is listed as an official domain"
+    if site_links_show:
+        return "verified", "a page on the official site links to this show"
     author_is_person = bool(person) and person <= author and len(author) <= len(person) + 2
     title_has_name = any(a <= title for a in alias_sets)
+    claims_site = bool(site_host) and any(site_host == d or site_host.endswith("." + d) for d in official)
     if author_is_person and title_has_name:
         if target["person_id"] in strict:
             return "candidate", "author and title match, but this person is widely re-uploaded: needs official-site evidence"
         return "name-match", "author is the person and the title carries the name"
+    if claims_site:
+        return "candidate", "the feed names the official site as its website, but the site was not found linking back: confirm by hand"
     if author_is_person:
         return "candidate", "author is the person; title does not carry the name"
     if title_has_name:
         return "candidate", "title carries the name; author is someone else (re-upload, fan feed or a show about them)"
     return "unrelated", "name appears only in episodes or search ranking"
+
+
+def clean_cell(text, limit=200) -> str:
+    """Text from a stranger's podcast listing, made safe to put in a CSV that people open in a
+    spreadsheet: one line, no control characters, capped, and never starting like a formula."""
+    text = "".join(ch if ch.isprintable() else " " for ch in str(text or ""))
+    text = " ".join(text.split())[:limit]
+    return "'" + text if text[:1] in ("=", "+", "-", "@") else text
+
+
+def clean_author(text) -> str:
+    """As clean_cell, and blank when it is an e-mail address rather than a name."""
+    text = clean_cell(text)
+    return "" if re.search(r"[^@\s]+@[^@\s]+\.[^@\s]+", text) else text
+
+
+def clean_address(text) -> str:
+    """The address if it is a plain http(s) address with a host, otherwise nothing."""
+    text = str(text or "").strip()
+    return text if re.match(r"^https?://[^\s/]+\.[^\s]*$", text) and len(text) <= 500 and host_of(text) else ""
+
+
+def show_needles(feed_url, apple_id):
+    """Strings that, found on the maker's own site, show that the site links to this show."""
+    needles = []
+    if apple_id:
+        needles.append(f"id{apple_id}")
+    parts = urllib.parse.urlsplit(feed_url)
+    bare = (parts.hostname or "").lower().removeprefix("www.") + parts.path.rstrip("/")
+    if len(parts.path.strip("/")) >= 4:          # a feed address with a real path, not just a host
+        needles.append(bare.lower())
+    return needles
+
+
+def site_links_show(domain, feed_url, apple_id, cache, timeout=40):
+    """True if the official site's home page mentions the show's Apple id or its feed address.
+    One request per domain per run; a site that cannot be read proves nothing (False)."""
+    if domain not in cache:
+        try:
+            _, _, body = get_bytes(f"https://{domain}/", timeout=timeout, max_bytes=6 * 1024 * 1024)
+            cache[domain] = body.decode("utf-8", "replace").lower()
+        except FetchError:
+            cache[domain] = ""
+    page = cache[domain]
+    return bool(page) and any(needle in page for needle in show_needles(feed_url, apple_id))
 
 
 def main():
@@ -235,21 +289,36 @@ def main():
             links[feed_url] = note
             if n % 20 == 0 or n == len(wanted):
                 print(f"[feeds] {n}/{len(wanted)} feed websites read", file=sys.stderr, flush=True)
-    best = {}
+    best, pages = {}, {}
+    site_checks = {(r["person_id"], r["feed_url"]): r for r in records if r.get("kind") == "site_check"}
     for rec in records:
         if rec.get("kind") != "result" or rec["person_id"] not in by_id:
             continue
         target = by_id[rec["person_id"]]
+        shown = {"artistName": rec["author"], "collectionName": rec["podcast_title"], "feedUrl": rec["feed_url"]}
         site_host = host_of((links.get(rec["feed_url"]) or {}).get("link") or "")
-        verdict, reason = grade(target, {"artistName": rec["author"], "collectionName": rec["podcast_title"],
-                                         "feedUrl": rec["feed_url"]}, strict, domains, site_host)
+        key = (rec["person_id"], rec["feed_url"])
+        if args.check_links and key not in site_checks and domains.get(rec["person_id"]) \
+                and grade(target, shown, strict, domains, site_host)[0] in ("candidate", "name-match"):
+            found = [d for d in sorted(domains[rec["person_id"]])
+                     if site_links_show(d, rec["feed_url"], rec.get("apple_id"), pages)]
+            site_checks[key] = {"kind": "site_check", "person_id": rec["person_id"], "feed_url": rec["feed_url"],
+                                "linked_from": found, "at": utc_now()}
+            append_jsonl(raw_path, site_checks[key])
+        linked = bool((site_checks.get(key) or {}).get("linked_from"))
+        verdict, reason = grade(target, shown, strict, domains, site_host, linked)
         if verdict == "unrelated":
             continue
+        if linked and verdict == "verified":
+            reason = f"{site_checks[key]['linked_from'][0]} links to this show"
         row = {"person_id": rec["person_id"], "person_name": target["person_name"], "query": rec["query"],
-               "grade": verdict, "reason": reason, "podcast_title": rec["podcast_title"], "author": rec["author"],
-               "episodes": rec.get("episodes") or "", "feed_url": rec["feed_url"], "site_host": site_host,
-               "site_link": (links.get(rec["feed_url"]) or {}).get("link") or "",
-               "apple_id": rec.get("apple_id") or "", "genre": rec.get("genre", "")}
+               "grade": verdict, "reason": reason, "podcast_title": clean_cell(rec["podcast_title"]),
+               "author": clean_author(rec["author"]), "episodes": rec.get("episodes") or "",
+               "feed_url": clean_address(rec["feed_url"]), "site_host": site_host,
+               "site_link": clean_address((links.get(rec["feed_url"]) or {}).get("link") or ""),
+               "apple_id": rec.get("apple_id") or "", "genre": clean_cell(rec.get("genre", ""), 60)}
+        if not row["feed_url"]:
+            continue                                 # not an http(s) address: nothing to read
         best.setdefault((rec["person_id"], rec["feed_url"]), row)
     rows = list(best.values())
     claimants = {}
