@@ -226,7 +226,19 @@ def collect(paths, opts=None):
     # Only feeds the registry accepts today are read. A feed that was rejected, or that moved and left
     # its old episode list behind, must not keep feeding the queue.
     accepted = {row["feed_key"] for row in read_registry(o["registry"], {x.strip() for x in o["accept"].split(",") if x.strip()})}
-    for feed_file in sorted(paths.feeds.glob("*.jsonl")):
+    # Two accepted feeds can hold the same episode (a show listed at an old and a new address). The copy
+    # from the feed that was read successfully most recently is the live one, so those files go first;
+    # a feed whose last read failed goes last and only contributes episodes nothing else has.
+    last_read = {}
+    for rec in read_jsonl(paths.feeds / "feeds_manifest.jsonl"):
+        if rec.get("feed_key"):
+            last_read[rec["feed_key"]] = (rec.get("status") == "ok", rec.get("started", ""))
+
+    def freshness(feed_file):
+        ok, when = last_read.get(feed_file.stem, (False, ""))
+        return (not ok, "".join(chr(255 - ord(c)) for c in when), feed_file.name)   # ok first, then newest first
+
+    for feed_file in sorted(paths.feeds.glob("*.jsonl"), key=freshness):
         if feed_file.name == "feeds_manifest.jsonl":
             continue
         if feed_file.stem not in accepted:

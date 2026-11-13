@@ -340,9 +340,18 @@ def main():
     if args.merge:
         existing = read_csv(REGISTRY) if REGISTRY.exists() else []
         have = {(r["person_id"], r["feed_url"]) for r in existing}
+        shows = {(r["person_id"], str(r["apple_id"])): r["feed_url"] for r in existing if r.get("apple_id")}
         added = 0
         for row in rows:
             if row["grade"] in ("verified", "name-match") and (row["person_id"], row["feed_url"]) not in have:
+                listed_at = shows.get((row["person_id"], str(row["apple_id"]))) if row["apple_id"] else None
+                if listed_at and listed_at != row["feed_url"]:
+                    # the same show (same Apple id) at a new address: the feed moved. Two rows for one show
+                    # would let the dead address win over the live one, so a person updates the row.
+                    print(f"note: {row['person_id']}: this show is already listed at {listed_at}; Apple now gives "
+                          f"{row['feed_url']}. If the feed moved, change the address in {REGISTRY.name} by hand.",
+                          file=sys.stderr)
+                    continue
                 existing.append({"person_id": row["person_id"], "relation": "own", "feed_url": row["feed_url"],
                                  "podcast_title": row["podcast_title"], "author": row["author"],
                                  "site_link": row.get("site_link", ""),

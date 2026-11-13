@@ -1,17 +1,17 @@
 person_id,person_name,role,youtube_videos_indexed,own_feeds,items_listed,listed_hours,audio_ok,audio_hours,audio_failed,audio_podcast,audio_creator_file,audio_youtube,publisher_texts,publisher_text_words,captions,captions_words,asr_transcripts,asr_words,asr_hours,items_text_from_source,items_text_made_here,items_with_text,audio_awaiting_transcript,youtube_twins,next_step
 daniel-scranton,Daniel Scranton,channeler,30,0,4958,0.0,0,0.0,0,0,0,0,4958,3044663,0,0,0,0,0.0,4958,0,4958,0,3171,complete for the listed items
 sam-the-illusionist,Sam the Illusionist,channeler,0,0,257,0.0,0,0.0,0,0,0,0,257,458265,0,0,0,0,0.0,257,0,257,0,0,complete for the listed items
-l-l-research,L/L Research,organisation,0,1,213,96.6,74,76.2,0,74,0,0,106,289222,0,0,1,5582,0.7,106,1,107,73,2,download the remaining 137 listed items
-lee-carroll,Lee Carroll,channeler,0,0,1306,32.7,74,32.7,0,0,74,0,0,0,0,0,1,1378,0.2,0,1,1,73,97,download the remaining 1232 listed items
-aaron-abke,Aaron Abke,context,0,1,272,98.8,74,37.4,0,74,0,0,0,0,0,0,1,1642,0.2,0,1,1,73,0,download the remaining 198 listed items
-athina-krol,Athina Król,channeler,4,2,225,103.1,74,32.4,0,74,0,0,0,0,0,0,1,2970,0.2,0,1,1,73,2,download the remaining 151 listed items
-aetherius-society,Aetherius Society,organisation,0,1,167,173.2,74,73.6,0,74,0,0,0,0,0,0,1,8751,0.9,0,1,1,73,0,download the remaining 93 listed items
-elizabeth-april,Elizabeth April,channeler,0,1,145,57.7,74,32.3,0,74,0,0,0,0,0,0,1,2715,0.3,0,1,1,73,0,download the remaining 71 listed items
-steve-nobel,Steve Nobel,channeler,0,1,379,207.0,74,37.9,0,74,0,0,0,0,0,0,0,0,0.0,0,0,0,74,0,download the remaining 305 listed items
-louise-kay,Louise Kay,channeler,0,1,214,29.2,74,9.0,0,74,0,0,0,0,0,0,0,0,0.0,0,0,0,74,0,download the remaining 140 listed items
+l-l-research,L/L Research,organisation,0,1,213,96.6,80,79.9,0,80,0,0,106,289222,0,0,1,5582,0.7,106,1,107,79,2,download the remaining 131 listed items
+aaron-abke,Aaron Abke,context,0,1,272,98.8,81,41.8,0,81,0,0,0,0,0,0,1,1642,0.2,0,1,1,80,0,download the remaining 191 listed items
+athina-krol,Athina Król,channeler,4,2,225,103.1,81,34.5,0,81,0,0,0,0,0,0,1,2970,0.2,0,1,1,80,2,download the remaining 144 listed items
+lee-carroll,Lee Carroll,channeler,0,0,1306,35.3,80,35.3,0,0,80,0,0,0,0,0,1,1378,0.2,0,1,1,79,97,download the remaining 1226 listed items
+aetherius-society,Aetherius Society,organisation,0,1,167,173.2,80,79.6,0,80,0,0,0,0,0,0,1,8751,0.9,0,1,1,79,0,download the remaining 87 listed items
+elizabeth-april,Elizabeth April,channeler,0,1,145,57.7,80,34.8,0,80,0,0,0,0,0,0,1,2715,0.3,0,1,1,79,0,download the remaining 65 listed items
+steve-nobel,Steve Nobel,channeler,0,1,379,207.0,80,41.8,0,80,0,0,0,0,0,0,0,0,0.0,0,0,0,80,0,download the remaining 299 listed items
+louise-kay,Louise Kay,channeler,0,1,214,29.2,80,9.4,0,80,0,0,0,0,0,0,0,0,0.0,0,0,0,80,0,download the remaining 134 listed items
+stewart-pearce,Stewart Pearce,channeler,0,1,42,44.0,20,21.2,0,20,0,0,0,0,0,0,1,7484,0.9,0,1,1,19,0,download the remaining 22 listed items
 lorie-ladd,Lorie Ladd,channeler,30,1,17,17.7,17,17.7,0,17,0,0,0,0,0,0,0,0,0.0,0,0,0,17,0,transcribe 17 recordings that have no text yet
 pavlina-klemm,Pavlina Klemm,channeler,30,1,12,5.2,12,5.2,0,12,0,0,0,0,0,0,0,0,0.0,0,0,0,12,3,transcribe 12 recordings that have no text yet
-stewart-pearce,Stewart Pearce,channeler,0,1,42,44.0,7,7.2,0,7,0,0,0,0,0,0,0,0,0.0,0,0,0,7,0,download the remaining 35 listed items
 suzanne-lie-ph-d,Suzanne Lie,channeler,0,1,3,0.9,3,0.9,0,3,0,0,0,0,0,0,0,0,0.0,0,0,0,3,0,transcribe 3 recordings that have no text yet
 sounds-true,Sounds True,publisher,0,1,955,966.3,1,1.2,1,1,0,0,0,0,0,0,0,0,0.0,0,0,0,1,0,download the remaining 953 listed items
 darryl-anka,Darryl Anka,channeler,2,0,75,0.0,0,0.0,3,0,0,0,0,0,0,0,0,0,0.0,0,0,0,0,0,YouTube only: run the YouTube lane on a home connection

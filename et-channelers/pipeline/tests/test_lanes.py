@@ -287,6 +287,32 @@ class TestGrading(unittest.TestCase):
         self.assertEqual((yes, no, by_feed), (True, False, True))
         self.assertEqual(find_feeds.show_needles("https://host.example/", None), [])   # a bare host proves nothing
 
+    def test_merge_does_not_list_one_show_at_two_addresses(self):
+        import io
+        import contextlib
+        tmp = Path(tempfile.mkdtemp(prefix="etmerge-"))
+        self.addCleanup(shutil.rmtree, tmp, True)
+        registry = tmp / "podcast_feeds.csv"
+        common.write_csv(registry, [{"person_id": "athina-krol", "relation": "own", "feed_url": "http://old.example/feed.xml",
+                                     "apple_id": "1561735554", "verification": "name-match"}], find_feeds.REGISTRY_FIELDS)
+        root = tmp / "private"
+        raw = root / "sources" / "apple_candidates.jsonl"
+        for url in ("https://new.example/feed.xml", "https://other-show.example/feed.xml"):
+            common.append_jsonl(raw, {"kind": "result", "person_id": "athina-krol", "query": "Athina Król", "feed_url": url,
+                                      "podcast_title": "Spirit Channel with Athina Król", "author": "Athina Krol", "episodes": 5,
+                                      "apple_id": 1561735554 if "new" in url else 999, "genre": ""})
+        saved, argv = find_feeds.REGISTRY, sys.argv
+        find_feeds.REGISTRY, sys.argv = registry, ["find_feeds.py", "--root", str(root), "--merge"]
+        err = io.StringIO()
+        try:
+            with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+                find_feeds.main()
+        finally:
+            find_feeds.REGISTRY, sys.argv = saved, argv
+        urls = sorted(r["feed_url"] for r in common.read_csv(registry))
+        self.assertEqual(urls, ["http://old.example/feed.xml", "https://other-show.example/feed.xml"])   # the moved show is not doubled
+        self.assertIn("already listed at http://old.example/feed.xml", err.getvalue())
+
     def test_text_from_a_strangers_listing_is_made_safe_for_a_spreadsheet(self):
         self.assertEqual(find_feeds.clean_cell('=HYPERLINK("https://x/"&B2,"A")\nsecond line'),
                          '\'=HYPERLINK("https://x/"&B2,"A") second line')
@@ -560,6 +586,25 @@ class TestSelectEpisodes(LaneCase):
         self.assertEqual([r["title"] for r in rows], ["Kept"])
         meta = json.loads((self.root / "jobs" / "queue_enclosures.meta.json").read_text())
         self.assertEqual(meta["dropped"]["feed_not_in_registry"], 2)
+
+    def test_a_show_at_an_old_and_a_new_address_is_taken_from_the_live_one(self):
+        ident = common.item_id("pod", "athina-krol", "guid-1")
+        for name, started, status in (("aaa-old", "2026-11-01T00:00:00Z", "error"), ("zzz-new", "2026-11-13T00:00:00Z", "ok")):
+            url = f"https://feeds.example/{name}.xml"
+            key = feeds.feed_key("athina-krol", url)
+            common.atomic_write_text(self.root / "feeds" / f"{key}.jsonl", json.dumps(
+                {"video_id": ident, "guid": "guid-1", "title": "Same episode", "duration_s": 600,
+                 "enclosure_url": f"https://{name}.example/1.mp3", "feed_key": key, "person_id": "athina-krol",
+                 "relation": "own"}) + "\n")
+            common.append_jsonl(self.root / "feeds" / "feeds_manifest.jsonl",
+                                {"feed_key": key, "status": status, "started": started})
+            registry = self.tmp / "registry.csv"
+            rows = common.read_csv(registry) if registry.exists() else []
+            rows.append({"person_id": "athina-krol", "relation": "own", "feed_url": url, "verification": "verified"})
+            common.write_csv(registry, rows, find_feeds.REGISTRY_FIELDS)
+        rows = self.select()
+        self.assertEqual(len(rows), 1)                                        # one episode, queued once
+        self.assertEqual(rows[0]["url"], "https://zzz-new.example/1.mp3")     # from the feed that still answers
 
     def test_the_queue_cannot_be_written_into_a_git_checkout(self):
         self.write_feed("good", "athina-krol", "own", [("Kept", 600, [])])
