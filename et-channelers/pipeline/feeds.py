@@ -142,6 +142,20 @@ def _int(text):
         return None
 
 
+MEDIA_SUFFIXES = (".mp3", ".m4a", ".m4b", ".mp4", ".m4v", ".aac", ".ogg", ".oga", ".opus", ".wav", ".flac", ".webm", ".mov")
+NOT_MEDIA_SUFFIXES = (".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg", ".pdf", ".html", ".htm", ".txt", ".zip")
+
+
+def is_media(declared_type, url: str) -> bool:
+    """True if an enclosure is a recording. The declared type decides when there is one; without it,
+    the file name does; with neither, it is taken as a recording unless the name says otherwise."""
+    kind = (declared_type or "").strip().lower()
+    path = urllib.parse.urlsplit(url).path.lower()
+    if kind:
+        return kind.startswith(AUDIO_TYPES) or (kind == "application/octet-stream" and path.endswith(MEDIA_SUFFIXES))
+    return not path.endswith(NOT_MEDIA_SUFFIXES)
+
+
 def episode_key(guid: str, enclosure_url: str) -> str:
     """What identifies an episode wherever its feed lives: the <guid> its publisher gave it, or, when
     there is none, the path of its media file without host and query (hosts and tracking prefixes change)."""
@@ -170,8 +184,8 @@ def parse_feed(data: bytes, feed_url: str, person_id: str = "") -> dict:
     for position, item in enumerate(items, 1):
         enclosure = item.find("enclosure")
         url = (enclosure.get("url") or "").strip() if enclosure is not None else ""
-        if not re.match(r"^https?://", url, re.I):
-            continue
+        if not re.match(r"^https?://", url, re.I) or not is_media(enclosure.get("type"), url):
+            continue          # no enclosure, or one that is a picture or a document (blog feeds attach a cover image)
         own_guid = _text(item, "guid")
         guid = own_guid or url
         ident = item_id("pod", person_id or feed_url, episode_key(own_guid, url))
