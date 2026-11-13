@@ -15,7 +15,7 @@ pipeline gained four lanes (podcast episodes, creator-hosted files, publisher te
 catalogue, and a tool that uploads to a private store, checks the copy and frees the disk. See
 [`pipeline/README.md`](pipeline/README.md) and [`sources/README.md`](sources/README.md).
 
-Snapshot at 2026-11-13T17:55:28Z (the current table is [`plan/coverage.csv`](plan/coverage.csv); jobs were still
+Snapshot at 2026-11-13T18:37:35Z (the current table is [`plan/coverage.csv`](plan/coverage.csv); jobs were still
 running when this was written):
 
 | Measure | Count |
@@ -23,12 +23,12 @@ running when this was written):
 | People tracked (92 in the index plus 4 from the ArchiveShelf inventory) | 96 |
 | People with at least one listed downloadable source | 15 |
 | People with audio downloaded | 12 |
-| Audio files downloaded and encoded | 235 (152.8 h) |
-| Texts obtained from the source (publisher's own transcript) | 3114 (2,113,118 words) |
+| Audio files downloaded and encoded | 419 (253.9 h) |
+| Texts obtained from the source (publisher's own transcript) | 5321 (3,792,150 words) |
 | YouTube caption tracks | 0 |
-| Transcripts made here by speech-to-text | 1 (1,642 words) |
-| Audio files still waiting for a transcript | 234 |
-| Items linked to an indexed YouTube video | 1445 |
+| Transcripts made here by speech-to-text | 4 (16,078 words) |
+| Audio files still waiting for a transcript | 415 |
+| Items linked to an indexed YouTube video | 3275 |
 
 Sources found so far: podcast feeds for 10 people (Aaron Abke, Aetherius Society, Athina Król, Elizabeth
 April, L/L Research, Lorie Ladd, Louise Kay, Pavlina Klemm, Steve Nobel, Suzanne Lie) and Sounds True; 1,306
