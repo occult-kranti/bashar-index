@@ -1,0 +1,27 @@
+{
+  "person": "Debbie Solaris",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "Debbie Solaris",
+    "handle": "@debbiesolarisgalactichistorian",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@debbiesolarisgalactichistorian",
+    "subscriber_count_text": "29.9K subscribers",
+    "video_count_text": "467 videos",
+    "description_short": null,
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [
+    [null, "Heal Debbie Solaris 💛 A Global Gathering", null, "8 days ago", null, false, null, "from research notes (video_id not captured); community healing event during her Oct 2026 health crisis"]
+  ],
+  "earliest_known_video": {"video_id": null, "title": "'Galactic Akashic Reading' videos (c. 2019, '7 years ago')", "date": null, "url": null, "source": "research notes"},
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23; legacy URL youtube.com/sydkat7). Self-described 'Akashic Records Channeler'/'Galactic Historian' — no named trance entity; 2012 OBE visits to an 'Arcturian mothership' claimed.",
+    "https://www.youtube.com/@debbiesolarisgalactichistorian",
+    "https://www.debbiesolaris.com/debbie"
+  ]
+}

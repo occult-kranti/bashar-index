@@ -26,6 +26,7 @@ See the [branch register](channeling-atlas/research/maintenance/branch-register.
 | `index.html` | The whole site — one self-contained page, no external requests. |
 | `data/` | The research data package: digests, catalogue, topic analysis, diagrams (JSON + SVG), glossary, timeline, manifests. See `data/README.md`. |
 | `src/` | The Python that builds the page (`build.py`, `css.py`, `js.py`, `svglib.py`, `diagrams_a.py`, `diagrams_b.py`), the analysis pipeline (`topics.py`) and the digest schema (`DIGEST_SPEC.md`). |
+| `et-channelers/` | The ET-channelers work from Claude sessions: research notes, a YouTube crawl of 92 people (466 videos), the flat index and dashboard tables, and the transcript pipeline with its manifests and findings. Start with [`et-channelers/README.md`](et-channelers/README.md). Separate from `channeling-atlas/`. Since 2026-11-13 the pipeline also collects podcast episodes, creator-hosted audio and publisher texts (lanes that work where YouTube refuses cloud servers): see [`et-channelers/pipeline/README.md`](et-channelers/pipeline/README.md) and the per-person table in [`et-channelers/plan/coverage.csv`](et-channelers/plan/coverage.csv). |
 
 ## Rebuilding
 

@@ -1,0 +1,24 @@
+# Full transcripts are (c) Darryl Anka / Bashar Communications, Inc. Keep them out of the repository.
+# The scripts in transcripts/scripts/ write <video_id>.txt files; point them at a folder matched here.
+**/astro_data/
+**/transcript_text/
+transcripts/*.txt
+
+__pycache__/
+*.pyc
+node_modules/
+
+# Raw media, captions and speech-to-text output never go in this repository (see pipeline/README.md).
+*.opus
+*.m4a
+*.mp3
+*.wav
+*.flac
+*.webm
+*.ogg
+*.vtt
+*.srt
+*.srv3
+*.json3
+**/.work/
+**/private_data/

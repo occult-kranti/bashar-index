@@ -1,0 +1,102 @@
+{
+ "person": "Darryl Anka",
+ "role": "channeler",
+ "status": "credits_exhausted",
+ "channel": {
+  "title": "Bashar Channeled by Darryl Anka",
+  "handle": "@BasharChanneledbyDarrylAnka",
+  "channel_id": "UCiDZy_rfSodwFaVL_imGWgQ",
+  "url": "https://www.youtube.com/@BasharChanneledbyDarrylAnka",
+  "subscriber_count_text": "229,000 subscribers",
+  "video_count_text": "322 videos",
+  "description_short": "Official Bashar Communications channel: 'Highlights' excerpts and Shorts from Bashar sessions channeled by Darryl Anka; full sessions sold on BasharTV (per research notes).",
+  "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCiDZy_rfSodwFaVL_imGWgQ",
+  "observed_at": "2026-10-23",
+  "source": "research notes",
+  "note": "Firecrawl credits ran out before this channel could be fetched; handle/ID from bashar.org links (corpus official_channels.md); 229,000 subs / 9,676,276 views / 322 videos from us.youtubers.me stats page (undated, seen 2026-10-23); thoughtleaders.io shows 258K subs in FAQ but 'nearing 190,000' in description text; first upload 2017-06-19."
+ },
+ "secondary_channels": [
+  {
+   "title": "Bashar Channeled by Darryl Anka 2025",
+   "url": "https://www.youtube.com/@bashardarrylanka2025",
+   "note": "look-alike/clip channel; 30 subscribers, 17 uploads, created 2024-01-16, no longer tracked (Social Blade, data to 2026-07-28)"
+  },
+  {
+   "title": "Divine Light Vibes",
+   "url": null,
+   "note": "third-party Bashar clip channel named in corpus official_channels.md; URL/subs not retrieved (credits exhausted)"
+  },
+  {
+   "title": "Path of Knowledge",
+   "url": null,
+   "note": "third-party Bashar clip channel named in corpus official_channels.md; URL/subs not retrieved (credits exhausted)"
+  },
+  {
+   "title": "Divine Insights",
+   "url": null,
+   "note": "re-upload/clip channel named in task brief; not verified (credits exhausted)"
+  },
+  {
+   "title": "Bashar Spiritual Insights",
+   "url": null,
+   "note": "re-upload/clip channel named in task brief; not verified (credits exhausted)"
+  },
+  {
+   "title": "Mammoth Awakening",
+   "url": null,
+   "note": "re-upload/clip channel named in task brief; not verified (credits exhausted)"
+  }
+ ],
+ "videos": [
+  {
+   "video_id": "fZmY4xS_qXE",
+   "title": "Official highlights clip, January 2026 (title not recorded): 'Welcome to the first transmission of your new year of 2026, the year of disclosure.'",
+   "url": "https://www.youtube.com/watch?v=fZmY4xS_qXE",
+   "view_count_text": null,
+   "published_text": null,
+   "published_date": null,
+   "length_text": null,
+   "is_channeling": true,
+   "entity": "Bashar",
+   "note": "from research notes via youtubetotranscript.com; metadata not available"
+  },
+  {
+   "video_id": "T5QtncJq1Jc",
+   "title": "Official highlights clip, 2025 (title not recorded): open contact 'imminent within two years'; hybrids and Pleiadians to be introduced first",
+   "url": "https://www.youtube.com/watch?v=T5QtncJq1Jc",
+   "view_count_text": null,
+   "published_text": null,
+   "published_date": null,
+   "length_text": null,
+   "is_channeling": true,
+   "entity": "Bashar",
+   "note": "from research notes via youtubetotranscript.com; metadata not available"
+  }
+ ],
+ "summary": {
+  "recent_videos_read": 2,
+  "channeling_videos_in_recent": 2,
+  "entities_seen": [
+   "Bashar"
+  ],
+  "top_channeling_video_ids": [
+   "fZmY4xS_qXE",
+   "T5QtncJq1Jc"
+  ],
+  "earliest_known_video": {
+   "video_id": null,
+   "title": "Finding your highest excitement (first Bashar video on YouTube per Baroni 2012; not on the official channel, which began uploading 2017-06-19)",
+   "date": "2006-09",
+   "url": null,
+   "source": "research notes (https://www.cesnur.org/2012/el-baroni.htm)"
+  }
+ },
+ "sources": [
+  "https://www.bashar.org/",
+  "https://us.youtubers.me/bashar-channeled-by-darryl-anka/youtuber-stats",
+  "https://app.thoughtleaders.io/youtube/bashar-channeled-by-darryl-anka",
+  "https://socialblade.com/youtube/handle/bashardarrylanka2025",
+  "https://youtubetotranscript.com/transcript?v=fZmY4xS_qXE",
+  "https://youtubetotranscript.com/transcript?v=T5QtncJq1Jc"
+ ]
+}

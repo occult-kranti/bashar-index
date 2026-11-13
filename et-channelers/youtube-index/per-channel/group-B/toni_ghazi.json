@@ -1,0 +1,20 @@
+{
+  "person": "Toni Ghazi",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": null,
+  "secondary_channels": [
+    {
+      "title": "The Antarean Heart with Toni Ghazi (podcast listing on YouTube Music)",
+      "url": "https://music.youtube.com/podcast/dXu7HHZXUfU",
+      "note": "own podcast; the underlying YouTube channel handle/ID was not resolved in the research notes (channel_videos lookups failed earlier) and the planned one-off Firecrawl search could not run (credits exhausted)"
+    }
+  ],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: the single Firecrawl search planned to locate his official channel could not be run on 2026-10-23 (credit reservation failed). Research notes: YouTube handle unverified; appearances on The Loretta Brown Show (https://www.youtube.com/watch?v=3UnEP2QJeDw), Gaia ('Mantis Beings: Architecture of Contact'), Wisdom From North #286. Entity claimed: 'The Praying-Mantis Beings'/'Antareans' of the Antares star system; self-described 'extradimensional trance channeling'.",
+    "https://tonighazi.com/about/",
+    "https://music.youtube.com/podcast/dXu7HHZXUfU",
+    "https://medium.com/mystic-minds/channeling-mantis-beings-from-the-antares-stargate-949467539b06"
+  ]
+}

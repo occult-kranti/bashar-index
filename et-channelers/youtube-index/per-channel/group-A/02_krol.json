@@ -1,0 +1,95 @@
+{
+ "person": "Athina Król",
+ "role": "channeler",
+ "status": "credits_exhausted",
+ "channel": {
+  "title": "Athina Król",
+  "handle": "@AthinaKrol",
+  "channel_id": "UCuXxdyss-NVCA3PQIAklk3g",
+  "url": "https://www.youtube.com/@AthinaKrol",
+  "subscriber_count_text": "5.41K subscribers",
+  "video_count_text": "152 videos",
+  "description_short": "Multidimensional trance channel (Ashtar, Goddess Isis, Galactic Councils, Atlantean Council of Light); Australia; channel joined 2007-06-10; 116,294 views (About tab, 2026-10-23).",
+  "rss_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCuXxdyss-NVCA3PQIAklk3g",
+  "observed_at": "2026-10-23",
+  "source": "research notes",
+  "note": "Channel metadata copied from research notes (earlier youtube-com provider call + About-tab scrape, 2026-10-23); the 30-video list could not be re-fetched because Firecrawl credits ran out. Videos below are the ones the notes record with IDs."
+ },
+ "secondary_channels": [],
+ "videos": [
+  {
+   "video_id": "MDdyY1WYmHY",
+   "title": "How to know your SOUL PURPOSE: Channeling Ashtar About Why You Came to Earth",
+   "url": "https://www.youtube.com/watch?v=MDdyY1WYmHY",
+   "view_count_text": "4.2K views",
+   "published_text": "3 weeks ago",
+   "published_date": null,
+   "length_text": "53:26",
+   "is_channeling": true,
+   "entity": "Ashtar",
+   "note": "metadata as recorded in SCHEMA.md example / notes (podcast release 2026-09-30)"
+  },
+  {
+   "video_id": "8pG8QV-18xQ",
+   "title": "Ashtar Live: The Return of the Sovereign Human: Breaking Free from Energetic Interference",
+   "url": "https://www.youtube.com/watch?v=8pG8QV-18xQ",
+   "view_count_text": null,
+   "published_text": null,
+   "published_date": "2026-09-02",
+   "length_text": null,
+   "is_channeling": true,
+   "entity": "Ashtar",
+   "note": "live trance channelling; published 2026-09-02T12:43:42Z per earlier video_details call"
+  },
+  {
+   "video_id": "mf80ocecqnU",
+   "title": "Pleiadian Light Codes",
+   "url": "https://www.youtube.com/watch?v=mf80ocecqnU",
+   "view_count_text": null,
+   "published_text": null,
+   "published_date": null,
+   "length_text": null,
+   "is_channeling": true,
+   "entity": "Pleiadians",
+   "note": "title as recorded in notes (~2026-10-17); channeled light-code transmission"
+  },
+  {
+   "video_id": "EhoFej0S6QY",
+   "title": "This is What 'ALWAYS' Happens Before Reality Splits! The Next 3 Years Will Reveal UNTHINKABLE…",
+   "url": "https://www.youtube.com/watch?v=EhoFej0S6QY",
+   "view_count_text": null,
+   "published_text": null,
+   "published_date": null,
+   "length_text": null,
+   "is_channeling": false,
+   "entity": null,
+   "note": "Aug 2026 teaching/prediction video; channeling not indicated in title"
+  }
+ ],
+ "summary": {
+  "recent_videos_read": 4,
+  "channeling_videos_in_recent": 3,
+  "entities_seen": [
+   "Ashtar",
+   "Pleiadians"
+  ],
+  "top_channeling_video_ids": [
+   "MDdyY1WYmHY",
+   "8pG8QV-18xQ",
+   "mf80ocecqnU"
+  ],
+  "earliest_known_video": {
+   "video_id": "8pG8QV-18xQ",
+   "title": "Ashtar Live: The Return of the Sovereign Human (first Ashtar-branded public content found; channel's older uploads not enumerated)",
+   "date": "2026-09-02",
+   "url": "https://www.youtube.com/watch?v=8pG8QV-18xQ",
+   "source": "research notes"
+  }
+ },
+ "sources": [
+  "https://www.youtube.com/@AthinaKr%C3%B3l/about",
+  "https://www.youtube.com/@AthinaKrol",
+  "https://athinakrol.podbean.com/",
+  "https://www.youtube.com/watch?v=8pG8QV-18xQ"
+ ]
+}

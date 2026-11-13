@@ -1,0 +1,1366 @@
+[
+  {
+    "id": "don-elkins",
+    "name": "Don Elkins",
+    "aliases": ["Donald Tully Elkins", "Phineas"],
+    "role": "context",
+    "tier": "deep",
+    "et_focus": true,
+    "entities": ["ra", "confederation", "hatonn"],
+    "species_tags": ["Ra / Law of One", "Confederation"],
+    "era": "pre-ra",
+    "start_year": 1962,
+    "start_year_basis": "began a channeling experiment with about twelve physics students in 1962 (L/L Research bio; Book I introduction); solo UFO research from 1955. Elkins was the questioner, not the instrument.",
+    "start_confidence": "high",
+    "public_year": 1976,
+    "public_year_basis": "WIEL Louisville radio interview 1976-01-01; Secrets of the UFO first printed May 1977 (L/L Research history page)",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1984,
+    "location": "Louisville, Kentucky, USA (born there 1930-02-27; brief move to Lake Lanier near Atlanta at the end of 1983)",
+    "method": "questioner in what he called 'tuned trance telepathy' (Ra sessions, 1981–84); experimenter in group meditation/channeling from 1962; regressive hypnosis research 1955–60",
+    "platforms": {
+      "youtube": null,
+      "website": "https://www.llresearch.org/",
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["1970s radio/TV interviews: WIEL Louisville 1976-01-01; WKQQ Lexington 1977-03-30; Bill Tush 'Open Up' (TBS) 1978-01-01; Courier-Journal profile 'UFO Prober' 1978-06-04"]
+    },
+    "books": [
+      {"title": "Secrets of the UFO (with Carla L. Rueckert)", "year": 1977, "url": "https://assets.llresearch.org/books/secrets_of_the_ufo.pdf"},
+      {"title": "The Law of One, Book I (The Ra Material; with Rueckert and McCarty)", "year": 1984, "url": "https://www.llresearch.org/channeling/ra-contact"}
+    ],
+    "summary": "Don Elkins (1930–1984) was a University of Louisville physics and engineering professor, later an airline captain, who researched UFO contactee messages from 1955 and ran a group channeling experiment from 1962. He was the questioner in the 106 trance sessions with 'Ra' (1981–84) that produced The Law of One.",
+    "claims": [
+      "Claimed that UFO contactee messages and channeled messages share one message: 'The same general message permeates over 90% of the millions of words received by thousands of people around the world' (Secrets of the UFO, 1977).",
+      "Claimed that contactee-type information 'can be duplicated in a controlled situation' through his group's channeling experiment.",
+      "Described Ra as 'a sixth-density social memory complex' whose evolution is 'millions of years in advance of Earthman's'.",
+      "Adopted the word 'density' for levels of reality by 1977, a term later widespread in ET channeling.",
+      "Acknowledged that 'evidential proof of its validity is not obtainable' for contactee information."
+    ],
+    "quotes": [
+      {"text": "The information in this book is either nonsense or it is the most centrally important thing that you could possibly learn.", "url": "https://assets.llresearch.org/books/secrets_of_the_ufo.pdf", "context": "Secrets of the UFO (1977), p. 9"},
+      {"text": "Our research group uses what I prefer to call 'tuned trance telepathy'.", "url": "https://www.lawofone.info/Intro", "context": "Introduction to The Law of One, Book I"},
+      {"text": "This opinion may change at any time as I become aware of future information.", "url": "https://www.lawofone.info/Intro", "context": "Introduction to The Law of One, Book I"}
+    ],
+    "controversies": [
+      "Manner of death: L/L Research's official bio gives only '1984' and its epilogue says the contact ended 'with Don Elkins' death on November 7, 1984, after a year of declining health' (https://www.superphysics.org/research/other/alien/ra/epilogue/); third-party databases state a self-inflicted gunshot (Find a Grave https://nl.findagrave.com/memorial/220756481/donald_tully-elkins ; IMDb https://www.imdb.com/name/nm0253859/bio/) and a 2025 Substack summary of Book V describes a suicide during a police standoff (https://theofficialurban.substack.com/p/ra-v) — secondary sources only.",
+      "RationalWiki describes L/L Research as 'not exactly champions of the scientific method' and notes the 2011 'harvest' approximation given in the Ra sessions passed without observable change (https://rationalwiki.org/wiki/Ra_Material)."
+    ],
+    "predictions": [
+      {"date_predicted": "2011", "what": "Ra sessions (1981) gave c. 2011 as 'an approximation' for the fourth-density 'harvest' (also a 100–700-year transition range elsewhere); Elkins was the questioner", "status": "failed", "url": "https://www.lawofone.info/c/Harvest"}
+    ],
+    "related_people": ["carla-l-rueckert", "jim-mccarty", "l-l-research", "tobey-wheelock", "aaron-abke"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["manner of death (third-party sources only)", "exact year he received the Detroit group's 'Brown Notebook' (1961 vs 1962)", "publication year of The Law of One Book I (commonly 1984)"],
+    "profile": [
+      "Don Elkins was born in Louisville, Kentucky, on 27 February 1930, trained as a mechanical engineer and taught physics and engineering at the University of Louisville from 1953 to 1965 before leaving tenure to fly Boeing 727s as an airline captain, which he did until his death ([L/L Research bio](https://www.llresearch.org/about/don-elkins)). At seventeen he had been a flying student of Capt. Thomas Mantell, who died chasing a reported UFO on 7 January 1948; L/L Research dates his UFO research to 1955 and says he conducted about 200 regressive-hypnosis sessions between 1955 and 1960 ([history talk](https://www.llresearch.org/speeches/the-history-of-llresearch)).",
+      "In 1961 or 1962 (L/L's pages differ) Elkins received the 'Brown Notebook' of a Detroit contactee group through Hal Price, and in 1962 he began an experiment in which about twelve physics students attempted to reproduce contactee messages in a controlled meditation setting; Carla Rueckert joined as the thirteenth member ([Book I introduction](https://assets.llresearch.org/ra-contact/resources/original_introduction.pdf); [L/L history](https://www.llresearch.org/history)). Elkins and Rueckert formed L/L Research in 1970 and co-wrote *Secrets of the UFO*, first printed in May 1977, in which he argued that over 90 percent of contactee material carried the same message and adopted the word 'density' for levels of reality ([Secrets of the UFO](https://assets.llresearch.org/books/secrets_of_the_ufo.pdf)).",
+      "On 15 January 1981, three weeks after Jim McCarty moved to Louisville, a session in which Rueckert and Elkins were teaching a student to channel produced a voice announcing 'I am Ra. I have not spoken through this instrument before' ([Ra session 1](https://www.llresearch.org/channeling/ra-contact/1)). Elkins acted as questioner in all 106 sessions, which ran until 15 March 1984 ([session list](https://www.lawofone.info/sessions.php)). He described the method as 'tuned trance telepathy' and his own stance as 'purely scientific', while conceding in print that evidential proof was 'not obtainable' ([Introduction](https://www.lawofone.info/Intro)).",
+      "The published material presents Ra as a 'sixth-density social memory complex' from Venus and a member of a 'Confederation of Planets in the Service of the Infinite Creator', and sets out the density octave, 'harvest', 'Wanderers' and the 'Orion group' vocabulary that later ET channels reused ([Ra session 6](https://www.llresearch.org/channeling/ra-contact/6); [session 16](https://www.llresearch.org/channeling/ra-contact/16)). The sessions also asked whether the 'harvest' would occur in 2011, to which Ra replied 'This is an approximation'; the date passed without the predicted shift, as skeptics note ([lawofone.info Harvest](https://www.lawofone.info/c/Harvest); [RationalWiki](https://rationalwiki.org/wiki/Ra_Material)).",
+      "Elkins died on 7 November 1984 'after a year of declining health', according to the L/L epilogue, and the Ra contact ended with him ([epilogue, reproduced](https://www.superphysics.org/research/other/alien/ra/epilogue/)). L/L Research's own bio gives only the year; Find a Grave and IMDb record a self-inflicted gunshot wound ([Find a Grave](https://nl.findagrave.com/memorial/220756481/donald_tully-elkins); [IMDb](https://www.imdb.com/name/nm0253859/bio/)). After his death Rueckert and McCarty continued conscious channeling of 'Q'uo', and L/L Research still publishes sessions in 2026 ([L/L channeling archive](https://www.llresearch.org/channeling))."
+    ],
+    "sources": [
+      {"url": "https://www.llresearch.org/about/don-elkins", "title": "L/L Research — Don Elkins bio", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/history", "title": "L/L Research — History", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/speeches/the-history-of-llresearch", "title": "The History of L/L Research (talk by Jim McCarty)", "accessed": "2026-10-23"},
+      {"url": "https://assets.llresearch.org/ra-contact/resources/original_introduction.pdf", "title": "The Law of One Book I — original introduction (PDF)", "accessed": "2026-10-23"},
+      {"url": "https://assets.llresearch.org/books/secrets_of_the_ufo.pdf", "title": "Secrets of the UFO (1977, PDF)", "accessed": "2026-10-23"},
+      {"url": "https://www.lawofone.info/Intro", "title": "lawofone.info — Introduction to The Law of One", "accessed": "2026-10-23"},
+      {"url": "https://www.lawofone.info/sessions.php", "title": "lawofone.info — session list", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact/1", "title": "Ra session 1 (1981-01-15)", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact/6", "title": "Ra session 6", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact/16", "title": "Ra session 16", "accessed": "2026-10-23"},
+      {"url": "https://www.lawofone.info/c/Harvest", "title": "lawofone.info — Harvest category", "accessed": "2026-10-23"},
+      {"url": "https://www.superphysics.org/research/other/alien/ra/epilogue/", "title": "Ra Material epilogue (reproduction)", "accessed": "2026-10-23"},
+      {"url": "https://nl.findagrave.com/memorial/220756481/donald_tully-elkins", "title": "Find a Grave — Donald Tully Elkins", "accessed": "2026-10-23"},
+      {"url": "https://www.imdb.com/name/nm0253859/bio/", "title": "IMDb — Don Elkins bio", "accessed": "2026-10-23"},
+      {"url": "https://theofficialurban.substack.com/p/ra-v", "title": "Substack summary of The Law of One Book V (2025)", "accessed": "2026-10-23"},
+      {"url": "https://rationalwiki.org/wiki/Ra_Material", "title": "RationalWiki — Ra Material", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling", "title": "L/L Research — channeling archive", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact", "title": "L/L Research — The Ra Contact", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "carla-l-rueckert",
+    "name": "Carla L. Rueckert",
+    "aliases": ["Carla Lisbeth Rueckert", "Carla Rueckert-McCarty", "the instrument"],
+    "role": "channeler",
+    "tier": "deep",
+    "et_focus": true,
+    "entities": ["ra", "confederation", "hatonn", "latwii", "laitos", "quo"],
+    "species_tags": ["Ra / Law of One", "Confederation", "Q'uo"],
+    "era": "pre-ra",
+    "start_year": 1974,
+    "start_year_basis": "'I did not learn to channel until 1974' (Rueckert, L/L archive vol. 3 introduction); L/L bio: 'Began channeling: 1974'",
+    "start_confidence": "high",
+    "public_year": 1977,
+    "public_year_basis": "co-author of Secrets of the UFO (first printing May 1977); L/L history page also lists radio/TV interviews with Elkins from 1976",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 2015,
+    "location": "Louisville, Kentucky, USA (born Lake Forest, Illinois, 1943-07-16)",
+    "method": "trance ('unconscious', 'narrow-band') channeling for Ra only (1981–84); conscious channeling of Hatonn, Latwii, Laitos, Q'uo and others; credited by L/L with 'tuning' and 'challenging the source' protocols",
+    "platforms": {
+      "youtube": null,
+      "website": "https://www.llresearch.org/",
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Weekly Sunday meditation channelings archived at llresearch.org (over 1,700 transcripts for all L/L channels)", "1976–78 radio/TV interviews with Don Elkins"]
+    },
+    "books": [
+      {"title": "Secrets of the UFO (with Don Elkins)", "year": 1977, "url": "https://assets.llresearch.org/books/secrets_of_the_ufo.pdf"},
+      {"title": "A Channeling Handbook", "year": 1987, "url": "https://www.llresearch.org/about/carla-rueckert"},
+      {"title": "A Wanderer's Handbook", "year": 2001, "url": "https://www.llresearch.org/about/carla-rueckert"},
+      {"title": "A Book of Days: Channelings From the Holy Spirit", "year": 2007, "url": "https://www.llresearch.org/about/carla-rueckert"},
+      {"title": "Living the Law of One 101: The Choice", "year": 2009, "url": "https://www.llresearch.org/about/carla-rueckert"},
+      {"title": "The Aaron/Q'uo Dialogues (with Barbara Brodsky)", "year": 2011, "url": "https://www.llresearch.org/about/carla-rueckert"},
+      {"title": "The Poetry of Carla Lisbeth Rueckert", "year": 2012, "url": "https://www.llresearch.org/about/carla-rueckert"}
+    ],
+    "summary": "Carla L. Rueckert (1943–2015) was the trance 'instrument' for the 106 Ra sessions of 1981–84 and a conscious channel for L/L Research's 'Confederation' sources, including Q'uo from 1986. She described herself as a Christian mystic and channeled weekly until her last session on 2 April 2011.",
+    "claims": [
+      "Claimed to channel 'Ra', described as a sixth-density 'social memory complex' formerly of Venus, in trance, 1981–84.",
+      "Claimed to channel Confederation sources (Hatonn, Latwii, Laitos, Oxal, L/Leema, Yadda, Nona) consciously, and from 1986 the composite principle 'Q'uo'.",
+      "Said she did not know how the Ra trance occurred: 'I did not know, and to this day do not know, how it occurred.'",
+      "Held that 'The message of Ra was the same as all of the Confederation sources offered.'",
+      "Described herself as a Christian mystic devoted to Jesus Christ and also channeled devotional material ('Channelings From the Holy Spirit', 2007)."
+    ],
+    "quotes": [
+      {"text": "I did not learn to channel until 1974.", "url": "https://assets.llresearch.org/books/ll_research_archive_volume_03.pdf", "context": "L/L Research archive, vol. 3 introduction"},
+      {"text": "I did not know, and to this day do not know, how it occurred.", "url": "https://www.lawofone.info/Intro", "context": "Introduction to The Law of One, Book I, on the Ra trance"},
+      {"text": "This contact is ongoing, fascinating, and, to me, a source of some disquiet.", "url": "https://www.lawofone.info/Intro", "context": "Introduction to The Law of One, Book I"},
+      {"text": "The message of Ra was the same as all of the Confederation sources offered.", "url": "https://www.llresearch.org/history", "context": "L/L Research history page"}
+    ],
+    "controversies": [
+      "No academic or journalistic controversy specific to Rueckert was found in the notes; L/L itself records that the Ra sessions were physically draining for her (Ra session 106 discusses her kidney and arthritic condition) (https://www.llresearch.org/channeling/ra-contact/106).",
+      "RationalWiki notes that the c. 2011 'harvest' approximation in the Ra material did not occur and describes L/L Research as 'not exactly champions of the scientific method' (https://rationalwiki.org/wiki/Ra_Material)."
+    ],
+    "predictions": [
+      {"date_predicted": "2011", "what": "Ra (through Rueckert, 1981) gave c. 2011 as 'an approximation' for the fourth-density 'harvest'; elsewhere a 100–700-year transition range", "status": "failed", "url": "https://www.lawofone.info/c/Harvest"}
+    ],
+    "related_people": ["don-elkins", "jim-mccarty", "l-l-research", "gary-l-bean-and-austin-bridges", "tobey-wheelock"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["exact date of the first Q'uo session (earliest archived 1986-01-12; 1984 index not checked)", "publication years of The Law of One Books I–V"],
+    "profile": [
+      "Carla Lisbeth Rueckert was born on 16 July 1943 in Lake Forest, Illinois, survived kidney failure at thirteen, and joined Don Elkins's meditation group 'in early 1962' as the thirteenth member of his channeling experiment ([Introduction](https://www.lawofone.info/Intro); [L/L bio](https://www.llresearch.org/about/carla-rueckert)). She took a BA in English Literature (1966) and an MA in Library Service (1971) at the University of Louisville, became Elkins's partner in 1968 and left her school-librarian job in January 1970 to work with him full time, the year L/L Research was formed ([L/L history](https://www.llresearch.org/history)).",
+      "By her own account she 'did not learn to channel until 1974' ([archive vol. 3](https://assets.llresearch.org/books/ll_research_archive_volume_03.pdf)). Her early conscious contact was 'almost always Hatonn', followed by Latwii, Laitos, Oxal, L/Leema and Yadda, all presented as members of a 'Confederation of Planets in the Service of the Infinite Creator' ([North Atlantic Books blog](https://www.northatlanticbooks.com/blog/wisdom-how-carla-rueckert-found-channeling-and-found-the-truth/)). She co-wrote *Secrets of the UFO* (1977) with Elkins and appeared with him in radio and television interviews from 1976 ([Secrets of the UFO](https://assets.llresearch.org/books/secrets_of_the_ufo.pdf)).",
+      "On 15 January 1981, during a session teaching a student to channel, Rueckert entered an unconscious trance and a source identifying itself as Ra spoke through her for the first time; the contact continued for 106 sessions until 15 March 1984, with Elkins as questioner and Jim McCarty as scribe ([Ra session 1](https://www.llresearch.org/channeling/ra-contact/1); [session list](https://www.lawofone.info/sessions.php)). L/L Research states that 'Only the 106 sessions of the Ra contact used the trance channeling technique' and that it no longer works with Ra or the trance state ([L/L channeling](https://www.llresearch.org/channeling); [epilogue](https://www.superphysics.org/research/other/alien/ra/epilogue/)). She wrote that she did not know how the trance occurred and called the contact 'a source of some disquiet' ([Introduction](https://www.lawofone.info/Intro)).",
+      "After Elkins's death in November 1984 she and McCarty kept the weekly Sunday sessions going; the earliest archived 'Q'uo' session is dated 12 January 1986, and Q'uo is described as a principle combining Hatonn, Latwii and Ra ([1986 archive](https://www.llresearch.org/channeling/1986); [2024 circle](https://www.llresearch.org/channeling/2024/0509)). She married McCarty on 30 May 1987, published *A Channeling Handbook* (1987), *A Wanderer's Handbook* (2001) and *Living the Law of One 101* (2009), and co-channeled *The Aaron/Q'uo Dialogues* with Barbara Brodsky from 1991 ([L/L bio](https://www.llresearch.org/about/carla-rueckert); [1991 session](https://www.llresearch.org/channeling/1991/0228_02)).",
+      "Rueckert described herself as a Christian mystic devoted to Jesus Christ and received weekly communion at home in her final years ([eulogy](https://www.llresearch.org/articles/carlas-eulogy)). Her last channeling session was on 2 April 2011, followed two weeks later by spinal-fusion surgery and repeated infections; she died on 1 April 2015 ([history talk](https://www.llresearch.org/speeches/the-history-of-llresearch); [L/L bio](https://www.llresearch.org/about/carla-rueckert)). Skeptics note that the Ra material's c. 2011 'harvest' approximation passed without observable change ([RationalWiki](https://rationalwiki.org/wiki/Ra_Material)); L/L Research continues the conscious-channeling circle she helped train, with sessions dated 2026 ([L/L channeling](https://www.llresearch.org/channeling))."
+    ],
+    "sources": [
+      {"url": "https://www.llresearch.org/about/carla-rueckert", "title": "L/L Research — Carla L. Rueckert bio", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/articles/carlas-eulogy", "title": "L/L Research — Carla's eulogy", "accessed": "2026-10-23"},
+      {"url": "https://www.lawofone.info/Intro", "title": "lawofone.info — Introduction to The Law of One", "accessed": "2026-10-23"},
+      {"url": "https://assets.llresearch.org/books/ll_research_archive_volume_03.pdf", "title": "L/L Research archive volume 3 (PDF)", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/speeches/the-history-of-llresearch", "title": "The History of L/L Research (talk)", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/history", "title": "L/L Research — History", "accessed": "2026-10-23"},
+      {"url": "https://assets.llresearch.org/books/secrets_of_the_ufo.pdf", "title": "Secrets of the UFO (1977, PDF)", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling", "title": "L/L Research — channeling archive", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact/1", "title": "Ra session 1", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact/106", "title": "Ra session 106", "accessed": "2026-10-23"},
+      {"url": "https://www.lawofone.info/sessions.php", "title": "lawofone.info — session list", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/1986", "title": "L/L Research — 1986 transcripts index", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/2024/0509", "title": "L/L Research — C/C Channeling Circle 2024-05-09", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/1991/0228_02", "title": "L/L Research — Aaron/Q'uo Dialogues 1991-02-28", "accessed": "2026-10-23"},
+      {"url": "https://www.northatlanticbooks.com/blog/wisdom-how-carla-rueckert-found-channeling-and-found-the-truth/", "title": "North Atlantic Books blog — how Carla Rueckert found channeling", "accessed": "2026-10-23"},
+      {"url": "https://www.superphysics.org/research/other/alien/ra/epilogue/", "title": "Ra Material epilogue (reproduction)", "accessed": "2026-10-23"},
+      {"url": "https://www.lawofone.info/c/Harvest", "title": "lawofone.info — Harvest category", "accessed": "2026-10-23"},
+      {"url": "https://rationalwiki.org/wiki/Ra_Material", "title": "RationalWiki — Ra Material", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "george-van-tassel",
+    "name": "George Van Tassel",
+    "aliases": ["George W. Van Tassel"],
+    "role": "channeler",
+    "tier": "deep",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Command", "Space Brothers", "Venusian"],
+    "era": "pre-ra",
+    "start_year": 1952,
+    "start_year_basis": "first telepathic 'spaceship' messages reported 1952-01-06; first 'Ashtar' message 1952-07-18 (WRSP profile; Wikipedia gives 1952)",
+    "start_confidence": "high",
+    "public_year": 1952,
+    "public_year_basis": "book I Rode a Flying Saucer published 1952 (New Age Publishing); Giant Rock conventions from 1953",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1978,
+    "location": "Giant Rock, Mojave Desert, near Landers, California, USA (leased from 1947); born Jefferson, Ohio, 1910",
+    "method": "telepathic reception during weekly group meditations in rooms dug beneath Giant Rock; also a claimed physical encounter with a Venusian ('Solgonda') on 1953-08-24; on-stage channeling of 'Knut' in 1958",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Giant Rock Interplanetary Spacecraft Conventions, annual from 1953 (to 1971 per Wikipedia; 1977 per WRSP)", "Newsletter Proceedings of the College of Universal Wisdom (1953–1978)", "Ministry of Universal Wisdom / College of Universal Wisdom", "Life magazine coverage 1957-05-27"]
+    },
+    "books": [
+      {"title": "I Rode a Flying Saucer", "year": 1952, "url": "https://en.wikipedia.org/wiki/George_Van_Tassel"},
+      {"title": "The Council of Seven Lights", "year": 1958, "url": "https://en.wikipedia.org/wiki/George_Van_Tassel"}
+    ],
+    "summary": "George Van Tassel (1910–1978) was a Giant Rock, California contactee who claimed telepathic contact with 'Ashtar', a space-fleet commander, from 18 July 1952, and hosted the Giant Rock Spacecraft Conventions from 1953. His messages began the Ashtar lineage that runs through Tuella, Yvonne Cole and many later channels.",
+    "claims": [
+      "Claimed the first 'Ashtar' message on 1952-07-18, in which the source identified itself as 'Ashtar, commandant quadra sector, patrol station Schare, all projections, all waves'.",
+      "Claimed Ashtar warned that hydrogen-bomb testing could destroy life on Earth and asked governments to halt it; after the 1952-11-01 test passed without catastrophe, later messages said Ashtar's forces had helped the planet survive.",
+      "Claimed a physical encounter on 1953-08-24 with 'Solgonda' of Venus, who gave a formula for a rejuvenation machine, the Integratron, begun in 1954 and unfinished at his death.",
+      "Presented extraterrestrials as having influenced humanity and religious texts; the earliest messages reference a 'Council of the Seven Lights'.",
+      "His Ministry later disowned the breakaway 'Ashtar Command' messages as 'a clone of the original Ashtar'."
+    ],
+    "quotes": [
+      {"text": "Ashtar, commandant quadra sector, patrol station Schare, all projections, all waves.", "url": "https://encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ashtar", "context": "self-introduction of the first Ashtar message, 1952 (Encyclopedia.com)"},
+      {"text": "My light, we shall remain in touch here at this cone of receptivity. My love, I am Ashtar.", "url": "https://www.cdamm.org/articles/extraterrestrial", "context": "Van Tassel 1952, pp. 29–30, quoted by CDAMM"},
+      {"text": "Van Tassel was a classic 1950s contactee in the mold of George Adamski", "url": "https://en.wikipedia.org/wiki/George_Van_Tassel", "context": "Wikipedia characterisation"}
+    ],
+    "controversies": [
+      "Failed prophecies: the 1952 hydrogen-bomb warning and late-1950s/60s mass-landing expectations did not materialise (Christopher Helland, via WRSP https://wrldrels.org/2016/12/05/ashtar-command/ and Wikipedia https://en.wikipedia.org/wiki/Ashtar_Sheran).",
+      "Christopher Helland argues Ashtar belief rests on 'faith in an extraterrestrial celebrity'; Andreas Grünschloss compares much Ashtar channeling to cargo cults (https://en.wikipedia.org/wiki/Ashtar_Sheran).",
+      "Robert Short split from Van Tassel in 1952 after Van Tassel rejected his Ashtar messages and founded the rival 'Ashtar Command' (https://wrldrels.org/2016/12/05/ashtar-command/).",
+      "Brenda Denzler calls him 'probably the most important person' in the contactee movement (https://en.wikipedia.org/wiki/Ashtar_Sheran)."
+    ],
+    "predictions": [
+      {"date_predicted": "1952", "what": "Ashtar message of 1952-07-18 warned that detonating the hydrogen bomb would destroy life on Earth", "status": "failed", "url": "https://wrldrels.org/2016/12/05/ashtar-command/"},
+      {"date_predicted": "1950s", "what": "expectations of an imminent space-fleet landing among the Giant Rock circle (Helland)", "status": "failed", "url": "https://en.wikipedia.org/wiki/Ashtar_Sheran"}
+    ],
+    "related_people": ["robert-short", "ethel-p-hill", "tuella", "yvonne-cole", "truman-bethurum", "george-hunt-williamson", "herbert-viktor-speer-medialer-friedenskreis-berlin", "athina-krol"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["birth day (March 10 per WRSP vs March 12 per Wikipedia)", "convention end year (1971 vs 1977) and peak attendance (10,000 vs 11,000)", "Ministry of Universal Wisdom founding year (1952 vs 1953)", "exact first-contact day (1952-07-18 from WRSP only)"],
+    "profile": [
+      "George W. Van Tassel was born in Jefferson, Ohio, in 1910 (10 or 12 March; sources differ) and in 1947 leased Giant Rock, a seven-storey boulder in the Mojave Desert near Landers, California, where he ran an airstrip and café ([Wikipedia: Giant Rock](https://en.wikipedia.org/wiki/Giant_Rock); [WRSP profile](https://wrldrels.org/2016/12/05/ashtar-command/)). In 1948 he founded a weekly meditation group, the Brotherhood of the Cosmic Christ, and the World Religions and Spirituality Project dates his first telepathic 'spaceship' messages to 6 January 1952 ([WRSP](https://wrldrels.org/2016/12/05/ashtar-command/)).",
+      "On 18 July 1952 he reported the first message from 'Ashtar', who introduced himself as 'commandant quadra sector, patrol station Schare' and warned that hydrogen-bomb research threatened life on Earth ([Encyclopedia.com](https://encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ashtar); [CDAMM](https://www.cdamm.org/articles/extraterrestrial)). The first US H-bomb test on 1 November 1952 passed without the predicted catastrophe; later messages claimed Ashtar's forces had helped the planet survive ([WRSP](https://wrldrels.org/2016/12/05/ashtar-command/)). His book *I Rode a Flying Saucer* appeared the same year ([Wikipedia](https://en.wikipedia.org/wiki/George_Van_Tassel)).",
+      "From spring 1953 Van Tassel hosted the annual Giant Rock Interplanetary Spacecraft Convention, which Wikipedia says ran to 1971 with a 1959 peak of about 10,000 attendees, while WRSP gives 1977 and 'up to 11,000'; *Life* magazine covered it on 27 May 1957 ([Wikipedia](https://en.wikipedia.org/wiki/George_Van_Tassel); [WRSP](https://wrldrels.org/2016/12/05/ashtar-command/)). He also published the newsletter *Proceedings of the College of Universal Wisdom* from 1953 and founded the Ministry of Universal Wisdom (1952 or 1953).",
+      "Van Tassel said that on 24 August 1953 he was physically visited by 'Solgonda' of Venus and other beings from a scout ship, who gave him the formula for a time and rejuvenation machine; he began building the Integratron in 1954 and it was still unfinished, described as '95% complete', when he died ([Wikipedia: Ashtar Sheran](https://en.wikipedia.org/wiki/Ashtar_Sheran); [WRSP](https://wrldrels.org/2016/12/05/ashtar-command/)). Within months of the first Ashtar message, Robert Short broke away after Van Tassel rejected his Ashtar messages and founded the 'Ashtar Command'; Van Tassel's Ministry later called such messages 'a clone of the original Ashtar' ([Kook Science](https://hatch.kookscience.com/wiki/Ashtar)).",
+      "Scholars treat Van Tassel as a founding figure of the contactee movement: Brenda Denzler calls him 'probably the most important person' in it, Christopher Helland argues that Ashtar belief rests on 'faith in an extraterrestrial celebrity', and Andreas Grünschloss likens much Ashtar channeling to cargo cults ([Wikipedia: Ashtar Sheran](https://en.wikipedia.org/wiki/Ashtar_Sheran)). Van Tassel died of a heart attack in a Santa Ana hotel room on 9 February 1978, weeks before the Integratron's planned opening ([Wikipedia](https://en.wikipedia.org/wiki/George_Van_Tassel)). After his death Tuella became Ashtar's main spokesperson, and the name has since been claimed by channels from Yvonne Cole (1986) to Athina Król (2026) ([Encyclopedia.com](https://encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ashtar))."
+    ],
+    "sources": [
+      {"url": "https://wrldrels.org/2016/12/05/ashtar-command/", "title": "WRSP — Ashtar Command profile (Helland-based)", "accessed": "2026-10-23"},
+      {"url": "https://wrldrels.org/?p=10393", "title": "WRSP — Ashtar Command (alternate URL)", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/George_Van_Tassel", "title": "Wikipedia — George Van Tassel", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/Ashtar_Sheran", "title": "Wikipedia — Ashtar Sheran", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/Giant_Rock", "title": "Wikipedia — Giant Rock", "accessed": "2026-10-23"},
+      {"url": "https://encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ashtar", "title": "Encyclopedia.com — Ashtar", "accessed": "2026-10-23"},
+      {"url": "https://www.cdamm.org/articles/extraterrestrial", "title": "CDAMM — Extraterrestrial/UFO Religion (Flaherty, 2021)", "accessed": "2026-10-23"},
+      {"url": "https://hatch.kookscience.com/wiki/Ashtar", "title": "Kook Science — Ashtar", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "jim-mccarty",
+    "name": "Jim McCarty",
+    "aliases": ["James Allen McCarty", "Jim"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["quo", "confederation", "ra"],
+    "species_tags": ["Q'uo", "Confederation", "Ra / Law of One"],
+    "era": "ra-era-1981-1990",
+    "start_year": null,
+    "start_year_basis": "L/L history talk says he and Carla Rueckert 'kept the weekly Sunday sessions going and began channeling Q'uo' after Don Elkins's death (late 1984 onward); the year he personally first channeled is not stated",
+    "start_confidence": null,
+    "public_year": 1984,
+    "public_year_basis": "co-author/participant in The Law of One Book I (1984, year commonly cited); scribe in the Ra sessions from 1981-01-15",
+    "public_confidence": "medium",
+    "active": true,
+    "end_year": null,
+    "location": "Louisville, Kentucky, USA (born Kearney, Nebraska, 1947-05-10; moved to Louisville 1980-12-23)",
+    "method": "scribe ('battery') in the Ra trance sessions; conscious channeling of Q'uo and other Confederation sources after 1984",
+    "platforms": {
+      "youtube": null,
+      "website": "https://www.llresearch.org/",
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Camelot Journal blog (bring4th.org/camelot)", "Schiffer Books blog essay (2021-01-07)"]
+    },
+    "books": [
+      {"title": "The Law of One, Book I (with Elkins and Rueckert)", "year": 1984, "url": "https://www.llresearch.org/channeling/ra-contact"},
+      {"title": "Tilting at Windmills (interview book with Carla L. Rueckert and Gary L. Bean)", "year": 2016, "url": "https://www.llresearch.org/library/tilting-at-windmills"}
+    ],
+    "summary": "Jim McCarty arrived in Louisville on 23 December 1980 and, three weeks later, became the scribe of the Ra contact; after Don Elkins's death he and Carla Rueckert continued L/L Research's weekly sessions and began channeling 'Q'uo'. He married Rueckert in 1987 and is listed among L/L's current channels in 2026.",
+    "claims": [
+      "States that 'three weeks later the contact with the social memory complex of Ra began' after he joined Elkins and Rueckert in December 1980.",
+      "Relays the Ra material's claim that 'Ra walked among the Egyptians 11,000 years ago to teach the Law of One'.",
+      "Describes himself (2021) as 'the only surviving member of the group'.",
+      "Channels Q'uo, presented as a principle of Hatonn, Latwii and Ra, in conscious channeling circles."
+    ],
+    "quotes": [
+      {"text": "This is it! This is the contact we've been waiting for, for 20 years.", "url": "https://www.llresearch.org/speeches/the-history-of-llresearch", "context": "McCarty recalling Don Elkins's reaction to the first Ra session"},
+      {"text": "I joined them in December of 1980, and three weeks later the contact with the social memory complex of Ra began.", "url": "https://schifferbooks.com/blogs/redfeather/the-ra-material-s-40th-anniversary", "context": "Schiffer Books blog, 2021"}
+    ],
+    "controversies": [],
+    "predictions": [],
+    "related_people": ["carla-l-rueckert", "don-elkins", "l-l-research", "gary-l-bean-and-austin-bridges"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["year he personally began channeling", "'scribe/battery' wording (L/L bio pages do not use the word 'scribe')"],
+    "profile": [],
+    "sources": [
+      {"url": "https://www.llresearch.org/about/james-mccarty", "title": "L/L Research — Jim McCarty bio", "accessed": "2026-10-23"},
+      {"url": "https://www.lawofone.info/Intro", "title": "lawofone.info — Introduction to The Law of One", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/speeches/the-history-of-llresearch", "title": "The History of L/L Research (talk)", "accessed": "2026-10-23"},
+      {"url": "https://schifferbooks.com/blogs/redfeather/the-ra-material-s-40th-anniversary", "title": "Schiffer Books — The Ra Material's 40th anniversary", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/about/team", "title": "L/L Research — team", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/articles/carlas-eulogy", "title": "L/L Research — Carla's eulogy", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/library/tilting-at-windmills", "title": "L/L Research — Tilting at Windmills", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact", "title": "L/L Research — The Ra Contact", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "gary-l-bean-and-austin-bridges",
+    "name": "Gary L. Bean and Austin Bridges",
+    "aliases": ["L/L Research current channels (with Trisha Bean and 'Kathy B.')"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["quo", "confederation"],
+    "species_tags": ["Q'uo", "Confederation"],
+    "era": "youtube-era-2012-2019",
+    "start_year": null,
+    "start_year_basis": "L/L pages list both under 'Current Channels' but give no start years",
+    "start_confidence": null,
+    "public_year": 2016,
+    "public_year_basis": "Tilting at Windmills, 'a seven-day interview conducted by Gary L. Bean' with Rueckert and McCarty; paperback listed 2016-08-02 (retailer metadata)",
+    "public_confidence": "medium",
+    "active": true,
+    "end_year": null,
+    "location": "Louisville, Kentucky, USA (L/L Research office)",
+    "method": "conscious channeling in group 'circles' (C/C Channeling Circle; practice circles 2020–21)",
+    "platforms": {
+      "youtube": null,
+      "website": "https://www.llresearch.org/",
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Bring4th community forum", "Annual 'Coming Home to a New Earth' gathering near Asheville, NC", "Spiral Practice & Resources channeling workshops"]
+    },
+    "books": [
+      {"title": "Tilting at Windmills (Gary L. Bean interviewing Rueckert and McCarty)", "year": 2016, "url": "https://www.llresearch.org/library/tilting-at-windmills"}
+    ],
+    "summary": "Gary L. Bean and Austin Bridges run the L/L Research office and are listed among its current channels of 'Q'uo' and other 'Confederation' sources, with transcripts dated into 2026. Their individual start years as channels are not given on L/L's pages.",
+    "claims": [
+      "Continue the 'Confederation' contact 'to the present day' through conscious channeling circles.",
+      "Channel Q'uo, described in a 2024 circle as combining Hatonn, Latwii and Ra."
+    ],
+    "quotes": [],
+    "controversies": [],
+    "predictions": [],
+    "related_people": ["jim-mccarty", "carla-l-rueckert", "l-l-research"],
+    "communities": [],
+    "confidence": "medium",
+    "unverified": ["start years as channels", "2016 publication year of Tilting at Windmills (retailer metadata)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://www.llresearch.org/about/team", "title": "L/L Research — team", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling", "title": "L/L Research — channeling archive", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/2024/0509", "title": "L/L Research — C/C Channeling Circle 2024-05-09", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/library/tilting-at-windmills", "title": "L/L Research — Tilting at Windmills", "accessed": "2026-10-23"},
+      {"url": "https://imusic.mx/books/9780945007395/jim-mccarty-2016-tilting-at-windmills-paperback-book", "title": "Retail listing — Tilting at Windmills paperback (2016)", "accessed": "2026-10-23"},
+      {"url": "https://blackwells.co.uk/bookshop/product/Tilting-at-Windmills-by-Jim-McCarty-Carla-L-Rueckert-Gary-L-Bean/9780945007395", "title": "Blackwell's — Tilting at Windmills", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/speeches/the-history-of-llresearch", "title": "The History of L/L Research (talk)", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "tobey-wheelock",
+    "name": "Tobey Wheelock",
+    "aliases": ["lawofone.info"],
+    "role": "interpreter",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ra"],
+    "species_tags": ["Ra / Law of One"],
+    "era": "2000s",
+    "start_year": null,
+    "start_year_basis": "not a channel; no start year applies",
+    "start_confidence": null,
+    "public_year": 2003,
+    "public_year_basis": "lawofone.info footer reads '2003–2026 Tobey Wheelock' (site start c. 2003 is an inference from the copyright range)",
+    "public_confidence": "medium",
+    "active": true,
+    "end_year": null,
+    "location": null,
+    "method": "none (maintains the lawofone.info reference site with L/L Research's permission)",
+    "platforms": {
+      "youtube": null,
+      "website": "https://www.lawofone.info/",
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": []
+    },
+    "books": [],
+    "summary": "Tobey Wheelock created and maintains lawofone.info, which hosts all 106 Ra sessions, about 60 extra Q&As from the Relistening Project, a glossary, timeline and translations (Polish, Czech, Spanish, Swedish). He is listed on L/L Research's team page and is not a channel.",
+    "claims": [],
+    "quotes": [],
+    "controversies": [],
+    "predictions": [],
+    "related_people": ["carla-l-rueckert", "don-elkins", "l-l-research"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["site start year (c. 2003 inferred from copyright range)", "location"],
+    "profile": [],
+    "sources": [
+      {"url": "https://www.lawofone.info/", "title": "lawofone.info — home", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/about/team", "title": "L/L Research — team", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "aaron-abke",
+    "name": "Aaron Abke",
+    "aliases": ["@aaronabke"],
+    "role": "interpreter",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ra"],
+    "species_tags": ["Ra / Law of One"],
+    "era": "youtube-era-2012-2019",
+    "start_year": null,
+    "start_year_basis": "not a channel; year he began teaching the Law of One specifically is unverified",
+    "start_confidence": null,
+    "public_year": 2016,
+    "public_year_basis": "YouTube channel created 2016-11-04 (vidIQ statistics)",
+    "public_confidence": "medium",
+    "active": true,
+    "end_year": null,
+    "location": "USA (described as a pastor's son from Silicon Valley)",
+    "method": "none (teacher/interpreter of the Ra Material; not a channel)",
+    "platforms": {
+      "youtube": {"handle": "@aaronabke", "channel_id": "UC867Q451mPjjD52peYqpF4A", "url": "https://www.youtube.com/@aaronabke", "subscribers": 374000, "subscribers_text": "374K subscribers", "videos": 1195, "videos_text": "1,195 videos", "observed": "2026-10-23"},
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Podcast guest spots on the Law of One (Living 4D with Paul Chek ep. 342; Wellness Force)", "Know Thyself conference speaker page"]
+    },
+    "books": [],
+    "summary": "Aaron Abke is a YouTube teacher (374K subscribers, 2026) who interprets the Ra Material/Law of One rather than channeling; his channel was created in November 2016. He presents himself as a former fitness model who had a 'dramatic spiritual awakening' at 27.",
+    "claims": [
+      "Teaches that 'Unity Consciousness and freedom from the Ego is the next evolutionary leap for mankind.'",
+      "Presents the Law of One as a framework for spiritual practice in podcasts and videos."
+    ],
+    "quotes": [
+      {"text": "Unity Consciousness and freedom from the Ego is the next evolutionary leap for mankind.", "url": "https://know-thyself-conference.heysummit.com/speakers/aaron-abke/", "context": "conference speaker bio"}
+    ],
+    "controversies": [],
+    "predictions": [],
+    "related_people": ["carla-l-rueckert", "don-elkins", "l-l-research", "tobey-wheelock"],
+    "communities": [],
+    "confidence": "medium",
+    "unverified": ["year he began teaching the Law of One", "channel statistics are from third-party analytics (vidIQ, 2026-10-20/22)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://vidiq.com/youtube-stats/channel/UC867Q451mPjjD52peYqpF4A", "title": "vidIQ — Aaron Abke channel statistics", "accessed": "2026-10-23"},
+      {"url": "https://know-thyself-conference.heysummit.com/speakers/aaron-abke/", "title": "Know Thyself conference — Aaron Abke", "accessed": "2026-10-23"},
+      {"url": "https://living4dwithpaulchek.buzzsprout.com/237152/episodes/16874105-ep-342-aaron-abke-the-law-of-one", "title": "Living 4D with Paul Chek ep. 342 — Aaron Abke: The Law of One", "accessed": "2026-10-23"},
+      {"url": "https://wellnessforce.com/?p=29397", "title": "Wellness Force — Aaron Abke: The Law of ONE", "accessed": "2026-10-23"},
+      {"url": "https://www.youtube.com/@aaronabke", "title": "YouTube — @aaronabke", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "l-l-research",
+    "name": "L/L Research",
+    "aliases": ["Rock Creek Research and Development Laboratories (legal name, 'doing business as L/L Research')", "the L/L Company"],
+    "role": "organisation",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ra", "confederation", "quo", "hatonn", "latwii", "laitos"],
+    "species_tags": ["Ra / Law of One", "Confederation", "Q'uo"],
+    "era": "pre-ra",
+    "start_year": 1970,
+    "start_year_basis": "formed 1970 (initially 'the L/L Company') by Don Elkins and Carla Rueckert; Elkins's experiment dates to 1962; nonprofit since 1980; merged with Rock Creek 1982",
+    "start_confidence": "high",
+    "public_year": 1977,
+    "public_year_basis": "Secrets of the UFO (May 1977) published by L/L Research; radio interviews from 1976",
+    "public_confidence": "high",
+    "active": true,
+    "end_year": null,
+    "location": "Louisville, Kentucky, USA",
+    "method": "trance channeling (Ra sessions only, 1981–84) and conscious channeling in meditation groups and training circles",
+    "platforms": {
+      "youtube": null,
+      "website": "https://www.llresearch.org/",
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Bring4th community forum", "lawofone.info (Tobey Wheelock, with L/L permission)", "Annual gathering near Asheville, NC", "Over 1,700 free transcripts online"]
+    },
+    "books": [
+      {"title": "Secrets of the UFO", "year": 1977, "url": "https://assets.llresearch.org/books/secrets_of_the_ufo.pdf"},
+      {"title": "The Law of One, Books I–V (The Ra Material)", "year": 1984, "url": "https://www.llresearch.org/channeling/ra-contact"},
+      {"title": "The Channeling Archives (18-volume set)", "year": null, "url": "https://www.llresearch.org/library/the-channeling-archives-18-volume-set"}
+    ],
+    "summary": "L/L Research is the Louisville, Kentucky nonprofit formed in 1970 by Don Elkins and Carla Rueckert that produced The Law of One (Ra Material) and continues weekly conscious channeling of 'Q'uo' and other 'Confederation' sources, with sessions dated 2026. It publishes more than 1,700 transcripts free online.",
+    "claims": [
+      "States that its sources are 'members of the Confederation of Planets in the Service of the Infinite Creator'.",
+      "States that only the 106 Ra sessions used trance channeling and that it 'no longer works with Ra nor the trance state'.",
+      "Advises readers to accept only what 'resonates' from channeled material."
+    ],
+    "quotes": [
+      {"text": "Only the 106 sessions of the Ra contact used the trance channeling technique.", "url": "https://www.llresearch.org/channeling", "context": "L/L Research channeling page"}
+    ],
+    "controversies": [
+      "RationalWiki calls L/L Research 'not exactly champions of the scientific method' and notes that David Wilcock 'once claimed to have channeled Ra in 1998', from which L/L distances itself (https://rationalwiki.org/wiki/Ra_Material)."
+    ],
+    "predictions": [],
+    "related_people": ["don-elkins", "carla-l-rueckert", "jim-mccarty", "gary-l-bean-and-austin-bridges", "tobey-wheelock", "aaron-abke"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["publication years of The Law of One Books I–V"],
+    "profile": [],
+    "sources": [
+      {"url": "https://www.llresearch.org/history", "title": "L/L Research — History", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling", "title": "L/L Research — channeling archive", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/about/team", "title": "L/L Research — team", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/library/the-channeling-archives-18-volume-set", "title": "L/L Research — The Channeling Archives", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/about/james-mccarty", "title": "L/L Research — Jim McCarty bio (Rock Creek merger)", "accessed": "2026-10-23"},
+      {"url": "https://assets.llresearch.org/books/secrets_of_the_ufo.pdf", "title": "Secrets of the UFO (1977, PDF)", "accessed": "2026-10-23"},
+      {"url": "https://www.llresearch.org/channeling/ra-contact", "title": "L/L Research — The Ra Contact", "accessed": "2026-10-23"},
+      {"url": "https://www.northatlanticbooks.com/blog/wisdom-how-carla-rueckert-found-channeling-and-found-the-truth/", "title": "North Atlantic Books blog (nonprofit since 1980)", "accessed": "2026-10-23"},
+      {"url": "https://rationalwiki.org/wiki/Ra_Material", "title": "RationalWiki — Ra Material", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "george-king",
+    "name": "George King",
+    "aliases": ["Sir George King (self-styled)", "Aetherius Society founder"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["aetherius"],
+    "species_tags": ["Venusian", "Cosmic Masters", "Interplanetary Parliament"],
+    "era": "pre-ra",
+    "start_year": 1954,
+    "start_year_basis": "Society account: on 1954-05-08 a voice told him 'Prepare yourself! You are to become the voice of Interplanetary Parliament' (Wikipedia notes this rests solely on the Society's hagiography)",
+    "start_confidence": "high",
+    "public_year": 1955,
+    "public_year_basis": "Aetherius Society founded 1955 per the George King article (WRSP says 1954; the Society article's body says 1956-08-02 — sources conflict); book Contact Your Higher Self Through Yoga (1955)",
+    "public_confidence": "medium",
+    "active": false,
+    "end_year": 1997,
+    "location": "London, UK (born Wellington, Shropshire, 1919-01-23); HQ moved to Hollywood/Los Angeles June 1959; died Santa Barbara, California, 1997-07-12",
+    "method": "trance/telepathic 'transmissions' recorded and published; yoga-based",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Aetherius Society", "Cosmic Voice magazine", "Operations Starlight (1958–61), Space Power (1959), Sunbeam (1966), Prayer Power (1973)", "BBC television interview 1959-05-21"]
+    },
+    "books": [
+      {"title": "Contact Your Higher Self Through Yoga", "year": 1955, "url": "https://en.wikipedia.org/wiki/Aetherius_Society"},
+      {"title": "Life on the Planets", "year": 1958, "url": "https://en.wikipedia.org/wiki/Aetherius_Society"},
+      {"title": "Contacts with the Gods From Space", "year": 1996, "url": "https://en.wikipedia.org/wiki/Aetherius_Society"}
+    ],
+    "summary": "George King (1919–1997) founded the Aetherius Society after claiming that on 8 May 1954 a voice commanded him to become 'the voice of Interplanetary Parliament'. He claimed to channel 'Master Aetherius' and other 'Cosmic Masters' said to live on Venus and Mars, and the Society describes him as its sole channel.",
+    "claims": [
+      "Claimed to channel 'Master Aetherius' (a Cosmic Master from Venus), 'Mars Sector 6', 'Master Jesus' (said to reside on Venus), Saint Goo-Ling and the 'Great White Brotherhood'.",
+      "Claimed the Cosmic Masters are 'far more technologically and spiritually advanced than human beings' and that the Twelve Blessings were 'sent by the Master Jesus who now resides on the planet Venus'.",
+      "Claimed to have 'spiritually charged' 18 mountains in Operation Starlight (1958–61) and to store prayer energy in 'Spiritual Energy Batteries'.",
+      "The Society claims Cosmic Voice reported the 1957 Kyshtym nuclear accident before the West learned of it."
+    ],
+    "quotes": [
+      {"text": "Prepare yourself! You are to become the voice of Interplanetary Parliament.", "url": "https://en.wikipedia.org/wiki/Aetherius_Society", "context": "the 1954 'command' as recounted by the Aetherius Society"}
+    ],
+    "controversies": [
+      "'His claims have been denounced as pseudoscience by some skeptics', citing James Randi (https://en.wikipedia.org/wiki/George_King_(religious_leader)).",
+      "Roy Wallis (1974) called him a 'religious virtuoso'; Mikael Rothstein describes the Society as syncretic, mainly theosophical, and King's life story as hagiography; Smith (2003) cites 'credibility gaps' (no life on other Solar System planets); Nebel (1961) and Moore (1972) report King could not answer questions in Norwegian and French despite claiming all terrestrial languages (https://en.wikipedia.org/wiki/Aetherius_Society).",
+      "Stephen Hunt calls the Aetherius Society 'probably the first and certainly the most enduring UFO cult' (https://en.wikipedia.org/wiki/UFO_religion)."
+    ],
+    "predictions": [],
+    "related_people": [],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["Society founding year (1954/1955/1956 conflict)", "first Caxton Hall public trance date", "title 'Primary Terrestrial Mental Channel'", "'Mars Sector 6' not confirmed on all fetched pages"],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/Aetherius_Society", "title": "Wikipedia — Aetherius Society", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/George_King_(religious_leader)", "title": "Wikipedia — George King (religious leader)", "accessed": "2026-10-23"},
+      {"url": "https://wrldrels.org/?p=3129", "title": "WRSP — Aetherius Society (Saliba)", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/UFO_religion", "title": "Wikipedia — UFO religion", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "george-hunt-williamson",
+    "name": "George Hunt Williamson",
+    "aliases": ["Brother Philip", "Michael d'Obrenovic"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": [],
+    "species_tags": ["Space Brothers", "Uranus/Neptune beings"],
+    "era": "pre-ra",
+    "start_year": 1952,
+    "start_year_basis": "'Beginning in 1952, he and Alfred Bailey held regular Ouija board sessions' with claimed space beings (Wikipedia)",
+    "start_confidence": "high",
+    "public_year": 1954,
+    "public_year_basis": "The Saucers Speak (1954, with Alfred C. Bailey), based on the Ouija sessions; he was also a named 'witness' to Adamski's claimed 1952-11-20 contact",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1986,
+    "location": "Arizona (Prescott) / California, USA",
+    "method": "Ouija board; claimed short-wave radio contacts",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": []
+    },
+    "books": [
+      {"title": "The Saucers Speak (with Alfred C. Bailey)", "year": 1954, "url": "https://en.wikipedia.org/wiki/George_Hunt_Williamson"},
+      {"title": "Other Tongues—Other Flesh", "year": 1957, "url": "https://en.wikipedia.org/wiki/George_Hunt_Williamson"},
+      {"title": "Secret Places of the Lion", "year": 1958, "url": "https://en.wikipedia.org/wiki/George_Hunt_Williamson"},
+      {"title": "Road in the Sky", "year": 1959, "url": "https://en.wikipedia.org/wiki/George_Hunt_Williamson"},
+      {"title": "Secret of the Andes (as Brother Philip)", "year": 1961, "url": "https://en.wikipedia.org/wiki/George_Hunt_Williamson"}
+    ],
+    "summary": "George Hunt Williamson (died January 1986) claimed Ouija-board contact from 1952 with space beings such as 'Agfa Affa from Uranus' and 'Zo of Neptune', published in The Saucers Speak (1954), and was a named witness to George Adamski's 1952 Desert Center contact. Wikipedia calls him 'a more mystically-inclined forerunner of Erich von Däniken'.",
+    "claims": [
+      "Claimed Ouija-board and short-wave radio contact with space beings including 'Agfa Affa from Uranus' and 'Zo of Neptune'.",
+      "Claimed ancient extraterrestrial influence on Earth history (Secret Places of the Lion, 1958)."
+    ],
+    "quotes": [
+      {"text": "Williamson can be considered a more mystically-inclined forerunner of Erich von Däniken.", "url": "https://en.wikipedia.org/wiki/George_Hunt_Williamson", "context": "Wikipedia characterisation"}
+    ],
+    "controversies": [
+      "Wikipedia (citing Zirger & Martinelli 2016) says his claimed academic background was false and that the Adamski 'witnesses' 'experienced nothing more than Adamski telling them to wait and stay put'; he worked for William Dudley Pelley's organization in 1954 (https://en.wikipedia.org/wiki/George_Hunt_Williamson)."
+    ],
+    "predictions": [],
+    "related_people": ["george-van-tassel", "truman-bethurum"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["year of Other Tongues—Other Flesh (1953 per bibliography vs 1957 per article body)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/George_Hunt_Williamson", "title": "Wikipedia — George Hunt Williamson", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "orfeo-angelucci",
+    "name": "Orfeo Angelucci",
+    "aliases": [],
+    "role": "contactee",
+    "tier": "card",
+    "et_focus": true,
+    "entities": [],
+    "species_tags": ["Space Brothers", "Neptune"],
+    "era": "pre-ra",
+    "start_year": 1952,
+    "start_year_basis": "first claimed encounter 'Shortly after midnight on Friday, May 23' 1952 on a Los Angeles River bridge (the article also says 'during the summer of 1952')",
+    "start_confidence": "high",
+    "public_year": 1955,
+    "public_year_basis": "The Secret of the Saucers (1955)",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1993,
+    "location": "Los Angeles/Burbank, California, USA (Lockheed worker; born Trenton, NJ 1912-06-25; died 1993-07-24)",
+    "method": "contactee narrative (claimed encounters with benevolent beings), not trance channeling",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": []
+    },
+    "books": [
+      {"title": "The Secret of the Saucers", "year": 1955, "url": "https://en.wikipedia.org/wiki/Orfeo_Angelucci"},
+      {"title": "Son of the Sun", "year": 1959, "url": "https://en.wikipedia.org/wiki/Orfeo_Angelucci"}
+    ],
+    "summary": "Orfeo Angelucci (1912–1993), a Lockheed worker in Burbank, claimed encounters from May 1952 with benevolent beings (one described as from Neptune) who asked him to spread their message; he published The Secret of the Saucers in 1955. Carl Jung discussed his case in Flying Saucers: A Modern Myth (1958/59).",
+    "claims": [
+      "Claimed that 'Angelucci was asked to spread the message of the supposedly benevolent aliens' he met in 1952.",
+      "Held that 'ideas preponderantly spiritual cannot now and have never been capable of proof by material methods.'"
+    ],
+    "quotes": [
+      {"text": "ideas preponderantly spiritual cannot now and have never been capable of proof by material methods.", "url": "https://en.wikipedia.org/wiki/Orfeo_Angelucci", "context": "quoted on Wikipedia"}
+    ],
+    "controversies": [
+      "Carl Jung analysed his story in Flying Saucers: A Modern Myth of Things Seen in the Skies (1958/1959); Jung's analysis and media ridicule led to the story being largely disregarded (https://en.wikipedia.org/wiki/Orfeo_Angelucci)."
+    ],
+    "predictions": [],
+    "related_people": ["george-van-tassel"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["internal conflict over first-encounter date (May 23 vs 'summer' 1952)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/Orfeo_Angelucci", "title": "Wikipedia — Orfeo Angelucci", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "truman-bethurum",
+    "name": "Truman Bethurum",
+    "aliases": [],
+    "role": "contactee",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["aura-rhanes"],
+    "species_tags": ["Clarion", "Space Brothers"],
+    "era": "pre-ra",
+    "start_year": 1952,
+    "start_year_basis": "first claimed contact 1952-07-28 in the Mojave Desert, Nevada, while doing roadwork (Wikipedia)",
+    "start_confidence": "high",
+    "public_year": 1952,
+    "public_year_basis": "first told the story at Giant Rock later in 1952 (per Wikipedia); Saucers magazine 1953; Aboard a Flying Saucer (DeVorss, 1954)",
+    "public_confidence": "medium",
+    "active": false,
+    "end_year": 1969,
+    "location": "Mojave Desert; Prescott, Arizona (Sanctuary of Thought, 1955); died Landers, California, 1969-05-21",
+    "method": "contactee narrative (claimed meetings with a saucer crew), not trance channeling",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Giant Rock convention talks", "Sanctuary of Thought, Prescott (1955)"]
+    },
+    "books": [
+      {"title": "Aboard a Flying Saucer", "year": 1954, "url": "https://en.wikipedia.org/wiki/Truman_Bethurum"},
+      {"title": "The Voice of the Planet Clarion", "year": 1957, "url": "https://en.wikipedia.org/wiki/Truman_Bethurum"}
+    ],
+    "summary": "Truman Bethurum (died 1969) claimed that from 28 July 1952 he met the crew of a saucer from the planet 'Clarion', captained by 'Aura Rhanes', and published Aboard a Flying Saucer in 1954. Most UFO researchers dismissed his account as implausible.",
+    "claims": [
+      "Claimed meetings with a saucer crew from the planet 'Clarion', said to lie on the far side of the Moon, captained by 'Aura Rhanes'."
+    ],
+    "quotes": [
+      {"text": "Other UFO researchers and investigators mostly dismissed Bethurum, largely due to his implausible claims.", "url": "https://en.wikipedia.org/wiki/Truman_Bethurum", "context": "Wikipedia"}
+    ],
+    "controversies": [
+      "James Moseley believed he was a liar; he refused polygraph tests; J. Gordon Melton called the Clarion account 'crude' (https://en.wikipedia.org/wiki/Truman_Bethurum)."
+    ],
+    "predictions": [],
+    "related_people": ["george-van-tassel", "george-hunt-williamson"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["the 1952 Giant Rock telling pre-dates the first convention (1953) in Wikipedia's account"],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/Truman_Bethurum", "title": "Wikipedia — Truman Bethurum", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "elizabeth-klarer",
+    "name": "Elizabeth Klarer",
+    "aliases": [],
+    "role": "contactee",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["akon-meton"],
+    "species_tags": ["Meton / Proxima Centauri", "Space Brothers"],
+    "era": "pre-ra",
+    "start_year": 1954,
+    "start_year_basis": "first claimed encounter 1954-12-27 at 'Flying Saucer Hill', Natal midlands; reportedly taken aboard Akon's ship 1956-04-07",
+    "start_confidence": "high",
+    "public_year": 1959,
+    "public_year_basis": "Swedish booklet I rymdskepp över Drakensberg (1959); address to the 11th International Congress of UFO Research Groups, Wiesbaden, 1975-11-02; Beyond the Light Barrier (1980)",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1994,
+    "location": "Natal, South Africa (born Mooi River 1910-07-01; died Durban 1994-02-09)",
+    "method": "contactee narrative (claimed physical encounters), not trance channeling",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": []
+    },
+    "books": [
+      {"title": "I rymdskepp över Drakensberg (Swedish booklet)", "year": 1959, "url": "https://en.wikipedia.org/wiki/Elizabeth_Klarer"},
+      {"title": "Beyond the Light Barrier", "year": 1980, "url": "https://en.wikipedia.org/wiki/Elizabeth_Klarer"}
+    ],
+    "summary": "Elizabeth Klarer (1910–1994), a South African contactee, claimed meetings from December 1954 with 'Akon', a scientist from the planet 'Meton' orbiting Proxima Centauri, and claimed to have borne his son 'Ayling' there. Ufologist Thomas Streicher concluded her claims are 'generally poorly substantiated'.",
+    "claims": [
+      "Claimed contact with 'Akon' from the planet 'Meton' (Alpha/Proxima Centauri system), including being taken aboard his scout ship on 1956-04-07 and photographing it on 1956-07-17.",
+      "Claimed to have borne Akon's son 'Ayling' on Meton."
+    ],
+    "quotes": [
+      {"text": "Ufologist Thomas Streicher concluded that Klarer's claims are generally poorly substantiated", "url": "https://en.wikipedia.org/wiki/Elizabeth_Klarer", "context": "Wikipedia"}
+    ],
+    "controversies": [
+      "Thomas Streicher found her claims poorly substantiated and possibly reflecting fantasy-proneness; no hard evidence for her claimed 1983 House of Lords address; her son David recalls no 1959 absence or pregnancy (https://en.wikipedia.org/wiki/Elizabeth_Klarer)."
+    ],
+    "predictions": [],
+    "related_people": [],
+    "communities": [],
+    "confidence": "high",
+    "unverified": [],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/Elizabeth_Klarer", "title": "Wikipedia — Elizabeth Klarer", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "billy-meier",
+    "name": "Billy Meier",
+    "aliases": ["Eduard Albert Meier", "BEAM", "FIGU founder"],
+    "role": "contactee",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["semjase-plejaren", "pleiadians"],
+    "species_tags": ["Pleiadian", "Plejaren"],
+    "era": "pre-ra",
+    "start_year": 1942,
+    "start_year_basis": "claims contact with 'Sfath' from 1942 (age five) and 'Asket' in 1953; contact said to cease 1964 and resume 1975-01-28 with 'Semjase' (Wikipedia, citing FIGU)",
+    "start_confidence": "medium",
+    "public_year": 1975,
+    "public_year_basis": "Contact Reports and photographs circulated from the Semjase contacts (dated from 1975-01-28); Wikipedia dates the published reports and FIGU's founding to the 'mid/late 1970s' — exact first publication not in the notes",
+    "public_confidence": "low",
+    "active": true,
+    "end_year": null,
+    "location": "Bülach / Hinterschmidrüti, Switzerland (born Bülach 1937-02-03); Semjase Silver Star Center",
+    "method": "claimed physical contact meetings and photographs; 'Contact Reports' — a contactee, not a trance channel",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["FIGU (Semjase Silver Star Center, Hinterschmidrüti)", "Photographs/films; Contact Report volumes", "1987 film Contact"]
+    },
+    "books": [],
+    "summary": "Eduard 'Billy' Meier (born 1937) is a Swiss contactee who claims physical meetings and photographs of 'Plejaren' (earlier 'Pleiadian') visitors, chiefly 'Semjase' from 28 January 1975, and founded FIGU. Scholars and skeptics describe his photographs as hoaxes, and his ex-wife said in 1997 that they showed models made from household objects.",
+    "claims": [
+      "Claims contact with 'Semjase' and 'Ptaah', 'Plejaren' humans from a world in a star system beyond the Pleiades, plus earlier 'Sfath' (1942) and 'Asket' (1953).",
+      "'Meier claims to be the seventh reincarnation after six prophets common to Judaism, Christianity, and Islam.'"
+    ],
+    "quotes": [
+      {"text": "Meier claims to be the seventh reincarnation after six prophets common to Judaism, Christianity, and Islam.", "url": "https://en.wikipedia.org/wiki/Billy_Meier", "context": "Wikipedia"}
+    ],
+    "controversies": [
+      "Scholars and skeptics say his photographs and films 'are hoaxes'; his ex-wife Kalliope said in 1997 the photos showed models made from household objects; 'Asket and Nera' photos were identified as Dean Martin Show dancers (The Golddiggers); Kinder's Light Years (1987) records Meier admitting to using models to 'recreate' scenes; the 1987 FIGU film Contact is described as hagiographic (https://en.wikipedia.org/wiki/Billy_Meier)."
+    ],
+    "predictions": [],
+    "related_people": ["barbara-marciniak", "elena-danaan"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["'Erra', Talmud Jmmanuel and FIGU's exact founding year (1975) not on the fetched page", "whether he remains publicly active in 2026"],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/Billy_Meier", "title": "Wikipedia — Billy Meier", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "dorothy-martin",
+    "name": "Dorothy Martin",
+    "aliases": ["Sister Thedra", "Marian Keech (pseudonym in When Prophecy Fails)"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["clarion-sananda"],
+    "species_tags": ["Clarion", "Sananda", "Space Brothers"],
+    "era": "pre-ra",
+    "start_year": 1954,
+    "start_year_basis": "automatic-writing messages from planet 'Clarion' received in 1954 (Wikipedia)",
+    "start_confidence": "high",
+    "public_year": 1954,
+    "public_year_basis": "messages published in the Chicago Tribune on 1954-12-17 via Charles Laughead",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": null,
+    "location": "Oak Park, Illinois, USA (1954)",
+    "method": "automatic writing",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Association of Sananda and Sanat Kumara (founded later as 'Sister Thedra'; year not given)", "Communiqués 1989–1992 compiled in A Call to Arms"]
+    },
+    "books": [],
+    "summary": "Dorothy Martin received automatic-writing messages in 1954 from beings on the planet 'Clarion' predicting a global flood for 21 December 1954 and a saucer rescue of believers; the flood did not occur. Her group was covertly studied by Festinger, Riecken and Schachter for When Prophecy Fails (1956), and she continued as 'Sister Thedra', channeling 'Sananda'.",
+    "claims": [
+      "Claimed messages from space beings on planet 'Clarion' who would send a flying saucer to rescue believers before a global flood on 1954-12-21.",
+      "Later, as 'Sister Thedra', channeled 'Sananda' and founded the Association of Sananda and Sanat Kumara."
+    ],
+    "quotes": [],
+    "controversies": [
+      "The 1954-12-21 flood prophecy failed; the group's response was documented covertly by Leon Festinger, Henry Riecken and Stanley Schachter in When Prophecy Fails (1956), the founding case study of cognitive dissonance, which notes the group 'briefly increased its public outreach' afterwards (https://en.wikipedia.org/wiki/Dorothy_Martin_(spiritualist))."
+    ],
+    "predictions": [
+      {"date_predicted": "1954-12-21", "what": "global flood; saucer rescue of believers", "status": "failed", "url": "https://en.wikipedia.org/wiki/Dorothy_Martin_(spiritualist)"}
+    ],
+    "related_people": ["tuella", "ethel-p-hill"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["death year and founding year of the Association of Sananda and Sanat Kumara (not in notes)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/Dorothy_Martin_(spiritualist)", "title": "Wikipedia — Dorothy Martin (spiritualist)", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "robert-short",
+    "name": "Robert Short",
+    "aliases": ["Robert 'Bob' Edward Short", "Blue Rose Ministry", "Solar Space Foundation"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Command"],
+    "era": "pre-ra",
+    "start_year": 1952,
+    "start_year_basis": "member of Van Tassel's group who broke away in 1952 when his Ashtar messages were rejected, founding 'Ashtar Command' (WRSP, CDAMM, Wikipedia; Kook Science dates the split to 1953)",
+    "start_confidence": "high",
+    "public_year": 1952,
+    "public_year_basis": "book Out of the Stars: A Message from Extraterrestrials (1952; republished 2003)",
+    "public_confidence": "medium",
+    "active": false,
+    "end_year": 2019,
+    "location": "Joshua Tree, California, USA; died Cornville, Yavapai County, Arizona, 2019-09-06 (born 1929-06-28)",
+    "method": "trance/medium ('American medium and saucerian')",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Interplanetary News Digest (editor)", "Blue Rose Ministry, Joshua Tree"]
+    },
+    "books": [
+      {"title": "Out of the Stars: A Message from Extraterrestrials", "year": 1952, "url": "https://wrldrels.org/2016/12/05/ashtar-command/"},
+      {"title": "Record in Stone: 'The Pyramids'", "year": 1977, "url": "https://hatch.kookscience.com/wiki/Robert_Short"},
+      {"title": "Beyond These Portals: 'A Solar Tour'", "year": 1981, "url": "https://hatch.kookscience.com/wiki/Robert_Short"}
+    ],
+    "summary": "Robert Short (1929–2019) was a member of George Van Tassel's Giant Rock group who split off in 1952 after Van Tassel rejected his Ashtar messages and founded the 'Ashtar Command', the organisational name later used across the lineage. He also channeled other Command members such as 'Korton'.",
+    "claims": [
+      "Claimed to channel Ashtar and other 'Ashtar Command' members, notably 'Korton'.",
+      "Originated the organisational name 'Ashtar Command' and 'became a primary source for later beliefs' about it."
+    ],
+    "quotes": [],
+    "controversies": [
+      "Van Tassel publicly distanced his work from Short's after the 1952 split (https://wrldrels.org/2016/12/05/ashtar-command/)."
+    ],
+    "predictions": [],
+    "related_people": ["george-van-tassel", "tuella"],
+    "communities": [],
+    "confidence": "medium",
+    "unverified": ["split year (1952 vs 1953)", "biographical details rest on a hobbyist wiki (Kook Science)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://hatch.kookscience.com/wiki/Robert_Short", "title": "Kook Science — Robert Short", "accessed": "2026-10-23"},
+      {"url": "https://wrldrels.org/2016/12/05/ashtar-command/", "title": "WRSP — Ashtar Command", "accessed": "2026-10-23"},
+      {"url": "https://www.cdamm.org/articles/extraterrestrial", "title": "CDAMM — Extraterrestrial/UFO Religion", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/Ashtar_Sheran", "title": "Wikipedia — Ashtar Sheran", "accessed": "2026-10-23"},
+      {"url": "https://hatch.kookscience.com/wiki/Ashtar", "title": "Kook Science — Ashtar", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "ethel-p-hill",
+    "name": "Ethel P. Hill",
+    "aliases": ["E.P.H."],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Command", "Sananda"],
+    "era": "pre-ra",
+    "start_year": null,
+    "start_year_basis": "not stated in the notes; automatic writing of Ashtar material by 1957",
+    "start_confidence": null,
+    "public_year": 1957,
+    "public_year_basis": "In Days to Come by Ashtar, Received Through Automatic Writing by E.P.H. (Los Angeles: New Age Publishing, 1957)",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1962,
+    "location": "Los Angeles, California, USA (dates 1875–1962 per CDAMM)",
+    "method": "automatic writing",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": []
+    },
+    "books": [
+      {"title": "In Days to Come by Ashtar, Received Through Automatic Writing by E.P.H.", "year": 1957, "url": "https://sacred-texts.com/ufo/idtc/index.htm"}
+    ],
+    "summary": "Ethel P. Hill (1875–1962) produced the 1957 automatic-writing book In Days to Come, the earliest book-length Ashtar text to present him as commander of 'a vast army of spacemen' who 'reports directly to Jesus Christ'. CDAMM identifies this Christian chain-of-command template as the one later central to Tuella.",
+    "claims": [
+      "Presented Ashtar as 'commander of a vast army of spacemen' 'ten million strong' who 'reports directly to Jesus Christ' and assists 'Unseen Guardians'."
+    ],
+    "quotes": [],
+    "controversies": [],
+    "predictions": [],
+    "related_people": ["george-van-tassel", "tuella", "dorothy-martin"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["biographical details beyond dates and initials"],
+    "profile": [],
+    "sources": [
+      {"url": "https://sacred-texts.com/ufo/idtc/index.htm", "title": "Sacred Texts — In Days to Come by Ashtar (full text)", "accessed": "2026-10-23"},
+      {"url": "https://hatch.kookscience.com/wiki/Ashtar_Command", "title": "Kook Science — Ashtar Command", "accessed": "2026-10-23"},
+      {"url": "https://www.cdamm.org/articles/extraterrestrial", "title": "CDAMM — Extraterrestrial/UFO Religion", "accessed": "2026-10-23"},
+      {"url": "https://hatch.kookscience.com/wiki/Ashtar", "title": "Kook Science — Ashtar", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "herbert-viktor-speer-medialer-friedenskreis-berlin",
+    "name": "Herbert Viktor Speer (Medialer Friedenskreis Berlin)",
+    "aliases": ["MFK", "Psychic Peace Circle Berlin", "mediums Monika-Manuela Speer and Uwe Speer"],
+    "role": "organisation",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Sheran", "Santiner / Metharia", "Nordic"],
+    "era": "pre-ra",
+    "start_year": null,
+    "start_year_basis": "Speer founded the Christian-spiritualist MFK in 1952; 'Ashtar Sheran' contact is placed only in the 'mid-1950s' by the devotee source (no year given)",
+    "start_confidence": null,
+    "public_year": 1956,
+    "public_year_basis": "group active 1956–1975 producing UFO brochures with Ashtar Sheran transmissions; earliest dated item seen is 'New Year's wishes 1957' (devotee site and translated brochure)",
+    "public_confidence": "medium",
+    "active": false,
+    "end_year": 1975,
+    "location": "Berlin (West), Germany",
+    "method": "automatic writing (Monika-Manuela Speer) and mediumistic drawing (Uwe Speer; about 200 drawings, including the well-known blond Ashtar Sheran portrait)",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Brochures/reports e.g. 'Nicht von dieser Erde' (Not from this Earth), 'Vor der Landung' (Before the Landing), 'Harmagedon', 'Von Stern zu Stern' (>8,000 pages)", "English translations hosted at psygrenz.com"]
+    },
+    "books": [],
+    "summary": "The Medialer Friedenskreis Berlin, founded by Herbert Viktor Speer (1902–1983) in 1952, produced more than 8,000 pages of brochures between 1956 and 1975 attributed to 'Ashtar Sheran', adding the title 'Sheran' and the blond 'Nordic' portrait that still defines Ashtar's image. The group described him as a Christ-appointed commander of an 'Intergalactic Light Fleet' whose people, the 'Santiner', come from 'Metharia' near Alpha Centauri.",
+    "claims": [
+      "Described 'Ashtar Sheran' as a 'World Teacher' and 'UFO commander' whom Christ and Archangel Michael appointed commander of the 'Intergalactic Light Fleet'.",
+      "Claimed his people, the 'Santiner', come from 'Metharia', placed near Alpha Centauri, and serve Jesus Christ (transmissions from 1959).",
+      "Referred to 'The space station SHARE, Quadra Sector, near planet Earth', linking to Van Tassel's 'Schare'."
+    ],
+    "quotes": [],
+    "controversies": [
+      "Primary sources are a devotee site (French) and antiquarian catalogues; no academic source on MFK dates was reachable (Grünschloss 1998 blocked), so exact years are medium confidence (notes, krol_ashtar_lineage.md)."
+    ],
+    "predictions": [],
+    "related_people": ["george-van-tassel", "eugenio-siragusa"],
+    "communities": [],
+    "confidence": "medium",
+    "unverified": ["year of first Ashtar Sheran contact ('mid-1950s')", "all dates rest on devotee/antiquarian sources"],
+    "profile": [],
+    "sources": [
+      {"url": "http://ashtar.sheran.free.fr/articles/dessins_groupe_de_berlin/dessins_groupe_de_berlin.htm", "title": "Devotee site — drawings of the Berlin group (MFK)", "accessed": "2026-10-23"},
+      {"url": "https://psygrenz.com/ebooks/mfk/ufologie-santiner/not_from_this_earth-part-1/toc/", "title": "psygrenz.com — MFK brochure 'Not from this Earth' (translation)", "accessed": "2026-10-23"},
+      {"url": "https://www.booklooker.de/B%C3%BCcher/Angebote/autor=Sheran%2C+Ashtar", "title": "booklooker.de — Ashtar Sheran antiquarian listings", "accessed": "2026-10-23"},
+      {"url": "https://www.zvab.com/buch-suchen/autor/ashtar-sheran/", "title": "ZVAB — Ashtar Sheran listings", "accessed": "2026-10-23"},
+      {"url": "https://www.scribd.com/document/488404850/Before-the-landing-Ashtar", "title": "Scribd — 'Before the Landing' (Ashtar Sheran translation)", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/Ashtar_Sheran", "title": "Wikipedia — Ashtar Sheran", "accessed": "2026-10-23"},
+      {"url": "https://hatch.kookscience.com/wiki/Ashtar_Command", "title": "Kook Science — Ashtar Command", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "eugenio-siragusa",
+    "name": "Eugenio Siragusa",
+    "aliases": ["Centro Studi Fratellanza Cosmica founder"],
+    "role": "contactee",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Sheran", "Confederated worlds"],
+    "era": "pre-ra",
+    "start_year": 1962,
+    "start_year_basis": "claimed meeting on 1962-04-30 on Monte Sona-Manfrè (Etna) with two luminous beings identified as 'Ashtar Sheran' and 'Ithacar'; an initial 'folgorazione' (glowing disc) is dated 1952-03-25 (devotee sources)",
+    "start_confidence": "medium",
+    "public_year": null,
+    "public_year_basis": "founding year of his Centro Studi Fratellanza Cosmica not found; no dated first publication in the notes",
+    "public_confidence": null,
+    "active": false,
+    "end_year": 2006,
+    "location": "Catania, Sicily, Italy (born 1919-03-25; died 2006-08-27)",
+    "method": "claimed physical contact plus received messages",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Centro Studi Fratellanza Cosmica", "message collections attributed to 'Ashtar Sheran, Capo della Flotta Spaziale Extraplanetaria'"]
+    },
+    "books": [],
+    "summary": "Eugenio Siragusa (1919–2006), an Italian contactee from Catania, claimed that on 30 April 1962 he met 'Ashtar Sheran, comandante dei mondi confederati' and his lieutenant 'Ithacar' on Mount Etna, and later published their messages. The available sources are devotional; a later circle formed around Giorgio Bongiovanni.",
+    "claims": [
+      "Claimed Ashtar Sheran is 'comandante dei mondi confederati in missione sulla Terra' (commander of the confederated worlds on mission to Earth) and that 'Ithacar' is regent of Mars."
+    ],
+    "quotes": [],
+    "controversies": [
+      "Sources are devotional (famigliafideus.com, veritauniversale.it); a 1978 arrest/trial mentioned in the research brief was not found in fetched pages and is unverified (notes, krol_ashtar_lineage.md)."
+    ],
+    "predictions": [],
+    "related_people": ["herbert-viktor-speer-medialer-friedenskreis-berlin", "george-van-tassel"],
+    "communities": [],
+    "confidence": "medium",
+    "unverified": ["Centro Studi Fratellanza Cosmica founding year", "1978 legal case", "all biographical detail beyond the 1962 date (three devotee/wiki sources agree on it)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://www.famigliafideus.com/eugenio-siragusa-biografia/", "title": "famigliafideus.com — Eugenio Siragusa biography (devotee)", "accessed": "2026-10-23"},
+      {"url": "https://www.veritauniversale.it/eugenio-siragusa/", "title": "veritauniversale.it — Eugenio Siragusa", "accessed": "2026-10-23"},
+      {"url": "https://mistero.fandom.com/it/wiki/Giorgio_Bongiovanni_(contattista)", "title": "Mistero wiki — Giorgio Bongiovanni (contattista)", "accessed": "2026-10-23"},
+      {"url": "https://www.conoscenzealconfine.it/la-grandezza-di-eugenio-siragusa-contattista-di-fama-mondiale/", "title": "conoscenzealconfine.it — La grandezza di Eugenio Siragusa", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "tuella",
+    "name": "Tuella",
+    "aliases": ["Thelma B. Terrell", "Thelma B. Terrill", "Thelma Blanche McNeely", "Guardian Action Publications / Guardian Action International"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Command", "Sananda", "Space Confederation"],
+    "era": "ra-era-1981-1990",
+    "start_year": 1977,
+    "start_year_basis": "WRSP: 1977 'Terrill establishes the Ashtar Galactic Command'; the exact year she first channeled Ashtar is unverified",
+    "start_confidence": "medium",
+    "public_year": 1982,
+    "public_year_basis": "Project World Evacuation: By the Ashtar Command (Guardian Action Publications, Deming NM, 1982), described as the Command's first 'official message'",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1993,
+    "location": "USA — born Greenup, Illinois, 1915-05-30; publishing addresses Deming and Aztec NM (1982–83), Durango CO (1985), Salt Lake City UT (1988); died Millersville, Pennsylvania, 1993-09-07",
+    "method": "telepathic channeling (The Dynamics of Cosmic Telepathy, 1983)",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Guardian Action Publications / Guardian Action International", "Ashtar Galactic Command (1977)"]
+    },
+    "books": [
+      {"title": "Project World Evacuation: By the Ashtar Command", "year": 1982, "url": "https://search.worldcat.org/oclc/35572116"},
+      {"title": "The Dynamics of Cosmic Telepathy", "year": 1983, "url": "https://hatch.kookscience.com/wiki/Thelma_B._Terrill_(Tuella)"},
+      {"title": "Lord Kuthumi: World Messages for the Coming Decade", "year": 1983, "url": "https://hatch.kookscience.com/wiki/Thelma_B._Terrill"},
+      {"title": "Ashtar: A Tribute", "year": 1985, "url": "https://hatch.kookscience.com/wiki/Thelma_B._Terrill_(Tuella)"},
+      {"title": "On Earth Assignment", "year": 1988, "url": "https://hatch.kookscience.com/wiki/Thelma_B._Terrill_(Tuella)"},
+      {"title": "Ashtar: Revealing the Secret Identity of the Forces of Light (posthumous, Inner Light)", "year": 1994, "url": "https://wrldrels.org/2016/12/05/ashtar-command/"},
+      {"title": "Cosmic Prophecies for the Year 2000 (posthumous)", "year": 1994, "url": "https://hatch.kookscience.com/wiki/Thelma_B._Terrill_(Tuella)"}
+    ],
+    "summary": "Tuella (Thelma B. Terrell, 1915–1993) became Ashtar's main spokesperson after George Van Tassel's death, founding the 'Ashtar Galactic Command' in 1977 and publishing Project World Evacuation (1982), which described a three-phase lifting of humans by ships before Earth changes. Her Ashtar was a physical 'flesh and blood' commander second only to Sananda (Jesus); no evacuation occurred.",
+    "claims": [
+      "Claimed Ashtar is a physical 'flesh and blood' being commanding 'millions of space ships', second only to Sananda (Jesus): 'In the Alliance of the Space Confederation, Commander Ashtar is the highest in authority for our hemisphere.'",
+      "Claimed an imminent mass evacuation of Earth by ships: 'Souls of Light' lifted first, then children, then others, in a short window before catastrophe.",
+      "Presented Ashtar as a 'Herald Angel' preparing Earth ('Shan') for Christ's return, not a fallen angel; also channeled 'Jycondria', 'assistant to Ashtar' (via 'Lyara' in Project World Evacuation)."
+    ],
+    "quotes": [
+      {"text": "In the Alliance of the Space Confederation, Commander Ashtar is the highest in authority for our hemisphere.", "url": "https://www.cdamm.org/articles/extraterrestrial", "context": "Tuella 1985, quoted by CDAMM"},
+      {"text": "I am Ashtar, of the Ashtar Universal Command", "url": "https://www.scribd.com/document/37290258/ASHTAR-a-Tribute-Compiled-by-TUELLA", "context": "self-introduction in Ashtar: A Tribute (1985), excerpt"}
+    ],
+    "controversies": [
+      "The evacuation she announced in Project World Evacuation (1982) did not occur; her later books (1994–95) shift toward spiritual ascension rather than physical rescue (https://wrldrels.org/2016/12/05/ashtar-command/).",
+      "Encyclopedia.com names her Ashtar's 'main spokesperson after Van Tassel's death' (https://encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ashtar)."
+    ],
+    "predictions": [
+      {"date_predicted": "1982", "what": "Project World Evacuation: imminent three-phase lifting of humans by Ashtar Command ships before Earth catastrophe", "status": "failed", "url": "https://wrldrels.org/2016/12/05/ashtar-command/"}
+    ],
+    "related_people": ["george-van-tassel", "yvonne-cole", "mike-quinsey", "ethel-p-hill", "dorothy-martin"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["birth and death dates (Kook Science; death citation not displayed)", "year she first channeled Ashtar", "founding year of Guardian Action"],
+    "profile": [],
+    "sources": [
+      {"url": "https://hatch.kookscience.com/wiki/Thelma_B._Terrill_(Tuella)", "title": "Kook Science — Thelma B. Terrill (Tuella)", "accessed": "2026-10-23"},
+      {"url": "https://hatch.kookscience.com/wiki/Thelma_B._Terrill", "title": "Kook Science — Thelma B. Terrill", "accessed": "2026-10-23"},
+      {"url": "https://wrldrels.org/2016/12/05/ashtar-command/", "title": "WRSP — Ashtar Command", "accessed": "2026-10-23"},
+      {"url": "https://www.cdamm.org/articles/extraterrestrial", "title": "CDAMM — Extraterrestrial/UFO Religion", "accessed": "2026-10-23"},
+      {"url": "https://encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ashtar", "title": "Encyclopedia.com — Ashtar", "accessed": "2026-10-23"},
+      {"url": "https://www.encyclopedia.com/science/encyclopedias-almanacs-transcripts-and-maps/ashtar", "title": "Encyclopedia.com — Ashtar (www)", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/Ashtar_Galactic_Command", "title": "Wikipedia — Ashtar Galactic Command", "accessed": "2026-10-23"},
+      {"url": "https://search.worldcat.org/oclc/35572116", "title": "WorldCat — Project World Evacuation", "accessed": "2026-10-23"},
+      {"url": "https://www.scribd.com/document/398590224/Thelma-Terrell-Project-World-Evacuation", "title": "Scribd — Project World Evacuation excerpt", "accessed": "2026-10-23"},
+      {"url": "https://www.scribd.com/document/37290258/ASHTAR-a-Tribute-Compiled-by-TUELLA", "title": "Scribd — Ashtar: A Tribute excerpt", "accessed": "2026-10-23"},
+      {"url": "https://hatch.kookscience.com/wiki/Jycondria_(Ashtar_Command)", "title": "Kook Science — Jycondria (Ashtar Command)", "accessed": "2026-10-23"},
+      {"url": "https://goldenageofgaia.com/2011/07/14/arraiel-biography-of-mike-quinsey/", "title": "Golden Age of Gaia — biography of Mike Quinsey (Universal Network link)", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "yvonne-cole",
+    "name": "Yvonne Cole",
+    "aliases": [],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Command"],
+    "era": "1990s",
+    "start_year": 1986,
+    "start_year_basis": "began channeling Ashtar in 1986 (WRSP, Wikipedia, citing Helland)",
+    "start_confidence": "high",
+    "public_year": 1994,
+    "public_year_basis": "published in Connecting Link magazine (1994) per Wikipedia's reference list; earlier public activity not dated in the notes",
+    "public_confidence": "medium",
+    "active": null,
+    "end_year": null,
+    "location": null,
+    "method": "channeling (method not specified in the notes)",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Connecting Link magazine (1994)"]
+    },
+    "books": [],
+    "summary": "Yvonne Cole began channeling Ashtar in 1986 and predicted that Earth would be destroyed and evacuated by the Ashtar Command in 1994, with alien cultures arriving and a broadcast message that year. The prophecy failed and 'further divided the movement'; followers reframed it as a 1994 'lift-off experience' and a December 1994 'Pioneer Voyage' with more than 250 participants.",
+    "claims": [
+      "Claimed Earth would be destroyed in 1994 and evacuated by the Ashtar Command, with the arrival of alien cultures and a broadcast message in 1994."
+    ],
+    "quotes": [],
+    "controversies": [
+      "Her 1994 destruction/evacuation prophecy failed and 'further divided the movement'; followers reframed it as a 'lift-off experience' and a December 1994 'Pioneer Voyage' (Helland, via WRSP https://wrldrels.org/2016/12/05/ashtar-command/ and Wikipedia https://en.wikipedia.org/wiki/Ashtar_Sheran)."
+    ],
+    "predictions": [
+      {"date_predicted": "1994", "what": "destruction of Earth civilisations; Ashtar Command evacuation/landings and a broadcast message", "status": "failed", "url": "https://wrldrels.org/2016/12/05/ashtar-command/"}
+    ],
+    "related_people": ["tuella", "george-van-tassel"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": ["location, dates and later activity (gap in the notes)"],
+    "profile": [],
+    "sources": [
+      {"url": "https://wrldrels.org/2016/12/05/ashtar-command/", "title": "WRSP — Ashtar Command", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/Ashtar_Sheran", "title": "Wikipedia — Ashtar Sheran", "accessed": "2026-10-23"},
+      {"url": "https://wrldrels.org/?p=10393", "title": "WRSP — Ashtar Command (alternate URL)", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "ashtar-athena-sheran",
+    "name": "Ashtar-Athena Sheran",
+    "aliases": ["Ashtar-Athena", "channel of 'Commander Lady Athena' / 'Pallas Athena'"],
+    "role": "channeler",
+    "tier": "card",
+    "et_focus": true,
+    "entities": ["ashtar"],
+    "species_tags": ["Ashtar Command", "Sananda"],
+    "era": "1990s",
+    "start_year": null,
+    "start_year_basis": "not found",
+    "start_confidence": null,
+    "public_year": 1997,
+    "public_year_basis": "Communiques from the Heart of the Ashtar Command (Mt. Shasta, CA, 1997)",
+    "public_confidence": "medium",
+    "active": null,
+    "end_year": null,
+    "location": "Mount Shasta, California, USA (publication place)",
+    "method": "channeling ('Spirit messages ... received by Ashtar-Athena')",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": []
+    },
+    "books": [
+      {"title": "Communiques from the Heart of the Ashtar Command (Spirit messages of Commander Lord Ashtar, Commander Lady Athena, Sai Baba and Lord Sananda)", "year": 1997, "url": "https://hatch.kookscience.com/wiki/Pallas_Athena_(Ashtar_Command)"}
+    ],
+    "summary": "'Ashtar-Athena Sheran' is the pen name of a Mount Shasta channel who published Communiques from the Heart of the Ashtar Command in 1997, presenting 'Commander Lady Athena' (identified with Pallas Athena) as a high-ranking member of the Ashtar Galactic Command alongside Lord Ashtar, Sai Baba and Sananda. The channel's legal name and later activity were not found.",
+    "claims": [
+      "Presented 'Commander Lady Athena'/'Pallas Athena' as a high-ranking member of the Ashtar Galactic Command, identified with the Greek goddess."
+    ],
+    "quotes": [],
+    "controversies": [],
+    "predictions": [],
+    "related_people": ["tuella"],
+    "communities": [],
+    "confidence": "low",
+    "unverified": ["legal name, dates and later web activity"],
+    "profile": [],
+    "sources": [
+      {"url": "https://hatch.kookscience.com/wiki/Pallas_Athena_(Ashtar_Command)", "title": "Kook Science — Pallas Athena (Ashtar Command)", "accessed": "2026-10-23"}
+    ]
+  },
+  {
+    "id": "jane-roberts",
+    "name": "Jane Roberts",
+    "aliases": [],
+    "role": "context",
+    "tier": "card",
+    "et_focus": false,
+    "entities": ["seth"],
+    "species_tags": ["non-ET"],
+    "era": "pre-ra",
+    "start_year": 1963,
+    "start_year_basis": "first coherent 'Seth' messages via Ouija board with husband Robert Butts on 1963-12-02, soon shifting to trance dictation",
+    "start_confidence": "high",
+    "public_year": 1966,
+    "public_year_basis": "How to Develop Your ESP Power (1966; later The Coming of Seth); The Seth Material (1970)",
+    "public_confidence": "high",
+    "active": false,
+    "end_year": 1984,
+    "location": "Elmira, New York, USA (born Albany, NY, 1929-05-08; died 1984-09-05)",
+    "method": "trance dictation; husband Robert Butts transcribed",
+    "platforms": {
+      "youtube": null,
+      "website": null,
+      "podcast": null,
+      "patreon": null,
+      "instagram": null,
+      "tiktok": null,
+      "other": ["Papers at Yale University Library (MS 1090)"]
+    },
+    "books": [
+      {"title": "How to Develop Your ESP Power (later The Coming of Seth)", "year": 1966, "url": "https://en.wikipedia.org/wiki/Seth_Material"},
+      {"title": "The Seth Material", "year": 1970, "url": "https://en.wikipedia.org/wiki/Seth_Material"},
+      {"title": "Seth Speaks", "year": 1972, "url": "https://en.wikipedia.org/wiki/Seth_Material"},
+      {"title": "The Nature of Personal Reality", "year": 1974, "url": "https://en.wikipedia.org/wiki/Seth_Material"}
+    ],
+    "summary": "Jane Roberts (1929–1984) channeled 'Seth', a self-described 'energy personality essence no longer focused in physical matter', from December 1963 until her death, producing more than 1,500 sessions. Not an ET source, the Seth books are credited by Klimo, Hanegraaff and Albanese with shaping the vocabulary of later channeling, including Bashar's.",
+    "claims": [
+      "Seth described himself as an 'energy personality essence no longer focused in physical matter' (not extraterrestrial).",
+      "Core teaching: 'you create your own reality'; 'You get what you concentrate upon. There is no other main rule.'"
+    ],
+    "quotes": [
+      {"text": "If you want to change your world, you must first change your thoughts, expectations, and beliefs.", "url": "https://en.wikipedia.org/wiki/Seth_Material", "context": "Seth, quoted on Wikipedia"}
+    ],
+    "controversies": [
+      "James Alcock: 'there seems little need to consider the involvement of any supernatural agency'; psychologist Paul Cunningham (2010): 'fraud and cryptomnesia are highly improbable explanations' (https://en.wikipedia.org/wiki/Seth_Material).",
+      "Catherine Albanese says The Seth Material (1970) 'launched an era of nationwide awareness' of communication with other-than-human entities; Francesco Baroni compares Bashar's 'future self' claim and 'All That Is' vocabulary to Seth (https://www.cesnur.org/2012/el-baroni.htm)."
+    ],
+    "predictions": [],
+    "related_people": ["darryl-anka", "thomas-massari", "esther-hicks", "barbara-marciniak"],
+    "communities": [],
+    "confidence": "high",
+    "unverified": [],
+    "profile": [],
+    "sources": [
+      {"url": "https://en.wikipedia.org/wiki/Seth_Material", "title": "Wikipedia — Seth Material", "accessed": "2026-10-23"},
+      {"url": "https://en.wikipedia.org/wiki/Jane_Roberts", "title": "Wikipedia — Jane Roberts", "accessed": "2026-10-23"},
+      {"url": "https://www.cesnur.org/2012/el-baroni.htm", "title": "CESNUR 2012 — Baroni, Darryl Anka and 'Bashar'", "accessed": "2026-10-23"}
+    ]
+  }
+]

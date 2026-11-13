@@ -1,0 +1,43 @@
+{
+ "person": "Judy Satori",
+ "role": "channeler",
+ "status": "credits_exhausted",
+ "channel": {
+  "title": null,
+  "handle": null,
+  "channel_id": null,
+  "url": null,
+  "subscriber_count_text": null,
+  "video_count_text": null,
+  "description_short": null,
+  "rss_url": null,
+  "observed_at": "2026-10-23",
+  "source": "research notes",
+  "note": "Firecrawl credits ran out before this channel could be fetched; research notes: 'YouTube presence exists (videos \"The Different Kinds of Light Language\") but channel handle/subscriber count not verified'; example video https://www.youtube.com/watch?v=bumKPM45uU0."
+ },
+ "secondary_channels": [],
+ "videos": [
+  {
+   "video_id": "bumKPM45uU0",
+   "title": "The Different Kinds of Light Language (title as recorded in notes)",
+   "url": "https://www.youtube.com/watch?v=bumKPM45uU0",
+   "view_count_text": null,
+   "published_text": null,
+   "published_date": null,
+   "length_text": null,
+   "is_channeling": false,
+   "entity": null,
+   "note": "Light Language explainer; not a channeled session per title; metadata not available"
+  }
+ ],
+ "summary": {
+  "recent_videos_read": 1,
+  "channeling_videos_in_recent": 0,
+  "entities_seen": [],
+  "top_channeling_video_ids": []
+ },
+ "sources": [
+  "https://www.eomega.org/people/judy-satori",
+  "https://www.youtube.com/watch?v=bumKPM45uU0"
+ ]
+}

@@ -1,0 +1,24 @@
+{
+  "person": "Magenta Pixie",
+  "role": "channeler",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "Magenta Pixie",
+    "handle": "@MagentaPixie",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@MagentaPixie",
+    "subscriber_count_text": "143K subscribers",
+    "video_count_text": "1.1K videos",
+    "description_short": null,
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23; videos 13K–16K views). Entity claimed: 'The White Winged Collective Consciousness of Nine'; recent themes: comet 3I/Atlas as 'Ka'Lina' (Oct 2025), 'Quantum AI and The Blue Ray Mission'.",
+    "https://www.youtube.com/@MagentaPixie",
+    "https://www.magentapixie.com/about.html"
+  ]
+}

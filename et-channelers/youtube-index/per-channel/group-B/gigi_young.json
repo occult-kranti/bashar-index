@@ -1,0 +1,24 @@
+{
+  "person": "Gigi Young",
+  "role": "context",
+  "status": "credits_exhausted",
+  "channel": {
+    "title": "Gigi Young",
+    "handle": "@GigiYoung",
+    "channel_id": null,
+    "url": "https://www.youtube.com/@GigiYoung",
+    "subscriber_count_text": "147K subscribers",
+    "video_count_text": "425 videos",
+    "description_short": null,
+    "rss_url": null,
+    "observed_at": "2026-10-23",
+    "source": "research notes"
+  },
+  "secondary_channels": [],
+  "videos": [],
+  "sources": [
+    "credits_exhausted: Firecrawl credit reservation failed on 2026-10-23 before this channel was fetched; metadata from research notes (channel page observed 2026-10-23; recent videos 21K–29K views). Not a trance channel: intuitive/esoteric lecture format (Steiner/anthroposophy, 'The Esoteric Keys to Disclosure'); no entity claimed on current site.",
+    "https://www.youtube.com/@GigiYoung",
+    "https://gigiyoung.com/about/"
+  ]
+}
