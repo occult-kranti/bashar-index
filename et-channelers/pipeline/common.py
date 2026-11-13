@@ -198,30 +198,52 @@ def write_csv(path, rows, fields):
 
 
 _APPEND_LOCK = threading.Lock()
+_WARNED = set()
 
 
 def append_jsonl(path, obj):
+    """Append one record as one line. If a crash left the file ending in half a line, the new record
+    starts on a fresh line, so the fragment stays a fragment and the record after it is not swallowed."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     line = json.dumps(obj, ensure_ascii=False, separators=(",", ":")) + "\n"
-    with _APPEND_LOCK, open(path, "a", encoding="utf-8", newline="\n") as handle:
-        handle.write(line)
+    with _APPEND_LOCK:
+        torn = False
+        try:
+            with open(path, "rb") as check:
+                check.seek(-1, os.SEEK_END)
+                torn = check.read(1) != b"\n"
+        except OSError:
+            pass                       # no file yet, or an empty one
+        with open(path, "a", encoding="utf-8", newline="\n") as handle:
+            handle.write(("\n" if torn else "") + line)
 
 
 def read_jsonl(path):
-    """All records in a JSONL file. A torn last line from an interrupted run is skipped."""
+    """All records in a JSONL file. A line that is not a whole record is what an interrupted write
+    leaves behind: it is skipped, wherever it sits, and reported once on stderr so it is not silent.
+    (Every line holds one complete record or none, so a skipped fragment loses at most the one item
+    whose write was interrupted, and that item is simply done again.)"""
     path = Path(path)
     if not path.exists():
         return []
-    lines = [ln for ln in path.read_text(encoding="utf-8").splitlines() if ln.strip()]
-    records = []
-    for n, line in enumerate(lines, 1):
+    records, bad = [], []
+    for n, line in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+        if not line.strip():
+            continue
         try:
-            records.append(json.loads(line))
+            record = json.loads(line)
         except json.JSONDecodeError:
-            if n == len(lines):
-                continue
-            raise
+            bad.append(n)
+            continue
+        if isinstance(record, dict):
+            records.append(record)
+        else:
+            bad.append(n)
+    if bad and str(path) not in _WARNED:
+        _WARNED.add(str(path))
+        print(f"note: {path.name} has {len(bad)} unreadable line(s) (first at line {bad[0]}), left by an "
+              "interrupted write; skipped", file=sys.stderr)
     return records
 
 

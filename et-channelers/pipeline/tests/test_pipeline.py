@@ -285,14 +285,23 @@ class TestCommon(unittest.TestCase):
             self.assertEqual(common.classify_error(text), want, text)
         self.assertEqual(common.HARD_BLOCKS, {"bot_check", "rate_limited", "forbidden"})
 
-    def test_read_jsonl_skips_a_torn_last_line_only(self):
+    def test_a_line_torn_by_a_crash_costs_one_record_and_nothing_else(self):
         path = self.tmp / "a.jsonl"
-        path.write_text('{"a":1}\n{"a":2}\n{"a":')
+        path.write_text('{"a":1}\n{"a":2}\n{"a":')                      # the process died half way through a line
         self.assertEqual(common.read_jsonl(path), [{"a": 1}, {"a": 2}])
-        path.write_text('{"a":1}\n{bad\n{"a":2}\n')
-        with self.assertRaises(json.JSONDecodeError):
-            common.read_jsonl(path)
+        common.append_jsonl(path, {"a": 3})                               # the next run appends
+        common.append_jsonl(path, {"a": 4})
+        self.assertEqual(common.read_jsonl(path), [{"a": 1}, {"a": 2}, {"a": 3}, {"a": 4}])   # 3 used to be swallowed
+        self.assertEqual(path.read_text().count("\n"), 5)                # the fragment sits alone on its line
+        path.write_text('{"a":1}\n{bad\n{"a":2}\n[1,2]\n')
+        self.assertEqual(common.read_jsonl(path), [{"a": 1}, {"a": 2}])    # it used to make every reader raise
         self.assertEqual(common.read_jsonl(self.tmp / "missing.jsonl"), [])
+
+    def test_appending_to_a_whole_file_adds_no_blank_line(self):
+        path = self.tmp / "b.jsonl"
+        common.append_jsonl(path, {"a": 1})
+        common.append_jsonl(path, {"a": 2})
+        self.assertEqual(path.read_text(), '{"a":1}\n{"a":2}\n')
 
     def test_latest_record_wins(self):
         recs = [{"video_id": "a", "n": 1}, {"video_id": "b", "n": 1}, {"video_id": "a", "n": 2}]
