@@ -22,10 +22,22 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, HARD_BLOCKS, ID_RE, Breaker, Progress, RateLimiter, add_root_arg,  # noqa: E402
-                    append_jsonl, atomic_write_text, classify_error, latest_by_key, layout, read_jsonl,
+                    append_jsonl, atomic_write_text, classify_error, latest_by_key, layout, read_csv, read_jsonl,
                     run_cmd, utc_now)
 
 INDEX = ET_ROOT / "youtube-index" / "youtube_index.json"
+EXTRA_CHANNELS = ET_ROOT / "sources" / "extra_channels.csv"   # tracked channels the 2026-10-23 index does not have
+
+
+def extra_entries(path=EXTRA_CHANNELS):
+    """Rows of sources/extra_channels.csv shaped like index entries."""
+    out = []
+    for row in read_csv(path) if Path(path).exists() else []:
+        if row.get("person_id") and (row.get("channel_url") or "").startswith("https://www.youtube.com/"):
+            out.append({"person": row["person_id"], "person_name": row.get("person_name", ""), "video_count": None,
+                        "channel": {"url": row["channel_url"], "channel_id": row.get("channel_id", ""),
+                                    "handle": row.get("handle", "")}})
+    return out
 
 
 def channel_url(entry):
@@ -85,6 +97,8 @@ def main():
     add_root_arg(ap)
     ap.add_argument("--ytdlp", default="yt-dlp")
     ap.add_argument("--index", type=Path, default=INDEX, help="channel index JSON (default: the committed one)")
+    ap.add_argument("--extra-channels", type=Path, default=EXTRA_CHANNELS,
+                    help="CSV of tracked channels the index does not have (default sources/extra_channels.csv)")
     ap.add_argument("--workers", type=int, default=3)
     ap.add_argument("--min-interval", type=float, default=3.0, help="seconds between request starts, all workers")
     ap.add_argument("--stop-after-blocks", type=int, default=3)
@@ -97,6 +111,8 @@ def main():
 
     paths = layout(args.root)
     entries = [e for e in json.loads(args.index.read_text(encoding="utf-8"))["channels"] if channel_url(e)]
+    known = {e["person"] for e in entries}
+    entries += [e for e in extra_entries(args.extra_channels) if e["person"] not in known]
     if args.only:
         wanted = set(args.only.split(","))
         entries = [e for e in entries if e["person"] in wanted]

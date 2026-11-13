@@ -451,8 +451,9 @@ class TestDiscover(PipelineCase):
         self.index.write_text(json.dumps({"channels": channels}))
 
     def discover(self, *extra):
+        # No extra channels unless a test names a file: the committed list holds real channels.
         return self.cli("discover.py", "--root", self.root, "--index", self.index, "--ytdlp", self.ytdlp,
-                        "--min-interval", "0", *extra)
+                        "--min-interval", "0", "--extra-channels", self.tmp / "no-extra-channels.csv", *extra)
 
     def test_lists_every_channel_and_records_coverage(self):
         self.write_index([("alpha", "alpha4", 4), ("beta", "beta6", 8)])
@@ -488,6 +489,25 @@ class TestDiscover(PipelineCase):
         self.assertEqual(sum(1 for e in self.fake_events("CALL") if e[2] == "gone3"), 1)
         self.discover("--retry-failed")
         self.assertEqual(sum(1 for e in self.fake_events("CALL") if e[2] == "gone3"), 2)
+
+    def test_channels_outside_the_index_are_listed_too(self):
+        self.write_index([("alice", "alice5", 5)])
+        extra = self.tmp / "extra_channels.csv"
+        common.write_csv(extra, [
+            {"person_id": "stewart-pearce", "person_name": "Stewart Pearce", "channel_url": "https://www.youtube.com/@extra7",
+             "channel_id": "UC0ycS7cUA44tvG9T8VErW_w", "handle": "@extra7"},
+            {"person_id": "not-a-youtube-row", "person_name": "X", "channel_url": "https://example.org/@nope3"},
+            {"person_id": "alice", "person_name": "already in the index", "channel_url": "https://www.youtube.com/@dupe9"}],
+            ["person_id", "person_name", "channel_url", "channel_id", "handle"])
+        p = self.discover("--extra-channels", extra)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        rows = read_jsonl(self.root / "discover" / "channels" / "stewart-pearce.jsonl")
+        self.assertEqual(len(rows), 7)                                    # the stand-in lists as many as the handle's number
+        self.assertEqual({r["person_id"] for r in rows}, {"stewart-pearce"})
+        self.assertEqual(len(read_jsonl(self.root / "discover" / "channels" / "alice.jsonl")), 5)
+        self.assertFalse((self.root / "discover" / "channels" / "not-a-youtube-row.jsonl").exists())
+        listed = {e[2] for e in self.fake_events("CALL")}
+        self.assertEqual(listed, {"alice5", "extra7"})                    # a person the index has is not listed twice
 
     def test_uses_the_documented_playlist_flag(self):
         self.write_index([("alpha", "alpha4", 4)])
