@@ -60,8 +60,8 @@ if "--version" in args:
 
 url = args[-1]
 if "--flat-playlist" in args:
-    handle = re.search(r"/@([^/]+)/", url).group(1)
-    note("CALL", "list", handle, "%.4f" % time.time())
+    handle, tab = re.search(r"/@([^/]+)/(\w+)$", url).groups()
+    note("CALL", "list", handle, "%.4f" % time.time(), tab)
     if handle.startswith("blocked"):
         sys.stderr.write("ERROR: [youtube:tab] Sign in to confirm you’re not a bot\n")
         sys.exit(1)
@@ -70,9 +70,19 @@ if "--flat-playlist" in args:
         sys.exit(1)
     m = re.search(r"(\d+)$", handle)
     count = int(m.group(1)) if m else 5
-    entries = [{"id": "v" + hashlib.sha1(("%s:%d" % (handle, i)).encode()).hexdigest()[:10],
-                "title": "%s video %d" % (handle, i), "duration": 60 + 60 * i, "view_count": 100 + i}
+    if tab != "videos":
+        # a channel has a Live tab only if its handle says "live", a Shorts tab only if it says "short"
+        if ("live" if tab == "streams" else "short") not in handle:
+            print("null")
+            sys.stderr.write("ERROR: [youtube:tab] @%s: This channel does not have a %s tab\n" % (handle, tab))
+            sys.exit(1)
+        count = 2
+    entries = [{"id": {"videos": "v", "streams": "l", "shorts": "h"}[tab] + hashlib.sha1(("%s:%d" % (handle, i)).encode()).hexdigest()[:10],
+                "title": "%s %s %d" % (handle, tab, i), "duration": None if tab == "shorts" else 60 + 60 * i,
+                "view_count": 100 + i, "upload_date": "20240105" if tab == "videos" and i == 0 else None}
                for i in range(count)]
+    if tab == "streams":
+        entries.append(dict(entries[0], id="v" + hashlib.sha1(("%s:%d" % (handle, 0)).encode()).hexdigest()[:10]))  # also on Videos
     print(json.dumps({"id": handle, "entries": entries}))
     sys.exit(0)
 
@@ -518,6 +528,29 @@ class TestDiscover(PipelineCase):
         listed = {e[2] for e in self.fake_events("CALL")}
         self.assertEqual(listed, {"alice5", "extra7"})                    # a person the index has is not listed twice
 
+    def test_live_and_shorts_tabs_are_listed_too_and_a_missing_tab_is_not_a_failure(self):
+        self.write_index([("plain", "plain4", 4), ("busy", "liveshort3", 7)])
+        p = self.discover("--workers", "1")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        manifest = common.latest_by_key(read_jsonl(self.root / "discover" / "discover_manifest.jsonl"), "person_id")
+        self.assertEqual(manifest["plain"]["tabs"], {"videos": 4, "streams": 0, "shorts": 0})
+        self.assertEqual(manifest["busy"]["tabs"], {"videos": 3, "streams": 2, "shorts": 2})   # the stream also on Videos counts once
+        self.assertEqual((manifest["busy"]["n_videos"], manifest["busy"]["coverage"]), (7, 1.0))
+        rows = read_jsonl(self.root / "discover" / "channels" / "busy.jsonl")
+        self.assertEqual(len({r["video_id"] for r in rows}), 7)
+        self.assertEqual({r["tab"] for r in rows}, {"videos", "streams", "shorts"})
+        self.assertEqual([r.get("upload_date_approx") for r in rows if r["tab"] == "videos"][:2], ["20240105", None])
+        self.assertIn("by tab: 7 videos, 2 streams, 2 shorts", p.stderr)
+
+    def test_a_channel_listed_before_tabs_existed_is_listed_again_in_full(self):
+        self.write_index([("busy", "liveshort3", 7)])
+        self.assertEqual(self.discover("--tabs", "videos").returncode, 0)
+        self.assertEqual(len(read_jsonl(self.root / "discover" / "channels" / "busy.jsonl")), 3)
+        self.assertIn("0 to do", self.discover("--tabs", "videos").stderr)
+        self.assertEqual(self.discover().returncode, 0)                                         # now all three tabs
+        self.assertEqual(len(read_jsonl(self.root / "discover" / "channels" / "busy.jsonl")), 7)
+        self.assertNotEqual(self.discover("--tabs", "videos,reels").returncode, 0)
+
     def test_uses_the_documented_playlist_flag(self):
         self.write_index([("alpha", "alpha4", 4)])
         import discover
@@ -920,6 +953,52 @@ class TestTranscribe(PipelineCase):
         self.assertEqual(self.transcribe("--workers", "3", "--stub-delay", "0.4").returncode, 0)
         parallel = time.time() - t0
         self.assertLess(parallel, serial * 0.8, (serial, parallel))
+
+    def test_round_robin_is_kept_inside_every_process(self):
+        for chan, prefix in (("chanA", "AAA"), ("chanB", "BBB"), ("chanC", "CCC")):
+            self.make_audio([mk(prefix, i) for i in range(4)], chan=chan)
+        p = self.transcribe("--workers", "2", "--order", "round-robin")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertEqual(len(self.tr_manifest()), 12)
+        for k in range(2):
+            part = json.loads((self.root / "transcripts" / ".jobs" / f"worker-{k}.json").read_text())
+            folders = [j["channel_dir"] for j in part]
+            self.assertEqual(len(part), 6)
+            # each process goes round all three folders before it returns to the first; splitting by
+            # length instead would start both processes on the longest files of one folder
+            self.assertEqual(set(folders[:3]), {"chanA", "chanB", "chanC"}, folders)
+            for chan in set(folders):
+                weights = [j["weight"] for j in part if j["channel_dir"] == chan]
+                self.assertEqual(weights, sorted(weights), "shortest first inside a folder")
+
+    def test_speech_in_another_language_waits_for_a_run_that_asks_for_it(self):
+        english, german, unknown = mk("ENG", 1), mk("GER", 1), mk("UNK", 1)
+        self.make_audio([english], chan="chanA")
+        self.make_audio([german], chan="chanB")
+        self.make_audio([unknown], chan="chanC")
+        for ident, chan, feed in ((english, "chanA", "feed-en"), (german, "chanB", "feed-de")):
+            common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                         {"video_id": ident, "channel_dir": chan, "status": "ok", "feed_key": feed, "duration_s": 60})
+        for feed, language in (("feed-en", "en-GB"), ("feed-de", "de")):
+            common.append_jsonl(self.root / "feeds" / "feeds_manifest.jsonl", {"feed_key": feed, "status": "ok", "language": language})
+        p = self.transcribe("--model", "base.en")                       # an English-only model
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertEqual(sorted(r["video_id"] for r in self.tr_manifest()), sorted([english, unknown]))
+        self.assertIn("left out: 1 recording(s) in chanB are in 'de'", p.stderr)
+        self.assertIn("--model base --language de --only chanB", p.stderr)
+        p = self.transcribe("--model", "base.en", "--language", "de")   # the model decides, whatever is asked
+        self.assertIn("0 to transcribe", p.stderr)
+        p = self.transcribe("--model", "base", "--language", "de")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertEqual(sorted(r["video_id"] for r in self.tr_manifest()), sorted([english, german, unknown]))
+        self.assertIn("are in 'en'", p.stderr)                          # nothing English is redone in German
+        self.assertIn("--model base.en --only chanA", p.stderr)
+        quiet = self.transcribe("--model", "base", "--language", "de", "--only", "chanB")
+        self.assertNotIn("left out", quiet.stderr)                      # folders that were not asked for are not discussed
+        shutil.rmtree(self.root / "transcripts")
+        p = self.transcribe("--model", "base", "--language", "auto")    # a model that detects the language takes all
+        self.assertEqual(len(self.tr_manifest()), 3)
+        self.assertNotIn("left out", p.stderr)
 
     def test_shards_do_not_overlap(self):
         ids = [mk("VID", i) for i in range(9)]

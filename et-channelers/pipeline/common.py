@@ -247,6 +247,16 @@ def read_jsonl(path):
     return records
 
 
+def listed_videos(root):
+    """Every row of the channel listings discover.py wrote. One file per channel, each written whole, so
+    this is safe to read while a listing run is still going (videos_all.jsonl is rebuilt only at its end)."""
+    folder = layout(root).discover / "channels"
+    rows = []
+    for listing in sorted(folder.glob("*.jsonl")) if folder.exists() else []:
+        rows += read_jsonl(listing)
+    return rows
+
+
 def archived_ids(root, kind) -> set:
     """Ids whose `kind` ("audio", "asr", "pubtext", "captions") has a checked copy in a store, according
     to the ledger sync_archive.py keeps. Such an item is finished even when its local file was deleted

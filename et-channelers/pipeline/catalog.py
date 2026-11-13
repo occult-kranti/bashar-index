@@ -32,7 +32,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, item_id, lane_of,  # noqa: E402
-                    latest_by_key, layout, read_csv, read_jsonl, utc_now, write_csv)
+                    latest_by_key, layout, listed_videos, read_csv, read_jsonl, utc_now, write_csv)
 from find_feeds import load_targets  # noqa: E402
 from select_episodes import collect  # noqa: E402
 
@@ -41,12 +41,14 @@ BASHAR_IDS = ET_ROOT / "transcripts" / "scripts" / "all_ids.txt"
 CREATOR_FILES = ET_ROOT / "sources" / "creator_files.csv"
 PAGES = ET_ROOT / "sources" / "publisher_pages.csv"
 REGISTRY = ET_ROOT / "sources" / "podcast_feeds.csv"
-CATALOG_FIELDS = ["item_id", "person_id", "lane", "relation", "title", "published", "duration_s", "audio_status",
+CATALOG_FIELDS = ["item_id", "person_id", "lane", "relation", "tab", "title", "published", "duration_s", "audio_status",
                   "audio_path", "audio_bytes", "publisher_text_status", "publisher_text_words", "publisher_text_path",
                   "captions_status", "captions_words", "captions_path", "asr_status", "asr_model", "asr_words",
                   "asr_path", "text_from_source", "text_made_here", "has_text", "twin_of", "twin_method",
                   "source_host", "source_url"]
 COVERAGE_FIELDS = ["person_id", "person_name", "role", "youtube_videos_indexed", "own_feeds", "items_listed",
+                   "items_outside_youtube", "distinct_listed", "distinct_captured", "youtube_listed", "youtube_shorts",
+                   "youtube_captured",
                    "listed_hours", "audio_ok", "audio_hours", "audio_failed", "audio_podcast", "audio_creator_file",
                    "audio_youtube", "publisher_texts", "publisher_text_words", "captions", "captions_words",
                    "asr_transcripts", "asr_words", "asr_hours", "items_text_from_source", "items_text_made_here",
@@ -78,7 +80,12 @@ def main():
         return {k: v for k, v in latest_by_key(read_jsonl(path)).items() if v.get("status") != "superseded"}
 
     audio = current(paths.audio / "audio_manifest.jsonl")
-    asr = current(paths.transcripts / "transcripts_manifest.jsonl")
+    # A multi-process transcription writes one manifest per process and merges them when it ends; a long
+    # run would otherwise look as if it had produced nothing until its last file.
+    asr_lines = read_jsonl(paths.transcripts / "transcripts_manifest.jsonl")
+    for part in sorted(paths.transcripts.glob("transcripts_manifest.part-*.jsonl")):
+        asr_lines += read_jsonl(part)
+    asr = {k: v for k, v in latest_by_key(asr_lines).items() if v.get("status") != "superseded"}
     pub = current(paths.pubtext / "publisher_text_manifest.jsonl")
     caps = current(paths.captions / "captions_manifest.jsonl")
 
@@ -100,7 +107,7 @@ def main():
     def entry(ident, person):
         if lane_of(ident) == "youtube":
             person = yt_person.get(ident, person)
-        return items.setdefault(ident, {"item_id": ident, "person_id": person, "lane": lane_of(ident), "relation": "",
+        return items.setdefault(ident, {"item_id": ident, "person_id": person, "lane": lane_of(ident), "relation": "", "tab": "",
                                         "title": "", "published": "", "duration_s": "", "twin_of": "", "twin_method": "",
                                         "source_host": "", "source_url": "", "text_id": ident, "folder": person})
 
@@ -125,6 +132,14 @@ def main():
         e = entry(row["video_id"], row["channel_dir"])
         e.update(relation="youtube", title=row.get("title", ""), duration_s=row.get("duration_s", ""),
                  source_url=row.get("url", ""), folder=row["channel_dir"], source_host="youtube.com")
+
+    # every video a channel lists (discover.py), whether or not a work order names it: the channel is the
+    # measure of "complete", and the listing is the only place that says how much there is
+    for row in listed_videos(paths.root):
+        if ID_RE.match(row.get("video_id") or ""):
+            e = entry(row["video_id"], row.get("person_id", ""))
+            e.update(relation="youtube", tab=row.get("tab") or "videos", title=e["title"] or row.get("title") or "",
+                     duration_s=e["duration_s"] or row.get("duration_s") or "", source_host="youtube.com")
 
     # a creator file pairs with the publisher page that offers it
     page_rows = read_csv(PAGES) if PAGES.exists() else []
@@ -192,6 +207,12 @@ def main():
     write_csv(paths.root / "catalog" / "catalog.csv", rows, CATALOG_FIELDS)
 
     # ---- per-person coverage: numbers only
+    # A video and the podcast episode or page that carries the same content are one piece of work: the
+    # pair is listed once and is captured as soon as either side is in the archive. Without this a
+    # person whose interviews were fetched as podcast episodes would still show every video as missing.
+    listed_ids = {r["item_id"] for r in rows}
+    work_of = {r["item_id"]: r["twin_of"] if r["twin_of"] in listed_ids else r["item_id"] for r in rows}
+    captured_works = {work_of[r["item_id"]] for r in rows if r["audio_status"] == "ok" or r["has_text"]}
     names = {t["person_id"]: t for t in load_targets()}
     feeds = collections.Counter(r["person_id"] for r in (read_csv(REGISTRY) if REGISTRY.exists() else [])
                                 if r.get("relation") == "own" and r.get("verification") in ("verified", "name-match"))
@@ -208,7 +229,11 @@ def main():
         got = [r for r in mine if r["audio_status"] == "ok"]
         asr_done = [r for r in mine if r["asr_status"] == "ok"]
         waiting = sum(1 for r in got if not r["has_text"])
-        remaining = [r for r in mine if r["relation"] in ("own", "host", "file", "youtube") and r["audio_status"] != "ok"]
+        # still to fetch: a listed recording without audio, unless its content is already here through its
+        # twin (the podcast episode of a video, or the page that carries its text)
+        remaining = [r for r in mine if r["relation"] in ("own", "host", "file", "youtube") and r["audio_status"] != "ok"
+                     and not (r["lane"] == "youtube" and work_of[r["item_id"]] in captured_works)]
+        tube = [r for r in mine if r["lane"] == "youtube"]
         pages_left = sum(1 for r in mine if r["relation"] == "page" and r["publisher_text_status"] != "ok")
         if not mine and not feeds.get(person):
             step = "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
@@ -227,7 +252,13 @@ def main():
         table.append({
             "person_id": person, "person_name": names.get(person, {}).get("person_name", ""),
             "role": names.get(person, {}).get("role", ""), "youtube_videos_indexed": indexed.get(person, 0),
-            "own_feeds": feeds.get(person, 0), "items_listed": len(mine), "listed_hours": round(seconds(mine) / 3600, 1),
+            "own_feeds": feeds.get(person, 0), "items_listed": len(mine),
+            "items_outside_youtube": sum(1 for r in mine if r["lane"] != "youtube"),
+            "distinct_listed": len({work_of[r["item_id"]] for r in mine}),
+            "distinct_captured": len({work_of[r["item_id"]] for r in mine} & captured_works),
+            "youtube_listed": len(tube), "youtube_shorts": sum(1 for r in tube if r["tab"] == "shorts"),
+            "youtube_captured": sum(1 for r in tube if work_of[r["item_id"]] in captured_works),
+            "listed_hours": round(seconds(mine) / 3600, 1),
             "audio_ok": len(got), "audio_hours": round(seconds(got) / 3600, 1),
             "audio_failed": sum(1 for r in mine if r["audio_status"] == "error"),
             "audio_podcast": sum(1 for r in got if r["lane"] == "pod"),
@@ -251,6 +282,8 @@ def main():
             totals[key] = round(total, 1) if isinstance(table[0][key], float) else total
     summary = {"generated": utc_now(), "people": len(table),
                "people_with_a_listed_source": sum(1 for r in table if r["items_listed"]),
+               "people_with_a_source_outside_youtube": sum(1 for r in table if r["items_outside_youtube"]),
+               "people_with_a_channel_listing": sum(1 for r in table if r["youtube_listed"]),
                "people_with_audio": sum(1 for r in table if r["audio_ok"]),
                "people_with_text_from_source": sum(1 for r in table if r["items_text_from_source"]),
                "people_with_text_made_here": sum(1 for r in table if r["items_text_made_here"]),
