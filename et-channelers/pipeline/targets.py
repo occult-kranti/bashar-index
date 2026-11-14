@@ -131,7 +131,10 @@ def build(root=None):
     def person(pid, name="", role=""):
         entry = people.setdefault(pid, {**dict.fromkeys(FIELDS, ""), "person_id": pid, "origins": set(), "sites": [],
                                         "earlier": []})
-        entry["person_name"] = entry["person_name"] or name
+        # a name cut short in a screenshot ("Pleiadian Laark…") gives way to any whole name found later
+        cut = entry["person_name"].endswith(("…", "..."))
+        if name and (not entry["person_name"] or (cut and not name.endswith(("…", "...")))):
+            entry["person_name"] = name
         entry["role"] = entry["role"] or role
         return entry
 
