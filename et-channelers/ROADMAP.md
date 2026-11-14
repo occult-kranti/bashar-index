@@ -247,6 +247,65 @@ Each phase has an exit test. Do not start the next phase until the test passes.
 * Questions to answer from the transcripts: how channelers use names, calendars and astrology, what they say about themselves and each other, and how the wording spreads between channels. Use the same denominators as the Atlas only after its identity audit (item N1).
 * Quotes in any write-up stay at 30 words or fewer, with the recording and time stamp.
 
+### Phase 7a: shorts against long videos (added 2026-11-14, at the owner's request; after collection)
+
+A separate analysis, run once the transcripts of both kinds are in. The channel listings already say which
+is which: 16,115 shorts against 42,584 videos and live streams on the 63 channels listed.
+
+* **Question 1, repetition.** Is a short new material, or a piece of a long video? For every short, look for
+  its words in the same channel's long transcripts (overlapping five-word runs; a short is an *excerpt* when
+  most of its runs sit together in one long video, a *rewording* when the words differ but the passage
+  matches by meaning, *new* otherwise). Report per channel the share of each, which long videos the excerpts
+  come from, and how long after the long video the short appeared. Do the same across channels, because
+  clip channels cut other people's sessions (the Bashar list has 11 of them).
+* **Question 2, topics.** Fit one vocabulary and one set of topics on the long videos only, then score the
+  shorts with it, so that the two are measured with the same ruler. Compare topic shares (by words, not by
+  count of videos), TF-IDF terms that set shorts apart from long videos (log-odds with a prior, so that rare
+  words do not win by chance), and length, pace and question-and-answer share. Per channel and overall.
+* **Question 3, what the shorts leave out.** Which topics of the long videos never reach a short, and which
+  are over-represented there. For Bashar, set this beside the topic shares the Bashar Index already
+  measured for its 75 recordings (`data/topic_share.csv`).
+* **What it needs.** Transcripts for shorts and long videos of the same channels: YouTube's captions where
+  they exist (the laptop lane), speech-to-text otherwise. Re-runs and re-uploads of one recording counted
+  once (the twin and duplicate marks in the catalogue).
+* **What it gives.** Tables and figures of numbers only, a section in the dashboard, and a methods note. No
+  transcript text, and quotes within the 30-word limit.
+* **Done when** every channel with at least 20 shorts and 20 long videos has its three answers, and a
+  second reader has re-run the numbers from the saved transcripts.
+
+### Phase 7b: the cycle runs itself, with a team of agents (added 2026-11-14, at the owner's request)
+
+The pipeline's cloud lanes work, so the routine is now one command, and agents run it. The lead (the
+session the owner talks to) acts as team lead and owner of the repository and the Codespace: it plans,
+hands out work, reads the reports, merges, and keeps this roadmap and the dashboard true.
+
+| Who | Model | Does | Never |
+|---|---|---|---|
+| lead | the session's own | plans the cycle, opens and merges pull requests, updates roadmap and dashboard, decides what the reports mean | merges without both test suites and both guards passing |
+| `et-collector` | small | runs `pipeline/run_cycle.py`, watches the logs, reports counts, refusals and what stopped | judges, edits code, deletes, lowers the disk floor |
+| `et-source-scout` | middle, with web search | for one person, finds their own site, channel and podcast, checks each with the pipeline's tools, proposes rows with evidence | registers a feed on a name alone; treats a platform profile as someone's site |
+| `et-interview-reader` | small | reads one interview transcript and says live channeling, conversation, unclear or commentary, with where the evidence is | copies transcript text anywhere |
+| `et-reviewer` | large | before a merge, tries to break the change for one of four risks (lost files, conduct toward hosts, private material leaking, wrong numbers) and reports only what it can show | changes the repository |
+
+The definitions are in [`../.claude/agents/`](../.claude/agents/). One cycle:
+
+1. `et-collector` runs `run_cycle.py --go`: list channels again when a listing is a week old, read the feeds,
+   queue what is new (own feeds, creator files, archive.org audio, interviews with live channeling), fetch
+   down to the disk floor, fetch the publishers' texts, type the interviews, rebuild the tables.
+2. `et-interview-reader`, one per interview that has a transcript and no reading yet. Its verdicts go to
+   `<root>/sources/interview_readings.jsonl` and outrank the phrase rules.
+3. `et-source-scout`, a few people per cycle from the "no source yet" and "YouTube only" lists.
+4. The lead turns accepted proposals into a branch; `et-reviewer` runs once per risk; the lead merges and
+   refreshes the dashboard.
+
+What stays with the owner: making a store private and logging in to it, the YouTube lane on a home
+connection, anything that deletes, and confirming identities matched by name only. The agents' rules
+repeat the project's: robots.txt obeyed, no YouTube audio or captions from a cloud server and nothing that
+gets around that refusal, nothing private in the repository or in an outbound request.
+
+State on 2026-11-14: the cycle command, the four definitions and the reader's file exist; the first
+reader run is supervised by the lead. Not yet built: a schedule that starts the cycle without anyone asking.
+
 ### Phase 8: release gate
 
 * Nothing from the audio or the transcript text is published before the paper, and then only what the rights allow. The publishable part is `media_manifest_public.csv` (durations, sizes, hashes, counts, model and revision) and derived numbers.

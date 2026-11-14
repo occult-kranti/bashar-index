@@ -22,6 +22,9 @@ What counts as evidence, and the label always says which was used:
   show notes   the episode's description in the feed says the session is channeled live, in those words
   title        only for "commentary or clip" (short, and the person's own name is not in it). A title
                never makes an episode "live channeling".
+  a reading    someone, or a model given the whole transcript, read the episode and said what it is
+               (<root>/sources/interview_readings.jsonl: video_id, kind, reader, evidence). A reading
+               outranks the phrase rules above, which only look for marks.
 
 Only episodes of kind "live channeling" are queued by default (select_episodes.py --interview-types);
 everything stays listed with its kind.
@@ -195,6 +198,8 @@ def main():
     asr = latest_by_key(asr_lines)
     out = paths.sources / "interview_types.jsonl"
     before = latest_by_key(read_jsonl(out))
+    readings = {k: v for k, v in latest_by_key(read_jsonl(paths.sources / "interview_readings.jsonl")).items()
+                if v.get("kind") in KINDS}
     counts = collections.Counter()
     for row in rows:
         ident, person = row["video_id"], row["channel_dir"]
@@ -219,6 +224,10 @@ def main():
                 kind, basis, marks = clip, "title and length", []
             else:
                 kind, basis, marks = "not classified", "no transcript yet; " + hint, []
+        if ident in readings and text_file is not None:
+            reading = readings[ident]
+            kind, basis = reading["kind"], f"read in full by {reading.get('reader') or 'a reader'}"
+            marks = [str(reading.get("evidence") or "")[:200]] if reading.get("evidence") else []
         counts[(kind, basis.split(" (")[0].split(";")[0])] += 1
         rec = {"video_id": ident, "person_id": person, "feed_key": row["feed_key"], "kind": kind, "basis": basis, "marks": marks}
         old = before.get(ident) or {}

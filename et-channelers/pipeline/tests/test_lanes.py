@@ -1519,6 +1519,24 @@ class TestCaptionsAndRunner(LaneCase):
         self.assertFalse(self.root.exists())
         self.assertEqual(self.log.read_text(), "")
 
+    def test_the_cloud_cycle_prints_its_plan_in_order_and_does_nothing_without_go(self):
+        done = self.cli("run_cycle.py", "--root", self.root)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        plan = done.stdout
+        order = [plan.index(name) for name in ("discover.py", "fetch_feeds.py", "select_episodes.py", "download_enclosures.py",
+                                               "fetch_publisher_text.py", "interview_types.py", "catalog.py", "targets.py")]
+        self.assertEqual(order, sorted(order))
+        self.assertIn("--interview-types live channeling", plan)                  # interviews without channeling stay paused
+        self.assertNotIn("transcribe.py", plan)                                   # speech-to-text only when asked for
+        self.assertNotIn("download_audio.py", plan)                               # never YouTube audio from a cloud server
+        self.assertIn("dry run", plan)
+        self.assertFalse(self.root.exists())
+        some = self.cli("run_cycle.py", "--root", self.root, "--skip", "list,texts", "--transcribe", "base.en", "--max-hours", "50").stdout
+        self.assertNotIn("discover.py", some)
+        self.assertIn("transcribe.py", some)
+        self.assertIn("--max-hours 50", some)
+        self.assertNotEqual(self.cli("run_cycle.py", "--root", self.root, "--skip", "everything").returncode, 0)
+
     def test_everything_means_every_listed_video_so_the_channels_are_listed_first(self):
         done = self.runner("--store", f"dir:{self.tmp / 'disk'}", "--lanes", "youtube,captions")      # --set all is the default
         plan = done.stdout
@@ -2570,6 +2588,38 @@ class TestInterviewTypes(unittest.TestCase):
         self.assertEqual(title("Bashar's message | Darryl Anka", ["Darryl Anka"], 18 * 60), "")
         self.assertEqual(title("Was Bashar Right?", ["Darryl Anka"], 80 * 60), "")
         self.assertEqual(title("Was Bashar Right?", ["Darryl Anka"], None), "")
+
+    def test_a_reading_of_the_whole_transcript_outranks_the_phrase_rules(self):
+        tmp = Path(tempfile.mkdtemp(prefix="etkinds-"))
+        self.addCleanup(shutil.rmtree, tmp, True)
+        root = tmp / "private"
+        show = next(r for r in common.read_csv(ET / "sources" / "podcast_feeds.csv") if r["relation"] == "host")
+        key = feeds.feed_key(show["person_id"], show["feed_url"])
+        ident = common.item_id("pod", show["person_id"], "episode-1")
+        common.atomic_write_text(root / "feeds" / f"{key}.jsonl", json.dumps({
+            "video_id": ident, "guid": "episode-1", "title": "An evening with Darryl Anka", "published": "2026-01-01",
+            "duration_s": 3600, "enclosure_url": "https://cdn.example/1.mp3", "transcripts": [], "youtube_ids": [],
+            "feed_key": key, "person_id": show["person_id"], "relation": "host"}) + "\n")
+        common.append_jsonl(root / "transcripts_publisher" / "publisher_text_manifest.jsonl",
+                            {"video_id": ident, "channel_dir": "darryl-anka", "status": "ok", "n_words": 4000})
+        common.atomic_write_text(root / "transcripts_publisher" / "darryl-anka" / f"{ident}.txt", self.talk)
+
+        def kinds():
+            done = subprocess.run([sys.executable, "-I", str(PIPE / "interview_types.py"), "--root", str(root)],
+                                  capture_output=True, text=True, timeout=120)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            return common.latest_by_key(common.read_jsonl(root / "sources" / "interview_types.jsonl"))[ident]
+        first = kinds()
+        self.assertEqual((first["kind"], first["basis"].split(" (")[0]), ("conversation", "transcript"))
+        common.append_jsonl(root / "sources" / "interview_readings.jsonl",
+                            {"video_id": ident, "kind": "live channeling", "reader": "a small model, supervised",
+                             "evidence": "the entity speaks from about 60% to the end"})
+        second = kinds()
+        self.assertEqual(second["kind"], "live channeling")
+        self.assertEqual(second["basis"], "read in full by a small model, supervised")
+        self.assertEqual(second["marks"], ["the entity speaks from about 60% to the end"])
+        common.append_jsonl(root / "sources" / "interview_readings.jsonl", {"video_id": ident, "kind": "a made-up kind"})
+        self.assertEqual(kinds()["kind"], "conversation")                # a verdict outside the list is not taken
 
     def test_the_names_of_what_a_person_channels_come_from_the_lists(self):
         names = self.mod.entity_names()
