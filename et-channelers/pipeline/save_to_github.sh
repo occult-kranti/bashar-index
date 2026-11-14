@@ -30,12 +30,18 @@ if [ -n "${ET_GH_TOKEN_FILE:-}" ]; then
   export GH_TOKEN
 fi
 hold="${ET_HOLD_UNTRANSCRIBED_FOR:-}"      # person ids whose audio stays until it is transcribed
+# ET_HOLD_UNTRANSCRIBED=1 keeps everyone's audio until it is transcribed (the disk then fills at the speed
+# of the downloads). Whatever is set, audio that a running transcribe.py has queued or open is never
+# deleted: each run names its files in <root>/sync/holds/.
+hold_all="${ET_HOLD_UNTRANSCRIBED:-0}"
 
 if [ "${1:-}" = "--mirror-loop" ]; then          # the background half: copy the texts every 30 minutes
   repo="$2"
   interval="${ET_MIRROR_INTERVAL:-1800}"          # 0: once, then stop
   while true; do
-    "$py" -I "$here/mirror_texts.py" --root "$root" --repo "$repo" --checkout "$checkout" --push || true
+    # a failed run is written to the log as one, and the loop goes on (the next run starts afresh)
+    "$py" -I "$here/mirror_texts.py" --root "$root" --repo "$repo" --checkout "$checkout" --push \
+      || { code=$?; echo "$(date -u +%FT%TZ) MIRROR RUN FAILED (exit $code): see the STOPPED line above" >&2; }
     [ "$interval" = "0" ] && exit 0
     sleep "$interval"
   done
@@ -63,8 +69,11 @@ store="gh:$repo@$tag"
 if pgrep -f -- "sync_archive.py push --root $root --store $store" >/dev/null; then   # this store's sync, not a test
   echo "a sync is already running: not starting a second one"
 else
+  extra=()
+  if [ "$hold_all" = "1" ]; then extra+=(--hold-untranscribed); fi
+  if [ -n "$hold" ]; then extra+=(--hold-untranscribed-for "$hold"); fi
   setsid nohup "$py" -I "$here/sync_archive.py" push --root "$root" --store "$store" --delete audio --watch 300 \
-    ${hold:+--hold-untranscribed-for "$hold"} >> "$root/logs/sync.log" 2>&1 < /dev/null &
+    ${extra[@]+"${extra[@]}"} >> "$root/logs/sync.log" 2>&1 < /dev/null &
   echo "audio and transcripts: uploading to the release '$tag' of $repo in the background (log: $root/logs/sync.log)"
 fi
 if pgrep -f -- "save_to_github.sh --mirror-loop $repo" >/dev/null; then

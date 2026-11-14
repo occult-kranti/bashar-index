@@ -31,8 +31,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, item_id, lane_of,  # noqa: E402
-                    latest_by_key, layout, listed_videos, read_csv, read_jsonl, utc_now, write_csv)
+from common import (ET_ROOT, ID_RE, YOUTUBE_WAITS, add_root_arg, atomic_write_text, ensure_outside_git, item_id,  # noqa: E402
+                    lane_of, latest_by_key, layout, listed_videos, read_csv, read_jsonl, utc_now, write_csv)
 from find_feeds import load_targets  # noqa: E402
 from select_episodes import collect  # noqa: E402
 
@@ -228,10 +228,13 @@ def main():
         return sum(int(r[field] or 0) for r in group)
 
     table = []
+    exact_hours = collections.Counter()      # the totals add unrounded hours and round once
     for person in sorted(set(names) | {r["person_id"] for r in rows if r["person_id"]}):
         mine = [r for r in rows if r["person_id"] == person]
         got = [r for r in mine if r["audio_status"] == "ok"]
         asr_done = [r for r in mine if r["asr_status"] == "ok"]
+        for key, group in (("listed_hours", mine), ("audio_hours", got), ("asr_hours", asr_done)):
+            exact_hours[key] += seconds(group) / 3600
         waiting = sum(1 for r in got if not r["has_text"])
         # still to fetch: a listed recording without audio, unless its content is already here through its
         # twin (the podcast episode of a video, or the page that carries its text)
@@ -245,10 +248,10 @@ def main():
             return sum(1 for r in group if (r["interview_type"] or "not classified") == kind)
         pages_left = sum(1 for r in mine if r["relation"] == "page" and r["publisher_text_status"] != "ok")
         if not mine and not feeds.get(person):
-            step = "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+            step = f"no downloadable source found yet: find the maker's own feed or site; {YOUTUBE_WAITS}"
         elif remaining:
             only_youtube = all(r["relation"] == "youtube" for r in remaining)
-            step = ("YouTube only: run the YouTube lane on a home connection" if only_youtube
+            step = (f"YouTube only: {YOUTUBE_WAITS}" if only_youtube
                     else f"download the remaining {len(remaining)} listed items")
         elif pages_left:
             step = f"fetch the remaining {pages_left} publisher pages"
@@ -293,7 +296,7 @@ def main():
     totals = {}
     for key in COVERAGE_FIELDS:
         if table and isinstance(table[0][key], (int, float)):
-            total = sum(r[key] for r in table)
+            total = exact_hours[key] if key in exact_hours else sum(r[key] for r in table)
             totals[key] = round(total, 1) if isinstance(table[0][key], float) else total
     summary = {"generated": utc_now(), "people": len(table),
                "people_with_a_listed_source": sum(1 for r in table if r["items_listed"]),

@@ -8,6 +8,9 @@ atomically, so an interrupted run never leaves half a channel, and videos_all.js
 those files. A run stops early after a few 403 / 429 / bot-check responses instead of pushing through.
 
 This is the one YouTube step that also answers from a cloud server: listing asks for no video stream.
+It is off unless the owner sets ET_YOUTUBE_ROBOTS_OVERRIDE=1: yt-dlp asks youtube.com's /youtubei/ for
+every page of a listing after the first, and youtube.com's robots.txt disallows that path. Without the
+variable it sends nothing, says so in one line, and ends with exit code 9 (skipped by rule).
 
     python3 pipeline/discover.py --workers 3 --min-interval 3
     python3 pipeline/discover.py --only tyler-ellison,darryl-anka --workers 1
@@ -29,7 +32,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, HARD_BLOCKS, ID_RE, Breaker, Progress, RateLimiter, add_root_arg,  # noqa: E402
                     append_jsonl, atomic_write_text, classify_error, latest_by_key, layout, read_csv, read_jsonl,
-                    run_cmd, utc_now)
+                    resting_hosts, run_cmd, say_resting, utc_now, youtube_gate)
 
 INDEX = ET_ROOT / "youtube-index" / "youtube_index.json"
 EXTRA_CHANNELS = ET_ROOT / "sources" / "extra_channels.csv"   # tracked channels the 2026-10-23 index does not have
@@ -83,6 +86,8 @@ def discover_one(args, entry, limiter, breaker, paths):
             if breaker.tripped.is_set():
                 return None                      # nothing recorded: the channel is listed again on the next run
             limiter.wait()
+            if breaker.tripped.is_set():
+                return None                      # the run stopped while this request waited for its turn
             entries, problem = list_tab(args, f"{base}/{tab}")
             if entries is None:
                 raise RuntimeError(problem)
@@ -140,7 +145,11 @@ def main():
     ap.add_argument("--only", help="comma-separated person ids")
     ap.add_argument("--limit-channels", type=int, default=0)
     ap.add_argument("--retry-failed", action="store_true")
+    ap.add_argument("--ask-resting", action="store_true",
+                    help="list again although YouTube refused on an earlier run and its wait is not over")
     args = ap.parse_args()
+    # nothing is read or sent before this: off unless the owner opted in (common.YOUTUBE_OVERRIDE)
+    youtube_gate("discover.py: channel listings (yt-dlp asks /youtubei/ for every page after the first)")
 
     args.tab_list = [t for t in (x.strip() for x in args.tabs.split(",")) if t]
     if not args.tab_list or set(args.tab_list) - set(TABS):
@@ -172,6 +181,13 @@ def main():
         todo = [e for e in todo if done.get(e["person"], {}).get("error_class") not in ("unavailable",)]
     if args.limit_channels:
         todo = todo[:args.limit_channels]
+    # every listing goes to one host: if it refused (403 / 429 / a bot check) on an earlier run, it is not
+    # asked again before its wait is over
+    resting = {} if args.ask_resting else resting_hosts(read_jsonl(paths.discover / "discover_manifest.jsonl"),
+                                                        lambda r: "youtube.com")
+    if todo and resting:
+        say_resting(resting, {"youtube.com": len(todo)}, "channel listing(s)")
+        todo = []
     print(f"{len(entries)} channels have a URL; {len(todo)} to do", file=sys.stderr)
     if todo and not shutil.which(args.ytdlp):
         sys.exit(f"{args.ytdlp} not found. Install it first: pip install -r pipeline/requirements.txt")

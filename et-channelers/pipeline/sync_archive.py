@@ -24,10 +24,14 @@ When a local file is deleted. Only when all of these hold:
   * the file on disk is still byte for byte the one that line describes (its SHA-256 is taken again
     just before deleting; a file that changed is uploaded again as a new version instead);
   * the store still holds it (dir: the files are there with the recorded sizes; gh: the bundle is
-    still on the release). If it does not, the item is sent again and nothing is deleted first.
+    still on the release). If it does not, the item is sent again and nothing is deleted first;
+  * the store has just been sent the current ledger, so a fresh folder can read the item back;
+  * for audio without a machine transcript: no running transcribe.py has it queued or open (each run
+    names its files in <root>/sync/holds/), and it is not held by --hold-untranscribed(-for).
 By default only audio is deleted (--delete audio), which is what fills the disk. Manifests are never
-deleted; a copy of them travels with every push. The ledger is <root>/sync/sync_manifest.jsonl: the
-downloaders read it too, so an item that is safely stored is never fetched again.
+deleted; a copy of them travels with every push that stores or deletes anything. The ledger is
+<root>/sync/sync_manifest.jsonl: the downloaders read it too, so an item that is safely stored is never
+fetched again.
 
     python3 pipeline/sync_archive.py status --store gh:you/private-archive@audio-v1
     python3 pipeline/sync_archive.py push   --store gh:you/private-archive@audio-v1 --delete audio
@@ -48,7 +52,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (ITEM_RE, add_root_arg, append_jsonl, ensure_outside_git, latest_by_key, layout,  # noqa: E402
+from common import (ITEM_RE, add_root_arg, append_jsonl, ensure_outside_git, held_items, latest_by_key, layout,  # noqa: E402
                     read_jsonl, run_cmd, sha256_file, utc_now)
 
 KINDS = ("audio", "asr", "pubtext", "captions")
@@ -388,12 +392,14 @@ def push_once(args, paths, store):
         {v for (v, k, s) in done if k == "asr" and s == store.spec}
 
     hold_for = {x.strip() for x in (args.hold_untranscribed_for or "").split(",") if x.strip()}
+    claimed = held_items(paths.root)        # files a running transcribe.py has queued or open
 
     def deletable(item):
         if args.delete == "none" or (args.delete == "audio" and item["kind"] != "audio"):
             return False
-        hold = args.hold_untranscribed or item["person"] in hold_for
-        return not (item["kind"] == "audio" and hold and item["video_id"] not in transcribed)
+        if item["kind"] != "audio" or item["video_id"] in transcribed:
+            return True
+        return not (args.hold_untranscribed or item["person"] in hold_for or item["video_id"] in claimed)
 
     todo, safe, lost = [], [], 0
     for item in items:
@@ -430,7 +436,11 @@ def push_once(args, paths, store):
             uploaded += 1
             safe.append(item)
     finally:
-        if uploaded:
+        claimed = held_items(paths.root)     # again: a transcription may have started while this pass uploaded
+        # The ledger is the only record of which bundle holds which item, so the store gets the current one
+        # before any local file goes: also on a pass that uploaded nothing new (an earlier pass may have
+        # stopped after its bundles but before its manifests). If that send fails, nothing is deleted.
+        if uploaded or any(deletable(i) for i in safe):
             store.put_manifests(paths)
         current = ledger(paths)
         for item in safe:

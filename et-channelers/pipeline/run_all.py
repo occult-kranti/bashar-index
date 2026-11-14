@@ -22,7 +22,13 @@ store must be a private repository, or the run stops there.
     python3 pipeline/run_all.py --store gh:you/private-archive@audio-v1 --transcribe large-v3 --devices 0 --go
 
 Exit code: 0 clean, 3 a source refused requests (wait and rerun), 4 the disk floor was reached,
-5 the store was refused. Everything is resumable: run the same command again.
+5 the store was refused, 9 nothing was left to run once the YouTube lanes were skipped by rule.
+Everything is resumable: run the same command again.
+
+The YouTube lanes (the channel listing, youtube, captions) are off unless the owner sets
+ET_YOUTUBE_ROBOTS_OVERRIDE=1: yt-dlp asks youtube.com's /youtubei/ for listings, the player and captions,
+and youtube.com's robots.txt disallows that path. Without the variable they are left out of the plan with
+one line saying so, and the other lanes run as usual.
 """
 from __future__ import annotations
 
@@ -33,7 +39,8 @@ import threading
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import add_root_arg, ensure_outside_git, layout  # noqa: E402
+from common import (SKIPPED_BY_RULE, YOUTUBE_OVERRIDE, YOUTUBE_RULE, add_root_arg, ensure_outside_git, layout,  # noqa: E402
+                    youtube_override)
 from sync_archive import StoreError, open_store  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
@@ -109,6 +116,14 @@ def main():
     ap.add_argument("--go", action="store_true", help="run it (without this the plan is only printed)")
     args = ap.parse_args()
     args.lanes = [x.strip() for x in args.lanes.split(",") if x.strip() in LANES]
+    held = [] if youtube_override() else [lane for lane in args.lanes if lane in ("youtube", "captions")]
+    if held:
+        # the YouTube lanes request paths that youtube.com's robots.txt disallows: not without the owner's decision
+        args.lanes = [lane for lane in args.lanes if lane not in held]
+        print(f"skipped: the {' and '.join(held)} lane(s): {YOUTUBE_RULE}. Nothing is sent to YouTube. The owner can "
+              f"allow it with {YOUTUBE_OVERRIDE}=1.", file=sys.stderr, flush=True)
+        if not args.lanes:
+            sys.exit(SKIPPED_BY_RULE)
 
     root = ensure_outside_git(args.root)
     prepare, parallel, after, sync, final_sync, catalog = build_plan(args, root)

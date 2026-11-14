@@ -21,7 +21,7 @@ import xml.etree.ElementTree as ET
 import zlib
 from email.utils import parsedate_to_datetime
 
-from common import item_id
+from common import item_id, retry_after_seconds, youtube_disallowed, youtube_override
 
 # A plain, honest client name. No project, account or contact details are sent to third parties.
 USER_AGENT = "podcast-feed-reader/1.0 (python-urllib)"
@@ -39,16 +39,51 @@ AUDIO_TYPES = ("audio/", "video/")  # some feeds carry the audio track inside an
 MAX_FEED_BYTES = 80 * 1024 * 1024
 
 
-# An opener with an empty proxy table: proxy settings in the environment are ignored on purpose.
-_DIRECT = urllib.request.build_opener(urllib.request.ProxyHandler({}))
-
-
 class FetchError(Exception):
-    """A request that did not return usable bytes. `status` is the HTTP status, or 0 for a network error."""
+    """A request that did not return usable bytes. `status` is the HTTP status, or 0 for a network error;
+    `retry_after` the seconds a refusing server asked to wait (its Retry-After header), or None; `klass` an
+    error class that overrides the one the status gives ("robots": not sent, because robots.txt forbids it)."""
 
-    def __init__(self, status, message, final_url=""):
+    def __init__(self, status, message, final_url="", retry_after=None, klass=None):
         super().__init__(message)
-        self.status, self.final_url = status, final_url
+        self.status, self.final_url, self.retry_after, self.klass = status, final_url, retry_after, klass
+
+
+def robots_refusal(url, redirect=False):
+    """The FetchError for an address on YouTube that its robots.txt disallows, or None (also None when the
+    owner opted in with ET_YOUTUBE_ROBOTS_OVERRIDE=1)."""
+    if not youtube_disallowed(url) or youtube_override():
+        return None
+    path = urllib.parse.urlsplit(url).path
+    return FetchError(0, f"{'redirect not followed' if redirect else 'not fetched'}: youtube.com's robots.txt disallows "
+                         f"{path} (owner decision pending, HANDOFF 6)", url, klass="robots")
+
+
+class _ObeyYouTubeRobots(urllib.request.HTTPRedirectHandler):
+    """Follows a redirect only to an address the rules allow: a YouTube path its robots.txt disallows is not
+    requested, wherever the redirect came from. A request opened with `before_redirect` (see open_url) has
+    that hook called with each address it is about to be redirected to, after the redirect answer is closed."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        target = urllib.parse.urljoin(req.full_url, newurl)
+        refusal = robots_refusal(target, redirect=True)
+        if refusal is not None:
+            fp.close()
+            raise refusal
+        hook = getattr(req, "before_redirect", None)
+        if hook is not None:
+            fp.read()          # the redirect answer is finished with: nothing stays open while the hook waits
+            fp.close()
+            hook(target)       # may wait for the next host's turn, or raise FetchError to stop here
+        new = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if new is not None and hook is not None:
+            new.before_redirect = hook
+        return new
+
+
+# An opener with an empty proxy table: proxy settings in the environment are ignored on purpose. Its
+# redirects never lead to a YouTube path that robots.txt disallows.
+_DIRECT = urllib.request.build_opener(urllib.request.ProxyHandler({}), _ObeyYouTubeRobots())
 
 
 def safe_url(url: str) -> str:
@@ -68,16 +103,26 @@ def safe_url(url: str) -> str:
     return urllib.parse.urlunsplit((parts.scheme.lower(), netloc, path, query, ""))
 
 
-def open_url(url, timeout=60, headers=None):
-    """urllib response for a GET. Raises FetchError with the HTTP status on any failure."""
+def open_url(url, timeout=60, headers=None, before_redirect=None):
+    """urllib response for a GET. Raises FetchError with the HTTP status on any failure. A YouTube address
+    that its robots.txt disallows is never requested, nor followed to by a redirect (FetchError, klass
+    "robots"), unless the owner opted in with ET_YOUTUBE_ROBOTS_OVERRIDE=1. `before_redirect`, if given, is
+    called with every address a redirect leads to before it is requested: it may wait (for that host's turn,
+    or the Retry-After it sent), or raise FetchError so that the host is not asked at all."""
     if not re.match(r"^https?://", url or "", re.I):
         raise FetchError(0, f"not an http(s) URL: {str(url)[:80]!r}")
+    refusal = robots_refusal(url)
+    if refusal is not None:
+        raise refusal
     try:
         request = urllib.request.Request(safe_url(url), headers={"User-Agent": USER_AGENT, "Accept": "*/*",
                                                                  **(headers or {})})
+        if before_redirect is not None:
+            request.before_redirect = before_redirect
         return _DIRECT.open(request, timeout=timeout)
     except urllib.error.HTTPError as err:
-        raise FetchError(err.code, f"HTTP Error {err.code}: {err.reason}", err.geturl() or url) from None
+        wait = retry_after_seconds(err.headers.get("Retry-After")) if err.headers is not None else None
+        raise FetchError(err.code, f"HTTP Error {err.code}: {err.reason}", err.geturl() or url, wait) from None
     except (urllib.error.URLError, http.client.HTTPException, OSError, ValueError) as err:
         raise FetchError(0, f"{type(err).__name__}: {err}"[:300], url) from None
 

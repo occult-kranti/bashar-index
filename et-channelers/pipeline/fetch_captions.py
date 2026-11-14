@@ -9,6 +9,9 @@ Runs yt-dlp with --skip-download and its subtitle options. No cookies, no login,
 alternative player clients: if YouTube answers with a bot check, 403 or 429, three in a row stop
 the run (exit code 3), exactly as in download_audio.py. From a cloud server YouTube refuses these
 requests; run this on your own computer.
+Off unless the owner sets ET_YOUTUBE_ROBOTS_OVERRIDE=1: yt-dlp asks for the player and the caption
+tracks through youtube.com's /youtubei/ and /api/, which its robots.txt disallows. Without the
+variable it sends nothing, says so in one line, and ends with exit code 9 (skipped by rule).
 
 Reads   <root>/jobs/queue.csv (from select_jobs.py)
 Writes  <root>/captions/<channel_dir>/<video_id>.<lang>.vtt
@@ -30,7 +33,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (HARD_BLOCKS, ID_RE, Breaker, Progress, RateLimiter, add_root_arg, append_jsonl,  # noqa: E402
                     atomic_write_text, classify_error, ensure_outside_git, latest_by_key, layout, normalise_text,
-                    parse_shard, read_csv, read_jsonl, run_cmd, sha256_text, stable_shard, utc_now)
+                    parse_shard, read_csv, read_jsonl, run_cmd, sha256_text, stable_shard, utc_now, youtube_gate)
 from fetch_publisher_text import cues_to_text  # noqa: E402
 
 SKIP_LATER = {"unavailable", "login_required", "no_captions"}
@@ -54,6 +57,8 @@ def fetch_one(args, row, out_root, limiter, breaker):
         shutil.rmtree(work, ignore_errors=True)
         work.mkdir(parents=True, exist_ok=True)
         limiter.wait()
+        if breaker.tripped.is_set() or (args.systemic is not None and args.systemic.tripped.is_set()):
+            return None   # the run stopped while this request waited for its turn: not sent, not recorded
         t0 = time.time()
         code, _, err = run_cmd(ytdlp_cmd(args, row, work), args.timeout)
         rec["elapsed_s"] = round(time.time() - t0, 1)
@@ -113,6 +118,8 @@ def main():
     ap.add_argument("--retry-failed", action="store_true")
     ap.add_argument("--ytdlp", default="yt-dlp")
     args = ap.parse_args()
+    # nothing is read or sent before this: off unless the owner opted in (common.YOUTUBE_OVERRIDE)
+    youtube_gate("fetch_captions.py: YouTube captions (yt-dlp's player and caption requests go through /youtubei/ and /api/)")
 
     paths = layout(ensure_outside_git(args.root))
     out_root = paths.captions

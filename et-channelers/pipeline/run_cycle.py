@@ -4,7 +4,8 @@
 This is the routine an agent (or a person) runs again and again. Every step is one of the existing
 scripts, each resumable, so a cycle that is stopped or refused is simply run again:
 
-    list     discover.py              what each tracked channel holds now (a listing older than a week is redone)
+    list     discover.py              what each tracked channel holds now (a listing older than a week is redone);
+                                      off unless the owner sets ET_YOUTUBE_ROBOTS_OVERRIDE=1 (see below)
     feeds    fetch_feeds.py           the registered podcast feeds, the makers' own and the interview shows'
     queue    select_episodes.py       what to fetch: own feeds, creator files, archive.org audio, and
                                       interviews of the kind asked for (live channeling unless told otherwise)
@@ -18,7 +19,13 @@ scripts, each resumable, so a cycle that is stopped or refused is simply run aga
 Without --go it prints the plan and does nothing. It never touches YouTube audio or captions: that is
 run_all.py's job, on a home connection. A step that ends with code 3 (a source refused requests) or 4
 (the disk floor was reached) does not stop the cycle: the later steps still record where things stand.
-Anything else does.
+Anything else does. One cycle at a time: a cycle started while another runs (the collection loop and an
+agent, say) does nothing and ends with code 8, since both would ask the same hosts for the same things.
+
+A step that ends with code 9 sent nothing because a rule forbids its requests, and the report says
+"skipped by rule". So far that is the listing step: youtube.com's robots.txt disallows /youtubei/, which
+yt-dlp's listing goes through, and the owner has not decided (HANDOFF 6). It does not stop the cycle,
+and it is not the cycle's own exit code.
 
     python3 pipeline/run_cycle.py                       # show the plan
     python3 pipeline/run_cycle.py --go                  # run it
@@ -32,11 +39,30 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import add_root_arg, ensure_outside_git, utc_now  # noqa: E402
+from common import SKIPPED_BY_RULE, YOUTUBE_OVERRIDE, add_root_arg, ensure_outside_git, utc_now, youtube_override  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 STEPS = ("list", "feeds", "queue", "fetch", "texts", "kinds", "speech", "tables")
-SOFT = (0, 3, 4)        # done, a source refused, the disk floor: the cycle goes on
+SOFT = (0, 3, 4, SKIPPED_BY_RULE)   # done, a source refused, the disk floor, skipped by rule: the cycle goes on
+BUSY = 8                # another cycle was running: this one did nothing
+
+
+def cycle_lock(root):
+    """The open lock file if this is the only cycle running, False if another cycle holds it, None where
+    the platform cannot lock files."""
+    try:
+        import fcntl
+    except ImportError:
+        return None
+    path = root / "jobs" / "cycle.lock"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle = open(path, "a", encoding="utf-8")
+    try:
+        fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        handle.close()
+        return False
+    return handle
 
 
 def build_plan(args, root):
@@ -55,7 +81,8 @@ def build_plan(args, root):
         "fetch": [py + [str(HERE / "download_enclosures.py"), *base, "--queue", str(queue), "--all", "--workers", "2",
                         "--per-host", "2", "--min-free-gb", str(args.min_free_gb)]],
         "texts": [py + [str(HERE / "fetch_publisher_text.py"), *base, "--all"]],
-        "kinds": [py + [str(HERE / "interview_types.py"), *base, "--notes"]],
+        # the show notes' marks come from the feeds step's own read: this step fetches nothing
+        "kinds": [py + [str(HERE / "interview_types.py"), *base]],
         "speech": [py + [str(HERE / "transcribe.py"), *base, "--model", args.transcribe, "--device", "cpu", "--compute-type", "int8",
                          "--workers", "1", "--cpu-threads", "2", "--batch-size", "8", "--order", "round-robin"]] if args.transcribe else [],
         "tables": [py + [str(HERE / "catalog.py"), *base, "--publish"], py + [str(HERE / "targets.py"), *base],
@@ -89,9 +116,17 @@ def main():
         print(f"  {step:7s} {' '.join(cmd[2:])}")
     if not args.transcribe and "speech" not in args.skip:
         print("  speech  (left out: pass --transcribe MODEL to include it)")
+    if "list" not in args.skip and not youtube_override():
+        print(f"  list    skipped by rule: youtube.com's robots.txt disallows what it requests (set {YOUTUBE_OVERRIDE}=1 "
+              "only by the owner's decision, HANDOFF 6)")
     if not args.go:
         print("dry run: add --go to run this cycle")
         return
+    lock = cycle_lock(root)                     # held until this process ends  # noqa: F841
+    if lock is False:
+        print(f"STOPPED: another run_cycle.py is running (it holds {root / 'jobs' / 'cycle.lock'}). This cycle does "
+              "nothing; run it again when that one has ended.", file=sys.stderr)
+        sys.exit(BUSY)
     worst, log = 0, []
     for step, cmd in plan:
         started = utc_now()
@@ -101,10 +136,13 @@ def main():
             print(f"STOPPED: {Path(cmd[2]).name} ended with exit code {code}", file=sys.stderr)
             worst = code
             break
-        worst = max(worst, code)
+        if code != SKIPPED_BY_RULE:
+            worst = max(worst, code)
     print("CYCLE REPORT")
     for step, script, code, started in log:
-        note = {0: "done", 3: "a source refused requests: wait and run the cycle again", 4: "disk floor reached"}.get(code, f"failed ({code})")
+        note = {0: "done", 3: "a source refused requests: wait and run the cycle again", 4: "disk floor reached",
+                SKIPPED_BY_RULE: "skipped by rule: youtube.com's robots.txt; owner decision pending (HANDOFF 6)"
+                }.get(code, f"failed ({code})")
         print(f"  {step:7s} {script:26s} {started}  {note}")
     sys.exit(worst)
 
