@@ -2,6 +2,23 @@
 
 Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos indexed, 75 Bashar recordings partly read" to "every video on every tracked channel as private audio plus a timestamped transcript", and then to analysis and a paper. The tooling is in [`pipeline/`](pipeline/README.md); the channel table is in the [README](README.md#plan-for-the-rest) and in [`plan/channel_inventory.csv`](plan/channel_inventory.csv). Everything here is an AI-written plan and has not been reviewed by a person; figures marked "estimate" are arithmetic on a sample, not measurements.
 
+## 00. Update 2026-11-14, evening: paused for the move to a 16 GB Codespace
+
+Everything was stopped cleanly so the work can go on in a larger Codespace. [`HANDOFF.md`](HANDOFF.md) has the
+setup, the restore commands and the order of work.
+
+| Task | State at the pause |
+|---|---|
+| Collection | 1,138 audio files (819.5 h, 10.11 GB), 8,425 texts from the sources, 61 transcripts made here. All of it is in the private store, and the final sync pass found nothing unstored |
+| Bashar's archive.org sessions | 262 of 903 downloaded (636.7 h left) |
+| Podcast backlog | 828 of 4,057 episodes (1,442.6 h left) |
+| Speech-to-text | 61 transcripts. At 1.3x real time the backlog needs a faster engine or a GPU (HANDOFF section 6) |
+| Private store | release `archive-v1` (bundles); `archiveshelf-podcast-audio-v1` (ArchiveShelf's 16 episodes, checked against GitHub's digests); `handoff-2026-11-14` (state without media, the Kimi snapshot, notes, memory files) |
+| Google Drive | Done: tables, transcript zips by person, the earlier work (Bashar Index, ArchiveShelf, Channeling Atlas) and 77 folders. In progress: the browsable copy from `pipeline/drive_stage.py` (audio by person and source in playable parts of at most 7.3 MB; texts as volumes per person) |
+| Kimi snapshot (channels-ET, received 2026-11-14) | read by agents; plan in phase 4b below |
+| Analysis plan | phases 7a and 7c written; methods in `ANALYSIS_PLAN.md` |
+| Next | set up and check the new Codespace; choose the speech-to-text engine; fix the disk hold; finish Drive; phase 4b; dashboard v2 |
+
 ## 0. Update 2026-11-13: the lanes that work from a cloud server
 
 Sections 1 to 6 below are the 2026-11-11 plan and are kept as written. This section records what changed.
@@ -233,6 +250,36 @@ Each phase has an exit test. Do not start the next phase until the test passes.
 * Refresh the dashboard from the new tables.
 * Exit test: every entry has a count or a recorded reason it has none; `inventory.py --update-readme` regenerates the README table.
 
+### Phase 4b: the Kimi agent's channels-ET snapshot (received 2026-11-14)
+
+The owner shared "Kimi_Agent_YouTube ET Channel Analysis.zip": a snapshot of the channels-ET (Channeling Atlas)
+repository with work up to 2026-11-13. It holds 2,275 files and 517 that are newer than the clone read earlier
+(`research/expansion-2026`, `research/acquisition-2026-11`). There is no audio inside: metadata, tables,
+manuscripts, reviews and code. It is kept outside this repository (in `/workspaces/_incoming/`, and in the
+private release `handoff-2026-11-14`).
+
+What it adds, by its own README:
+* a YouTube inventory of 2,840 video records across 302 accounts, with a selection (942, then 748 eligible,
+  then 733 chosen) that already sets shorts and recordings under five minutes apart, as Phase 7a does;
+* 35 audio files of YouTube videos with 34 speech-to-text transcripts (146,605 words, 572 literal question
+  units, 69 AI-review verdicts);
+* a publisher cohort of 12 transcripts;
+* subtitles for 12 non-Bashar sources;
+* a 57-page manuscript with its review rounds, and analysis code (Q&A extraction, TF-IDF, NMF, KMeans,
+  networks) with 119 checks.
+
+Steps:
+1. Readers (agents) map every new area: data products, methods, results, how each was obtained.
+2. Take the metadata. Accounts in its inventory that we do not track are checked and proposed as targets or
+   host shows, through `et-source-scout` and the usual evidence rules.
+3. Take the methods: its literal question-unit extraction, recurrence families and checks feed phases 7a and
+   7c; its results become the comparison for ours.
+4. **Provenance.** Its YouTube audio was fetched through converter sites and its subtitles through paste-link
+   services. This project does not use those methods and will not repeat them. What it already holds may be
+   used privately, marked with how it was obtained, if the owner agrees (HANDOFF section 6).
+5. **Done when** the readers' plan is reviewed, the new accounts are decided, and phases 7a and 7c cite what
+   was taken.
+
 ### Phase 5: selection rule and pilot on the wider set
 
 * Decide the sampling rule before looking at transcripts (Atlas roadmap item N3): for example, a seeded sample of up to 20 videos per channel, 5 minutes to 3 hours long, flagged as channeling or not, English or auto-detected. `select_jobs.py` writes the seed, rule and input hashes next to the queue so the draw can be reproduced and reported.
@@ -250,9 +297,12 @@ Each phase has an exit test. Do not start the next phase until the test passes.
 * Questions to answer from the transcripts: how channelers use names, calendars and astrology, what they say about themselves and each other, and how the wording spreads between channels. Use the same denominators as the Atlas only after its identity audit (item N1).
 * Quotes in any write-up stay at 30 words or fewer, with the recording and time stamp.
 
-### Phase 7a: shorts against long videos (added 2026-11-14, at the owner's request; after collection)
+### Phase 7a: shorts and short recordings against the main corpus (added 2026-11-14, at the owner's request; after collection)
 
-A separate analysis, run once the transcripts of both kinds are in. The channel listings already say which
+A separate analysis, run once the transcripts of both kinds are in. **The main corpus is every recording over
+5 minutes, with no upper limit** (nothing in the pipeline is limited to an hour: the queues keep every length,
+and their `too_short` and `too_long` counts are 0). **Shorts, and any recording of 5 minutes or less, form a
+group of their own**, compared to the main corpus with the method below. The channel listings already say which
 is which: 16,115 shorts against 42,584 videos and live streams on the 63 channels listed.
 
 * **Question 1, repetition.** Is a short new material, or a piece of a long video? For every short, look for
@@ -275,6 +325,36 @@ is which: 16,115 shorts against 42,584 videos and live streams on the 63 channel
   transcript text, and quotes within the 30-word limit.
 * **Done when** every channel with at least 20 shorts and 20 long videos has its three answers, and a
   second reader has re-run the numbers from the saved transcripts.
+
+### Phase 7c: years, recent recordings, predictions and warnings, timelines, question banks (added 2026-11-14, at the owner's request)
+
+Built on the same corpus groups as Phase 7a (main corpus over 5 minutes; shorts and short recordings apart),
+with texts from the source and speech-to-text kept apart in every table. The methods, statistics and sources
+are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md), written from a deep-research survey run with agents.
+
+* **By year, for each channel.** Recordings, hours, words, topics, vocabulary, share of audience questions,
+  named beings, star systems and places, per year; year-over-year change with confidence intervals, and a
+  correction for uneven sampling (few early recordings, many recent ones).
+* **The last 5, 10, 50 and 100 recordings** of each channel against its whole history: what is new in topics
+  and wording, length and pace, how often predictions and warnings come up. Windows of different sizes are
+  made comparable by resampling; a channel with fewer recordings than N is reported as such, not padded.
+* **Every prediction and warning.** A small model reads every transcript and marks each statement about the
+  future: what is predicted or warned of, conditional or not, how sure, and the date or period it points to,
+  resolved against the recording's own date. The same prediction repeated in several recordings or by several
+  channels is linked, not counted twice. From this: **a timeline for each channel and one combined timeline**,
+  each point linked to its recording and time stamp. Checking predictions against what happened comes later,
+  only for specific and checkable ones, and with the scoring rules written down first.
+* **Datasets the small model builds** (Claude Haiku through agents; a larger model audits a sample, and
+  agreement is reported): question-and-answer pairs from audience sessions, question banks grouped by theme,
+  per-recording summaries, dated statements, predictions and warnings. Every row carries the item id and the
+  time stamp or offset it came from. Rows that contain transcript text stay in the private store; counts,
+  labels and ids can be published.
+* **Dashboard.** Build the per-year tables, the last-N comparison and the two timelines first, from these
+  datasets; then improve the UI and UX (filters by channel, kind and year, phone width, linking each point to
+  its recording) once the first version has been used.
+* **Done when** every channel with at least 20 recordings in the main corpus has its per-year table, its
+  last-N comparison and its timeline; the combined timeline exists; and the audit sample's agreement figures
+  are in the methods note.
 
 ### Phase 7b: the cycle runs itself, with a team of agents (added 2026-11-14, at the owner's request)
 

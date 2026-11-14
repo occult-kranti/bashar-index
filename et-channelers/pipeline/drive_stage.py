@@ -459,12 +459,29 @@ def cmd_batches(args, paths):
         slot = min(loads, key=lambda s: s[0])
         slot[0] += p["bytes"]
         slot[1].append(p)
+    link_dir = Path(args.link_dir) if args.link_dir else None
+    if link_dir:
+        link_dir.mkdir(parents=True, exist_ok=True)
+
+    def sendable(p):
+        """The path the uploader reads. The Claude connector reads a file by reference only from the main
+        session's scratchpad folder, and refuses a file with more than one hard link (a link could expose a
+        file from elsewhere): --link-dir puts a real copy of each file there, under a plain name."""
+        if not link_dir:
+            return p["path"]
+        dest = link_dir / f"{p['sha256'][:24]}{Path(p['path']).suffix}"
+        if not dest.exists() or dest.stat().st_nlink > 1:
+            tmp = dest.with_suffix(dest.suffix + ".part")
+            shutil.copyfile(p["path"], tmp)
+            tmp.replace(dest)
+        return str(dest)
+
     for i, (_, items) in enumerate(loads, 1):
         items.sort(key=lambda p: (p["folder"], p["title"]))
         with open(bdir / f"batch-{i:02d}.jsonl", "w", encoding="utf-8") as fh:
             for p in items:
                 fh.write(json.dumps({"key": p["key"], "title": p["title"], "parentId": ids[tuple(p["folder"])],
-                                     "ref": f"sha256:{p['sha256']}:{p['path']}", "mime": p["mime"]},
+                                     "ref": f"sha256:{p['sha256']}:{sendable(p)}", "mime": p["mime"]},
                                     ensure_ascii=False) + "\n")
     print(f"[drive] {len(todo)} upload(s) in {len(loads)} batch file(s) under {bdir}"
           + (f"; {waiting} wait for their folder to be created" if waiting else ""), file=sys.stderr)
@@ -534,6 +551,9 @@ def main():
                     help='a Drive folder that already exists: "04 Audio=<folder id>" (repeatable)')
     ap.add_argument("--n", type=int, default=6, help="batches: number of batch files")
     ap.add_argument("--jobs", type=int, default=3, help="plan: audio files cut at the same time")
+    ap.add_argument("--link-dir", default="", help="batches: copy every file into this folder under a plain name (the "
+                                                   "Claude connector reads files only from the main session's "
+                                                   "scratchpad, and refuses hard links)")
     ap.add_argument("--ffmpeg", default="ffmpeg")
     args = ap.parse_args()
     args.kinds = {k.strip() for k in args.kinds.split(",") if k.strip()}
