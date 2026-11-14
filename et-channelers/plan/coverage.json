@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-14T02:40:06Z",
+ "generated": "2026-11-14T15:27:32Z",
  "people": 102,
  "people_with_a_listed_source": 70,
  "people_with_a_source_outside_youtube": 38,
@@ -14,7 +14,7 @@
   "items_listed": 73921,
   "items_outside_youtube": 15159,
   "distinct_listed": 69186,
-  "distinct_captured": 8776,
+  "distinct_captured": 8834,
   "youtube_listed": 58762,
   "youtube_shorts": 16115,
   "youtube_captured": 3357,
@@ -25,13 +25,13 @@
   "interviews_commentary": 2,
   "interviews_not_classified": 138,
   "interviews_here": 62,
-  "listed_hours": 24359.1,
-  "audio_ok": 1080,
-  "audio_hours": 752.7,
+  "listed_hours": 24358.4,
+  "audio_ok": 1138,
+  "audio_hours": 819.5,
   "audio_failed": 5,
   "audio_podcast": 781,
   "audio_creator_file": 95,
-  "audio_archive_org": 204,
+  "audio_archive_org": 262,
   "archive_org_listed": 903,
   "audio_youtube": 0,
   "publisher_texts": 8425,
@@ -40,11 +40,11 @@
   "captions_words": 0,
   "asr_transcripts": 61,
   "asr_words": 259518,
-  "asr_hours": 30.7,
+  "asr_hours": 30.6,
   "items_text_from_source": 8425,
   "items_text_made_here": 61,
   "items_with_text": 8480,
-  "audio_awaiting_transcript": 995,
+  "audio_awaiting_transcript": 1053,
   "youtube_twins": 5242
  },
  "rows": [
@@ -89,7 +89,7 @@
    "items_with_text": 4960,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 3171,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "l-l-research",
@@ -175,7 +175,50 @@
    "items_with_text": 909,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 806,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
+  },
+  {
+   "person_id": "darryl-anka",
+   "person_name": "Darryl Anka",
+   "role": "channeler",
+   "youtube_videos_indexed": 2,
+   "own_feeds": 0,
+   "items_listed": 1413,
+   "items_outside_youtube": 945,
+   "distinct_listed": 1408,
+   "distinct_captured": 289,
+   "youtube_listed": 468,
+   "youtube_shorts": 185,
+   "youtube_captured": 5,
+   "interviews_listed": 42,
+   "interviews_live_channeling": 1,
+   "interviews_unclear": 0,
+   "interviews_conversation": 13,
+   "interviews_commentary": 2,
+   "interviews_not_classified": 26,
+   "interviews_here": 27,
+   "listed_hours": 976.9,
+   "audio_ok": 282,
+   "audio_hours": 298.1,
+   "audio_failed": 3,
+   "audio_podcast": 20,
+   "audio_creator_file": 0,
+   "audio_archive_org": 262,
+   "archive_org_listed": 903,
+   "audio_youtube": 0,
+   "publisher_texts": 11,
+   "publisher_text_words": 138022,
+   "captions": 0,
+   "captions_words": 0,
+   "asr_transcripts": 9,
+   "asr_words": 105840,
+   "asr_hours": 11.6,
+   "items_text_from_source": 11,
+   "items_text_made_here": 9,
+   "items_with_text": 17,
+   "audio_awaiting_transcript": 272,
+   "youtube_twins": 5,
+   "next_step": "download the remaining 1104 listed items"
   },
   {
    "person_id": "sam-the-illusionist",
@@ -218,50 +261,7 @@
    "items_with_text": 257,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
-  },
-  {
-   "person_id": "darryl-anka",
-   "person_name": "Darryl Anka",
-   "role": "channeler",
-   "youtube_videos_indexed": 2,
-   "own_feeds": 0,
-   "items_listed": 1413,
-   "items_outside_youtube": 945,
-   "distinct_listed": 1408,
-   "distinct_captured": 231,
-   "youtube_listed": 468,
-   "youtube_shorts": 185,
-   "youtube_captured": 5,
-   "interviews_listed": 42,
-   "interviews_live_channeling": 1,
-   "interviews_unclear": 0,
-   "interviews_conversation": 13,
-   "interviews_commentary": 2,
-   "interviews_not_classified": 26,
-   "interviews_here": 27,
-   "listed_hours": 977.5,
-   "audio_ok": 224,
-   "audio_hours": 231.2,
-   "audio_failed": 3,
-   "audio_podcast": 20,
-   "audio_creator_file": 0,
-   "audio_archive_org": 204,
-   "archive_org_listed": 903,
-   "audio_youtube": 0,
-   "publisher_texts": 11,
-   "publisher_text_words": 138022,
-   "captions": 0,
-   "captions_words": 0,
-   "asr_transcripts": 9,
-   "asr_words": 105840,
-   "asr_hours": 11.6,
-   "items_text_from_source": 11,
-   "items_text_made_here": 9,
-   "items_with_text": 17,
-   "audio_awaiting_transcript": 214,
-   "youtube_twins": 5,
-   "next_step": "download the remaining 1162 listed items"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "blossom-goodchild",
@@ -304,7 +304,7 @@
    "items_with_text": 227,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 166,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "laarkmaa",
@@ -347,7 +347,7 @@
    "items_with_text": 207,
    "audio_awaiting_transcript": 1,
    "youtube_twins": 14,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "lee-carroll",
@@ -691,7 +691,7 @@
    "items_with_text": 2,
    "audio_awaiting_transcript": 40,
    "youtube_twins": 28,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "erin-lyons",
@@ -777,7 +777,7 @@
    "items_with_text": 25,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 10,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "pavlina-klemm",
@@ -820,7 +820,7 @@
    "items_with_text": 12,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 12,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "lorie-ladd",
@@ -863,7 +863,7 @@
    "items_with_text": 1,
    "audio_awaiting_transcript": 16,
    "youtube_twins": 15,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "michelle-robinson",
@@ -906,7 +906,7 @@
    "items_with_text": 11,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 4,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "paul-selig",
@@ -992,7 +992,7 @@
    "items_with_text": 3,
    "audio_awaiting_transcript": 3,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "wendy-kennedy",
@@ -1035,7 +1035,7 @@
    "items_with_text": 2,
    "audio_awaiting_transcript": 2,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "sounds-true",
@@ -1121,7 +1121,7 @@
    "items_with_text": 1,
    "audio_awaiting_transcript": 3,
    "youtube_twins": 1,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "pamela-aaralyn",
@@ -1164,7 +1164,7 @@
    "items_with_text": 2,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "micheila-sheldan",
@@ -1250,7 +1250,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "ivan-teller",
@@ -1293,7 +1293,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "ismael-perez",
@@ -1336,7 +1336,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "lauren-galey",
@@ -1379,7 +1379,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "rachel-chamness",
@@ -1422,7 +1422,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "monica-de-medeiros",
@@ -1465,7 +1465,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "brad-johnson",
@@ -1508,7 +1508,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "tyler-ellison",
@@ -1551,7 +1551,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "aurora-ray",
@@ -1594,7 +1594,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "elsa-farrus-rusinol",
@@ -1637,7 +1637,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "magenta-pixie",
@@ -1680,7 +1680,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "kristin-davies",
@@ -1723,7 +1723,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "rob-gauthier",
@@ -1766,7 +1766,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "jamye-price",
@@ -1809,7 +1809,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "debbie-solaris",
@@ -1852,7 +1852,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "lightingclarity",
@@ -1895,7 +1895,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "gigi-young",
@@ -1938,7 +1938,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "elena-danaan",
@@ -1981,7 +1981,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "rachel-kevin-pasdon",
@@ -2024,7 +2024,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "pleiadian-council-whispers",
@@ -2067,7 +2067,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "anrita-melchizedek",
@@ -2110,7 +2110,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "arkayla",
@@ -2153,7 +2153,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "krista-raisa",
@@ -2196,7 +2196,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "tracey-milne",
@@ -2239,7 +2239,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "andrew-bayuk",
@@ -2282,7 +2282,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "saraharyana",
@@ -2325,7 +2325,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "fernanda-and-flavia",
@@ -2368,7 +2368,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "wieteke-koolhof",
@@ -2411,7 +2411,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "tolec",
@@ -2454,7 +2454,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "ashley-cunningham",
@@ -2497,7 +2497,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "lyssa-royal-holt",
@@ -2540,7 +2540,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "megan-rose",
@@ -2583,7 +2583,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "nora-herold",
@@ -2626,7 +2626,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "channeler-junko",
@@ -2669,7 +2669,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "shaun-swanson",
@@ -2712,7 +2712,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "sarah-evans",
@@ -2755,7 +2755,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "leslie-muller",
@@ -2798,7 +2798,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "ashtar-command-lower-decks",
@@ -2841,7 +2841,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "barbara-hand-clow",
@@ -2927,7 +2927,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "patricia-cori",
@@ -3013,7 +3013,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "YouTube only: run the YouTube lane on a home connection"
+   "next_step": "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "toni-ghazi",
@@ -3099,7 +3099,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "arcturus-signal",
@@ -3142,7 +3142,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "ashtar-command-crew",
@@ -3185,7 +3185,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "barbara-marciniak",
@@ -3228,7 +3228,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "billy-meier",
@@ -3271,7 +3271,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "channeling-arcturians",
@@ -3314,7 +3314,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "corey-goode",
@@ -3357,7 +3357,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "edson-tozzi",
@@ -3400,7 +3400,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "elizabeth-trutwin",
@@ -3443,7 +3443,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "erena-velazquez",
@@ -3486,7 +3486,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "esther-hicks",
@@ -3529,7 +3529,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "grace-solaris",
@@ -3572,7 +3572,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "ivo-a-benda",
@@ -3615,7 +3615,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "j-z-knight",
@@ -3658,7 +3658,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "james-mcconnell",
@@ -3701,7 +3701,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "jane-roberts",
@@ -3744,7 +3744,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "jordan-younger",
@@ -3787,7 +3787,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "juan-manuel-giordano",
@@ -3830,7 +3830,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "judy-satori",
@@ -3873,7 +3873,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "laura-knight-jadczyk",
@@ -3916,7 +3916,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "liquidlightcodes",
@@ -3959,7 +3959,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "mike-quinsey",
@@ -4002,7 +4002,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "nancy-lieder",
@@ -4045,7 +4045,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "neva-gabriel",
@@ -4088,7 +4088,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "paul-hamden",
@@ -4131,7 +4131,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "robert-shapiro",
@@ -4174,7 +4174,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "sharon-stewart",
@@ -4217,7 +4217,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "sheldan-nidle",
@@ -4260,7 +4260,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "susan-leland",
@@ -4303,7 +4303,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "suzanne-ward",
@@ -4346,7 +4346,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "tom-kenyon",
@@ -4389,7 +4389,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   },
   {
    "person_id": "yafi-channeling",
@@ -4432,7 +4432,7 @@
    "items_with_text": 0,
    "audio_awaiting_transcript": 0,
    "youtube_twins": 0,
-   "next_step": "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
+   "next_step": "no downloadable source found yet: find the maker's own feed or site; the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
   }
  ]
 }
