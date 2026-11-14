@@ -29,7 +29,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (AUDIO_EXT, ITEM_RE, add_root_arg, append_jsonl, archived_ids, atomic_write_text, ensure_outside_git,  # noqa: E402
+from common import (AUDIO_EXT, ITEM_RE, add_root_arg, lane_of, append_jsonl, archived_ids, atomic_write_text, ensure_outside_git,  # noqa: E402
                     latest_by_key, layout, lpt_assign, normalise_text, parse_shard, probe_duration, read_jsonl,
                     sha256_file, sha256_text, stable_shard, utc_now)
 
@@ -162,6 +162,7 @@ def find_jobs(a, audio_dir, out_dir):
     stored = archived_ids(a.root, "asr")   # transcripts already uploaded and removed here
     languages, want, other = declared_languages(a.root, audio_meta), wanted_language(a), {}
     only = {x.strip() for x in (a.only or "").split(",") if x.strip()}
+    lanes = {x.strip() for x in (a.lanes or "").split(",") if x.strip()}
     i, n = parse_shard(a.shard)
     jobs = []
     for f in sorted(audio_dir.rglob("*")):
@@ -171,6 +172,8 @@ def find_jobs(a, audio_dir, out_dir):
             continue  # scratch folders such as .work
         chan = f.parent.name if f.parent != audio_dir else "unsorted"
         if only and chan not in only:
+            continue
+        if lanes and lane_of(f.stem) not in lanes:
             continue
         spoken = languages.get(f.stem, "")
         if want != "auto" and spoken and spoken != want:
@@ -278,6 +281,8 @@ def main():
                          "itself skips the file it was on; one stopped from outside tries it again")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--only", default="", help="comma-separated audio folders (person ids)")
+    ap.add_argument("--lanes", default="", help="comma-separated kinds of item: ia (archive.org), pod (podcast), "
+                                                "web (the maker's site), youtube; default all")
     ap.add_argument("--order", choices=("as-is", "round-robin"), default="as-is",
                     help="round-robin: one file per folder in turn, shortest first")
     ap.add_argument("--shard", help="i/n")

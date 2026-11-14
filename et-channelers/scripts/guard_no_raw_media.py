@@ -83,7 +83,7 @@ def check(path: Path):
         hits.append("scratch-or-private-folder")
     stem = path.name.split(".")[0]                       # 'pod-…​.en.vtt' and 'abc.en-orig.vtt' keep the id first
     parts = set(path.parts[:-1])
-    if suffix == ".source":
+    if suffix == ".source" or path.name.endswith(".source.gz"):
         hits.append("saved-page-source")
     if LANE_ID.match(stem) or (YOUTUBE_ID.match(stem) and suffix in ITEM_SUFFIXES and parts & ITEM_DIRS):
         hits.append("collected-item-file")

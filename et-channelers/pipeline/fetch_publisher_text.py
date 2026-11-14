@@ -9,7 +9,7 @@ Two kinds of source, both public pages or files the publisher links for readers:
 
 For each one it saves, in the private folder only,
     <root>/transcripts_publisher/<person>/<item id>.txt        plain text
-    <root>/transcripts_publisher/<person>/<item id>.source     the bytes as fetched
+    <root>/transcripts_publisher/<person>/<item id>.source.gz  the bytes as fetched, gzip-compressed
 and appends a line to <root>/transcripts_publisher/publisher_text_manifest.jsonl (kind, host, sizes,
 word count, hashes, and any media file the page links). The text is the publisher's edition: it is
 never mixed with machine transcripts, and it never goes into Git.
@@ -24,6 +24,8 @@ default; a host that answers 403 or 429 three times in a row is left alone for t
 from __future__ import annotations
 
 import argparse
+import gzip
+import os
 import concurrent.futures as cf
 import hashlib
 import html
@@ -201,6 +203,20 @@ class Robots:
             return None
 
 
+def saved_source(folder: Path, ident: str):
+    """The bytes of a saved page source, compressed (.source.gz) or as earlier versions kept it, or None."""
+    packed, plain = folder / f"{ident}.source.gz", folder / f"{ident}.source"
+    if packed.exists():
+        return gzip.decompress(packed.read_bytes())
+    return plain.read_bytes() if plain.exists() else None
+
+
+def atomic_write_bytes(path: Path, data: bytes):
+    tmp = path.with_name(path.name + f".tmp{os.getpid()}")
+    tmp.write_bytes(data)
+    os.replace(tmp, path)
+
+
 def load_jobs(paths, kinds, only):
     jobs, seen = [], set()
     if "pages" in kinds and PAGES.exists():
@@ -283,7 +299,7 @@ def fetch_one(job, out_dir, gates, robots, args):
         return rec
     target = out_dir / job["channel_dir"]
     target.mkdir(parents=True, exist_ok=True)
-    (target / f"{job['video_id']}.source").write_bytes(body)
+    atomic_write_bytes(target / f"{job['video_id']}.source.gz", gzip.compress(body, compresslevel=6, mtime=0))
     atomic_write_text(target / f"{job['video_id']}.txt", text + "\n")
     media, page_title, published, youtube_ids = [], "", "", []
     if kind == "page":
@@ -321,18 +337,34 @@ def main():
     ap.add_argument("--retry-failed", action="store_true")
     ap.add_argument("--rescan", action="store_true",
                     help="no network: read the saved page sources again and refresh the video ids found on them")
+    ap.add_argument("--compact-sources", action="store_true",
+                    help="no network: gzip saved page sources kept uncompressed by earlier versions (.source -> .source.gz)")
     args = ap.parse_args()
 
     paths = layout(ensure_outside_git(args.root))
     out_dir = paths.pubtext
     manifest = out_dir / "publisher_text_manifest.jsonl"
+    if args.compact_sources:
+        done = saved = 0
+        for old_file in sorted(out_dir.rglob("*.source")):
+            body = old_file.read_bytes()
+            packed = old_file.with_name(old_file.name + ".gz")
+            atomic_write_bytes(packed, gzip.compress(body, compresslevel=6, mtime=0))
+            if gzip.decompress(packed.read_bytes()) != body:          # checked before the original goes
+                packed.unlink()
+                continue
+            old_file.unlink()
+            done += 1
+            saved += len(body) - packed.stat().st_size
+        print(f"compacted {done} saved page source(s), {saved / 1e6:.0f} MB freed")
+        return
     if args.rescan:
         changed = 0
         for rec in latest_by_key(read_jsonl(manifest)).values():
-            source = out_dir / rec.get("channel_dir", "") / f"{rec['video_id']}.source"
-            if rec.get("status") != "ok" or rec.get("kind") != "page" or not source.exists():
+            source = saved_source(out_dir / rec.get("channel_dir", ""), rec["video_id"])
+            if rec.get("status") != "ok" or rec.get("kind") != "page" or source is None:
                 continue
-            ids = sorted(set(YOUTUBE_ID_IN_TEXT.findall(source.read_text(encoding="utf-8", errors="replace"))))[:20]
+            ids = sorted(set(YOUTUBE_ID_IN_TEXT.findall(source.decode("utf-8", errors="replace"))))[:20]
             if ids != (rec.get("youtube_ids") or []):
                 append_jsonl(manifest, {**rec, "youtube_ids": ids, "rescanned": utc_now()})
                 changed += 1

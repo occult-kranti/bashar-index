@@ -1047,6 +1047,19 @@ class TestTranscribe(PipelineCase):
         self.assertEqual(len(self.tr_manifest()), 3)
         self.assertNotIn("left out", p.stderr)
 
+    def test_only_the_kinds_of_item_asked_for(self):
+        archive, podcast = "ia-00000000000000a1", "pod-00000000000000b2"
+        for ident in (archive, podcast):
+            path = self.root / "audio" / "chanA" / f"{ident}.opus"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"FAKEOPUS" + ident.encode() * 60)
+        self.make_audio([mk("VID", 1)])
+        p = self.transcribe("--lanes", "ia")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertEqual([r["video_id"] for r in self.tr_manifest()], [archive])
+        self.assertEqual(self.transcribe("--lanes", "pod,youtube").returncode, 0)
+        self.assertEqual(sorted(r["video_id"] for r in self.tr_manifest()), sorted([archive, podcast, mk("VID", 1)]))
+
     def test_shards_do_not_overlap(self):
         ids = [mk("VID", i) for i in range(9)]
         self.make_audio(ids)
@@ -1220,6 +1233,7 @@ class TestGuard(unittest.TestCase):
         files = {
             f"transcripts_publisher/sam-the-illusionist/{web}.txt": "four thousand words of a session\n",
             f"transcripts_publisher/sam-the-illusionist/{web}.source": "<html>the page as fetched</html>",
+            f"transcripts_publisher/sam-the-illusionist/{web}x.source.gz": "compressed page as fetched",
             f"transcripts/athina-krol/{pod}.txt": "machine transcript text\n",
             f"transcripts/athina-krol/{pod}.json": '{"segments": []}',
             f"captions/chanY/{yt}.txt": "caption text\n",

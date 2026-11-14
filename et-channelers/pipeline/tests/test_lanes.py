@@ -1001,6 +1001,25 @@ class TestPublisherTextRun(LaneCase):
         recs = common.latest_by_key(common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl"))
         self.assertEqual(recs[rows[0]["video_id"]]["error_class"], "robots")
 
+    def test_page_sources_are_kept_compressed_and_old_ones_are_compacted_without_loss(self):
+        import gzip
+        rows = self.text_queue(2)
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+        self.assertEqual(self.fetch_text().returncode, 0)
+        folder = self.root / "transcripts_publisher" / "chanA"
+        packed = sorted(folder.glob("*.source.gz"))
+        self.assertEqual(len(packed), 2)
+        self.assertEqual(list(folder.glob("*.source")), [])
+        self.assertTrue(gzip.decompress(packed[0].read_bytes()).startswith(b"WEBVTT"))
+        # a source kept the old way is compacted, and its bytes come back unchanged
+        old = folder / "pod-0123456789abcdef.source"
+        old.write_bytes(b"<html>" + b"x" * 5000 + b"</html>")
+        done = self.cli("fetch_publisher_text.py", "--root", self.root, "--compact-sources")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertFalse(old.exists())
+        self.assertEqual(gzip.decompress((folder / "pod-0123456789abcdef.source.gz").read_bytes()), b"<html>" + b"x" * 5000 + b"</html>")
+        self.assertIn("compacted 1 saved page source", done.stdout)
+
     def test_a_listed_episode_with_a_transcript_link_needs_no_queue(self):
         # The queue is one work order among several (interview episodes have their own). A transcript that a
         # listed episode links was skipped unless that episode happened to be in queue_enclosures.csv.
@@ -1234,6 +1253,38 @@ class TestSync(LaneCase):
         self.assertEqual(back.returncode, 0, back.stderr)
         for ident, data in originals.items():
             self.assertEqual((self.root / "audio" / "chanA" / f"{ident}.opus").read_bytes(), data)
+
+    def test_audio_of_the_people_named_stays_until_it_has_a_transcript(self):
+        # chanA's first item has a transcript, the other two do not; a second person's audio goes as usual
+        other = common.item_id("pod", "g", "1")
+        f = self.root / "audio" / "chanB" / f"{other}.opus"
+        f.parent.mkdir(parents=True)
+        f.write_bytes(b"FAKEOPUS" + b"z" * 900)
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl", {"video_id": other, "channel_dir": "chanB", "lane": "pod",
+                            "status": "ok", "path": f"chanB/{other}.opus", "bytes": f.stat().st_size, "duration_s": 60.0})
+        done = self.sync("push", f"dir:{self.tmp / 'disk'}", "--delete", "audio", "--hold-untranscribed-for", "chanA")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.local_audio(), sorted(f"{i}.opus" for i in self.ids[1:]))   # the transcribed one went
+        self.assertFalse(f.exists())                                                       # chanB is not held
+        self.assertTrue((self.tmp / "disk" / "audio" / "chanA" / f"{self.ids[1]}.opus").exists())   # but everything is stored
+
+    def test_a_fresh_folder_can_read_everything_back_from_the_store(self):
+        # the private folder is lost (or this is a new computer): the store alone must be enough
+        originals = {ident: (self.root / "audio" / "chanA" / f"{ident}.opus").read_bytes() for ident in self.ids}
+        for store in ("gh:someone/archive@audio-v1", f"dir:{self.tmp / 'disk'}"):
+            done = self.sync("push", store, "--delete", "audio")
+            self.assertEqual(done.returncode, 0, done.stderr)
+            fresh = self.tmp / ("fresh-" + store.split(":")[0])
+            back = subprocess.run([sys.executable, "-I", str(PIPE / "sync_archive.py"), "pull", "--root", str(fresh), "--store", store,
+                                   "--gh", self.gh, "--kinds", "audio,asr"], capture_output=True, text=True, timeout=120,
+                                  env={**os.environ, "FAKE_GH_DIR": str(self.gh_dir), "FAKE_GH_LOG": str(self.gh_log)})
+            self.assertEqual(back.returncode, 0, back.stderr)
+            self.assertIn("read the ledger kept in", back.stderr)
+            for ident, data in originals.items():
+                self.assertEqual((fresh / "audio" / "chanA" / f"{ident}.opus").read_bytes(), data, store)
+            self.assertTrue((fresh / "transcripts" / "chanA" / f"{self.ids[0]}.txt").exists())
+            for ident, data in originals.items():                                  # put the local copies back for the next store
+                (self.root / "audio" / "chanA" / f"{ident}.opus").write_bytes(data)
 
     def test_bundles_respect_the_item_cap(self):
         done = self.sync("push", "gh:someone/archive@audio-v1", "--kinds", "audio", "--bundle-items", "2")
@@ -2841,7 +2892,7 @@ class TestSaveToGithub(LaneCase):
         self.assertTrue(self.wait_for(log, "mirror_texts.py"), log.read_text())
         self.assertTrue(self.wait_for(log, "sync_archive.py push"), log.read_text())
         calls = log.read_text()
-        self.assertIn("repo create me/et-channelers-archive --private", calls)
+        self.assertIn("repo create me/et-channelers-archive --private --add-readme", calls)
         self.assertIn("--store gh:me/et-channelers-archive@archive-v1 --delete audio", calls)
         self.assertIn("--repo me/et-channelers-archive", calls)
         self.assertNotIn("token=codespace-token", calls)                                    # the user's login, not the Codespace's

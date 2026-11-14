@@ -23,6 +23,13 @@ checkout="${ET_ARCHIVE_CHECKOUT:-$HOME/et-archive-checkout}"
 
 # gh prefers the Codespace's own GITHUB_TOKEN over your login; set it aside here and in everything started here
 unset GITHUB_TOKEN GH_TOKEN
+# Or a token of yours kept in a file outside every repository (ET_GH_TOKEN_FILE=~/.config/et-channelers/github_token).
+# It is exported, never put on a command line, so it does not show in the process list.
+if [ -n "${ET_GH_TOKEN_FILE:-}" ]; then
+  GH_TOKEN="$(tr -d '[:space:]' < "$ET_GH_TOKEN_FILE")"
+  export GH_TOKEN
+fi
+hold="${ET_HOLD_UNTRANSCRIBED_FOR:-}"      # person ids whose audio stays until it is transcribed
 
 if [ "${1:-}" = "--mirror-loop" ]; then          # the background half: copy the texts every 30 minutes
   repo="$2"
@@ -41,7 +48,7 @@ fi
 login="$(gh api user --jq .login)"
 repo="${1:-$login/et-channelers-archive}"
 if ! gh repo view "$repo" >/dev/null 2>&1; then
-  gh repo create "$repo" --private \
+  gh repo create "$repo" --private --add-readme \
     --description "Private archive of the et-channelers pipeline (bashar-index). Not for publication."
   echo "created $repo (private)"
 fi
@@ -53,14 +60,14 @@ mkdir -p "$root/logs"
 store="gh:$repo@$tag"
 "$py" -I "$here/sync_archive.py" status --root "$root" --store "$store" || true
 
-if pgrep -f "sync_archive.py push" >/dev/null; then
+if pgrep -f -- "sync_archive.py push --root $root --store $store" >/dev/null; then   # this store's sync, not a test
   echo "a sync is already running: not starting a second one"
 else
   setsid nohup "$py" -I "$here/sync_archive.py" push --root "$root" --store "$store" --delete audio --watch 300 \
-    >> "$root/logs/sync.log" 2>&1 < /dev/null &
+    ${hold:+--hold-untranscribed-for "$hold"} >> "$root/logs/sync.log" 2>&1 < /dev/null &
   echo "audio and transcripts: uploading to the release '$tag' of $repo in the background (log: $root/logs/sync.log)"
 fi
-if pgrep -f "save_to_github.sh --mirror-loop" >/dev/null; then
+if pgrep -f -- "save_to_github.sh --mirror-loop $repo" >/dev/null; then
   echo "the text mirror is already running"
 else
   setsid nohup bash "$here/save_to_github.sh" --mirror-loop "$repo" >> "$root/logs/mirror.log" 2>&1 < /dev/null &

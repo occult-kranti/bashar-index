@@ -72,7 +72,7 @@ def main():
 
     jobs = (("audio", paths.audio / "audio_manifest.jsonl", paths.audio, (".opus",)),
             ("asr", paths.transcripts / "transcripts_manifest.jsonl", paths.transcripts, (".json", ".txt")),
-            ("pubtext", paths.pubtext / "publisher_text_manifest.jsonl", paths.pubtext, (".txt", ".source")))
+            ("pubtext", paths.pubtext / "publisher_text_manifest.jsonl", paths.pubtext, (".txt", ".source", ".source.gz")))
     for kind, manifest, folder, suffixes in jobs:
         latest = latest_by_key(read_jsonl(manifest))
         for old, rec in list(latest.items()):

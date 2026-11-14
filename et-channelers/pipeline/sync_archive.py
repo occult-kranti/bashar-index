@@ -54,7 +54,10 @@ from common import (ITEM_RE, add_root_arg, append_jsonl, ensure_outside_git, lat
 KINDS = ("audio", "asr", "pubtext", "captions")
 MANIFESTS = ("audio/audio_manifest.jsonl", "transcripts/transcripts_manifest.jsonl",
              "transcripts_publisher/publisher_text_manifest.jsonl", "captions/captions_manifest.jsonl",
-             "feeds/feeds_manifest.jsonl", "jobs/queue.csv", "jobs/queue_enclosures.csv", "catalog/catalog.csv")
+             "feeds/feeds_manifest.jsonl", "jobs/queue.csv", "jobs/queue_enclosures.csv", "catalog/catalog.csv",
+             # the ledger says which bundle holds which item: without it a store cannot be read back
+             "sync/sync_manifest.jsonl")
+LEDGER = "sync/sync_manifest.jsonl"
 
 
 class StoreError(Exception):
@@ -87,7 +90,7 @@ def local_items(paths, only):
             folder = paths.pubtext / rec["channel_dir"]
             add(ident, "pubtext", rec["channel_dir"],
                 [(f"transcripts_publisher/{rec['channel_dir']}/{ident}{ext}", folder / f"{ident}{ext}")
-                 for ext in (".txt", ".source")])
+                 for ext in (".txt", ".source.gz", ".source")])
     for ident, rec in latest_by_key(read_jsonl(paths.captions / "captions_manifest.jsonl")).items():
         if rec.get("status") == "ok":
             folder = paths.captions / rec["channel_dir"]
@@ -163,6 +166,15 @@ class DirStore:
             src = paths.root / rel
             if src.is_file():
                 self._copy(src, rel)
+
+    def fetch_ledger(self, dest: Path) -> bool:
+        """Copy the store's own ledger to `dest`. True if the store had one."""
+        src = self.base / LEDGER
+        if not src.is_file():
+            return False
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(src, dest)
+        return True
 
     def has(self, rec):
         sizes = rec.get("sizes") or {}
@@ -305,6 +317,29 @@ class GhStore:
         asset = self.assets().get(rec.get("remote", ""))
         return bool(asset) and (rec.get("bundle_bytes") is None or asset.get("size") == rec["bundle_bytes"])
 
+    def fetch_ledger(self, dest: Path) -> bool:
+        """Read the ledger out of the release's manifests.tar into `dest`. True if it was there."""
+        scratch = dest.parent / ".scratch"
+        scratch.mkdir(parents=True, exist_ok=True)
+        if "manifests.tar" not in self.assets(refresh=True):
+            return False
+        self._run("release", "download", self.tag, "-R", self.repo, "-p", "manifests.tar", "-D", str(scratch), "--clobber")
+        bundle = scratch / "manifests.tar"
+        try:
+            with tarfile.open(bundle) as tar:
+                try:
+                    member = tar.getmember(LEDGER)
+                except KeyError:
+                    return False
+                if not member.isfile():
+                    return False
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                with tar.extractfile(member) as src, open(dest, "wb") as out:
+                    shutil.copyfileobj(src, out)
+                return True
+        finally:
+            bundle.unlink(missing_ok=True)
+
     def fetch(self, records, paths, overwrite):
         scratch = paths.root / "sync" / ".scratch"
         scratch.mkdir(parents=True, exist_ok=True)
@@ -352,10 +387,13 @@ def push_once(args, paths, store):
     transcribed = {i["video_id"] for i in local_items(paths, args.only) if i["kind"] == "asr"} | \
         {v for (v, k, s) in done if k == "asr" and s == store.spec}
 
+    hold_for = {x.strip() for x in (args.hold_untranscribed_for or "").split(",") if x.strip()}
+
     def deletable(item):
         if args.delete == "none" or (args.delete == "audio" and item["kind"] != "audio"):
             return False
-        return not (item["kind"] == "audio" and args.hold_untranscribed and item["video_id"] not in transcribed)
+        hold = args.hold_untranscribed or item["person"] in hold_for
+        return not (item["kind"] == "audio" and hold and item["video_id"] not in transcribed)
 
     todo, safe, lost = [], [], 0
     for item in items:
@@ -434,6 +472,17 @@ def cmd_status(args, paths, store):
 
 
 def cmd_pull(args, paths, store):
+    own = paths.root / LEDGER
+    if not any(s == store.spec for (_, _, s) in ledger(paths)):
+        # A fresh folder (a new computer, a lost private folder) knows nothing of the store: read the
+        # store's own ledger first. A local ledger is never overwritten: it is kept beside, and merged.
+        theirs = paths.root / "sync" / "sync_manifest.from-store.jsonl"
+        if store.fetch_ledger(theirs):
+            for rec in read_jsonl(theirs):
+                if rec.get("store") == store.spec:
+                    append_jsonl(own, rec)
+            theirs.unlink(missing_ok=True)
+            print(f"[sync] read the ledger kept in {store.spec}", file=sys.stderr)
     wanted = [r for (v, k, s), r in ledger(paths).items()
               if s == store.spec and k in args.kinds and (not args.only or r.get("person") in args.only)]
     if args.limit:
@@ -455,6 +504,8 @@ def main():
                     help="local copies to remove once the stored copy has been checked (default none)")
     ap.add_argument("--hold-untranscribed", action="store_true",
                     help="keep the local audio until its machine transcript exists (use while transcribe.py runs)")
+    ap.add_argument("--hold-untranscribed-for", default="",
+                    help="like --hold-untranscribed, for these person ids only (comma-separated): their audio stays until it has a transcript")
     ap.add_argument("--overwrite", action="store_true", help="pull: replace files that already exist locally")
     ap.add_argument("--watch", type=float, default=0, help="repeat every N seconds until interrupted")
     ap.add_argument("--stop-file", default="", help="with --watch: leave when this file exists")
