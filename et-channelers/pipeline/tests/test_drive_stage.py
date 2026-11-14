@@ -152,9 +152,9 @@ class TestPlan(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
-    def run_tool(self, *args):
+    def run_tool(self, *args, stdin=None):
         return subprocess.run([sys.executable, "-I", str(PIPE / "drive_stage.py"), *args, "--root", str(self.root),
-                               "--out", str(self.out)], capture_output=True, text=True, timeout=300)
+                               "--out", str(self.out)], capture_output=True, text=True, timeout=300, input=stdin)
 
     def plan(self):
         done = self.run_tool("plan", "--audio-from", str(self.pulled), "--max-mb", "0.12",
@@ -222,6 +222,125 @@ class TestPlan(unittest.TestCase):
         again, _ = self.plan()
         self.assertNotIn(first["key"], {p["key"] for p in again})
         self.assertEqual(len(again), len(plan) - 1)
+
+    def record_folders(self):
+        folders = [json.loads(x) for x in (self.out / "folders.jsonl").read_text(encoding="utf-8").splitlines()]
+        res = self.tmp / "folders_done.jsonl"
+        res.write_text("".join(json.dumps({"path": f["path"], "id": f"F{i}"}) + "\n" for i, f in enumerate(folders)),
+                       encoding="utf-8")
+        self.assertEqual(self.run_tool("record", str(res)).returncode, 0)
+
+    @staticmethod
+    def round_id(printed):
+        import re
+        found = re.search(r"round ([0-9a-f]{8}):", printed.stderr)
+        if not found:
+            raise AssertionError(printed.stderr)
+        return found.group(1)
+
+    def file_rows(self):
+        lines = (self.root / "sync" / "drive_manifest.jsonl").read_text(encoding="utf-8").splitlines()
+        return [r for r in map(json.loads, lines) if r.get("kind") != "folder"]
+
+    def test_rounds_number_the_uploads_and_done_records_them(self):
+        plan, _ = self.plan()
+        self.record_folders()
+        self.assertEqual(self.run_tool("batches", "--n", "3").returncode, 0)
+        first = self.run_tool("round", "--size", "2")
+        self.assertEqual(first.returncode, 0, first.stderr)
+        rows = [line.split("\t") for line in first.stdout.splitlines()]
+        self.assertEqual([r[0] for r in rows], ["1", "2"])
+        self.assertTrue(all(len(r) == 5 and r[3].startswith("sha256:") for r in rows))
+        self.assertIn(f"{len(plan)} pending in all", first.stderr)
+        done = self.run_tool("done", "--round", self.round_id(first), stdin="1 D1\n2 D2\n9 D9\n1 D3\n")
+        self.assertEqual(done.returncode, 1)                          # a number outside the round, one given twice
+        self.assertIn("not recorded: 9 D9", done.stderr)
+        self.assertIn("not recorded: 1 D3", done.stderr)
+        self.assertIn("recorded 2 file(s)", done.stderr)
+        self.assertEqual(sorted(r["drive_id"] for r in self.file_rows()), ["D1", "D2"])
+        nxt = self.run_tool("round", "--size", "50")
+        self.assertEqual(len(nxt.stdout.splitlines()), len(plan) - 2)
+        self.assertNotIn(rows[0][1], nxt.stdout)                      # what is on Drive is not offered again
+
+    def test_done_refuses_numbers_from_another_round_and_ids_already_recorded(self):
+        # what the review found: after a partial `done`, `round` numbered the rest afresh, the first list's
+        # numbers were recorded against other files, and those files were never offered again
+        plan, _ = self.plan()
+        self.record_folders()
+        self.run_tool("batches", "--n", "1")
+        self.assertIn("run `round` first", self.run_tool("done", "--round", "x", stdin="1 D1\n").stderr)
+        first = self.run_tool("round", "--size", "3")
+        rid = self.round_id(first)
+        self.assertEqual(self.round_id(self.run_tool("round", "--size", "3")), rid)     # nothing recorded: same round
+        self.assertEqual(self.run_tool("done", "--round", rid, stdin="1 D1\n").returncode, 0)
+        second = self.run_tool("round", "--size", "3")
+        self.assertNotEqual(self.round_id(second), rid)                                   # the rest, numbered afresh
+        stale = self.run_tool("done", "--round", rid, stdin="2 D2\n3 D3\n")             # the first list's numbers
+        self.assertEqual(stale.returncode, 1)
+        self.assertIn("nothing recorded", stale.stderr)
+        self.assertIn("trash those uploads on Drive (D2 D3)", stale.stderr)             # and what to do with them
+        self.assertEqual(self.run_tool("done", stdin="2 D2\n").returncode, 1)            # no round named at all
+        twice = self.run_tool("done", "--round", self.round_id(second), stdin="1 D1\n")  # an id fed in again
+        self.assertEqual(twice.returncode, 1)
+        self.assertIn("already has that Drive id", twice.stderr)
+        self.assertEqual([r["drive_id"] for r in self.file_rows()], ["D1"])
+        self.assertIn(f'"left": {len(plan) - 1}', self.run_tool("status").stdout)
+
+    def test_done_records_only_its_own_lines(self):
+        # what the review found: `done` gave the ledger every earlier round's lines again, so a text volume
+        # uploaded twice had its third version recorded at an old Drive id and was never uploaded again
+        page = self.root / "transcripts_publisher" / "ann" / "web-00000000000000d4.txt"
+        for n, edition in enumerate(("first", "second", "third"), 1):
+            page.write_text(f"the {edition} edition of the page " + "word " * 20, encoding="utf-8")
+            self.plan()
+            if n == 1:
+                self.record_folders()
+            self.run_tool("batches", "--n", "1")
+            listed = self.run_tool("round", "--size", "50")
+            lines = [line.split("\t") for line in listed.stdout.splitlines()]
+            volume = [x for x in lines if "texts from the source" in x[1]]
+            self.assertEqual(len(volume), 1, listed.stdout)                 # the changed volume is offered again
+            pick = volume[0][0] if n < 3 else next(x[0] for x in lines if x is not volume[0])
+            done = self.run_tool("done", "--round", self.round_id(listed), stdin=f"{pick} D{n}\n")
+            self.assertEqual(done.returncode, 0, done.stderr)
+            self.assertIn("recorded 1 file(s)", done.stderr)
+        key = next(p["key"] for p in map(json.loads, (self.out / "plan.jsonl").read_text(encoding="utf-8").splitlines())
+                   if "texts from the source" in p["title"])
+        self.assertEqual([r["drive_id"] for r in self.file_rows() if r["key"] == key], ["D1", "D2"])
+        self.assertIn("texts from the source", self.run_tool("round", "--size", "50").stdout)   # the third is still due
+
+    def test_done_refuses_an_upload_whose_file_changed_after_the_round(self):
+        # a text volume rewritten between `round` and `done`: the upload holds the old bytes, so recording it
+        # with the plan's new checksum would leave the new edition off Drive for good
+        page = self.root / "transcripts_publisher" / "ann" / "web-00000000000000d4.txt"
+        self.plan()
+        self.record_folders()
+        self.run_tool("batches", "--n", "1")
+        listed = self.run_tool("round", "--size", "50")
+        vol = next(x.split()[0] for x in listed.stdout.splitlines() if "texts from the source" in x)
+        page.write_text("a new edition of the page " + "word " * 20, encoding="utf-8")
+        self.plan()
+        self.run_tool("batches", "--n", "1")
+        done = self.run_tool("done", "--round", self.round_id(listed), stdin=vol + " D1")
+        self.assertEqual(done.returncode, 1, done.stderr)
+        self.assertIn("changed or left the plan", done.stderr)
+        self.assertEqual(self.file_rows(), [])
+        self.assertIn("texts from the source", self.run_tool("round", "--size", "50").stdout)   # the new edition is due
+
+    def test_done_refuses_an_upload_whose_file_left_the_plan_after_the_round(self):
+        # planned again with other kinds between `round` and `done`: the upload matched nothing and `done` said 0
+        self.plan()
+        self.record_folders()
+        self.run_tool("batches", "--n", "1")
+        listed = self.run_tool("round", "--size", "50")
+        vol = next(x.split()[0] for x in listed.stdout.splitlines() if "texts from the source" in x)
+        again = self.run_tool("plan", "--audio-from", str(self.pulled), "--max-mb", "0.12", "--kinds", "audio",
+                              "--known-folder", "04 Audio=AUDIO", "--known-folder", "03 Transcripts=TEXT")
+        self.assertEqual(again.returncode, 0, again.stderr)
+        done = self.run_tool("done", "--round", self.round_id(listed), stdin=vol + " D1")
+        self.assertEqual(done.returncode, 1, done.stderr)
+        self.assertIn("changed or left the plan", done.stderr)
+        self.assertEqual(self.file_rows(), [])
 
 
 if __name__ == "__main__":

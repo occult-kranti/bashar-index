@@ -4,6 +4,8 @@
     python3 pipeline/drive_stage.py plan --out /tmp/et-drive/stage --audio-from /tmp/et-drive/pull
     python3 pipeline/drive_stage.py batches --out /tmp/et-drive/stage --n 6
     python3 pipeline/drive_stage.py record --out /tmp/et-drive/stage RESULTS.jsonl ...
+    python3 pipeline/drive_stage.py round --out /tmp/et-drive/stage --size 200     (one call per file, numbered)
+    python3 pipeline/drive_stage.py done --out /tmp/et-drive/stage --round <id> < ids.txt   ("i <Drive id>" lines)
     python3 pipeline/drive_stage.py status --out /tmp/et-drive/stage
 
 The upload is done by whoever holds the Drive login: the Claude Google Drive connector (one file per call,
@@ -35,6 +37,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures as cf
 import csv
+import hashlib
 import json
 import re
 import shutil
@@ -487,14 +490,18 @@ def cmd_batches(args, paths):
           + (f"; {waiting} wait for their folder to be created" if waiting else ""), file=sys.stderr)
 
 
-def cmd_record(args, paths):
-    """Merge uploaders' results ({"key", "id"} or {"path", "id"} for folders) into the ledger."""
+def record_results(args, paths, result_files) -> int:
+    """Merge uploaders' results ({"key", "id"} or {"path", "id"} for folders) into the ledger. A Drive id that
+    the ledger already holds for another file or folder is reported and not recorded: it is a result line
+    given against the wrong number or fed in twice. Returns the number of such lines."""
     out = Path(args.out)
     plan = {p["key"]: p for p in read_jsonl(out / "plan.jsonl")}
     folders = {tuple(r["path"]): r for r in read_jsonl(out / "folders.jsonl")}
     have = ledger(paths)
+    owner = {v["drive_id"]: k for k, v in have.items() if v.get("drive_id")}
     n_files = n_folders = unknown = 0
-    for f in args.results:
+    clashes = []
+    for f in result_files:
         for r in read_jsonl(Path(f)):
             drive_id = r.get("id") or r.get("drive_id")
             if not drive_id:
@@ -504,9 +511,12 @@ def cmd_record(args, paths):
                 key = "folder:" + "/".join(path)
                 ours = path in folders or (path and path[0] in (AUDIO_TOP, TEXT_TOP))   # made before the plan ended
                 if ours and have.get(key, {}).get("drive_id") != drive_id:
+                    if owner.get(drive_id, key) != key:
+                        clashes.append((drive_id, key, owner[drive_id]))
+                        continue
                     append_jsonl(paths.root / LEDGER, {"key": key, "kind": "folder", "path": list(path),
                                                         "drive_id": drive_id, "at": utc_now()})
-                    have[key] = {"drive_id": drive_id, "path": list(path)}
+                    have[key], owner[drive_id] = {"drive_id": drive_id, "path": list(path)}, key
                     n_folders += 1
                 continue
             p = plan.get(r.get("key"))
@@ -515,12 +525,110 @@ def cmd_record(args, paths):
                 continue
             if have.get(p["key"], {}).get("drive_id") == drive_id:
                 continue
+            if owner.get(drive_id, p["key"]) != p["key"]:
+                clashes.append((drive_id, p["key"], owner[drive_id]))
+                continue
             append_jsonl(paths.root / LEDGER, {**{k: v for k, v in p.items() if k != "path"}, "drive_id": drive_id,
                                                 "uploaded_at": utc_now()})
-            have[p["key"]] = {"drive_id": drive_id}
+            have[p["key"]], owner[drive_id] = {"drive_id": drive_id}, p["key"]
             n_files += 1
+    for drive_id, key, other in clashes:
+        print(f"[drive] not recorded: {drive_id} for {key}: the ledger already has that Drive id for {other}",
+              file=sys.stderr)
     print(f"[drive] recorded {n_files} file(s) and {n_folders} folder(s)"
           + (f"; {unknown} result line(s) matched nothing in the plan" if unknown else ""), file=sys.stderr)
+    return n_files, len(clashes)
+
+
+def cmd_record(args, paths):
+    if record_results(args, paths, args.results)[1]:
+        sys.exit(1)
+
+
+def pending_uploads(out: Path, paths) -> list:
+    """The batch lines whose file is not on Drive with the same content yet, in folder and title order."""
+    done = ledger(paths)
+    rows = [r for f in sorted((out / "batches").glob("batch-*.jsonl")) for r in read_jsonl(f)]
+    return sorted((r for r in rows if done.get(r["key"], {}).get("sha256") != r["ref"].split(":")[1]),
+                  key=lambda r: (r["parentId"], r["title"]))
+
+
+def round_id(numbering: dict) -> str:
+    """A short name for one numbering of the pending uploads: the same numbering always gets the same name."""
+    return hashlib.sha256(json.dumps(numbering, sort_keys=True).encode("utf-8")).hexdigest()[:8]
+
+
+def cmd_round(args, paths):
+    """For an uploader that sends one file per call (the Claude connector): print the next --size pending
+    uploads, numbered, as "i<TAB>title<TAB>parentId<TAB>ref<TAB>mime", and the round's id. The numbering is
+    kept in <out>/round.json, so `done --round <id>` can take back just "i <Drive id>" per upload. Running
+    `round` again before anything is recorded or changed prints the same numbers under the same id; once some are
+    recorded, the rest are numbered afresh under a new id, and `done` refuses numbers from the old one."""
+    out = Path(args.out)
+    pending = pending_uploads(out, paths)
+    todo = pending[:max(1, args.size)]
+    numbering = {str(i): r["key"] for i, r in enumerate(todo, 1)}
+    shas = {str(i): r["ref"].split(":")[1] for i, r in enumerate(todo, 1)}      # the bytes each number sends
+    rid = round_id({"keys": numbering, "sha256": shas})
+    (out / "round.json").write_text(json.dumps({"round": rid, "keys": numbering, "sha256": shas}), encoding="utf-8")
+    for i, r in enumerate(todo, 1):
+        print("\t".join((str(i), r["title"], r["parentId"], r["ref"], r["mime"])))
+    print(f"[drive] round {rid}: {len(todo)} upload(s); {len(pending)} pending in all. Record it with "
+          f"`done --round {rid}`", file=sys.stderr)
+
+
+def cmd_done(args, paths):
+    """Record a round: one line "i <Drive id>" per upload, i being the number `round` printed, read from the
+    files given or from stdin, with --round the id `round` printed. Every call's lines are kept in
+    <out>/results.jsonl; only this call's go into the ledger, as `record` puts them. A number outside the
+    round, one given twice, one whose file changed or left the plan after the round was printed, or a Drive
+    id the ledger already holds for another file is reported and not recorded, and the exit code is 1.
+    Numbers from another round are refused altogether, with the Drive ids of those uploads to trash."""
+    out = Path(args.out)
+    saved_path = out / "round.json"
+    if not saved_path.exists():
+        sys.exit("[drive] no round to record: run `round` first")
+    saved = json.loads(saved_path.read_text(encoding="utf-8"))
+    if "round" not in saved:                       # written by an earlier version, without an id
+        sys.exit("[drive] round.json has no round id: run `round` again and upload what it prints")
+    numbering = saved["keys"]
+    text = "\n".join(sys.stdin.read() if f == "-" else Path(f).read_text(encoding="utf-8") for f in (args.results or ["-"]))
+    if args.round != saved["round"]:
+        held = {v["drive_id"] for v in ledger(paths).values()}
+        loose = [w[-1] for w in map(str.split, text.splitlines()) if w and w[-1] not in held]
+        sys.exit(f"[drive] nothing recorded: these numbers are for round {args.round or '(none given)'}, and the "
+                 f"current round is {saved['round']}. Ids uploaded from an earlier list cannot be recorded (its "
+                 f"numbers now point at other files): trash those uploads on Drive ({' '.join(loose) or 'none'}), "
+                 f"and `round` offers the files again. Only ids from the list printed with {saved['round']} go "
+                 f"with --round {saved['round']}.")
+    taken, bad = {}, []
+    for line in text.splitlines():
+        parts = line.split()
+        if not parts:
+            continue
+        if len(parts) != 2 or parts[0] not in numbering or parts[0] in taken:
+            bad.append(line.strip())
+            continue
+        taken[parts[0]] = parts[1]
+    planned = {p["key"]: p["sha256"] for p in read_jsonl(out / "plan.jsonl")}
+    held = {v["drive_id"] for v in ledger(paths).values()}
+    for i in list(taken):          # planned again since the round: that upload is not what the plan holds now
+        key, sent = numbering[i], saved.get("sha256", {}).get(i)
+        if taken[i] not in held and (key not in planned or planned[key] != (sent or planned[key])):
+            bad.append(f"{i} {taken.pop(i)}: {key} changed or left the plan after the round was printed; trash that "
+                       "upload on Drive (if `plan` left the file out by mistake, plan again and repeat this `done`)")
+    lines = [{"key": numbering[i], "id": drive_id, "at": utc_now(), "round": saved["round"]} for i, drive_id in taken.items()]
+    for line in lines:
+        append_jsonl(out / "results.jsonl", line)                 # the log of every round
+    this_call = out / "results.this-call.jsonl"
+    this_call.write_text("".join(json.dumps(line) + "\n" for line in lines), encoding="utf-8")
+    for line in bad:
+        print(f"[drive] not recorded: {line}", file=sys.stderr)
+    recorded, clashes = record_results(args, paths, [str(this_call)])
+    print(f"[drive] {recorded} of {len(numbering)} in round {saved['round']} recorded now; "
+          f"{len(pending_uploads(out, paths))} pending in all", file=sys.stderr)
+    if bad or clashes:
+        sys.exit(1)
 
 
 def cmd_status(args, paths):
@@ -538,8 +646,9 @@ def cmd_status(args, paths):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=("plan", "batches", "record", "status"))
-    ap.add_argument("results", nargs="*", help="record: result files written by the uploaders")
+    ap.add_argument("command", choices=("plan", "batches", "round", "done", "record", "status"))
+    ap.add_argument("results", nargs="*", help="record: result files written by the uploaders; done: files of "
+                                               '"i <Drive id>" lines (default: stdin)')
     add_root_arg(ap)
     ap.add_argument("--out", required=True, help="staging folder (outside any Git checkout)")
     ap.add_argument("--audio-from", action="append", default=[],
@@ -550,6 +659,8 @@ def main():
     ap.add_argument("--known-folder", action="append", default=[],
                     help='a Drive folder that already exists: "04 Audio=<folder id>" (repeatable)')
     ap.add_argument("--n", type=int, default=6, help="batches: number of batch files")
+    ap.add_argument("--size", type=int, default=200, help="round: uploads in one round (default 200)")
+    ap.add_argument("--round", default="", help="done: the round id that `round` printed with the numbers")
     ap.add_argument("--jobs", type=int, default=3, help="plan: audio files cut at the same time")
     ap.add_argument("--link-dir", default="", help="batches: copy every file into this folder under a plain name (the "
                                                    "Claude connector reads files only from the main session's "
@@ -559,7 +670,8 @@ def main():
     args.kinds = {k.strip() for k in args.kinds.split(",") if k.strip()}
     paths = layout(ensure_outside_git(args.root))
     ensure_outside_git(args.out)
-    {"plan": cmd_plan, "batches": cmd_batches, "record": cmd_record, "status": cmd_status}[args.command](args, paths)
+    {"plan": cmd_plan, "batches": cmd_batches, "round": cmd_round, "done": cmd_done, "record": cmd_record,
+     "status": cmd_status}[args.command](args, paths)
 
 
 if __name__ == "__main__":
