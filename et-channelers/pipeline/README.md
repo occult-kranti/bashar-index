@@ -89,6 +89,12 @@ every listed interview episode a kind, and says what the kind rests on:
 | `commentary or clip` | a short episode whose title carries only what the person channels, not their name |
 | `not classified` | no transcript is held and the show notes do not say |
 
+A fifth basis outranks all of these: **a reading**. A reader given the whole transcript (the
+`et-interview-reader` agent, a small model; or a person) says what the episode is and where in it the
+entity starts and stops speaking. Verdicts are kept in `<root>/sources/interview_readings.jsonl`, and the
+label then says "read in full by ...". The phrase rules only look for marks; a reader notices that Kryon
+is brought in halfway through, or that "Bashar says" is Darryl Anka talking.
+
 **A title never makes an episode live channeling.** Eleven Bashar interviews came with the publisher's own
 transcript, several titled "Bashar's Channeled Message ...": all are conversations with Darryl Anka in which
 nothing is channeled. A sentence such as "I am going to channel" is not used either: in the transcripts read

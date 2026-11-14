@@ -97,13 +97,16 @@ the top of this repository:
 **What kind of interview.** An interview is fetched only when the entity speaks in it, and the kind comes
 from the transcript or the show notes, never from the title (`interview_types.py`). Nine interview shows
 of the Bashar list have a verified podcast feed; their feeds hold 189 episodes that name 28 tracked people.
-So far: 8 contain live channeling (fetched), 5 are unclear, 32 are conversations, 3 are commentary or
-clips, and 141 are not classified because no transcript is held. Of the 42 that name Darryl Anka or
-Bashar, the 13 classified so far are conversations, unclear or commentary: none has Bashar speaking,
-whatever the title says. Twenty of those 42 were downloaded before this rule was set; they are kept, and
-their kind follows from their transcripts as speech-to-text reaches them.
+A first supervised run of the reader agent (a small model, one reader per transcript, all 39 transcripts
+then held) found 21 with live channeling, 17 conversations and 1 commentary; it placed where the entity
+starts and stops in each, and spot checks against the entities' own sign-offs agreed. The phrase rules
+alone had called 17 of those 21 conversations, so a reading is now the basis wherever a transcript exists.
+With 8 more that the show notes mark, 29 interviews are known to contain live channeling and are fetched;
+141 wait for a transcript. **All 11 Bashar interviews read are conversations with Darryl Anka**: none has
+Bashar speaking, whatever the title says. Twenty Bashar interviews were downloaded before this rule was
+set; they are kept, and each gets its kind as speech-to-text reaches it.
 
-Snapshot at 2026-11-14T00:16Z, with downloads and speech-to-text running; the current figures are in
+Snapshot at 2026-11-14T00:41Z, with downloads and speech-to-text running; the current figures are in
 [`plan/targets_summary.json`](plan/targets_summary.json) and [`plan/coverage.csv`](plan/coverage.csv).
 
 | Measure | Count |
@@ -112,13 +115,13 @@ Snapshot at 2026-11-14T00:16Z, with downloads and speech-to-text running; the cu
 | State: partly captured / planned, YouTube only / planned, no source yet / captured | 27 / 40 / 35 / 0 |
 | Channels listed in full | 63 of 64 on record |
 | Distinct pieces of work listed (a video and its podcast or page twin count once) | 69,186 |
-| ... of which in the archive as audio or text | 8,568 |
-| Listed YouTube items whose content is already here through a twin | 3,355 |
-| Audio files held | 851 (510.6 h) for 19 people |
+| ... of which in the archive as audio or text | 8,612 |
+| Audio files held | 895 (553.8 h) for 19 people |
+| ... of which Bashar sessions from archive.org | 44, of 937 listed (983 h) and 180 queued for now |
 | Texts obtained from the source | 8,424 (13,308,502 words) for 18 people |
-| Transcripts made here by speech-to-text | 53 (155,285 words), running |
-| Audio waiting for a transcript | 793 |
-| Bashar session audio listed on archive.org / queued for now | 937 files (983 h) / 180 files (176 h) |
+| Transcripts made here by speech-to-text | 55 (185,275 words), running |
+| Audio waiting for a transcript | 837 |
+| Interview episodes: live channeling / conversation / commentary / not classified | 29 / 17 / 2 / 141 |
 
 Nobody is "captured": that state needs the person's channel to be listed and every listed item to be here,
 and no YouTube audio can be fetched from this machine.
@@ -303,8 +306,10 @@ connection, anything that deletes, and confirming identities matched by name onl
 repeat the project's: robots.txt obeyed, no YouTube audio or captions from a cloud server and nothing that
 gets around that refusal, nothing private in the repository or in an outbound request.
 
-State on 2026-11-14: the cycle command, the four definitions and the reader's file exist; the first
-reader run is supervised by the lead. Not yet built: a schedule that starts the cycle without anyone asking.
+State on 2026-11-14: the cycle command and the four definitions exist. The first reader run is done
+(39 transcripts, 39 verdicts, under seven minutes, checked by the lead on a sample). The collector, the
+scout and the reviewer have not run yet as agents; the lead ran their steps by hand that day. Not yet
+built: a schedule that starts the cycle without anyone asking.
 
 ### Phase 8: release gate
 
