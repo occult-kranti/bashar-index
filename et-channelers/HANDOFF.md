@@ -1,21 +1,61 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
 Written for whoever picks this up next: the owner, or the Claude session in the new Codespace. The work so
-far ran on a 2-core, 8 GB Codespace. Everything was paused on 2026-11-14 around 03:30 UTC so it can carry
+far ran on a 2-core, 8 GB Codespace. Collection was paused on 2026-11-14 around 03:30 UTC so it can carry
 on in a Codespace with 16 GB of memory (GitHub's 4-core machine: check with `nproc`). Nothing is lost by the
-move: every file collected is in the private GitHub store, and the pipeline's state is in a handoff release.
+move: every file collected is in the private GitHub store, the pipeline's state is in a handoff release, and
+a browsable copy of everything is on the owner's Google Drive. Section 9 is a prompt for the next session.
 
 ## 1. State in one paragraph
 
 * **Collected:** 1,138 audio files (819.5 hours, 10.11 GB, mono 24 kbps Opus), 8,425 texts published by the
   sources themselves, and 61 speech-to-text transcripts (30.6 hours). Every one of them is in the private store.
-* **Bashar's archive.org sessions:** 262 of 903 downloaded, 636.7 hours left.
-* **Podcast episodes:** 828 of 4,057 downloaded, 1,442.6 hours left.
+* **Google Drive: done.** Everything collected is in the folder "ET Channelers Archive": 1,138 recordings as
+  1,958 playable files of at most 7.3 MB (10.13 GB), and 40 text volumes. That is 1,998 files in 77 folders, by
+  person and source.
+* **Bashar's archive.org sessions** (his own channeled sessions, not interviews): 262 of 903 recordings
+  downloaded (274.6 hours), all 262 on Drive; 641 (636.7 hours) still to download and to put on Drive (section 5).
+* **Podcast episodes:** 733 of 2,647 downloaded, 1,442.6 hours left. **Creators' own audio files** (Kryon's and
+  L/L Research's sites): 95 of 1,410 downloaded, 1,315 left, of unknown length.
 * **Interviews on other shows:** 28 of 29 downloaded.
 * **Speech-to-text is the bottleneck.** This machine made about 1.3 hours of text per hour, so the backlog
-  needs a faster engine or a GPU (section 6).
-* **Google Drive:** tables, transcripts and the earlier work are up. The browsable audio copy is in progress
-  (section 5).
+  needs a faster engine or a GPU (section 6.1).
+* **YouTube steps are off by rule.** youtube.com's robots.txt disallows the listing, feed and caption paths for
+  every crawler. The owner decides what happens next (section 6.6).
+
+**Since the pause** (03:30 to 07:45 UTC, no collecting): the Drive copy was finished (the last 50 files were
+17 Bashar sessions and 4 podcast episodes that had arrived after the Drive plan was made); the tables were
+rebuilt from the store, so `plan/bashar_sessions.csv` now counts the 262 sessions; the review fixes and the
+YouTube robots.txt gate were finished; the deep research on the analyses was folded into `ANALYSIS_PLAN.md`;
+`drive_stage.py` gained `round` and `done` for uploads made one call at a time.
+
+**The pre-merge review** (07:56 to 09:30 UTC; five reviewers, and each finding checked by a second agent that
+tried to refute it): 34 findings confirmed and fixed, 3 rejected. What matters for the next task:
+* One refusal from archive.org's own host, or from one of its storage nodes, no longer holds back every queued
+  Bashar session for a day or more. archive.org sends each file from one of about a hundred storage nodes, and
+  Podbean a show's episodes from dozens: a success now counts for every host along the way, an item is held
+  back only by the host that last answered for it, and a whole feed only when its last three items all came
+  from one host that is being left alone (files without a feed are never grouped: archive.org keeps the files
+  of one item together on one node).
+* In the audio lane, no redirect is followed to a host that is being left alone, and every host a redirect leads to
+  has its own start rate and its own Retry-After. A Retry-After sent with a 503 is obeyed too (audio, feeds, texts).
+* A 429 for a site's robots.txt counts as a refusal, so the site rests on later runs as well.
+* `drive_stage.py round` prints a round id, and `done --round <id>` must be given it. `done` records only the
+  lines it is given (it used to give the ledger every earlier round again), and refuses a Drive id that the
+  ledger already holds for another file.
+* `keep_collecting.sh`: its lock is no longer inherited by the cycle and the sleep, so a loop stopped with
+  `kill <pid>` can be started again at once.
+* Corrected figures: archive.org hours are 911.3 (not 911.2; totals now add unrounded hours), captured audio
+  819.5 hours, and the podcast backlog above.
+
+**A second pass checked the fixes** (15:41 to about 17:00 UTC; five reviewers and five refuters): 20 more
+findings, 18 confirmed and fixed, each with a test that fails without its fix where the fix is code. The ones that
+change behaviour: a request already waiting for its turn obeys a Retry-After that arrives meanwhile; a success
+no longer erases a refusal that came after the download started; a lone 403 or 429 still holds its host for the
+Retry-After it carried, on later runs too; a huge Retry-After is capped at 32 days instead of crashing every
+later run; robots.txt is read once per site, through the site's turn, and one 429 for it counts once; and
+`done` refuses an upload whose file changed or left the plan after the round was printed, and lists the Drive
+ids of uploads from an older round, to trash.
 
 ## 2. Where everything is
 
@@ -26,7 +66,8 @@ move: every file collected is in the private GitHub store, and the pipeline's st
 | The same texts as plain files (private) | the same repository, folder `texts/` (person, then `from-source/` or `made-here/`) |
 | ArchiveShelf's 16 podcast episodes (private) | the same repository, release `archiveshelf-podcast-audio-v1` (byte-identical to ArchiveShelf's, by GitHub's digests) |
 | Pipeline state without media; the Kimi snapshot; reader notes; Claude's memory files | the same repository, release `handoff-2026-11-14`, with `SHA256SUMS` |
-| Browsable copy by person | the owner's Google Drive, folder "ET Channelers Archive" (its read-me explains the layout). The folder ids and every uploaded file's id are in the private ledger `sync/drive_manifest.jsonl`, which is in the state bundle |
+| The Drive ledger (the Drive id of every folder and file) | `<root>/sync/drive_manifest.jsonl`. The newest copy is the asset `drive_manifest.jsonl` of the release `handoff-2026-11-14`, newer than the one inside the state bundle (section 3, step 3) |
+| Browsable copy by person | the owner's Google Drive, folder "ET Channelers Archive" (its read-me explains the layout): `03 Transcripts/<person>/`, `04 Audio/<person>/<source>/` |
 | Collection dashboard | <https://claude.ai/artifact/898o4zpkocZ8qXjvR1xDfb> (a claude.ai "Data" page; datasets are this repository's `plan/*.csv`) |
 | The old Codespace | still holds `/workspaces/et-channelers-private` until it is deleted. Do not delete it before the new one has been checked (step 4 below) |
 
@@ -50,6 +91,8 @@ mkdir -p /workspaces/et-channelers-private && ln -sfn /workspaces/et-channelers-
 gh release download handoff-2026-11-14 -R occult-kranti/et-channelers-archive -D /tmp/handoff
 (cd /tmp/handoff && sha256sum -c SHA256SUMS)
 tar xzf /tmp/handoff/state-2026-11-14.tar.gz -C /workspaces/et-channelers-private
+cp /tmp/handoff/drive_manifest.jsonl /workspaces/et-channelers-private/sync/drive_manifest.jsonl   # the newer ledger
+tar xzf /tmp/handoff/scratch-notes-2026-11-14.tar.gz -C /workspaces/et-channelers-private   # crosswalks, judge snapshot
 mkdir -p ~/.claude/projects/-workspaces-bashar-index \
   && tar xzf /tmp/handoff/claude-memory-2026-11-14.tar.gz -C ~/.claude/projects/-workspaces-bashar-index
 mkdir -p /workspaces/_incoming/kimi-agent-youtube-et \
@@ -61,6 +104,10 @@ S=gh:occult-kranti/et-channelers-archive@archive-v1
 ~/et-venv/bin/python -I et-channelers/pipeline/sync_archive.py pull --root ~/et-channelers-private --store $S --kinds asr,pubtext
 ~/et-venv/bin/python -I et-channelers/pipeline/sync_archive.py pull --root ~/et-channelers-private --store $S --kinds audio --only darryl-anka
 ~/et-venv/bin/python -I et-channelers/pipeline/sync_archive.py status --root ~/et-channelers-private --store $S
+
+# 5. the tables from what is here, and a check that the Drive ledger knows everything that is stored
+for s in "catalog.py --publish" targets.py sources_table.py; do ~/et-venv/bin/python -I et-channelers/pipeline/$s --root ~/et-channelers-private; done
+~/et-venv/bin/python -I et-channelers/pipeline/drive_stage.py status --out ~/et-drive/stage   # on_drive_files 1998
 ```
 
 Pull other people's audio when it is about to be transcribed, not all at once. The disk is 32 GB, and the
@@ -78,67 +125,171 @@ sync deletes local audio once its stored copy is checked (`--only <person-id>` p
 Every job skips what is finished. Kill a job by its process id, never with `pkill -f`, which also matches the
 shell that runs it.
 
-## 5. Work in progress
+To stop the collection loop and the cycle it is running together, kill its group: `kill -- -<pid>` (it was
+started with `setsid`). `kill <pid>` stops the loop only; the cycle then finishes on its own.
 
-* **Google Drive copy** (`pipeline/drive_stage.py`). Audio goes in by person and source:
-  * "Podcast - <show>", "archive.org sessions", "Audio from own website", "Interviews on other shows";
-  * file names are "<date> <title> [<item id>].opus";
-  * files over 7.3 MB are cut between Ogg pages into parts that each play on their own, with no re-encoding.
+Exit codes worth knowing: **8** means another cycle was already running (it holds the lock), so this one did
+nothing; `keep_collecting.sh` tries again at its next cycle. **9** means a step was skipped by rule: a YouTube
+step without `ET_YOUTUBE_ROBOTS_OVERRIDE=1`. `run_cycle.py` reports it as "skipped by rule" and goes on with the
+next step, and `run_all.py` leaves the YouTube lanes out of its plan. In the cycle log a skipped listing shows
+as "skipped by rule", not as a failure.
 
-  Texts go in as volumes per person; texts from the source and speech-to-text made here are never in one file.
-  The 77 folders exist. The plan has 1,948 files (9.93 GB); see the ledger for how many are up. To go on:
-  `drive_stage.py plan`, then `batches --link-dir <the Claude session's scratchpad>/drive_up`, then the
-  uploads, then `record`.
+## 5. The next big task, and other work in progress
 
-  **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
+* **Every Bashar session on archive.org, downloaded and on Google Drive** (added at the owner's request).
+  The Bashar Index catalogued 684 sessions. 393 point at a recording somebody deposited on archive.org, which
+  answers from a cloud server. archive.org lists 937 audio files there; 34 are a second encoding of a
+  recording already counted, so there are **903 recordings (911.3 hours by archive.org's listing; six have no
+  listed length, two of them downloaded)**. 262 are
+  downloaded (274.6 hours by the listing; 275.2 measured) and all of them are on Drive in "04 Audio / Darryl Anka / archive.org sessions" (609 files). **641
+  recordings (636.7 hours, about 7.8 GB) are left.** 274 sessions are only on the official streaming site,
+  which is paid and behind a login: not collected. These are channeled sessions, not interviews, so the
+  interview rule (fetch only with live channeling) does not apply.
+
+  How: start the archive.org download (section 4). As sessions arrive and are stored, put them on Drive:
+
+  ```bash
+  S=~/et-drive/stage-bashar; X=<the Claude session's scratchpad>/drive_up
+  ~/et-venv/bin/python -I et-channelers/pipeline/drive_stage.py plan    --out $S --only darryl-anka --kinds audio
+  ~/et-venv/bin/python -I et-channelers/pipeline/drive_stage.py batches --out $S --n 1 --link-dir $X
+  ~/et-venv/bin/python -I et-channelers/pipeline/drive_stage.py round   --out $S --size 200   # prints "round <id>"
+  #   one Google Drive create_file call per line: title, parentId, base64Content = the ref ("sha256:<hex>:<path>"),
+  #   contentMimeType audio/ogg, disableConversionToGoogleType true; then one "i <Drive id>" line per upload:
+  ~/et-venv/bin/python -I et-channelers/pipeline/drive_stage.py done    --out $S --round <id> < ids.txt
+  gh release upload handoff-2026-11-14 ~/et-channelers-private/sync/drive_manifest.jsonl -R occult-kranti/et-channelers-archive --clobber
+  ```
+
+  About 1,450 Drive files, eight rounds of 200 (two messages of 100 calls each). Then rebuild the tables
+  (section 3, step 5). Done when all 903 are in the store and on Drive, `drive_stage.py status` shows nothing
+  left, and `plan/bashar_sessions.csv` shows 903 here.
+
+* **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
   It also refuses a file with more than one hard link, which is why `--link-dir` copies each file. Subagents
-  and other folders are refused too, so the uploads run in the main session, about 30 per message (roughly
-  2 seconds per 7 MB file). For unattended uploads, rclone with a one-time Google login is the alternative
-  (not set up).
-* **Agent workflows** that were running in the old session (they cannot move): deep research on the analyses
-  (by year, last N, predictions and warnings, question banks, UI), readers of the Kimi snapshot, the analysis
-  plan, the source scouts, and a review of the dashboard and the store. What they finished is in
-  `ANALYSIS_PLAN.md`, `ROADMAP.md` (phases 4b and 7c) and `notes/2026-11-14/`. Run again what is not there.
-* **Dashboard v2** (sources with links and methods; Bashar tables): the page is written but not yet published.
-  Publish it after the review findings are fixed.
+  and other folders are refused too, so the uploads run in the main session, about 2 seconds per 7 MB file.
+  For unattended uploads, rclone with a one-time Google login is the alternative (not set up; decision 6.5).
+* **Agent workflows** of the old session are finished or harvested: the deep research on the analyses is the
+  section "Timelines, predictions and question banks" of `ANALYSIS_PLAN.md` (its critique is
+  `notes/2026-11-14/research_critique.md`; the raw findings stay private); the Kimi readers' plan is
+  `notes/2026-11-14/kimi_integration_plan.md`; the review of the dashboard and the store was fixed in full.
+* **Dashboard v2** (sources with links and methods; Bashar tables; the Drive copy) is published at the address
+  in section 2.
 
 ## 6. Decisions waiting for the owner
 
-1. **A faster speech-to-text engine.** Installing `onnx-asr` with NVIDIA's Parakeet TDT 0.6B (int8, CPU) was
-   refused by the session's permission check, so it was never measured. It is expected to be several times
-   faster than Whisper base.en and more accurate. Allow it, or transcribe on a GPU
-   (`ET_ASR_MODEL=large-v3 ET_ASR_DEVICE=cuda ET_ASR_COMPUTE=float16`).
-2. **The Kimi snapshot's YouTube material.** Its audio was fetched through converter sites and its subtitles
-   through paste-link services: ways around YouTube's refusal that this project does not use. Proposed: use
-   what it already holds privately, marked with how it was obtained, and never repeat the method.
+1. **A faster speech-to-text engine.** Parakeet TDT 0.6b v3 (`onnx-asr`, int8, CPU) was measured on the old
+   machine on 2026-11-13 (`pipeline/README.md`, "Speech-to-text on this machine"): 3.2 times real time on
+   podcast speech and a word error rate of 0.831 on an old tape, against `base.en`'s 9.2 times and 0.729. On two
+   threads it was slower, not faster. (A later attempt to install it again was refused by the session's
+   permission check.) Choose: measure it again on the 4-core machine, or transcribe on a GPU
+   (`ET_ASR_MODEL=large-v3 ET_ASR_DEVICE=cuda ET_ASR_COMPUTE=float16`), or keep `base.en`.
+2. **The Kimi snapshot's YouTube material.** Its audio of 42 videos was fetched through a converter site and
+   its subtitles through paste-link services: ways around YouTube's refusal that this project does not use.
+   The readers found that the zip holds no audio or transcript text, only tables, code and the paper.
+   Proposed: do not take the converter audio or subtitles even if offered later; fetch the same videos
+   through the laptop lane if you allow it (6.6 b); cite their figures only labelled by route, apart from ours
+   (`notes/2026-11-14/kimi_integration_plan.md`).
 3. **The token in `kimiiii.txt`.** It gave this session full access. Revoke it, delete the file, and give the
    new Codespace a fine-grained token limited to the two repositories.
 4. **ArchiveShelf** is still public, and it carries third-party audio and transcripts. Make it private again.
 5. **Unattended Drive sync with rclone** (one Google login), instead of uploads from a Claude session.
+6. **YouTube's robots.txt** (read 2026-11-14). It disallows, for every crawler, `/youtubei/` (which channel
+   listings and the player go through), `/feeds/videos.xml` (channel RSS), `/api/` and `/timedtext_video`,
+   among other paths. The project obeys robots.txt, so `discover.py`, `fetch_captions.py` and
+   `download_audio.py` now send nothing, and exit 9, unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1` is set. Choose:
+   (a) leave the YouTube lanes off (the default);
+   (b) opt in yourself, on your own connection, by setting the variable: it says you accept sending requests
+   that robots.txt disallows (it does not get past bot checks, and nothing here tries to);
+   (c) use the YouTube Data API v3 with your own key for listings (not built; captions of other people's
+   videos are not available through it).
+   Also decide what to keep of what came through those paths before the rule: 63 channel listings (58,699
+   videos, live streams and shorts) and 15 RSS entries, and the counts made from them. Until you decide they
+   are kept, labelled by route, and not refreshed.
+7. **The owner's email address is in the public commits.** The author address of this repository's commits is
+   a personal Gmail address. To stop that for new commits: turn on "Keep my email addresses private" and
+   "Block command line pushes that expose my email" in GitHub's email settings, and set
+   `git config --global user.email <id>+occult-kranti@users.noreply.github.com` (GitHub shows the exact
+   address). Old commits keep it unless history is rewritten, which would break every clone and fork.
 
 ## 7. Known problems
 
 * **Disk.** `--hold-untranscribed-for darryl-anka` keeps every untranscribed Bashar session on disk. At the
   speed of this machine's speech-to-text, that fills the disk before the download ends. Planned fix: keep only
-  a window of the sessions the transcriber reaches next, and pull the rest back when it gets to them.
+  a window of the sessions the transcriber reaches next, and pull the rest back when it gets to them. Until
+  then, watch `df -h` while the 641 sessions download (about 7.8 GB).
+* **A pull can race the sync.** The sync deletes local audio once its stored copy is checked. Audio pulled for
+  transcription is safe only once `transcribe.py` has it queued (each run names its files in
+  `<root>/sync/holds/`) or when its person is in `ET_HOLD_UNTRANSCRIBED_FOR`. Pull with the sync loop stopped,
+  or add the person to the hold first.
+* **Sync log.** A failed text-mirror run is logged as `MIRROR RUN FAILED (exit N)`; the reason is on the
+  `STOPPED` line above it. The loop goes on and the next run starts afresh.
+* **suzanneliephd.blogspot.com** answered HTTP 429 (never 403) nine times, twice on 2026-11-13 at 21:34 UTC and
+  seven times on 2026-11-14 at 02:38 UTC, and the texts step stopped for that host: 1 of the 8 posts asked for
+  came through, out of 1,656 registered. The texts step leaves it alone until 2026-11-15 02:38:35 UTC; after
+  that the next cycle asks for the other 1,655 at one request a second. Consider a slower `--min-interval`
+  for that host, or fetching its posts in small daily batches.
+* **Tiny last parts on Drive.** The cutter fills each part up to 7.3 MB, so a recording can end in a very
+  small last part (the smallest so far is 4,305 bytes, about a second). It plays; planned fix: split into
+  parts of equal size.
+* **Redirects outside the audio lane.** The feeds, texts and site-pages lanes follow a redirect without the
+  audio lane's rules: an answer is charged to the address they asked for, and a host a redirect leads to is not
+  checked for being left alone. Only 2 of 23 feeds redirect, and no refusal through a redirect is on record.
+  Planned fix: move `Hops` into `feeds.py` and use it in those lanes too.
 * **Load-sensitive tests.** `test_workers_are_not_stuck_behind_a_busy_channel` and the runner test failed once
   under load 13 and passed alone.
-* **YouTube from a cloud server.** Audio and captions are refused (bot checks, HTTP 403). They need the
-  owner's own connection (the laptop lane in `pipeline/README.md`). Channel listings work from the cloud.
+* **YouTube from a cloud server.** Apart from robots.txt (section 6.6), audio and captions are refused from a
+  cloud server (bot checks, HTTP 403). They need the owner's own connection (the laptop lane in
+  `pipeline/README.md`).
 * **tv.bashar.org** is paid and behind a login: not collected.
-* **No video is held.** Every lane keeps audio only.
+* **No video is held.** Every lane keeps audio only. The 153 archive.org video files of Bashar sessions are
+  listed, not fetched.
 
 ## 8. Order of work for the next session
 
-1. Set up and check (section 3). Then start the sync, the collection cycles and the archive.org download.
-2. Choose the speech-to-text engine (section 6.1). Start `keep_transcribing.sh` sized to the machine.
-3. Fix the disk hold (section 7). Finish the Drive copy and its read-me.
-4. Fold in the Kimi snapshot (ROADMAP phase 4b). Fix the review findings. Publish dashboard v2.
-5. After collection: the analyses of phases 7, 7a and 7c (`ANALYSIS_PLAN.md`).
+1. Set up and check (section 3), with the newer Drive ledger.
+2. Decide YouTube (section 6.6) before any YouTube step runs. Decide the commit email (6.7).
+3. Start the sync, the archive.org download and the collection cycles (section 4), sized to the machine.
+4. Put each stored Bashar session on Drive as it arrives (section 5), until all 903 are there.
+5. Choose the speech-to-text engine (6.1). Start `keep_transcribing.sh` sized to the machine. Fix the disk
+   hold (section 7).
+6. Fold in the Kimi snapshot (ROADMAP phase 4b).
+7. After collection: the analyses of phases 7, 7a and 7c (`ANALYSIS_PLAN.md`).
 
 The rules do not change:
 * audio and transcript text stay private, and quotes are at most 30 words;
 * robots.txt is obeyed;
 * no way around a block is used;
 * nothing private goes into this repository or into an outbound request;
-* every change comes on a branch, with both test suites and both guards passing before the merge.
+* every change comes on a branch, with the three test suites and both guards passing before the merge.
+
+## 9. Prompt for the next session
+
+Paste this into Claude Code in the new Codespace, at `/workspaces/bashar-index`:
+
+> You are taking over the ET-channelers collection from an earlier Claude session, in a new 16 GB Codespace.
+> Act as team lead and owner of the repository and the Codespace; parallelise with agents where it helps.
+> Read `et-channelers/HANDOFF.md` first, then section 00 of `et-channelers/ROADMAP.md` and
+> `et-channelers/pipeline/README.md`.
+>
+> 1. Set up as in HANDOFF section 3. Ask me for the GitHub token and keep it in
+>    `~/.config/et-channelers/github_token`; never print it or put it on a command line. Restore the state and
+>    the memory files from the release `handoff-2026-11-14`, copy its newer `drive_manifest.jsonl` over the
+>    restored one, pull the transcripts, the texts and Bashar's audio, and show me `sync_archive.py status`:
+>    every kind should show `on_disk_not_stored` 0. Rebuild the tables and check that `drive_stage.py status`
+>    shows 1,998 files on Drive.
+> 2. Run the three test suites in `et-channelers/pipeline/tests/` and both guards in `et-channelers/scripts/`.
+> 3. Size the jobs to the machine (`nproc`, `free -g`, `df -h`), then start the sync loop, the archive.org
+>    download of Bashar's sessions and the collection cycles (HANDOFF section 4).
+> 4. As Bashar's sessions arrive and are stored, put them on my Google Drive with `drive_stage.py` (`plan`,
+>    `batches --link-dir <your scratchpad>/drive_up`, `round --size 200`, the uploads in two messages of 100
+>    calls, `done --round <the id round printed>`), and upload the ledger to the handoff release after each
+>    round, until all 903 are there.
+>    They are channeled sessions, not interviews.
+> 5. Do not run any YouTube step and do not set `ET_YOUTUBE_ROBOTS_OVERRIDE`: that is my decision (HANDOFF 6.6).
+>    Bring me decisions 6.1 to 6.7 when you reach them, with your recommendation.
+> 6. Keep `ROADMAP.md`, `HANDOFF.md` and the dashboard up to date; work on a branch, run the three test suites and
+>    both guards before each merge, and push and merge as you go.
+>
+> Rules: audio, captions and transcript text never go into the public repository; quotes are at most 30 words;
+> obey robots.txt; use no way around a block (no cookies, proxies, other clients or mirror sites); put nothing
+> private in an outbound request; keep texts from the source apart from speech-to-text in every table; report
+> counts as they are, failures included.

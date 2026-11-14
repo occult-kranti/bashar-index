@@ -156,7 +156,7 @@ Design: resumable manifests, stable-hash shards, a global start-rate limit with 
 
 Checks run on 2026-11-11:
 
-1. **Automated tests** (`pipeline/tests/test_pipeline.py`, stand-in yt-dlp and ffmpeg, no network): 75 pass. Breaking four safety rails on purpose (the breaker, the channel cap, the Git-folder refusal, resume) made the tests fail each time.
+1. **Automated tests** (`pipeline/tests/test_pipeline.py`, stand-in yt-dlp and ffmpeg, no network): 75 pass. (Today it sits beside `test_lanes.py` and `test_drive_stage.py`; their counts are under "Rerunning the checks" below.) Breaking four safety rails on purpose (the breaker, the channel cap, the Git-folder refusal, resume) made the tests fail each time.
 2. **Real tools where they can run offline.** ffmpeg produced mono Opus from a stereo file; faster-whisper 1.2.1 with `Systran/faster-whisper-tiny.en` transcribed a 10-second public speech clip correctly on CPU; yt-dlp 2026.10.26 accepted every option the scripts use.
 3. **A bug found that way.** faster-whisper 1.2.1 fails with PyAV 19 (`av.open() got an unexpected keyword argument 'metadata_errors'`), and a fresh install pulls PyAV 19. The pipeline now decodes audio with ffmpeg, and a test guards it.
 4. **Real YouTube pilot, from a cloud server.** Three Bashar videos were requested one at a time. All three were refused: two "confirm you're not a bot" responses and one HTTP 403. The circuit breaker stopped the run (exit code 3). No cookies, proxies, other player clients or mirror sites were tried. The download therefore has to run from the owner's own computer.
@@ -202,13 +202,13 @@ The scripts keep the absolute paths they had during the session (for example `/h
 | Step | State |
 |---|---|
 | Paused on 2026-11-14 | the sync, the downloads, the collection cycles and speech-to-text, each after a clean stop. Nothing collected is outside the private store |
-| Lanes that work from a cloud server | podcast feeds and their audio, creators' own audio files, the publishers' own text pages, archive.org, interviews on other shows (each typed: live channeling, conversation, unclear, commentary); YouTube channel listings |
+| Lanes that work from a cloud server | podcast feeds and their audio, creators' own audio files, the publishers' own text pages, archive.org, interviews on other shows (each typed: live channeling, conversation, unclear, commentary). YouTube channel listings worked too, but youtube.com's robots.txt disallows them, so they are off until the owner decides (HANDOFF section 6.6) |
 | Collected | 1,138 audio files (819.5 hours, 10.11 GB, mono 24 kbps Opus), 8,425 texts from the sources, 61 speech-to-text transcripts (30.6 hours) |
-| Queued | Bashar's archive.org sessions: 262 of 903 downloaded (636.7 hours left). Podcast episodes: 828 of 4,057 (1,442.6 hours left), fetched in cycles of 80 hours. Interviews on other shows: 28 of 29 |
+| Queued | Bashar's archive.org sessions (his own channeled sessions, not interviews): 262 of 903 downloaded (636.7 hours left), and all 262 are on Google Drive; the other 641 are the next job, to the store and to Drive (HANDOFF section 5). Podcast episodes: 733 of 2,647 (1,442.6 hours left), fetched in cycles of 80 hours; creators' own audio files: 95 of 1,410 (1,315 left, length unknown). Interviews on other shows: 28 of 29 |
 | Lengths | every length is kept: no queue drops a recording for being short or long. For analysis, the main corpus is every recording over 5 minutes; shorts and recordings of 5 minutes or less are analysed as a group of their own |
-| Stores | a private GitHub repository (checked bundles of audio, transcripts and texts, and the texts as plain files: `pipeline/save_to_github.sh`), and the owner's Google Drive (tables, transcripts by person, audio by person in playable parts of at most 7.3 MB: `pipeline/drive_stage.py`) |
+| Stores | a private GitHub repository (checked bundles of audio, transcripts and texts, and the texts as plain files: `pipeline/save_to_github.sh`), and the owner's Google Drive, which holds a browsable copy of everything collected: 1,138 recordings as 1,958 playable files of at most 7.3 MB (10.13 GB) and 40 text volumes, 1,998 files in 77 folders by person and source, plus the tables (`pipeline/drive_stage.py`) |
 | Video | not held: every lane keeps audio only |
-| YouTube audio and captions | refused from cloud servers (bot checks, HTTP 403); they have to come from the owner's own connection |
+| YouTube audio and captions | off by rule: youtube.com's robots.txt (read 2026-11-14) disallows the listing, feed and caption paths for every crawler, so `discover.py`, `fetch_captions.py` and `download_audio.py` send nothing unless the owner sets `ET_YOUTUBE_ROBOTS_OVERRIDE=1`. Audio and captions are also refused from cloud servers (bot checks, HTTP 403); with the owner's decision they come from the owner's own connection |
 | Speech-to-text | about 1.3x real time on this 2-core machine, so the backlog needs a GPU (see `pipeline/README.md`) |
 
 **Analysis planned** (after collection; [`ROADMAP.md`](ROADMAP.md), methods and statistics in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md)):
@@ -367,6 +367,8 @@ The same table as CSV: [`plan/channel_inventory.csv`](plan/channel_inventory.csv
 
 ```sh
 python3 et-channelers/scripts/check_counts.py              # 54 checks, stdlib only, no network
-python3 -I et-channelers/pipeline/tests/test_pipeline.py   # 75 tests, about 40 seconds, no network
+python3 -I et-channelers/pipeline/tests/test_pipeline.py   # 104 tests, about 80 seconds, no network
+python3 -I et-channelers/pipeline/tests/test_lanes.py      # 237 tests, about 7 minutes
+python3 -I et-channelers/pipeline/tests/test_drive_stage.py # 13 tests, needs ffmpeg
 python3 et-channelers/scripts/guard_no_raw_media.py        # fails on raw media, captions, transcripts or credentials
 ```
