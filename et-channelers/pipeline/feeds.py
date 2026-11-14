@@ -10,6 +10,7 @@ Used by fetch_feeds.py, select_episodes.py, download_enclosures.py and fetch_pub
 from __future__ import annotations
 
 import gzip
+import functools
 import hashlib
 import http.client
 import re
@@ -255,9 +256,15 @@ def tokens(text: str):
     return [w for w in words if w not in _STOP and (len(w) > 1 or w.isdigit() or not w.isascii())]
 
 
+@functools.lru_cache(maxsize=500_000)
+def _token_set(text: str) -> frozenset:
+    return frozenset(tokens(text))
+
+
 def title_similarity(a: str, b: str) -> float:
-    """Dice overlap of the content words of two titles: 1.0 identical sets, 0.0 disjoint or empty."""
-    ta, tb = set(tokens(a)), set(tokens(b))
+    """Dice overlap of the content words of two titles: 1.0 identical sets, 0.0 disjoint or empty.
+    The word sets are remembered: matching a feed against a whole channel compares each title thousands of times."""
+    ta, tb = _token_set(a or ""), _token_set(b or "")
     if not ta or not tb:
         return 0.0
     return 2 * len(ta & tb) / (len(ta) + len(tb))

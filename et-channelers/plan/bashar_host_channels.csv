@@ -1,39 +1,39 @@
-channel,host_id,kind,bashar_recordings,interviews,transcripts_read_earlier,youtube_channel_url,youtube_channel_id,websites,podcast_feeds,captured_here,state,next_step
-Divine Insights,host:divine-insights,re-upload channel,19,0,15,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Bashar Channeled by Darryl Anka,host:bashar-channeled-by-darryl-anka,official channel,12,0,11,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Heart Coherence Collaborative,host:heart-coherence-collaborative,interview show,3,2,3,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Align Podcast,host:align-podcast,interview show,2,2,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Antoinette & Friends,host:antoinette-friends,interview show,2,2,0,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Mammoth Awakening,host:mammoth-awakening,clip channel,2,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Next Level Soul Clips,host:next-level-soul-clips,clip channel,2,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Next Level Soul Podcast,host:next-level-soul-podcast,interview show,2,2,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Wisdom From North Clips,host:wisdom-from-north-clips,interview show,2,2,0,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Aaron Lazar: Impossible Dreams,host:aaron-lazar-impossible-dreams,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-ACID FOR SQUARES,host:acid-for-squares,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Cosmic Bridge,host:cosmic-bridge,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Cosmic Soul,host:cosmic-soul,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Divine Light Vibes,host:divine-light-vibes,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Dr. Mayim Bialik,host:dr.-mayim-bialik,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Emilio Ortiz,host:emilio-ortiz,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Eternal Inspiration,host:eternal-inspiration,re-upload channel,1,0,0,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-ETs and Erin,host:ets-and-erin,clip channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Extreme Mysteries,host:extreme-mysteries,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-FADE TO BLACK Radio,host:fade-to-black-radio,interview show,1,1,0,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Free Vibration,host:free-vibration,clip channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Free Vibrations,host:free-vibrations,clip channel,1,0,0,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Gaia,host:gaia,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Hibbs Teachings Hub,host:hibbs-teachings-hub,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Higher Journeys Podcast,host:higher-journeys-podcast,interview show,1,1,0,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Love Is The Way,host:love-is-the-way,clip channel,1,0,0,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Michael Sandler Inspire Nation,host:michael-sandler-inspire-nation,interview show,1,1,0,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-my daily life,host:my-daily-life,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-New Thinking Allowed with Jeffrey Mishlove,host:new-thinking-allowed-with-jeffrey-mishlove,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-NewRealities,host:newrealities,interview show,1,1,1,,,,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
-Nflow,host:nflow,clip channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-ozy bourne,host:ozy-bourne,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Path of Knowledge,host:path-of-knowledge,clip channel,1,0,0,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-QUANTUM HEALING PATH,host:quantum-healing-path,clip channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Soul Luma (third-party clip channel),host:soul-luma,clip channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-Suthisa Sonphlaeng,host:suthisa-sonphlaeng,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-The Present Moment,host:the-present-moment,re-upload channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
-巴夏听闻录,host:channel,clip channel,1,0,1,,,,0,0,planned: YouTube only,YouTube lane on a home connection
+channel,host_id,kind,bashar_recordings,interviews,still_on_youtube,transcripts_read_earlier,youtube_channel_url,youtube_channel_id,subscribers,websites,podcast_feeds,podcast_episodes_listed,podcast_episodes_captured,captured_here,state,next_step
+Next Level Soul Podcast,host:next-level-soul-podcast,interview show,2,2,2,1,https://www.youtube.com/@NextLevelSoul,UCuulUz5sIdikcX8F5mbP2YA,1180000,nextlevelsoul.tv,1,11,10,2,captured,
+Higher Journeys Podcast,host:higher-journeys-podcast,interview show,1,1,1,0,https://www.youtube.com/@higherjourneys,UCD6ES6gBqvcXbwVK2rxdpCA,54800,higherjourneys.com,1,11,6,1,captured,
+Michael Sandler Inspire Nation,host:michael-sandler-inspire-nation,interview show,1,1,1,0,https://www.youtube.com/@inspirenation,UCVoOM-cCEPbJ1vzlQAFQu1A,427000,inspirenationshow.com,1,2,1,1,captured,
+Align Podcast,host:align-podcast,interview show,2,2,2,1,https://www.youtube.com/@AlignPodcast,UC6egNlsOB3AfgLsvNR4zXCA,174000,,1,3,2,1,partly captured,fetch the rest: YouTube lane on a home connection
+Wisdom From North Clips,host:wisdom-from-north-clips,interview show,2,2,2,0,https://www.youtube.com/@wisdomfromnorthclips,UCVANygmkFDoy4_a_-OGtWIw,23000,wisdomfromnorth.com,1,3,2,0,planned: podcast feed found,download the show's episodes that name Darryl Anka or Bashar (download_enclosures.py)
+ACID FOR SQUARES,host:acid-for-squares,interview show,1,1,1,1,https://www.youtube.com/@acidforsquares,UCfAkfmfrfFW2lgFw85H2RSQ,160000,parapodfestival.com acidforsquares.com acidforsquares-shop.fourthwall.com,1,3,2,0,planned: podcast feed found,download the show's episodes that name Darryl Anka or Bashar (download_enclosures.py)
+Dr. Mayim Bialik,host:dr.-mayim-bialik,interview show,1,1,1,1,https://www.youtube.com/@MayimBialik,UCTOocPnDh2YQZZwh86K2OxA,2430000,bialikbreakdown.com,1,2,2,0,planned: podcast feed found,download the show's episodes that name Darryl Anka or Bashar (download_enclosures.py)
+Emilio Ortiz,host:emilio-ortiz,interview show,1,1,1,1,https://www.youtube.com/@EmilioOrtiz,UCPVpvcPOMLgSzdBrdzvv7-g,294000,iamemilioortiz.com,1,3,2,0,planned: podcast feed found,download the show's episodes that name Darryl Anka or Bashar (download_enclosures.py)
+FADE TO BLACK Radio,host:fade-to-black-radio,interview show,1,1,1,0,https://www.youtube.com/@FADETOBLACKRadio,UCXDvumKcfoqKYs1W_VKqLdA,128000,jimmychurchradio.com intothevortex.tv,1,4,0,0,planned: podcast feed found,download the show's episodes that name Darryl Anka or Bashar (download_enclosures.py)
+Divine Insights,host:divine-insights,re-upload channel,19,0,19,15,https://www.youtube.com/@Divine_Insights_Official,UCKy61LU_IToA4CJBggQQvYg,15900,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Bashar Channeled by Darryl Anka,host:bashar-channeled-by-darryl-anka,official channel,12,0,12,11,https://www.youtube.com/@BasharChanneledbyDarrylAnka,UCiDZy_rfSodwFaVL_imGWgQ,260000,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Heart Coherence Collaborative,host:heart-coherence-collaborative,interview show,3,2,3,3,https://www.youtube.com/@HeartCoherenceCollaborative,UC8Ge1qbg-DM-9M8Ij2PjGPA,201000,,0,0,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
+Antoinette & Friends,host:antoinette-friends,interview show,2,2,2,0,https://www.youtube.com/@antoinetteandfriends,UCi9qz1iVTCns4BCPI5IXlOg,8530,antoinetteandfriends.com,0,0,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
+Mammoth Awakening,host:mammoth-awakening,clip channel,2,0,2,1,https://www.youtube.com/@MammothAwakening,UCb8t5aLTCNtk1Erg3ck0UYQ,3010,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Next Level Soul Clips,host:next-level-soul-clips,clip channel,2,0,2,1,https://www.youtube.com/@NextLevelSoulClips,UCkLoug3TYi3lyzvgloXI0dg,97200,nextlevelsoul.tv,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Aaron Lazar: Impossible Dreams,host:aaron-lazar-impossible-dreams,interview show,1,1,1,1,https://www.youtube.com/@ALImpossibleDreams,UCGiGjICw6RFZhGYeY9M9pQQ,10700,aaronlazar.com,0,0,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
+Cosmic Soul,host:cosmic-soul,re-upload channel,1,0,1,1,https://www.youtube.com/@CosmicSoul26,UCl08lZh5gb0u4z7boUZKUig,1770,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Divine Light Vibes,host:divine-light-vibes,re-upload channel,1,0,1,1,https://www.youtube.com/@DivineLightVibes,UCugr4dreXep1lI_6JIDhU8g,48200,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Eternal Inspiration,host:eternal-inspiration,re-upload channel,1,0,1,0,https://www.youtube.com/@EternalInspirationOfficial,UCsi1jSc7BubaE_Ns9NHQmOg,9120,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+ETs and Erin,host:ets-and-erin,clip channel,1,0,1,1,https://www.youtube.com/@etsanderin,UCCmKn0GHKtd1Y3_P2-JPdOQ,3910,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Extreme Mysteries,host:extreme-mysteries,interview show,1,1,1,1,https://www.youtube.com/@ExtremeMysteries,UCc_53-Ev85K8B86f8wbWwXA,1190000,janson.com,0,0,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
+Free Vibration,host:free-vibration,clip channel,1,0,1,1,https://www.youtube.com/@FreeVibration323,UCuPwkJDk2odOmmLqiELO9Gg,2020,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Free Vibrations,host:free-vibrations,clip channel,1,0,1,0,https://www.youtube.com/@free.vibration,UCuieszRDT9Fwb1Tah4SmTGg,1120,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Gaia,host:gaia,interview show,1,1,1,1,https://www.youtube.com/@GaiaVideo,UCFVqzO9_qHVckKqNC95o9tw,1850000,,0,0,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
+Love Is The Way,host:love-is-the-way,clip channel,1,0,1,0,https://www.youtube.com/@loveistheway233,UCkAgKHoVL6I_9XQEgAVHd7g,4660,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+New Thinking Allowed with Jeffrey Mishlove,host:new-thinking-allowed-with-jeffrey-mishlove,interview show,1,1,1,1,https://www.youtube.com/@NewThinkingAllowed,UCFk448YbGITLnzplK7jwNcw,232000,newthinkingallowed.com newthinkingallowed.org nta-magazine.magcloud.com,0,0,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
+NewRealities,host:newrealities,interview show,1,1,1,1,https://www.youtube.com/@newrealities,UC7zGzURoj0k1ea3xPQ69DYg,104000,newrealities.com,0,0,0,0,planned: YouTube only,look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane on a home connection
+Nflow,host:nflow,clip channel,1,0,1,1,https://www.youtube.com/@n_flow,UC7hIk9rBgDdb5ZkltokGqwg,1110,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+QUANTUM HEALING PATH,host:quantum-healing-path,clip channel,1,0,1,1,https://www.youtube.com/@quantumhealingpath,UCR4h_af_7YgN1aZFRfW3BZQ,183,quantumhealingpath.net,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+The Present Moment,host:the-present-moment,re-upload channel,1,0,1,1,https://www.youtube.com/@ThePresentMoment256,UCK_n-uNTnb1KUxBD-w-MWhw,17000,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+巴夏听闻录,host:channel,clip channel,1,0,1,1,https://www.youtube.com/@%E5%B7%B4%E5%A4%8F%E5%90%AC%E9%97%BB%E5%BD%95,UCfMtU9QjFn5nqCK8mysjg9g,3130,,0,0,0,0,planned: YouTube only,YouTube lane on a home connection
+Cosmic Bridge,host:cosmic-bridge,re-upload channel,1,0,0,1,,,,,0,0,0,0,gone from YouTube,none of its listed recordings is on YouTube any more: look for the session elsewhere
+Hibbs Teachings Hub,host:hibbs-teachings-hub,re-upload channel,1,0,0,1,,,,,0,0,0,0,gone from YouTube,none of its listed recordings is on YouTube any more: look for the session elsewhere
+my daily life,host:my-daily-life,re-upload channel,1,0,0,1,,,,,0,0,0,0,gone from YouTube,none of its listed recordings is on YouTube any more: look for the session elsewhere
+ozy bourne,host:ozy-bourne,re-upload channel,1,0,0,1,,,,,0,0,0,0,gone from YouTube,none of its listed recordings is on YouTube any more: look for the session elsewhere
+Path of Knowledge,host:path-of-knowledge,clip channel,1,0,0,0,,,,,0,0,0,0,gone from YouTube,none of its listed recordings is on YouTube any more: look for the session elsewhere
+Soul Luma (third-party clip channel),host:soul-luma,clip channel,1,0,0,1,,,,,0,0,0,0,gone from YouTube,none of its listed recordings is on YouTube any more: look for the session elsewhere
+Suthisa Sonphlaeng,host:suthisa-sonphlaeng,re-upload channel,1,0,0,1,,,,,0,0,0,0,gone from YouTube,none of its listed recordings is on YouTube any more: look for the session elsewhere

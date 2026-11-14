@@ -53,6 +53,75 @@ clip channels) with what was read in October and what is in the archive now.
 `list_site_pages.py --only <person>` names the families of addresses in a person's own sitemap (`/post/…`,
 `/blog/…`), and with `--match` and `--merge` registers the chosen ones in `publisher_pages.csv`.
 
+### Interviews: the host lane
+
+The 75 Bashar recordings sit on 38 channels. `host_channels.py` finds each channel's address through
+YouTube's public embed lookup and reads the websites the channel declares
+([`../sources/bashar_host_channels.csv`](../sources/bashar_host_channels.csv)); with `--recordings` it asks, once
+per recording, whether YouTube still has it
+([`../sources/bashar_recordings_status.csv`](../sources/bashar_recordings_status.csv): 68 do, 6 are gone and 1 is
+private).
+
+Sixteen of the 38 are interview shows, and most interview shows also publish their episodes as a podcast:
+a file on the show's own host, which a cloud server can fetch. `find_host_feeds.py` looks each show up in
+Apple's podcast search and registers its feed as a **host feed** when the name fits and either the feed
+lives on a website the show's channel declares or the feed carries an interview of the list. Nine were found.
+"The name fits" means the distinctive words are shared as a phrase or nearly all of them match: a long
+subtitle that happens to contain "next", "level" and "soul" somewhere is another show.
+
+A host feed is never taken whole. `select_episodes.py --relation host` keeps only the episodes whose title
+names a tracked person: 186 of the nine feeds' episodes do, for 27 people (246 hours), 42 of them Darryl Anka
+or Bashar. For 17 of the 27, Darryl Anka among them, these interviews are the first source outside YouTube.
+An episode from a show's own feed and a
+video on that show's own channel with mostly the same title words and the same numbers are the same
+interview (`twin_method: title-same-show`), so the Bashar table counts it for the recording in the list.
+
+### What kind of interview: live channeling, or talk about it
+
+An interview with a channeler is fetched only when the entity speaks in it. `interview_types.py` gives
+every listed interview episode a kind, and says what the kind rests on:
+
+| Kind | Rests on |
+|---|---|
+| `live channeling` | the entity's own signature in the episode's transcript (Bashar's greeting "this day of your time", or the entity naming itself or being greeted by name), or show notes that say the session is channeled live in this episode |
+| `unclear` | a transcript with many marks of an entity addressing humans ("your planet", "as you call it") and no signature: a conversation with channeled passages, or one about channeling |
+| `conversation` | a transcript with neither |
+| `commentary or clip` | a short episode whose title carries only what the person channels, not their name |
+| `not classified` | no transcript is held and the show notes do not say |
+
+**A title never makes an episode live channeling.** Eleven Bashar interviews came with the publisher's own
+transcript, several titled "Bashar's Channeled Message ...": all are conversations with Darryl Anka in which
+nothing is channeled. A sentence such as "I am going to channel" is not used either: in the transcripts read
+it was always part of a story. Show notes count only when they speak of the episode itself ("the episode
+concludes with a live channeling of ..."), not when they advertise an event or describe the guest.
+
+`select_episodes.py` queues only `live channeling` by default (`--interview-types all` to change that); the
+others stay listed with their kind in the catalogue, the coverage table and the dashboard. A transcript that
+a podcast feed itself links (`<podcast:transcript>`) is fetched like the episode's audio, because the feed
+hands it to podcast apps: a file store that has no robots.txt and answers 403 for it no longer hides it, a
+robots.txt that says no is still obeyed, and a site that cannot be reached is left alone for the run.
+
+### Channeled sessions on archive.org
+
+The Bashar Index data package at the top of this repository (`data/session_catalog.csv`) catalogues 684
+Bashar sessions since 1984, and 391 of its entries point at a recording somebody deposited on archive.org.
+Those are the sessions themselves. `list_archive_org.py` asks archive.org's public metadata service what
+each item holds and writes [`../sources/archive_org_sessions.csv`](../sources/archive_org_sessions.csv): audio
+files (tape transfers, small) are queued like any other recording, with ids `ia-<16 hex>`; video files run
+to gigabytes each and are only listed. `targets.py` also writes three tables from that data package:
+`plan/bashar_recordings.csv` (the 75 digested recordings, each with its kind and where it stands),
+`plan/bashar_sessions.csv` (the catalogue by decade) and `plan/bashar_podcasts.csv` (the 48 podcast
+appearances it listed, with the type it gave and the kind found here).
+
+### A long run has to survive its accidents
+
+A two-process speech-to-text run lost a worker six times on 2026-11-13, each time stopped from outside
+(signal 15) while tests and downloads ran beside it and memory was short. Without care that halves a
+two-day run. On this 8 GB machine the bulk run therefore uses one process with two threads (11% slower,
+half the memory), restarted by a loop if it is stopped. `transcribe.py` now restarts a worker that ends early. A worker that ended by itself
+(a fault inside a native library leaves no Python error) skips the file it was on, which is recorded as
+`worker_died`; a worker stopped from outside tries its file again. `--restarts` caps it at 20 per worker.
+
 ### Three mistakes found on 2026-11-13 (evening), and what stops them now
 
 | What happened | Now |
@@ -201,6 +270,10 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing, one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
 | [`targets.py`](targets.py) | the one list of everyone tracked, with origin, channel, sources, capture counts and state; and the channels behind the 75 Bashar recordings | `--no-private`, `--out` |
 | [`list_site_pages.py`](list_site_pages.py) | names the address families in a person's own sitemap and registers the chosen pages | `--only`, `--match`, `--exclude`, `--merge` |
+| [`host_channels.py`](host_channels.py) | the address, id and declared websites of each channel behind the Bashar list; whether each recording is still on YouTube | `--all`, `--recordings`, `--refresh` |
+| [`find_host_feeds.py`](find_host_feeds.py) | the podcast feed of each interview show in the Bashar list, graded, registered as a host feed | `--all`, `--merge`, `--kinds` |
+| [`interview_types.py`](interview_types.py) | the kind of each listed interview episode (live channeling, unclear, conversation, commentary or clip), from its transcript or show notes | `--notes`, `--only` |
+| [`list_archive_org.py`](list_archive_org.py) | the audio and video files behind the session catalogue's archive.org entries | `--all`, `--refresh` |
 | [`download_audio.py`](download_audio.py) | yt-dlp downloads a small audio stream to a scratch folder, ffmpeg re-encodes it to mono 16 kHz Opus, scratch is deleted | `--limit N` (pilot), `--all`, `--workers`, `--per-channel`, `--min-interval`, `--shard i/n`, `--bitrate`, `--limit-rate`, `--retry-failed` |
 | [`transcribe.py`](transcribe.py) | faster-whisper with batching and VAD; one process per GPU; longest files first so processes finish together, or every person in turn with `--order round-robin`; leaves out speech in a language the run was not asked for | `--model`, `--model-revision`, `--devices 0,1`, `--workers`, `--cpu-threads`, `--batch-size`, `--language`, `--order`, `--only`, `--compute-type`, `--shard i/n` |
 | [`verify.py`](verify.py) | file sizes, optional re-hash, audio-versus-listing length, transcript sanity, audio without transcript; builds the QA sheet | `--hash`, `--qa-sample N` |

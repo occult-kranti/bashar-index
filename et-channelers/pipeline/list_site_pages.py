@@ -11,6 +11,7 @@ holds and how many the pattern would take.
 
     python3 pipeline/list_site_pages.py --only michelle-robinson
     python3 pipeline/list_site_pages.py --only michelle-robinson --match '/post/' --merge
+    python3 pipeline/list_site_pages.py --only jamie-butler --from-sitemap post-sitemap --merge
 
 Only sites listed in sources/official_sites.csv are read, so every page registered here is on a site
 the person declared as theirs. robots.txt is obeyed for the sitemap files, and again for every page
@@ -63,8 +64,10 @@ def slug_title(url: str) -> str:
     return " ".join(re.sub(r"[-_+]+", " ", last).split())[:200].lower()
 
 
-def read_sitemaps(domain, fetch, max_files):
-    """(page addresses on this site, sitemap files read, sitemap files left unread)."""
+def read_sitemaps(domain, fetch, max_files, where=None):
+    """(page addresses on this site, sitemap files read, sitemap files left unread). If `where` is a dict
+    it is filled with {page address: the sitemap file that lists it}: many sites keep their posts in a
+    file of their own (post-sitemap.xml), which says what a bare address cannot."""
     root = f"https://{domain}"
     queue = [root + "/sitemap.xml"]
     try:
@@ -86,7 +89,11 @@ def read_sitemaps(domain, fetch, max_files):
             continue
         read += 1
         found, children = sitemap_locs(body)
-        pages += [p for p in found if host_of(p).removeprefix("www.") == bare and not NOT_A_PAGE.search(urllib.parse.urlsplit(p).path)]
+        mine = [p for p in found if host_of(p).removeprefix("www.") == bare and not NOT_A_PAGE.search(urllib.parse.urlsplit(p).path)]
+        pages += mine
+        if where is not None:
+            for page in mine:
+                where.setdefault(page, urllib.parse.urlsplit(url).path.rsplit("/", 1)[-1] or "sitemap")
         queue += [c for c in children if c not in seen and c not in queue]
     return list(dict.fromkeys(pages)), read, len(queue)
 
@@ -98,7 +105,10 @@ def main():
     ap.add_argument("--pages", type=Path, default=PAGES, help="the list to add to (default sources/publisher_pages.csv)")
     ap.add_argument("--only", required=True, help="comma-separated person ids")
     ap.add_argument("--domain", default="", help="read just this one of the person's official sites")
-    ap.add_argument("--match", default=POST_LIKE.pattern, help="pattern an address must contain to be registered")
+    ap.add_argument("--match", default="", help="pattern an address must contain to be registered (default: the usual "
+                                                "post addresses, or everything when --from-sitemap is given)")
+    ap.add_argument("--from-sitemap", default="", help="take only pages listed in a sitemap file whose name matches, "
+                                                       "for example post-sitemap")
     ap.add_argument("--exclude", default="", help="pattern that leaves an address out")
     ap.add_argument("--evidence", default="", help="what to record as the reason these pages are the person's texts")
     ap.add_argument("--max-sitemaps", type=int, default=40, help="sitemap files read per site")
@@ -115,8 +125,9 @@ def main():
         sys.exit("no official site is listed for " + ", ".join(sorted(wanted))
                  + ": add it to sources/official_sites.csv first (discover_sites.py reads it from the channel page)")
     try:
-        take = re.compile(args.match, re.I)
+        take = re.compile(args.match or (".*" if args.from_sitemap else POST_LIKE.pattern), re.I)
         leave = re.compile(args.exclude, re.I) if args.exclude else None
+        listed_in = re.compile(args.from_sitemap, re.I) if args.from_sitemap else None
     except re.error as err:
         sys.exit(f"not a usable pattern: {err}")
     robots, gates = Robots(), HostGates(interval=args.min_interval, stop_after=3)
@@ -144,20 +155,29 @@ def main():
     added = 0
     for site in sorted(sites, key=lambda r: (r["person_id"], r["domain"])):
         person, domain = site["person_id"], site["domain"]
-        pages, read, unread = read_sitemaps(domain, fetch, args.max_sitemaps)
+        where = {}
+        pages, read, unread = read_sitemaps(domain, fetch, args.max_sitemaps, where)
         chosen = [p for p in pages if take.search(urllib.parse.urlsplit(p).path + "/")
-                  and not (leave and leave.search(p)) and robots.allowed(p)]
+                  and not (leave and leave.search(p)) and (listed_in is None or listed_in.search(where.get(p, "")))
+                  and urllib.parse.urlsplit(p).path.strip("/") and robots.allowed(p)]
         families = collections.Counter(family(p) for p in pages)
         taken = collections.Counter(family(p) for p in chosen)
+        files = collections.Counter(where.get(p, "") for p in pages)
+        files_taken = collections.Counter(where.get(p, "") for p in chosen)
         append_jsonl(paths.sources / "site_pages.jsonl",
                      {"person_id": person, "domain": domain, "at": utc_now(), "sitemap_files_read": read,
                       "sitemap_files_unread": unread, "pages": len(pages), "matching": len(chosen),
-                      "families": dict(families.most_common(40)), "pattern": args.match, "exclude": args.exclude})
+                      "families": dict(families.most_common(40)), "sitemap_files": dict(files.most_common(40)),
+                      "pattern": take.pattern, "exclude": args.exclude, "from_sitemap": args.from_sitemap})
         print(f"{person} | {domain}: {len(pages)} addresses in {read} sitemap file(s)"
               + (f", {unread} file(s) left unread (raise --max-sitemaps)" if unread else "")
               + (" | no sitemap could be read" if not read else ""))
         for name, count in families.most_common(25):
             print(f"    {count:6d}  {name:28s} {'take ' + str(taken[name]) if taken.get(name) else ''}")
+        if len(files) > 1:
+            print("    by sitemap file:")
+            for name, count in files.most_common(15):
+                print(f"    {count:6d}  {name:28s} {'take ' + str(files_taken[name]) if files_taken.get(name) else ''}")
         new = [p for p in chosen if p not in have]
         print(f"    -> {len(chosen)} match the pattern, {len(new)} not listed yet")
         if args.merge:

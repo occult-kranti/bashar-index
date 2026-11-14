@@ -4,8 +4,8 @@
 Two kinds of source, both public pages or files the publisher links for readers:
   pages     sources/publisher_pages.csv in the repository: one row per page that holds a session's
             published text (for example the 106 Ra Contact sessions on llresearch.org).
-  episodes  transcript links carried by a podcast feed (<podcast:transcript>), taken from the queue
-            that select_episodes.py wrote.
+  episodes  transcript links carried by a podcast feed (<podcast:transcript>), for every listed episode:
+            the makers' own feeds, and the episodes of interview shows that name a tracked person.
 
 For each one it saves, in the private folder only,
     <root>/transcripts_publisher/<person>/<item id>.txt        plain text
@@ -168,7 +168,9 @@ class Robots:
                     self.cache[root] = parser
                 except FetchError as err:
                     missing = 400 <= err.status < 500 and err.status not in (401, 403, 429)
-                    self.cache[root] = True if missing else None
+                    # "no file": the site answered 401 or 403 for robots.txt itself. Not permission to read
+                    # its pages, but different from a site that could not be reached at all.
+                    self.cache[root] = True if missing else "no file" if err.status in (401, 403) else None
             return self.cache[root]
 
     def allowed(self, url):
@@ -176,14 +178,21 @@ class Robots:
         if not base:
             return False
         rules = self._rules(base.group(1).lower())
-        if rules is None or isinstance(rules, bool):
+        if rules is None or rules == "no file":
+            return None
+        if isinstance(rules, bool):
             return rules
         return rules.can_fetch(USER_AGENT, url)
+
+    def answered_without_a_file(self, url):
+        """True when the site answered 401 or 403 for robots.txt: it is up, and keeps no readable rules."""
+        base = re.match(r"^(https?://[^/]+)", url, re.I)
+        return bool(base) and self._rules(base.group(1).lower()) == "no file"
 
     def crawl_delay(self, url):
         base = re.match(r"^(https?://[^/]+)", url, re.I)
         rules = self._rules(base.group(1).lower()) if base else None
-        if rules is None or isinstance(rules, bool):
+        if rules is None or isinstance(rules, (bool, str)):
             return None
         try:
             delay = rules.crawl_delay(USER_AGENT)
@@ -205,9 +214,14 @@ def load_jobs(paths, kinds, only):
                 jobs.append({"video_id": ident, "channel_dir": person, "url": url, "declared": "text/html",
                              "title": row.get("title") or "", "origin": "page",
                              "media_pattern": row.get("media_pattern") or ""})
-    queue = paths.jobs / "queue_enclosures.csv"
-    if "episodes" in kinds and queue.exists():
-        for row in read_csv(queue):
+    if "episodes" in kinds:
+        # Every listed episode that carries a transcript link: the maker's own feeds, and the episodes of
+        # interview shows that name a tracked person. The queue file is one work order among several, so it
+        # is only read for anything the lists no longer hold.
+        from select_episodes import collect          # imported here: listing pages needs none of it
+        listed, _, _ = collect(paths)
+        queue = paths.jobs / "queue_enclosures.csv"
+        for row in listed + (read_csv(queue) if queue.exists() else []):
             url = (row.get("transcript_url") or "").strip()
             if not url or not ITEM_RE.match(row.get("video_id") or "") or row["video_id"] in seen:
                 continue
@@ -232,11 +246,16 @@ def fetch_one(job, out_dir, gates, robots, args):
         rec.update(status="error", error_class="bad_address", error_tail=str(err)[-300:])
         return rec
     verdict = robots.allowed(address)
-    if verdict is None:
+    # A transcript that a podcast feed links (<podcast:transcript>) is offered to podcast apps the way the
+    # episode's audio is: the feed is the publisher's word. The file stores that keep such transcripts have
+    # no robots.txt and answer 403 for it, which must not hide a file the publisher hands out. A site that
+    # could not be reached is still left alone for this run, and a robots.txt that says no is obeyed.
+    handed_out = job["origin"] == "episode" and robots.answered_without_a_file(address)
+    if verdict is None and not handed_out:
         rec.update(status="error", error_class="network",
                    error_tail="robots.txt could not be read, so nothing was fetched from this site on this run")
         return rec
-    if not verdict:
+    if verdict is False:
         rec.update(status="error", error_class="robots", error_tail="robots.txt does not allow this address")
         return rec
     delay = robots.crawl_delay(address)

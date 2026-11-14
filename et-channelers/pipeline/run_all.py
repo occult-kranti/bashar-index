@@ -4,6 +4,7 @@
 Meant for your own computer, where YouTube answers normally. It starts the existing steps side by
 side and a watcher that keeps moving finished items to your private store and freeing the disk:
 
+    first   list        discover.py           what every tracked channel holds (with --set all, the default)
     lanes   youtube     download_audio.py     audio of the queued YouTube videos (yt-dlp)
             captions    fetch_captions.py     YouTube's own caption tracks for the same videos
             enclosures  download_enclosures.py  podcast episodes and creator-hosted files
@@ -43,6 +44,12 @@ def build_plan(args, root):
     py, base = [sys.executable, "-I"], ["--root", str(root)]
     prepare, parallel, after = [], [], []
     if {"youtube", "captions"} & set(args.lanes):
+        if args.set == "all":
+            # "all" is every video the channels list, so the channels are listed first: public metadata, no
+            # media, and channels already listed are skipped. Without this the queue would hold only the few
+            # hundred videos the 2026-10 index happened to record.
+            prepare.append(("list: every video on every tracked channel",
+                            py + [str(HERE / "discover.py"), *base, "--workers", "1", "--min-interval", "5"]))
         cmd = py + [str(HERE / "select_jobs.py"), *base, "--set", args.set]
         if args.per_channel:
             cmd += ["--per-channel", str(args.per_channel)]

@@ -63,68 +63,95 @@ recordings on llresearch.org; 4,958 posts on danielscranton.com, each the publis
    reads agreed its history would put 257 third-party transcripts into this public repository), and one
    registry of people, channels and items across this index, ArchiveShelf and channels-ET.
 
-### Later on 2026-11-13: one list of everyone, whole channels counted, three mistakes caught
+### Later on 2026-11-13: one list of everyone, whole channels counted, and what kind each recording is
 
 **The channel listing answers from the cloud.** Audio and captions are still refused, but listing what a
-channel holds asks for no video stream, and YouTube answers it. `discover.py` now lists the Videos, Live and
-Shorts tabs of every tracked channel, so the size of the job is counted instead of estimated, and the queue
-for the owner's computer can be built from complete lists.
+channel holds asks for no video stream, and YouTube answers it. `discover.py` listed the Videos, Live and
+Shorts tabs of all 63 channels with a usable address, without one refusal: 32,570 videos and 10,014 live
+streams (21,269 hours where the length is given) and 16,115 shorts. That is the size of the YouTube job,
+counted instead of estimated, and the queue for the owner's computer can now be built from complete lists
+(`run_all.py` lists the channels first when asked for everything).
 
 **One list.** [`plan/targets.csv`](plan/targets.csv) joins this index, the ArchiveShelf channel intake and
-the people added since: 103 rows (98 people and groups, three names nobody has tied to a channel, two left
-out at the owner's request). [`plan/bashar_host_channels.csv`](plan/bashar_host_channels.csv) lists the 38
-channels behind the 75 Bashar recordings: the official channel, 16 interview shows (21 interviews), 10
-re-upload channels and 11 clip channels. Transcripts of 55 of the 75 were read in October and not kept; none
-of the 75 is in the archive yet.
+the people added since: 103 rows (102 people and groups, and one name left out at the owner's request).
+The three truncated names of the ArchiveShelf intake were tied to channels by the channel's own name
+(Pleiadian Laarkmaa, Rachel & Kevin Pasdon, LightingClarity); the owner has not confirmed them. Added at
+the owner's request the same day: **Michelle Robinson Medium** (93 videos, 110 shorts, 11 posts saved) and
+**Jamie Butler, The Everyday Medium**, who had been left out before (209 videos, 605 live streams, 550
+hours listed; 25 posts saved; her old podcast feed is gone).
 
-Snapshot at 2026-11-13T23:03Z. The channel listing had finished 23 of 59 channels and speech-to-text was
-running, so these move; the current figures are in [`plan/targets_summary.json`](plan/targets_summary.json)
-and [`plan/coverage.csv`](plan/coverage.csv).
+**The earlier Bashar Index work is used, not only cited.** Three tables are made from the data package at
+the top of this repository:
+
+* [`plan/bashar_recordings.csv`](plan/bashar_recordings.csv): the 75 digested recordings (27 channeled
+  sessions, 27 clips of sessions, 21 interviews; 1,186,510 words read for the digests), each with whether it
+  is still on YouTube (68 are; 6 are gone, 1 is private) and whether it is in the archive (5 are, as the
+  same interview from the show's podcast).
+* [`plan/bashar_sessions.csv`](plan/bashar_sessions.csv): its catalogue of 684 sessions since 1984. 393 point
+  at a recording deposited on archive.org, which answers from a cloud server: 937 audio files (983 hours,
+  mostly 1984 to 1999) and 153 video files of several gigabytes each. 274 sessions are only on the official
+  streaming site, which is not collected.
+* [`plan/bashar_podcasts.csv`](plan/bashar_podcasts.csv): the 48 podcast appearances it listed, with the
+  type it gave and the kind found here.
+
+**What kind of interview.** An interview is fetched only when the entity speaks in it, and the kind comes
+from the transcript or the show notes, never from the title (`interview_types.py`). Nine interview shows
+of the Bashar list have a verified podcast feed; their feeds hold 189 episodes that name 28 tracked people.
+So far: 8 contain live channeling (fetched), 5 are unclear, 32 are conversations, 3 are commentary or
+clips, and 141 are not classified because no transcript is held. Of the 42 that name Darryl Anka or
+Bashar, the 13 classified so far are conversations, unclear or commentary: none has Bashar speaking,
+whatever the title says. Twenty of those 42 were downloaded before this rule was set; they are kept, and
+their kind follows from their transcripts as speech-to-text reaches them.
+
+Snapshot at 2026-11-14T00:16Z, with downloads and speech-to-text running; the current figures are in
+[`plan/targets_summary.json`](plan/targets_summary.json) and [`plan/coverage.csv`](plan/coverage.csv).
 
 | Measure | Count |
 |---|---|
-| People and groups tracked | 98 |
-| State: partly captured / planned, YouTube only / planned, no source yet / captured | 19 / 43 / 36 / 0 |
-| Channels listed in full so far | 23 of 59: 12,369 videos (4,848 h), 1,230 live streams, 6,507 shorts |
-| Distinct pieces of work listed (a video and its podcast or page twin count once) | 29,573 |
-| ... of which in the archive as audio or text | 8,275 |
-| Listed YouTube items whose content is already here through a twin | 3,265 |
-| Audio files held | 823 (476.2 h) for 14 people |
-| Texts obtained from the source | 8,155 (12,682,271 words) for 7 people |
-| Transcripts made here by speech-to-text | 28 (98,908 words), running |
-| Audio waiting for a transcript | 791 |
+| People and groups tracked | 102 |
+| State: partly captured / planned, YouTube only / planned, no source yet / captured | 27 / 40 / 35 / 0 |
+| Channels listed in full | 63 of 64 on record |
+| Distinct pieces of work listed (a video and its podcast or page twin count once) | 69,186 |
+| ... of which in the archive as audio or text | 8,568 |
+| Listed YouTube items whose content is already here through a twin | 3,355 |
+| Audio files held | 851 (510.6 h) for 19 people |
+| Texts obtained from the source | 8,424 (13,308,502 words) for 18 people |
+| Transcripts made here by speech-to-text | 53 (155,285 words), running |
+| Audio waiting for a transcript | 793 |
+| Bashar session audio listed on archive.org / queued for now | 937 files (983 h) / 180 files (176 h) |
 
-Nobody is "captured": that state now needs the person's channel to be listed and every listed item to be
-here, and no YouTube audio can be fetched from this machine.
+Nobody is "captured": that state needs the person's channel to be listed and every listed item to be here,
+and no YouTube audio can be fetched from this machine.
 
-Added at the owner's request the same day: **Michelle Robinson Medium**. Her channel is listed in full (93
-videos, 52.9 h, and 110 shorts; she has no Live tab), the 11 posts on her own site are saved, and she has no
-podcast of her own: the four shows under that name belong to other people (see the namesake rule in
-[`sources/README.md`](sources/README.md)).
-
-**Three mistakes caught, each now stopped by a rule and a test** (details in
+**Mistakes caught, each now stopped by a rule and a test** (details in
 [`pipeline/README.md`](pipeline/README.md)): two podcasts by other people called Michelle Robinson were
-accepted on the name; one German episode was transcribed with the English-only model; and people were
-called captured whose channel had not been counted.
+accepted on the name; one German episode was transcribed with the English-only model; people were called
+captured whose channel had not been counted; two unrelated shows passed for interview shows because their
+long titles contained the same words; interviews were taken for channeling on the strength of their
+titles; a course site and a mailing-list service were registered as two people's own websites; and a
+speech-to-text worker stopped from outside left half of a run undone.
 
-**Speech-to-text here.** The Codespace's two CPUs are one core. `base.en` runs at about 10 times real time
-with two single-thread processes, so the 476 hours held take about two days; `tiny.en` is 1.8 times faster
-and a little less accurate; larger models are slower than that. A machine with eight real cores or a GPU is
-the way to finish in hours.
+**Speech-to-text here.** The Codespace's two CPUs are one core. `base.en` runs at about 9 times real time
+on the idle machine and well below that while downloads run, so the hours held take days; `tiny.en` is 1.8
+times faster and a little less accurate; larger models are slower than that. A machine with eight real
+cores or a GPU is the way to finish in hours.
 
 **Open, in order** (this replaces the list above where they differ).
 
 1. Put the collected audio and texts in a private store (unchanged: `archiveshelf` is public and this
-   session cannot write to it).
-2. On the owner's computer: `run_all.py --go` for audio and captions. The listings are in the private
-   folder, so the queue can cover every listed video.
-3. Find the podcast feed of each of the 16 interview shows that carry a Bashar interview: those episodes
-   can be fetched from here.
-4. Tie the three unresolved names to channels, or drop them.
-5. Register the pages of the remaining official sites with `list_site_pages.py` (about ten sites have a
-   post feed or a sitemap with posts), and confirm or reject the candidate feeds.
-6. Find sources for the 36 people with no channel or site on record.
-7. Merge ArchiveShelf's code as a filtered snapshot (unchanged).
+   session cannot write to it). **The disk is now the limit**: about 180 of the 983 hours of Bashar session
+   audio on archive.org fit; the rest waits for the store, which frees the disk as it uploads.
+2. On the owner's computer: `run_all.py --go` for audio and captions of every listed video.
+3. Speech-to-text for the interviews already held, so each gets its kind; then for the sessions.
+4. The 153 archive.org video files of Bashar sessions (529 GB as video): fetch the audio track only, on a
+   machine with room.
+5. Interview shows: seven of the sixteen in the Bashar list have no feed registered, and the same lookup
+   can be run for interview shows outside the list.
+6. Confirm the three names tied to channels by name only.
+7. Register the pages of the remaining official sites with `list_site_pages.py`, and confirm or reject
+   the candidate feeds.
+8. Find sources for the 35 people with no channel or site on record.
+9. Merge ArchiveShelf's code as a filtered snapshot (unchanged).
 
 ## 1. Where things stand
 
