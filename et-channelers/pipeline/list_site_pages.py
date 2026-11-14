@@ -15,8 +15,9 @@ holds and how many the pattern would take.
 
 Only sites listed in sources/official_sites.csv are read, so every page registered here is on a site
 the person declared as theirs. robots.txt is obeyed for the sitemap files, and again for every page
-when it is fetched later; a site gets one request a second at most. Addresses and counts only: no
-page text is read or saved here.
+when it is fetched later; a site gets one request a second at most, and so does every host a redirect
+leads to; no redirect is followed to a host that is being left alone after its refusals. Addresses and
+counts only: no page text is read or saved here.
 
 Reads   sources/official_sites.csv
 Writes  <root>/sources/site_pages.jsonl          one line per site: families and counts
@@ -34,7 +35,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, HostGates, add_root_arg, append_jsonl, ensure_outside_git, host_of, layout,  # noqa: E402
                     read_csv, utc_now, write_csv)
-from feeds import FetchError, get_bytes  # noqa: E402
+from feeds import FetchError, Hops, get_bytes  # noqa: E402
 from fetch_publisher_text import Robots  # noqa: E402
 from recon_sites import POST_LIKE, sitemap_locs  # noqa: E402
 
@@ -156,15 +157,19 @@ def main():
         gates.wait(host)
         if gates.blocked(host):              # it refused while this request waited for its turn
             raise FetchError(0, "host left alone after repeated refusals")
+        # a redirect follows the same rules (Hops): the host it leads to waits for its own turn and its own
+        # Retry-After, is charged with its own answers, and is not asked at all once it is being left alone
+        hops = Hops(host, gates, gates.blocked)
         try:
-            out = get_bytes(url, timeout=args.timeout, max_bytes=30_000_000)
-        except FetchError as err:
+            out = get_bytes(url, timeout=args.timeout, max_bytes=30_000_000, before_redirect=hops)
+        except FetchError as err:                            # a redirect not followed ("held") charges no one
+            refuser = hops.answered(err) or host
             if err.status in (403, 429):
-                gates.hard_block(host, err.retry_after)
+                gates.hard_block(refuser, err.retry_after)
             elif err.retry_after:
-                gates.unavailable(host, err.retry_after)     # a 503 that says how long to wait: obeyed
+                gates.unavailable(refuser, err.retry_after)  # a 503 that says how long to wait: obeyed
             raise
-        gates.success(host)
+        hops.credit(host_of(out[0]) or host)                 # every host along the way answered as asked
         return out
 
     existing = read_csv(args.pages) if args.pages.exists() else []

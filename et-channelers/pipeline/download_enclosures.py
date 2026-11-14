@@ -52,10 +52,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, archived_ids, ensure_outside_git,  # noqa: E402
                     downloader_lock, host_of, http_error_class, lane_of, latest_by_key, layout, parse_shard, probe_duration,
-                    read_csv, read_jsonl, resting_hosts, run_cmd, say_refused, say_resting, stable_shard, sha256_file,
+                    read_csv, read_jsonl, resting_hosts_along, run_cmd, say_refused, say_resting, stable_shard, sha256_file,
                     utc_now)
 from download_audio import ffmpeg_cmd, first_line, tool_version  # noqa: E402
-from feeds import FetchError, open_url  # noqa: E402
+from feeds import FetchError, Hops, open_url  # noqa: E402
 
 SKIP_LATER = {"unavailable", "not_audio", "too_large"}
 HARD = {"rate_limited", "forbidden"}
@@ -107,38 +107,14 @@ class MediaHosts:
         return host if host and stopped(host) else ""
 
 
-class Hops:
-    """Called before each redirect is followed (feeds.open_url's before_redirect): every host along the way
-    gets its own turn and its own Retry-After, and a host that is being left alone (it refused, or stopped
-    answering) is not asked at all, whichever first hop leads to it. `last` is the last host led to."""
-
-    def __init__(self, first, gates, stopped):
-        self.first, self.gates, self.stopped, self.last, self.passed = first, gates, stopped, "", []
-
-    def __call__(self, url):
-        host = host_of(url)
-        if host and host != self.first:
-            if self.stopped(host):
-                raise FetchError(0, f"redirect not followed: {host} is being left alone (it refused or stopped "
-                                    "answering)", url, klass="held")
-            self.gates.wait(host)
-            if self.stopped(host):
-                raise FetchError(0, f"redirect not followed: {host} refused while this request waited for its turn",
-                                 url, klass="held")
-        self.last = host or self.last
-        if host and host != self.first and host not in self.passed:
-            self.passed.append(host)
-
-
 def save_stream(url, dest, args, hops=None):
     """GET `url` into `dest`. Returns facts about the response; raises Problem on any failure."""
     deadline = time.monotonic() + args.timeout
     try:
         response = open_url(url, timeout=args.socket_timeout, before_redirect=hops)
     except FetchError as err:
-        answered = host_of(err.final_url or "")
-        if not err.status and err.klass is None and hops is not None and hops.last:
-            answered = hops.last          # the connection failed after a redirect: at the host it led to
+        # the host that answered; for a connection that failed after a redirect, the host it led to
+        answered = hops.answered(err) if hops is not None else host_of(err.final_url or "")
         raise Problem(err.klass or (http_error_class(err.status) if err.status else "network"), str(err), err.status,
                       answered, err.retry_after) from None
     digest, received = hashlib.sha256(), 0
@@ -236,9 +212,8 @@ def fetch_one(args, row, audio_root, gates, versions):
                 time.sleep(max(min(60.0, args.backoff * 2 ** (attempt - 1)), float(err.retry_after or 0)))
                 continue
             args.media.note(group, ident, facts["final_host"] or host)
-            for passed in dict.fromkeys([facts["final_host"] or host, host, *hops.passed]):
-                gates.success(passed)          # every host along the way answered as asked
-            via = [h for h in hops.passed if h != facts["final_host"]]
+            hops.credit(facts["final_host"])          # every host along the way answered as asked
+            via = hops.via(facts["final_host"])
             if via:
                 rec["via_hosts"] = via
             rec.update(attempts=attempt, **facts)
@@ -360,17 +335,10 @@ def main():
         todo.append(r)
     # A host that refused on an earlier run is not asked again before its wait is over: not the first host of an
     # item's address, not the host known to answer for it (MediaHosts), and no redirect leads to it (Hops).
-    # A success counts for the first hop as well as for the host that served the file: archive.org redirects
-    # every download to one of its storage nodes, so its own host never serves a file itself, and one refusal
-    # must not leave all of it alone as though it had served nothing.
-    credited = []
-    for rec in records:
-        credited.append(rec)
-        if rec.get("status") == "ok" and rec.get("final_host"):
-            for passed in dict.fromkeys([rec.get("source_host"), *(rec.get("via_hosts") or [])]):
-                if passed and passed != rec["final_host"]:
-                    credited.append({**rec, "final_host": passed})
-    resting = {} if args.ask_resting else resting_hosts(credited, lambda r: r.get("final_host") or r.get("source_host") or "")
+    # A success counts for the first hop and every host in between as well as for the host that served the file
+    # (common.resting_hosts_along): archive.org redirects every download to one of its storage nodes, so its own
+    # host never serves a file itself, and one refusal must not leave all of it alone as though it had served nothing.
+    resting = {} if args.ask_resting else resting_hosts_along(records, "source_host")
     media = MediaHosts()
     for rec in records:
         media.note(rec.get("feed_key") or "", rec.get("video_id") or "", rec.get("final_host") or "")

@@ -18,7 +18,9 @@ Rules: robots.txt of every host is read first and obeyed; one request per host p
 default; a Retry-After is obeyed; a host that answers 403 or 429 three times in a row is left alone for
 the rest of the run, and any 403 or 429 ends the run with exit code 3. A host that refused is not asked
 again on later runs until its wait is over (common.resting_hosts: a day at least, longer if it says so
-or refuses again). Without --limit or --all the script only prints what it would do.
+or refuses again). A redirect, robots.txt's included, follows the same rules (feeds.Hops): the host it leads
+to waits for its own turn, an answer is charged to the host that gave it, and no redirect is followed to a
+host that is being left alone. Without --limit or --all the script only prints what it would do.
 
     python3 pipeline/fetch_publisher_text.py --limit 3
     python3 pipeline/fetch_publisher_text.py --all
@@ -44,8 +46,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, archived_ids, atomic_write_text,  # noqa: E402
                     ensure_outside_git, host_of, http_error_class, item_id, latest_by_key, layout, normalise_text,
-                    read_csv, read_jsonl, resting_hosts, say_refused, say_resting, sha256_text, utc_now)
-from feeds import USER_AGENT, YOUTUBE_ID_IN_TEXT, FetchError, get_bytes, parse_date, safe_url  # noqa: E402
+                    read_csv, read_jsonl, resting_hosts_along, say_refused, say_resting, sha256_text, utc_now)
+from feeds import USER_AGENT, YOUTUBE_ID_IN_TEXT, FetchError, Hops, get_bytes, parse_date, safe_url  # noqa: E402
 
 PAGES = ET_ROOT / "sources" / "publisher_pages.csv"
 MEDIA_LINK = re.compile(r"""(?:href|src)\s*=\s*["']([^"']+\.(?:mp3|m4a|ogg|opus|wav|flac)(?:\?[^"']*)?)["']""", re.I)
@@ -160,6 +162,9 @@ class Robots:
                an unread robots.txt is not a refusal, and it is not permission either.
     A 429 for robots.txt itself is different: the site asked to be left alone, so refusal() reports it, and
     the first of its items is recorded as rate limited, so that later runs leave the host alone until its wait is over.
+    The 429 is charged to the host that sent it, which is another one when robots.txt redirects. A robots.txt
+    that redirects to a host being left alone is not read (held(): the get callable raised klass "held"), and
+    nothing is asked of that site this run, nor recorded.
     """
 
     def __init__(self, timeout=30, get=None):
@@ -179,12 +184,21 @@ class Robots:
                     # "no file": the site answered 401 or 403 for robots.txt itself. Not permission to read
                     # its pages, but different from a site that could not be reached at all.
                     self.cache[root] = True if missing else "no file" if err.status in (401, 403) else None
+                    if err.klass == "held":
+                        self.cache[root] = "held"
                     if err.status == 429:
-                        self.refused[root] = {"retry_after": err.retry_after}
+                        self.refused[root] = {"retry_after": err.retry_after,
+                                              "host": host_of(err.final_url or "") or host_of(root)}
             return self.cache[root]
 
+    def held(self, url):
+        """True when this site's robots.txt redirects to a host that is being left alone: not read this run."""
+        base = re.match(r"^(https?://[^/]+)", url, re.I)
+        return bool(base) and self._rules(base.group(1).lower()) == "held"
+
     def refusal(self, url):
-        """{"retry_after": seconds or None} when the site answered 429 for its robots.txt on this run, else None."""
+        """{"retry_after": seconds or None, "host": the host that answered} when the site answered 429 for its
+        robots.txt on this run, else None."""
         base = re.match(r"^(https?://[^/]+)", url, re.I)
         if not base:
             return None
@@ -197,7 +211,7 @@ class Robots:
         if not base:
             return False
         rules = self._rules(base.group(1).lower())
-        if rules is None or rules == "no file":
+        if rules is None or rules in ("no file", "held"):
             return None
         if isinstance(rules, bool):
             return rules
@@ -267,10 +281,22 @@ def load_jobs(paths, kinds, only):
     return jobs
 
 
-def fetch_one(job, out_dir, gates, robots, args):
+def robots_reader(gates, stopped):
+    """How Robots reads a site's robots.txt in a run: a redirect leads only to a host that is not being left alone
+    (`stopped`), in that host's own turn and after its own Retry-After (Hops)."""
+    def get(url, **kwargs):
+        return get_bytes(url, before_redirect=Hops(host_of(url), gates, stopped), **kwargs)
+    return get
+
+
+def fetch_one(job, out_dir, gates, robots, args, resting=()):
+    """Fetch one text. Returns the manifest record, or None if it was not asked for: its host was already
+    stopped, or the host a redirect leads to (robots.txt's included) is being left alone, on this run or in
+    `resting` from earlier runs."""
     host = host_of(job["url"])
     rec = {"video_id": job["video_id"], "channel_dir": job["channel_dir"], "origin": job["origin"],
-           "source_host": host, "source_url": job["url"], "started": utc_now()}
+           "source_host": host, "source_url": job["url"], "started": utc_now(),
+           "final_host": host}            # the host that answered: the first one, unless a redirect led elsewhere
     if gates.blocked(host):
         return None
     try:
@@ -279,6 +305,8 @@ def fetch_one(job, out_dir, gates, robots, args):
         rec.update(status="error", error_class="bad_address", error_tail=str(err)[-300:])
         return rec
     verdict = robots.allowed(address)
+    if robots.held(address):
+        return None      # its robots.txt redirects to a host that is being left alone: nothing asked, nothing recorded
     # A transcript that a podcast feed links (<podcast:transcript>) is offered to podcast apps the way the
     # episode's audio is: the feed is the publisher's word. The file stores that keep such transcripts have
     # no robots.txt and answer 403 for it, which must not hide a file the publisher hands out. A site that
@@ -293,8 +321,9 @@ def fetch_one(job, out_dir, gates, robots, args):
             first, refusal["counted"] = not refusal.get("counted"), True
         if not first:
             return None
-        gates.hard_block(host, float("inf"))
-        rec.update(status="error", http_status=429, error_class="rate_limited",
+        refuser = refusal.get("host") or host
+        gates.hard_block(refuser, float("inf"))
+        rec.update(status="error", http_status=429, error_class="rate_limited", final_host=refuser,
                    error_tail="robots.txt answered 429: nothing was fetched from this site on this run")
         if refusal["retry_after"] is not None:
             rec["retry_after_s"] = refusal["retry_after"]
@@ -312,19 +341,28 @@ def fetch_one(job, out_dir, gates, robots, args):
     gates.wait(host)
     if gates.blocked(host):
         return None                               # it refused while this request waited for its turn
+    # a transcript's address may redirect to a file store: that host waits for its own turn and its own
+    # Retry-After, is charged with its own answers, and is not asked at all while it is being left alone
+    hops = Hops(host, gates, lambda h: gates.blocked(h) or h in resting)
     try:
-        _, ctype, body = get_bytes(job["url"], timeout=args.timeout, max_bytes=MAX_TEXT_BYTES)
+        final_url, ctype, body = get_bytes(job["url"], timeout=args.timeout, max_bytes=MAX_TEXT_BYTES, before_redirect=hops)
     except FetchError as err:
+        if err.klass == "held":
+            return None   # the host it leads to is being left alone: nothing was asked of it, nothing recorded
+        refuser = hops.answered(err) or host
         klass = err.klass or (http_error_class(err.status) if err.status else "network")
         if klass in ("rate_limited", "forbidden"):
-            gates.hard_block(host, err.retry_after)
+            gates.hard_block(refuser, err.retry_after)
         elif err.retry_after:
-            gates.unavailable(host, err.retry_after)          # a 503 that says how long to wait: obeyed
-        rec.update(status="error", http_status=err.status, error_class=klass, error_tail=str(err)[-300:])
+            gates.unavailable(refuser, err.retry_after)          # a 503 that says how long to wait: obeyed
+        rec.update(status="error", http_status=err.status, error_class=klass, error_tail=str(err)[-300:],
+                   **hops.record(refuser))
         if err.retry_after is not None:
             rec["retry_after_s"] = err.retry_after
         return rec
-    gates.success(host)
+    answered = host_of(final_url) or host
+    hops.credit(answered)                                     # every host along the way answered as asked
+    rec.update(hops.record(answered))
     try:
         kind, text = to_text(body, ctype, job["declared"], job["url"])
     except Exception as err:  # noqa: BLE001 - one odd file must not stop the batch
@@ -425,8 +463,9 @@ def main():
                 and not args.retry_failed:
             continue
         todo.append(job)
-    # a host that refused on an earlier run is not asked again before its wait is over
-    resting = {} if args.ask_resting else resting_hosts(records, lambda r: r.get("source_host") or "")
+    # a host that refused on an earlier run is not asked again before its wait is over, as the first host of an
+    # address or as the host a redirect leads to; a success counts for every host along the way
+    resting = {} if args.ask_resting else resting_hosts_along(records, "source_host")
     say_resting(resting, collections.Counter(host_of(j["url"]) for j in todo if host_of(j["url"]) in resting), "text(s)")
     todo = [j for j in todo if host_of(j["url"]) not in resting]
     hosts = sorted({host_of(j["url"]) for j in todo})
@@ -437,10 +476,11 @@ def main():
         return
     if args.limit:
         todo = todo[:args.limit]
-    gates, robots, progress = HostGates(args.min_interval), Robots(), Progress(len(todo), "publisher-text")
+    gates, progress = HostGates(args.min_interval), Progress(len(todo), "publisher-text")
+    robots = Robots(get=robots_reader(gates, lambda h: gates.blocked(h) or h in resting))
     ok = 0
     with cf.ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
-        for rec in pool.map(lambda j: fetch_one(j, out_dir, gates, robots, args), todo):
+        for rec in pool.map(lambda j: fetch_one(j, out_dir, gates, robots, args, resting), todo):
             if rec is None:
                 continue
             append_jsonl(manifest, rec)

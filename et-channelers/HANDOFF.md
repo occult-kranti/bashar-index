@@ -39,6 +39,7 @@ tried to refute it): 34 findings confirmed and fixed, 3 rejected. What matters f
   of one item together on one node).
 * In the audio lane, no redirect is followed to a host that is being left alone, and every host a redirect leads to
   has its own start rate and its own Retry-After. A Retry-After sent with a 503 is obeyed too (audio, feeds, texts).
+  Since then the feeds, texts and site-pages lanes follow the same redirect rules (section 7).
 * A 429 for a site's robots.txt counts as a refusal, so the site rests on later runs as well.
 * `drive_stage.py round` prints a round id, and `done --round <id>` must be given it. `done` records only the
   lines it is given (it used to give the ledger every earlier round again), and refuses a Drive id that the
@@ -230,10 +231,14 @@ as "skipped by rule", not as a failure.
 * **Tiny last parts on Drive.** The cutter fills each part up to 7.3 MB, so a recording can end in a very
   small last part (the smallest so far is 4,305 bytes, about a second). It plays; planned fix: split into
   parts of equal size.
-* **Redirects outside the audio lane.** The feeds, texts and site-pages lanes follow a redirect without the
-  audio lane's rules: an answer is charged to the address they asked for, and a host a redirect leads to is not
-  checked for being left alone. Only 2 of 23 feeds redirect, and no refusal through a redirect is on record.
-  Planned fix: move `Hops` into `feeds.py` and use it in those lanes too.
+* **Redirects outside the audio lane: fixed.** `Hops` is now in `feeds.py`, and the feeds, texts (robots.txt
+  included) and site-pages lanes use it as the audio lane does: no redirect is followed to a host that is being
+  left alone on this run, or (feeds, texts) resting from an earlier one (the item is not asked for and not
+  recorded, so a later run picks it up); every host a redirect leads to waits for its own turn and its own Retry-After; an answer is
+  charged to the host that gave it (`final_host`, and `via_hosts` for the hosts in between); and a success counts
+  for every host along the way (`common.resting_hosts_along`, shared by the audio, feeds and texts lanes). Older
+  records without `final_host` are read by their first host, as before. Only 2 of 23 feeds redirect (rss.pdrl.fm
+  to rss.libsyn.com, which is also another feed's first host), and no refusal through a redirect is on record.
 * **Load-sensitive tests.** `test_workers_are_not_stuck_behind_a_busy_channel` and the runner test failed once
   under load 13 and passed alone.
 * **YouTube from a cloud server.** Apart from robots.txt (section 6.6), audio and captions are refused from a
