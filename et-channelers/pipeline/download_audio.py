@@ -12,6 +12,10 @@ Reads the queue from select_jobs.py. For every video it writes
     <root>/audio/<channel_dir>/<video_id>.opus
 and appends one line to <root>/audio/audio_manifest.jsonl (status, bytes, duration, sha256, error class).
 
+Off unless the owner sets ET_YOUTUBE_ROBOTS_OVERRIDE=1: yt-dlp asks for the player through
+youtube.com's /youtubei/, which its robots.txt disallows. Without the variable it sends nothing,
+says so in one line, and ends with exit code 9 (skipped by rule).
+
 Safety rails (all on by default):
   * Without --limit or --all it only prints what it WOULD do (items, hours, disk) and exits.
   * --root must be outside any Git checkout.
@@ -39,8 +43,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (HARD_BLOCKS, Breaker, Progress, RateLimiter, add_root_arg, append_jsonl, archived_ids,  # noqa: E402
-                    classify_error, ensure_outside_git, latest_by_key, layout, parse_shard, probe_duration,
-                    read_csv, read_jsonl, run_cmd, sha256_file, stable_shard, utc_now)
+                    classify_error, downloader_lock, ensure_outside_git, latest_by_key, layout, parse_shard, probe_duration,
+                    read_csv, read_jsonl, run_cmd, sha256_file, stable_shard, utc_now, youtube_gate)
 
 SKIP_LATER = {"unavailable", "login_required"}
 SYSTEMIC = {"other", "no_formats", "transcode"}  # failures that say something is wrong with the setup
@@ -93,6 +97,8 @@ def fetch_one(args, row, audio_root, limiter, breaker, versions):
             shutil.rmtree(work, ignore_errors=True)
             work.mkdir(parents=True, exist_ok=True)
             limiter.wait()
+            if breaker.tripped.is_set():
+                return None  # the run stopped while this request waited for its turn: not sent, not recorded
             t0 = time.time()
             code, _, err = run_cmd(ytdlp_cmd(args, row, work), args.timeout)
             raw = find_raw(work, video_id) if code == 0 else None
@@ -206,10 +212,15 @@ def main():
     ap.add_argument("--sample-rate", type=int, default=16000)
     ap.add_argument("--bitrate", default="24k")
     args = ap.parse_args()
+    # nothing is read or sent before this: off unless the owner opted in (common.YOUTUBE_OVERRIDE)
+    youtube_gate("download_audio.py: YouTube audio (yt-dlp's player requests go through /youtubei/)")
 
     root = ensure_outside_git(args.root)
     paths = layout(root)
     audio_root = paths.audio
+    # one YouTube downloader at a time (shards of one queue excepted): a second one waits here and reads
+    # what is left to do only when the first has finished
+    locks = downloader_lock(paths.jobs, __file__, args.shard) if args.limit or args.all else []  # noqa: F841
     queue = [r for r in read_csv(args.queue or paths.jobs / "queue.csv") if r.get("video_id")]
     i, n = parse_shard(args.shard)
     queue = [r for r in queue if stable_shard(r["video_id"], n) == i]

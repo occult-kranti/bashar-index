@@ -105,11 +105,13 @@ def recon_one(row, gates, robots, args):
         if delay:
             gates.set_interval(host, min(delay, 30.0))
         gates.wait(host)
+        if gates.blocked(host):              # it refused while this request waited for its turn
+            raise FetchError(0, "host left alone after repeated refusals")
         try:
             out = get_bytes(url, timeout=args.timeout, max_bytes=max_bytes)
         except FetchError as err:
             if err.status in (403, 429):
-                gates.hard_block(host)
+                gates.hard_block(host, err.retry_after)
             raise
         gates.success(host)
         return out

@@ -9,14 +9,16 @@ Two kinds of source, both public pages or files the publisher links for readers:
 
 For each one it saves, in the private folder only,
     <root>/transcripts_publisher/<person>/<item id>.txt        plain text
-    <root>/transcripts_publisher/<person>/<item id>.source     the bytes as fetched
+    <root>/transcripts_publisher/<person>/<item id>.source.gz  the bytes as fetched, gzip-compressed
 and appends a line to <root>/transcripts_publisher/publisher_text_manifest.jsonl (kind, host, sizes,
 word count, hashes, and any media file the page links). The text is the publisher's edition: it is
 never mixed with machine transcripts, and it never goes into Git.
 
 Rules: robots.txt of every host is read first and obeyed; one request per host per second by
-default; a host that answers 403 or 429 three times in a row is left alone for the rest of the run
-(exit code 3). Without --limit or --all the script only prints what it would do.
+default; a Retry-After is obeyed; a host that answers 403 or 429 three times in a row is left alone for
+the rest of the run, and any 403 or 429 ends the run with exit code 3. A host that refused is not asked
+again on later runs until its wait is over (common.resting_hosts: a day at least, longer if it says so
+or refuses again). Without --limit or --all the script only prints what it would do.
 
     python3 pipeline/fetch_publisher_text.py --limit 3
     python3 pipeline/fetch_publisher_text.py --all
@@ -24,6 +26,9 @@ default; a host that answers 403 or 429 three times in a row is left alone for t
 from __future__ import annotations
 
 import argparse
+import collections
+import gzip
+import os
 import concurrent.futures as cf
 import hashlib
 import html
@@ -39,7 +44,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, archived_ids, atomic_write_text,  # noqa: E402
                     ensure_outside_git, host_of, http_error_class, item_id, latest_by_key, layout, normalise_text,
-                    read_csv, read_jsonl, sha256_text, utc_now)
+                    read_csv, read_jsonl, resting_hosts, say_refused, say_resting, sha256_text, utc_now)
 from feeds import USER_AGENT, YOUTUBE_ID_IN_TEXT, FetchError, get_bytes, parse_date, safe_url  # noqa: E402
 
 PAGES = ET_ROOT / "sources" / "publisher_pages.csv"
@@ -153,16 +158,19 @@ class Robots:
         None   robots.txt could not be read this run (timeout, 5xx, or the site answered 401/403/429).
                Nothing is fetched from that site this run, and the items are tried again next run:
                an unread robots.txt is not a refusal, and it is not permission either.
+    A 429 for robots.txt itself is different: the site asked to be left alone, so refusal() reports it, and
+    the first of its items is recorded as rate limited, so that later runs leave the host alone until its wait is over.
     """
 
-    def __init__(self, timeout=30):
-        self.timeout, self.cache, self.lock = timeout, {}, threading.Lock()
+    def __init__(self, timeout=30, get=None):
+        self.timeout, self.cache, self.refused, self.lock = timeout, {}, {}, threading.Lock()
+        self.get = get          # how robots.txt is fetched: get_bytes, unless the caller sends it through its own gates
 
     def _rules(self, root):
         with self.lock:
             if root not in self.cache:
                 try:
-                    _, _, body = get_bytes(root + "/robots.txt", timeout=self.timeout, max_bytes=2 * 1024 * 1024)
+                    _, _, body = (self.get or get_bytes)(root + "/robots.txt", timeout=self.timeout, max_bytes=2 * 1024 * 1024)
                     parser = urllib.robotparser.RobotFileParser()
                     parser.parse(body.decode("utf-8", "replace").splitlines())
                     self.cache[root] = parser
@@ -171,7 +179,18 @@ class Robots:
                     # "no file": the site answered 401 or 403 for robots.txt itself. Not permission to read
                     # its pages, but different from a site that could not be reached at all.
                     self.cache[root] = True if missing else "no file" if err.status in (401, 403) else None
+                    if err.status == 429:
+                        self.refused[root] = {"retry_after": err.retry_after}
             return self.cache[root]
+
+    def refusal(self, url):
+        """{"retry_after": seconds or None} when the site answered 429 for its robots.txt on this run, else None."""
+        base = re.match(r"^(https?://[^/]+)", url, re.I)
+        if not base:
+            return None
+        root = base.group(1).lower()
+        self._rules(root)
+        return self.refused.get(root)
 
     def allowed(self, url):
         base = re.match(r"^(https?://[^/]+)", url, re.I)
@@ -199,6 +218,20 @@ class Robots:
             return float(delay) if delay else None
         except (TypeError, ValueError):
             return None
+
+
+def saved_source(folder: Path, ident: str):
+    """The bytes of a saved page source, compressed (.source.gz) or as earlier versions kept it, or None."""
+    packed, plain = folder / f"{ident}.source.gz", folder / f"{ident}.source"
+    if packed.exists():
+        return gzip.decompress(packed.read_bytes())
+    return plain.read_bytes() if plain.exists() else None
+
+
+def atomic_write_bytes(path: Path, data: bytes):
+    tmp = path.with_name(path.name + f".tmp{os.getpid()}")
+    tmp.write_bytes(data)
+    os.replace(tmp, path)
 
 
 def load_jobs(paths, kinds, only):
@@ -251,6 +284,21 @@ def fetch_one(job, out_dir, gates, robots, args):
     # no robots.txt and answer 403 for it, which must not hide a file the publisher hands out. A site that
     # could not be reached is still left alone for this run, and a robots.txt that says no is obeyed.
     handed_out = job["origin"] == "episode" and robots.answered_without_a_file(address)
+    refusal = robots.refusal(address)
+    if refusal is not None:
+        # the site answered 429 for robots.txt: a refusal like any other, remembered so later runs let it rest.
+        # It is one answer: counted and recorded once, for the first of the site's items, and the host is left
+        # alone for the rest of the run (its other items are tried again once its wait is over)
+        with robots.lock:
+            first, refusal["counted"] = not refusal.get("counted"), True
+        if not first:
+            return None
+        gates.hard_block(host, float("inf"))
+        rec.update(status="error", http_status=429, error_class="rate_limited",
+                   error_tail="robots.txt answered 429: nothing was fetched from this site on this run")
+        if refusal["retry_after"] is not None:
+            rec["retry_after_s"] = refusal["retry_after"]
+        return rec
     if verdict is None and not handed_out:
         rec.update(status="error", error_class="network",
                    error_tail="robots.txt could not be read, so nothing was fetched from this site on this run")
@@ -262,13 +310,19 @@ def fetch_one(job, out_dir, gates, robots, args):
     if delay:
         gates.set_interval(host, min(delay, 60.0))
     gates.wait(host)
+    if gates.blocked(host):
+        return None                               # it refused while this request waited for its turn
     try:
         _, ctype, body = get_bytes(job["url"], timeout=args.timeout, max_bytes=MAX_TEXT_BYTES)
     except FetchError as err:
-        klass = http_error_class(err.status) if err.status else "network"
+        klass = err.klass or (http_error_class(err.status) if err.status else "network")
         if klass in ("rate_limited", "forbidden"):
-            gates.hard_block(host)
+            gates.hard_block(host, err.retry_after)
+        elif err.retry_after:
+            gates.unavailable(host, err.retry_after)          # a 503 that says how long to wait: obeyed
         rec.update(status="error", http_status=err.status, error_class=klass, error_tail=str(err)[-300:])
+        if err.retry_after is not None:
+            rec["retry_after_s"] = err.retry_after
         return rec
     gates.success(host)
     try:
@@ -283,7 +337,7 @@ def fetch_one(job, out_dir, gates, robots, args):
         return rec
     target = out_dir / job["channel_dir"]
     target.mkdir(parents=True, exist_ok=True)
-    (target / f"{job['video_id']}.source").write_bytes(body)
+    atomic_write_bytes(target / f"{job['video_id']}.source.gz", gzip.compress(body, compresslevel=6, mtime=0))
     atomic_write_text(target / f"{job['video_id']}.txt", text + "\n")
     media, page_title, published, youtube_ids = [], "", "", []
     if kind == "page":
@@ -319,20 +373,38 @@ def main():
     ap.add_argument("--timeout", type=int, default=60)
     ap.add_argument("--min-words", type=int, default=50, help="shorter extractions are recorded as an error")
     ap.add_argument("--retry-failed", action="store_true")
+    ap.add_argument("--ask-resting", action="store_true",
+                    help="ask hosts that refused on an earlier run again, before their wait is over")
     ap.add_argument("--rescan", action="store_true",
                     help="no network: read the saved page sources again and refresh the video ids found on them")
+    ap.add_argument("--compact-sources", action="store_true",
+                    help="no network: gzip saved page sources kept uncompressed by earlier versions (.source -> .source.gz)")
     args = ap.parse_args()
 
     paths = layout(ensure_outside_git(args.root))
     out_dir = paths.pubtext
     manifest = out_dir / "publisher_text_manifest.jsonl"
+    if args.compact_sources:
+        done = saved = 0
+        for old_file in sorted(out_dir.rglob("*.source")):
+            body = old_file.read_bytes()
+            packed = old_file.with_name(old_file.name + ".gz")
+            atomic_write_bytes(packed, gzip.compress(body, compresslevel=6, mtime=0))
+            if gzip.decompress(packed.read_bytes()) != body:          # checked before the original goes
+                packed.unlink()
+                continue
+            old_file.unlink()
+            done += 1
+            saved += len(body) - packed.stat().st_size
+        print(f"compacted {done} saved page source(s), {saved / 1e6:.0f} MB freed")
+        return
     if args.rescan:
         changed = 0
         for rec in latest_by_key(read_jsonl(manifest)).values():
-            source = out_dir / rec.get("channel_dir", "") / f"{rec['video_id']}.source"
-            if rec.get("status") != "ok" or rec.get("kind") != "page" or not source.exists():
+            source = saved_source(out_dir / rec.get("channel_dir", ""), rec["video_id"])
+            if rec.get("status") != "ok" or rec.get("kind") != "page" or source is None:
                 continue
-            ids = sorted(set(YOUTUBE_ID_IN_TEXT.findall(source.read_text(encoding="utf-8", errors="replace"))))[:20]
+            ids = sorted(set(YOUTUBE_ID_IN_TEXT.findall(source.decode("utf-8", errors="replace"))))[:20]
             if ids != (rec.get("youtube_ids") or []):
                 append_jsonl(manifest, {**rec, "youtube_ids": ids, "rescanned": utc_now()})
                 changed += 1
@@ -340,7 +412,8 @@ def main():
         return
     only = {x.strip() for x in args.only.split(",") if x.strip()}
     jobs = load_jobs(paths, {x.strip() for x in args.kinds.split(",") if x.strip()}, only)
-    done = latest_by_key(read_jsonl(manifest))
+    records = read_jsonl(manifest)
+    done = latest_by_key(records)
     stored = archived_ids(paths.root, "pubtext")
     todo = []
     for job in jobs:
@@ -352,6 +425,10 @@ def main():
                 and not args.retry_failed:
             continue
         todo.append(job)
+    # a host that refused on an earlier run is not asked again before its wait is over
+    resting = {} if args.ask_resting else resting_hosts(records, lambda r: r.get("source_host") or "")
+    say_resting(resting, collections.Counter(host_of(j["url"]) for j in todo if host_of(j["url"]) in resting), "text(s)")
+    todo = [j for j in todo if host_of(j["url"]) not in resting]
     hosts = sorted({host_of(j["url"]) for j in todo})
     print(f"publisher texts listed {len(jobs)} | already saved or settled {len(jobs) - len(todo)} | to fetch {len(todo)} "
           f"from {len(hosts)} host(s)", file=sys.stderr)
@@ -371,8 +448,7 @@ def main():
             progress.tick(rec["status"] == "ok")
     latest = [r for r in latest_by_key(read_jsonl(manifest)).values() if r["status"] == "ok"]
     print(f"saved {ok} this run | on disk: {len(latest)} publisher texts, {sum(r['n_words'] for r in latest)} words")
-    if gates.blocked_hosts():
-        print("STOPPED for these hosts after repeated 403 / 429: " + ", ".join(gates.blocked_hosts()), file=sys.stderr)
+    if say_refused(gates):                       # any refusal, not only a tripped breaker: the cycle report says so
         sys.exit(3)
 
 

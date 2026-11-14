@@ -49,7 +49,10 @@ PLATFORMS = ("facebook.com", "fb.com", "fb.me", "instagram.com", "twitter.com", 
              "learnitlive.com", "mailchi.mp", "mailchimp.com", "creator-spring.com", "teespring.com", "skool.com",
              "bookme.name", "myshopify.com", "shopify.com", "mykajabi.com", "kajabi.com", "podia.com", "teachable.com",
              "thinkific.com", "gumroad.com", "stan.store", "substack.com", "campsite.bio", "taplink.cc", "komi.io",
-             "flow.page", "lnk.to", "acuityscheduling.com", "as.me", "setmore.com", "square.site", "circle.so", "mn.co")
+             "flow.page", "lnk.to", "acuityscheduling.com", "as.me", "setmore.com", "square.site", "circle.so", "mn.co",
+             # event, podcast-directory and messaging services: the address names the person's page there, and
+             # only the host is kept, which then opens the service's own home page
+             "crowdcast.io", "libsyn.com", "line.me", "lin.ee")
 JSON_LD = re.compile(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', re.S | re.I)
 
 

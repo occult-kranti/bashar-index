@@ -130,22 +130,39 @@ def main():
         listed_in = re.compile(args.from_sitemap, re.I) if args.from_sitemap else None
     except re.error as err:
         sys.exit(f"not a usable pattern: {err}")
-    robots, gates = Robots(), HostGates(interval=args.min_interval, stop_after=3)
+    gates, robots_txt = HostGates(interval=args.min_interval, stop_after=3), {}
 
     def fetch(url, check_robots=True):
+        if not check_robots:      # robots.txt: read once per site, through the gates, for read_sitemaps and Robots alike
+            if url not in robots_txt:
+                try:
+                    robots_txt[url] = gated(url)
+                except FetchError as err:
+                    robots_txt[url] = err
+            if isinstance(robots_txt[url], FetchError):
+                raise robots_txt[url]
+            return robots_txt[url]
+        verdict = robots.allowed(url)
+        if not verdict:
+            raise FetchError(0, "robots.txt could not be read" if verdict is None else "robots.txt does not allow this address")
+        return gated(url)
+
+    robots = Robots(get=lambda url, **_: fetch(url, check_robots=False))
+
+    def gated(url):
         host = host_of(url)
         if gates.blocked(host):
             raise FetchError(0, "host left alone after repeated refusals")
-        if check_robots:
-            verdict = robots.allowed(url)
-            if not verdict:
-                raise FetchError(0, "robots.txt could not be read" if verdict is None else "robots.txt does not allow this address")
         gates.wait(host)
+        if gates.blocked(host):              # it refused while this request waited for its turn
+            raise FetchError(0, "host left alone after repeated refusals")
         try:
             out = get_bytes(url, timeout=args.timeout, max_bytes=30_000_000)
         except FetchError as err:
             if err.status in (403, 429):
-                gates.hard_block(host)
+                gates.hard_block(host, err.retry_after)
+            elif err.retry_after:
+                gates.unavailable(host, err.retry_after)     # a 503 that says how long to wait: obeyed
             raise
         gates.success(host)
         return out

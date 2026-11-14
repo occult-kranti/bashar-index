@@ -9,7 +9,10 @@ Design rules that every script in this folder follows:
 """
 from __future__ import annotations
 
+import calendar
+import collections
 import csv
+import datetime
 import hashlib
 import json
 import os
@@ -286,6 +289,91 @@ def latest_by_key(records, key="video_id"):
     return out
 
 
+# ---------------------------------------------------------------- local files another process still needs
+def holds_dir(root) -> Path:
+    return Path(root) / "sync" / "holds"
+
+
+def pid_alive(pid) -> bool:
+    """True if a process with this id is running. On Windows it is not checked and taken as running."""
+    try:
+        pid = int(pid)
+    except (TypeError, ValueError):
+        return False
+    if pid <= 0:
+        return False
+    if os.name == "nt":                 # os.kill(pid, 0) would send Ctrl-C there
+        return True
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:             # somebody else's process: it is running
+        return True
+    except OSError:
+        return False
+    return True
+
+
+def hold_items(root, who, ids) -> Path:
+    """Ask sync_archive.py to keep the local audio of these items while this process runs. transcribe.py
+    names every file it has queued, so the sync does not remove a stored copy under it. The note is a small
+    file in <root>/sync/holds/ that lapses by itself when the process is gone; delete it when done."""
+    path = holds_dir(root) / f"{who}-{os.getpid()}.json"
+    atomic_write_text(path, json.dumps({"who": who, "pid": os.getpid(), "since": utc_now(),
+                                        "video_ids": sorted(set(ids))}))
+    return path
+
+
+def held_items(root) -> set:
+    """Ids whose local audio a running process asked to keep (hold_items). A note left by a process that
+    has ended counts for nothing."""
+    out, folder = set(), holds_dir(root)
+    for path in sorted(folder.glob("*.json")) if folder.is_dir() else []:
+        try:
+            note = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if isinstance(note, dict) and pid_alive(note.get("pid")):
+            out.update(str(v) for v in note.get("video_ids") or [])
+    return out
+
+
+def file_lock(path, what, shared=False):
+    """Hold a lock on `path` until this process ends (keep the returned file open). A process that asks for
+    a lock someone else holds waits until it is free (several shared holders are fine together; an
+    exclusive one is alone); `what` names the job in the message it prints. Where there is no fcntl
+    (Windows) this does nothing and returns None."""
+    try:
+        import fcntl
+    except ImportError:
+        return None
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle = open(path, "a", encoding="utf-8")       # not inherited by the tools this process starts
+    mode = fcntl.LOCK_SH if shared else fcntl.LOCK_EX
+    try:
+        fcntl.flock(handle, mode | fcntl.LOCK_NB)
+    except BlockingIOError:
+        print(f"waiting: another {what} is running (lock {path}); this one goes on when it has finished",
+              file=sys.stderr, flush=True)
+        fcntl.flock(handle, mode)
+        print(f"the other {what} has finished: going on", file=sys.stderr, flush=True)
+    return handle
+
+
+def downloader_lock(jobs_dir, script, shard=None):
+    """One run of a downloader at a time, whoever starts it, so no item is fetched by two processes and no
+    host gets twice its cap. Shards of one queue (--shard i/n) hold disjoint items and may run together;
+    a run of the whole queue waits for every shard and they wait for it. Keep the result until the end."""
+    name = Path(script).stem
+    if not shard:
+        return [file_lock(Path(jobs_dir) / f"{name}.lock", name)]
+    i, n = parse_shard(shard)
+    return [file_lock(Path(jobs_dir) / f"{name}.lock", name, shared=True),
+            file_lock(Path(jobs_dir) / f"{name}.shard-{i}-of-{n}.lock", f"{name} --shard {i}/{n}")]
+
+
 # ---------------------------------------------------------------- running tools
 PROXY_VARS = ("http_proxy", "https_proxy", "ftp_proxy", "all_proxy", "socks_proxy")
 
@@ -355,20 +443,31 @@ def classify_error(text: str) -> str:
 
 # ---------------------------------------------------------------- concurrency helpers
 class RateLimiter:
-    """At most one call start per `interval` seconds (plus jitter), shared by all threads."""
+    """At most one call start per `interval` seconds (plus jitter), shared by all threads. hold() keeps every start,
+    those already waiting for their turn included, until a wait the other side asked for is over (a Retry-After)."""
 
     def __init__(self, interval, jitter=0.25, clock=time.monotonic, sleep=time.sleep, seed=None):
         self.interval, self.jitter = max(0.0, float(interval)), max(0.0, float(jitter))
         self._clock, self._sleep, self._rng = clock, sleep, random.Random(seed)
-        self._next, self._lock = 0.0, threading.Lock()
+        self._next, self._held, self._lock = 0.0, 0.0, threading.Lock()
+
+    def hold(self, seconds):
+        with self._lock:
+            self._held = max(self._held, self._clock() + float(seconds))
+            self._next = max(self._next, self._held)
 
     def wait(self):
-        with self._lock:
-            now = self._clock()
-            start = max(now, self._next)
-            self._next = start + self.interval * (1 + self._rng.uniform(0, self.jitter))
-        if start > now:
-            self._sleep(start - now)
+        while True:
+            with self._lock:
+                now = self._clock()
+                start = max(now, self._next)
+                self._next = start + self.interval * (1 + self._rng.uniform(0, self.jitter))
+            if start > now:
+                self._sleep(start - now)
+            with self._lock:
+                if self._held <= start:
+                    return
+            # a Retry-After came while this call waited for its turn: it takes a new turn after that wait
 
 
 class Breaker:
@@ -392,12 +491,16 @@ class Breaker:
 
 class HostGates:
     """Politeness for plain HTTP lanes: each host gets its own start-rate limit and its own breaker,
-    so one publisher that answers 403 / 429 is left alone while the other hosts carry on."""
+    so one publisher that answers 403 / 429 is left alone while the other hosts carry on. A Retry-After
+    is obeyed: a short one delays the host's next request, a long one leaves the host alone for the run.
+    Check blocked() again after wait(): a request that was waiting for its turn when the host refused
+    for the last time must not go out."""
 
     def __init__(self, interval=1.0, stop_after=3, stop_after_failures=0, clock=time.monotonic, sleep=time.sleep):
         self.interval, self.stop_after, self.stop_after_failures = interval, stop_after, stop_after_failures
         self._clock, self._sleep = clock, sleep
         self._limiters, self._breakers, self._down, self._lock = {}, {}, {}, threading.Lock()
+        self._refused = collections.Counter()
 
     def _get(self, host):
         with self._lock:
@@ -425,8 +528,38 @@ class HostGates:
         refused.success()
         down.success()
 
-    def hard_block(self, host):
-        self._get(host)[1].hard_block()
+    @staticmethod
+    def _hold(limiter, seconds):
+        limiter.hold(seconds)
+
+    def hard_block(self, host, retry_after=None):
+        """A refusal (403 / 429). `retry_after` is the wait the host asked for, in seconds, if it said."""
+        limiter, refused, _ = self._get(host)
+        with self._lock:
+            self._refused[host] += 1
+        refused.hard_block()
+        if retry_after:
+            if retry_after > RETRY_AFTER_IN_RUN_S:
+                refused.tripped.set()            # longer than a run should wait: not asked again on this run
+            else:
+                self._hold(limiter, retry_after)
+
+    def unavailable(self, host, retry_after):
+        """An answer that is not a refusal but says how long to wait: a 503 with a Retry-After. A short wait
+        delays the host's next request; a longer one than a run should hold leaves the host alone for the rest
+        of the run (it is then listed with the hosts that were not answering). Call failure() as well."""
+        limiter, _, down = self._get(host)
+        if not retry_after:
+            return
+        if retry_after > RETRY_AFTER_IN_RUN_S:
+            down.tripped.set()
+        else:
+            self._hold(limiter, retry_after)
+
+    def refused_hosts(self):
+        """{host: refusals} for every host that refused at least once on this run."""
+        with self._lock:
+            return dict(self._refused)
 
     def failure(self, host):
         """A network-class failure (5xx, timeout, dropped connection). Enough in a row and the host is
@@ -440,6 +573,169 @@ class HostGates:
     def down_hosts(self):
         with self._lock:
             return sorted(h for h, b in self._down.items() if b.tripped.is_set())
+
+
+# ---------------------------------------------------------------- youtube.com's robots.txt
+# youtube.com's robots.txt (read 2026-11-14) disallows these paths for every user agent. yt-dlp's channel
+# listing beyond the first page, its player and its caption requests all go through /youtubei/, and the
+# channel RSS is /feeds/videos.xml. The project obeys robots.txt, so every step that would send such a
+# request refuses unless the owner opts in with YOUTUBE_OVERRIDE=1 (a decision for the owner: HANDOFF 6).
+# Paths it allows, such as a channel page or the oEmbed lookup, are read by steps that read robots.txt first.
+YOUTUBE_OVERRIDE = "ET_YOUTUBE_ROBOTS_OVERRIDE"
+YOUTUBE_HOSTS = ("youtube.com", "youtu.be", "youtube-nocookie.com")
+YOUTUBE_DISALLOWED = ("/api/", "/channel_picker", "/comment", "/feeds/videos.xml", "/file_download", "/get_video",
+                      "/get_video_info", "/get_midroll_info", "/live_chat", "/login", "/qr", "/results", "/signup",
+                      "/t/terms", "/timedtext_video", "/verify_age", "/watch_ajax", "/watch_fragments_ajax",
+                      "/watch_popup", "/watch_queue_ajax", "/youtubei/")
+SKIPPED_BY_RULE = 9          # exit status of a step that sent nothing because a rule forbids its requests
+YOUTUBE_RULE = ("youtube.com's robots.txt disallows /youtubei/ and /feeds/videos.xml, which this step requests; "
+                "owner decision pending (HANDOFF 6)")
+YOUTUBE_WAITS = "the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
+# Next steps that coverage tables written before the YouTube lanes were held still carry, and their new words
+OLD_YOUTUBE_STEPS = {
+    "YouTube only: run the YouTube lane on a home connection": f"YouTube only: {YOUTUBE_WAITS}",
+    "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site":
+        f"no downloadable source found yet: find the maker's own feed or site; {YOUTUBE_WAITS}",
+}
+
+
+def youtube_override() -> bool:
+    """True only when the owner set ET_YOUTUBE_ROBOTS_OVERRIDE=1."""
+    return os.environ.get(YOUTUBE_OVERRIDE, "").strip() == "1"
+
+
+def is_youtube(url: str) -> bool:
+    host = host_of(url)
+    return any(host == h or host.endswith("." + h) for h in YOUTUBE_HOSTS)
+
+
+def youtube_disallowed(url: str) -> bool:
+    """True for an address on YouTube whose path its robots.txt disallows for every user agent."""
+    if not is_youtube(url):
+        return False
+    from urllib.parse import urlsplit
+    try:
+        path = urlsplit(url).path or "/"
+    except ValueError:
+        return True
+    return any(path.startswith(prefix) for prefix in YOUTUBE_DISALLOWED)
+
+
+def youtube_gate(step: str):
+    """In front of every step whose requests to YouTube go through paths its robots.txt disallows (everything
+    yt-dlp does). Unless the owner opted in, it says so in one line and ends the step with SKIPPED_BY_RULE,
+    before anything is read or sent."""
+    if youtube_override():
+        print(f"{step}: {YOUTUBE_OVERRIDE}=1: requests that youtube.com's robots.txt disallows are sent, by the "
+              "owner's decision", file=sys.stderr, flush=True)
+        return
+    print(f"skipped: {step}: {YOUTUBE_RULE}. Nothing was sent. The owner can allow it with {YOUTUBE_OVERRIDE}=1.",
+          file=sys.stderr, flush=True)
+    sys.exit(SKIPPED_BY_RULE)
+
+
+# ---------------------------------------------------------------- refusals remembered from one run to the next
+REFUSED = ("rate_limited", "forbidden", "bot_check")   # what a host says when it does not want to be asked
+REFUSAL_REST_S = 24 * 3600                              # the least a host that refused is left alone
+REFUSAL_REST_MAX_S = 32 * 24 * 3600
+RETRY_AFTER_IN_RUN_S = 600                              # a longer Retry-After ends the host's turn on this run
+SPELL_GAP_S = 3600                                      # refusals further apart than this are separate spells
+
+
+def epoch(stamp):
+    """Seconds since 1970 for a 'YYYY-MM-DDTHH:MM:SSZ' stamp, or None."""
+    try:
+        return calendar.timegm(time.strptime(str(stamp), "%Y-%m-%dT%H:%M:%SZ"))
+    except (TypeError, ValueError):
+        return None
+
+
+def stamp(seconds) -> str:
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(seconds))
+
+
+def retry_after_seconds(value, now=None):
+    """The wait a Retry-After header asks for, in seconds (it is a number of seconds or an HTTP date), or None."""
+    text = str(value or "").strip()
+    if not text:
+        return None
+    if text.isdigit():
+        return min(int(text), REFUSAL_REST_MAX_S)
+    from email.utils import parsedate_to_datetime
+    try:
+        when = parsedate_to_datetime(text)
+    except (TypeError, ValueError, IndexError):
+        return None
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=datetime.timezone.utc)
+    return min(REFUSAL_REST_MAX_S, max(0, int(when.timestamp() - (time.time() if now is None else now))))
+
+
+def resting_hosts(records, host_of_record, now=None, in_a_row=3):
+    """{host: {"until", "times", "answer", "since"}} for the hosts to leave alone on this run, read from the
+    step's own manifest (records in the order they were written).
+
+    A host rests when the answers since its last success are refusals (403, 429, a bot check) and one of
+    them was a 429, or there were `in_a_row` of them, or the host served nothing in the day before the
+    first: a 403 for one file among many successes says something about that file, not about the host.
+    It rests until the longest of the Retry-After it sent, 24 hours, and a wait that doubles with each
+    further spell of refusals (32 days at most). A refusal that does not make the host rest still holds it for
+    the Retry-After it carried."""
+    state = {}
+    for rec in records:
+        host = host_of_record(rec) or ""
+        if not host:
+            continue
+        if rec.get("status") == "ok":
+            served = epoch(rec.get("started")) or 0
+            entry = state.setdefault(host, {"served": None, "trail": []})
+            entry["served"] = max(entry["served"] or 0, served)
+            entry["trail"] = [t for t in entry["trail"] if t[0] > served]   # asked after this one started: it stands
+        elif rec.get("error_class") in REFUSED and epoch(rec.get("started")) is not None:
+            entry = state.setdefault(host, {"served": None, "trail": []})
+            entry["trail"].append((epoch(rec["started"]), rec.get("error_class"), rec.get("http_status") or rec.get("error_class"),
+                                   min(REFUSAL_REST_MAX_S, float(rec.get("retry_after_s") or 0))))
+    now = time.time() if now is None else now
+    out = {}
+    for host, entry in state.items():
+        trail = entry["trail"]
+        if not trail:
+            continue
+        served_lately = entry["served"] is not None and entry["served"] >= trail[0][0] - REFUSAL_REST_S
+        rests = any(klass == "rate_limited" for _, klass, _, _ in trail) or len(trail) >= in_a_row or not served_lately
+        spells, last, asked = 0, None, 0.0
+        for at, _, _, wait in trail:
+            if last is None or at - last > SPELL_GAP_S:
+                spells, asked = spells + 1, 0.0          # a new spell: an earlier Retry-After is over
+            asked, last = max(asked, wait), at
+        # a refusal that says nothing about the host by itself still holds it for as long as it asked (Retry-After)
+        until = last + (max(asked, min(REFUSAL_REST_MAX_S, REFUSAL_REST_S * 2 ** (spells - 1))) if rests else asked)
+        if until > now:
+            out[host] = {"until": until, "times": len(trail), "answer": trail[-1][2], "since": stamp(trail[0][0])}
+    return out
+
+
+def say_resting(resting, waiting, what="item(s)"):
+    """One line on stderr per host left alone on this run because it refused on an earlier one.
+    `waiting` is {host: how many items of this run it holds}."""
+    for host, info in sorted(resting.items()):
+        if waiting.get(host):
+            answer = info["answer"]
+            print(f"left alone on this run: {host} refused ({'HTTP ' + str(answer) if str(answer).isdigit() else answer}) "
+                  f"{info['times']} time(s) since {info['since']}; it is asked again after {stamp(info['until'])}. "
+                  f"{waiting[host]} {what} wait for it.", file=sys.stderr, flush=True)
+
+
+def say_refused(gates, file=None):
+    """The STOPPED line for the hosts that refused on this run, or nothing. True if there were any."""
+    refused, tripped = gates.refused_hosts(), set(gates.blocked_hosts())
+    if not refused:
+        return False
+    print("STOPPED for these hosts after 403 / 429 answers: "
+          + ", ".join(f"{h} ({n}{', left alone for the rest of the run' if h in tripped else ''})" for h, n in sorted(refused.items()))
+          + ". Later runs leave a host that keeps refusing alone until its wait is over (a day at least, longer if it "
+          "asks or refuses again); finished items are skipped.", file=file or sys.stderr)
+    return True
 
 
 def host_of(url: str) -> str:

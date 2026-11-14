@@ -10,6 +10,11 @@ One process per GPU (--devices 0,1) or per CPU worker (--workers N). Videos are 
 so the processes finish together (with --order round-robin they are dealt out in turn instead, so every
 folder gets text early), and reruns skip finished videos.
 
+While it runs, <root>/sync/holds/transcribe-<pid>.json names every file it has queued, so a sync that
+stores audio and frees the disk (sync_archive.py --delete audio) leaves them alone until they are done.
+A file that is gone when its turn comes (or goes while it is read) is skipped and not recorded as an
+error, so the next pass makes its transcript once the audio is back (sync_archive.py pull).
+
     python3 pipeline/transcribe.py --limit 3 --model small.en --device cpu      # smoke test
     python3 pipeline/transcribe.py --model large-v3 --devices 0                  # one GPU
     python3 pipeline/transcribe.py --model distil-large-v3 --devices 0,1 --batch-size 24
@@ -29,9 +34,13 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (AUDIO_EXT, ITEM_RE, add_root_arg, append_jsonl, archived_ids, atomic_write_text, ensure_outside_git,  # noqa: E402
-                    latest_by_key, layout, lpt_assign, normalise_text, parse_shard, probe_duration, read_jsonl,
+from common import (AUDIO_EXT, ITEM_RE, add_root_arg, lane_of, append_jsonl, archived_ids, atomic_write_text, ensure_outside_git,  # noqa: E402
+                    hold_items, latest_by_key, layout, lpt_assign, normalise_text, parse_shard, probe_duration, read_jsonl,
                     sha256_file, sha256_text, stable_shard, utc_now)
+
+# Errors that say nothing about the file: its audio was taken away while it was being read (an earlier
+# version recorded that as an error, which a plain rerun then skipped). Such an item is tried again.
+NOT_THE_FILES_FAULT = {"FileNotFoundError"}
 
 
 class StubEngine:
@@ -162,6 +171,7 @@ def find_jobs(a, audio_dir, out_dir):
     stored = archived_ids(a.root, "asr")   # transcripts already uploaded and removed here
     languages, want, other = declared_languages(a.root, audio_meta), wanted_language(a), {}
     only = {x.strip() for x in (a.only or "").split(",") if x.strip()}
+    lanes = {x.strip() for x in (a.lanes or "").split(",") if x.strip()}
     i, n = parse_shard(a.shard)
     jobs = []
     for f in sorted(audio_dir.rglob("*")):
@@ -171,6 +181,8 @@ def find_jobs(a, audio_dir, out_dir):
             continue  # scratch folders such as .work
         chan = f.parent.name if f.parent != audio_dir else "unsorted"
         if only and chan not in only:
+            continue
+        if lanes and lane_of(f.stem) not in lanes:
             continue
         spoken = languages.get(f.stem, "")
         if want != "auto" and spoken and spoken != want:
@@ -182,7 +194,7 @@ def find_jobs(a, audio_dir, out_dir):
         prev = done.get(f.stem)
         if prev and prev["status"] == "ok" and (f.stem in stored or (out_dir / chan / f"{f.stem}.json").exists()):
             continue
-        if prev and prev["status"] == "error" and not a.retry_failed:
+        if prev and prev["status"] == "error" and not a.retry_failed and prev.get("error_class") not in NOT_THE_FILES_FAULT:
             continue
         weight = audio_meta.get(f.stem, {}).get("duration_s") or f.stat().st_size / 3000.0  # ~24 kbps bytes per second
         jobs.append({"video_id": f.stem, "channel_dir": chan, "path": str(f), "weight": float(weight)})
@@ -197,8 +209,20 @@ def run_jobs(a, jobs, manifest, out_dir, marker=None):
     """Transcribe the jobs one after another. `marker` is a file that names the job in hand: if the
     process dies (a fault inside a native library leaves no Python error), the restart reads it."""
     engine = load_engine(a)
+
+    def gone(job):
+        # The audio is no longer here: a sync stored it and freed the disk before this pass reached it. That
+        # settles nothing, so nothing is recorded and a later pass makes the transcript once the audio is back.
+        print(f"skipped {job['video_id']}: its audio is no longer here (stored and removed meanwhile?); a later "
+              "pass makes its transcript once the audio is back", file=sys.stderr, flush=True)
+
     for job in jobs:
         rec = {"video_id": job["video_id"], "channel_dir": job["channel_dir"], "started": utc_now(), **engine.info}
+        try:
+            audio_sha256 = sha256_file(job["path"])   # first: once the work is done the file may be gone
+        except FileNotFoundError:
+            gone(job)
+            continue
         if marker is not None:
             atomic_write_text(marker, json.dumps({"video_id": job["video_id"], "channel_dir": job["channel_dir"]}))
         t0 = time.time()
@@ -215,10 +239,13 @@ def run_jobs(a, jobs, manifest, out_dir, marker=None):
             rec.update(status="ok", duration_s=info["duration"], wall_s=round(wall, 1),
                        x_real_time=round(info["duration"] / wall, 1), language=info["language"],
                        language_probability=info["language_probability"], n_segments=len(segs),
-                       n_words=len(text.split()), audio_sha256=sha256_file(job["path"]),
+                       n_words=len(text.split()), audio_sha256=audio_sha256,
                        text_sha256=sha256_text(normalise_text(text)),
                        json_sha256=sha256_file(target / f"{job['video_id']}.json"))
         except Exception as exc:  # noqa: BLE001 - one bad file must not stop the batch
+            if not Path(job["path"]).exists():          # taken away while it was being read: not the file's fault
+                gone(job)
+                continue
             rec.update(status="error", error_class=type(exc).__name__, error_tail=str(exc)[-300:])
         append_jsonl(manifest, rec)
     if marker is not None and marker.exists():
@@ -278,6 +305,8 @@ def main():
                          "itself skips the file it was on; one stopped from outside tries it again")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--only", default="", help="comma-separated audio folders (person ids)")
+    ap.add_argument("--lanes", default="", help="comma-separated kinds of item: ia (archive.org), pod (podcast), "
+                                                "web (the maker's site), youtube; default all")
     ap.add_argument("--order", choices=("as-is", "round-robin"), default="as-is",
                     help="round-robin: one file per folder in turn, shortest first")
     ap.add_argument("--shard", help="i/n")
@@ -314,6 +343,17 @@ def main():
     print(f"{len(jobs)} to transcribe (about {hours:.1f} h of audio) with {workers} process(es)", file=sys.stderr)
     if not jobs:
         return
+    # Every file this run has queued stays on disk while it runs: a sync that stores audio and frees the disk
+    # (sync_archive.py --delete audio) reads this note and leaves these files alone until they are done.
+    note = hold_items(root, "transcribe", [j["video_id"] for j in jobs])
+    try:
+        transcribe_all(a, jobs, root, audio_dir, out_dir, devices, workers)
+    finally:
+        note.unlink(missing_ok=True)
+
+
+def transcribe_all(a, jobs, root, audio_dir, out_dir, devices, workers):
+    """Run the jobs in this process, or split over worker processes whose manifests are merged at the end."""
     manifest = out_dir / "transcripts_manifest.jsonl"
     if workers == 1:
         if devices:

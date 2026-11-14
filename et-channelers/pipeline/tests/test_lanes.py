@@ -8,6 +8,7 @@ plays the encoder, so nothing here touches the network or a real podcast host.
 """
 from __future__ import annotations
 
+import collections
 import http.server
 import json
 import os
@@ -52,13 +53,14 @@ def item(guid, title, url, duration="10:00", date="Fri, 06 Nov 2026 13:16:35 +00
 
 
 class Publisher(http.server.BaseHTTPRequestHandler):
-    """Serves what the test put in the class attribute `routes`: path -> (status, content type, body)."""
+    """Serves what the test put in the class attribute `routes`: path -> (status, content type, body), or
+    (status, content type, body, {extra header: value})."""
     routes, hits, lock = {}, [], threading.Lock()
 
     def do_GET(self):  # noqa: N802
         with self.lock:
             self.hits.append(self.path)
-        status, ctype, body = self.routes.get(self.path, (404, "text/plain", b"not here"))
+        status, ctype, body, *extra = self.routes.get(self.path, (404, "text/plain", b"not here"))
         if callable(body):
             body = body()
         if status in (301, 302):                     # (302, "location", b"http://other-host/path")
@@ -70,6 +72,8 @@ class Publisher(http.server.BaseHTTPRequestHandler):
         self.send_response(status)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
+        for name, value in (extra[0] if extra else {}).items():
+            self.send_header(name, value)
         self.end_headers()
         self.wfile.write(body)
 
@@ -489,6 +493,19 @@ class TestDownloadEnclosures(LaneCase):
         self.download("--all")
         self.assertEqual(len(Publisher.hits), first_hits)
 
+    def test_a_host_that_refused_is_reported_and_not_asked_again_on_the_next_run(self):
+        rows = self.rows(2)
+        for i in range(2):
+            Publisher.routes[f"/media/{i}.mp3"] = (403, "text/plain", b"no")
+        self.write_queue(rows)
+        first = self.download("--all", "--workers", "1")
+        self.assertEqual(first.returncode, 3, first.stderr)                        # fewer than three refusals still count
+        self.assertIn("STOPPED for these hosts after 403 / 429 answers", first.stderr)
+        asked = len(Publisher.hits)
+        second = self.download("--all")
+        self.assertEqual(len(Publisher.hits), asked, second.stderr)                # it served nothing and refused: it rests
+        self.assertIn("left alone on this run: 127.0.0.1 refused (HTTP 403) 2 time(s)", second.stderr)
+
     def test_missing_file_is_recorded_once_and_the_batch_goes_on(self):
         rows = self.rows(3)
         Publisher.routes["/media/1.mp3"] = (404, "text/plain", b"gone")
@@ -603,6 +620,200 @@ class TestDownloadEnclosures(LaneCase):
         self.download("--all", "--workers", "1", "--limit", "2")
         asked = [h for h in Publisher.hits if h.startswith("/r/")]
         self.assertNotIn("/r/A/0.mp3", asked)                          # new items first, the refused one waits
+
+    # ---- findings of the 2026-11-14 pre-merge review: hosts that send their files from many storage nodes
+    def storage_nodes(self, n, node_of, refuse=()):
+        """Files without a feed behind one first hop (127.0.0.1) that sends each file from a storage node, as
+        archive.org does: node_of(i) is the last byte of the node's address. Files in `refuse` get a 403 from
+        the first hop itself."""
+        port = self.server.server_address[1]
+        rows = []
+        for i in range(n):
+            Publisher.routes[f"/ia/{i}.mp3"] = ((403, "text/plain", b"no") if i in refuse else
+                                                (302, "location", f"http://127.0.0.{node_of(i)}:{port}/node/{i}.mp3".encode()))
+            Publisher.routes.setdefault(f"/node/{i}.mp3", (200, "audio/mpeg", AUDIO + bytes([i])))
+            rows.append({"video_id": common.item_id("web", "ia", str(i)), "url": f"{self.base}/ia/{i}.mp3",
+                         "channel_dir": "chanA", "lane": "web", "relation": "file"})
+        self.write_queue(rows)
+        return rows
+
+    def test_one_refusal_from_a_first_hop_that_redirects_every_file_does_not_hold_back_the_rest(self):
+        # what the review found: archive.org's own host never serves a file itself, so it was never credited
+        # with a success, and one 403 from it held back every queued Bashar recording for a day or more
+        self.storage_nodes(8, lambda i: 2 + i % 3, refuse={3})
+        first = self.download("--workers", "1", "--limit", "6")
+        self.assertEqual(first.returncode, 3, first.stderr)
+        second = self.download("--workers", "1", "--all")
+        self.assertNotIn("left alone on this run", second.stderr)
+        latest = common.latest_by_key(self.manifest())
+        self.assertEqual(sum(r["status"] == "ok" for r in latest.values()), 7, second.stderr)   # all but the refused file
+
+    def test_a_storage_node_that_refused_one_file_holds_back_only_that_file(self):
+        # what the review found: the node of the last record stood for the whole site, so a node that refused
+        # the last file of a run held back all the others on the next run
+        rows = self.storage_nodes(8, lambda i: 4 if i == 2 else 2 + i % 2)
+        Publisher.routes["/node/2.mp3"] = (403, "text/plain", b"no")
+        self.download("--workers", "1", "--limit", "3")                 # file 2 comes last, from a node that served nothing
+        Publisher.hits.clear()
+        second = self.download("--workers", "1", "--all")
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertNotIn("/ia/2.mp3", Publisher.hits)                     # its node rests, so that file waits
+        self.assertIn("left alone on this run: 127.0.0.4 refused (HTTP 403) 1 time(s)", second.stderr)
+        latest = common.latest_by_key(self.manifest())
+        self.assertEqual(sum(latest[r["video_id"]]["status"] == "ok" for r in rows), 7, second.stderr)
+
+    def test_a_storage_node_that_stops_answering_holds_back_only_the_files_it_holds(self):
+        # within a run, the node that answered last stood for the whole site: when it stopped answering,
+        # every later file of the site was skipped
+        rows = self.storage_nodes(6, lambda i: 2 if i % 2 == 0 else 3)
+        for i in range(0, 6, 2):
+            Publisher.routes[f"/node/{i}.mp3"] = (503, "text/plain", b"down")
+        done = self.download("--workers", "1", "--all", "--attempts", "2", "--stop-after-failures", "2")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        self.assertIn("not answering", done.stderr)
+        latest = common.latest_by_key(self.manifest())
+        self.assertEqual([i for i, r in enumerate(rows) if latest.get(r["video_id"], {}).get("status") == "ok"], [1, 3, 5])
+        self.assertEqual([h for h in Publisher.hits if h in ("/node/0.mp3", "/node/2.mp3", "/node/4.mp3")],
+                         ["/node/0.mp3", "/node/0.mp3"])                  # and no redirect was followed to it afterwards
+
+    def test_no_redirect_is_followed_to_a_host_that_is_being_left_alone(self):
+        self.two_shows_behind_one_first_hop()
+        self.download("--workers", "1", "--limit", "1")                 # A0 is refused by show A's media host: it rests
+        Publisher.hits.clear()
+        second = self.download("--workers", "1", "--all")
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertEqual([h for h in Publisher.hits if h.startswith("/m/A/")], [])       # not asked while it rests
+        # the first hop is asked until three of show A's episodes are known to lead there, then no more
+        self.assertEqual([h for h in Publisher.hits if h.startswith("/r/A/")], ["/r/A/1.mp3", "/r/A/2.mp3"])
+        latest = common.latest_by_key(self.manifest())
+        self.assertEqual(sum(r["status"] == "ok" and r["channel_dir"] == "showB" for r in latest.values()), 5)
+
+    def test_a_short_retry_after_from_the_host_a_redirect_leads_to_is_obeyed(self):
+        # what the review found: the wait was kept for the media host, but only the first hop was ever waited for
+        import time
+        port, asked, rows = self.server.server_address[1], [], []
+        for i in range(2):
+            Publisher.routes[f"/r/{i}.mp3"] = (302, "location", f"http://127.0.0.2:{port}/m/{i}.mp3".encode())
+            rows.append({"video_id": common.item_id("pod", "feedA", str(i)), "url": f"{self.base}/r/{i}.mp3",
+                         "channel_dir": "showA", "lane": "pod", "relation": "own", "feed_key": "feedA"})
+        Publisher.routes["/m/0.mp3"] = (429, "text/plain", lambda: asked.append(time.monotonic()) or b"slow down",
+                                        {"Retry-After": "2"})
+        Publisher.routes["/m/1.mp3"] = (200, "audio/mpeg", lambda: asked.append(time.monotonic()) or AUDIO)
+        self.write_queue(rows)
+        done = self.download("--workers", "1", "--all")
+        self.assertEqual(done.returncode, 3, done.stderr)                 # a 429 was answered
+        self.assertEqual(len(asked), 2, done.stderr)
+        self.assertGreaterEqual(asked[1] - asked[0], 1.9)                 # it used to be asked again at once
+
+    def test_a_retry_after_sent_with_a_503_is_obeyed(self):
+        import time
+        asked, rows = [], self.rows(1)
+
+        def busy():
+            asked.append(time.monotonic())
+            Publisher.routes["/media/0.mp3"] = (200, "audio/mpeg", lambda: asked.append(time.monotonic()) or AUDIO)
+            return b"busy"
+        Publisher.routes["/media/0.mp3"] = (503, "text/plain", busy, {"Retry-After": "2"})
+        self.write_queue(rows)
+        done = self.download("--all", "--attempts", "2")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.manifest()[-1]["status"], "ok")
+        self.assertGreaterEqual(asked[1] - asked[0], 1.9)                 # not the 0.01 s back-off
+
+    def test_a_long_retry_after_sent_with_a_503_leaves_the_host_alone_for_the_run(self):
+        rows = self.rows(3)
+        for i in range(3):
+            Publisher.routes[f"/media/{i}.mp3"] = (503, "text/plain", b"maintenance", {"Retry-After": "3600"})
+        self.write_queue(rows)
+        done = self.download("--all", "--workers", "1", "--attempts", "3")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        self.assertIn("not answering", done.stderr)
+        self.assertEqual(len(Publisher.hits), 1)                          # asked once, not nine times
+        self.assertEqual(self.manifest()[0].get("retry_after_s"), 3600)
+
+    def test_a_host_in_the_middle_of_a_redirect_chain_is_credited_with_its_successes(self):
+        # what the second review found: only the first and the last host were credited, so a middle hop that
+        # refused one file rested as though it had served nothing, and held back every new episode behind it
+        port, rows = self.server.server_address[1], []
+        for i in range(12):
+            Publisher.routes[f"/a/{i}.mp3"] = (302, "location", f"http://127.0.0.2:{port}/b/{i}.mp3".encode())
+            Publisher.routes[f"/b/{i}.mp3"] = (302, "location", f"http://127.0.0.3:{port}/c/{i}.mp3".encode())
+            Publisher.routes[f"/c/{i}.mp3"] = (200, "audio/mpeg", AUDIO + bytes([i]))
+            rows.append({"video_id": common.item_id("pod", "feedA", str(i)), "url": f"{self.base}/a/{i}.mp3",
+                         "channel_dir": "showA", "lane": "pod", "relation": "own", "feed_key": "feedA"})
+        Publisher.routes["/b/3.mp3"] = (403, "text/plain", b"no")
+        self.write_queue(rows)
+        self.assertEqual(self.download("--workers", "1", "--limit", "8").returncode, 3)
+        second = self.download("--workers", "1", "--all")
+        self.assertNotIn("left alone on this run", second.stderr)
+        latest = common.latest_by_key(self.manifest())
+        self.assertEqual(sum(latest[r["video_id"]]["status"] == "ok" for r in rows), 11, second.stderr)
+        self.assertEqual(latest[rows[0]["video_id"]].get("via_hosts"), ["127.0.0.2"])
+
+    def test_files_of_one_item_on_one_node_do_not_pin_the_whole_site_to_it(self):
+        # what the second review found: archive.org keeps an item's files together on one node, so three files
+        # in a row from one node made that node stand for every file of the site
+        rows = self.storage_nodes(9, lambda i: 2 if i < 3 else 3 + i % 2)
+        Publisher.routes["/node/2.mp3"] = (429, "text/plain", b"slow down")
+        self.assertEqual(self.download("--workers", "1", "--limit", "3").returncode, 3)
+        Publisher.hits.clear()
+        second = self.download("--workers", "1", "--all")
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertNotIn("/ia/2.mp3", Publisher.hits)                     # the file its node refused waits
+        latest = common.latest_by_key(self.manifest())
+        self.assertEqual([i for i, r in enumerate(rows) if latest.get(r["video_id"], {}).get("status") == "ok"],
+                         [0, 1, 3, 4, 5, 6, 7, 8])
+
+    def test_a_success_that_started_before_a_refusal_does_not_erase_it(self):
+        # what the second review found: a download that started before a 429 and ended after it was written
+        # last, and wiped the refusal, so the next run asked again at once
+        import time
+        rows = self.rows(3)
+
+        def slow():
+            time.sleep(3)
+            return AUDIO
+        Publisher.routes["/media/0.mp3"] = (200, "audio/mpeg", slow)
+        Publisher.routes["/media/1.mp3"] = (429, "text/plain", b"slow down", {"Retry-After": "3600"})
+        self.write_queue(rows[:2])
+        first = self.download("--workers", "2", "--min-interval", "1", "--all")
+        self.assertEqual(first.returncode, 3, first.stderr)
+        self.assertEqual([r["status"] for r in self.manifest()], ["error", "ok"])   # the refusal is written first
+        self.write_queue(rows)
+        Publisher.hits.clear()
+        second = self.download("--all")
+        self.assertEqual(Publisher.hits, [], second.stderr)
+        self.assertIn("left alone on this run: 127.0.0.1 refused (HTTP 429)", second.stderr)
+
+    def test_an_absurd_retry_after_is_capped_and_stops_nothing_else(self):
+        # what the second review found: 'Retry-After: 99999999999999999999' made every later run crash
+        port, rows = self.server.server_address[1], self.rows(1)
+        Publisher.routes["/media/0.mp3"] = (429, "text/plain", b"no", {"Retry-After": "9" * 20})
+        Publisher.routes["/other/0.mp3"] = (200, "audio/mpeg", AUDIO)
+        other = [{"video_id": common.item_id("pod", "feedB", "0"), "url": f"http://127.0.0.2:{port}/other/0.mp3",
+                  "channel_dir": "chanB", "lane": "pod", "relation": "own"}]
+        self.write_queue(rows)
+        self.assertEqual(self.download("--all").returncode, 3)
+        self.write_queue(rows + other)
+        second = self.download("--all")
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertEqual(self.manifest()[-1]["status"], "ok")
+        self.assertIn("left alone on this run: 127.0.0.1 refused (HTTP 429)", second.stderr)
+
+    def test_a_group_is_taken_to_live_on_one_host_only_after_several_different_items(self):
+        import download_enclosures
+        media = download_enclosures.MediaHosts()
+        for _ in range(5):
+            media.note("feed", "item1", "node.example")                  # the tries of one item count once
+        self.assertEqual(media.likely("feed", "item9"), "")
+        media.note("feed", "item2", "node.example")
+        media.note("feed", "item3", "node.example")
+        self.assertEqual(media.likely("feed", "item9"), "node.example")
+        media.note("feed", "item4", "other.example")                     # a second host: the files are spread out
+        self.assertEqual(media.likely("feed", "item9"), "")
+        self.assertEqual(media.likely("feed", "item1"), "node.example")  # an item's own host stays known
+        self.assertEqual(media.stopped_by("feed", "item1", {"node.example"}.__contains__), "node.example")
+        self.assertEqual(media.stopped_by("feed", "item9", {"node.example"}.__contains__), "")
 
     def test_a_host_that_only_answers_errors_is_left_alone_after_a_while(self):
         rows = self.rows(10)
@@ -920,6 +1131,47 @@ class TestFetchFeeds(LaneCase):
         self.run_fetch(registry)
         self.assertEqual(Publisher.hits, ["/bad.xml"])           # only the one that failed is tried again
 
+    # ---- findings of the 2026-11-14 review
+    def test_an_interview_feed_keeps_the_marks_of_its_show_notes_and_not_the_notes(self):
+        notes = "The episode concludes with a live channeling of his guide Red Eagle."
+        Publisher.routes["/show.xml"] = (200, "text/xml", feed_xml([
+            item("g1", "A talk with Darryl Anka", "https://c.example/1.mp3", extra=f"<description>{notes}</description>"),
+            item("g2", "Another talk", "https://c.example/2.mp3", extra="<description>We talked for an hour.</description>")]))
+        registry = self.registry([{"person_id": "host:test-show", "relation": "host", "feed_url": self.base + "/show.xml",
+                                   "verification": "verified"}])
+        self.assertEqual(self.run_fetch(registry).returncode, 0)
+        key = feeds.feed_key("host:test-show", self.base + "/show.xml")
+        listing = self.root / "feeds" / f"{key}.jsonl"
+        episodes = {e["guid"]: e for e in common.read_jsonl(listing)}
+        self.assertEqual((episodes["g1"]["notes_marks"], episodes["g2"]["notes_marks"]), (["live channeling"], []))
+        self.assertNotIn("Red Eagle", listing.read_text(encoding="utf-8"))           # the notes themselves are not kept
+        manifest = self.root / "feeds" / "feeds_manifest.jsonl"
+        self.assertTrue(common.read_jsonl(manifest)[-1]["notes_marks_read"])
+        # a feed read before the marks were kept is read once more, and is fresh after that
+        common.append_jsonl(manifest, {k: v for k, v in common.read_jsonl(manifest)[-1].items() if k != "notes_marks_read"})
+        Publisher.hits.clear()
+        self.run_fetch(registry)
+        self.assertEqual(Publisher.hits, ["/show.xml"])
+        Publisher.hits.clear()
+        self.run_fetch(registry)
+        self.assertEqual(Publisher.hits, [])
+
+    def test_a_feed_host_that_refused_once_is_reported_and_left_alone_on_the_next_run(self):
+        Publisher.routes["/r.xml"] = (429, "text/plain", b"slow down", {"Retry-After": "3600"})
+        registry = self.registry([{"person_id": "a", "relation": "own", "feed_url": self.base + "/r.xml", "verification": "verified"}])
+        first = self.run_fetch(registry)
+        self.assertEqual(first.returncode, 3, first.stderr)                          # one refusal is enough to say so
+        self.assertIn("STOPPED for these hosts after 403 / 429 answers: 127.0.0.1 (1", first.stderr)
+        self.assertEqual(common.read_jsonl(self.root / "feeds" / "feeds_manifest.jsonl")[-1]["retry_after_s"], 3600)
+        Publisher.hits.clear()
+        second = self.run_fetch(registry)
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertEqual(Publisher.hits, [])                                         # not asked again before the wait is over
+        self.assertIn("left alone on this run: 127.0.0.1 refused (HTTP 429) 1 time(s)", second.stderr)
+        self.assertIn("waiting for a host that refused 1", second.stderr)
+        self.run_fetch(registry, "--ask-resting")
+        self.assertEqual(Publisher.hits, ["/r.xml"])
+
 
 # --------------------------------------------------------------------------- publisher texts
 class TestPublisherText(unittest.TestCase):
@@ -1001,6 +1253,25 @@ class TestPublisherTextRun(LaneCase):
         recs = common.latest_by_key(common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl"))
         self.assertEqual(recs[rows[0]["video_id"]]["error_class"], "robots")
 
+    def test_page_sources_are_kept_compressed_and_old_ones_are_compacted_without_loss(self):
+        import gzip
+        rows = self.text_queue(2)
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+        self.assertEqual(self.fetch_text().returncode, 0)
+        folder = self.root / "transcripts_publisher" / "chanA"
+        packed = sorted(folder.glob("*.source.gz"))
+        self.assertEqual(len(packed), 2)
+        self.assertEqual(list(folder.glob("*.source")), [])
+        self.assertTrue(gzip.decompress(packed[0].read_bytes()).startswith(b"WEBVTT"))
+        # a source kept the old way is compacted, and its bytes come back unchanged
+        old = folder / "pod-0123456789abcdef.source"
+        old.write_bytes(b"<html>" + b"x" * 5000 + b"</html>")
+        done = self.cli("fetch_publisher_text.py", "--root", self.root, "--compact-sources")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertFalse(old.exists())
+        self.assertEqual(gzip.decompress((folder / "pod-0123456789abcdef.source.gz").read_bytes()), b"<html>" + b"x" * 5000 + b"</html>")
+        self.assertIn("compacted 1 saved page source", done.stdout)
+
     def test_a_listed_episode_with_a_transcript_link_needs_no_queue(self):
         # The queue is one work order among several (interview episodes have their own). A transcript that a
         # listed episode links was skipped unless that episode happened to be in queue_enclosures.csv.
@@ -1037,6 +1308,50 @@ class TestPublisherTextRun(LaneCase):
         return self.cli("fetch_publisher_text.py", "--root", self.root, "--kinds", "episodes", "--all",
                         "--min-interval", "0", *extra)
 
+    # ---- findings of the 2026-11-14 review
+    def refusing(self, n, headers=None):
+        rows = self.text_queue(n)
+        for i in range(n):
+            Publisher.routes[f"/t/{i}.vtt"] = (429, "text/plain", b"slow down", headers or {})
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+        return rows
+
+    def asked(self):
+        return [h for h in Publisher.hits if h.startswith("/t/")]
+
+    def test_two_refusals_end_the_run_with_code_3_and_the_host_is_left_alone_on_the_next_run(self):
+        # what happened: a blog answered 429 to its two pages, the run ended 0, and every cycle asked again
+        self.refusing(2)
+        first = self.fetch_text()
+        self.assertEqual(first.returncode, 3, first.stderr)
+        self.assertIn("STOPPED for these hosts after 403 / 429 answers: 127.0.0.1 (2)", first.stderr)
+        self.assertEqual(len(self.asked()), 2)
+        Publisher.hits.clear()
+        second = self.fetch_text()
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertEqual(self.asked(), [])
+        self.assertIn("left alone on this run: 127.0.0.1 refused (HTTP 429) 2 time(s)", second.stderr)
+        self.fetch_text("--ask-resting")
+        self.assertEqual(len(self.asked()), 2)
+
+    def test_a_long_retry_after_ends_the_hosts_turn_on_this_run_and_is_remembered(self):
+        import time
+        self.refusing(5, {"Retry-After": "86400"})
+        first = self.fetch_text("--workers", "1")
+        self.assertEqual(first.returncode, 3, first.stderr)
+        self.assertEqual(len(self.asked()), 1)                                     # one answer was enough
+        records = common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl")
+        self.assertEqual([r.get("retry_after_s") for r in records], [86400])
+        until = common.resting_hosts(records, lambda r: r["source_host"])["127.0.0.1"]["until"]
+        self.assertGreater(until, time.time() + 86400 - 600)
+
+    def test_requests_waiting_for_their_turn_are_not_sent_once_the_host_has_refused_three_times(self):
+        self.refusing(12)
+        done = self.cli("fetch_publisher_text.py", "--root", self.root, "--kinds", "episodes", "--all", "--min-interval", "1",
+                        "--workers", "3")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        self.assertEqual(len(self.asked()), 3, done.stderr)                        # it used to send five
+
     def test_a_robots_file_that_could_not_be_read_is_not_a_refusal_for_good(self):
         rows = self.text_queue(4)
         Publisher.routes["/robots.txt"] = (503, "text/plain", b"try later")
@@ -1050,6 +1365,50 @@ class TestPublisherTextRun(LaneCase):
         latest = common.latest_by_key(common.read_jsonl(manifest))
         self.assertEqual({r["status"] for r in latest.values()}, {"ok"})
         self.assertEqual(len(latest), len(rows))
+
+    def test_a_retry_after_sent_with_a_503_delays_the_next_request_to_that_host(self):
+        import time
+        self.text_queue(2)
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+        asked = []
+        Publisher.routes["/t/0.vtt"] = (503, "text/plain", lambda: asked.append(time.monotonic()) or b"busy", {"Retry-After": "2"})
+        words = " ".join(f"word{i}" for i in range(80))
+        Publisher.routes["/t/1.vtt"] = (200, "text/vtt", lambda: asked.append(time.monotonic()) or
+                                        f"WEBVTT\n\n00:00.000 --> 00:05.000\n{words}\n".encode())
+        done = self.fetch_text("--workers", "1")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(len(asked), 2, done.stderr)
+        self.assertGreaterEqual(asked[1] - asked[0], 1.9)                       # it used to be asked a moment later
+
+    def test_a_429_for_robots_txt_is_a_refusal_remembered_on_later_runs(self):
+        # what the review found: it was recorded as a network error, so every cycle asked for robots.txt again
+        self.text_queue(4)
+        Publisher.routes["/robots.txt"] = (429, "text/plain", b"slow down", {"Retry-After": "86400"})
+        first = self.fetch_text("--workers", "1")
+        self.assertEqual(first.returncode, 3, first.stderr)
+        self.assertEqual(Publisher.hits, ["/robots.txt"])                       # nothing else was asked
+        records = common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl")
+        self.assertEqual({(r["error_class"], r["http_status"], r.get("retry_after_s")) for r in records},
+                         {("rate_limited", 429, 86400)})
+        Publisher.hits.clear()
+        second = self.fetch_text()
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertEqual(Publisher.hits, [])                                    # not even robots.txt, while it rests
+        self.assertIn("left alone on this run: 127.0.0.1 refused (HTTP 429)", second.stderr)
+
+    def test_one_429_for_robots_txt_is_counted_and_recorded_once(self):
+        # what the second review found: one answer was counted 3 to 10 times, depending on the workers
+        self.text_queue(12)
+        Publisher.routes["/robots.txt"] = (429, "text/plain", b"slow down")
+        first = self.fetch_text("--workers", "3")
+        self.assertEqual(first.returncode, 3, first.stderr)
+        self.assertEqual(Publisher.hits, ["/robots.txt"])
+        self.assertIn("127.0.0.1 (1, left alone for the rest of the run)", first.stderr)
+        records = common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl")
+        self.assertEqual([(r["error_class"], r["http_status"]) for r in records], [("rate_limited", 429)])
+        second = self.fetch_text()
+        self.assertIn("left alone on this run: 127.0.0.1 refused (HTTP 429) 1 time(s)", second.stderr)
+        self.assertIn("12 text(s) wait for it", second.stderr)
 
     def test_a_site_with_no_robots_file_is_open(self):
         self.text_queue(2)                                              # /robots.txt answers 404
@@ -1134,6 +1493,10 @@ if args[:2] == ["release", "create"]:
 if args[:2] == ["release", "upload"]:
     if not folder.exists():
         sys.stderr.write("release not found\n"); sys.exit(1)       # as the real gh answers
+    once = os.environ.get("FAKE_GH_FAIL_UPLOAD_ONCE", "")           # "<asset name>|<flag file>": its first upload fails
+    if once and Path(args[3]).name == once.split("|")[0] and not Path(once.split("|")[1]).exists():
+        Path(once.split("|")[1]).write_text("failed once")
+        sys.stderr.write("HTTP 502: Bad Gateway\n"); sys.exit(1)
     shutil.copyfile(args[3], folder / Path(args[3]).name); sys.exit(0)
 if args[:2] == ["release", "download"]:
     name, dest = args[args.index("-p") + 1], Path(args[args.index("-D") + 1])
@@ -1234,6 +1597,38 @@ class TestSync(LaneCase):
         self.assertEqual(back.returncode, 0, back.stderr)
         for ident, data in originals.items():
             self.assertEqual((self.root / "audio" / "chanA" / f"{ident}.opus").read_bytes(), data)
+
+    def test_audio_of_the_people_named_stays_until_it_has_a_transcript(self):
+        # chanA's first item has a transcript, the other two do not; a second person's audio goes as usual
+        other = common.item_id("pod", "g", "1")
+        f = self.root / "audio" / "chanB" / f"{other}.opus"
+        f.parent.mkdir(parents=True)
+        f.write_bytes(b"FAKEOPUS" + b"z" * 900)
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl", {"video_id": other, "channel_dir": "chanB", "lane": "pod",
+                            "status": "ok", "path": f"chanB/{other}.opus", "bytes": f.stat().st_size, "duration_s": 60.0})
+        done = self.sync("push", f"dir:{self.tmp / 'disk'}", "--delete", "audio", "--hold-untranscribed-for", "chanA")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.local_audio(), sorted(f"{i}.opus" for i in self.ids[1:]))   # the transcribed one went
+        self.assertFalse(f.exists())                                                       # chanB is not held
+        self.assertTrue((self.tmp / "disk" / "audio" / "chanA" / f"{self.ids[1]}.opus").exists())   # but everything is stored
+
+    def test_a_fresh_folder_can_read_everything_back_from_the_store(self):
+        # the private folder is lost (or this is a new computer): the store alone must be enough
+        originals = {ident: (self.root / "audio" / "chanA" / f"{ident}.opus").read_bytes() for ident in self.ids}
+        for store in ("gh:someone/archive@audio-v1", f"dir:{self.tmp / 'disk'}"):
+            done = self.sync("push", store, "--delete", "audio")
+            self.assertEqual(done.returncode, 0, done.stderr)
+            fresh = self.tmp / ("fresh-" + store.split(":")[0])
+            back = subprocess.run([sys.executable, "-I", str(PIPE / "sync_archive.py"), "pull", "--root", str(fresh), "--store", store,
+                                   "--gh", self.gh, "--kinds", "audio,asr"], capture_output=True, text=True, timeout=120,
+                                  env={**os.environ, "FAKE_GH_DIR": str(self.gh_dir), "FAKE_GH_LOG": str(self.gh_log)})
+            self.assertEqual(back.returncode, 0, back.stderr)
+            self.assertIn("read the ledger kept in", back.stderr)
+            for ident, data in originals.items():
+                self.assertEqual((fresh / "audio" / "chanA" / f"{ident}.opus").read_bytes(), data, store)
+            self.assertTrue((fresh / "transcripts" / "chanA" / f"{self.ids[0]}.txt").exists())
+            for ident, data in originals.items():                                  # put the local copies back for the next store
+                (self.root / "audio" / "chanA" / f"{ident}.opus").write_bytes(data)
 
     def test_bundles_respect_the_item_cap(self):
         done = self.sync("push", "gh:someone/archive@audio-v1", "--kinds", "audio", "--bundle-items", "2")
@@ -1374,6 +1769,75 @@ class TestSync(LaneCase):
         self.assertTrue((store / "captions" / "chanA" / f"{vid}.en.vtt").exists())
         self.assertTrue((store / "captions" / "captions_manifest.jsonl").exists())
 
+    # ---- findings of the 2026-11-14 review
+    def test_audio_a_running_transcription_has_queued_stays_until_it_is_transcribed(self):
+        common.hold_items(self.root, "transcribe", [self.ids[1]])            # this test process is the running one
+        ended = subprocess.run([sys.executable, "-c", "import os; print(os.getpid())"], capture_output=True, text=True)
+        stale = common.holds_dir(self.root) / "transcribe-gone.json"           # a note left by a process that has ended
+        stale.write_text(json.dumps({"who": "transcribe", "pid": int(ended.stdout), "video_ids": [self.ids[2]]}))
+        store = self.tmp / "disk"
+        done = self.sync("push", f"dir:{store}", "--delete", "audio")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.local_audio(), [f"{self.ids[1]}.opus"])          # stored, but queued: it stays
+        self.assertTrue((store / "audio" / "chanA" / f"{self.ids[1]}.opus").exists())
+        for note in common.holds_dir(self.root).glob("*.json"):
+            note.unlink()                                                      # the transcription has ended
+        self.sync("push", f"dir:{store}", "--delete", "audio")
+        self.assertEqual(self.local_audio(), [])
+
+    def test_a_transcription_beside_the_deleting_sync_keeps_every_transcript(self):
+        # the review's case: transcribe.py has one file open and one queued while the sync stores and deletes
+        ids = [common.item_id("pod", "h", str(i)) for i in range(2)]
+        for n, ident in enumerate(ids):
+            f = self.root / "audio" / "chanB" / f"{ident}.opus"
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_bytes(b"FAKEOPUS" + bytes([n + 7]) * 1500)
+            common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                                {"video_id": ident, "channel_dir": "chanB", "lane": "pod", "status": "ok",
+                                 "path": f"chanB/{ident}.opus", "bytes": f.stat().st_size, "duration_s": 60.0})
+        # each file takes 4 s, so the push below runs while the first is open and the second is queued
+        work = subprocess.Popen([sys.executable, "-I", str(PIPE / "transcribe.py"), "--root", str(self.root), "--engine", "stub",
+                                 "--stub-delay", "4", "--only", "chanB"], stderr=subprocess.PIPE, text=True)
+        import time
+        end = time.time() + 30
+        while not list(common.holds_dir(self.root).glob("transcribe-*.json")) and time.time() < end:
+            time.sleep(0.05)
+        store = self.tmp / "disk"
+        done = self.sync("push", f"dir:{store}", "--delete", "audio")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertTrue(all((self.root / "audio" / "chanB" / f"{i}.opus").exists() for i in ids))   # open and queued: kept
+        _, err = work.communicate(timeout=60)
+        self.assertEqual(work.returncode, 0, err)
+        latest = common.latest_by_key(common.read_jsonl(self.root / "transcripts" / "transcripts_manifest.jsonl"))
+        self.assertEqual([latest[i]["status"] for i in ids], ["ok", "ok"])
+        self.assertFalse(list(common.holds_dir(self.root).glob("*.json")))   # the note goes with the run
+        self.sync("push", f"dir:{store}", "--delete", "audio")
+        self.assertFalse(any((self.root / "audio" / "chanB" / f"{i}.opus").exists() for i in ids))
+        for ident in ids:                                                      # and both transcripts are stored
+            self.assertTrue((store / "transcripts" / "chanB" / f"{ident}.txt").exists())
+
+    def test_a_pass_that_uploads_nothing_still_sends_the_ledger_before_it_deletes(self):
+        # one failed manifests.tar upload, then a pass with nothing new: it used to delete without sending the
+        # ledger, and a fresh folder could then read nothing back
+        originals = {ident: (self.root / "audio" / "chanA" / f"{ident}.opus").read_bytes() for ident in self.ids}
+        store = "gh:someone/archive@audio-v1"
+        fail = {"FAKE_GH_FAIL_UPLOAD_ONCE": f"manifests.tar|{self.tmp / 'failed-once'}"}
+        first = self.sync("push", store, "--delete", "audio", env=fail)
+        self.assertEqual(first.returncode, 5, first.stderr)
+        self.assertIn("502", first.stderr)
+        self.assertEqual(len(self.local_audio()), 3)                                 # nothing deleted
+        second = self.sync("push", store, "--delete", "audio", env=fail)
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertIn("uploaded and checked 0", second.stderr)
+        self.assertEqual(self.local_audio(), [])
+        fresh = self.tmp / "fresh"
+        back = subprocess.run([sys.executable, "-I", str(PIPE / "sync_archive.py"), "pull", "--root", str(fresh), "--store", store,
+                               "--gh", self.gh, "--kinds", "audio"], capture_output=True, text=True, timeout=120,
+                              env={**os.environ, "FAKE_GH_DIR": str(self.gh_dir), "FAKE_GH_LOG": str(self.gh_log)})
+        self.assertEqual(back.returncode, 0, back.stderr)
+        for ident, data in originals.items():
+            self.assertEqual((fresh / "audio" / "chanA" / f"{ident}.opus").read_bytes(), data)
+
     def test_status_reports_both_sides(self):
         store = self.tmp / "disk"
         self.sync("push", f"dir:{store}", "--kinds", "audio", "--limit", "2")
@@ -1437,7 +1901,8 @@ class TestCaptionsAndRunner(LaneCase):
     def captions(self, *extra):
         return subprocess.run([sys.executable, "-I", str(PIPE / "fetch_captions.py"), "--root", str(self.root),
                                "--ytdlp", self.ytdlp, "--min-interval", "0", *map(str, extra)], capture_output=True,
-                              text=True, timeout=120, env={**os.environ, "FAKE_LOG": str(self.log)})
+                              text=True, timeout=120, env={**os.environ, "FAKE_LOG": str(self.log),
+                                                           common.YOUTUBE_OVERRIDE: "1"})   # as if the owner had opted in
 
     def test_captions_are_saved_as_tracks_and_plain_text(self):
         ids = [yt("GOOD", 1), yt("NOCA", 2)]
@@ -1505,7 +1970,7 @@ class TestCaptionsAndRunner(LaneCase):
         (self.tmp / "ghstore").mkdir(exist_ok=True)
         full = {**os.environ, "FAKE_LOG": str(self.log), "FAKE_GH_DIR": str(self.tmp / "ghstore"),
                 "FAKE_GH_LOG": str(self.tmp / "gh.log"), "PATH": f"{self.tmp / 'bin'}{os.pathsep}{os.environ['PATH']}",
-                **(env or {})}
+                common.YOUTUBE_OVERRIDE: "1", **(env or {})}                          # as if the owner had opted in
         return subprocess.run([sys.executable, "-I", str(PIPE / "run_all.py"), "--root", str(self.root), "--gh", gh,
                                *map(str, extra)], capture_output=True, text=True, timeout=240, env=full)
 
@@ -1527,6 +1992,7 @@ class TestCaptionsAndRunner(LaneCase):
                                                "fetch_publisher_text.py", "interview_types.py", "catalog.py", "targets.py")]
         self.assertEqual(order, sorted(order))
         self.assertIn("--interview-types live channeling", plan)                  # interviews without channeling stay paused
+        self.assertNotIn("--notes", plan)                                         # the kinds step fetches nothing
         self.assertNotIn("transcribe.py", plan)                                   # speech-to-text only when asked for
         self.assertNotIn("download_audio.py", plan)                               # never YouTube audio from a cloud server
         self.assertIn("dry run", plan)
@@ -1819,7 +2285,7 @@ class TestTargets(LaneCase):
         self.assertGreater(int(by["darryl-anka"]["archive_org_files"]), 900)
         self.assertEqual(by["arkayla"]["state"], "planned: YouTube only")        # a channel and nothing else
         self.assertEqual(by["grace-solaris"]["state"], "planned: no source yet")
-        self.assertIn("home connection", by["arkayla"]["next_step"])
+        self.assertIn(common.YOUTUBE_WAITS, by["arkayla"]["next_step"])        # the YouTube lanes wait for the owner
         row = common.read_csv(ET / "sources" / "creator_files.csv")[0]
         ident = common.item_id("web", row["media_url"])
         common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
@@ -2028,6 +2494,13 @@ class TestListSitePages(LaneCase):
         self.assertIn("nothing registered", out)
         self.assertFalse(self.pages.exists())
         self.assertNotIn("https://elsewhere.example/sitemap.xml", self.asked)    # only the person's own site is read
+
+    def test_robots_txt_is_asked_once_per_site_through_its_turn(self):
+        # what the second review found: the sitemaps and the robots rules each read robots.txt, the second time
+        # 1 ms after the first and outside the site's turn, whatever Retry-After the first answer sent
+        code, out = self.run_tool("--only", "maker", "--match", "^/post/")
+        self.assertEqual(code, 0, out)
+        self.assertEqual(self.asked.count("https://maker.example/robots.txt"), 1, self.asked)
 
     def test_merge_adds_the_matching_pages_once_and_obeys_robots(self):
         code, out = self.run_tool("--only", "maker", "--match", "^/post/", "--merge")
@@ -2626,6 +3099,37 @@ class TestInterviewTypes(unittest.TestCase):
         self.assertIn("bashar", names["darryl-anka"])
         self.assertIn("kryon", names["lee-carroll"])
 
+    def an_episode_without_a_transcript(self, extra):
+        tmp = Path(tempfile.mkdtemp(prefix="etkinds-"))
+        self.addCleanup(shutil.rmtree, tmp, True)
+        root = tmp / "private"
+        show = next(r for r in common.read_csv(ET / "sources" / "podcast_feeds.csv") if r["relation"] == "host")
+        key = feeds.feed_key(show["person_id"], show["feed_url"])
+        ident = common.item_id("pod", show["person_id"], "episode-2")
+        common.atomic_write_text(root / "feeds" / f"{key}.jsonl", json.dumps({
+            "video_id": ident, "guid": "episode-2", "title": "An evening with Darryl Anka", "published": "2026-01-01",
+            "duration_s": 3600, "enclosure_url": "https://cdn.example/2.mp3", "transcripts": [], "youtube_ids": [],
+            "feed_key": key, "person_id": show["person_id"], "relation": "host", **extra}) + "\n")
+
+        def kinds():
+            done = subprocess.run([sys.executable, "-I", str(PIPE / "interview_types.py"), "--root", str(root)],
+                                  capture_output=True, text=True, timeout=120)
+            self.assertEqual(done.returncode, 0, done.stderr)
+            return common.latest_by_key(common.read_jsonl(root / "sources" / "interview_types.jsonl"))[ident]
+        return root, ident, kinds
+
+    def test_the_marks_of_the_show_notes_come_from_the_feed_read_and_nothing_is_fetched(self):
+        # the review: --notes fetched every interview feed again in every cycle, with no refusal handling
+        _, _, kinds = self.an_episode_without_a_transcript({"notes_marks": ["live channeling"]})
+        found = kinds()
+        self.assertEqual((found["kind"], found["basis"], found["marks"]), ("live channeling", "show notes", ["live channeling"]))
+
+    def test_a_kind_found_in_show_notes_stays_until_its_feed_has_been_read_with_marks(self):
+        root, ident, kinds = self.an_episode_without_a_transcript({})          # read before the marks were kept
+        common.append_jsonl(root / "sources" / "interview_types.jsonl",
+                            {"video_id": ident, "kind": "live channeling", "basis": "show notes", "marks": ["channels live"]})
+        self.assertEqual((kinds()["kind"], kinds()["marks"]), ("live channeling", ["channels live"]))
+
 
 # --------------------------------------------------------------------------- recordings deposited on archive.org
 class TestArchiveOrg(LaneCase):
@@ -2735,6 +3239,22 @@ class TestBasharIndexTables(LaneCase):
         self.assertTrue(all(r["kind_found_here"] in ("the show has no registered feed", "episode not found in the show's feed")
                             for r in podcasts))
 
+    def test_archive_org_audio_is_counted_once_per_recording(self):
+        import select_episodes
+        _, sessions, _, summary = self.tables()
+        listed = common.read_csv(ET / "sources" / "archive_org_sessions.csv")
+        distinct = select_episodes.distinct_archive_audio(listed)
+        self.assertLess(len(distinct), sum(r["kind"] == "audio" for r in listed))   # the list holds second encodings
+        self.assertEqual(sum(int(r["archive_org_audio_files"]) for r in sessions), len(distinct))
+        self.assertEqual(summary["bashar"]["archive_org_audio_files"], len(distinct))
+        hours = sum(float(r["duration_s"] or 0) for r in distinct) / 3600
+        self.assertAlmostEqual(sum(float(r["archive_org_audio_hours"]) for r in sessions), hours, delta=0.3)
+        targets = {r["person_id"]: r for r in common.read_csv(self.tmp / "plan" / "targets.csv") if r["person_id"]}
+        self.assertEqual(int(targets["darryl-anka"]["archive_org_files"]), len(distinct))
+        # and it is the set the catalogue lists (the download queue is built from the same rule)
+        catalogue = {r["item_id"] for r in common.read_csv(self.root / "catalog" / "catalog.csv") if r["lane"] == "ia"}
+        self.assertEqual(catalogue, {common.item_id("ia", r["identifier"], r.get("file_name") or "") for r in distinct})
+
     def test_an_interview_of_the_list_shows_the_kind_found_for_its_podcast_episode(self):
         listed = common.read_csv(ET / "draft-package" / "csv" / "bashar_videos_in_repo_by_channel.csv")
         interview = next(r for r in listed if r["channel"] == "Emilio Ortiz")
@@ -2746,6 +3266,715 @@ class TestBasharIndexTables(LaneCase):
         row = next(r for r in recordings if r["video_id"] == interview["video_id"])
         self.assertEqual((row["here"], row["kind_of_recording"].split(":")[0]), ("yes", "interview"))
         self.assertIn("podcast", row["how_here"])
+
+# --------------------------------------------------------------------------- sources, and saving to a private GitHub repository
+class TestSourcesTable(LaneCase):
+    def test_every_source_has_a_safe_link_a_method_and_a_count(self):
+        done = self.cli("catalog.py", "--root", self.root)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        out = self.tmp / "plan"
+        done = self.cli("sources_table.py", "--root", self.root, "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        rows = common.read_csv(out / "sources.csv")
+        methods = {m["method"] for m in common.read_csv(out / "methods.csv")}
+        self.assertGreater(len(rows), 100)
+        self.assertEqual(len({r["source_id"] for r in rows}), len(rows))
+        self.assertTrue(all(r["link"].startswith("https://") for r in rows))                # only https links reach the page
+        self.assertTrue(all(r["data_link"] == "" or r["data_link"].startswith("https://") for r in rows))
+        self.assertTrue({r["method"] for r in rows} <= methods)
+        self.assertTrue(all(set(r["chain"].split(", ")) <= methods for r in rows))
+        self.assertEqual({r["from_cloud"] for r in rows if r["kind"] == "youtube channel"}, {"no"})
+        kryon = [r for r in rows if r["person_id"] == "lee-carroll" and r["kind"] == "audio on own site"]
+        self.assertEqual(len(kryon), 1)                                                     # kryon.com and www.kryon.com are one site
+        self.assertEqual(kryon[0]["items_here"], "0")                                        # an empty private folder holds nothing
+        self.assertEqual({r["items_listed"] for r in rows if r["kind"] in ("official site", "earlier research")}, {""})
+        text = (out / "sources.csv").read_text(encoding="utf-8")
+        self.assertNotIn("watch?v=", text)
+        self.assertNotIn(".mp3", text)                                                       # no address of a single recording
+
+    def test_without_the_private_folder_counts_are_unknown(self):
+        out = self.tmp / "plan2"
+        done = self.cli("sources_table.py", "--no-private", "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        rows = common.read_csv(out / "sources.csv")
+        self.assertEqual({r["items_listed"] for r in rows}, {""})
+        self.assertEqual({r["status"] for r in rows if r["kind"] == "official site"}, {""})
+        self.assertEqual({r["counts_as_of"] for r in rows}, {""})
+
+    # ---- findings of the 2026-11-14 review
+    def private_fixture(self):
+        """A channel listing, a recording on another channel, texts imported from earlier work, and one
+        L/L Research file held as audio whose page text is held too."""
+        listing = self.root / "discover" / "channels" / "darryl-anka.jsonl"
+        listing.parent.mkdir(parents=True)
+        listing.write_text("".join(json.dumps({"video_id": f"AAAAAAAAAA{n}", "person_id": "darryl-anka", "tab": "videos",
+                                               "title": f"listed {n}", "duration_s": 600}) + "\n" for n in range(3)))
+        common.write_csv(self.root / "jobs" / "queue.csv", [{"video_id": "BBBBBBBBBB1", "channel_dir": "darryl-anka",
+                         "url": "https://www.youtube.com/watch?v=BBBBBBBBBB1", "duration_s": 600}],
+                         ["video_id", "channel_dir", "url", "duration_s"])       # a recording on someone else's channel
+        pub = self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl"
+        imported = common.item_id("web", "https://imported.example/session-1")
+        common.append_jsonl(pub, {"video_id": imported, "channel_dir": "sam-the-illusionist", "origin": "import", "status": "ok",
+                                  "imported_from": "archiveshelf repo, inventory/channels/x/session-1.txt", "kind": "plain",
+                                  "source_host": "imported.example", "source_url": "https://imported.example/session-1",
+                                  "n_words": 900})
+        files = common.read_csv(ET / "sources" / "creator_files.csv")
+        pages = {r["page_url"].strip() for r in common.read_csv(ET / "sources" / "publisher_pages.csv")}
+        offered = next(r for r in files if r["person_id"] == "l-l-research" and r["official_page"].strip() in pages)
+        ident = common.item_id("web", offered["media_url"].strip())
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": ident, "channel_dir": "l-l-research", "lane": "web", "status": "ok",
+                             "path": f"l-l-research/{ident}.opus", "bytes": 10, "started": "2026-11-14T03:00:00Z"})
+        common.append_jsonl(pub, {"video_id": common.item_id("web", offered["official_page"].strip()), "channel_dir": "l-l-research",
+                                  "origin": "page", "status": "ok", "kind": "page", "source_host": "llresearch.org",
+                                  "source_url": offered["official_page"].strip(), "n_words": 5000})
+        done = self.cli("catalog.py", "--root", self.root)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        out = self.tmp / "plan"
+        done = self.cli("sources_table.py", "--root", self.root, "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        return common.read_csv(out / "sources.csv"), common.read_csv(out / "methods.csv"), done.stderr
+
+    def test_every_catalogue_item_is_counted_on_one_row_and_a_channel_row_counts_its_own_listing(self):
+        rows, _, said = self.private_fixture()
+        catalogue = common.read_csv(self.root / "catalog" / "catalog.csv")
+        kind_of = {"own": "own podcast", "host": "interview show", "file": "audio on own site", "page": "texts on own site",
+                   "archive": "archive.org"}
+        want = collections.Counter("youtube channel" if r["lane"] == "youtube" else kind_of[r["relation"]] for r in catalogue
+                                   if (r["lane"] == "youtube" and r["tab"]) or (r["lane"] != "youtube" and r["relation"] in kind_of))
+        got = collections.Counter()
+        for r in rows:
+            if r["items_listed"] != "":
+                got[r["kind"]] += int(r["items_listed"])
+        self.assertEqual(got, want)                                   # nothing lands on no row
+        anka = next(r for r in rows if r["person_id"] == "darryl-anka" and r["kind"] == "youtube channel")
+        self.assertEqual(anka["items_listed"], "3")                   # his channel's own listing, not the other channel's video
+        self.assertIn("1 catalogue item(s) are counted on no row", said)
+        sam = [r for r in rows if r["person_id"] == "sam-the-illusionist" and r["kind"] == "texts on own site"]
+        self.assertEqual([(r["source"], r["items_listed"], r["texts_from_source"]) for r in sam],
+                         [("Text pages on imported.example", "1", "1")])
+        self.assertIn("imported into this archive from earlier work (archiveshelf repo)", sam[0]["verification"])
+        self.assertNotIn("inventory/", (self.tmp / "plan" / "sources.csv").read_text(encoding="utf-8"))   # no private path
+        made = json.loads((self.root / "public_export" / "coverage.json").read_text(encoding="utf-8"))["generated"]
+        self.assertEqual({r["counts_as_of"] for r in rows if r["items_listed"] != ""}, {made})
+
+    def test_here_counts_what_the_source_yields_and_the_three_holdings_stay_apart(self):
+        rows, _, _ = self.private_fixture()
+        files = next(r for r in rows if r["person_id"] == "l-l-research" and r["kind"] == "audio on own site")
+        self.assertEqual((files["items_here"], files["audio_here"], files["texts_from_source"], files["texts_made_here"]),
+                         ("1", "1", "1", "0"))                       # the page's text does not make the file 'here'
+        self.assertEqual(files["status"], f"1 of {files['items_listed']} here; 1 with the text of the page that offers it")
+        sam = next(r for r in rows if r["person_id"] == "sam-the-illusionist" and r["kind"] == "texts on own site")
+        self.assertEqual((sam["items_here"], sam["audio_here"], sam["status"]), ("1", "0", "all here"))   # text pages: text
+
+    def test_a_channel_never_listed_shows_no_count_and_says_so(self):
+        rows, _, _ = self.private_fixture()
+        kryon = next(r for r in rows if r["person_id"] == "lee-carroll" and r["kind"] == "youtube channel")
+        self.assertEqual((kryon["items_listed"], kryon["items_here"], kryon["status"]), ("", "", "not listed yet"))
+        anka = next(r for r in rows if r["person_id"] == "darryl-anka" and r["kind"] == "youtube channel")
+        self.assertTrue(anka["status"].startswith("listed;"))
+
+    def test_notes_say_what_they_count_and_no_claim_the_data_contradicts(self):
+        import select_episodes
+        import sources_table
+        rows, methods, _ = self.private_fixture()
+        listed = common.read_csv(ET / "sources" / "archive_org_sessions.csv")
+        audio = sum(r["kind"] == "audio" for r in listed)
+        distinct = len(select_episodes.distinct_archive_audio(listed))
+        ia = next(r for r in rows if r["kind"] == "archive.org")
+        self.assertEqual(ia["items_listed"], str(distinct))
+        self.assertIn(f"{audio} audio files listed ({audio - distinct} of them a second encoding of a recording, counted once)",
+                      ia["note"])
+        offered = {r["official_page"].strip() for r in common.read_csv(ET / "sources" / "creator_files.csv")}
+        pages = [r for r in common.read_csv(ET / "sources" / "publisher_pages.csv") if r["person_id"] == "l-l-research"]
+        texts = next(r for r in rows if r["person_id"] == "l-l-research" and r["kind"] == "texts on own site")
+        self.assertEqual(texts["note"], f"{len(pages)} pages registered, "
+                                        f"{sum(r['page_url'].strip() in offered for r in pages)} of them counted with the audio file they offer")
+        table = (self.tmp / "plan" / "sources.csv").read_text(encoding="utf-8") + (self.tmp / "plan" / "methods.csv").read_text(encoding="utf-8")
+        self.assertNotIn("only interviews with live channeling are downloaded", table.lower())
+        rule = next(m for m in methods if m["method"] == "interview-kind")["rules"]
+        self.assertIn("for every listed episode", rule)
+        note = sources_table.interview_note({"live channeling": collections.Counter(listed=1, audio=1),
+                                             "conversation": collections.Counter(listed=3, audio=2, audio_before_rule=2, text_only=1)})
+        self.assertEqual(note, "3 conversation, 1 live channeling; audio is queued only for live channeling, the feed's own "
+                               "transcript for every listed episode; of the other kinds, 2 as audio fetched before that rule "
+                               "(14 November) and kept, 1 as the feed's transcript only")
+
+    def test_no_row_links_the_archiveshelf_repository(self):
+        rows, _, _ = self.private_fixture()
+        text = (self.tmp / "plan" / "sources.csv").read_text(encoding="utf-8")
+        self.assertNotIn("github.com/occult-kranti/archiveshelf", text)
+        shelf = [r for r in rows if r["source"] == "ArchiveShelf"]
+        self.assertTrue(shelf)
+        self.assertEqual({r["link"] for r in shelf},
+                         {"https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/sources/archiveshelf_intake.csv"})
+
+    def test_no_official_site_is_a_page_on_a_platform(self):
+        import discover_sites
+        sites = common.read_csv(ET / "sources" / "official_sites.csv")
+        self.assertEqual([r["domain"] for r in sites if discover_sites.is_platform(r["domain"])], [])
+        for host in ("crowdcast.io", "directory.libsyn.com", "liff.line.me", "lin.ee"):
+            self.assertTrue(discover_sites.is_platform(host), host)
+        self.assertEqual(discover_sites.website_domains(["https://www.crowdcast.io/@someone", "https://someone.org/"]),
+                         ["someone.org"])
+
+
+FAKE_GH_SAVE = r"""#!/bin/sh
+echo "gh $*" >> "$SAVE_LOG"
+case "$*" in
+  "auth status"*) exit 0 ;;
+  "api user"*) echo me ;;
+  *"repo view"*"--json isPrivate"*) echo "$FAKE_PRIVATE" ;;
+  *"repo view"*) [ -n "$FAKE_EXISTS" ] || exit 1 ;;
+  *"repo create"*) exit 0 ;;
+esac
+"""
+FAKE_PY_SAVE = r"""#!/bin/sh
+echo "python token=${GITHUB_TOKEN:-none} $*" >> "$SAVE_LOG"
+"""
+
+
+def shell_tool(bin_dir: Path, name: str, source: str) -> str:
+    """A stand-in written as a POSIX shell script (make_tool writes Python ones)."""
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    path = bin_dir / name
+    path.write_text(source, encoding="utf-8")
+    path.chmod(0o755)
+    return str(path)
+
+
+@unittest.skipIf(os.name == "nt", "the script is for the Codespace's shell")
+class TestSaveToGithub(LaneCase):
+    def save(self, private, exists="", **extra):
+        bin_dir = self.tmp / "savebin"
+        shell_tool(bin_dir, "gh", FAKE_GH_SAVE)
+        python = shell_tool(bin_dir, "python-fake", FAKE_PY_SAVE)
+        log = self.tmp / "save.log"
+        env = {**os.environ, "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}", "SAVE_LOG": str(log),
+               "FAKE_PRIVATE": private, "FAKE_EXISTS": exists, "ET_PYTHON": str(python), "ET_PRIVATE_DIR": str(self.root),
+               "ET_MIRROR_INTERVAL": "0", "ET_ARCHIVE_CHECKOUT": str(self.tmp / "checkout"), "GITHUB_TOKEN": "codespace-token",
+               "ET_HOLD_UNTRANSCRIBED": "", "ET_HOLD_UNTRANSCRIBED_FOR": "", **extra}
+        done = subprocess.run(["bash", str(PIPE / "save_to_github.sh")], capture_output=True, text=True, timeout=60, env=env)
+        return done, log
+
+    def test_the_hold_options_reach_the_sync(self):
+        done, log = self.save(private="true", exists="1")
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        self.assertTrue(self.wait_for(log, "sync_archive.py push"), log.read_text())
+        self.assertNotIn("--hold-untranscribed", log.read_text())               # by default only a transcriber's own note holds
+        log.unlink()
+        done, log = self.save(private="true", exists="1", ET_HOLD_UNTRANSCRIBED="1", ET_HOLD_UNTRANSCRIBED_FOR="darryl-anka")
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        self.assertTrue(self.wait_for(log, "sync_archive.py push"), log.read_text())
+        self.assertIn("--hold-untranscribed --hold-untranscribed-for darryl-anka", log.read_text())
+
+    def test_a_failed_mirror_run_is_logged_as_one_and_the_loop_goes_on(self):
+        failing = shell_tool(self.tmp / "failbin", "python-fails", '#!/bin/sh\necho "STOPPED: something" >&2\nexit 5\n')
+        env = {**os.environ, "ET_PYTHON": failing, "ET_PRIVATE_DIR": str(self.root), "ET_MIRROR_INTERVAL": "0",
+               "ET_ARCHIVE_CHECKOUT": str(self.tmp / "checkout")}
+        done = subprocess.run(["bash", str(PIPE / "save_to_github.sh"), "--mirror-loop", "me/private"], capture_output=True,
+                              text=True, timeout=60, env=env)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertRegex(done.stderr, r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ MIRROR RUN FAILED \(exit 5\)")
+
+    def wait_for(self, log, text, seconds=20):
+        import time
+        end = time.time() + seconds
+        while time.time() < end:
+            if log.exists() and text in log.read_text():
+                return True
+            time.sleep(0.2)
+        return False
+
+    def test_a_repository_that_is_not_private_is_refused_before_anything_starts(self):
+        done, log = self.save(private="false", exists="1")
+        self.assertEqual(done.returncode, 5, done.stdout + done.stderr)
+        self.assertIn("is not private", done.stderr)
+        calls = log.read_text()
+        self.assertNotIn("python", calls)                                                   # no sync, no mirror
+        self.assertNotIn("repo create", calls)
+
+    def test_a_missing_repository_is_created_private_and_both_halves_start_without_the_codespace_token(self):
+        done, log = self.save(private="true")
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        self.assertTrue(self.wait_for(log, "mirror_texts.py"), log.read_text())
+        self.assertTrue(self.wait_for(log, "sync_archive.py push"), log.read_text())
+        calls = log.read_text()
+        self.assertIn("repo create me/et-channelers-archive --private --add-readme", calls)
+        self.assertIn("--store gh:me/et-channelers-archive@archive-v1 --delete audio", calls)
+        self.assertIn("--repo me/et-channelers-archive", calls)
+        self.assertNotIn("token=codespace-token", calls)                                    # the user's login, not the Codespace's
+
+
+# --------------------------------------------------------------------------- youtube.com's robots.txt
+# youtube.com's robots.txt as it read on 2026-11-14
+YOUTUBE_ROBOTS = """# robots.txt file for YouTube
+User-agent: Mediapartners-Google*
+Disallow:
+
+User-agent: *
+Disallow: /api/
+Disallow: /channel_picker
+Disallow: /comment
+Disallow: /feeds/videos.xml
+Disallow: /file_download
+Disallow: /get_video
+Disallow: /get_video_info
+Disallow: /get_midroll_info
+Disallow: /live_chat
+Disallow: /login
+Disallow: /qr
+Disallow: /results
+Disallow: /signup
+Disallow: /t/terms
+Disallow: /timedtext_video
+Disallow: /verify_age
+Disallow: /watch_ajax
+Disallow: /watch_fragments_ajax
+Disallow: /watch_popup
+Disallow: /watch_queue_ajax
+Disallow: /youtubei/
+
+Sitemap: https://www.youtube.com/sitemaps/sitemap.xml
+"""
+FAKE_YTDLP_CALLS = r"""
+import os, sys
+with open(os.environ["YT_LOG"], "a") as fh:
+    fh.write(" ".join(sys.argv[1:]) + "\n")
+if "--version" in sys.argv:
+    print("2099.01.01-fake"); sys.exit(0)
+sys.stderr.write("ERROR: stand-in yt-dlp\n"); sys.exit(1)
+"""
+
+
+class TestYouTubeRobotsRule(LaneCase):
+    """youtube.com's robots.txt disallows /youtubei/ (yt-dlp's listings beyond the first page, its player, its
+    captions) and /feeds/videos.xml (the channel RSS). Until the owner decides, nothing may request them."""
+
+    def setUp(self):
+        super().setUp()
+        self.ytdlp = make_tool(self.tmp / "bin", "yt-dlp", FAKE_YTDLP_CALLS)
+        self.ytlog = self.tmp / "yt.log"
+        index = {"channels": [{"person": "alpha", "person_name": "Alpha", "status": "ok", "video_count": 3,
+                               "channel": {"url": "https://www.youtube.com/@alpha", "handle": "@alpha"}, "videos": []}]}
+        self.index = self.tmp / "index.json"
+        self.index.write_text(json.dumps(index))
+        common.write_csv(self.root / "jobs" / "queue.csv", [{"video_id": "AAAAAAAAAA1", "channel_dir": "alpha",
+                         "url": "https://www.youtube.com/watch?v=AAAAAAAAAA1", "duration_s": 600, "sources": "test", "shard": 0}],
+                         ["video_id", "channel_dir", "url", "duration_s", "sources", "shard"])
+
+    def env(self, on):
+        env = {k: v for k, v in os.environ.items() if k != common.YOUTUBE_OVERRIDE}    # off: the variable is not there
+        env["YT_LOG"] = str(self.ytlog)
+        if on:
+            env[common.YOUTUBE_OVERRIDE] = "1"
+        return env
+
+    def step(self, script, *args, on=False):
+        return subprocess.run([sys.executable, "-I", str(PIPE / script), *map(str, args)], capture_output=True, text=True,
+                              timeout=120, env=self.env(on))
+
+    def entry_points(self):
+        """Every step that runs yt-dlp, with what it needs to run."""
+        return {"discover.py": ["--root", self.root, "--ytdlp", self.ytdlp, "--index", self.index, "--workers", "1",
+                                "--min-interval", "0", "--extra-channels", self.tmp / "none.csv"],
+                "fetch_captions.py": ["--root", self.root, "--ytdlp", self.ytdlp, "--all", "--min-interval", "0"],
+                "download_audio.py": ["--root", self.root, "--ytdlp", self.ytdlp, "--ffmpeg", self.ffmpeg, "--ffprobe", "none",
+                                      "--all", "--min-interval", "0"]}
+
+    def files(self):
+        return sorted(str(p.relative_to(self.root)) for p in self.root.rglob("*"))
+
+    def asked_youtube(self):
+        """The stand-in's calls other than asking its version."""
+        return [l for l in self.ytlog.read_text().splitlines() if l.strip() != "--version"] if self.ytlog.exists() else []
+
+    def test_every_youtube_step_sends_nothing_by_default(self):
+        before = self.files()
+        for script, args in self.entry_points().items():
+            done = self.step(script, *args)
+            self.assertEqual(done.returncode, common.SKIPPED_BY_RULE, f"{script}: {done.stderr}")
+            self.assertIn("skipped: ", done.stderr)
+            self.assertIn("robots.txt disallows /youtubei/ and /feeds/videos.xml", done.stderr)
+            self.assertIn("HANDOFF 6", done.stderr)
+            self.assertEqual(len(done.stderr.strip().splitlines()), 1, done.stderr)          # one line
+        self.assertFalse(self.ytlog.exists())                                               # yt-dlp was never started
+        self.assertEqual(self.files(), before)                                              # and nothing was written
+
+    def test_every_youtube_step_runs_when_the_owner_opted_in(self):
+        for script, args in self.entry_points().items():
+            self.ytlog.unlink(missing_ok=True)
+            done = self.step(script, *args, on=True)
+            self.assertNotEqual(done.returncode, common.SKIPPED_BY_RULE, f"{script}: {done.stderr}")
+            self.assertIn(f"{common.YOUTUBE_OVERRIDE}=1", done.stderr)
+            self.assertTrue(self.asked_youtube(), f"{script} did not run yt-dlp: {done.stderr}")
+        self.assertEqual(self.step("discover.py", *self.entry_points()["discover.py"],
+                                   on=False).returncode, common.SKIPPED_BY_RULE)           # "1" only: unset is off
+
+    def test_the_gate_stands_in_front_of_every_step_that_runs_yt_dlp(self):
+        import ast
+        import re
+        runs_ytdlp = sorted(p.name for p in PIPE.glob("*.py")
+                            if re.search(r"run_cmd\(\s*(?:\[args\.ytdlp|ytdlp_cmd\()", p.read_text(encoding="utf-8")))
+        self.assertEqual(runs_ytdlp, sorted(self.entry_points()))                          # no other step runs it
+        for name in runs_ytdlp:
+            main = next(node for node in ast.parse((PIPE / name).read_text(encoding="utf-8")).body
+                        if isinstance(node, ast.FunctionDef) and node.name == "main")
+            parsed = next(i for i, stmt in enumerate(main.body) if "parse_args()" in ast.unparse(stmt))
+            self.assertIn("youtube_gate(", ast.unparse(main.body[parsed + 1]), f"{name}: the gate must come first")
+        # Python's own requests to YouTube: every step that builds a YouTube address and fetches it reads robots.txt
+        fetchers = sorted(p.name for p in PIPE.glob("*.py") if re.search(r"get_bytes\(|open_url\(", p.read_text(encoding="utf-8"))
+                          and "https://www.youtube.com/" in p.read_text(encoding="utf-8"))
+        self.assertEqual(fetchers, ["discover_sites.py", "host_channels.py"])
+        for name in fetchers:
+            self.assertIn("robots.allowed(", (PIPE / name).read_text(encoding="utf-8"), name)
+
+    def test_the_cycle_reports_the_listing_skipped_by_rule_and_goes_on(self):
+        done = self.step("run_cycle.py", "--root", self.root, "--go", "--ytdlp", self.ytdlp,
+                         "--skip", "feeds,queue,fetch,texts,kinds,tables")
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)                      # not a failure, and not 9
+        self.assertRegex(done.stdout, r"list\s+discover\.py\s+\S+\s+skipped by rule: youtube\.com's robots\.txt")
+        self.assertIn("list    skipped by rule", done.stdout)                               # the plan says so first
+        self.assertFalse(self.ytlog.exists())
+
+    def test_the_runner_leaves_the_youtube_lanes_out_and_runs_the_rest(self):
+        store = f"dir:{self.tmp / 'disk'}"
+        done = self.step("run_all.py", "--root", self.root, "--store", store, "--lanes", "youtube,captions,texts")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertIn("skipped: the youtube and captions lane(s)", done.stderr)
+        for script in ("discover.py", "select_jobs.py", "download_audio.py", "fetch_captions.py"):
+            self.assertNotIn(script, done.stdout)
+        self.assertIn("fetch_publisher_text.py", done.stdout)
+        only = self.step("run_all.py", "--root", self.root, "--store", store, "--lanes", "youtube,captions", "--go")
+        self.assertEqual(only.returncode, common.SKIPPED_BY_RULE, only.stderr)              # nothing left to run
+        self.assertNotIn("PLAN", only.stdout)
+        on = self.step("run_all.py", "--root", self.root, "--store", store, "--lanes", "youtube,captions", on=True)
+        self.assertIn("download_audio.py", on.stdout)
+        self.assertFalse(self.ytlog.exists())
+
+    def no_youtube_connection(self):
+        """Any attempt to open a connection to a YouTube host fails the test instead of reaching the network."""
+        from unittest import mock
+        import socket
+        real = socket.create_connection
+
+        def guard(address, *args, **kwargs):
+            if "youtube" in str(address[0]):
+                raise AssertionError(f"a connection to {address[0]} was attempted")
+            return real(address, *args, **kwargs)
+        return mock.patch("socket.create_connection", guard)
+
+    def test_no_request_and_no_redirect_reaches_a_youtube_path_its_robots_txt_disallows(self):
+        from unittest import mock
+        Publisher.routes["/hop"] = (302, "location", b"http://www.youtube.com/youtubei/v1/browse")
+        with self.no_youtube_connection():
+            for url in ("https://www.youtube.com/feeds/videos.xml?channel_id=UC123", "https://www.youtube.com/youtubei/v1/player",
+                        "https://m.youtube.com/api/timedtext?v=AAAAAAAAAA1", f"{self.base}/hop"):
+                with self.assertRaises(feeds.FetchError, msg=url) as caught:
+                    feeds.get_bytes(url, timeout=10)
+                self.assertEqual(caught.exception.klass, "robots", url)
+        self.assertEqual(Publisher.hits, ["/hop"])                       # the redirect was asked for, not where it led
+        self.assertIsNone(feeds.robots_refusal("https://www.youtube.com/@someone"))      # paths its robots.txt allows
+        self.assertIsNone(feeds.robots_refusal("https://www.youtube.com/oembed?format=json&url=x"))
+        with mock.patch.dict(os.environ, {common.YOUTUBE_OVERRIDE: "1"}):
+            self.assertIsNone(feeds.robots_refusal("https://www.youtube.com/youtubei/v1/browse"))   # the owner's decision
+
+    def test_a_youtube_channel_feed_in_the_registry_is_recorded_as_refused_by_robots_not_read(self):
+        import fetch_feeds
+        row = {"feed_key": "alpha--00000000", "person_id": "alpha", "relation": "own",
+               "feed_url": "https://www.youtube.com/feeds/videos.xml?channel_id=UC123"}
+        with self.no_youtube_connection():
+            rec = fetch_feeds.fetch_one(row, self.root / "feeds", common.HostGates(0), 10)
+        self.assertEqual((rec["status"], rec["error_class"]), ("error", "robots"))
+
+    def test_our_robots_check_reads_youtubes_rules_the_way_youtube_wrote_them(self):
+        import fetch_publisher_text
+        Publisher.routes["/robots.txt"] = (200, "text/plain", YOUTUBE_ROBOTS.encode())
+        robots = fetch_publisher_text.Robots()
+        for path, allowed in (("/youtubei/v1/browse", False), ("/feeds/videos.xml?channel_id=UC1", False),
+                              ("/api/timedtext?v=x", False), ("/get_video_info", False), ("/@someone", True),
+                              ("/channel/UC123", True), ("/oembed?format=json&url=x", True), ("/watch?v=x", True)):
+            self.assertEqual(robots.allowed(self.base + path), allowed, path)
+        listed = [line.split(":", 1)[1].strip() for line in YOUTUBE_ROBOTS.splitlines()
+                  if line.startswith("Disallow:") and line.split(":", 1)[1].strip()]
+        self.assertEqual(sorted(listed), sorted(common.YOUTUBE_DISALLOWED))              # the same list as the code's
+
+    def test_the_tables_no_longer_present_the_youtube_lanes_as_allowed(self):
+        out = self.tmp / "plan"
+        done = self.cli("sources_table.py", "--no-private", "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        methods = {m["method"]: m for m in common.read_csv(out / "methods.csv")}
+        for name in ("youtube-listing", "youtube-audio", "youtube-captions"):
+            self.assertIn("Off by rule until the owner decides", methods[name]["rules"], name)
+        self.assertIn(f"{common.YOUTUBE_OVERRIDE}=1", methods["youtube-listing"]["rules"])
+        rows = common.read_csv(out / "sources.csv")
+        self.assertTrue(all("off by rule" in r["collects"] for r in rows if r["kind"] == "youtube channel"))
+        # a coverage table written before the lanes were held still says to run them; the target list words it anew
+        common.atomic_write_text(self.root / "public_export" / "coverage.json", json.dumps({"rows": [
+            {"person_id": "darryl-anka", "distinct_listed": 10, "distinct_captured": 2, "items_outside_youtube": 5,
+             "next_step": "YouTube only: run the YouTube lane on a home connection"}]}))
+        done = self.cli("targets.py", "--root", self.root, "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        targets = common.read_csv(out / "targets.csv")
+        anka = next(r for r in targets if r["person_id"] == "darryl-anka")
+        self.assertEqual(anka["next_step"], f"YouTube only: {common.YOUTUBE_WAITS}")
+        self.assertFalse([r["next_step"] for r in targets if "home connection" in r["next_step"]])
+
+
+# --------------------------------------------------------------------------- the text mirror in the private repository
+@unittest.skipIf(not shutil.which("git"), "git is not installed")
+class TestMirrorTexts(LaneCase):
+    """The 2026-11-14 review: the push could go to another repository than the one checked for privacy, and
+    one failed push beside a second writer left the mirror stuck in a rebase for good."""
+
+    def setUp(self):
+        super().setUp()
+        from unittest import mock
+        import mirror_texts
+        self.mod = mirror_texts
+        config = self.tmp / "gitconfig"
+        config.write_text("")
+        patch = mock.patch.dict(os.environ, {"GIT_CONFIG_GLOBAL": str(config), "GIT_CONFIG_NOSYSTEM": "1",
+                                             "GIT_TERMINAL_PROMPT": "0"})
+        patch.start()
+        self.addCleanup(patch.stop)
+        self.remote = self.bare("private")
+        self.texts = 0
+
+    def run_git(self, cwd, *args):
+        done = subprocess.run(["git", "-C", str(cwd), "-c", "user.name=t", "-c", "user.email=t@example.invalid", *args],
+                              capture_output=True, text=True)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        return done.stdout.strip()
+
+    def bare(self, name):
+        path = self.tmp / f"{name}.git"
+        subprocess.run(["git", "init", "--quiet", "--bare", "--initial-branch=main", str(path)], check=True)
+        seed = self.tmp / f"seed-{name}"
+        subprocess.run(["git", "clone", "--quiet", path.as_uri(), str(seed)], check=True, capture_output=True)
+        (seed / "README.md").write_text("seed\n")
+        self.run_git(seed, "add", "-A")
+        self.run_git(seed, "commit", "--quiet", "-m", "seed")
+        self.run_git(seed, "push", "--quiet", "origin", "HEAD:refs/heads/main")
+        return path.as_uri()
+
+    def clone(self, name, remote=None):
+        path = self.tmp / name
+        subprocess.run(["git", "clone", "--quiet", remote or self.remote, str(path)], check=True, capture_output=True)
+        return path
+
+    def add_text(self):
+        ident = common.item_id("pod", "mirror", str(self.texts))
+        self.texts += 1
+        folder = self.root / "transcripts_publisher" / "chanA"
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / f"{ident}.txt").write_text(f"a text from the source, number {self.texts}\n")
+        common.append_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl",
+                            {"video_id": ident, "channel_dir": "chanA", "status": "ok", "n_words": 8})
+        return ident
+
+    def on_remote(self, name, remote=None):
+        """The texts a fresh clone of the remote holds."""
+        fresh = self.clone(name, remote)
+        return sorted(p.stem for p in (fresh / "texts").rglob("*.txt")) if (fresh / "texts").exists() else []
+
+    def test_a_checkout_without_origin_head_still_finds_the_remote_branch(self):
+        # what the review found: with no origin/HEAD (a clone made while the store was still empty), the branch
+        # came out as "HEAD", and the push made a branch of that name on the remote instead of updating main
+        checkout = self.clone("no-origin-head")
+        self.run_git(checkout, "remote", "set-head", "origin", "-d")
+        self.run_git(checkout, "config", "remote.origin.followRemoteHEAD", "never")    # newer git re-creates it
+        self.assertEqual(self.mod.start_from_remote(checkout), "main")
+
+    def test_a_remote_that_is_not_the_checked_repository_is_refused_before_anything_happens(self):
+        public = self.bare("public")
+        gh = shell_tool(self.tmp / "ghbin", "gh", '#!/bin/sh\necho "gh $*" >> "$GH_LOG"\necho true\n')
+        log = self.tmp / "gh.log"
+        self.add_text()
+        done = subprocess.run([sys.executable, "-I", str(PIPE / "mirror_texts.py"), "--root", str(self.root), "--repo", "me/private",
+                               "--remote", public, "--checkout", str(self.tmp / "new-checkout"), "--gh", gh, "--push"],
+                              capture_output=True, text=True, timeout=120, env={**os.environ, "GH_LOG": str(log)})
+        self.assertEqual(done.returncode, 5, done.stdout + done.stderr)
+        self.assertIn("is not an address of me/private", done.stderr)
+        self.assertFalse((self.tmp / "new-checkout").exists())
+        self.assertEqual(self.on_remote("public-after", public), [])               # nothing reached the other repository
+        self.assertFalse(log.exists())                                             # refused before even asking GitHub
+        for good in ("https://github.com/me/private.git", "https://github.com/Me/Private", "git@github.com:me/private.git",
+                     "ssh://git@github.com/me/private.git"):
+            self.assertEqual(self.mod.github_repo(good), "me/private", good)
+        for bad in ("https://github.com/me/public.git", "https://github.com.example.org/me/private.git", "file:///me/private.git",
+                    "https://user@github.com/me/private.git", "git@gitlab.com:me/private.git"):
+            self.assertNotEqual(self.mod.github_repo(bad), "me/private", bad)
+
+    def test_a_checkout_that_would_push_anywhere_else_is_refused(self):
+        other = self.bare("other")
+        for n, setting in enumerate((["config", "remote.origin.pushurl", other],
+                                     ["remote", "set-url", "--add", "origin", other],
+                                     ["config", f"url.{other}.pushInsteadOf", self.remote])):
+            checkout = self.clone(f"checkout-{n}")
+            self.mod.check_origin(checkout, self.remote)                          # a plain clone passes
+            self.run_git(checkout, *setting)
+            with self.assertRaises(self.mod.Refused, msg=setting):
+                self.mod.check_origin(checkout, self.remote)
+            self.add_text()
+            with self.assertRaises(self.mod.Refused):
+                self.mod.sync(self.root, checkout, self.remote, push=True)
+        self.assertEqual(self.on_remote("other-after", other), [])                # nothing reached the other repository
+
+    def test_a_run_after_a_failed_push_and_a_second_writer_starts_from_the_remote_and_pushes_every_text(self):
+        first = self.add_text()
+        a = self.clone("a")
+        self.assertTrue(self.mod.sync(self.root, a, self.remote, push=True)[2])
+        b = self.clone("b")                                                        # a second writer changes the README
+        readme = (b / "README.md").read_text().splitlines()
+        (b / "README.md").write_text("\n".join(readme[:-1] + ["Last updated by hand: the owner's line"]) + "\n")
+        self.run_git(b, "commit", "--quiet", "-am", "owner edit")
+        self.run_git(b, "push", "--quiet", "origin", "HEAD:refs/heads/main")
+        second = self.add_text()                                                   # meanwhile A made a commit it never pushed
+        self.mod.mirror(self.root, a)
+        self.run_git(a, "add", "-A")
+        self.run_git(a, "commit", "--quiet", "-m", "unpushed")
+        subprocess.run(["git", "-C", str(a), "pull", "--quiet", "--rebase"], capture_output=True)   # what the old code did
+        self.assertTrue((a / ".git" / "rebase-merge").exists() or (a / ".git" / "rebase-apply").exists(), "no stuck rebase to recover from")
+        third = self.add_text()
+        changed, _, pushed = self.mod.sync(self.root, a, self.remote, push=True)
+        self.assertTrue(pushed)
+        self.assertEqual(self.on_remote("after"), sorted([first, second, third]))
+        self.assertFalse((a / ".git" / "rebase-merge").exists() or (a / ".git" / "rebase-apply").exists())
+
+    def test_nothing_is_written_through_a_link_that_leads_out_of_the_checkout(self):
+        self.add_text()
+        public = self.tmp / "public-tree"
+        (public / "docs" / "texts").mkdir(parents=True)
+        for name, link_to in (("texts", public / "docs" / "texts"), ("catalog.csv", public / "catalog.csv")):
+            checkout = self.clone(f"linked-{name}")
+            if (checkout / name).exists():
+                shutil.rmtree(checkout / name) if (checkout / name).is_dir() else (checkout / name).unlink()
+            (checkout / name).symlink_to(link_to, target_is_directory=name == "texts")
+            with self.assertRaises(self.mod.Refused, msg=name):
+                self.mod.mirror(self.root, checkout)
+        self.assertEqual(list(public.rglob("*.*")), [])                           # nothing landed in the other tree
+        plain = self.clone("plain")
+        changed, counts = self.mod.mirror(self.root, plain)
+        self.assertGreater(changed, 0)
+        self.assertEqual(counts["from_source"], 1)
+
+
+# --------------------------------------------------------------------------- one downloader, one loop, one cycle at a time
+@unittest.skipIf(os.name == "nt", "file locks are for the Codespace's and the laptop's shell")
+class TestOneAtATime(LaneCase):
+    """The 2026-11-14 review: the loop's 'never two downloaders' was one look at the process list, and two
+    downloaders ran at once on overlapping queues in its first cycle."""
+
+    def test_a_second_downloader_waits_for_the_first_and_skips_what_it_finished(self):
+        rows = []
+        for i in range(3):
+            Publisher.routes[f"/media/{i}.mp3"] = (200, "audio/mpeg", AUDIO + bytes([i]))
+            rows.append({"video_id": common.item_id("pod", "feed", str(i)), "url": f"{self.base}/media/{i}.mp3",
+                         "channel_dir": "chanA", "duration_s": 600, "lane": "pod", "relation": "own"})
+        self.write_queue(rows)
+        first = common.downloader_lock(self.root / "jobs", "download_enclosures.py")      # a downloader is running
+        second = subprocess.Popen([sys.executable, "-I", str(PIPE / "download_enclosures.py"), "--root", str(self.root),
+                                   "--ffmpeg", self.ffmpeg, "--ffprobe", "ffprobe-not-installed", "--min-interval", "0",
+                                   "--backoff", "0.01", "--min-bytes", "10", "--all"], stderr=subprocess.PIPE, text=True)
+        self.assertIn("waiting: another download_enclosures is running", second.stderr.readline())   # its first word
+        self.assertEqual(Publisher.hits, [])                                    # it waits, and has asked nothing
+        ident = rows[0]["video_id"]                                             # meanwhile the first one finishes item 0
+        done = self.root / "audio" / "chanA" / f"{ident}.opus"
+        done.parent.mkdir(parents=True, exist_ok=True)
+        done.write_bytes(b"FAKEOPUS" + b"0" * 100)
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": ident, "channel_dir": "chanA", "lane": "pod", "status": "ok",
+                             "path": f"chanA/{ident}.opus", "bytes": done.stat().st_size})
+        for handle in first:
+            handle.close()                                                      # the first one has ended
+        _, err = second.communicate(timeout=60)
+        self.assertEqual(second.returncode, 0, err)
+        self.assertEqual(sorted(Publisher.hits), ["/media/1.mp3", "/media/2.mp3"])   # item 0 is not fetched again
+
+    def test_shards_of_one_queue_run_together_but_never_beside_a_run_of_the_whole_queue(self):
+        import fcntl
+        jobs = self.tmp / "jobs"
+        held = common.downloader_lock(jobs, "download_enclosures.py", "0/2")
+        other = []
+        thread = threading.Thread(target=lambda: other.extend(common.downloader_lock(jobs, "download_enclosures.py", "1/2")))
+        thread.start()
+        thread.join(10)
+        self.assertFalse(thread.is_alive(), "shard 1/2 should not wait for shard 0/2")
+        for name in ("download_enclosures.lock", "download_enclosures.shard-0-of-2.lock"):
+            with open(jobs / name, "a") as probe, self.assertRaises(BlockingIOError):
+                fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)               # the whole queue, or shard 0 again, would wait
+        for handle in held + other:
+            handle.close()
+        with open(jobs / "download_enclosures.lock", "a") as probe:
+            fcntl.flock(probe, fcntl.LOCK_EX | fcntl.LOCK_NB)                   # free once both shards have ended
+
+    def test_a_second_collection_loop_leaves_at_once(self):
+        import signal
+        import time
+        if not shutil.which("flock"):
+            self.skipTest("flock(1) is not installed")
+        log = self.tmp / "loop.log"
+        fake = shell_tool(self.tmp / "loopbin", "python-fake", '#!/bin/sh\necho "cycle $*" >> "$LOOP_LOG"\nsleep 30\n')
+        env = {**os.environ, "ET_PYTHON": fake, "ET_PRIVATE_DIR": str(self.root), "LOOP_LOG": str(log)}
+        first = subprocess.Popen(["bash", str(PIPE / "keep_collecting.sh")], env=env, stdout=subprocess.DEVNULL,
+                                 stderr=subprocess.DEVNULL, start_new_session=True)
+        self.addCleanup(lambda: first.poll() is None and os.killpg(first.pid, signal.SIGTERM))
+        end = time.time() + 20
+        while not (log.exists() and "cycle" in log.read_text()) and time.time() < end:
+            time.sleep(0.1)
+        second = subprocess.run(["bash", str(PIPE / "keep_collecting.sh")], env=env, capture_output=True, text=True, timeout=30)
+        self.assertEqual(second.returncode, 0, second.stderr)
+        self.assertIn("another keep_collecting.sh is running", second.stdout)
+        self.assertEqual(len(log.read_text().splitlines()), 1, log.read_text())   # the second started no cycle
+
+    def test_a_loop_stopped_with_kill_can_be_started_again_at_once(self):
+        # what the review found: the loop's children kept its lock, so after `kill <pid>`, as its header says,
+        # a new loop reported another one running and left, and nothing was collected for hours
+        import signal
+        import time
+        if not shutil.which("flock"):
+            self.skipTest("flock(1) is not installed")
+        log = self.tmp / "loop.log"
+        fake = shell_tool(self.tmp / "loopbin", "python-fake", '#!/bin/sh\necho "cycle $*" >> "$LOOP_LOG"\nsleep 30\n')
+        env = {**os.environ, "ET_PYTHON": fake, "ET_PRIVATE_DIR": str(self.root), "LOOP_LOG": str(log)}
+
+        def start():
+            loop = subprocess.Popen(["bash", str(PIPE / "keep_collecting.sh")], env=env, stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL, start_new_session=True)
+
+            def stop_group():
+                try:
+                    os.killpg(loop.pid, signal.SIGKILL)       # the loop's group, with any cycle it left running
+                except ProcessLookupError:
+                    pass
+                loop.wait(timeout=10)
+            self.addCleanup(stop_group)
+            return loop
+
+        def cycles(n):
+            end = time.time() + 20
+            while not (log.exists() and len(log.read_text().splitlines()) >= n) and time.time() < end:
+                time.sleep(0.1)
+            return len(log.read_text().splitlines()) if log.exists() else 0
+        first = start()
+        self.assertEqual(cycles(1), 1)
+        os.kill(first.pid, signal.SIGTERM)                      # the loop alone; its cycle goes on running
+        first.wait(timeout=10)
+        start()
+        self.assertEqual(cycles(2), 2, "the new loop did not start a cycle")
+
+    def test_a_cycle_started_while_another_runs_does_nothing(self):
+        skip = ["--skip", "list,feeds,queue,fetch,texts,kinds,tables"]
+        running = common.file_lock(self.root / "jobs" / "cycle.lock", "run_cycle")
+        done = self.cli("run_cycle.py", "--root", self.root, "--go", *skip)
+        self.assertEqual(done.returncode, 8, done.stderr)
+        self.assertIn("another run_cycle.py is running", done.stderr)
+        self.assertNotIn("CYCLE REPORT", done.stdout)
+        running.close()
+        done = self.cli("run_cycle.py", "--root", self.root, "--go", *skip)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertIn("CYCLE REPORT", done.stdout)
 
 
 if __name__ == "__main__":

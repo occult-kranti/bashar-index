@@ -223,6 +223,43 @@ def assign_person(title: str, rules):
     return winners[0], "named"
 
 
+# ---------------------------------------------------------------- what counts as one recording
+def same_recording(person, title, duration_s):
+    """The key under which two list entries are one recording: the same person, the same title (case and
+    spacing aside) and the same length. Only used when both the title and the length are known."""
+    return (person, " ".join((title or "").lower().split()), duration_s)
+
+
+def archive_title(row):
+    """The title an archive.org file is listed under: its session's, with the part its file name gives."""
+    title = row.get("title") or ""
+    part = re.search(r"\b(\d+)\s*of\s*(\d+)\b|\bpart\s*(\d+)\b", row.get("file_name") or "", re.I)
+    if part:
+        title += f" (part {part.group(1) or part.group(3)})"
+    return title
+
+
+def distinct_archive_audio(rows):
+    """The audio rows of sources/archive_org_sessions.csv that are recordings of their own, as collect()
+    keeps them: a second encoding of a session in the same item (same title and length, another file) is
+    left out. The tables count these, so they agree with the catalogue and the download queue."""
+    out, seen_urls, seen_ids, seen_keys = [], set(), set(), set()
+    for row in rows:
+        person, url = row.get("person_id") or "", (row.get("media_url") or "").strip()
+        if row.get("kind") != "audio" or not person or not host_of(url):
+            continue
+        ident = item_id("ia", row.get("identifier") or "", row.get("file_name") or "")
+        title, seconds = archive_title(row), int(float(row["duration_s"])) if row.get("duration_s") else None
+        key = same_recording(person, title, seconds)
+        if url in seen_urls or ident in seen_ids or (title and seconds and key in seen_keys):
+            continue
+        seen_urls.add(url)
+        seen_ids.add(ident)
+        seen_keys.add(key)
+        out.append(row)
+    return out
+
+
 # ---------------------------------------------------------------- everything that could be queued
 def collect(paths, opts=None):
     """(rows, dropped, used input hashes): every item the source lists hold, with twins worked out and
@@ -237,7 +274,7 @@ def collect(paths, opts=None):
                                                   "too_short", "too_long", "before_since", "feed_not_in_registry")})
 
     def add(row, person):
-        key = (person, " ".join(row["title"].lower().split()), row["duration_s"])
+        key = same_recording(person, row["title"], row["duration_s"])
         # Same file or same id twice is a duplicate. Same title is only a duplicate when the lengths are
         # known and equal (one episode carried by two feeds); two creator files can share a title.
         if row["url"] in seen_urls or row["video_id"] in seen_ids \
@@ -333,10 +370,7 @@ def collect(paths, opts=None):
             person, url = row.get("person_id") or "", (row.get("media_url") or "").strip()
             if row.get("kind") != "audio" or not person or not host_of(url) or (only and person not in only):
                 continue
-            title = row.get("title") or ""
-            part = re.search(r"\b(\d+)\s*of\s*(\d+)\b|\bpart\s*(\d+)\b", row.get("file_name") or "", re.I)
-            if part:
-                title += f" (part {part.group(1) or part.group(3)})"
+            title = archive_title(row)
             add({"video_id": item_id("ia", row["identifier"], row.get("file_name") or ""), "url": url, "channel_dir": person,
                  "title": title, "duration_s": int(float(row["duration_s"])) if row.get("duration_s") else None,
                  "published": row.get("session_date") or "", "lane": "ia", "relation": "archive", "feed_key": "",

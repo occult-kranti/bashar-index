@@ -29,12 +29,14 @@ What counts as evidence, and the label always says which was used:
 Only episodes of kind "live channeling" are queued by default (select_episodes.py --interview-types);
 everything stays listed with its kind.
 
-Reads   the listed interview episodes, the texts held for them, and (--notes) the shows' feeds again
+Reads   the listed interview episodes, the texts held for them, and the marks of each episode's show
+        notes, which fetch_feeds.py records when it reads the show's feed (notes_marks). Nothing is
+        fetched here: the notes follow fetch_feeds.py's rules (a feed is read at most once a day, and a
+        host that refused is left alone).
 Writes  <root>/sources/interview_types.jsonl    one line per episode: kind, basis, which marks were found
         No transcript text and no show notes are kept: marks are named, not quoted.
 
-    python3 pipeline/interview_types.py              # from the texts already held
-    python3 pipeline/interview_types.py --notes      # also read each show's feed for its episode notes
+    python3 pipeline/interview_types.py
 """
 from __future__ import annotations
 
@@ -44,14 +46,13 @@ import html
 import json
 import re
 import sys
-import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, add_root_arg, append_jsonl, ensure_outside_git, latest_by_key, layout, read_csv,  # noqa: E402
                     read_jsonl, utc_now)
-from feeds import FetchError, episode_key, get_bytes  # noqa: E402
+from feeds import episode_key  # noqa: E402
 from find_feeds import INDEX, fold  # noqa: E402
 
 KINDS = ("live channeling", "unclear", "conversation", "commentary or clip", "not classified")
@@ -159,15 +160,27 @@ def notes_by_episode(feed_xml: bytes, host: str):
     return out
 
 
+def notes_marks(paths, feed_keys):
+    """({item id: names of the marks its show notes carry}, the feeds whose last read recorded them)."""
+    marks, read = {}, set()
+    for key in sorted(feed_keys):
+        for episode in read_jsonl(paths.feeds / f"{key}.jsonl"):
+            if "notes_marks" in episode:
+                read.add(key)
+                if episode["notes_marks"]:
+                    marks[episode["video_id"]] = list(episode["notes_marks"])
+    return marks, read
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     add_root_arg(ap)
-    ap.add_argument("--notes", action="store_true", help="read each interview show's feed again for its episode notes")
+    ap.add_argument("--notes", action="store_true",
+                    help="no longer needed: the show notes' marks come from fetch_feeds.py, and nothing is fetched here")
     ap.add_argument("--only", default="", help="comma-separated person ids")
     args = ap.parse_args()
     paths = layout(ensure_outside_git(args.root))
     from select_episodes import collect
-    from fetch_feeds import read_registry, REGISTRY
     rows, _, _ = collect(paths, {"relation": "host"})
     only = {x.strip() for x in args.only.split(",") if x.strip()}
     rows = [r for r in rows if r["relation"] == "host" and (not only or r["channel_dir"] in only)]
@@ -178,19 +191,7 @@ def main():
     if INDEX.exists():
         for channel in json.loads(INDEX.read_text(encoding="utf-8"))["channels"]:
             names.setdefault(channel["person"], []).append(channel.get("person_name") or "")
-    notes = {}
-    if args.notes:
-        feeds = {r["feed_key"]: r for r in read_registry(REGISTRY, {"verified", "name-match"}) if r["relation"] == "host"}
-        for key in sorted({r["feed_key"] for r in rows}):
-            feed = feeds.get(key)
-            if not feed:
-                continue
-            time.sleep(1.0)
-            try:
-                _, _, body = get_bytes(feed["feed_url"], timeout=90, max_bytes=120_000_000)
-                notes.update(notes_by_episode(body, feed["person_id"]))
-            except FetchError as err:
-                print(f"notes not read for {feed['person_id']}: {err}", file=sys.stderr)
+    notes, marked = notes_marks(paths, {r["feed_key"] for r in rows})
     pub = latest_by_key(read_jsonl(paths.pubtext / "publisher_text_manifest.jsonl"))
     asr_lines = read_jsonl(paths.transcripts / "transcripts_manifest.jsonl")
     for part in sorted(paths.transcripts.glob("transcripts_manifest.part-*.jsonl")):
@@ -217,7 +218,9 @@ def main():
                 kind = clip
             basis = f"transcript ({source})"
         else:
-            said = from_notes(notes.get(ident, ""))
+            said = notes.get(ident) or []
+            if row["feed_key"] not in marked and (before.get(ident) or {}).get("basis") == "show notes":
+                said = list(before[ident].get("marks") or [])   # its feed was read before the marks were kept
             if said:
                 kind, basis, marks = "live channeling", "show notes", said
             elif clip:

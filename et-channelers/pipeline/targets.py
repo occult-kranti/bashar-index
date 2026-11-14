@@ -43,8 +43,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (ET_ROOT, add_root_arg, atomic_write_text, ensure_outside_git, host_id, latest_by_key, layout,  # noqa: E402
-                    read_csv, read_jsonl, utc_now, write_csv)
+from common import (ET_ROOT, OLD_YOUTUBE_STEPS, YOUTUBE_WAITS, add_root_arg, atomic_write_text, ensure_outside_git,  # noqa: E402
+                    host_id, latest_by_key, layout, read_csv, read_jsonl, utc_now, write_csv)
 
 INDEX = ET_ROOT / "youtube-index" / "youtube_index.json"
 INVENTORY = ET_ROOT / "plan" / "channel_inventory.csv"
@@ -131,7 +131,10 @@ def build(root=None):
     def person(pid, name="", role=""):
         entry = people.setdefault(pid, {**dict.fromkeys(FIELDS, ""), "person_id": pid, "origins": set(), "sites": [],
                                         "earlier": []})
-        entry["person_name"] = entry["person_name"] or name
+        # a name cut short in a screenshot ("Pleiadian Laark…") gives way to any whole name found later
+        cut = entry["person_name"].endswith(("…", "..."))
+        if name and (not entry["person_name"] or (cut and not name.endswith(("…", "...")))):
+            entry["person_name"] = name
         entry["role"] = entry["role"] or role
         return entry
 
@@ -188,7 +191,7 @@ def build(root=None):
                                 if r.get("relation") == "own" and r.get("verification") in ("verified", "name-match"))
     files = collections.Counter(r["person_id"] for r in rows_of(SOURCES / "creator_files.csv"))
     pages = collections.Counter(r["person_id"] for r in rows_of(SOURCES / "publisher_pages.csv"))
-    deposits = collections.Counter(r["person_id"] for r in rows_of(SOURCES / "archive_org_sessions.csv") if r.get("kind") == "audio")
+    deposits = collections.Counter(r["person_id"] for r in archive_audio())
     # 5. what the private folder knows
     coverage_file, listings = COVERAGE, {}
     if root is not None:
@@ -230,7 +233,9 @@ def build(root=None):
             captured_source_words=number(cov.get("publisher_text_words")) + number(cov.get("captions_words")),
             captured_machine_transcripts=number(cov.get("asr_transcripts")),
             audio_awaiting_transcript=number(cov.get("audio_awaiting_transcript")),
-            earlier_work="; ".join(entry["earlier"]), next_step=cov.get("next_step", ""))
+            earlier_work="; ".join(entry["earlier"]),
+            # a coverage table written before the YouTube lanes were held still says to run them: say it the new way
+            next_step=OLD_YOUTUBE_STEPS.get(cov.get("next_step", ""), cov.get("next_step", "")))
         # interviews in which nothing is channeled are listed, not planned: they do not make a "source found"
         outside = number(cov.get("items_outside_youtube")) - entry["interviews_other_kinds"] - entry["interviews_not_classified"]
         has_source = bool(entry["podcast_feeds"] or entry["creator_files"] or entry["publisher_pages"]
@@ -239,7 +244,7 @@ def build(root=None):
                                   seen is not None)
         if entry["state"] in ("planned: YouTube only", "planned: no source yet", "unresolved"):
             entry["next_step"] = {
-                "planned: YouTube only": "run the YouTube lane on a home connection (run_all.py); look for the maker's own site or feed",
+                "planned: YouTube only": f"look for the maker's own site or feed; {YOUTUBE_WAITS}",
                 "planned: no source yet": "no channel or site known: find where this person publishes",
                 "unresolved": "establish who this name refers to"}[entry["state"]]
         table.append({k: entry[k] for k in FIELDS})
@@ -311,12 +316,11 @@ def bashar_hosts(root=None):
         else:
             state = "planned: YouTube only"
         step = {"captured": "",
-                "partly captured": "fetch the rest: YouTube lane on a home connection",
+                "partly captured": f"the rest is on YouTube: {YOUTUBE_WAITS}",
                 "planned: podcast feed found": "download the show's episodes that name Darryl Anka or Bashar (download_enclosures.py)",
                 "gone from YouTube": "none of its listed recordings is on YouTube any more: look for the session elsewhere",
-                "planned: YouTube only": ("look for the show's own podcast feed (find_host_feeds.py); otherwise the YouTube lane "
-                                          "on a home connection" if kind == "interview show"
-                                          else "YouTube lane on a home connection")}[state]
+                "planned: YouTube only": (f"look for the show's own podcast feed (find_host_feeds.py); {YOUTUBE_WAITS}"
+                                          if kind == "interview show" else YOUTUBE_WAITS)}[state]
         out.append({"channel": group["channel"], "host_id": host, "kind": kind, "bashar_recordings": total,
                     "interviews": interviews, "still_on_youtube": still,
                     "transcripts_read_earlier": sum(1 for v in group["ids"] if read.get(v)),
@@ -377,11 +381,22 @@ def bashar_recordings(root=None):
     return out
 
 
+def archive_audio(rows=None):
+    """The audio files on archive.org that are recordings of their own: a second encoding of a session in the
+    same item is left out, as the catalogue and the download queue leave it out (select_episodes.py)."""
+    from select_episodes import distinct_archive_audio
+    return distinct_archive_audio(rows_of(SOURCES / "archive_org_sessions.csv") if rows is None else rows)
+
+
 def bashar_sessions(root=None):
     """The session catalogue of the Bashar Index (1984 on) by decade: what is on archive.org, what only on
-    the official streaming site, and what of it is here."""
+    the official streaming site, and what of it is here. archive.org audio is counted once per recording."""
     deposits = collections.defaultdict(list)
-    for row in rows_of(SOURCES / "archive_org_sessions.csv"):
+    rows = rows_of(SOURCES / "archive_org_sessions.csv")
+    distinct = {id(r) for r in archive_audio(rows)}
+    for row in rows:
+        if row.get("kind") == "audio" and id(row) not in distinct:
+            continue                               # a second encoding of a recording already counted
         deposits[row["identifier"]].append(row)
     mine = bashar_catalogue_rows(root)
     got = collections.defaultdict(lambda: [0, 0.0, 0])            # decade -> [audio files, hours, transcripts]
@@ -414,6 +429,7 @@ def bashar_sessions(root=None):
         entry = table[decade]
         files, hours, texts = got.get(decade, [0, 0.0, 0])
         entry.update(archive_org_audio_hours=round(entry["archive_org_audio_hours"], 1),
+                     exact_archive_org_audio_hours=entry["archive_org_audio_hours"],   # not a column: for the total
                      audio_here="" if mine is None else files, audio_hours_here="" if mine is None else round(hours, 1),
                      transcripts_here="" if mine is None else texts)
         out.append(entry)
@@ -456,12 +472,20 @@ def bashar_podcasts(root=None):
     return out
 
 
-def summarise(table, hosts):
+def coverage_totals(root=None) -> dict:
+    """The totals of the coverage table that build() reads (unrounded hours, rounded once), or {}."""
+    path = COVERAGE if root is None else layout(root).public / "coverage.json"
+    return json.loads(Path(path).read_text(encoding="utf-8")).get("totals", {}) if Path(path).exists() else {}
+
+
+def summarise(table, hosts, covered=None):
     by_state = collections.Counter(r["state"] for r in table)
     by_origin = collections.Counter(r["origin"] for r in table)
     cross = collections.Counter((r["origin"], r["state"]) for r in table)
     totals = {key: sum(r[key] for r in table) for key in NUMBERS}
-    totals["captured_audio_hours"] = round(sum(r["captured_audio_hours"] for r in table), 1)
+    # each row's hours are rounded already: the coverage table's own total adds them unrounded
+    exact = (covered or {}).get("audio_hours")
+    totals["captured_audio_hours"] = round(float(exact) if exact is not None else sum(r["captured_audio_hours"] for r in table), 1)
     for key in ("videos_listed", "live_listed", "shorts_listed"):
         totals[key] = sum(number(r[key]) for r in table)
     totals["listed_video_hours"] = round(sum(float(r["listed_video_hours"] or 0) for r in table), 1)
@@ -493,7 +517,7 @@ def main():
     args = ap.parse_args()
     root = None if args.no_private else ensure_outside_git(args.root)
     table, hosts = build(root), bashar_hosts(root)
-    summary = summarise(table, hosts)
+    summary = summarise(table, hosts, coverage_totals(root))
     write_csv(args.out / "targets.csv", table, FIELDS)
     write_csv(args.out / "bashar_host_channels.csv", hosts, HOST_FIELDS)
     recordings, sessions, podcasts = bashar_recordings(root), bashar_sessions(root), bashar_podcasts(root)
@@ -507,7 +531,7 @@ def main():
         sessions_catalogued=sum(r["sessions_catalogued"] for r in sessions),
         sessions_on_archive_org=sum(r["on_archive_org"] for r in sessions),
         archive_org_audio_files=sum(r["archive_org_audio_files"] for r in sessions),
-        archive_org_audio_hours=round(sum(r["archive_org_audio_hours"] for r in sessions), 1),
+        archive_org_audio_hours=round(sum(r["exact_archive_org_audio_hours"] for r in sessions), 1),
         archive_org_audio_here=sum(number(r["audio_here"]) for r in sessions),
         podcast_appearances_listed=len(podcasts),
         podcast_appearances_by_type=dict(collections.Counter(r["type_in_bashar_index"] for r in podcasts)))

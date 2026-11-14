@@ -10,7 +10,9 @@ Work on the extraterrestrial-channeler thread of the Bashar Index: research note
 
 | What | Where |
 |---|---|
-| Repository | <https://github.com/occult-kranti/bashar-index>. This work is the folder `et-channelers/` on the branch `research/et-channelers-youtube-index` (not on `main` yet). |
+| Repository | <https://github.com/occult-kranti/bashar-index>. This work is the folder `et-channelers/`, on `main` since 2026-11-13. |
+| **Handoff (start here when resuming)** | [`HANDOFF.md`](HANDOFF.md): where everything is, how to set up a new Codespace, what was paused and how to start it again. |
+| Collection dashboard | <https://claude.ai/artifact/898o4zpkocZ8qXjvR1xDfb>. A claude.ai "Data" page: who is tracked, what is collected, sources with their links and methods, the Bashar tables. Its datasets are the CSV files in [`plan/`](plan/). |
 | Channeler YouTube index (dashboard) | <https://claude.ai/artifact/XFQHVyn2WSk7Xnn4yXpAa8>. A claude.ai page, private to its owner until shared. Page source: [`dashboard/index.html`](dashboard/index.html). |
 | The Bashar Index, live site | <https://occult-kranti.github.io/bashar-index/> (GitHub Pages, served from `main`). |
 | Channeling Atlas, live site | <https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/index.html> |
@@ -154,7 +156,7 @@ Design: resumable manifests, stable-hash shards, a global start-rate limit with 
 
 Checks run on 2026-11-11:
 
-1. **Automated tests** (`pipeline/tests/test_pipeline.py`, stand-in yt-dlp and ffmpeg, no network): 75 pass. Breaking four safety rails on purpose (the breaker, the channel cap, the Git-folder refusal, resume) made the tests fail each time.
+1. **Automated tests** (`pipeline/tests/test_pipeline.py`, stand-in yt-dlp and ffmpeg, no network): 75 pass. (Today it sits beside `test_lanes.py` and `test_drive_stage.py`; their counts are under "Rerunning the checks" below.) Breaking four safety rails on purpose (the breaker, the channel cap, the Git-folder refusal, resume) made the tests fail each time.
 2. **Real tools where they can run offline.** ffmpeg produced mono Opus from a stereo file; faster-whisper 1.2.1 with `Systran/faster-whisper-tiny.en` transcribed a 10-second public speech clip correctly on CPU; yt-dlp 2026.10.26 accepted every option the scripts use.
 3. **A bug found that way.** faster-whisper 1.2.1 fails with PyAV 19 (`av.open() got an unexpected keyword argument 'metadata_errors'`), and a fresh install pulls PyAV 19. The pipeline now decodes audio with ffmpeg, and a test guards it.
 4. **Real YouTube pilot, from a cloud server.** Three Bashar videos were requested one at a time. All three were refused: two "confirm you're not a bot" responses and one HTTP 403. The circuit breaker stopped the run (exit code 3). No cookies, proxies, other player clients or mirror sites were tried. The download therefore has to run from the owner's own computer.
@@ -195,15 +197,29 @@ The scripts keep the absolute paths they had during the session (for example `/h
 
 **Goal.** Bring every public video on every tracked channel into the same two private forms, a small mono audio file and a timestamped transcript, so the whole set can be analysed one way. Today 75 Bashar recordings have been looked at (55 transcript pages retrieved, 12 saved as files) and the index holds 466 videos; the channels it tracks hold at least 40,652. The phases, estimates, risks and open decisions are in [`ROADMAP.md`](ROADMAP.md); the tooling is in [`pipeline/README.md`](pipeline/README.md).
 
-**Where it stands (2026-11-11).**
+**Where it stands (2026-11-14).** Everything is paused for the move to a larger Codespace; [`HANDOFF.md`](HANDOFF.md) says how to start it again.
 
 | Step | State |
 |---|---|
-| Inventory of all 92 entries with video totals | done; the table below is generated from the index |
-| Queue builder, channel lister, audio downloader, transcriber, verifier, public export, machine check | built; the automated tests pass using stand-in downloader and encoder tools |
-| The parts that can run offline, for real | done: ffmpeg encoded mono Opus; faster-whisper `tiny.en` transcribed a public speech clip; yt-dlp accepted every option used |
-| Real YouTube download | tried once, from a cloud server, on 2026-11-11: 3 of 3 pilot videos were refused (two bot checks, one HTTP 403) and the run stopped by design. Nothing was downloaded. It has to run from the owner's own computer. |
-| GPU transcription speed, Windows, long batches | not measured, not tested |
+| Paused on 2026-11-14 | the sync, the downloads, the collection cycles and speech-to-text, each after a clean stop. Nothing collected is outside the private store |
+| Lanes that work from a cloud server | podcast feeds and their audio, creators' own audio files, the publishers' own text pages, archive.org, interviews on other shows (each typed: live channeling, conversation, unclear, commentary). YouTube channel listings worked too, but youtube.com's robots.txt disallows them, so they are off until the owner decides (HANDOFF section 6.6) |
+| Collected | 1,138 audio files (819.5 hours, 10.11 GB, mono 24 kbps Opus), 8,425 texts from the sources, 61 speech-to-text transcripts (30.6 hours) |
+| Queued | Bashar's archive.org sessions (his own channeled sessions, not interviews): 262 of 903 downloaded (636.7 hours left), and all 262 are on Google Drive; the other 641 are the next job, to the store and to Drive (HANDOFF section 5). Podcast episodes: 733 of 2,647 (1,442.6 hours left), fetched in cycles of 80 hours; creators' own audio files: 95 of 1,410 (1,315 left, length unknown). Interviews on other shows: 28 of 29 |
+| Lengths | every length is kept: no queue drops a recording for being short or long. For analysis, the main corpus is every recording over 5 minutes; shorts and recordings of 5 minutes or less are analysed as a group of their own |
+| Stores | a private GitHub repository (checked bundles of audio, transcripts and texts, and the texts as plain files: `pipeline/save_to_github.sh`), and the owner's Google Drive, which holds a browsable copy of everything collected: 1,138 recordings as 1,958 playable files of at most 7.3 MB (10.13 GB) and 40 text volumes, 1,998 files in 77 folders by person and source, plus the tables (`pipeline/drive_stage.py`) |
+| Video | not held: every lane keeps audio only |
+| YouTube audio and captions | off by rule: youtube.com's robots.txt (read 2026-11-14) disallows the listing, feed and caption paths for every crawler, so `discover.py`, `fetch_captions.py` and `download_audio.py` send nothing unless the owner sets `ET_YOUTUBE_ROBOTS_OVERRIDE=1`. Audio and captions are also refused from cloud servers (bot checks, HTTP 403); with the owner's decision they come from the owner's own connection |
+| Speech-to-text | about 1.3x real time on this 2-core machine, so the backlog needs a GPU (see `pipeline/README.md`) |
+
+**Analysis planned** (after collection; [`ROADMAP.md`](ROADMAP.md), methods and statistics in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md)):
+
+* by year for each channel, and the last 5, 10, 50 and 100 recordings against each channel's whole history;
+* every prediction and warning, on a timeline for each channel and on one combined timeline;
+* datasets built by a small model that reads every transcript: questions and answers, question banks, dated
+  statements, predictions and warnings, each row tied to its recording and time stamp;
+* shorts and recordings of 5 minutes or less against the main corpus: repetition, topics, distinctive words;
+* names, calendars and astrology, what the sources say about themselves and each other, and how wording
+  spreads between channels.
 
 **Rules for the data.** Audio, captions and transcripts stay in a private folder outside this repository (default `~/et-channelers-private`, synced to Google Drive if wanted) and are released, if at all, only alongside the final paper. What may be published is a table of numbers and hashes (`pipeline/export_public.py`). The recordings belong to their rights holders (the Bashar sessions: Darryl Anka / Bashar Communications, Inc.), and downloading media from YouTube is outside YouTube's terms unless a feature offers it. So the scripts stop at the first signs of blocking and use no cookies, logins, proxies or other ways around a block, and `scripts/guard_no_raw_media.py` fails if the repository holds audio, captions, speech-to-text output or credentials.
 
@@ -351,6 +367,8 @@ The same table as CSV: [`plan/channel_inventory.csv`](plan/channel_inventory.csv
 
 ```sh
 python3 et-channelers/scripts/check_counts.py              # 54 checks, stdlib only, no network
-python3 -I et-channelers/pipeline/tests/test_pipeline.py   # 75 tests, about 40 seconds, no network
+python3 -I et-channelers/pipeline/tests/test_pipeline.py   # 104 tests, about 80 seconds, no network
+python3 -I et-channelers/pipeline/tests/test_lanes.py      # 237 tests, about 7 minutes
+python3 -I et-channelers/pipeline/tests/test_drive_stage.py # 13 tests, needs ffmpeg
 python3 et-channelers/scripts/guard_no_raw_media.py        # fails on raw media, captions, transcripts or credentials
 ```

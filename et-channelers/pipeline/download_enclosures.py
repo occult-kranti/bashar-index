@@ -19,9 +19,14 @@ indexed YouTube video.
 Safety rails (all on by default):
   * Without --limit or --all it only prints what it WOULD do and exits.
   * --root must be outside any Git checkout.
-  * Each host has its own start-rate limit and concurrency cap. 403 / 429 answers are never retried;
-    after --stop-after-blocks of them in a row from one host, that host is left alone for the rest of
-    the run and the script exits with code 3 when the other hosts are done.
+  * Each host has its own start-rate limit, and so does every host a redirect leads to (a podcast enclosure
+    usually starts at a tracking redirector; archive.org sends each file from one of its storage nodes); the
+    cap on simultaneous downloads (--per-host) counts the first host of each address. 403 / 429 answers are
+    never retried, and a Retry-After is obeyed, with a 403 / 429 or a 503; after --stop-after-blocks refusals
+    in a row from one host, that host is left alone for the rest of the run, and no redirect is followed to it.
+    Any 403 / 429 makes the script exit with code 3 when the other hosts are done, and a host that keeps
+    refusing is not asked again on later runs until its wait is over (a day at least; common.resting_hosts).
+  * One run at a time: a second one waits for the first (a lock in <root>/jobs/), then reads what is left.
   * Only network-class errors are retried, with exponential backoff. Missing files (404 / 410) are
     recorded once and skipped on later runs (use --retry-failed to try again).
 
@@ -40,35 +45,102 @@ import os
 import platform
 import shutil
 import sys
+import threading
 import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, archived_ids, ensure_outside_git, host_of,  # noqa: E402
-                    http_error_class, lane_of, latest_by_key, layout, parse_shard, probe_duration, read_csv,
-                    read_jsonl, run_cmd, stable_shard, sha256_file, utc_now)
+from common import (ITEM_RE, HostGates, Progress, add_root_arg, append_jsonl, archived_ids, ensure_outside_git,  # noqa: E402
+                    downloader_lock, host_of, http_error_class, lane_of, latest_by_key, layout, parse_shard, probe_duration,
+                    read_csv, read_jsonl, resting_hosts, run_cmd, say_refused, say_resting, stable_shard, sha256_file,
+                    utc_now)
 from download_audio import ffmpeg_cmd, first_line, tool_version  # noqa: E402
 from feeds import FetchError, open_url  # noqa: E402
 
 SKIP_LATER = {"unavailable", "not_audio", "too_large"}
 HARD = {"rate_limited", "forbidden"}
 TEXT_TYPES = ("text/html", "text/plain", "application/json", "application/xml", "text/xml")
+SAME_HOST_ITEMS = 3      # a group's last answers for this many different items all came from one host: its host
 
 
 class Problem(Exception):
-    def __init__(self, klass, message, status=0, final_host=""):
+    def __init__(self, klass, message, status=0, final_host="", retry_after=None):
         super().__init__(message)
-        self.klass, self.status, self.final_host = klass, status, final_host
+        self.klass, self.status, self.final_host, self.retry_after = klass, status, final_host, retry_after
 
 
-def save_stream(url, dest, args):
+class MediaHosts:
+    """Which host answers for an item, learned from the answers: per item, and per feed. Behind a redirector a
+    feed usually lives on one media host, but Podbean sends a show's episodes from dozens of nodes, so a feed is
+    taken to live on one host only when its answers for the last SAME_HOST_ITEMS different items all came from
+    it. Files without a feed have no group (pass ''): archive.org sends them from about a hundred storage nodes
+    and keeps the files of one item together on one node, so a run of files from one node says nothing about
+    the next item."""
+
+    def __init__(self, items=SAME_HOST_ITEMS):
+        self._items, self._group, self._item, self._lock = items, {}, {}, threading.Lock()
+
+    def note(self, group, item, host):
+        if not host:
+            return
+        with self._lock:
+            if item:
+                self._item[item] = host
+            answers = self._group.setdefault(group, collections.OrderedDict())
+            answers.pop(item, None)                      # an item counts once, with its latest answer
+            answers[item] = host
+            while len(answers) > self._items:
+                answers.popitem(last=False)
+
+    def likely(self, group, item):
+        """The host expected to answer for this item: the one that answered for it last, or the one host its
+        group lives on, or ''."""
+        with self._lock:
+            if self._item.get(item):
+                return self._item[item]
+            hosts = list(self._group.get(group, {}).values())
+        return hosts[0] if group and len(hosts) == self._items and len(set(hosts)) == 1 else ""
+
+    def stopped_by(self, group, item, stopped):
+        """The host that holds this item back (`stopped` says it is being left alone), or ''."""
+        host = self.likely(group, item)
+        return host if host and stopped(host) else ""
+
+
+class Hops:
+    """Called before each redirect is followed (feeds.open_url's before_redirect): every host along the way
+    gets its own turn and its own Retry-After, and a host that is being left alone (it refused, or stopped
+    answering) is not asked at all, whichever first hop leads to it. `last` is the last host led to."""
+
+    def __init__(self, first, gates, stopped):
+        self.first, self.gates, self.stopped, self.last, self.passed = first, gates, stopped, "", []
+
+    def __call__(self, url):
+        host = host_of(url)
+        if host and host != self.first:
+            if self.stopped(host):
+                raise FetchError(0, f"redirect not followed: {host} is being left alone (it refused or stopped "
+                                    "answering)", url, klass="held")
+            self.gates.wait(host)
+            if self.stopped(host):
+                raise FetchError(0, f"redirect not followed: {host} refused while this request waited for its turn",
+                                 url, klass="held")
+        self.last = host or self.last
+        if host and host != self.first and host not in self.passed:
+            self.passed.append(host)
+
+
+def save_stream(url, dest, args, hops=None):
     """GET `url` into `dest`. Returns facts about the response; raises Problem on any failure."""
     deadline = time.monotonic() + args.timeout
     try:
-        response = open_url(url, timeout=args.socket_timeout)
+        response = open_url(url, timeout=args.socket_timeout, before_redirect=hops)
     except FetchError as err:
-        raise Problem(http_error_class(err.status) if err.status else "network", str(err), err.status,
-                      host_of(err.final_url or "")) from None
+        answered = host_of(err.final_url or "")
+        if not err.status and err.klass is None and hops is not None and hops.last:
+            answered = hops.last          # the connection failed after a redirect: at the host it led to
+        raise Problem(err.klass or (http_error_class(err.status) if err.status else "network"), str(err), err.status,
+                      answered, err.retry_after) from None
     digest, received = hashlib.sha256(), 0
     answered_by = host_of(response.geturl())
     with response:
@@ -103,7 +175,8 @@ def save_stream(url, dest, args):
 
 
 def fetch_one(args, row, audio_root, gates, versions):
-    """Download and encode one item. Returns the manifest record, or None if its host was already stopped."""
+    """Download and encode one item. Returns the manifest record, or None if it was not asked for: its host was
+    already stopped, or the host it leads to is being left alone."""
     ident, host = row["video_id"], host_of(row["url"])
     target = audio_root / row["channel_dir"]
     work = audio_root / ".work" / ident
@@ -116,45 +189,58 @@ def fetch_one(args, row, audio_root, gates, versions):
            "target": f"opus mono {args.sample_rate} Hz {args.bitrate} complexity {args.opus_complexity}"}
     try:
         # An enclosure address usually starts at a tracking redirector and ends at the show's media host.
-        # Refusals are charged to the host that refused, remembered per feed, so one show's refusing host
-        # neither stops the other shows behind the same first hop nor gets asked again for every episode.
-        group = row.get("feed_key") or host
+        # Refusals are charged to the host that refused, so one show's refusing host does not stop the other
+        # shows behind the same first hop, and no redirect is followed to a host that is being left alone
+        # (Hops). A feed that is known to live on one host that is being left alone is not even started
+        # (MediaHosts), so its first hop is not asked for every episode either. Files without a feed have no
+        # group: each is held back only by the host that last answered for it.
+        group = row.get("feed_key") or ""
+        stopped = lambda h: gates.blocked(h) or h in args.resting  # noqa: E731
         for attempt in range(1, args.attempts + 1):
-            media = args.media_host.get(group, "")
-            if gates.blocked(host) or (media and gates.blocked(media)):
+            if gates.blocked(host) or args.media.stopped_by(group, ident, stopped):
                 return None  # not attempted, not recorded: the next run picks it up
             shutil.rmtree(work, ignore_errors=True)
             work.mkdir(parents=True, exist_ok=True)
             gates.wait(host)
+            if gates.blocked(host) or args.media.stopped_by(group, ident, stopped):
+                return None  # it refused while this request waited for its turn: not sent, not recorded
+            rec["started"] = utc_now()      # when the request goes out, after its turn came
             t0 = time.time()
             raw = work / "source.bin"
             try:
                 try:
-                    facts = save_stream(row["url"], raw, args)
+                    hops = Hops(host, gates, stopped)
+                    facts = save_stream(row["url"], raw, args, hops)
                 except Problem:
                     raise
                 except Exception as err:  # noqa: BLE001 - never let one item end the run
                     raise Problem("other", f"{type(err).__name__}: {err}"[:300]) from None
             except Problem as err:
+                args.media.note(group, ident, err.final_host)
+                if err.klass == "held":
+                    return None  # the host it leads to is being left alone: nothing was asked of it, nothing recorded
                 refuser = err.final_host or host
-                if err.final_host:
-                    args.media_host[group] = err.final_host
                 rec.update(attempts=attempt, elapsed_s=round(time.time() - t0, 1), status="error",
                            http_status=err.status, error_class=err.klass, error_tail=str(err)[-300:],
                            final_host=refuser)
+                if err.retry_after is not None:
+                    rec["retry_after_s"] = err.retry_after
                 if err.klass in HARD:
-                    gates.hard_block(refuser)
+                    gates.hard_block(refuser, err.retry_after)
                     return rec  # never retry into a block
                 if err.klass == "network":
                     gates.failure(refuser)
+                    gates.unavailable(refuser, err.retry_after)    # a 503 that says how long to wait: obeyed
                 if err.klass != "network" or attempt == args.attempts or gates.blocked(refuser):
                     return rec
-                time.sleep(min(60.0, args.backoff * 2 ** (attempt - 1)))
+                time.sleep(max(min(60.0, args.backoff * 2 ** (attempt - 1)), float(err.retry_after or 0)))
                 continue
-            args.media_host[group] = facts["final_host"] or host
-            gates.success(facts["final_host"] or host)
-            if facts["final_host"] and facts["final_host"] != host:
-                gates.success(host)
+            args.media.note(group, ident, facts["final_host"] or host)
+            for passed in dict.fromkeys([facts["final_host"] or host, host, *hops.passed]):
+                gates.success(passed)          # every host along the way answered as asked
+            via = [h for h in hops.passed if h != facts["final_host"]]
+            if via:
+                rec["via_hosts"] = via
             rec.update(attempts=attempt, **facts)
             target.mkdir(parents=True, exist_ok=True)
             part = target / f"{ident}.opus.part"
@@ -232,6 +318,8 @@ def main():
     ap.add_argument("--max-bytes", type=int, default=1_500_000_000, help="refuse source files larger than this")
     ap.add_argument("--min-bytes", type=int, default=2000, help="smaller responses are treated as an error page")
     ap.add_argument("--retry-failed", action="store_true")
+    ap.add_argument("--ask-resting", action="store_true",
+                    help="ask hosts that refused on an earlier run again, before their wait is over")
     ap.add_argument("--min-free-gb", type=float, default=2.0,
                     help="stop starting new items when the data drive has less free space than this (exit code 4)")
     ap.add_argument("--ffmpeg", default="ffmpeg")
@@ -246,6 +334,10 @@ def main():
     root = ensure_outside_git(args.root)
     paths = layout(root)
     audio_root = paths.audio
+    # One downloader at a time, whoever starts it (the collection loop, a cycle, an archive.org run started by
+    # hand): a second one waits here and reads what is left to do only when the first has finished. Two at
+    # once fetched the same items side by side, shared their scratch folders and doubled the per-host cap.
+    locks = downloader_lock(paths.jobs, __file__, args.shard) if args.limit or args.all else []  # noqa: F841
     queue = [r for r in read_csv(args.queue or paths.jobs / "queue_enclosures.csv")
              if ITEM_RE.match(r.get("video_id") or "") and host_of(r.get("url") or "")]
     if args.only:
@@ -253,7 +345,8 @@ def main():
         queue = [r for r in queue if r["channel_dir"] in wanted]
     i, n = parse_shard(args.shard)
     queue = [r for r in queue if stable_shard(r["video_id"], n) == i]
-    done = latest_by_key(read_jsonl(audio_root / "audio_manifest.jsonl"))
+    records = read_jsonl(audio_root / "audio_manifest.jsonl")
+    done = latest_by_key(records)
     stored = archived_ids(root, "audio")   # uploaded, checked and then deleted here: finished, not missing
     todo = []
     for r in queue:
@@ -265,6 +358,30 @@ def main():
         elif prev and prev.get("error_class") in SKIP_LATER and not args.retry_failed:
             continue
         todo.append(r)
+    # A host that refused on an earlier run is not asked again before its wait is over: not the first host of an
+    # item's address, not the host known to answer for it (MediaHosts), and no redirect leads to it (Hops).
+    # A success counts for the first hop as well as for the host that served the file: archive.org redirects
+    # every download to one of its storage nodes, so its own host never serves a file itself, and one refusal
+    # must not leave all of it alone as though it had served nothing.
+    credited = []
+    for rec in records:
+        credited.append(rec)
+        if rec.get("status") == "ok" and rec.get("final_host"):
+            for passed in dict.fromkeys([rec.get("source_host"), *(rec.get("via_hosts") or [])]):
+                if passed and passed != rec["final_host"]:
+                    credited.append({**rec, "final_host": passed})
+    resting = {} if args.ask_resting else resting_hosts(credited, lambda r: r.get("final_host") or r.get("source_host") or "")
+    media = MediaHosts()
+    for rec in records:
+        media.note(rec.get("feed_key") or "", rec.get("video_id") or "", rec.get("final_host") or "")
+
+    def resting_host(row):
+        first = host_of(row["url"])
+        return first if first in resting else media.stopped_by(row.get("feed_key") or "", row["video_id"], resting.__contains__)
+    waiting = collections.Counter(resting_host(r) for r in todo)
+    waiting.pop("", None)
+    say_resting(resting, waiting, "file(s)")
+    todo = [r for r in todo if not resting_host(r)]
 
     def tried_before(r):
         prev = done.get(r["video_id"])
@@ -289,15 +406,12 @@ def main():
     versions = {"client": f"python-urllib {platform.python_version()}", "ffmpeg": tool_version(args.ffmpeg, "-version")}
 
     gates = HostGates(args.min_interval, args.stop_after_blocks, args.stop_after_failures)
-    args.media_host = {}
+    args.media, args.resting = media, resting
     args.disk_full = False
     audio_root.mkdir(parents=True, exist_ok=True)
     attempted = run_queue(todo, args, audio_root, gates, versions, Progress(len(todo), "enclosures"))
     print(f"attempted {attempted} of {len(todo)}; manifest {audio_root / 'audio_manifest.jsonl'}", file=sys.stderr)
-    refused, down = gates.blocked_hosts(), gates.down_hosts()
-    if refused:
-        print("STOPPED for these hosts after repeated 403 / 429 answers: " + ", ".join(refused)
-              + ". Wait, then rerun: finished items are skipped.", file=sys.stderr)
+    refused, down = say_refused(gates), gates.down_hosts()     # any 403 / 429, not only a tripped breaker
     if down:
         print("STOPPED for these hosts, which were not answering (errors or timeouts): " + ", ".join(down)
               + ". Try again later: finished items are skipped.", file=sys.stderr)

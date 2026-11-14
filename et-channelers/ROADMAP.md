@@ -2,6 +2,61 @@
 
 Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos indexed, 75 Bashar recordings partly read" to "every video on every tracked channel as private audio plus a timestamped transcript", and then to analysis and a paper. The tooling is in [`pipeline/`](pipeline/README.md); the channel table is in the [README](README.md#plan-for-the-rest) and in [`plan/channel_inventory.csv`](plan/channel_inventory.csv). Everything here is an AI-written plan and has not been reviewed by a person; figures marked "estimate" are arithmetic on a sample, not measurements.
 
+## 00. Update 2026-11-14: paused for the move to a 16 GB Codespace
+
+Everything was stopped cleanly so the work can go on in a larger Codespace. [`HANDOFF.md`](HANDOFF.md) has the
+setup, the restore commands, the order of work and a prompt for the next session. This table was last
+brought up to date at about 16:00 UTC, after the pre-merge review was fixed.
+
+| Task | State at the pause |
+|---|---|
+| Collection | 1,138 audio files (819.5 h, 10.11 GB), 8,425 texts from the sources, 61 transcripts made here. All of it is in the private store, and the final sync pass found nothing unstored |
+| Bashar's archive.org sessions | 262 of 903 recordings downloaded (274.6 h; 636.7 h left), and all 262 are on Google Drive. The other 641 are the next task (below) |
+| Podcast backlog | 733 of 2,647 episodes (1,442.6 h left); creators' own audio files 95 of 1,410 (1,315 left, length unknown) |
+| Speech-to-text | 61 transcripts. At 1.3x real time the backlog needs a faster engine or a GPU (HANDOFF section 6) |
+| Private store | release `archive-v1` (bundles); `archiveshelf-podcast-audio-v1` (ArchiveShelf's 16 episodes, checked against GitHub's digests); `handoff-2026-11-14` (state without media, the Drive ledger, the Kimi snapshot, notes, memory files) |
+| Google Drive | **Done.** Everything collected is there in the folder "ET Channelers Archive": 1,138 recordings as 1,958 playable files of at most 7.3 MB (10.13 GB) and 40 text volumes (texts from the source and speech-to-text made here never in one file), 1,998 files in 77 folders by person and source. Also the tables, transcript zips by person and the earlier work (Bashar Index, ArchiveShelf, Channeling Atlas) |
+| YouTube's robots.txt | read 2026-11-14: it disallows the channel listing, feed and caption paths for every crawler. The YouTube steps now stop with exit code 9 ("skipped by rule") unless the owner sets `ET_YOUTUBE_ROBOTS_OVERRIDE=1`. The owner decides (decision D8, HANDOFF 6.6) |
+| Kimi snapshot (channels-ET, received 2026-11-14) | read by five agents; it holds no audio or transcript text. Plan in phase 4b below and in `notes/2026-11-14/kimi_integration_plan.md` |
+| Analysis plan | written: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) (three drafts and a synthesis; families, gates, small-model steps, phases, paper). The deep research on timelines, predictions and question banks is folded in as its own section; the critique is in `notes/2026-11-14/research_critique.md` |
+| Review of dashboard v2 and the store | done: 46 of 47 findings confirmed by skeptics, and all 46 fixed in code, tables and page |
+| Pre-merge review of this work | done: 34 of 37 findings confirmed and fixed, with a test for each code fix that fails without it. The one that mattered most: one refusal from archive.org's own host, or from one of its storage nodes, would have held back every queued Bashar session for a day or more (HANDOFF section 1) |
+| Next | set up and check the new Codespace; decide YouTube (D8); choose the speech-to-text engine; fix the disk hold; the Bashar sessions to Drive (below); phase 4b |
+
+### Next task: every Bashar session on archive.org, downloaded and on Google Drive (added 2026-11-14, at the owner's request)
+
+The Bashar Index catalogued 684 sessions. 393 point at a recording somebody deposited on archive.org, which
+answers from a cloud server. archive.org lists 937 audio files there; 34 of them are a second encoding of a
+recording already counted, so the sessions come to **903 recordings (911.3 hours)**. 274 sessions are only on
+the official streaming site, which is paid and behind a login, and are not collected. These are Bashar's own
+channeled sessions, not interviews: the interview rule (fetch only with live channeling) does not apply.
+
+| | Recordings | Hours |
+|---|---|---|
+| Listed on archive.org | 903 | 911.3 |
+| Downloaded, in the private store | 262 | 274.6 (275.2 measured) |
+| On Google Drive ("04 Audio / Darryl Anka / archive.org sessions") | 262 | 274.6 |
+| Still to download, then to Drive | 641 | 636.7 |
+
+Hours are archive.org's listed lengths, so the rows add up. Six recordings have no listed length (two of them
+are downloaded), so the real total is a little higher.
+
+Steps, in the 16 GB Codespace:
+1. Start the archive.org download (HANDOFF section 4). At the rate so far (about 12 MB per hour of audio)
+   the 641 recordings come to about 7.8 GB.
+2. Fix the disk hold first (HANDOFF section 7). Without the hold, the sync deletes each session's audio once
+   it is stored; step 3 must then first pull it into another folder (`sync_archive.py pull --root <folder>
+   --store $S --kinds audio --only darryl-anka`) and pass `--audio-from <folder>` to `drive_stage.py plan`.
+3. After each few dozen downloads: `sync_archive.py push`, then `drive_stage.py plan --only darryl-anka
+   --kinds audio`, `batches --link-dir <scratchpad>/drive_up`, `round --size 200` (it prints a round id), the
+   uploads, and `done --round <id>` (pipeline README, "A browsable copy on Google Drive"). The 641 recordings make about 1,450 Drive files
+   (2.3 per recording so far), about eight rounds of 200.
+4. Rebuild the tables (`catalog.py --publish`, `targets.py`, `sources_table.py`, each with `--root`), so
+   `plan/bashar_sessions.csv` and the dashboard count them.
+
+**Done when** all 903 recordings are in the private store and on Drive, `drive_stage.py status` shows
+nothing left, and `plan/bashar_sessions.csv` shows 903 here.
+
 ## 0. Update 2026-11-13: the lanes that work from a cloud server
 
 Sections 1 to 6 below are the 2026-11-11 plan and are kept as written. This section records what changed.
@@ -88,9 +143,10 @@ the top of this repository:
   is still on YouTube (68 are; 6 are gone, 1 is private) and whether it is in the archive (5 are, as the
   same interview from the show's podcast).
 * [`plan/bashar_sessions.csv`](plan/bashar_sessions.csv): its catalogue of 684 sessions since 1984. 393 point
-  at a recording deposited on archive.org, which answers from a cloud server: 937 audio files (983 hours,
-  mostly 1984 to 1999) and 153 video files of several gigabytes each. 274 sessions are only on the official
-  streaming site, which is not collected.
+  at a recording deposited on archive.org, which answers from a cloud server: 937 audio files, of which 34
+  are a second encoding of a recording already counted, so 903 recordings (911 hours, mostly 1984 to 1999),
+  and 153 video files of several gigabytes each. 274 sessions are only on the official streaming site,
+  which is not collected. (Corrected 2026-11-14: this line first said 937 recordings and 983 hours.)
 * [`plan/bashar_podcasts.csv`](plan/bashar_podcasts.csv): the 48 podcast appearances it listed, with the
   type it gave and the kind found here.
 
@@ -117,7 +173,7 @@ Snapshot at 2026-11-14T00:41Z, with downloads and speech-to-text running; the cu
 | Distinct pieces of work listed (a video and its podcast or page twin count once) | 69,186 |
 | ... of which in the archive as audio or text | 8,612 |
 | Audio files held | 895 (553.8 h) for 19 people |
-| ... of which Bashar sessions from archive.org | 44, of 937 listed (983 h) and 180 queued for now |
+| ... of which Bashar sessions from archive.org | 44, of 903 recordings listed (911.3 h; 937 files with the second encodings) and 180 queued for now |
 | Texts obtained from the source | 8,424 (13,308,502 words) for 18 people |
 | Transcripts made here by speech-to-text | 55 (185,275 words), running |
 | Audio waiting for a transcript | 837 |
@@ -142,7 +198,7 @@ cores or a GPU is the way to finish in hours.
 **Open, in order** (this replaces the list above where they differ).
 
 1. Put the collected audio and texts in a private store (unchanged: `archiveshelf` is public and this
-   session cannot write to it). **The disk is now the limit**: about 180 of the 983 hours of Bashar session
+   session cannot write to it). **The disk is now the limit**: about 180 of the 911 hours of Bashar session
    audio on archive.org fit; the rest waits for the store, which frees the disk as it uploads.
 2. On the owner's computer: `run_all.py --go` for audio and captions of every listed video.
 3. Speech-to-text for the interviews already held, so each gets its kind; then for the sessions.
@@ -233,9 +289,54 @@ Each phase has an exit test. Do not start the next phase until the test passes.
 * Refresh the dashboard from the new tables.
 * Exit test: every entry has a count or a recorded reason it has none; `inventory.py --update-readme` regenerates the README table.
 
+### Phase 4b: the Kimi agent's channels-ET snapshot (received 2026-11-14)
+
+The owner shared "Kimi_Agent_YouTube ET Channel Analysis.zip": the channels-ET (Channeling Atlas) repository
+as of 2026-11-14. It holds 2,275 files; 517 are newer than the clone read before. No audio or transcript text
+is in it. Five agents read the new parts; their plan is
+[`notes/2026-11-14/kimi_integration_plan.md`](notes/2026-11-14/kimi_integration_plan.md). The zip is kept
+outside this repository (`/workspaces/_incoming/` and the private release `handoff-2026-11-14`).
+
+What its tables and notes describe (the audio, transcripts and subtitles themselves are not in the zip):
+* an inventory of 2,840 YouTube videos on 302 accounts, and a selection of 733 that **drops** recordings
+  under 300 s and caps Bashar at 100. Unlike Phase 7a, it does not study short recordings as a group;
+* audio of 42 videos fetched through the y2mate.gs converter (2026-11-10), with 34 `tiny.en` transcripts and
+  572 question units;
+* subtitles of 12 of those videos from paste-link services;
+* 12 Bashar interviews from the publishers' own feeds, with 715 question units;
+* a 57-page draft paper, AI reviews and analysis code (121 checks).
+
+**Provenance.** The converter audio and the subtitles were obtained by going around YouTube's refusal. We do
+not use them, not even privately: none is in the zip, and the YouTube lane on the owner's computer can fetch
+the same 43 videos if the owner allows it under D8. Their figures may be cited, labelled by route, apart from ours. The owner decides
+(HANDOFF section 6.2).
+
+Steps:
+1. Copy their metadata tables and the readers' tables to `<root>/comparison/channels-et/`, with a sha256 per
+   file.
+2. Channels: put Lee Carroll's channel id in `sources/extra_channels.csv`; list the channel only if the owner
+   allows it under D8 (the listing goes through a path youtube.com's robots.txt disallows). Check and add
+   six more ids for people we list without a channel. Record old routes as aliases.
+3. New accounts: Calenara, Tracy Kumbera, Multidimensional Soul, OmNa and Christine Day go to
+   `et-source-scout` first. 19 Bashar and 3 Kryon re-upload accounts and 10 interview shows join the host
+   lists; an interview is fetched only when the entity speaks live.
+4. Queue (only if D8 allows the YouTube lanes, like every YouTube step): with Lee Carroll listed, the laptop lane covers 33 of the 43 videos; the other 10 wait for steps 2
+   and 3 and a twin check.
+5. Methods: a language and broken-output check in `transcribe.py`; `pipeline/qa_units.py` (question units,
+   six answer-window states, families of two or more content words); an edition field (exact, changed,
+   failed) for enclosures; `tiny.en` against `base.en` on `pod-505525fbd6216f31`, held by both projects byte
+   for byte.
+6. Analysis: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) takes in their limits: no topic or cluster claim without
+   seed stability and a shuffled baseline; names and adverts masked first; upload year apart from session
+   year; their AI-review rates as priors for the 7c audit.
+
+**Done when** the account decisions are in `plan/targets.csv` or the source tables, the comparison folder has
+its hashes, `qa_units.py` and the language check pass their tests, and phases 7a and 7c cite what was taken
+and what was refused.
+
 ### Phase 5: selection rule and pilot on the wider set
 
-* Decide the sampling rule before looking at transcripts (Atlas roadmap item N3): for example, a seeded sample of up to 20 videos per channel, 5 minutes to 3 hours long, flagged as channeling or not, English or auto-detected. `select_jobs.py` writes the seed, rule and input hashes next to the queue so the draw can be reproduced and reported.
+* *Superseded on 2026-11-14 by decision D4: there is no sample; every recording over 5 minutes is taken, with no upper limit and no cap per channel.* Decide the sampling rule before looking at transcripts (Atlas roadmap item N3): for example, a seeded sample of up to 20 videos per channel, 5 minutes to 3 hours long, flagged as channeling or not, English or auto-detected. `select_jobs.py` writes the seed, rule and input hashes next to the queue so the draw can be reproduced and reported.
 * Pilot on 10 channels. Measure disk, hours, block rate and error rate.
 * Exit test: the rule is written down and justified; the pilot's numbers replace the estimates above.
 
@@ -250,9 +351,12 @@ Each phase has an exit test. Do not start the next phase until the test passes.
 * Questions to answer from the transcripts: how channelers use names, calendars and astrology, what they say about themselves and each other, and how the wording spreads between channels. Use the same denominators as the Atlas only after its identity audit (item N1).
 * Quotes in any write-up stay at 30 words or fewer, with the recording and time stamp.
 
-### Phase 7a: shorts against long videos (added 2026-11-14, at the owner's request; after collection)
+### Phase 7a: shorts and short recordings against the main corpus (added 2026-11-14, at the owner's request; after collection)
 
-A separate analysis, run once the transcripts of both kinds are in. The channel listings already say which
+A separate analysis, run once the transcripts of both kinds are in. **The main corpus is every recording over
+5 minutes, with no upper limit** (nothing in the pipeline is limited to an hour: the queues keep every length,
+and their `too_short` and `too_long` counts are 0). **Shorts, and any recording of 5 minutes or less, form a
+group of their own**, compared to the main corpus with the method below. The channel listings already say which
 is which: 16,115 shorts against 42,584 videos and live streams on the 63 channels listed.
 
 * **Question 1, repetition.** Is a short new material, or a piece of a long video? For every short, look for
@@ -276,6 +380,39 @@ is which: 16,115 shorts against 42,584 videos and live streams on the 63 channel
 * **Done when** every channel with at least 20 shorts and 20 long videos has its three answers, and a
   second reader has re-run the numbers from the saved transcripts.
 
+### Phase 7c: years, recent recordings, predictions and warnings, timelines, question banks (added 2026-11-14, at the owner's request)
+
+Built on the same corpus groups as Phase 7a (main corpus over 5 minutes; shorts and short recordings apart),
+with texts from the source and speech-to-text kept apart in every table. The methods, statistics and sources
+are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md), written from a deep-research survey run with agents; its
+section "Timelines, predictions and question banks (deep research, 2026-11-14)" is the current method for
+everything below, and replaces the earlier per-channel caps.
+
+* **By year, for each channel.** Recordings, hours, words, topics, vocabulary, share of audience questions,
+  named beings, star systems and places, per year; year-over-year change with confidence intervals, and a
+  correction for uneven sampling (few early recordings, many recent ones).
+* **The last 5, 10, 50 and 100 recordings** of each channel against its whole history: what is new in topics
+  and wording, length and pace, how often predictions and warnings come up. The last N is compared with the
+  N just before it, against placebo windows from earlier in the channel, so a channel needs at least 2N
+  recordings; one with fewer is reported as such, not padded.
+* **Every prediction and warning.** A small model reads every transcript and marks each statement about the
+  future: what is predicted or warned of, conditional or not, how sure, and the date or period it points to,
+  resolved against the recording's own date. The same prediction repeated in several recordings or by several
+  channels is linked, not counted twice. From this: **a timeline for each channel and one combined timeline**,
+  each point linked to its recording and time stamp. Checking predictions against what happened comes later,
+  only for specific and checkable ones, and with the scoring rules written down first.
+* **Datasets the small model builds** (Claude Haiku in batches through the Message Batches API; agents run
+  only the pilots and the adjudication; larger models re-label a sample blind, and agreement is reported): question-and-answer pairs from audience sessions, question banks grouped by theme,
+  per-recording summaries, dated statements, predictions and warnings. Every row carries the item id and the
+  time stamp or offset it came from. Rows that contain transcript text stay in the private store; counts,
+  labels and ids can be published.
+* **Dashboard.** Build the per-year tables, the last-N comparison and the two timelines first, from these
+  datasets; then improve the UI and UX (filters by channel, kind and year, phone width, linking each point to
+  its recording) once the first version has been used.
+* **Done when** every channel with at least 20 recordings in the main corpus has its per-year table, its
+  last-N comparison and its timeline; the combined timeline exists; and the audit sample's agreement figures
+  are in the methods note.
+
 ### Phase 7b: the cycle runs itself, with a team of agents (added 2026-11-14, at the owner's request)
 
 The pipeline's cloud lanes work, so the routine is now one command, and agents run it. The lead (the
@@ -284,7 +421,7 @@ hands out work, reads the reports, merges, and keeps this roadmap and the dashbo
 
 | Who | Model | Does | Never |
 |---|---|---|---|
-| lead | the session's own | plans the cycle, opens and merges pull requests, updates roadmap and dashboard, decides what the reports mean | merges without both test suites and both guards passing |
+| lead | the session's own | plans the cycle, opens and merges pull requests, updates roadmap and dashboard, decides what the reports mean | merges without the three test suites and both guards passing |
 | `et-collector` | small | runs `pipeline/run_cycle.py`, watches the logs, reports counts, refusals and what stopped | judges, edits code, deletes, lowers the disk floor |
 | `et-source-scout` | middle, with web search | for one person, finds their own site, channel and podcast, checks each with the pipeline's tools, proposes rows with evidence | registers a feed on a name alone; treats a platform profile as someone's site |
 | `et-interview-reader` | small | reads one interview transcript and says live channeling, conversation, unclear or commentary, with where the evidence is | copies transcript text anywhere |
@@ -292,7 +429,8 @@ hands out work, reads the reports, merges, and keeps this roadmap and the dashbo
 
 The definitions are in [`../.claude/agents/`](../.claude/agents/). One cycle:
 
-1. `et-collector` runs `run_cycle.py --go`: list channels again when a listing is a week old, read the feeds,
+1. `et-collector` runs `run_cycle.py --go`: list channels again when a listing is a week old (skipped by rule unless
+   the owner opts in under D8), read the feeds,
    queue what is new (own feeds, creator files, archive.org audio, interviews with live channeling), fetch
    down to the disk floor, fetch the publishers' texts, type the interviews, rebuild the tables.
 2. `et-interview-reader`, one per interview that has a transcript and no reading yet. Its verdicts go to
@@ -323,10 +461,11 @@ built: a schedule that starts the cycle without anyone asking.
 | D1 | What is "all Bashar videos": the 75 recordings in the index, or also the 322 on the official channel and every re-upload? | the 75, then the official channel |
 | D2 | Which Whisper model? | decided by the Phase 2 benchmark |
 | D3 | Language: force English or detect? | English for Bashar, detect for the rest |
-| D4 | Sampling rule for the wider set | up to 20 per channel, seeded, 5 min to 3 h |
+| D4 | Sampling rule for the wider set | Settled 2026-11-14: no sample. Every recording over 5 minutes is collected, transcribed and analysed, with no upper length limit and no cap per channel; shorts and recordings of 5 minutes or less are analysed apart (Phase 7a). Transcription follows a seeded order by person, year and length band. Method: [ANALYSIS_PLAN.md](ANALYSIS_PLAN.md) section 12, "Timelines, predictions and question banks (deep research, 2026-11-14)". |
 | D5 | Where does audio live, and for how long? | outside Git, synced to Drive, kept until the paper is final |
 | D6 | Use captions where good ones exist, and transcribe only the gaps? | captions as a cross-check only, so every video is transcribed the same way |
 | D7 | Make the repository private, or keep it public with data kept elsewhere? | public code and plan; private data |
+| D8 | YouTube's robots.txt (read 2026-11-14) disallows the listing, feed and caption paths for every crawler. Leave the YouTube lanes off; or the owner opts in with `ET_YOUTUBE_ROBOTS_OVERRIDE=1` on their own connection; or use the YouTube Data API with the owner's key (not built). And what to keep of what came through those paths before (63 listings, 58,699 videos; 15 RSS entries) | lanes off; the listings already made are kept and labelled by route (HANDOFF 6.6) |
 
 ## 5. Risks
 
@@ -342,6 +481,9 @@ built: a schedule that starts the cycle without anyone asking.
 | Data leaks into the repository | rights breach | `.gitignore` rules, Git-folder refusal in every script, `guard_no_raw_media.py`, review before each push |
 
 ## 6. Next session: checklist and starter prompt
+
+*Kept as written on 2026-11-11. The current setup, order of work and prompt for the next session are in
+[`HANDOFF.md`](HANDOFF.md) (2026-11-14).*
 
 1. **Get the commit onto your computer.** The cloud session could not push, so it delivered the work as `et-channelers-youtube-index.bundle` (and a zip of the folder). In your clone of the repository:
 

@@ -10,11 +10,25 @@ YouTube refuses audio and caption requests from cloud servers, so the pipeline n
 recording or its text is published, and labels each item with the lane it came from. All lanes write the same
 manifests, so `transcribe.py`, `verify.py`, `catalog.py` and `export_public.py` work on all of them.
 
+**The YouTube lanes are off until the owner decides (2026-11-14).** youtube.com's robots.txt disallows, for every
+user agent, `/youtubei/` (which yt-dlp's channel listing beyond the first page, its player and its caption requests
+all go through) and `/feeds/videos.xml` (the channel RSS), among other paths. The project obeys robots.txt, so
+`discover.py`, `fetch_captions.py` and `download_audio.py` send nothing unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1` is
+set. Without it each of them says so in one line and ends with exit code **9, skipped by rule**; `run_cycle.py`
+reports that step as "skipped by rule" and goes on, and `run_all.py` leaves those lanes out of its plan. Without
+the variable, no Python request goes to a YouTube path that robots.txt disallows, not even through a redirect
+(`feeds.open_url` refuses it, error class `robots`); with it set, `feeds.open_url` and its redirects send those
+requests too, in every step of the process that has it. The two steps that read allowed YouTube pages (a channel's
+page in `discover_sites.py`, the oEmbed lookup in `host_channels.py`) read robots.txt first. Setting the variable
+is the owner's decision, not a workaround: it says the owner accepts sending requests that robots.txt
+disallows. The YouTube Data API is a different route, with its own terms and an API key of the owner's; it is
+not used here.
+
 | Lane | Source | Script | Works from a cloud server? |
 |---|---|---|---|
-| YouTube audio | the video itself, through yt-dlp | `download_audio.py` | **No.** Tried twice from cloud machines (2026-11-11 and 2026-11-13): every request got "confirm you're not a bot". Run it on your own computer. |
-| YouTube captions | YouTube's own caption tracks | `fetch_captions.py` | **No**, same reason. Written and tested against a stand-in; not yet run against YouTube. |
-| YouTube channel listing | what each channel lists on its Videos, Live and Shorts tabs: ids, titles, lengths. No media | `discover.py` | **Yes** (found 2026-11-13: listing asks for no video stream, and YouTube answers it). It sets the size of the job and the laptop queue. |
+| YouTube audio | the video itself, through yt-dlp | `download_audio.py` | **Off by rule** (above). Technically, **no** as well: tried twice from cloud machines (2026-11-11 and 2026-11-13), every request got "confirm you're not a bot". |
+| YouTube captions | YouTube's own caption tracks | `fetch_captions.py` | **Off by rule**; technically no, same reason. Written and tested against a stand-in; not yet run against YouTube. |
+| YouTube channel listing | what each channel lists on its Videos, Live and Shorts tabs: ids, titles, lengths. No media | `discover.py` | **Off by rule** since 2026-11-14. Technically yes: it answered from the cloud on 2026-11-13, and those listings set the size of the job. |
 | Podcast episodes | the enclosure of each item in the maker's own feed | `find_feeds.py`, `fetch_feeds.py`, `select_episodes.py`, `download_enclosures.py` | Yes |
 | Creator files | audio the maker hosts on their own site | `select_episodes.py`, `download_enclosures.py` | Yes |
 | Publisher texts | transcripts the publisher wrote (site pages, feed transcript links) | `fetch_publisher_text.py` | Yes |
@@ -40,7 +54,7 @@ from, the channel and what it lists, what is registered outside YouTube, what is
 | `captured` | every listed piece of work is in the archive, and the person's channel has been listed, so "every" includes its videos |
 | `partly captured` | some of it is |
 | `planned: source found` | a feed, files or pages are registered and nothing is fetched yet |
-| `planned: YouTube only` | a channel is known and nothing else: it waits for a home connection |
+| `planned: YouTube only` | a channel is known and nothing else: it waits for the owner's decision on YouTube's robots.txt (and then a home connection) |
 | `planned: no source yet` | no channel or site is known |
 | `unresolved` | a name nobody has tied to a channel (three truncated names from ArchiveShelf's screenshot) |
 | `excluded` | left out at the owner's request |
@@ -78,8 +92,9 @@ interview (`twin_method: title-same-show`), so the Bashar table counts it for th
 
 ### What kind of interview: live channeling, or talk about it
 
-An interview with a channeler is fetched only when the entity speaks in it. `interview_types.py` gives
-every listed interview episode a kind, and says what the kind rests on:
+An interview's audio is queued only when the entity speaks in it (since 14 November; audio fetched before
+that is kept whatever its kind), while the feed's own transcript is fetched for every listed episode.
+`interview_types.py` gives every listed interview episode a kind, and says what the kind rests on:
 
 | Kind | Rests on |
 |---|---|
@@ -110,8 +125,10 @@ robots.txt that says no is still obeyed, and a site that cannot be reached is le
 ### Channeled sessions on archive.org
 
 The Bashar Index data package at the top of this repository (`data/session_catalog.csv`) catalogues 684
-Bashar sessions since 1984, and 391 of its entries point at a recording somebody deposited on archive.org.
-Those are the sessions themselves. `list_archive_org.py` asks archive.org's public metadata service what
+Bashar sessions since 1984, and 393 of its entries (392 distinct items) point at a recording somebody
+deposited on archive.org; 274 more are only on the official streaming site, which is paid and is not
+collected. Those are the channeled sessions themselves, not interviews, so the interview rule (fetch only
+when the entity speaks live) does not apply to them. `list_archive_org.py` asks archive.org's public metadata service what
 each item holds and writes [`../sources/archive_org_sessions.csv`](../sources/archive_org_sessions.csv): audio
 files (tape transfers, small) are queued like any other recording, with ids `ia-<16 hex>`; video files run
 to gigabytes each and are only listed. `targets.py` also writes three tables from that data package:
@@ -162,20 +179,55 @@ machine with eight real cores or a GPU would take hours.
 ### One command on your own computer
 
 `run_all.py` starts the lanes side by side with a watcher that uploads finished items to your private store,
-checks each copy, and deletes the local file. Without `--go` it only prints the plan.
+checks each copy, and deletes the local file. Without `--go` it only prints the plan. Its YouTube lanes run only
+if the owner has decided to send requests that youtube.com's robots.txt disallows and set the variable
+(`$env:ET_YOUTUBE_ROBOTS_OVERRIDE = "1"` in PowerShell, `export ET_YOUTUBE_ROBOTS_OVERRIDE=1` in a Unix shell);
+without it they are left out of the plan, and a run of YouTube lanes alone ends with exit code 9.
 
 ```powershell
 python et-channelers\pipeline\run_all.py --store gh:YOU/PRIVATE-REPO@audio-v1            # show the plan
 python et-channelers\pipeline\run_all.py --store gh:YOU/PRIVATE-REPO@audio-v1 --go      # run it
-python et-channelers\pipeline\run_all.py --store dir:D:\et-archive --lanes youtube,captions --set bashar75 --go
+python et-channelers\pipeline\run_all.py --store dir:D:\et-archive --lanes youtube,captions --set bashar75 --go   # only with the variable
 ```
 
 `--store gh:OWNER/REPO@TAG` puts tar bundles on a release of a **private** GitHub repository through the `gh`
 command you are logged in with. The repository's visibility is read before anything is downloaded and the run
 stops (exit code 5) unless it is private; there is no flag to override that. `--store dir:/folder` copies into
 any folder outside a Git checkout (an external disk, or a folder your Drive client syncs). Exit codes: 3 a
-source refused requests, 4 the disk floor was reached, 5 the store was refused, 6 a run of setup faults.
+source refused requests, 4 the disk floor was reached, 5 the store was refused, 6 a run of setup faults, 8 another
+cycle was running (`run_cycle.py`), 9 skipped by rule (a YouTube step without `ET_YOUTUBE_ROBOTS_OVERRIDE=1`).
 `sync_archive.py` can also be run by itself (`push`, `status`, `pull`).
+
+### A browsable copy on Google Drive
+
+`drive_stage.py` lays out what the store holds as files for the owner's Google Drive, under one top folder:
+`04 Audio/<person>/<group>/<date> <title> [<item id>].opus` (groups: "Podcast - <show>", "archive.org
+sessions", "Audio from own website", "Interviews on other shows") and `03 Transcripts/<person>/`, where
+texts from the source and speech-to-text made here are separate volumes, never one file. Audio is never
+re-encoded: a file over 7.3 MB is cut between Ogg pages into parts that each play on their own. The ledger
+`<root>/sync/drive_manifest.jsonl` holds the Drive id of every folder and file, so a later run plans only
+what is new or changed.
+
+```bash
+S=~/et-drive/stage                       # outside any Git checkout
+python3 -I et-channelers/pipeline/sync_archive.py pull --root ~/et-channelers-private --store gh:OWNER/REPO@TAG --kinds audio --only darryl-anka
+python3 -I et-channelers/pipeline/drive_stage.py plan    --out $S --only darryl-anka --kinds audio
+python3 -I et-channelers/pipeline/drive_stage.py batches --out $S --n 1 --link-dir <folder the uploader may read>
+python3 -I et-channelers/pipeline/drive_stage.py round   --out $S --size 200     # numbered: title, parent id, file, type; and its id
+# ... upload each file of the round, then hand back one "i <Drive id>" line per upload:
+python3 -I et-channelers/pipeline/drive_stage.py done    --out $S --round <id> < ids.txt
+python3 -I et-channelers/pipeline/drive_stage.py status  --out $S
+```
+
+The uploads are done by whoever holds the Drive login. With the Claude Google Drive connector, one call
+sends one file, by reference, only from the main session's scratchpad folder and only a file with a single
+hard link: `--link-dir` copies each file there under a plain name. About two seconds per 7 MB file; two
+messages of 100 calls make a round of 200. `round` prints the round's id, and `done` takes back only numbers
+of that round (`--round <id>`): once part of a round is recorded, `round` numbers the rest afresh under a new
+id, and the old numbers are refused (the refusal lists those uploads' Drive ids, to trash on Drive). `done`
+also refuses a number outside the round, one given twice, one whose file changed or left the plan after the
+round was printed, and a Drive id that the ledger already holds for another file, and records the rest; it records only the lines it is
+given (every round's lines are also kept in `<out>/results.jsonl`). rclone with a one-time Google login would do the same unattended (not set up).
 
 ### What changed in the YouTube lane on 2026-11-13
 
@@ -219,6 +271,34 @@ Not fixed, by choice: the GitHub release is an ordinary one, not a draft (a draf
 repository were made public, but `gh` behaviour with drafts was not tested here). Use a repository made for
 this purpose, with no public past.
 
+### Review of 2026-11-14: what was wrong and what changed
+
+The same four risks again, on the store, the cycle loop and the sources table. Each finding was reproduced
+before it was fixed, and each fix has a test.
+
+| Found | Now |
+|---|---|
+| The deleting sync removed audio that `transcribe.py` had open or queued; the finished transcript was then recorded as an error, never stored, and never made again | each `transcribe.py` run names the files it has queued in `<root>/sync/holds/`, and the sync keeps them until they are transcribed; the audio is hashed before the work, and a file that is gone is skipped, not failed, so a later pass makes it (earlier `FileNotFoundError` errors are tried again). `ET_HOLD_UNTRANSCRIBED=1` keeps everyone's audio until it has a transcript |
+| After one failed manifests upload, the next pass deleted local audio while the store's ledger did not list it, so a fresh folder could not read it back | every pass that deletes anything sends the current ledger first, and deletes nothing if that send fails |
+| "Never two downloaders" was one look at the process list: two downloaders ran at once on overlapping queues | every downloader takes a lock in `<root>/jobs/` (a second waits, then reads what is left; shards of one queue may run together); a second `keep_collecting.sh` leaves at once; a cycle started while another runs does nothing (exit code 8) |
+| A host that refused was asked again in every cycle; nothing read Retry-After; one or two refusals ended a run with code 0 | a refusing host rests a day at least, longer if its Retry-After says so, doubling with each further spell (`common.resting_hosts`, from each step's own manifest; `--ask-resting` overrides); any 403 / 429 ends the run with code 3; a Retry-After over ten minutes ends that host's turn for the run |
+| `interview_types.py --notes` downloaded every interview feed again in every cycle, with no refusal handling | `fetch_feeds.py` keeps the names of the marks in each interview episode's show notes (never the notes) from the read it makes anyway; `interview_types.py` fetches nothing (`--notes` is accepted and ignored) |
+| Requests waiting for their turn still went out after a host's third refusal | the breaker is checked again after the wait, in every fetcher |
+| `mirror_texts.py --remote` was never compared with `--repo`; the origin check read one fetch address while the push went to the push addresses; a link inside the checkout could lead writes into the public repository; one failed push beside a second writer left the mirror stuck in a rebase | `--remote` must be an address of `--repo`; the checkout must have one fetch and one push address, both of that repository; nothing is written through a link that leads out of the checkout; each run starts from the remote's branch and pushes to it by name; a failed run is logged as one |
+| The sources table: 257 texts counted under no source; a channel row counting 63 videos of other channels; "here" counting a page's text as the file held; a never-listed channel shown as "listed" with 0; notes counting list rows (937 files, 1,775 pages) against the catalogue's numbers; a fixed claim that only live channeling is downloaded; ArchiveShelf linked | every catalogue item lands on one row (a row is made for what no list names); a channel row counts its own listing; `items_here` is what the source yields, with `audio_here`, `texts_from_source` and `texts_made_here` beside it; an unlisted channel has no count and says "not listed yet"; notes say what they count; the interview note is built from the counts; ArchiveShelf rows link this repository's intake list. archive.org audio is counted once per recording everywhere (903, not 937) |
+| Three "official sites" were a platform's home page (Crowdcast, the Libsyn directory, LINE) | those services are platforms in `discover_sites.py`, and the three rows are gone |
+| (pre-merge review, 2026-11-14) archive.org sends every file from one of about a hundred storage nodes, so its own host was never credited with a success: one 403 from it would have held back every queued Bashar session for a day or more. The node of the last answer also stood for the whole site (and for a Podbean feed, whose episodes come from dozens of nodes), across runs and within a run | a success counts for the first hop too; an item is held back by the host that last answered for it, and a feed or site only when its last three items all came from one host that is being left alone (`MediaHosts`); no redirect is followed to a host that is being left alone (`Hops`), and a connection that fails after a redirect is charged to the host it led to |
+| A short Retry-After from the host a redirect led to was stored but never waited for; a Retry-After sent with a 503 was ignored (audio, feeds, texts) | in the audio lane, every host a redirect leads to waits for its own turn and its own Retry-After; a 503's Retry-After delays the host's next request, and a wait over ten minutes ends the host's turn for the run |
+| A 429 for a site's robots.txt was recorded as a network error, so every cycle asked again | it is recorded as a refusal (rate limited, with its Retry-After), so the site rests on later runs |
+| `drive_stage.py done` gave the ledger every earlier round's lines again, which could record a new version of a text volume at an old Drive id and never upload it; after a partial `done`, `round` numbered the rest afresh and old numbers went to other files | `done` records only its own lines; `round` prints a round id that `done --round` must be given; a Drive id already recorded for another file is refused |
+| `keep_collecting.sh`'s lock was inherited by its cycle and its sleep, so after `kill <pid>` a new loop reported one running and left | the children do not inherit the lock |
+| `mirror_texts.py` read the remote's branch as "HEAD" when the checkout had no `origin/HEAD` | read with `git symbolic-ref`, which says nothing then, so the fallback applies |
+| Hours in the summaries added values already rounded per row (911.2 instead of 911.3) | the totals add unrounded hours and round once |
+| (second pass, checking the fixes) A host in the middle of a redirect chain was never credited with a success, so one refusal from it held back every episode behind it; three files of one archive.org item, which sit on one node, made that node stand for the whole site | every host along the way is credited (`via_hosts` in the record); files without a feed are never grouped |
+| A request already waiting for its turn went out despite a Retry-After the host sent meanwhile; a download that started before a 429 and ended after it erased the refusal; a lone 403 with a Retry-After of days was asked again on the next run; a huge Retry-After crashed every later run | the limiter holds waiting requests too; a success clears only refusals that came before it started (`started` is the moment the request goes out); a refusal's Retry-After holds the host on later runs; a Retry-After is capped at 32 days |
+| `list_site_pages.py` read robots.txt twice, the second time outside the site's turn; one 429 for robots.txt was counted 3 to 10 times | read once, through the gates; counted and recorded once |
+| `done` recorded an upload whose file had changed or left the plan since the round was printed, so the new version was never offered; an old round's ids were refused with no word on what to do with them | `done` refuses such a number and says to trash that upload; the round id covers the files' checksums; a refused old round lists its uploads' Drive ids, to trash |
+
 ## Rules for the data
 
 | Data | Where it lives | May it go into Git? |
@@ -250,6 +330,9 @@ python et-channelers\pipeline\doctor.py --root $HOME\et-channelers-private
 
 ## Run order
 
+These steps request YouTube paths that its robots.txt disallows: they run only after the owner's decision, with
+`$env:ET_YOUTUBE_ROBOTS_OVERRIDE = "1"` (HANDOFF section 6). Without it steps 2 to 4 end at once with exit code 9.
+
 ```powershell
 $P = "et-channelers\pipeline"
 python $P\select_jobs.py --set bashar75                 # 1. queue of the 75 Bashar recordings
@@ -265,7 +348,7 @@ python $P\export_public.py                              # 9. publishable numbers
 
 If step 3 prints `STOPPED` (exit code 3), do not push on: wait, lower `--workers`, raise `--min-interval`, or stop. Finished items are skipped when you rerun. To work from audio you already hold, put files named `<11-character-video-id>.opus` (or `.m4a`, `.mp3`, `.wav`, ...) in `<root>/audio/<channel>/` and start at step 6.
 
-For the other channels: `discover.py` lists every video on each tracked channel (public metadata), `select_jobs.py --set all --per-channel 20 --seed 7 --min-seconds 300` draws a reproducible sample, and the same download and transcription steps follow. Two machines can split a queue with `--shard 0/2` and `--shard 1/2`.
+For the other channels: `discover.py` lists every video on each tracked channel (public metadata; off by the same rule), `select_jobs.py --set all --per-channel 20 --seed 7 --min-seconds 300` draws a reproducible sample, and the same download and transcription steps follow. Two machines can split a queue with `--shard 0/2` and `--shard 1/2`.
 
 ## The scripts
 
@@ -273,21 +356,23 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 |---|---|---|
 | [`inventory.py`](inventory.py) | channel and video totals and hour/disk estimates from the committed index; rewrites the table in the README | `--update-readme`, `--refresh-bashar75` |
 | [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--min-seconds`, `--max-seconds`, `--order`, `--shards N`, `--export-ids` |
-| [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing, one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
+| [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing (off unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1`), one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
 | [`targets.py`](targets.py) | the one list of everyone tracked, with origin, channel, sources, capture counts and state; and the channels behind the 75 Bashar recordings | `--no-private`, `--out` |
 | [`list_site_pages.py`](list_site_pages.py) | names the address families in a person's own sitemap and registers the chosen pages | `--only`, `--match`, `--exclude`, `--merge` |
 | [`host_channels.py`](host_channels.py) | the address, id and declared websites of each channel behind the Bashar list; whether each recording is still on YouTube | `--all`, `--recordings`, `--refresh` |
 | [`find_host_feeds.py`](find_host_feeds.py) | the podcast feed of each interview show in the Bashar list, graded, registered as a host feed | `--all`, `--merge`, `--kinds` |
-| [`interview_types.py`](interview_types.py) | the kind of each listed interview episode (live channeling, unclear, conversation, commentary or clip), from its transcript or show notes | `--notes`, `--only` |
+| [`interview_types.py`](interview_types.py) | the kind of each listed interview episode (live channeling, unclear, conversation, commentary or clip), from its transcript or the marks of its show notes that `fetch_feeds.py` keeps; fetches nothing | `--only` |
 | [`list_archive_org.py`](list_archive_org.py) | the audio and video files behind the session catalogue's archive.org entries | `--all`, `--refresh` |
-| [`run_cycle.py`](run_cycle.py) | one collection cycle from a cloud server: list, feeds, queue, fetch, texts, interview kinds, tables. What the agents run (see Phase 7b of the roadmap) | `--go`, `--skip`, `--max-hours`, `--transcribe`, `--interview-types` |
-| [`download_audio.py`](download_audio.py) | yt-dlp downloads a small audio stream to a scratch folder, ffmpeg re-encodes it to mono 16 kHz Opus, scratch is deleted | `--limit N` (pilot), `--all`, `--workers`, `--per-channel`, `--min-interval`, `--shard i/n`, `--bitrate`, `--limit-rate`, `--retry-failed` |
+| [`run_cycle.py`](run_cycle.py) | one collection cycle from a cloud server: list (skipped by rule without `ET_YOUTUBE_ROBOTS_OVERRIDE=1`), feeds, queue, fetch, texts, interview kinds, tables. What the agents run (see Phase 7b of the roadmap) | `--go`, `--skip`, `--max-hours`, `--transcribe`, `--interview-types` |
+| [`download_audio.py`](download_audio.py) | (off unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1`) yt-dlp downloads a small audio stream to a scratch folder, ffmpeg re-encodes it to mono 16 kHz Opus, scratch is deleted | `--limit N` (pilot), `--all`, `--workers`, `--per-channel`, `--min-interval`, `--shard i/n`, `--bitrate`, `--limit-rate`, `--retry-failed` |
 | [`transcribe.py`](transcribe.py) | faster-whisper with batching and VAD; one process per GPU; longest files first so processes finish together, or every person in turn with `--order round-robin`; leaves out speech in a language the run was not asked for | `--model`, `--model-revision`, `--devices 0,1`, `--workers`, `--cpu-threads`, `--batch-size`, `--language`, `--order`, `--only`, `--compute-type`, `--shard i/n` |
 | [`verify.py`](verify.py) | file sizes, optional re-hash, audio-versus-listing length, transcript sanity, audio without transcript; builds the QA sheet | `--hash`, `--qa-sample N` |
 | [`export_public.py`](export_public.py) | the publishable table: durations, sizes, hashes, language, word counts, model and revision, speed | `--out` |
+| [`sync_archive.py`](sync_archive.py) | puts audio, transcripts and texts in the private store as checked tar bundles, reads them back into a fresh folder, and frees the disk once a copy is checked | `push`, `pull`, `status`, `--store`, `--kinds`, `--only`, `--delete`, `--hold-untranscribed-for` |
+| [`drive_stage.py`](drive_stage.py) | the Google Drive copy by person and source: names, folders, playable parts of at most 7.3 MB, text volumes, and the ledger of Drive ids | `plan`, `batches`, `round`, `done`, `record`, `status`, `--only`, `--kinds`, `--link-dir`, `--size` |
 | [`doctor.py`](doctor.py) | checks the machine | `--root`, `--need-gb` |
 | [`common.py`](common.py) | shared helpers: manifests, shards, rate limiter, circuit breaker, Git guard | – |
-| [`tests/test_pipeline.py`](tests/test_pipeline.py) | the automated tests | – |
+| [`tests/test_pipeline.py`](tests/test_pipeline.py), [`tests/test_lanes.py`](tests/test_lanes.py), [`tests/test_drive_stage.py`](tests/test_drive_stage.py) | the automated tests | – |
 
 ## How it works
 
@@ -295,6 +380,8 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 * **Parallel without overlap.** Videos are split across workers and machines by a stable hash of the id (`--shard i/n`), so shards never overlap and do not depend on Python's randomised `hash()`.
 * **Polite.** A global limit on how often downloads start (`--min-interval`, with a little jitter), a per-channel cap on simultaneous downloads, and a scheduler that never leaves a worker idle behind a busy channel.
 * **Stops instead of pushing through.** Three hard blocks in a row (bot check, 403, 429) trip a circuit breaker; a success resets the count. Only network errors are retried (exponential backoff). A re-encode failure is not retried.
+* **Remembers a refusal.** A Retry-After is obeyed, with a 403, 429 or 503. In the audio lane it is also obeyed from a host a redirect leads to, and no redirect is followed to a host that is being left alone; feeds, texts and site pages charge an answer to the address they asked for. A host that keeps refusing (a 429, three refusals in a row, or a refusal from a host that served nothing in the day before) is not asked again on later runs until its wait is over: a day at least, the Retry-After if longer, doubling with each further spell of refusals; any other refusal holds the host for the Retry-After it carried (`--ask-resting` asks anyway).
+* **One at a time.** Each downloader holds a lock in `<root>/jobs/`, so a second one waits and then reads what is left; shards of one queue may run together. One collection loop and one cycle at a time.
 * **Safe by default.** `download_audio.py` only prints its plan unless `--limit` or `--all` is given. Every script refuses a data folder inside a Git checkout.
 * **Why ffmpeg encodes, not yt-dlp.** yt-dlp copies the stream unchanged when the source is already Opus, which would ignore the bitrate and channel settings. The pipeline downloads a stream and encodes it itself, so every file is mono 16 kHz Opus at the stated bitrate (24 kbps is about 10.8 MB per hour).
 * **Why ffmpeg decodes, not PyAV.** faster-whisper 1.2.1 calls `av.open(..., metadata_errors=...)`, which PyAV 19 rejects, and its requirement is only `av>=11`, so a fresh install fails with `TypeError`. `transcribe.py` decodes with ffmpeg and hands the samples to the model. The test suite checks this.
@@ -327,7 +414,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | Real YouTube, from a cloud server (2026-11-11) | 3 of 3 pilot videos refused: two "confirm you're not a bot" responses and one HTTP 403. The breaker stopped the run. No workaround was tried. |
 | Windows, a GPU, large models, long batches | **not tested** |
 
-Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (about 40 seconds; standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
+Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (104 tests, about 80 seconds), `tests/test_lanes.py` (237, about 7 minutes) and `tests/test_drive_stage.py` (13) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
 
 ## Known limits
 

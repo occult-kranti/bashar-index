@@ -181,7 +181,10 @@ class PipelineCase(unittest.TestCase):
         self.state.mkdir()
         self.ytdlp = make_tool(self.tmp / "bin", "yt-dlp", FAKE_YTDLP)
         self.ffmpeg = make_tool(self.tmp / "bin", "ffmpeg", FAKE_FFMPEG)
-        self.env = {"FAKE_LOG": str(self.log), "FAKE_STATE": str(self.state), "FAKE_SLEEP": "0.3"}
+        # These tests drive the YouTube lanes' mechanics with stand-in tools, as if the owner had opted in;
+        # TestYouTubeRobotsRule checks that without the opt-in nothing is sent.
+        self.env = {"FAKE_LOG": str(self.log), "FAKE_STATE": str(self.state), "FAKE_SLEEP": "0.3",
+                    common.YOUTUBE_OVERRIDE: "1"}
 
     # -- running things
     def cli(self, script, *args, env=None):
@@ -249,6 +252,51 @@ class TestCommon(unittest.TestCase):
         for text, want in [("1:02:03", 3723), ("15:38", 938), ("45", 45), ("", None), (None, None), ("abc", None),
                            ("1:2:3:4", None), ("-1:00", None)]:
             self.assertEqual(common.parse_duration(text), want, text)
+
+    # ---- refusals remembered from one run to the next (review of 2026-11-14)
+    def test_a_host_that_refused_rests_a_day_or_as_long_as_it_asked_and_longer_each_time(self):
+        t0 = common.epoch("2026-11-14T00:00:00Z")
+
+        def rec(status, klass, at, **extra):
+            return {"status": status, "error_class": klass, "started": common.stamp(t0 + at), "host": "x", **extra}
+
+        def rest(records, at):
+            return common.resting_hosts(records, lambda r: r["host"], now=t0 + at)
+        day = 86400
+        self.assertEqual(rest([rec("error", "rate_limited", 0)], 60)["x"]["until"], t0 + day)            # one 429: a day
+        self.assertEqual(rest([rec("error", "rate_limited", 0, retry_after_s=3 * day)], 60)["x"]["until"], t0 + 3 * day)
+        again = [rec("error", "rate_limited", 0), rec("error", "rate_limited", day + 10)]                   # asked again, refused again
+        self.assertEqual(rest(again, day + 60)["x"]["until"], t0 + day + 10 + 2 * day)
+        same_spell = [rec("error", "rate_limited", 0), rec("error", "rate_limited", 5), rec("error", "rate_limited", 9)]
+        self.assertEqual(rest(same_spell, 60)["x"]["until"], t0 + 9 + day)                                 # one spell, one day
+        self.assertEqual(rest([rec("ok", "", 0), rec("error", "forbidden", 10)], 60), {})                   # that file's 403
+        asked = rest([rec("ok", "", 0), rec("error", "forbidden", 10, retry_after_s=2 * day)], 60)        # unless it said how long
+        self.assertEqual(asked["x"]["until"], t0 + 10 + 2 * day)
+        self.assertEqual(rest([rec("ok", "", 0), rec("error", "forbidden", 10, retry_after_s=5)], 60), {})
+        three = [rec("ok", "", 0)] + [rec("error", "forbidden", 10 + i) for i in range(3)]
+        self.assertIn("x", rest(three, 60))                                                                # three in a row: the host's
+        self.assertIn("x", rest([rec("ok", "", 0), rec("error", "forbidden", 2 * day)], 2 * day + 60))     # nothing served for a day
+        self.assertEqual(rest([rec("error", "rate_limited", 0), rec("ok", "", 10)], 60), {})                # a success ends it
+        self.assertEqual(rest([rec("error", "rate_limited", 0)], day + 1), {})                              # and so does the wait
+        self.assertEqual(rest([rec("error", "network", i) for i in range(5)], 60), {})                     # not a refusal
+        self.assertEqual(rest([rec("error", "bot_check", i) for i in range(3)], 60)["x"]["times"], 3)
+
+    def test_retry_after_is_read_as_seconds_or_as_a_date_and_obeyed_within_a_run(self):
+        self.assertEqual(common.retry_after_seconds("120"), 120)
+        self.assertEqual(common.retry_after_seconds("Sat, 14 Nov 2026 01:00:00 GMT", now=common.epoch("2026-11-14T00:00:00Z")), 3600)
+        self.assertIsNone(common.retry_after_seconds("soon"))
+        self.assertEqual(common.retry_after_seconds("9" * 20), common.REFUSAL_REST_MAX_S)              # capped: 32 days
+        self.assertEqual(common.retry_after_seconds("Fri, 31 Dec 9999 23:59:59 GMT", now=0), common.REFUSAL_REST_MAX_S)
+        self.assertIsNone(common.retry_after_seconds(None))
+        clock, slept = [100.0], []
+        gates = common.HostGates(interval=0, stop_after=3, clock=lambda: clock[0], sleep=slept.append)
+        gates.hard_block("far", retry_after=3600)
+        self.assertTrue(gates.blocked("far"))                       # longer than a run should wait: left alone for the run
+        gates.hard_block("near", retry_after=30)
+        self.assertFalse(gates.blocked("near"))
+        gates.wait("near")
+        self.assertAlmostEqual(slept[-1], 30.0, places=3)           # its next request waits as long as it asked
+        self.assertEqual(gates.refused_hosts(), {"far": 1, "near": 1})
 
     def test_shards_partition_and_are_stable_across_processes(self):
         ids = [mk("VID", i) for i in range(200)]
@@ -351,6 +399,19 @@ class TestCommon(unittest.TestCase):
         for _ in range(3):
             limiter.wait()
         self.assertEqual(slept, [2.0, 2.0])
+
+    def test_a_retry_after_reaches_a_request_already_waiting_for_its_turn(self):
+        now, slept = [0.0], []
+
+        def sleep(seconds):
+            slept.append(seconds)
+            if len(slept) == 1:
+                gates.hard_block("h", retry_after=30)   # the request before this one was answered: 429, Retry-After: 30
+            now[0] += seconds
+        gates = common.HostGates(interval=1.0, clock=lambda: now[0], sleep=sleep)
+        gates.wait("h")                                  # the first request goes at once
+        gates.wait("h")                                  # the second was waiting for its turn when that answer came
+        self.assertAlmostEqual(now[0], 30.0, places=6)   # it used to go out after about one second
 
     def test_private_root_default_honours_environment(self):
         old = os.environ.get("ET_PRIVATE_DIR")
@@ -501,6 +562,17 @@ class TestDiscover(PipelineCase):
         self.assertEqual([r["error_class"] for r in records], ["bot_check"] * 3)
         self.assertFalse((self.root / "discover" / "channels" / "okay.jsonl").exists())
 
+    def test_after_refusals_youtube_is_not_asked_to_list_again_until_the_wait_is_over(self):
+        self.write_index([("b1", "blocked1", 1), ("b2", "blocked2", 1), ("b3", "blocked3", 1), ("okay", "okay5", 5)])
+        self.assertEqual(self.discover("--workers", "1").returncode, 3)
+        calls = len(self.fake_events("CALL"))
+        again = self.discover("--workers", "1")
+        self.assertEqual(again.returncode, 0, again.stderr)
+        self.assertEqual(len(self.fake_events("CALL")), calls)                  # the next cycle asks nothing
+        self.assertIn("left alone on this run: youtube.com refused (bot_check) 3 time(s)", again.stderr)
+        self.discover("--workers", "1", "--ask-resting")
+        self.assertGreater(len(self.fake_events("CALL")), calls)
+
     def test_terminated_channel_is_recorded_once(self):
         self.write_index([("gone", "gone3", 3), ("alpha", "alpha4", 4)])
         self.assertEqual(self.discover().returncode, 0)
@@ -591,6 +663,27 @@ class TestDownload(PipelineCase):
         self.assertEqual(self.download("--limit", "2").returncode, 0)
         self.assertEqual(len(self.audio_manifest()), 2)
         self.assertEqual(len(list((self.root / "audio" / "chanA").glob("*.opus"))), 2)
+
+    @unittest.skipIf(os.name == "nt", "file locks are for the Codespace's and the laptop's shell")
+    def test_a_second_downloader_waits_for_the_first(self):
+        # the review of 2026-11-14: two downloaders on one queue fetched the same items side by side
+        self.write_queue([(mk("VID", i), "chanA", 600) for i in range(2)])
+        first = common.downloader_lock(self.root / "jobs", "download_audio.py")
+        second = subprocess.Popen([sys.executable, "-I", str(PIPE / "download_audio.py"), "--root", str(self.root), "--ytdlp",
+                                   self.ytdlp, "--ffmpeg", self.ffmpeg, "--ffprobe", "ffprobe-not-installed", "--min-interval", "0",
+                                   "--backoff", "0.01", "--all"], stderr=subprocess.PIPE, text=True,
+                                  env={**os.environ, **self.env})
+        said = second.stderr.readline()
+        if f"{common.YOUTUBE_OVERRIDE}=1" in said:                         # the opt-in it runs under is said first
+            said = second.stderr.readline()
+        self.assertIn("waiting: another download_audio is running", said)
+        self.assertIsNone(second.poll())                                   # it waits for the first one
+        self.assertEqual(self.fake_events("START"), [])                    # and has asked for nothing
+        for handle in first:
+            handle.close()
+        _, err = second.communicate(timeout=120)
+        self.assertEqual(second.returncode, 0, err)
+        self.assertEqual(len(self.ok_manifest()), 2)
 
     def test_parallel_with_worker_and_channel_caps(self):
         chan = {}
@@ -953,6 +1046,92 @@ class TestTranscribe(PipelineCase):
         self.assertEqual(self.transcribe().returncode, 0)
         self.assertEqual([r["video_id"] for r in self.tr_manifest()], [mk("VID", 1)])
 
+    # ---- the deleting sync runs beside this (review of 2026-11-14): a file that goes is no error
+    def run_in_process(self, jobs, engine=None):
+        import contextlib
+        import io
+        import types
+        from unittest import mock
+        import transcribe
+        out = self.root / "transcripts"
+        a, said = types.SimpleNamespace(engine="stub", stub_delay=0), io.StringIO()
+        with mock.patch.object(transcribe, "load_engine", (lambda _a: engine) if engine else transcribe.load_engine), \
+                contextlib.redirect_stderr(said):
+            transcribe.run_jobs(a, jobs, out / "transcripts_manifest.jsonl", out)
+        self.said = said.getvalue()
+        return self.tr_manifest() if (out / "transcripts_manifest.jsonl").exists() else []
+
+    def jobs_for(self, ids):
+        return [{"video_id": v, "channel_dir": "chanA", "path": str(self.root / "audio" / "chanA" / f"{v}.opus"), "weight": 1.0}
+                for v in ids]
+
+    def test_a_file_taken_away_before_its_turn_is_skipped_and_a_later_pass_does_it(self):
+        ids = [mk("VID", i) for i in range(3)]
+        self.make_audio(ids)
+        gone = self.root / "audio" / "chanA" / f"{ids[1]}.opus"
+        kept = gone.read_bytes()
+        gone.unlink()                                          # stored and removed by the sync meanwhile
+        records = self.run_in_process(self.jobs_for(ids))
+        self.assertEqual([r["video_id"] for r in records], [ids[0], ids[2]])   # nothing recorded for the missing one
+        self.assertIn(f"skipped {ids[1]}: its audio is no longer here", self.said)
+        gone.write_bytes(kept)                                 # sync_archive.py pull brought it back
+        p = self.transcribe()
+        self.assertIn("1 to transcribe", p.stderr)
+        self.assertEqual(self.tr_manifest()[-1]["status"], "ok")
+
+    def test_a_file_taken_away_while_it_is_read_keeps_its_finished_transcript(self):
+        import transcribe
+        ids = [mk("VID", i) for i in range(2)]
+        self.make_audio(ids)
+        before = {v: common.sha256_file(self.root / "audio" / "chanA" / f"{v}.opus") for v in ids}
+
+        class Vanishing(transcribe.StubEngine):
+            def transcribe(self, path, a):
+                done = super().transcribe(path, a)
+                Path(path).unlink()                            # gone once the decoder has read it
+                return done
+
+        records = self.run_in_process(self.jobs_for(ids), Vanishing())
+        self.assertEqual([(r["status"], r["audio_sha256"]) for r in records], [("ok", before[v]) for v in ids])
+        self.assertTrue(all((self.root / "transcripts" / "chanA" / f"{v}.txt").exists() for v in ids))
+
+        class VanishingThenFailing(transcribe.StubEngine):
+            def transcribe(self, path, a):
+                Path(path).unlink()
+                raise FileNotFoundError(path)
+
+        self.make_audio([mk("VID", 7)])
+        self.assertEqual(len(self.run_in_process(self.jobs_for([mk("VID", 7)]), VanishingThenFailing())), 2)  # no error line
+
+    def test_an_error_an_earlier_version_recorded_for_a_vanished_file_is_tried_again(self):
+        ids = [mk("VID", i) for i in range(2)]
+        self.make_audio(ids)
+        manifest = self.root / "transcripts" / "transcripts_manifest.jsonl"
+        common.append_jsonl(manifest, {"video_id": ids[0], "channel_dir": "chanA", "status": "error",
+                                       "error_class": "FileNotFoundError", "error_tail": "No such file or directory"})
+        common.append_jsonl(manifest, {"video_id": ids[1], "channel_dir": "chanA", "status": "error",
+                                       "error_class": "ValueError", "error_tail": "stub: cannot decode audio"})
+        p = self.transcribe()
+        self.assertIn("1 to transcribe", p.stderr)
+        latest = common.latest_by_key(self.tr_manifest())
+        self.assertEqual((latest[ids[0]]["status"], latest[ids[1]]["status"]), ("ok", "error"))
+
+    def test_a_run_names_the_files_it_has_queued_until_it_ends(self):
+        ids = [mk("VID", i) for i in range(2)]
+        self.make_audio(ids)
+        proc = subprocess.Popen([sys.executable, "-I", str(PIPE / "transcribe.py"), "--root", str(self.root), "--engine", "stub",
+                                 "--stub-delay", "2"], stderr=subprocess.DEVNULL)
+        end, notes = time.time() + 30, []
+        while not notes and time.time() < end:
+            notes = list(common.holds_dir(self.root).glob("transcribe-*.json"))
+            time.sleep(0.05)
+        note = json.loads(notes[0].read_text())
+        self.assertEqual((note["pid"], note["video_ids"]), (proc.pid, sorted(ids)))
+        self.assertEqual(common.held_items(self.root), set(ids))
+        self.assertEqual(proc.wait(timeout=60), 0)
+        self.assertEqual(common.held_items(self.root), set())
+        self.assertFalse(list(common.holds_dir(self.root).glob("*.json")))
+
     def test_more_processes_finish_sooner(self):
         self.make_audio([mk("VID", i) for i in range(6)])
         t0 = time.time()
@@ -1046,6 +1225,19 @@ class TestTranscribe(PipelineCase):
         p = self.transcribe("--model", "base", "--language", "auto")    # a model that detects the language takes all
         self.assertEqual(len(self.tr_manifest()), 3)
         self.assertNotIn("left out", p.stderr)
+
+    def test_only_the_kinds_of_item_asked_for(self):
+        archive, podcast = "ia-00000000000000a1", "pod-00000000000000b2"
+        for ident in (archive, podcast):
+            path = self.root / "audio" / "chanA" / f"{ident}.opus"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"FAKEOPUS" + ident.encode() * 60)
+        self.make_audio([mk("VID", 1)])
+        p = self.transcribe("--lanes", "ia")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertEqual([r["video_id"] for r in self.tr_manifest()], [archive])
+        self.assertEqual(self.transcribe("--lanes", "pod,youtube").returncode, 0)
+        self.assertEqual(sorted(r["video_id"] for r in self.tr_manifest()), sorted([archive, podcast, mk("VID", 1)]))
 
     def test_shards_do_not_overlap(self):
         ids = [mk("VID", i) for i in range(9)]
@@ -1220,6 +1412,7 @@ class TestGuard(unittest.TestCase):
         files = {
             f"transcripts_publisher/sam-the-illusionist/{web}.txt": "four thousand words of a session\n",
             f"transcripts_publisher/sam-the-illusionist/{web}.source": "<html>the page as fetched</html>",
+            f"transcripts_publisher/sam-the-illusionist/{web}x.source.gz": "compressed page as fetched",
             f"transcripts/athina-krol/{pod}.txt": "machine transcript text\n",
             f"transcripts/athina-krol/{pod}.json": '{"segments": []}',
             f"captions/chanY/{yt}.txt": "caption text\n",
