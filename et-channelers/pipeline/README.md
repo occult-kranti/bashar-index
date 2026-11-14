@@ -89,6 +89,12 @@ every listed interview episode a kind, and says what the kind rests on:
 | `commentary or clip` | a short episode whose title carries only what the person channels, not their name |
 | `not classified` | no transcript is held and the show notes do not say |
 
+A fifth basis outranks all of these: **a reading**. A reader given the whole transcript (the
+`et-interview-reader` agent, a small model; or a person) says what the episode is and where in it the
+entity starts and stops speaking. Verdicts are kept in `<root>/sources/interview_readings.jsonl`, and the
+label then says "read in full by ...". The phrase rules only look for marks; a reader notices that Kryon
+is brought in halfway through, or that "Bashar says" is Darryl Anka talking.
+
 **A title never makes an episode live channeling.** Eleven Bashar interviews came with the publisher's own
 transcript, several titled "Bashar's Channeled Message ...": all are conversations with Darryl Anka in which
 nothing is channeled. A sentence such as "I am going to channel" is not used either: in the transcripts read
@@ -274,6 +280,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | [`find_host_feeds.py`](find_host_feeds.py) | the podcast feed of each interview show in the Bashar list, graded, registered as a host feed | `--all`, `--merge`, `--kinds` |
 | [`interview_types.py`](interview_types.py) | the kind of each listed interview episode (live channeling, unclear, conversation, commentary or clip), from its transcript or show notes | `--notes`, `--only` |
 | [`list_archive_org.py`](list_archive_org.py) | the audio and video files behind the session catalogue's archive.org entries | `--all`, `--refresh` |
+| [`run_cycle.py`](run_cycle.py) | one collection cycle from a cloud server: list, feeds, queue, fetch, texts, interview kinds, tables. What the agents run (see Phase 7b of the roadmap) | `--go`, `--skip`, `--max-hours`, `--transcribe`, `--interview-types` |
 | [`download_audio.py`](download_audio.py) | yt-dlp downloads a small audio stream to a scratch folder, ffmpeg re-encodes it to mono 16 kHz Opus, scratch is deleted | `--limit N` (pilot), `--all`, `--workers`, `--per-channel`, `--min-interval`, `--shard i/n`, `--bitrate`, `--limit-rate`, `--retry-failed` |
 | [`transcribe.py`](transcribe.py) | faster-whisper with batching and VAD; one process per GPU; longest files first so processes finish together, or every person in turn with `--order round-robin`; leaves out speech in a language the run was not asked for | `--model`, `--model-revision`, `--devices 0,1`, `--workers`, `--cpu-threads`, `--batch-size`, `--language`, `--order`, `--only`, `--compute-type`, `--shard i/n` |
 | [`verify.py`](verify.py) | file sizes, optional re-hash, audio-versus-listing length, transcript sanity, audio without transcript; builds the QA sheet | `--hash`, `--qa-sample N` |

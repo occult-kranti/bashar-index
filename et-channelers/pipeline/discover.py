@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures as cf
+import datetime
 import json
 import re
 import shutil
@@ -131,6 +132,8 @@ def main():
     ap.add_argument("--stop-after-blocks", type=int, default=3)
     ap.add_argument("--max-per-channel", type=int, default=20000)
     ap.add_argument("--tabs", default=",".join(TABS), help="which tabs to list: videos, streams (live), shorts")
+    ap.add_argument("--max-age-days", type=float, default=0,
+                    help="list a channel again when its listing is older than this many days (0 = a listing never goes stale)")
     ap.add_argument("--page-pause", type=float, default=0.3,
                     help="seconds between the page requests inside one listing (a long channel is many pages)")
     ap.add_argument("--timeout", type=int, default=600)
@@ -151,8 +154,16 @@ def main():
         entries = [e for e in entries if e["person"] in wanted]
     done = latest_by_key(read_jsonl(paths.discover / "discover_manifest.jsonl"), "person_id")
     def listed(person):
-        """Finished for every tab asked for. A record from before tabs existed covered the Videos tab only."""
+        """Finished for every tab asked for, and not too long ago. A record from before tabs existed covered
+        the Videos tab only."""
         rec = done.get(person, {})
+        if args.max_age_days and rec.get("started"):
+            try:
+                made = datetime.datetime.strptime(rec["started"], "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=datetime.timezone.utc)
+                if (datetime.datetime.now(datetime.timezone.utc) - made).total_seconds() > args.max_age_days * 86400:
+                    return False
+            except ValueError:
+                return False
         return rec.get("status") == "ok" and set(args.tab_list) <= set(rec.get("tabs") or {"videos": 0}) \
             and (paths.discover / "channels" / f"{person}.jsonl").exists()
 

@@ -551,6 +551,16 @@ class TestDiscover(PipelineCase):
         self.assertEqual(len(read_jsonl(self.root / "discover" / "channels" / "busy.jsonl")), 7)
         self.assertNotEqual(self.discover("--tabs", "videos,reels").returncode, 0)
 
+    def test_a_listing_older_than_asked_for_is_made_again(self):
+        self.write_index([("alpha", "alpha4", 4)])
+        self.assertEqual(self.discover().returncode, 0)
+        self.assertIn("0 to do", self.discover("--max-age-days", "7").stderr)          # made a moment ago: still fresh
+        manifest = self.root / "discover" / "discover_manifest.jsonl"
+        old = common.latest_by_key(read_jsonl(manifest), "person_id")["alpha"]
+        common.append_jsonl(manifest, {**old, "started": "2026-01-01T00:00:00Z"})      # as if listed long ago
+        self.assertIn("0 to do", self.discover().stderr)                              # by default a listing never goes stale
+        self.assertIn("1 to do", self.discover("--max-age-days", "7").stderr)
+
     def test_uses_the_documented_playlist_flag(self):
         self.write_index([("alpha", "alpha4", 4)])
         import discover
