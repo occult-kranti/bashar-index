@@ -19,6 +19,18 @@ YouTube channel of each person the 2026-10-23 index does not have. `targets.py` 
 [`../plan/targets.csv`](../plan/targets.csv). Pages get into `publisher_pages.csv` through
 `list_site_pages.py`, which reads the sitemap of a site listed in `official_sites.csv`.
 
+`bashar_host_channels.csv` holds the 38 channels behind the 75 Bashar recordings (address, id, kind,
+declared websites; seven have no address because their listed recording is gone or private), and
+`bashar_recordings_status.csv` says for each of the 75 whether YouTube still answers for it. Rows of
+`podcast_feeds.csv` with relation `host` and a person id of the form `host:<show>` are interview shows:
+only their episodes whose title names a tracked person are ever queued.
+
+`archive_org_sessions.csv` lists the media files of the archive.org items that the Bashar Index session
+catalogue cites (`list_archive_org.py`): audio files are queued, video files only listed. A page on a
+course, shop, mailing-list or booking service (learnitlive, mailchi.mp, skool, a Shopify or Kajabi
+address) is nobody's own website and is never registered in `official_sites.csv`; two such rows were
+removed on 2026-11-13.
+
 ## How a feed is graded
 
 `find_feeds.py` never downloads audio. It grades each feed Apple returns for a person's name:

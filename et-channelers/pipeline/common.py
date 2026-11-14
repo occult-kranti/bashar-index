@@ -88,6 +88,12 @@ def item_id(lane: str, *key_parts) -> str:
     return f"{lane}-{hashlib.sha256(joined.encode('utf-8')).hexdigest()[:16]}"
 
 
+def host_id(channel: str) -> str:
+    """The id of an interview show or re-upload channel, from the name the lists use for it:
+    'Next Level Soul Podcast' -> 'host:next-level-soul-podcast'. A note in brackets is not part of the name."""
+    return "host:" + slug(str(channel or "").split("(")[0].strip(), "channel").lower()
+
+
 def lane_of(item: str) -> str:
     """'youtube' for an 11-character id, otherwise the lane prefix ('pod', 'web', 'ia')."""
     return item.split("-", 1)[0] if LANE_ID_RE.match(item or "") else "youtube"

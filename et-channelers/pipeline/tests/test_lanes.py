@@ -678,10 +678,35 @@ class TestSelectEpisodes(LaneCase):
         common.write_csv(registry, rows, find_feeds.REGISTRY_FIELDS)
 
     def select(self, *extra):
+        # these tests are about which episodes exist and how they pair with videos, so every kind of
+        # interview is asked for; the default (live channeling only) has a test of its own below
+        kinds = () if "--interview-types" in extra or "--default-kinds" in extra else ("--interview-types", "all")
+        extra = tuple(x for x in extra if x != "--default-kinds")
         done = self.cli("select_episodes.py", "--root", self.root, "--relation", "own,host", "--registry",
-                        self.tmp / "registry.csv", *extra)
+                        self.tmp / "registry.csv", *kinds, *extra)
         self.assertEqual(done.returncode, 0, done.stderr)
         return common.read_csv(self.root / "jobs" / "queue_enclosures.csv")
+
+    def test_only_interviews_with_live_channeling_are_queued_and_the_rest_stay_listed(self):
+        self.write_feed("show", "host:show", "host", [("Live session with Darryl Anka", 3600, []),
+                                                      ("A talk with Darryl Anka", 3600, []),
+                                                      ("Darryl Anka returns", 3600, [])])
+        self.write_feed("own", "athina-krol", "own", [("Her own episode", 600, [])])
+        live, talk = common.item_id("pod", "show", "0"), common.item_id("pod", "show", "1")
+        common.append_jsonl(self.root / "sources" / "interview_types.jsonl", {"video_id": live, "kind": "live channeling"})
+        common.append_jsonl(self.root / "sources" / "interview_types.jsonl", {"video_id": talk, "kind": "conversation"})
+        rows = self.select("--default-kinds")
+        self.assertEqual(sorted(r["title"] for r in rows), ["Her own episode", "Live session with Darryl Anka"])
+        self.assertEqual({r["title"]: r["interview_type"] for r in rows},
+                         {"Her own episode": "", "Live session with Darryl Anka": "live channeling"})
+        meta = json.loads((self.root / "jobs" / "queue_enclosures.meta.json").read_text())
+        self.assertEqual(meta["dropped"]["interview_of_another_kind"], 2)
+        everything = self.select("--interview-types", "all")
+        self.assertEqual(len(everything), 4)
+        kinds = {r["title"]: r["interview_type"] for r in everything}
+        self.assertEqual((kinds["A talk with Darryl Anka"], kinds["Darryl Anka returns"]), ("conversation", "not classified"))
+        some = self.select("--interview-types", "live channeling,not classified")
+        self.assertEqual(len(some), 3)
 
     def test_a_feed_the_registry_no_longer_accepts_is_not_queued(self):
         self.write_feed("good", "athina-krol", "own", [("Kept", 600, [])])
@@ -947,6 +972,56 @@ class TestPublisherTextRun(LaneCase):
         self.assertEqual(recs[b]["error_class"], "robots")
         self.assertNotIn("/private/2.vtt", Publisher.hits)
         self.assertTrue((self.root / "transcripts_publisher" / "chanA" / f"{a}.txt").exists())
+
+    def test_a_file_store_without_a_robots_file_does_not_hide_a_transcript_the_feed_hands_out(self):
+        # what happened: the feed links its transcripts on a file store that answers 403 for /robots.txt
+        rows = self.text_queue(2)
+        Publisher.routes["/robots.txt"] = (403, "text/plain", b"AccessDenied")
+        done = self.fetch_text()
+        self.assertEqual(done.returncode, 0, done.stderr)
+        recs = common.latest_by_key(common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl"))
+        self.assertEqual({recs[r["video_id"]]["status"] for r in rows}, {"ok"})
+        # a page is another matter: nobody handed its address to a podcast app, so an unread robots.txt still stops it
+        pages = self.tmp / "pages.csv"
+        common.write_csv(pages, [{"person_id": "chanA", "title": "a page", "page_url": self.base + "/t/0.vtt", "media_pattern": "",
+                                  "evidence": "test"}], ["person_id", "title", "page_url", "media_pattern", "evidence"])
+        import fetch_publisher_text as fpt
+        job = {"video_id": common.item_id("web", self.base + "/t/0.vtt"), "channel_dir": "chanA", "url": self.base + "/t/0.vtt",
+               "declared": "text/html", "title": "", "origin": "page", "media_pattern": ""}
+        import argparse
+        rec = fpt.fetch_one(job, self.root / "transcripts_publisher", common.HostGates(interval=0), fpt.Robots(),
+                            argparse.Namespace(timeout=20, min_words=50))
+        self.assertEqual((rec["status"], rec["error_class"]), ("error", "network"))
+        self.assertIn("robots.txt could not be read", rec["error_tail"])
+
+    def test_a_robots_file_that_says_no_is_obeyed_for_feed_transcripts_too(self):
+        rows = self.text_queue(1)
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nDisallow: /t/\n")
+        self.fetch_text()
+        recs = common.latest_by_key(common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl"))
+        self.assertEqual(recs[rows[0]["video_id"]]["error_class"], "robots")
+
+    def test_a_listed_episode_with_a_transcript_link_needs_no_queue(self):
+        # The queue is one work order among several (interview episodes have their own). A transcript that a
+        # listed episode links was skipped unless that episode happened to be in queue_enclosures.csv.
+        row = next(r for r in common.read_csv(ET / "sources" / "podcast_feeds.csv")
+                   if r["relation"] == "own" and r["verification"] == "verified")
+        key = feeds.feed_key(row["person_id"], row["feed_url"])
+        words = " ".join(f"word{i}" for i in range(80))
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+        Publisher.routes["/t/listed.vtt"] = (200, "text/vtt", f"WEBVTT\n\n00:00.000 --> 00:05.000\n{words}\n".encode())
+        ident = common.item_id("pod", row["person_id"], "listed-1")
+        common.atomic_write_text(self.root / "feeds" / f"{key}.jsonl", json.dumps({
+            "video_id": ident, "guid": "listed-1", "title": "An episode", "published": "2026-01-01", "duration_s": 600,
+            "enclosure_url": "https://cdn.example/listed/1.mp3",
+            "transcripts": [{"url": self.base + "/t/listed.vtt", "type": "text/vtt"}],
+            "youtube_ids": [], "feed_key": key, "person_id": row["person_id"], "relation": "own"}) + "\n")
+        done = self.cli("fetch_publisher_text.py", "--root", self.root, "--kinds", "episodes", "--only", row["person_id"],
+                        "--all", "--min-interval", "0")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        recs = {r["video_id"]: r for r in common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl")}
+        self.assertEqual((recs[ident]["status"], recs[ident]["n_words"]), ("ok", 80))
+        self.assertFalse((self.root / "jobs" / "queue_enclosures.csv").exists())
 
     def text_queue(self, n):
         words = " ".join(f"word{i}" for i in range(80))
@@ -1444,6 +1519,16 @@ class TestCaptionsAndRunner(LaneCase):
         self.assertFalse(self.root.exists())
         self.assertEqual(self.log.read_text(), "")
 
+    def test_everything_means_every_listed_video_so_the_channels_are_listed_first(self):
+        done = self.runner("--store", f"dir:{self.tmp / 'disk'}", "--lanes", "youtube,captions")      # --set all is the default
+        plan = done.stdout
+        self.assertIn("discover.py", plan)
+        self.assertLess(plan.index("discover.py"), plan.index("select_jobs.py"))
+        named = self.runner("--store", f"dir:{self.tmp / 'disk'}", "--lanes", "youtube", "--set", "bashar75").stdout
+        self.assertNotIn("discover.py", named)                                    # a named set needs no listing
+        texts = self.runner("--store", f"dir:{self.tmp / 'disk'}", "--lanes", "enclosures,texts").stdout
+        self.assertNotIn("discover.py", texts)
+
     def test_runner_checks_the_store_before_downloading_anything(self):
         done = self.runner("--store", "gh:someone/archive@audio-v1", "--lanes", "youtube", "--set", "bashar75", "--go",
                            env={"FAKE_GH_VISIBILITY": "public"})
@@ -1659,7 +1744,7 @@ class TestCatalogTextKinds(LaneCase):
         self.assertEqual(int(after["items_listed"]), int(before["items_listed"]) + 1)       # two items ...
         self.assertEqual(after["distinct_listed"], before["distinct_listed"])               # ... one piece of work
         self.assertEqual((before["distinct_captured"], after["distinct_captured"]), ("0", "1"))
-        self.assertEqual(after["items_outside_youtube"], "1")
+        self.assertEqual(int(after["items_outside_youtube"]), int(before["items_outside_youtube"]) + 1)   # the episode itself
 
     def coverage_row(self, person):
         self.assertEqual(self.cli("catalog.py", "--root", self.root).returncode, 0)
@@ -1696,19 +1781,27 @@ class TestTargets(LaneCase):
         self.assertIn("257 session transcripts", by["sam-the-illusionist"]["earlier_work"])
         self.assertIn("recordings digested", by["darryl-anka"]["earlier_work"])
         self.assertEqual({r["state"] for r in rows} - set(__import__("targets").STATES), set())
-        # names nobody has tied to a channel stay in the list, marked as such, and so do the two left out on request
-        self.assertEqual(sorted(r["person_name"] for r in rows if r["state"] == "unresolved"),
-                         ["LightingClarity", "Pleiadian Laark…", "Rachel & Kevin P…"])
-        self.assertEqual(sorted(r["person_name"] for r in rows if r["state"] == "excluded"), ["Jamie Butler", "Vivek Samtani"])
+        # The three truncated names of the intake were tied to channels by the channel's own name. That is
+        # not the owner's confirmation, and the list says so; the two left out on request stay listed as such.
+        self.assertEqual({p: by[p]["identity"] for p in ("laarkmaa", "rachel-kevin-pasdon", "lightingclarity")},
+                         {"laarkmaa": "name-match", "rachel-kevin-pasdon": "name-match", "lightingclarity": "name-match"})
+        self.assertIn("listed there as 'Pleiadian Laark…'", by["laarkmaa"]["earlier_work"])
+        self.assertEqual([r for r in rows if r["state"] == "unresolved"], [])
+        # one name stays left out at the owner's request; Jamie Butler was left out too until the owner asked for her
+        self.assertEqual(sorted(r["person_name"] for r in rows if r["state"] == "excluded"), ["Vivek Samtani"])
+        self.assertEqual((by["jamie-butler"]["origin"], by["jamie-butler"]["identity"]), ("archiveshelf", "verified"))
+        self.assertNotEqual(by["jamie-butler"]["state"], "excluded")
         # an index entry whose channel was not found is still a known person, not an unresolved name
         self.assertNotEqual(by["grace-solaris"]["identity"], "unresolved")
 
     def test_the_state_says_what_the_plan_rests_on(self):
         by, _, _ = self.targets()
         self.assertEqual(by["l-l-research"]["state"], "planned: source found")   # files, pages and a feed are registered
-        self.assertEqual(by["darryl-anka"]["state"], "planned: YouTube only")
+        self.assertEqual(by["darryl-anka"]["state"], "planned: source found")    # his sessions on archive.org are registered
+        self.assertGreater(int(by["darryl-anka"]["archive_org_files"]), 900)
+        self.assertEqual(by["arkayla"]["state"], "planned: YouTube only")        # a channel and nothing else
         self.assertEqual(by["grace-solaris"]["state"], "planned: no source yet")
-        self.assertIn("home connection", by["darryl-anka"]["next_step"])
+        self.assertIn("home connection", by["arkayla"]["next_step"])
         row = common.read_csv(ET / "sources" / "creator_files.csv")[0]
         ident = common.item_id("web", row["media_url"])
         common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
@@ -1752,7 +1845,12 @@ class TestTargets(LaneCase):
         kinds = {h["channel"]: h["kind"] for h in hosts}
         self.assertEqual(kinds["Bashar Channeled by Darryl Anka"], "official channel")
         self.assertEqual(kinds["Next Level Soul Podcast"], "interview show")
-        self.assertEqual({h["state"] for h in hosts}, {"planned: YouTube only"})
+        self.assertEqual({h["state"] for h in hosts}, {"planned: YouTube only", "planned: podcast feed found", "gone from YouTube"})
+        # a channel whose listed recording YouTube no longer has cannot be planned at all
+        self.assertEqual(next(h["state"] for h in hosts if h["channel"] == "Cosmic Bridge"), "gone from YouTube")
+        self.assertEqual(sum(int(h["still_on_youtube"]) for h in hosts), 68)
+        self.assertEqual(next(h["state"] for h in hosts if h["channel"] == "Next Level Soul Podcast"), "planned: podcast feed found")
+        self.assertEqual(next(h["state"] for h in hosts if h["channel"] == "Divine Insights"), "planned: YouTube only")
         self.assertTrue(all(h["captured_here"] == "0" for h in hosts))
         # an interview that arrives as the show's podcast episode counts for the channel that carries the video
         interview = next(r for r in listed if r["channel"] == "Emilio Ortiz")
@@ -1825,6 +1923,36 @@ class TestChannelListingInTheCatalogue(LaneCase):
         self.assertEqual(select_episodes.find_twin(episode, known["stewart-pearce"], 0.72, 0.12)[:2], ("SPVIDEO0001", "title"))
 
 
+class TestSameShowTwins(unittest.TestCase):
+    """An interview show's podcast episode and the video on that show's own channel."""
+    VIDEOS = [{"video_id": "ALIGNVIDEO1", "title": "Bashar: This is Coming In 2026", "duration_s": None, "uploader": "host:align-podcast"},
+              {"video_id": "ALIGNVIDEO2", "title": "Bashar: Urgent message for 2025", "duration_s": None, "uploader": "host:align-podcast"},
+              {"video_id": "REUPLOAD001", "title": "Bashar: This is Coming In 2026 (full)", "duration_s": None, "uploader": "host:divine-insights"}]
+
+    def twin(self, title, show="host:align-podcast", videos=None):
+        return select_episodes.find_twin({"title": title, "duration_s": 4100, "youtube_ids": []}, videos or self.VIDEOS, 0.72, 0.12, (), show)
+
+    def test_the_same_show_and_the_same_title_words_are_the_same_interview(self):
+        self.assertEqual(self.twin("Bashar: This is Coming In 2026... (Darryl Anka)")[:2], ("ALIGNVIDEO1", "title-same-show"))
+        self.assertEqual(self.twin("Bashar: URGENT MESSAGE for 2025 (Darryl Anka) - Align Podcast #561")[0], "")   # #561: numbers differ
+        self.assertEqual(self.twin("Bashar: URGENT MESSAGE for 2025 (Darryl Anka)")[:2], ("ALIGNVIDEO2", "title-same-show"))
+
+    def test_another_shows_feed_gets_no_such_credit(self):
+        # the same words from a different show are a candidate at most: no length to compare
+        video, method, _, candidate = self.twin("Bashar: This is Coming In 2026", show="host:some-other-show")
+        self.assertEqual((video, method), ("", ""))
+        self.assertIn(candidate, ("ALIGNVIDEO1", "REUPLOAD001"))
+        self.assertEqual(self.twin("Bashar: This is Coming In 2026", show="")[0], "")          # the maker's own feed: the old rule
+        self.assertEqual(self.twin("A talk about gardening")[:2], ("", ""))
+
+    def test_the_bashar_list_knows_which_show_uploaded_each_video(self):
+        known = select_episodes.known_videos()["darryl-anka"]
+        uploaders = {v.get("uploader") for v in known if v.get("uploader")}
+        self.assertIn("host:next-level-soul-podcast", uploaders)
+        self.assertIn("host:soul-luma", uploaders)                         # the note in brackets is not part of the id
+        self.assertEqual(common.host_id("Dr. Mayim Bialik"), "host:dr.-mayim-bialik")
+
+
 # --------------------------------------------------------------------------- pages on a maker's own site
 class TestListSitePages(LaneCase):
     def setUp(self):
@@ -1894,6 +2022,22 @@ class TestListSitePages(LaneCase):
         code, out = self.run_tool("--only", "maker", "--match", "^/post/", "--merge")
         self.assertIn("0 added", out)
         self.assertEqual(len(common.read_csv(self.pages)), 5)
+
+    def test_posts_kept_in_a_sitemap_file_of_their_own_can_be_taken_by_that_file(self):
+        # a site whose posts sit at the top level (/a-message), told apart only by the file that lists them
+        base = "https://maker.example"
+        self.serve(base + "/sitemap_index.xml", f"<sitemapindex><sitemap><loc>{base}/post-sitemap.xml</loc></sitemap>"
+                                                f"<sitemap><loc>{base}/page-sitemap.xml</loc></sitemap></sitemapindex>")
+        self.serve(base + "/post-sitemap.xml", "<urlset>" + "".join(f"<url><loc>{base}/a-message-{i}/</loc></url>" for i in range(4))
+                   + f"<url><loc>{base}/</loc></url></urlset>")
+        self.serve(base + "/page-sitemap.xml", f"<urlset><url><loc>{base}/about/</loc></url><url><loc>{base}/contact/</loc></url></urlset>")
+        code, out = self.run_tool("--only", "maker")
+        self.assertIn("by sitemap file", out)
+        self.assertIn("post-sitemap.xml", out)
+        code, out = self.run_tool("--only", "maker", "--from-sitemap", "post-sitemap", "--merge")
+        self.assertEqual(code, 0, out)
+        self.assertEqual(sorted(r["page_url"] for r in common.read_csv(self.pages)),
+                         [f"https://maker.example/a-message-{i}/" for i in range(4)])     # not the pages, not the home page
 
     def test_someone_without_an_official_site_is_refused(self):
         code, _ = self.run_tool("--only", "nobody")
@@ -2178,6 +2322,380 @@ class TestReconSites(LaneCase):
         self.assertEqual(code, 0, err)
         rows = {r["person_id"]: r for r in common.read_csv(self.root / "sources" / "site_recon.csv")}
         self.assertEqual((rows["down"]["status"], rows["up"]["status"]), ("error", "ok"))
+
+# --------------------------------------------------------------------------- the channels behind the Bashar list
+class TestHostChannels(LaneCase):
+    def setUp(self):
+        super().setUp()
+        import host_channels
+        self.mod = host_channels
+        self.served, self.asked = {}, []
+        self.list_csv = self.tmp / "by_channel.csv"
+        self.out = self.tmp / "hosts.csv"
+        common.write_csv(self.list_csv, [
+            {"channel": "Next Level Soul Podcast", "official": "False", "content_type": "Interview with Darryl Anka", "video_id": "NLSGONE0001"},
+            {"channel": "Next Level Soul Podcast", "official": "False", "content_type": "Interview with Darryl Anka", "video_id": "NLSVIDEO002"},
+            {"channel": "Soul Luma (third-party clip channel)", "official": "False", "content_type": "Clip / excerpt", "video_id": "LUMAVIDEO01"},
+            {"channel": "The Official One", "official": "True", "content_type": "Official highlight clip", "video_id": "OFFICIAL001"}],
+            ["channel", "official", "content_type", "video_id"])
+        self.serve("https://www.youtube.com/robots.txt", "User-agent: *\nAllow: /\n")
+
+    def serve(self, url, body, status=200):
+        self.served[url] = (status, body.encode("utf-8") if isinstance(body, str) else body)
+
+    def embed(self, vid, name, address):
+        import urllib.parse
+        self.serve(self.mod.OEMBED + urllib.parse.quote(f"https://www.youtube.com/watch?v={vid}", safe=""),
+                   json.dumps({"author_name": name, "author_url": address, "type": "video"}))
+
+    def run_tool(self, *extra):
+        import contextlib
+        import io
+        import fetch_publisher_text as fpt
+        case = self
+
+        def fake_get(url, timeout=60, max_bytes=0):
+            case.asked.append(url)
+            status, body = case.served.get(url, (404, b""))
+            if status != 200:
+                raise feeds.FetchError(status, f"HTTP Error {status}", url)
+            return url, "text/html", body
+        saved = (self.mod.get_bytes, fpt.get_bytes, sys.argv)
+        self.mod.get_bytes = fpt.get_bytes = fake_get
+        sys.argv = ["host_channels.py", "--list", str(self.list_csv), "--out", str(self.out), "--min-interval", "0", *extra]
+        code = 0
+        try:
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                try:
+                    self.mod.main()
+                except SystemExit as stop:
+                    code = stop.code or 0
+        finally:
+            self.mod.get_bytes, fpt.get_bytes, sys.argv = saved
+        return code
+
+    def test_each_channel_gets_its_address_its_kind_and_its_declared_sites(self):
+        self.embed("NLSVIDEO002", "Next Level Soul Podcast", "https://www.youtube.com/@NextLevelSoul")   # the first video is gone
+        self.serve("https://www.youtube.com/@NextLevelSoul",
+                   channel_page("UCnextlevelsoul000000000", "Next Level Soul Podcast", ["https://nextlevelsoul.com", "https://instagram.com/x"]))
+        self.embed("LUMAVIDEO01", "Soul Luma", "https://www.youtube.com/@SoulLuma")
+        self.assertEqual(self.run_tool("--all"), 0)
+        rows = {r["channel"]: r for r in common.read_csv(self.out)}
+        self.assertEqual(len(rows), 3)                                    # every channel of the list has a row, found or not
+        nls = rows["Next Level Soul Podcast"]
+        self.assertEqual((nls["host_id"], nls["kind"], nls["channel_url"], nls["channel_id"], nls["websites"], nls["subscribers"]),
+                         ("host:next-level-soul-podcast", "interview show", "https://www.youtube.com/@NextLevelSoul",
+                          "UCnextlevelsoul000000000", "nextlevelsoul.com", "35100"))
+        luma = rows["Soul Luma (third-party clip channel)"]
+        self.assertEqual((luma["host_id"], luma["kind"], luma["channel_url"], luma["channel_id"]),
+                         ("host:soul-luma", "clip channel", "https://www.youtube.com/@SoulLuma", ""))   # its page was not served
+        self.assertEqual((rows["The Official One"]["kind"], rows["The Official One"]["channel_url"]), ("official channel", ""))
+        asked = len(self.asked)
+        self.assertEqual(self.run_tool("--all"), 0)                       # found channels are not asked about again
+        self.assertFalse(any("NLSVIDEO002" in u or "LUMAVIDEO01" in u for u in self.asked[asked:]))
+
+    def test_refusals_stop_the_run(self):
+        import urllib.parse
+        for vid in ("NLSGONE0001", "NLSVIDEO002", "LUMAVIDEO01", "OFFICIAL001"):
+            self.serve(self.mod.OEMBED + urllib.parse.quote(f"https://www.youtube.com/watch?v={vid}", safe=""), "", status=429)
+        self.assertEqual(self.run_tool("--all"), 3)
+        self.assertEqual(sum(1 for u in self.asked if "oembed" in u), 3)  # nothing is asked after the third refusal
+
+    def test_a_dry_run_asks_nothing(self):
+        self.assertEqual(self.run_tool(), 0)
+        self.assertEqual(self.asked, [])
+
+    def test_each_recording_is_asked_whether_youtube_still_has_it(self):
+        import urllib.parse
+        status = self.tmp / "status.csv"
+        self.embed("NLSVIDEO002", "Next Level Soul Podcast", "https://www.youtube.com/@NextLevelSoul")
+        self.serve(self.mod.OEMBED + urllib.parse.quote("https://www.youtube.com/watch?v=LUMAVIDEO01", safe=""), "", status=401)
+        self.serve(self.mod.OEMBED + urllib.parse.quote("https://www.youtube.com/watch?v=OFFICIAL001", safe=""), "", status=403)
+        self.assertEqual(self.run_tool("--recordings", "--all", "--status-out", str(status)), 0)
+        got = {r["video_id"]: (r["embed_lookup"], r["still_on_youtube"]) for r in common.read_csv(status)}
+        self.assertEqual(got, {"NLSGONE0001": ("404", "no: gone"), "NLSVIDEO002": ("200", "yes"),
+                               "LUMAVIDEO01": ("401", "yes: embedding switched off"), "OFFICIAL001": ("403", "no: private")})
+        asked = len(self.asked)
+        self.assertEqual(self.run_tool("--recordings", "--all", "--status-out", str(status)), 0)
+        self.assertEqual(len(self.asked), asked)                          # nothing is asked twice
+        self.assertFalse(self.out.exists())                               # the channel table is a separate run
+
+
+class TestHostFeeds(LaneCase):
+    def setUp(self):
+        super().setUp()
+        import find_host_feeds
+        self.mod = find_host_feeds
+        self.hosts = self.tmp / "hosts.csv"
+        self.registry = self.tmp / "registry.csv"
+        common.write_csv(self.hosts, [
+            {"channel": "Next Level Soul Podcast", "host_id": "host:next-level-soul-podcast", "kind": "interview show",
+             "websites": "nextlevelsoul.com"},
+            {"channel": "Emilio Ortiz", "host_id": "host:emilio-ortiz", "kind": "interview show", "websites": ""},
+            {"channel": "Divine Insights", "host_id": "host:divine-insights", "kind": "re-upload channel", "websites": ""}],
+            ["channel", "host_id", "kind", "websites"])
+
+    def test_show_names(self):
+        fits = self.mod.name_fits
+        self.assertTrue(fits("Next Level Soul Clips", "Next Level Soul Podcast with Alex Ferrari"))
+        self.assertTrue(fits("Dr. Mayim Bialik", "Mayim Bialik's Breakdown"))
+        self.assertTrue(fits("NewRealities", "New Realities with Alan Steinfeld"))
+        self.assertTrue(fits("Align Podcast", "ALIGN podcast"))
+        self.assertFalse(fits("Align Podcast", "Align Your Life"))          # one distinctive word is not enough
+        self.assertFalse(fits("Gaia", "Gaia Stories"))
+        self.assertFalse(fits("Emilio Ortiz", "Emilio's Kitchen"))
+        self.assertFalse(fits("Extreme Mysteries", "Extreme Genes"))
+        # the words scattered through a long subtitle are not the name (both happened on 2026-11-13)
+        self.assertFalse(fits("Extreme Mysteries", "Extreme cults, beliefs, and crime mysteries"))
+        self.assertFalse(fits("Next Level Soul Podcast",
+                              "Live Your Soul - Der Seelen-Podcast für Frauen. Finde zu deinem Seelenplan und deinem Next Level"))
+        self.assertTrue(fits("Michael Sandler Inspire Nation", "Inspire Nation Show with Michael Sandler"))   # same words, other order
+        self.assertTrue(fits("New Thinking Allowed with Jeffrey Mishlove", "New Thinking Allowed Audio Podcast"))
+        self.assertTrue(fits("FADE TO BLACK Radio", "FADE to BLACK w/ Jimmy Church Podcast"))
+
+    def test_grades(self):
+        grade = self.mod.grade
+        show, title = "Next Level Soul Podcast", "Next Level Soul Podcast with Alex Ferrari"
+        self.assertEqual(grade(show, title, "https://feeds.example/nls", "https://nextlevelsoul.com/", ["nextlevelsoul.com"], 0, 0.0)[0], "verified")
+        self.assertEqual(grade(show, title, "https://feeds.example/nls", "https://elsewhere.example/", ["nextlevelsoul.com"], 3, 0.8)[0], "verified")
+        self.assertEqual(grade(show, title, "https://feeds.example/nls", "", [], 3, 0.2)[0], "name-match")
+        self.assertEqual(grade(show, title, "https://feeds.example/nls", "", [], 0, 0.0)[0], "candidate")
+        self.assertEqual(grade(show, "Gardening Weekly", "https://nextlevelsoul.com/feed", "", ["nextlevelsoul.com"], 9, 0.9)[0], "unrelated")
+        # a hosting company's page is nobody's own website, even if a channel lists it
+        self.assertEqual(grade(show, title, "https://anchor.fm/s/1/podcast/rss", "https://anchor.fm/nls", ["anchor.fm"], 0, 0.0)[0], "candidate")
+
+    def run_tool(self, apple, served, *extra):
+        import contextlib
+        import io
+        mod, asked = self.mod, []
+
+        def fake_search(term, limit=10, timeout=30):
+            asked.append(term)
+            return apple.get(term, [])
+
+        def fake_get(url, timeout=60, max_bytes=0):
+            if url not in served:
+                raise feeds.FetchError(404, "HTTP Error 404", url)
+            return url, "application/rss+xml", served[url]
+        saved = (mod.apple_search, mod.get_bytes, mod.time.sleep, sys.argv)
+        mod.apple_search, mod.get_bytes, mod.time.sleep = fake_search, fake_get, lambda s: None
+        sys.argv = ["find_host_feeds.py", "--root", str(self.root), "--hosts", str(self.hosts), "--registry", str(self.registry),
+                    "--min-interval", "0", *extra]
+        out, code = io.StringIO(), 0
+        try:
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                try:
+                    mod.main()
+                except SystemExit as stop:
+                    code = stop.code or 0
+        finally:
+            mod.apple_search, mod.get_bytes, mod.time.sleep, sys.argv = saved
+        return code, out.getvalue(), asked
+
+    def test_an_interview_shows_podcast_is_found_graded_and_registered_once(self):
+        nls = "https://feeds.example/nls.xml"
+        fan = "https://feeds.example/fan.xml"
+        emilio = "https://feeds.example/tapin.xml"
+        apple = {"Next Level Soul Podcast": [
+                     {"feedUrl": nls, "collectionName": "Next Level Soul Podcast with Alex Ferrari", "artistName": "Alex Ferrari", "collectionId": 1},
+                     {"feedUrl": fan, "collectionName": "Next Level Soul Podcast (fan cuts)", "artistName": "A Fan", "collectionId": 2},
+                     {"feedUrl": "https://feeds.example/other.xml", "collectionName": "Soul Level", "artistName": "X", "collectionId": 3}],
+                 "Emilio Ortiz": [{"feedUrl": emilio, "collectionName": "Just Tap In with Emilio Ortiz", "artistName": "Emilio Ortiz", "collectionId": 4}]}
+        listed = common.read_csv(ET / "draft-package" / "csv" / "bashar_videos_in_repo_by_channel.csv")
+        interview = next(r["title"] for r in listed if r["channel"] == "Next Level Soul Podcast")
+        served = {nls: feed_xml([item("g1", interview, "https://cdn.example/1.mp3"),
+                                 item("g2", "A talk about something else", "https://cdn.example/2.mp3")],
+                                title="Next Level Soul Podcast with Alex Ferrari", link="https://nextlevelsoul.com/"),
+                  fan: feed_xml([item("f1", "Fan cut", "https://cdn.example/f.mp3")], title="Next Level Soul Podcast (fan cuts)"),
+                  emilio: feed_xml([item("e1", "Episode without a tracked guest", "https://cdn.example/e.mp3")],
+                                   title="Just Tap In with Emilio Ortiz")}
+        code, out, asked = self.run_tool(apple, served, "--all", "--merge")
+        self.assertEqual(code, 0, out)
+        self.assertEqual(sorted(asked), ["Emilio Ortiz", "Next Level Soul Podcast"])      # the re-upload channel is not a show
+        rows = {r["feed_url"]: r for r in common.read_csv(self.root / "sources" / "host_feed_candidates.csv")}
+        self.assertEqual((rows[nls]["grade"], rows[fan]["grade"], rows[emilio]["grade"]), ("verified", "candidate", "candidate"))
+        self.assertNotIn("https://feeds.example/other.xml", rows)
+        reg = common.read_csv(self.registry)
+        self.assertEqual([(r["person_id"], r["relation"], r["feed_url"], r["verification"]) for r in reg],
+                         [("host:next-level-soul-podcast", "host", nls, "verified")])
+        self.assertIn("Next Level Soul Podcast", reg[0]["evidence"])
+        code, out, asked = self.run_tool(apple, served, "--all", "--merge")                # a second run changes nothing
+        self.assertEqual((asked, len(common.read_csv(self.registry))), ([], 1))
+        self.assertIn("0 host feed(s) added", out)
+
+# --------------------------------------------------------------------------- what kind of interview an episode is
+class TestInterviewTypes(unittest.TestCase):
+    def setUp(self):
+        import interview_types
+        self.mod = interview_types
+        self.talk = " ".join(["so we talked about his life and the film he made and how he started"] * 400)
+
+    def test_a_title_does_not_make_an_interview_live_channeling(self):
+        # what happened: "Bashar's Channeled Message to Humanity" was a conversation with Darryl Anka
+        kind, marks = self.mod.from_transcript(self.talk + " you have been channeling bashar for forty years", ["bashar"])
+        self.assertEqual((kind, marks), ("conversation", []))
+        # a story about channeling is not channeling either: every "I am going to channel" read so far was an anecdote
+        kind, _ = self.mod.from_transcript(self.talk + " she said tonight jamie is going to channel and I said oh no", ["maitland"])
+        self.assertEqual(kind, "conversation")
+
+    def test_the_entitys_own_signature_is_live_channeling(self):
+        kind, marks = self.mod.from_transcript(self.talk + " all right I'll say good day to you this day of your time how are you all", ["bashar"])
+        self.assertEqual((kind, marks), ("live channeling", ["the entity's own greeting"]))
+        kind, marks = self.mod.from_transcript(self.talk + " Greetings, dear ones, I am Kryon of magnetic service", ["kryon"])
+        self.assertEqual(kind, "live channeling")
+        self.assertIn("the entity names itself", marks)
+        kind, marks = self.mod.from_transcript(self.talk + " welcome, Kryon, thank you for being with us", ["kryon"])
+        self.assertEqual((kind, marks), ("live channeling", ["the entity is greeted by name"]))
+
+    def test_marks_of_an_entitys_voice_alone_are_unclear(self):
+        voice = " on your planet as you call it dear ones we perceive that your species in your terms we are here to help you humans"
+        kind, marks = self.mod.from_transcript(" ".join(["we spoke for a while"] * 300) + voice * 2, [])
+        self.assertEqual(kind, "unclear")
+        self.assertIn("no signature", marks[0])
+        kind, _ = self.mod.from_transcript(self.talk + " your planet", [])      # one such phrase is ordinary speech
+        self.assertEqual(kind, "conversation")
+
+    def test_show_notes_count_only_when_they_speak_of_this_episode(self):
+        notes = self.mod.from_notes
+        self.assertEqual(notes("The episode concludes with a live channeling of his guide Red Eagle."), ["live channeling"])
+        self.assertEqual(notes("36:14 What humanity teaches 38:53 – Live channeling 42:44 Creativity"), ["live channeling"])
+        self.assertEqual(notes("It culminates with Paul channeling live on the podcast."), ["channels live"])
+        self.assertEqual(notes("▷ Attend Gaia's live channeling event feat. Darryl Anka via livestream"), [])           # an advertisement
+        self.assertEqual(notes("She shares her work through classes, retreats, and live channeling experiences."), [])   # a biography
+        self.assertEqual(notes("He shares a channeled message and books channeling sessions on his site."), [])          # too weak
+
+    def test_a_short_episode_without_the_persons_name_is_commentary_or_a_clip(self):
+        title = self.mod.from_title
+        self.assertEqual(title("Was Bashar Right? The truth about soul contracts", ["Darryl Anka"], 18 * 60), "commentary or clip")
+        self.assertEqual(title("Bashar's message | Darryl Anka", ["Darryl Anka"], 18 * 60), "")
+        self.assertEqual(title("Was Bashar Right?", ["Darryl Anka"], 80 * 60), "")
+        self.assertEqual(title("Was Bashar Right?", ["Darryl Anka"], None), "")
+
+    def test_the_names_of_what_a_person_channels_come_from_the_lists(self):
+        names = self.mod.entity_names()
+        self.assertIn("bashar", names["darryl-anka"])
+        self.assertIn("kryon", names["lee-carroll"])
+
+
+# --------------------------------------------------------------------------- recordings deposited on archive.org
+class TestArchiveOrg(LaneCase):
+    def setUp(self):
+        super().setUp()
+        import list_archive_org
+        self.mod = list_archive_org
+
+    def test_lengths_and_file_choice(self):
+        self.assertEqual([self.mod.seconds(x) for x in ("6806.26", "1:53:26", "45:10", "", None, "about an hour")],
+                         [6806, 6806, 2710, "", "", ""])
+        item = {"files": [{"name": "talk.mp3", "source": "original", "format": "VBR MP3", "size": "10", "length": "60"},
+                          {"name": "talk.ogg", "source": "derivative", "format": "Ogg Vorbis"},
+                          {"name": "cover.jpg", "source": "original"}, {"name": "talk_meta.xml", "source": "metadata"}]}
+        self.assertEqual([(k, f["name"]) for k, f in self.mod.media_files(item)], [("audio", "talk.mp3")])
+        film = {"files": [{"name": "session.mp4", "source": "original"}, {"name": "session.ia.mp4", "source": "derivative"}]}
+        self.assertEqual([(k, f["name"]) for k, f in self.mod.media_files(film)], [("video", "session.mp4")])
+        self.assertEqual(self.mod.media_files({"files": [{"name": "notes.pdf", "source": "original"}]}), [])
+
+    def run_tool(self, served, *extra):
+        import contextlib
+        import io
+        import fetch_publisher_text as fpt
+        asked = []
+
+        def fake_get(url, timeout=60, max_bytes=0):
+            asked.append(url)
+            if url not in served:
+                raise feeds.FetchError(404, "HTTP Error 404", url)
+            return url, "application/json", served[url]
+        catalogue, out = self.tmp / "catalogue.csv", self.tmp / "archive.csv"
+        common.write_csv(catalogue, [
+            {"date": "1984-06-25", "title": "You Always Have Free Will", "source_url": "https://archive.org/details/bashar-one"},
+            {"date": "2012-12-21", "title": "Tipping the Scales", "source_url": "https://archive.org/details/bashar-two"},
+            {"date": "2020-01-10", "title": "On the official site", "source_url": "https://tv.bashar.org/browse/x"}],
+            ["date", "title", "source_url"])
+        saved = (self.mod.get_bytes, fpt.get_bytes, sys.argv)
+        self.mod.get_bytes = fpt.get_bytes = fake_get
+        sys.argv = ["list_archive_org.py", "--catalogue", str(catalogue), "--out", str(out), "--min-interval", "0", *extra]
+        code = 0
+        try:
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                try:
+                    self.mod.main()
+                except SystemExit as stop:
+                    code = stop.code or 0
+        finally:
+            self.mod.get_bytes, fpt.get_bytes, sys.argv = saved
+        return code, (common.read_csv(out) if out.exists() else []), asked
+
+    def test_each_item_is_listed_with_its_audio_or_its_video(self):
+        served = {"https://archive.org/robots.txt": b"User-agent: *\nAllow: /\n",
+                  "https://archive.org/metadata/bashar-one": json.dumps({"files": [
+                      {"name": "Free Will 1of2.mp3", "source": "original", "format": "VBR MP3", "size": "100", "length": "3600"},
+                      {"name": "Free Will 2of2.mp3", "source": "original", "format": "VBR MP3", "size": "90", "length": "53:20"}]}).encode(),
+                  "https://archive.org/metadata/bashar-two": json.dumps({"files": [
+                      {"name": "Tipping.mp4", "source": "original", "format": "MPEG4", "size": "4254521376", "length": "8208.68"}]}).encode()}
+        code, rows, asked = self.run_tool(served, "--all")
+        self.assertEqual(code, 0)
+        self.assertEqual([(r["identifier"], r["kind"], r["duration_s"]) for r in rows],
+                         [("bashar-one", "audio", "3600"), ("bashar-one", "audio", "3200"), ("bashar-two", "video", "8208")])
+        self.assertEqual(rows[0]["media_url"], "https://archive.org/download/bashar-one/Free%20Will%201of2.mp3")
+        self.assertEqual({r["session_date"] for r in rows}, {"1984-06-25", "2012-12-21"})
+        self.assertFalse(any("tv.bashar.org" in u for u in asked))               # only archive.org items are asked about
+        code, again, asked = self.run_tool(served, "--all")
+        self.assertEqual((len(again), [u for u in asked if "/metadata/" in u]), (3, []))   # nothing is asked twice
+
+    def test_audio_is_queued_as_its_own_kind_and_video_is_not(self):
+        listed = [r for r in common.read_csv(ET / "sources" / "archive_org_sessions.csv")]
+        audio = [r for r in listed if r["kind"] == "audio"]
+        self.assertTrue(audio)
+        done = self.cli("select_episodes.py", "--root", self.root, "--relation", "archive", "--only", "darryl-anka", "--order", "as-is")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        rows = common.read_csv(self.root / "jobs" / "queue_enclosures.csv")
+        self.assertEqual({(r["lane"], r["relation"]) for r in rows}, {("ia", "archive")})
+        self.assertTrue(all(r["video_id"].startswith("ia-") and common.ITEM_RE.match(r["video_id"]) for r in rows))
+        self.assertLessEqual(len(rows), len(audio))
+        self.assertFalse(any(r["url"].lower().endswith((".mp4", ".mkv", ".avi")) for r in rows))
+
+
+class TestBasharIndexTables(LaneCase):
+    """Three tables made from the Bashar Index data package at the top of the repository."""
+
+    def tables(self):
+        self.assertEqual(self.cli("catalog.py", "--root", self.root).returncode, 0)
+        out = self.tmp / "plan"
+        done = self.cli("targets.py", "--root", self.root, "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        return (common.read_csv(out / "bashar_recordings.csv"), common.read_csv(out / "bashar_sessions.csv"),
+                common.read_csv(out / "bashar_podcasts.csv"), json.loads((out / "targets_summary.json").read_text(encoding="utf-8")))
+
+    def test_the_75_recordings_the_session_catalogue_and_the_podcast_list_are_all_there(self):
+        recordings, sessions, podcasts, summary = self.tables()
+        site = json.loads((ET.parent / "data" / "videos.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(recordings), len(site))
+        kinds = {r["kind_of_recording"].split(":")[0] for r in recordings}
+        self.assertEqual(kinds, {"channeled session", "clip of a channeled session", "interview"})
+        self.assertTrue(all(r["here"] == "no" for r in recordings))                       # an empty private folder holds nothing
+        self.assertEqual(sum(int(r["words_digested"]) for r in recordings), summary["bashar"]["words_digested"])
+        catalogue = common.read_csv(ET.parent / "data" / "session_catalog.csv")
+        self.assertEqual(sum(int(r["sessions_catalogued"]) for r in sessions), len(catalogue))
+        self.assertEqual(sum(int(r["on_archive_org"]) for r in sessions), sum(1 for r in catalogue if "archive.org/details/" in r["source_url"]))
+        listed = json.loads((ET.parent / "data" / "podcasts.json").read_text(encoding="utf-8"))
+        self.assertEqual(len(podcasts), len(listed))
+        self.assertIn("interview", {r["type_in_bashar_index"] for r in podcasts})
+        # an episode is only ever matched inside the show's own registered feed
+        self.assertTrue(all(r["kind_found_here"] in ("the show has no registered feed", "episode not found in the show's feed")
+                            for r in podcasts))
+
+    def test_an_interview_of_the_list_shows_the_kind_found_for_its_podcast_episode(self):
+        listed = common.read_csv(ET / "draft-package" / "csv" / "bashar_videos_in_repo_by_channel.csv")
+        interview = next(r for r in listed if r["channel"] == "Emilio Ortiz")
+        twin = common.item_id("pod", "host:emilio-ortiz", "episode")
+        common.append_jsonl(self.root / "audio" / "audio_manifest.jsonl",
+                            {"video_id": twin, "channel_dir": "darryl-anka", "lane": "pod", "status": "ok", "bytes": 10,
+                             "twin_of": interview["video_id"], "path": f"darryl-anka/{twin}.opus", "duration_s": 4000.0})
+        recordings, _, _, _ = self.tables()
+        row = next(r for r in recordings if r["video_id"] == interview["video_id"])
+        self.assertEqual((row["here"], row["kind_of_recording"].split(":")[0]), ("yes", "interview"))
+        self.assertIn("podcast", row["how_here"])
 
 
 if __name__ == "__main__":

@@ -44,7 +44,12 @@ PLATFORMS = ("facebook.com", "fb.com", "fb.me", "instagram.com", "twitter.com", 
              "ko-fi.com", "etsy.com", "eventbrite.com", "calendly.com", "zoom.us", "wa.me", "whatsapp.com",
              "snapchat.com", "pinterest.com", "linkedin.com", "threads.net", "twitch.tv", "soundcloud.com",
              "bandcamp.com", "insighttimer.com", "gofundme.com", "cash.app", "bit.ly", "tinyurl.com", "goo.gl",
-             "google.com", "wikipedia.org", "audible.com", "gaia.com", "vimeo.com", "clubhouse.com", "locals.com")
+             "google.com", "wikipedia.org", "audible.com", "gaia.com", "vimeo.com", "clubhouse.com", "locals.com",
+             # course, shop, mailing-list and booking services: a page there is a profile, not the maker's site
+             "learnitlive.com", "mailchi.mp", "mailchimp.com", "creator-spring.com", "teespring.com", "skool.com",
+             "bookme.name", "myshopify.com", "shopify.com", "mykajabi.com", "kajabi.com", "podia.com", "teachable.com",
+             "thinkific.com", "gumroad.com", "stan.store", "substack.com", "campsite.bio", "taplink.cc", "komi.io",
+             "flow.page", "lnk.to", "acuityscheduling.com", "as.me", "setmore.com", "square.site", "circle.so", "mn.co")
 JSON_LD = re.compile(r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>', re.S | re.I)
 
 
@@ -90,13 +95,19 @@ def read_channel_page(markup: str) -> dict:
     return {}
 
 
+def is_platform(host: str) -> bool:
+    """True for a host on a service where anyone can have a page: such a page is nobody's own website."""
+    host = (host or "").lower().removeprefix("www.")
+    return any(host == p or host.endswith("." + p) for p in PLATFORMS)
+
+
 def website_domains(links):
     """Hosts among the declared links that are the maker's own site, not a profile on a platform."""
     out = []
     for link in links:
         host = host_of(link if re.match(r"^https?://", link, re.I) else "https://" + link.lstrip("/"))
         host = host.removeprefix("www.")
-        if not host or "." not in host or any(host == p or host.endswith("." + p) for p in PLATFORMS):
+        if not host or "." not in host or is_platform(host):
             continue
         if host not in out:
             out.append(host)
@@ -186,6 +197,10 @@ def main():
                   "Wait, then rerun: channels already read are skipped.", file=sys.stderr)
 
     read = [r for r in latest_by_key(read_jsonl(out), "person_id").values() if r.get("status") == "ok"]
+    for rec in read:
+        # worked out again from the declared links: the list of platforms grows, and a page read last week
+        # must not keep a course or shop profile as "the maker's own site"
+        rec["websites"] = website_domains(rec.get("same_as") or [])
     with_site = [r for r in read if r.get("websites")]
     print(f"read {len(read)} channel pages | {len(with_site)} declare a website of their own | "
           f"{sum(1 for r in read if r.get('channel_id'))} with a channel id -> {out}")

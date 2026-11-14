@@ -1,14 +1,14 @@
 {
- "generated": "2026-11-13T23:03:13Z",
+ "generated": "2026-11-14T00:16:22Z",
  "targets": 103,
  "by_state": {
   "captured": 0,
-  "partly captured": 19,
+  "partly captured": 27,
   "planned: source found": 0,
-  "planned: YouTube only": 43,
-  "planned: no source yet": 36,
-  "unresolved": 3,
-  "excluded": 2
+  "planned: YouTube only": 40,
+  "planned: no source yet": 35,
+  "unresolved": 0,
+  "excluded": 1
  },
  "by_origin": {
   "added": 2,
@@ -25,37 +25,32 @@
   {
    "origin": "archiveshelf",
    "state": "excluded",
-   "targets": 2
-  },
-  {
-   "origin": "archiveshelf",
-   "state": "partly captured",
    "targets": 1
   },
   {
    "origin": "archiveshelf",
-   "state": "planned: YouTube only",
+   "state": "partly captured",
    "targets": 3
   },
   {
    "origin": "archiveshelf",
-   "state": "unresolved",
-   "targets": 3
+   "state": "planned: YouTube only",
+   "targets": 5
   },
   {
    "origin": "bashar-index",
    "state": "partly captured",
-   "targets": 12
+   "targets": 18
   },
   {
    "origin": "bashar-index",
    "state": "planned: YouTube only",
-   "targets": 39
+   "targets": 34
   },
   {
    "origin": "bashar-index",
    "state": "planned: no source yet",
-   "targets": 36
+   "targets": 35
   },
   {
    "origin": "both",
@@ -68,40 +63,75 @@
    "targets": 1
   }
  ],
- "with_channel": 60,
- "with_channel_listing": 23,
- "with_official_site": 50,
+ "with_channel": 64,
+ "with_channel_listing": 63,
+ "with_official_site": 53,
  "totals": {
   "podcast_feeds": 14,
   "creator_files": 1410,
-  "publisher_pages": 9536,
-  "items_listed": 29573,
-  "items_captured": 8275,
-  "captured_audio_files": 823,
-  "captured_source_texts": 8155,
-  "captured_source_words": 12682271,
-  "captured_machine_transcripts": 28,
-  "audio_awaiting_transcript": 791,
-  "captured_audio_hours": 476.2,
-  "videos_listed": 12369,
-  "live_listed": 1230,
-  "shorts_listed": 6507,
-  "listed_video_hours": 4847.5
+  "publisher_pages": 9856,
+  "archive_org_files": 937,
+  "interviews_listed": 189,
+  "interviews_live_channeling": 8,
+  "interviews_other_kinds": 40,
+  "interviews_not_classified": 141,
+  "items_listed": 69186,
+  "items_captured": 8568,
+  "captured_audio_files": 851,
+  "captured_source_texts": 8424,
+  "captured_source_words": 13308502,
+  "captured_machine_transcripts": 53,
+  "audio_awaiting_transcript": 793,
+  "captured_audio_hours": 510.6,
+  "videos_listed": 32570,
+  "live_listed": 10014,
+  "shorts_listed": 16115,
+  "listed_video_hours": 21269.4
  },
  "bashar": {
   "host_channels": 38,
   "recordings": 75,
   "interviews": 21,
   "transcripts_read_earlier": 55,
-  "captured_here": 0,
+  "captured_here": 5,
+  "still_on_youtube": 68,
+  "checked_on_youtube": 75,
+  "podcast_feeds": 9,
+  "podcast_episodes_listed": 42,
+  "podcast_episodes_captured": 27,
   "by_kind": {
+   "interview show": 16,
    "re-upload channel": 10,
    "official channel": 1,
-   "interview show": 16,
    "clip channel": 11
   },
   "by_state": {
-   "planned: YouTube only": 38
+   "captured": 3,
+   "partly captured": 1,
+   "planned: podcast feed found": 5,
+   "planned: YouTube only": 22,
+   "gone from YouTube": 7
+  },
+  "recordings_here": 5,
+  "recordings_by_kind": {
+   "channeled session": 27,
+   "clip of a channeled session": 27,
+   "interview: conversation": 1,
+   "interview: not classified": 19,
+   "interview: unclear": 1
+  },
+  "words_digested": 1186510,
+  "sessions_catalogued": 684,
+  "sessions_on_archive_org": 393,
+  "archive_org_audio_files": 937,
+  "archive_org_audio_hours": 983.2,
+  "archive_org_audio_here": 0,
+  "podcast_appearances_listed": 48,
+  "podcast_appearances_by_type": {
+   "interview": 43,
+   "channeling": 1,
+   "official": 1,
+   "skeptical": 3
   }
  }
 }

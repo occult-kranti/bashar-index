@@ -35,6 +35,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import functools
 import json
 import random
 import re
@@ -42,9 +43,9 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, host_of, item_id,  # noqa: E402
-                    layout, listed_videos, parse_duration, read_csv, read_jsonl, sha256_file, stable_shard, utc_now,
-                    write_csv)
+from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, host_id, host_of,  # noqa: E402
+                    item_id, layout, listed_videos, parse_duration, read_csv, read_jsonl, sha256_file, stable_shard,
+                    utc_now, write_csv)
 from feeds import title_similarity, tokens  # noqa: E402
 from fetch_feeds import REGISTRY, read_registry  # noqa: E402
 from find_feeds import fold, load_targets  # noqa: E402
@@ -52,14 +53,15 @@ from find_feeds import fold, load_targets  # noqa: E402
 INDEX = ET_ROOT / "youtube-index" / "youtube_index.json"
 BASHAR_CSV = ET_ROOT / "draft-package" / "csv" / "bashar_videos_in_repo_by_channel.csv"
 CREATOR_FILES = ET_ROOT / "sources" / "creator_files.csv"
+ARCHIVE_ORG = ET_ROOT / "sources" / "archive_org_sessions.csv"
 EXTRA_TARGETS = ET_ROOT / "sources" / "extra_targets.csv"
 FIELDS = ["video_id", "url", "channel_dir", "title", "duration_s", "published", "lane", "relation", "feed_key",
           "guid", "twin_of", "twin_method", "twin_score", "twin_candidate", "transcript_url", "transcript_type",
-          "bytes_hint", "shard"]
+          "bytes_hint", "interview_type", "shard"]
 TRANSCRIPT_PREFERENCE = ("text/vtt", "application/x-subrip", "application/srt", "text/srt", "application/json",
                          "text/html", "text/plain")
 PROMO_SHARE = 0.2     # a video linked from more than this share of a feed's episodes is a promotion
-DEFAULTS = {"relation": "own,host,file", "only": "", "min_seconds": 0, "max_seconds": 0, "since": "",
+DEFAULTS = {"relation": "own,host,file,archive", "only": "", "min_seconds": 0, "max_seconds": 0, "since": "",
             "keep_trailers": False, "min_title": 0.72, "duration_tolerance": 0.12, "registry": REGISTRY,
             "accept": "verified,name-match"}
 
@@ -81,7 +83,7 @@ def known_videos(paths=None):
         for row in read_csv(BASHAR_CSV):
             if ID_RE.match(row.get("video_id") or "") and row["video_id"] not in have:
                 out.setdefault("darryl-anka", []).append({"video_id": row["video_id"], "title": row.get("title") or "",
-                                                          "duration_s": None})
+                                                          "duration_s": None, "uploader": host_id(row.get("channel"))})
                 have.add(row["video_id"])
     if paths is not None:
         have = {v["video_id"]: v for group in out.values() for v in group}
@@ -97,22 +99,41 @@ def known_videos(paths=None):
     return out
 
 
+@functools.lru_cache(maxsize=500_000)
+def _numbers(title: str) -> tuple:
+    return tuple(sorted(n.lstrip("0") or "0" for n in re.findall(r"\d+", title) if not re.fullmatch(r"(?:19|20)\d\d", n)))
+
+
 def numbers_in(title: str):
     """The numbers a title carries, as a sorted list, without calendar years (2019 in one edition's
     title and not in the other's is common and says nothing about which recording it is)."""
-    return sorted(n.lstrip("0") or "0" for n in re.findall(r"\d+", title or "") if not re.fullmatch(r"(?:19|20)\d\d", n))
+    return list(_numbers(title or ""))
 
 
-def find_twin(episode, videos, min_title, duration_tolerance, promo=()):
+SAME_SHOW_TITLE = 0.5    # how alike the titles must be when the episode and the video are from the same show
+
+
+def find_twin(episode, videos, min_title, duration_tolerance, promo=(), show=""):
     """(video_id, method, score, candidate). `video_id` is set only for a match that is safe to count.
-    `candidate` is a title match whose lengths could not be compared: worth a look, not counted."""
+    `candidate` is a title match whose lengths could not be compared: worth a look, not counted.
+    `show` is the id of the interview show whose feed the episode is from, if it is from one."""
     by_id = {v["video_id"]: v for v in videos}
     linked = [i for i in episode.get("youtube_ids") or [] if i in by_id and i not in promo]
     if len(linked) == 1:
         return linked[0], "link", 1.0, ""
+    wanted = _numbers(episode.get("title") or "")
+    if show:
+        # The show's own feed against the videos on that show's own channel: the same show, the same guest
+        # and mostly the same title words are the same interview, though the list does not know its length.
+        own = [(title_similarity(episode.get("title", ""), v["title"]), v) for v in videos if v.get("uploader") == show
+               and wanted == _numbers(v["title"] or "")]
+        if own:
+            score, video = max(own, key=lambda pair: pair[0])
+            if score >= SAME_SHOW_TITLE:
+                return video["video_id"], "title-same-show", round(score, 3), ""
     best, best_score = None, 0.0
     for video in videos:
-        if numbers_in(episode.get("title", "")) != numbers_in(video["title"]):
+        if wanted != _numbers(video["title"] or ""):
             continue          # Day 10 and Day 11, Part 1 and Part 2: different recordings
         score = title_similarity(episode.get("title", ""), video["title"])
         if score > best_score:
@@ -279,7 +300,8 @@ def collect(paths, opts=None):
             if only and person not in only:
                 continue
             twin, method, score, candidate = find_twin(episode, videos.get(person, []), o["min_title"],
-                                                       o["duration_tolerance"], promo)
+                                                       o["duration_tolerance"], promo,
+                                                       episode.get("person_id", "") if relation == "host" else "")
             t_url, t_type = pick_transcript(episode)
             add({"video_id": episode["video_id"], "url": episode["enclosure_url"], "channel_dir": person,
                  "title": episode.get("title") or "", "duration_s": episode.get("duration_s"),
@@ -303,8 +325,35 @@ def collect(paths, opts=None):
                  "twin_score": "", "twin_candidate": "", "transcript_url": "", "transcript_type": "",
                  "bytes_hint": ""}, person)
 
+    # recordings deposited on archive.org that the Bashar Index session catalogue cites (list_archive_org.py).
+    # Audio only: a video file there runs to gigabytes and is left to a machine with room for it.
+    if "archive" in kinds and ARCHIVE_ORG.exists():
+        used["archive_org_sessions.csv"] = sha256_file(ARCHIVE_ORG)
+        for row in read_csv(ARCHIVE_ORG):
+            person, url = row.get("person_id") or "", (row.get("media_url") or "").strip()
+            if row.get("kind") != "audio" or not person or not host_of(url) or (only and person not in only):
+                continue
+            title = row.get("title") or ""
+            part = re.search(r"\b(\d+)\s*of\s*(\d+)\b|\bpart\s*(\d+)\b", row.get("file_name") or "", re.I)
+            if part:
+                title += f" (part {part.group(1) or part.group(3)})"
+            add({"video_id": item_id("ia", row["identifier"], row.get("file_name") or ""), "url": url, "channel_dir": person,
+                 "title": title, "duration_s": int(float(row["duration_s"])) if row.get("duration_s") else None,
+                 "published": row.get("session_date") or "", "lane": "ia", "relation": "archive", "feed_key": "",
+                 "guid": row["identifier"], "twin_of": "", "twin_method": "", "twin_score": "", "twin_candidate": "",
+                 "transcript_url": "", "transcript_type": "", "bytes_hint": row.get("bytes") or ""}, person)
+
+    # what kind of interview each interview episode is (interview_types.py); unread ones are "not classified"
+    kinds_file = paths.sources / "interview_types.jsonl"
+    typed = {}
+    for rec in read_jsonl(kinds_file) if kinds_file.exists() else []:
+        if rec.get("video_id"):
+            typed[rec["video_id"]] = rec.get("kind") or "not classified"
+    for row in rows:
+        row["interview_type"] = typed.get(row["video_id"], "not classified") if row["relation"] == "host" else ""
+
     # one video is the twin of at most one item: a link beats a creator index, which beats a title match
-    rank = {"link": 3, "creator-index": 2, "title": 1}
+    rank = {"link": 4, "creator-index": 3, "title": 2, "title-same-show": 1}
     holder = {}
     for row in rows:
         if row["twin_of"]:
@@ -320,7 +369,7 @@ def collect(paths, opts=None):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     add_root_arg(ap)
-    ap.add_argument("--relation", default=DEFAULTS["relation"], help="which kinds to queue: own, host, file")
+    ap.add_argument("--relation", default=DEFAULTS["relation"], help="which kinds to queue: own, host, file, archive")
     ap.add_argument("--only", default="", help="comma-separated person ids")
     ap.add_argument("--per-channel", type=int, help="keep at most K items per person (seeded sample)")
     ap.add_argument("--seed", type=int, default=20261113)
@@ -332,6 +381,10 @@ def main():
     ap.add_argument("--order", choices=("round-robin", "newest-first", "shortest-first", "as-is"), default="round-robin",
                     help="round-robin takes one item per person in turn, so every person starts early")
     ap.add_argument("--keep-trailers", action="store_true")
+    ap.add_argument("--interview-types", default="live channeling",
+                    help="which kinds of interview episode to queue, comma-separated: live channeling, unclear, conversation, "
+                         "commentary or clip, not classified, or all (default: live channeling). The makers' own feeds and "
+                         "files are not affected")
     ap.add_argument("--min-title", type=float, default=DEFAULTS["min_title"], help="title overlap needed to call a video a twin")
     ap.add_argument("--duration-tolerance", type=float, default=DEFAULTS["duration_tolerance"])
     ap.add_argument("--shards", type=int, default=1)
@@ -345,6 +398,13 @@ def main():
     out = args.out or paths.jobs / "queue_enclosures.csv"
     ensure_outside_git(out.parent)       # the queue holds titles and addresses: never inside a checkout
     rows, dropped, used = collect(paths, {k: getattr(args, k) for k in DEFAULTS})
+    # An interview is fetched only if the entity speaks in it. The others stay listed with their kind (the
+    # catalogue shows them), and are not downloaded unless asked for.
+    wanted = {x.strip().lower() for x in args.interview_types.split(",") if x.strip()}
+    if "all" not in wanted:
+        held_back = [r for r in rows if r["relation"] == "host" and r["interview_type"] not in wanted]
+        rows = [r for r in rows if not (r["relation"] == "host" and r["interview_type"] not in wanted)]
+        dropped["interview_of_another_kind"] = len(held_back)
     kinds = sorted({x.strip() for x in args.relation.split(",") if x.strip()})
     only = sorted({x.strip() for x in args.only.split(",") if x.strip()})
 
@@ -393,16 +453,18 @@ def main():
             "seed": args.seed, "min_seconds": args.min_seconds, "max_seconds": args.max_seconds, "since": args.since,
             "max_hours": args.max_hours, "order": args.order, "min_title": args.min_title,
             "duration_tolerance": args.duration_tolerance, "items": len(rows), "people": len(per_person),
-            "by_lane": {lane: sum(1 for r in rows if r["lane"] == lane) for lane in ("pod", "web")},
-            "by_relation": {k: sum(1 for r in rows if r["relation"] == k) for k in ("own", "host", "file")},
+            "by_lane": {lane: sum(1 for r in rows if r["lane"] == lane) for lane in ("pod", "web", "ia")},
+            "by_relation": {k: sum(1 for r in rows if r["relation"] == k) for k in ("own", "host", "file", "archive")},
             "with_twin": sum(1 for r in rows if r["twin_of"]),
             "with_twin_candidate": sum(1 for r in rows if r["twin_candidate"]),
             "with_publisher_transcript": sum(1 for r in rows if r["transcript_url"]),
             "with_known_duration": len(known), "known_hours": round(sum(known) / 3600, 1),
             "dropped": dropped, "per_person": dict(sorted(per_person.items())), "inputs_sha256": used}
     atomic_write_text(out.with_name(out.stem + ".meta.json"), json.dumps(meta, indent=2) + "\n")
+    held = dropped.get("interview_of_another_kind", 0)
     print(f"{len(rows)} items for {len(per_person)} people ({meta['by_relation']['own']} own-feed, "
-          f"{meta['by_relation']['host']} interview, {meta['by_relation']['file']} creator files), "
+          f"{meta['by_relation']['host']} interview{f' with {held} of another kind held back' if held else ''}, "
+          f"{meta['by_relation']['file']} creator files, {meta['by_relation']['archive']} archive.org recordings), "
           f"{meta['known_hours']} h with known length ({len(rows) - len(known)} unknown), "
           f"{meta['with_twin']} matched to an indexed YouTube video, "
           f"{meta['with_publisher_transcript']} with a publisher transcript -> {out}")

@@ -45,6 +45,14 @@ class StubEngine:
         data = Path(path).read_bytes()
         if data.startswith(b"CORRUPT"):
             raise ValueError("stub: cannot decode audio")
+        if data.startswith(b"CRASH"):
+            os._exit(11)                              # the process is gone, as after a fault in a native library
+        if data.startswith(b"KILLME"):                # stopped from outside, once: the file itself is fine
+            flag = Path(path).with_suffix(".killed-once")
+            if not flag.exists():
+                flag.write_text("x")
+                os.kill(os.getpid(), 15)
+                time.sleep(5)
         time.sleep(a.stub_delay)
         digest = hashlib.sha256(data).hexdigest()
         segs = [{"id": i, "start": i * 5.0, "end": i * 5.0 + 4.0, "text": f"stub segment {i} {digest[:8]}",
@@ -126,9 +134,11 @@ def manifest_records(out_dir):
 def merge_parts(out_dir):
     main = out_dir / "transcripts_manifest.jsonl"
     for part in sorted(out_dir.glob("transcripts_manifest.part-*.jsonl")):
-        for rec in read_jsonl(part):
+        taken = part.with_name(part.name + f".merging{os.getpid()}")
+        os.replace(part, taken)                        # a worker still appending starts a fresh part file
+        for rec in read_jsonl(taken):
             append_jsonl(main, rec)
-        part.unlink()
+        taken.unlink()
 
 
 def declared_languages(root, audio_meta):
@@ -183,10 +193,14 @@ def find_jobs(a, audio_dir, out_dir):
     return jobs
 
 
-def run_jobs(a, jobs, manifest, out_dir):
+def run_jobs(a, jobs, manifest, out_dir, marker=None):
+    """Transcribe the jobs one after another. `marker` is a file that names the job in hand: if the
+    process dies (a fault inside a native library leaves no Python error), the restart reads it."""
     engine = load_engine(a)
     for job in jobs:
         rec = {"video_id": job["video_id"], "channel_dir": job["channel_dir"], "started": utc_now(), **engine.info}
+        if marker is not None:
+            atomic_write_text(marker, json.dumps({"video_id": job["video_id"], "channel_dir": job["channel_dir"]}))
         t0 = time.time()
         try:
             segs, info = engine.transcribe(job["path"], a)
@@ -207,6 +221,27 @@ def run_jobs(a, jobs, manifest, out_dir):
         except Exception as exc:  # noqa: BLE001 - one bad file must not stop the batch
             rec.update(status="error", error_class=type(exc).__name__, error_tail=str(exc)[-300:])
         append_jsonl(manifest, rec)
+    if marker is not None and marker.exists():
+        marker.unlink()
+
+
+def run_share(a, out_dir):
+    """One worker process: its share of the jobs, minus what an earlier life of this worker settled."""
+    part = out_dir / f"transcripts_manifest.part-{a.worker_index}.jsonl"
+    marker = a.jobs_file.with_suffix(".current")
+    settled = {r["video_id"] for r in read_jsonl(part)}
+    if marker.exists():                                # the worker died with this file in hand
+        try:
+            fatal = json.loads(marker.read_text(encoding="utf-8"))
+        except ValueError:
+            fatal = {}
+        if fatal.get("video_id") and fatal["video_id"] not in settled:
+            append_jsonl(part, {"video_id": fatal["video_id"], "channel_dir": fatal.get("channel_dir", ""), "started": utc_now(),
+                                "status": "error", "error_class": "worker_died",
+                                "error_tail": "the worker process ended while this file was being transcribed"})
+            settled.add(fatal["video_id"])
+    jobs = [j for j in json.loads(a.jobs_file.read_text(encoding="utf-8")) if j["video_id"] not in settled]
+    run_jobs(a, jobs, part, out_dir, marker)
 
 
 def child_cmd(a, root, audio_dir, out_dir, jobs_file, k):
@@ -238,6 +273,9 @@ def main():
     ap.add_argument("--workers", type=int, default=1, help="processes (ignored when --devices is given)")
     ap.add_argument("--devices", default="", help="GPU ids, one process each, e.g. 0,1")
     ap.add_argument("--cpu-threads", type=int, default=0, help="threads per process (0 = library default)")
+    ap.add_argument("--restarts", type=int, default=20,
+                    help="how often one worker process is started again after ending early. A worker that ended by "
+                         "itself skips the file it was on; one stopped from outside tries it again")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--only", default="", help="comma-separated audio folders (person ids)")
     ap.add_argument("--order", choices=("as-is", "round-robin"), default="as-is",
@@ -255,8 +293,7 @@ def main():
     out_dir = ensure_outside_git(a.out or paths.transcripts)
     out_dir.mkdir(parents=True, exist_ok=True)
     if a.jobs_file:  # child process: run its share and exit
-        run_jobs(a, json.loads(a.jobs_file.read_text(encoding="utf-8")),
-                 out_dir / f"transcripts_manifest.part-{a.worker_index}.jsonl", out_dir)
+        run_share(a, out_dir)
         return
 
     merge_parts(out_dir)
@@ -294,19 +331,48 @@ def main():
         parts = [jobs[k::workers] for k in range(workers)]
     else:
         parts = lpt_assign(jobs, workers, lambda j: j["weight"])
-    for k, part in enumerate(parts):
-        if not part:
-            continue
+    def start(k):
         jobs_file = out_dir / ".jobs" / f"worker-{k}.json"
-        atomic_write_text(jobs_file, json.dumps(part))
         env = dict(os.environ)
         if devices:
             env["CUDA_VISIBLE_DEVICES"] = devices[k]
-        procs.append(subprocess.Popen(child_cmd(a, root, audio_dir, out_dir, jobs_file, k), env=env))
-    codes = [p.wait() for p in procs]
+        return subprocess.Popen(child_cmd(a, root, audio_dir, out_dir, jobs_file, k), env=env)
+
+    running, restarts, failed = {}, {}, 0
+    for k, part in enumerate(parts):
+        if not part:
+            continue
+        stale = out_dir / ".jobs" / f"worker-{k}.current"
+        if stale.exists():
+            stale.unlink()                             # left by an earlier run: not this run's file in hand
+        atomic_write_text(out_dir / ".jobs" / f"worker-{k}.json", json.dumps(part))
+        running[k] = start(k)
+    # A worker that dies (a fault in a native library gives no Python error) is started again and carries
+    # on after the file it died on, so one bad file costs one file and not half of a two-day run.
+    while running:
+        for k, proc in list(running.items()):
+            code = proc.poll()
+            if code is None:
+                continue
+            del running[k]
+            if code != 0 and restarts.get(k, 0) < a.restarts:
+                restarts[k] = restarts.get(k, 0) + 1
+                # Stopped from outside (terminated or killed, for instance when memory ran short): the file in
+                # hand is not to blame and is tried again. Ended by itself: that file is skipped.
+                outside = code in (-15, -9, -2, -1)
+                marker = out_dir / ".jobs" / f"worker-{k}.current"
+                if outside and marker.exists():
+                    marker.unlink()
+                print(f"worker {k} ended with code {code} ({'stopped from outside, its file is tried again' if outside else 'its file is skipped'}): "
+                      f"starting it again ({restarts[k]} of {a.restarts})", file=sys.stderr, flush=True)
+                running[k] = start(k)
+            elif code != 0:
+                failed += 1
+        if running:
+            time.sleep(0.2)
     merge_parts(out_dir)
-    if any(codes):
-        sys.exit(f"{sum(c != 0 for c in codes)} worker process(es) failed; rerun to continue")
+    if failed:
+        sys.exit(f"{failed} worker process(es) failed; rerun to continue")
 
 
 if __name__ == "__main__":

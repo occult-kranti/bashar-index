@@ -954,6 +954,43 @@ class TestTranscribe(PipelineCase):
         parallel = time.time() - t0
         self.assertLess(parallel, serial * 0.8, (serial, parallel))
 
+    def test_a_worker_that_dies_is_started_again_and_skips_the_file_it_died_on(self):
+        ids = [mk("VID", i) for i in range(8)]
+        self.make_audio(ids)
+        poison = self.root / "audio" / "chanA" / f"{ids[3]}.opus"
+        poison.write_bytes(b"CRASH" + b"x" * 700)                       # the stand-in engine exits on this file, no error raised
+        p = self.transcribe("--workers", "2")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertIn("its file is skipped", p.stderr)
+        self.assertIn("starting it again (1 of 20)", p.stderr)
+        got = common.latest_by_key(self.tr_manifest())
+        self.assertEqual(sorted(got), sorted(ids))                      # nothing in the dead worker's share was dropped
+        self.assertEqual({v: r["status"] for v, r in got.items() if r["status"] != "ok"}, {ids[3]: "error"})
+        self.assertEqual(got[ids[3]]["error_class"], "worker_died")
+        self.assertEqual(sum(1 for r in self.tr_manifest() if r["status"] == "ok"), 7)       # and nothing was done twice
+        self.assertFalse(list((self.root / "transcripts" / ".jobs").glob("*.current")))
+        self.assertIn("0 to transcribe", self.transcribe("--workers", "2").stderr)           # the bad file is not tried forever
+
+    def test_a_worker_stopped_from_outside_tries_its_file_again(self):
+        ids = [mk("VID", i) for i in range(6)]
+        self.make_audio(ids)
+        (self.root / "audio" / "chanA" / f"{ids[2]}.opus").write_bytes(b"KILLME" + b"y" * 900)   # the stand-in is terminated on it, once
+        p = self.transcribe("--workers", "2")
+        self.assertEqual(p.returncode, 0, p.stderr)
+        self.assertIn("ended with code -15 (stopped from outside, its file is tried again)", p.stderr)
+        got = common.latest_by_key(self.tr_manifest())
+        self.assertEqual({r["status"] for r in got.values()}, {"ok"})   # the file that was in hand is done, not blamed
+        self.assertEqual(sorted(got), sorted(ids))
+
+    def test_a_worker_that_keeps_dying_gives_up_and_says_so(self):
+        ids = [mk("VID", i) for i in range(4)]
+        self.make_audio(ids)
+        for vid in ids:
+            (self.root / "audio" / "chanA" / f"{vid}.opus").write_bytes(b"CRASH" + vid.encode() * 40)
+        p = self.transcribe("--workers", "2", "--restarts", "1")
+        self.assertNotEqual(p.returncode, 0)
+        self.assertIn("worker process(es) failed; rerun to continue", p.stderr)
+
     def test_round_robin_is_kept_inside_every_process(self):
         for chan, prefix in (("chanA", "AAA"), ("chanB", "BBB"), ("chanC", "CCC")):
             self.make_audio([mk(prefix, i) for i in range(4)], chan=chan)

@@ -45,11 +45,12 @@ CATALOG_FIELDS = ["item_id", "person_id", "lane", "relation", "tab", "title", "p
                   "audio_path", "audio_bytes", "publisher_text_status", "publisher_text_words", "publisher_text_path",
                   "captions_status", "captions_words", "captions_path", "asr_status", "asr_model", "asr_words",
                   "asr_path", "text_from_source", "text_made_here", "has_text", "twin_of", "twin_method",
-                  "source_host", "source_url"]
+                  "feed_key", "interview_type", "source_host", "source_url"]
 COVERAGE_FIELDS = ["person_id", "person_name", "role", "youtube_videos_indexed", "own_feeds", "items_listed",
                    "items_outside_youtube", "distinct_listed", "distinct_captured", "youtube_listed", "youtube_shorts",
-                   "youtube_captured",
-                   "listed_hours", "audio_ok", "audio_hours", "audio_failed", "audio_podcast", "audio_creator_file",
+                   "youtube_captured", "interviews_listed", "interviews_live_channeling", "interviews_unclear",
+                   "interviews_conversation", "interviews_commentary", "interviews_not_classified", "interviews_here",
+                   "listed_hours", "audio_ok", "audio_hours", "audio_failed", "audio_podcast", "audio_creator_file", "audio_archive_org", "archive_org_listed",
                    "audio_youtube", "publisher_texts", "publisher_text_words", "captions", "captions_words",
                    "asr_transcripts", "asr_words", "asr_hours", "items_text_from_source", "items_text_made_here",
                    "items_with_text", "audio_awaiting_transcript", "youtube_twins", "next_step"]
@@ -108,7 +109,8 @@ def main():
         if lane_of(ident) == "youtube":
             person = yt_person.get(ident, person)
         return items.setdefault(ident, {"item_id": ident, "person_id": person, "lane": lane_of(ident), "relation": "", "tab": "",
-                                        "title": "", "published": "", "duration_s": "", "twin_of": "", "twin_method": "",
+                                        "title": "", "published": "", "duration_s": "", "twin_of": "", "twin_method": "", "feed_key": "",
+                                        "interview_type": "",
                                         "source_host": "", "source_url": "", "text_id": ident, "folder": person})
 
     # What exists is what the source lists hold (every accepted feed's episodes, every creator file),
@@ -119,7 +121,8 @@ def main():
         e = entry(row["video_id"], row["channel_dir"])
         e.update(relation=row["relation"], title=row["title"], published=row["published"],
                  duration_s="" if row["duration_s"] is None else row["duration_s"], twin_of=row["twin_of"],
-                 twin_method=row["twin_method"], source_url=row["url"], folder=row["channel_dir"])
+                 twin_method=row["twin_method"], source_url=row["url"], folder=row["channel_dir"],
+                 feed_key=row.get("feed_key") or "", interview_type=row.get("interview_type") or "")
     queue = paths.jobs / "queue_enclosures.csv"
     for row in read_csv(queue) if queue.exists() else []:       # anything queued that the lists no longer hold
         if row["video_id"] not in items:
@@ -160,6 +163,7 @@ def main():
         e["source_host"] = e["source_host"] or rec.get("source_host", "") or ("youtube.com" if lane_of(ident) == "youtube" else "")
         e["published"] = e["published"] or rec.get("published", "")
         e["twin_of"] = e["twin_of"] or rec.get("twin_of", "")
+        e["feed_key"] = e["feed_key"] or rec.get("feed_key", "")
     for ident, rec in asr.items():
         entry(ident, rec.get("channel_dir", ""))
     for ident, rec in caps.items():
@@ -231,9 +235,14 @@ def main():
         waiting = sum(1 for r in got if not r["has_text"])
         # still to fetch: a listed recording without audio, unless its content is already here through its
         # twin (the podcast episode of a video, or the page that carries its text)
-        remaining = [r for r in mine if r["relation"] in ("own", "host", "file", "youtube") and r["audio_status"] != "ok"
-                     and not (r["lane"] == "youtube" and work_of[r["item_id"]] in captured_works)]
+        remaining = [r for r in mine if r["relation"] in ("own", "host", "file", "archive", "youtube") and r["audio_status"] != "ok"
+                     and not (r["lane"] == "youtube" and work_of[r["item_id"]] in captured_works)
+                     and not (r["relation"] == "host" and r["interview_type"] != "live channeling")]
         tube = [r for r in mine if r["lane"] == "youtube"]
+        talks = [r for r in mine if r["relation"] == "host"]
+
+        def kind_count(kind, group=talks):
+            return sum(1 for r in group if (r["interview_type"] or "not classified") == kind)
         pages_left = sum(1 for r in mine if r["relation"] == "page" and r["publisher_text_status"] != "ok")
         if not mine and not feeds.get(person):
             step = "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site"
@@ -258,11 +267,17 @@ def main():
             "distinct_captured": len({work_of[r["item_id"]] for r in mine} & captured_works),
             "youtube_listed": len(tube), "youtube_shorts": sum(1 for r in tube if r["tab"] == "shorts"),
             "youtube_captured": sum(1 for r in tube if work_of[r["item_id"]] in captured_works),
+            "interviews_listed": len(talks), "interviews_live_channeling": kind_count("live channeling"),
+            "interviews_unclear": kind_count("unclear"), "interviews_conversation": kind_count("conversation"),
+            "interviews_commentary": kind_count("commentary or clip"), "interviews_not_classified": kind_count("not classified"),
+            "interviews_here": sum(1 for r in talks if r["audio_status"] == "ok" or r["has_text"]),
             "listed_hours": round(seconds(mine) / 3600, 1),
             "audio_ok": len(got), "audio_hours": round(seconds(got) / 3600, 1),
             "audio_failed": sum(1 for r in mine if r["audio_status"] == "error"),
             "audio_podcast": sum(1 for r in got if r["lane"] == "pod"),
             "audio_creator_file": sum(1 for r in got if r["lane"] == "web"),
+            "audio_archive_org": sum(1 for r in got if r["lane"] == "ia"),
+            "archive_org_listed": sum(1 for r in mine if r["lane"] == "ia"),
             "audio_youtube": sum(1 for r in got if r["lane"] == "youtube"),
             "publisher_texts": sum(1 for r in mine if r["publisher_text_status"] == "ok"),
             "publisher_text_words": words(mine, "publisher_text_words"),
