@@ -38,8 +38,10 @@ import csv
 import json
 import re
 import shutil
+import struct
 import subprocess
 import sys
+import zlib
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -146,8 +148,93 @@ def find_audio(rel, places, size):
 
 
 # ---------------------------------------------------------------- audio parts
+_REV8 = bytes(int(f"{i:08b}"[::-1], 2) for i in range(256))
+_OGG = struct.Struct("<4sBBqIIIB")   # capture, version, flags, granule, serial, sequence, crc, segments
+
+
+def ogg_crc(page) -> int:
+    """Ogg's CRC-32 (polynomial 0x04C11DB7, start 0, not reflected) over a page whose CRC field is zero.
+    zlib's CRC-32 is the reflected form; run on bit-reversed bytes and reversed back, it gives Ogg's at C speed."""
+    r = zlib.crc32(bytes(page).translate(_REV8), 0xFFFFFFFF) ^ 0xFFFFFFFF
+    return int(f"{r:032b}"[::-1], 2)
+
+
+def ogg_pages(data: bytes):
+    """[(offset, size, flags, granule, data offset, lacing)] for every page; ValueError if it is not Ogg."""
+    out, pos = [], 0
+    while pos < len(data):
+        if data[pos:pos + 4] != b"OggS" or len(data) < pos + 27:
+            raise ValueError(f"no Ogg page at byte {pos}")
+        _, _, flags, granule, _, _, _, nseg = _OGG.unpack_from(data, pos)
+        lacing = data[pos + 27:pos + 27 + nseg]
+        size = 27 + nseg + sum(lacing)
+        if pos + size > len(data):
+            raise ValueError("the last Ogg page is cut short")
+        out.append((pos, size, flags, granule, pos + 27 + nseg, lacing))
+        pos += size
+    return out
+
+
+def cut_ogg_opus(src: Path, work: Path, stem: str, max_bytes: int) -> list:
+    """Cut an Ogg Opus file between pages into parts of at most max_bytes, without decoding anything.
+
+    Each part gets the original OpusHead and OpusTags pages, then a run of whole audio pages whose
+    granule positions are counted again from the part's start, page numbers renumbered, the last page
+    marked end-of-stream and every checksum recomputed: so each part is a valid stream that plays on its
+    own (RFC 7845). A cut is made only before a page that starts a new packet. ValueError if the file is
+    not Ogg Opus as expected, so the caller can fall back to ffmpeg."""
+    data = src.read_bytes()
+    pages = ogg_pages(data)
+    if len(pages) < 3 or data[pages[0][4]:pages[0][4] + 8] != b"OpusHead" or \
+            data[pages[1][4]:pages[1][4] + 8] != b"OpusTags":
+        raise ValueError("not an Ogg Opus file with its two header packets first")
+    n_head = 2
+    while n_head < len(pages) and pages[n_head - 1][5] and pages[n_head - 1][5][-1] == 255:
+        n_head += 1          # the comment header continues on the next page
+    head = b"".join(data[p[0]:p[0] + p[1]] for p in pages[:n_head])
+    audio = pages[n_head:]
+    budget = max_bytes - len(head)
+    if budget < 4096 or any(p[1] > budget for p in audio):
+        raise ValueError("pages are too large for parts of this size")
+    groups, cur, size = [], [], 0
+    for p in audio:
+        if cur and size + p[1] > budget and not p[2] & 0x01:   # 0x01: the page continues a packet
+            groups.append(cur)
+            cur, size = [], 0
+        cur.append(p)
+        size += p[1]
+    if cur:
+        groups.append(cur)
+    if any(sum(p[1] for p in g) > budget for g in groups):
+        raise ValueError("a packet spans too many pages to cut within the size")
+    out, base = [], 0
+    for i, group in enumerate(groups, 1):
+        body = bytearray()
+        for j, (off, sz, flags, granule, _, _) in enumerate(group):
+            page = bytearray(data[off:off + sz])
+            last = j == len(group) - 1
+            new_flags = (flags & ~0x04) | (0x04 if last else 0)
+            new_granule = granule - base if granule != -1 else -1
+            struct.pack_into("<BqII", page, 5, new_flags, new_granule,
+                             _OGG.unpack_from(data, off)[4], n_head + j)
+            struct.pack_into("<I", page, 22, 0)
+            struct.pack_into("<I", page, 22, ogg_crc(page))
+            body += page
+        ends = [p[3] for p in group if p[3] != -1]
+        base = ends[-1] if ends else base   # the next part counts its samples from here
+        f = work / f"{stem} (part {i} of {len(groups)}).opus"
+        f.write_bytes(head + bytes(body))
+        out.append(f)
+    return out
+
+
 def split_audio(src: Path, work: Path, stem: str, max_bytes: int, duration: float, ffmpeg="ffmpeg") -> list:
-    """Cut src at packet boundaries (no re-encoding) into playable parts of at most max_bytes each."""
+    """Cut src into playable parts of at most max_bytes each, never re-encoding: between Ogg pages when it
+    is Ogg Opus (all the pipeline's audio), else at packet boundaries with ffmpeg's stream copy."""
+    try:
+        return cut_ogg_opus(src, work, stem, max_bytes)
+    except ValueError:
+        pass
     size = src.stat().st_size
     seconds = max(60, int(duration * max_bytes * 0.88 / size)) if duration else 1800
     tmp = work / f".{stem[-40:]}.parts"
@@ -398,7 +485,8 @@ def cmd_record(args, paths):
             if r.get("path") and not r.get("key"):
                 path = tuple(r["path"]) if isinstance(r["path"], list) else tuple(str(r["path"]).split("/"))
                 key = "folder:" + "/".join(path)
-                if path in folders and have.get(key, {}).get("drive_id") != drive_id:
+                ours = path in folders or (path and path[0] in (AUDIO_TOP, TEXT_TOP))   # made before the plan ended
+                if ours and have.get(key, {}).get("drive_id") != drive_id:
                     append_jsonl(paths.root / LEDGER, {"key": key, "kind": "folder", "path": list(path),
                                                         "drive_id": drive_id, "at": utc_now()})
                     have[key] = {"drive_id": drive_id, "path": list(path)}

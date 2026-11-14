@@ -67,6 +67,44 @@ class TestVolumes(unittest.TestCase):
             self.assertEqual(text, "".join(entries))
 
 
+@unittest.skipUnless(HAVE_FFMPEG, "ffmpeg is needed to make audio")
+class TestOggCut(unittest.TestCase):
+    def test_checksum_parts_and_lengths(self):
+        import struct
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "in.opus"
+            make_opus(src, 90)
+            data = src.read_bytes()
+            for off, size, *_ in drive_stage.ogg_pages(data):          # Ogg's CRC, as ffmpeg wrote it
+                page = bytearray(data[off:off + size])
+                stored = struct.unpack_from("<I", page, 22)[0]
+                struct.pack_into("<I", page, 22, 0)
+                self.assertEqual(drive_stage.ogg_crc(page), stored)
+            parts = drive_stage.cut_ogg_opus(src, Path(tmp), "s [x]", 100_000)
+            self.assertGreater(len(parts), 2)
+            again = drive_stage.cut_ogg_opus(src, Path(tmp), "t [x]", 100_000)
+            self.assertEqual([sha256_file(p) for p in parts], [sha256_file(p) for p in again])
+            total = 0.0
+            for i, p in enumerate(parts, 1):
+                self.assertLessEqual(p.stat().st_size, 100_000)
+                self.assertTrue(p.name.endswith(f"(part {i} of {len(parts)}).opus"))
+                decode = subprocess.run(["ffmpeg", "-v", "error", "-nostdin", "-i", str(p), "-f", "null", "-"],
+                                        capture_output=True, text=True, timeout=60)
+                self.assertEqual(decode.stderr.strip(), "", p.name)
+                pages = drive_stage.ogg_pages(p.read_bytes())
+                self.assertTrue(pages[-1][2] & 0x04)                     # the last page ends the stream
+                self.assertFalse(any(pg[2] & 0x04 for pg in pages[:-1]))
+                total += probe_duration(p)
+            self.assertAlmostEqual(total, probe_duration(src), delta=0.1 * len(parts))
+
+    def test_not_ogg_falls_back(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            f = Path(tmp) / "x.opus"
+            f.write_bytes(b"not an ogg file at all" * 100)
+            with self.assertRaises(ValueError):
+                drive_stage.cut_ogg_opus(f, Path(tmp), "x", 1000)
+
+
 @unittest.skipUnless(HAVE_FFMPEG, "ffmpeg is needed to make and cut audio")
 class TestPlan(unittest.TestCase):
     def setUp(self):
