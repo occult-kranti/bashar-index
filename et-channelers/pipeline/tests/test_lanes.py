@@ -2747,6 +2747,105 @@ class TestBasharIndexTables(LaneCase):
         self.assertEqual((row["here"], row["kind_of_recording"].split(":")[0]), ("yes", "interview"))
         self.assertIn("podcast", row["how_here"])
 
+# --------------------------------------------------------------------------- sources, and saving to a private GitHub repository
+class TestSourcesTable(LaneCase):
+    def test_every_source_has_a_safe_link_a_method_and_a_count(self):
+        done = self.cli("catalog.py", "--root", self.root)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        out = self.tmp / "plan"
+        done = self.cli("sources_table.py", "--root", self.root, "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        rows = common.read_csv(out / "sources.csv")
+        methods = {m["method"] for m in common.read_csv(out / "methods.csv")}
+        self.assertGreater(len(rows), 100)
+        self.assertEqual(len({r["source_id"] for r in rows}), len(rows))
+        self.assertTrue(all(r["link"].startswith("https://") for r in rows))                # only https links reach the page
+        self.assertTrue(all(r["data_link"] == "" or r["data_link"].startswith("https://") for r in rows))
+        self.assertTrue({r["method"] for r in rows} <= methods)
+        self.assertTrue(all(set(r["chain"].split(", ")) <= methods for r in rows))
+        self.assertEqual({r["from_cloud"] for r in rows if r["kind"] == "youtube channel"}, {"no"})
+        kryon = [r for r in rows if r["person_id"] == "lee-carroll" and r["kind"] == "audio on own site"]
+        self.assertEqual(len(kryon), 1)                                                     # kryon.com and www.kryon.com are one site
+        self.assertEqual(kryon[0]["items_here"], "0")                                        # an empty private folder holds nothing
+        self.assertEqual({r["items_listed"] for r in rows if r["kind"] in ("official site", "earlier research")}, {""})
+        text = (out / "sources.csv").read_text(encoding="utf-8")
+        self.assertNotIn("watch?v=", text)
+        self.assertNotIn(".mp3", text)                                                       # no address of a single recording
+
+    def test_without_the_private_folder_counts_are_unknown(self):
+        out = self.tmp / "plan2"
+        done = self.cli("sources_table.py", "--no-private", "--out", out)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        rows = common.read_csv(out / "sources.csv")
+        self.assertEqual({r["items_listed"] for r in rows}, {""})
+        self.assertEqual({r["status"] for r in rows if r["kind"] == "official site"}, {""})
+
+
+FAKE_GH_SAVE = r"""#!/bin/sh
+echo "gh $*" >> "$SAVE_LOG"
+case "$*" in
+  "auth status"*) exit 0 ;;
+  "api user"*) echo me ;;
+  *"repo view"*"--json isPrivate"*) echo "$FAKE_PRIVATE" ;;
+  *"repo view"*) [ -n "$FAKE_EXISTS" ] || exit 1 ;;
+  *"repo create"*) exit 0 ;;
+esac
+"""
+FAKE_PY_SAVE = r"""#!/bin/sh
+echo "python token=${GITHUB_TOKEN:-none} $*" >> "$SAVE_LOG"
+"""
+
+
+def shell_tool(bin_dir: Path, name: str, source: str) -> str:
+    """A stand-in written as a POSIX shell script (make_tool writes Python ones)."""
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    path = bin_dir / name
+    path.write_text(source, encoding="utf-8")
+    path.chmod(0o755)
+    return str(path)
+
+
+@unittest.skipIf(os.name == "nt", "the script is for the Codespace's shell")
+class TestSaveToGithub(LaneCase):
+    def save(self, private, exists=""):
+        bin_dir = self.tmp / "savebin"
+        shell_tool(bin_dir, "gh", FAKE_GH_SAVE)
+        python = shell_tool(bin_dir, "python-fake", FAKE_PY_SAVE)
+        log = self.tmp / "save.log"
+        env = {**os.environ, "PATH": f"{bin_dir}{os.pathsep}{os.environ['PATH']}", "SAVE_LOG": str(log),
+               "FAKE_PRIVATE": private, "FAKE_EXISTS": exists, "ET_PYTHON": str(python), "ET_PRIVATE_DIR": str(self.root),
+               "ET_MIRROR_INTERVAL": "0", "ET_ARCHIVE_CHECKOUT": str(self.tmp / "checkout"), "GITHUB_TOKEN": "codespace-token"}
+        done = subprocess.run(["bash", str(PIPE / "save_to_github.sh")], capture_output=True, text=True, timeout=60, env=env)
+        return done, log
+
+    def wait_for(self, log, text, seconds=20):
+        import time
+        end = time.time() + seconds
+        while time.time() < end:
+            if log.exists() and text in log.read_text():
+                return True
+            time.sleep(0.2)
+        return False
+
+    def test_a_repository_that_is_not_private_is_refused_before_anything_starts(self):
+        done, log = self.save(private="false", exists="1")
+        self.assertEqual(done.returncode, 5, done.stdout + done.stderr)
+        self.assertIn("is not private", done.stderr)
+        calls = log.read_text()
+        self.assertNotIn("python", calls)                                                   # no sync, no mirror
+        self.assertNotIn("repo create", calls)
+
+    def test_a_missing_repository_is_created_private_and_both_halves_start_without_the_codespace_token(self):
+        done, log = self.save(private="true")
+        self.assertEqual(done.returncode, 0, done.stdout + done.stderr)
+        self.assertTrue(self.wait_for(log, "mirror_texts.py"), log.read_text())
+        self.assertTrue(self.wait_for(log, "sync_archive.py push"), log.read_text())
+        calls = log.read_text()
+        self.assertIn("repo create me/et-channelers-archive --private", calls)
+        self.assertIn("--store gh:me/et-channelers-archive@archive-v1 --delete audio", calls)
+        self.assertIn("--repo me/et-channelers-archive", calls)
+        self.assertNotIn("token=codespace-token", calls)                                    # the user's login, not the Codespace's
+
 
 if __name__ == "__main__":
     unittest.main()

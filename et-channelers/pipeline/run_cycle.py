@@ -12,7 +12,8 @@ scripts, each resumable, so a cycle that is stopped or refused is simply run aga
     texts    fetch_publisher_text.py  transcripts and pages the publishers offer
     kinds    interview_types.py       what kind each interview episode is
     speech   transcribe.py            speech-to-text for audio without text (only with --transcribe MODEL)
-    tables   catalog.py, targets.py   the catalogue, the coverage table and the target list (published to plan/)
+    tables   catalog.py, targets.py,  the catalogue, the coverage table, the target list and the list of
+             sources_table.py         sources with their links and methods (published to plan/)
 
 Without --go it prints the plan and does nothing. It never touches YouTube audio or captions: that is
 run_all.py's job, on a home connection. A step that ends with code 3 (a source refused requests) or 4
@@ -57,7 +58,8 @@ def build_plan(args, root):
         "kinds": [py + [str(HERE / "interview_types.py"), *base, "--notes"]],
         "speech": [py + [str(HERE / "transcribe.py"), *base, "--model", args.transcribe, "--device", "cpu", "--compute-type", "int8",
                          "--workers", "1", "--cpu-threads", "2", "--batch-size", "8", "--order", "round-robin"]] if args.transcribe else [],
-        "tables": [py + [str(HERE / "catalog.py"), *base, "--publish"], py + [str(HERE / "targets.py"), *base]],
+        "tables": [py + [str(HERE / "catalog.py"), *base, "--publish"], py + [str(HERE / "targets.py"), *base],
+                   py + [str(HERE / "sources_table.py"), *base]],
     }
     if args.only and plan["list"]:
         plan["list"][0] += ["--only", args.only]
