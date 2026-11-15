@@ -141,7 +141,7 @@ def main():
     print("CYCLE REPORT")
     for step, script, code, started in log:
         note = {0: "done", 3: "a source refused requests: wait and run the cycle again", 4: "disk floor reached",
-                SKIPPED_BY_RULE: "skipped by rule: youtube.com's robots.txt; owner decision pending (HANDOFF 6)"
+                SKIPPED_BY_RULE: "skipped by rule: youtube.com's robots.txt; the override is not set for this run (HANDOFF 6.6)"
                 }.get(code, f"failed ({code})")
         print(f"  {step:7s} {script:26s} {started}  {note}")
     sys.exit(worst)

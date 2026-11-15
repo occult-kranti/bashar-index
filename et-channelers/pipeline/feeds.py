@@ -104,7 +104,7 @@ def robots_refusal(url, redirect=False):
         return None
     path = urllib.parse.urlsplit(url).path
     return FetchError(0, f"{'redirect not followed' if redirect else 'not fetched'}: youtube.com's robots.txt disallows "
-                         f"{path} (owner decision pending, HANDOFF 6)", url, klass="robots")
+                         f"{path} (the override is not set for this run, HANDOFF 6.6)", url, klass="robots")
 
 
 class _ObeyYouTubeRobots(urllib.request.HTTPRedirectHandler):
