@@ -10,9 +10,15 @@ Sets:  bashar75 | indexed | channeling | all
     python3 pipeline/select_jobs.py --set bashar75
     python3 pipeline/select_jobs.py --set all --per-channel 20 --seed 7 --min-seconds 300
     python3 pipeline/select_jobs.py --set bashar75 --export-ids ids.json   # input for the Atlas caption tool
+    python3 pipeline/select_jobs.py --set all --newest 10 --out jobs/queue_newest10.csv
 
 A per-channel sample is drawn with a seeded generator and the seed, rule and input hashes are
-written next to the queue (queue.meta.json), so the selection can be reproduced and reported.
+written next to the queue (<queue>.meta.json, e.g. queue.meta.json), so the selection can be
+reproduced and reported.
+
+--newest N takes the first N videos of each channel's Videos tab in the order the channel lists them
+(newest first, as discover.py recorded it): no shorts, no live streams, and only videos a channel
+listing holds. It reads only what is on disk and sends no request.
 """
 from __future__ import annotations
 
@@ -29,12 +35,14 @@ from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, layout, par
 INDEX = ET_ROOT / "youtube-index" / "youtube_index.json"
 BASHAR_IDS = ET_ROOT / "transcripts" / "scripts" / "all_ids.txt"
 BASHAR_CSV = ET_ROOT / "draft-package" / "csv" / "bashar_videos_in_repo_by_channel.csv"
-FIELDS = ["video_id", "url", "channel_dir", "title", "duration_s", "channeling", "entity", "sources", "shard"]
+FIELDS = ["video_id", "url", "channel_dir", "title", "duration_s", "channeling", "entity", "sources", "shard",
+          "tab", "listing_rank", "upload_date_approx"]
 
 
 def blank(video_id):
     return {"video_id": video_id, "url": f"https://www.youtube.com/watch?v={video_id}", "channel_dir": "",
-            "title": "", "duration_s": None, "channeling": None, "entity": "", "sources": set()}
+            "title": "", "duration_s": None, "channeling": None, "entity": "", "sources": set(),
+            "tab": "", "listing_rank": None, "upload_date_approx": ""}
 
 
 def merge(rows, video_id, source, **fields):
@@ -46,11 +54,18 @@ def merge(rows, video_id, source, **fields):
 
 
 def load_sources(root):
-    rows, used = {}, {}
+    rows, used, rank = {}, {}, {}
     for rec in read_jsonl(layout(root).discover / "videos_all.jsonl"):
         if ID_RE.match(rec.get("video_id", "")):
+            person = rec.get("person_id") or ""
+            seen_before = rec["video_id"] in rows and "discover" in rows[rec["video_id"]]["sources"]
             merge(rows, rec["video_id"], "discover", title=rec.get("title"), duration_s=rec.get("duration_s"),
-                  channel_dir=rec.get("person_id"))
+                  channel_dir=person, tab=rec.get("tab"), upload_date_approx=rec.get("upload_date_approx"))
+            if not seen_before:
+                # the position in the channel's own listing of that tab: 0 is the newest
+                key = (person, rec.get("tab") or "")
+                rows[rec["video_id"]]["listing_rank"] = rank.get(key, 0)
+                rank[key] = rank.get(key, 0) + 1
     if (layout(root).discover / "videos_all.jsonl").exists():
         used["discover"] = sha256_file(layout(root).discover / "videos_all.jsonl")
     if INDEX.exists():
@@ -82,6 +97,8 @@ def main():
     add_root_arg(ap)
     ap.add_argument("--set", dest="which", choices=("bashar75", "indexed", "channeling", "all"), default="bashar75")
     ap.add_argument("--per-channel", type=int, help="keep at most K videos per channel (seeded sample)")
+    ap.add_argument("--newest", type=int, default=0,
+                    help="keep the first N of each channel's Videos tab in listing order (newest first)")
     ap.add_argument("--seed", type=int, default=20261111)
     ap.add_argument("--min-seconds", type=int, default=0, help="drop videos known to be shorter (Shorts are < 60)")
     ap.add_argument("--max-seconds", type=int, default=0, help="drop videos known to be longer (0 = no limit)")
@@ -91,6 +108,10 @@ def main():
     ap.add_argument("--out", type=Path, help="queue CSV (default <root>/jobs/queue.csv)")
     ap.add_argument("--export-ids", type=Path, help="also write {records:[{video_id}]} for acquire_youtube.py")
     args = ap.parse_args()
+    if args.newest and args.per_channel:
+        ap.error("--newest and --per-channel choose videos in different ways: give one of them")
+    if args.newest < 0:
+        ap.error("--newest must be a positive number")
 
     out = args.out or layout(args.root).jobs / "queue.csv"
     rows, used = load_sources(args.root)
@@ -109,6 +130,14 @@ def main():
             group = groups[chan]
             rng = random.Random(f"{args.seed}:{chan}")
             picked += sorted(rng.sample(group, min(args.per_channel, len(group))), key=lambda r: r["video_id"])
+    if args.newest:
+        groups = {}
+        for r in picked:
+            if r["tab"] == "videos" and r["listing_rank"] is not None:
+                groups.setdefault(r["channel_dir"], []).append(r)
+        picked = []
+        for chan in sorted(groups):
+            picked += sorted(groups[chan], key=lambda r: r["listing_rank"])[:args.newest]
     if args.order == "longest-first":
         picked.sort(key=lambda r: (-(r["duration_s"] or 0), r["video_id"]))
     elif args.order == "shortest-first":
@@ -120,16 +149,19 @@ def main():
 
     table = [{**r, "channeling": "" if r["channeling"] is None else int(r["channeling"]),
               "duration_s": "" if r["duration_s"] is None else r["duration_s"],
+              "listing_rank": "" if r["listing_rank"] is None else r["listing_rank"],
               "sources": "+".join(sorted(r["sources"])), "shard": stable_shard(r["video_id"], args.shards)}
              for r in picked]
     write_csv(out, table, FIELDS)
     known = [r["duration_s"] for r in picked if r["duration_s"]]
-    meta = {"created": utc_now(), "set": args.which, "per_channel": args.per_channel, "seed": args.seed,
+    meta = {"created": utc_now(), "set": args.which, "per_channel": args.per_channel, "newest": args.newest,
+            "seed": args.seed,
             "min_seconds": args.min_seconds, "max_seconds": args.max_seconds, "order": args.order,
             "shards": args.shards, "limit": args.limit, "videos": len(picked),
             "channels": len({r["channel_dir"] for r in picked}), "with_known_duration": len(known),
             "known_hours": round(sum(known) / 3600, 1), "inputs_sha256": used}
-    atomic_write_text(out.with_name("queue.meta.json"), json.dumps(meta, indent=2) + "\n")
+    # each queue gets its own meta file (queue.csv -> queue.meta.json), so a second queue never overwrites the first's
+    atomic_write_text(out.with_name(out.stem + ".meta.json"), json.dumps(meta, indent=2) + "\n")
     if args.export_ids:
         atomic_write_text(args.export_ids, json.dumps({"records": [{"video_id": r["video_id"]} for r in picked]}) + "\n")
     print(f"{len(picked)} videos from {meta['channels']} channels, {meta['known_hours']} h with known length "

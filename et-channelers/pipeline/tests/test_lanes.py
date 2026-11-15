@@ -2226,6 +2226,13 @@ class TestCaptionsAndRunner(LaneCase):
         texts = self.runner("--store", f"dir:{self.tmp / 'disk'}", "--lanes", "enclosures,texts").stdout
         self.assertNotIn("discover.py", texts)
 
+    def test_newest_reaches_the_youtube_queue_and_not_the_episode_queue(self):
+        plan = self.runner("--store", f"dir:{self.tmp / 'disk'}", "--lanes", "youtube,enclosures", "--newest", "10").stdout
+        line = next(l for l in plan.splitlines() if "select_jobs.py" in l)
+        self.assertIn("--newest 10", line)
+        self.assertNotIn("--per-channel", line)
+        self.assertNotIn("--newest", next(l for l in plan.splitlines() if "select_episodes.py" in l))
+
     def test_runner_checks_the_store_before_downloading_anything(self):
         done = self.runner("--store", "gh:someone/archive@audio-v1", "--lanes", "youtube", "--set", "bashar75", "--go",
                            env={"FAKE_GH_VISIBILITY": "public"})
