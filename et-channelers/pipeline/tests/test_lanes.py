@@ -1308,6 +1308,18 @@ class TestPublisherText(unittest.TestCase):
         text = fetch_publisher_text.html_to_text(page)
         self.assertEqual(text, "Session 1\nFirst paragraph.\nSecond paragraph.")
 
+    def test_page_text_leaves_out_readers_comment_threads(self):
+        blogger = ("<html><body><div class='post-body entry-content'><p>The message.</p><div>Nested part.</div></div>"
+                   "<div class='comments' id='comments'><h4>2 comments:</h4><div class='comment-thread'>"
+                   "<div class='comment-block'><p>A reader: this will happen in 2030!</p><div>Reply</div></div>"
+                   "</div></div><div class='post-footer'>Labels: arcturians</div></body></html>")
+        self.assertEqual(fetch_publisher_text.html_to_text(blogger), "The message.\nNested part.\nLabels: arcturians")
+        wordpress = ("<html><body><article><p>Channelled text.</p><div id=\"comments\" class=\"comments-area\">"
+                     "<ol class=\"comment-list\"><li>Thank you!</li></ol></div><p>After.</p></article></body></html>")
+        self.assertEqual(fetch_publisher_text.html_to_text(wordpress), "Channelled text.\nAfter.")
+        plain = "<html><body><main><p>No comments here, and a class of <span class='comment'>note</span>.</p></main></body></html>"
+        self.assertEqual(fetch_publisher_text.html_to_text(plain), "No comments here, and a class of note.")
+
     def test_webvtt_and_srt_lose_their_timings(self):
         vtt = "WEBVTT\n\n1\n00:00:00.000 --> 00:00:02.000\n<v Host>Hello there\n\n2\n00:00:02.000 --> 00:00:04.000\nHello there\nand welcome\n"
         self.assertEqual(fetch_publisher_text.cues_to_text(vtt), "Hello there\nand welcome")

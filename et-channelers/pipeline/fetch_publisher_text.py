@@ -55,24 +55,51 @@ SKIP_TAGS = {"script", "style", "nav", "header", "footer", "aside", "form", "but
 BLOCK_TAGS = {"p", "div", "br", "li", "h1", "h2", "h3", "h4", "h5", "h6", "tr", "blockquote", "section", "article",
               "dt", "dd", "pre", "hr"}
 MAX_TEXT_BYTES = 12 * 1024 * 1024
+# readers' comment threads: Blogger's <div class='comments' id='comments'>, WordPress's comments-area,
+# comment-list and reply form. They are readers' words, not the publisher's, so the text leaves them out
+# (the page as fetched, comments included, is still kept in .source.gz)
+COMMENT_IDS = {"comments", "disqus_thread", "respond"}
+COMMENT_CLASSES = {"comments", "comments-area", "comment-list", "commentlist", "comment-respond", "comment-thread"}
+
+
+def is_comment_block(attrs) -> bool:
+    values = dict(attrs)
+    if (values.get("id") or "").strip().lower() in COMMENT_IDS:
+        return True
+    return bool(COMMENT_CLASSES & set((values.get("class") or "").lower().split()))
 
 
 class MainText(HTMLParser):
-    """Text of the <main> element (or <article>, or <body>), without navigation, forms or scripts."""
+    """Text of the <main> element (or <article>, or <body>), without navigation, forms, scripts or readers'
+    comment threads."""
 
     def __init__(self, container):
         super().__init__(convert_charrefs=True)
         self.container, self.depth, self.skip, self.parts = container, 0, 0, []
+        self.thread_tag, self.thread_depth = None, 0      # the comment thread being skipped, and its nesting
 
     def handle_starttag(self, tag, attrs):
         if tag == self.container:
             self.depth += 1
+        if self.thread_tag:
+            if tag == self.thread_tag:
+                self.thread_depth += 1
+            return
+        if self.depth and is_comment_block(attrs):
+            self.thread_tag, self.thread_depth = tag, 1
+            return
         if self.depth and tag in SKIP_TAGS:
             self.skip += 1
         if self.depth and not self.skip and tag in BLOCK_TAGS:
             self.parts.append("\n")
 
     def handle_endtag(self, tag):
+        if self.thread_tag:
+            if tag == self.thread_tag:
+                self.thread_depth -= 1
+                if not self.thread_depth:
+                    self.thread_tag = None
+            return
         if self.depth and tag in SKIP_TAGS and self.skip:
             self.skip -= 1
         if self.depth and not self.skip and tag in BLOCK_TAGS:
@@ -81,7 +108,7 @@ class MainText(HTMLParser):
             self.depth -= 1
 
     def handle_data(self, data):
-        if self.depth and not self.skip:
+        if self.depth and not self.skip and not self.thread_tag:
             self.parts.append(data)
 
 

@@ -31,7 +31,7 @@ not used here.
 | YouTube channel listing | what each channel lists on its Videos, Live and Shorts tabs: ids, titles, lengths. No media | `discover.py` | **Off by rule** since 2026-11-14. Technically yes: it answered from the cloud on 2026-11-13, and those listings set the size of the job. |
 | Podcast episodes | the enclosure of each item in the maker's own feed | `find_feeds.py`, `fetch_feeds.py`, `select_episodes.py`, `download_enclosures.py` | Yes |
 | Creator files | audio the maker hosts on their own site | `select_episodes.py`, `download_enclosures.py` | Yes |
-| Publisher texts | transcripts the publisher wrote (site pages, feed transcript links) | `fetch_publisher_text.py` | Yes |
+| Publisher texts | transcripts the publisher wrote (site pages, feed transcript links); readers' comment threads and reply forms are left out of the text, the page as fetched is kept | `fetch_publisher_text.py` | Yes |
 
 Items that do not come from YouTube get the id `pod-<16 hex>` (podcast episode) or `web-<16 hex>` (creator file
 or page). Where the same recording is also an indexed YouTube video, the item records that id as `twin_of` and
@@ -425,7 +425,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | Real YouTube, from a cloud server (2026-11-11) | 3 of 3 pilot videos refused: two "confirm you're not a bot" responses and one HTTP 403. The breaker stopped the run. No workaround was tried. |
 | Windows, a GPU, large models, long batches | **not tested** |
 
-Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (116 tests, about 80 seconds alone), `tests/test_lanes.py` (251, about 7 minutes alone) and `tests/test_drive_stage.py` (14) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
+Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (118 tests, about 2 minutes alone), `tests/test_lanes.py` (252, about 8 minutes alone) and `tests/test_drive_stage.py` (14) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
 
 ## Known limits
 
