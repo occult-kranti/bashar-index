@@ -16,7 +16,7 @@ Drive; the other rows give the state at the pause.
 | Podcast backlog | 733 of 2,647 episodes (1,442.6 h left); creators' own audio files 95 of 1,410 (1,315 left, length unknown) |
 | Speech-to-text | 61 transcripts. At 1.3x real time the backlog needs a faster engine or a GPU (HANDOFF section 6) |
 | Private store | release `archive-v1` (bundles); `archiveshelf-podcast-audio-v1` (ArchiveShelf's 16 episodes, checked against GitHub's digests); `handoff-2026-11-14` (state without media, the Drive ledger, the Kimi snapshot, notes, memory files) |
-| Google Drive | **Done.** Everything collected is there in the folder "ET Channelers Archive": 1,138 recordings as 1,958 playable files of at most 7.3 MB (10.13 GB) and 40 text volumes (texts from the source and speech-to-text made here never in one file), 1,998 files in 77 folders by person and source. Also the tables, transcript zips by person and the earlier work (Bashar Index, ArchiveShelf, Channeling Atlas) |
+| Google Drive | **Done.** Everything collected is there in the folder "ET Channelers Archive": 1,138 recordings as 1,958 playable files of at most 7.3 MB (10.13 GB) and 40 text volumes (texts from the source and speech-to-text made here never in one file), 1,998 files in 77 folders by person and source at the pause; with the Bashar sessions of 2026-11-15, 3,420 files (17.9 GB). Also the tables, transcript zips by person and the earlier work (Bashar Index, ArchiveShelf, Channeling Atlas) |
 | YouTube's robots.txt | read 2026-11-14: it disallows the channel listing, feed and caption paths for every crawler. The YouTube steps now stop with exit code 9 ("skipped by rule") unless the owner sets `ET_YOUTUBE_ROBOTS_OVERRIDE=1`. The owner decides (decision D8, HANDOFF 6.6) |
 | Kimi snapshot (channels-ET, received 2026-11-14) | read by five agents; it holds no audio or transcript text. Plan in phase 4b below and in `notes/2026-11-14/kimi_integration_plan.md` |
 | Analysis plan | written: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) (three drafts and a synthesis; families, gates, small-model steps, phases, paper). The deep research on timelines, predictions and question banks is folded in as its own section; the critique is in `notes/2026-11-14/research_critique.md` |
@@ -51,14 +51,14 @@ Steps, in the 16 GB Codespace:
 3. After each few dozen downloads: `sync_archive.py push`, then `drive_stage.py plan --only darryl-anka
    --kinds audio`, `batches --link-dir <scratchpad>/drive_up`, `round --size 200` (it prints a round id), the
    uploads, and `done --round <id>` (pipeline README, "A browsable copy on Google Drive"). Done: the copy took
-   at least 15 rounds, and each round's ledger (`sync/drive_manifest.jsonl`) was saved to the private store's
+   18 rounds (1,422 files), and each round's ledger (`sync/drive_manifest.jsonl`) was saved to the private store's
    release `handoff-2026-11-14`.
 4. Rebuild the tables (`catalog.py --publish`, `targets.py`, `sources_table.py`, each with `--root`), so
-   `plan/bashar_sessions.csv` and the dashboard count them.
+   `plan/bashar_sessions.csv` and the dashboard count them. Done on 2026-11-15.
 
 **Done when** all 903 recordings are in the private store and on Drive, `drive_stage.py status` shows
-nothing left, and `plan/bashar_sessions.csv` shows 903 here. The store and Drive parts were done on
-2026-11-15; `plan/bashar_sessions.csv` counts the 262 of 2026-11-14 until the tables are rebuilt (step 4).
+nothing left, and `plan/bashar_sessions.csv` shows 903 here. All of it was done on
+2026-11-15: `plan/bashar_sessions.csv` shows all 903 here (909.7 hours measured).
 
 ## 0. Update 2026-11-13: the lanes that work from a cloud server
 

@@ -12,7 +12,8 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
   sources themselves, and 61 speech-to-text transcripts (30.6 hours). Every one of them is in the private store.
 * **Google Drive: done.** Everything collected by the pause is in the folder "ET Channelers Archive": 1,138
   recordings as 1,958 playable files of at most 7.3 MB (10.13 GB), and 40 text volumes. That is 1,998 files in
-  77 folders, by person and source. The Bashar sessions downloaded since then are there too (next line).
+  77 folders, by person and source. The Bashar sessions downloaded since then are there too (next line): with
+  them Drive holds 3,420 files (17.9 GB) in the same 77 folders.
 * **Bashar's archive.org sessions** (his own channeled sessions, not interviews): **done on 2026-11-15.** All 903
   recordings are downloaded (911.3 hours by archive.org's listing), with no failures, and all 903 are on Drive
   (section 5). Their audio is in the private store and on Drive, not in this repository.
@@ -162,10 +163,10 @@ as "skipped by rule", not as a failure.
   gh release upload handoff-2026-11-14 ~/et-channelers-private/sync/drive_manifest.jsonl -R occult-kranti/et-channelers-archive --clobber
   ```
 
-  The copy took at least 15 rounds of `plan`, `batches`, `round` and `done`, and after each round its ledger
-  (`sync/drive_manifest.jsonl`) was uploaded to the release `handoff-2026-11-14`. Left from this task: rebuild
-  the tables (section 3, step 5), so `plan/bashar_sessions.csv` shows 903 here; until then it counts the 262
-  held on 2026-11-14.
+  The copy of the 641 later sessions took 18 rounds (1,422 files) of `plan`, `batches`, `round` and `done`, and
+  after each round its ledger (`sync/drive_manifest.jsonl`) was uploaded to the release `handoff-2026-11-14`.
+  All of Bashar's archive.org sessions now fill 2,032 files (11.0 GB) on Drive. The tables were rebuilt on
+  2026-11-15: `plan/bashar_sessions.csv` shows all 903 here (909.7 hours measured).
 
 * **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
   It also refuses a file with more than one hard link, which is why `--link-dir` copies each file. Subagents
@@ -285,7 +286,7 @@ Paste this into Claude Code in the new Codespace, at `/workspaces/bashar-index`:
 >    the memory files from the release `handoff-2026-11-14`, copy its newer `drive_manifest.jsonl` over the
 >    restored one, pull the transcripts, the texts and Bashar's audio, and show me `sync_archive.py status`:
 >    every kind should show `on_disk_not_stored` 0. Rebuild the tables and check that `drive_stage.py status`
->    shows 1,998 files on Drive.
+>    shows 3,420 files on Drive.
 > 2. Run the three test suites in `et-channelers/pipeline/tests/` and both guards in `et-channelers/scripts/`.
 > 3. Size the jobs to the machine (`nproc`, `free -g`, `df -h`), then start the sync loop, the archive.org
 >    download of Bashar's sessions and the collection cycles (HANDOFF section 4).
