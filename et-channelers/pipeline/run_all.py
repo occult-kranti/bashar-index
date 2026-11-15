@@ -55,8 +55,13 @@ def build_plan(args, root):
             # "all" is every video the channels list, so the channels are listed first: public metadata, no
             # media, and channels already listed are skipped. Without this the queue would hold only the few
             # hundred videos the 2026-10 index happened to record.
-            prepare.append(("list: every video on every tracked channel",
-                            py + [str(HERE / "discover.py"), *base, "--workers", "1", "--min-interval", "5"]))
+            listing = py + [str(HERE / "discover.py"), *base, "--workers", "1", "--min-interval", "5"]
+            if args.newest:
+                # only the head of each Videos tab is wanted: list that much, and list it again if it is a day old
+                listing += ["--tabs", "videos", "--max-per-channel", str(args.newest), "--max-age-days", "1"]
+                prepare.append((f"list: the newest {args.newest} videos of every tracked channel", listing))
+            else:
+                prepare.append(("list: every video on every tracked channel", listing))
         cmd = py + [str(HERE / "select_jobs.py"), *base, "--set", args.set]
         if args.newest:
             cmd += ["--newest", str(args.newest)]

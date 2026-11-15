@@ -81,6 +81,8 @@ if "--flat-playlist" in args:
                 "title": "%s %s %d" % (handle, tab, i), "duration": None if tab == "shorts" else 60 + 60 * i,
                 "view_count": 100 + i, "upload_date": "20240105" if tab == "videos" and i == 0 else None}
                for i in range(count)]
+    if tab == "videos" and len(entries) > 1:
+        entries[1]["timestamp"] = 1704499200          # how yt-dlp's approximate_date gives it: 2024-01-06 UTC
     if tab == "streams":
         entries.append(dict(entries[0], id="v" + hashlib.sha1(("%s:%d" % (handle, 0)).encode()).hexdigest()[:10]))  # also on Videos
     print(json.dumps({"id": handle, "entries": entries}))
@@ -656,7 +658,7 @@ class TestDiscover(PipelineCase):
         rows = read_jsonl(self.root / "discover" / "channels" / "busy.jsonl")
         self.assertEqual(len({r["video_id"] for r in rows}), 7)
         self.assertEqual({r["tab"] for r in rows}, {"videos", "streams", "shorts"})
-        self.assertEqual([r.get("upload_date_approx") for r in rows if r["tab"] == "videos"][:2], ["20240105", None])
+        self.assertEqual([r.get("upload_date_approx") for r in rows if r["tab"] == "videos"][:3], ["20240105", "20240106", None])
         self.assertIn("by tab: 7 videos, 2 streams, 2 shorts", p.stderr)
 
     def test_a_channel_listed_before_tabs_existed_is_listed_again_in_full(self):

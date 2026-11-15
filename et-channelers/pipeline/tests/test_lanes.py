@@ -2232,6 +2232,10 @@ class TestCaptionsAndRunner(LaneCase):
         self.assertIn("--newest 10", line)
         self.assertNotIn("--per-channel", line)
         self.assertNotIn("--newest", next(l for l in plan.splitlines() if "select_episodes.py" in l))
+        listing = next(l for l in plan.splitlines() if "discover.py" in l)
+        self.assertIn("--tabs videos --max-per-channel 10 --max-age-days 1", listing)   # only the head of each Videos tab
+        full = self.runner("--store", f"dir:{self.tmp / 'disk'}", "--lanes", "youtube").stdout
+        self.assertNotIn("--max-per-channel", next(l for l in full.splitlines() if "discover.py" in l))
 
     def test_runner_checks_the_store_before_downloading_anything(self):
         done = self.runner("--store", "gh:someone/archive@audio-v1", "--lanes", "youtube", "--set", "bashar75", "--go",
