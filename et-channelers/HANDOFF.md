@@ -165,7 +165,7 @@ as "skipped by rule", not as a failure.
 
   The copy of the 641 later sessions took 18 rounds (1,422 files) of `plan`, `batches`, `round` and `done`, and
   after each round its ledger (`sync/drive_manifest.jsonl`) was uploaded to the release `handoff-2026-11-14`.
-  All of Bashar's archive.org sessions now fill 2,032 files (11.0 GB) on Drive. The tables were rebuilt on
+  All of Bashar's archive.org sessions now fill 2,031 files (11.0 GB) on Drive. The tables were rebuilt on
   2026-11-15: `plan/bashar_sessions.csv` shows all 903 here (909.7 hours measured).
 
 * **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
