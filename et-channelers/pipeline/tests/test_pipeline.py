@@ -30,6 +30,7 @@ import common  # noqa: E402
 import inventory  # noqa: E402
 import select_jobs  # noqa: E402
 import prediction_timeline  # noqa: E402
+import prediction_pilot  # noqa: E402
 
 GUARD = ET / "scripts" / "guard_no_raw_media.py"
 
@@ -480,6 +481,11 @@ class TestPredictionTimeline(PipelineCase):
         self.assertIsNone(c("You will learn to love yourself.", 2020))              # teaching: no time, no theme
         self.assertIsNotNone(c("We predict that this will unfold.", 2020))          # a prediction word suffices
         self.assertIsNone(c("Register now for the 2026 retreat, it will be amazing.", 2025))   # promotion
+        self.assertIsNone(c("What do you think is gonna happen in the next ten years?", 2025))  # a question
+        self.assertIsNone(c("How come you said this was going to happen in 2030?", 2025))    # question and report
+        self.assertIsNone(c("You said this was going to happen in 2030.", 2025))             # a report
+        self.assertIsNone(c("Get my book on amazon: The Shift of 2030 will change all.", 2025))  # a cross-link
+        self.assertIsNotNone(c("The ships will be seen in 2030.", 2025))
         row = c("If you choose it, the shift may come by 2030.", 2024)
         self.assertTrue(row["conditional"] and row["hedged"])
         self.assertEqual((row["window_lo"], row["window_hi"]), (2024, 2030))
@@ -551,6 +557,36 @@ class TestPredictionTimeline(PipelineCase):
         self.assertEqual(set(counts), {"made", "source"})                             # never mixed
         self.assertNotIn("contact", (out / "counts.csv").read_text())                 # counts carry no text
         self.assertIn("| 2023 |", (out / "zed.md").read_text())
+
+# --------------------------------------------------------------------------- prediction_pilot.py
+class TestPredictionPilot(PipelineCase):
+    def rows(self):
+        return [{"person_id": p, "item_id": f"{p}-{i}", "sentence": f"s{i}", "time_expr": "2030", "kind": "source",
+                 "window_lo": None if i % 3 == 0 else 2030, "window_hi": 2030 if i % 3 else None, "time_rule": "year",
+                 "date_said": ""} for p in ("a", "b") for i in range(12)]
+
+    def test_the_draw_is_seeded_capped_and_only_windowed(self):
+        one = prediction_pilot.draw(self.rows(), 3, 7)
+        self.assertEqual(one, prediction_pilot.draw(self.rows(), 3, 7))           # same seed, same sample
+        self.assertEqual(Counter(r["person_id"] for r in one), {"a": 3, "b": 3})
+        rows = self.rows() + [{"person_id": "c", "item_id": "c-1", "sentence": "x", "window_lo": None, "window_hi": None}]
+        self.assertNotIn("c", {r["person_id"] for r in prediction_pilot.draw(rows, 3, 7)})   # no window, not drawn
+
+    def test_kappa_and_the_precision_counts(self):
+        self.assertEqual(prediction_pilot.kappa(["x", "y", "x", "y"], ["x", "y", "x", "y"]), 1.0)
+        self.assertEqual(prediction_pilot.kappa(["x", "x", "y", "y"], ["x", "y", "x", "y"]), 0.0)
+        key = [{"uid": f"u{i}", "kind": "made" if i < 2 else "source", "time_rule": "year"} for i in range(4)]
+        a = [{"uid": "u0", "type": "prediction"}, {"uid": "u1", "type": "not_future"},
+             {"uid": "u2", "type": "warning"}, {"uid": "u3", "type": "future_tense_teaching"}]
+        b = [{"uid": "u0", "type": "prophecy"}, {"uid": "u1", "type": "not_future"},
+             {"uid": "u2", "type": "warning"}, {"uid": "u3", "type": "nonsense"}]
+        res = prediction_pilot.score(a, b, key)
+        self.assertEqual((res["units"], res["invalid_type"]), (3, ["u3"]))        # a bad label is set aside, not counted
+        self.assertEqual(res["all"]["both_prediction_like"], 2)                   # prediction and prophecy both count
+        self.assertEqual(res["by_kind"]["made"]["units"], 2)
+        self.assertEqual(res["prediction_like_kappa"], 1.0)
+        self.assertNotIn("sentence", json.dumps(res))                             # no text in the score
+
 
 # --------------------------------------------------------------------------- select_jobs.py
 class TestSelectJobs(PipelineCase):

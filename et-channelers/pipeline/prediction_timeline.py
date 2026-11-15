@@ -66,7 +66,17 @@ CONDITIONAL = re.compile(r"\b(if|unless|provided that|as long as|depending on)\b
 BOILERPLATE = re.compile(r"(register|subscribe|sign up|signup|newsletter|email list|my store|% off|discount|coupon|"
                          r"pay what you want|tickets?|webinar|zoom|livestream (on|at)|click|link (in|below)|"
                          r"https?://|www\.|\b(am|pm) (pacific|eastern)|pacific/|eastern\b.*\bregister|"
-                         r"free guided meditation|join (me|us) (for|at|on)|patreon|paypal|venmo|donat\w+)", re.I)
+                         r"free guided meditation|join (me|us) (for|at|on)|patreon|paypal|venmo|donat\w+|"
+                         # page furniture and cross-links (pilot of 2026-11-15: 11 dropped, no prediction among them)
+                         r"\bon amazon\b|continue reading|posted by|share to (x|facebook|pinterest)|"
+                         r"\b(\d+|one|no) comments?\b|listen to the podcast|all transcripts|watch the original video|"
+                         r"\b\S+@\S+\.[a-z]{2,}\b|spell caster|\bpodcast\b.*\b(ep|episode|s\d\d)\b|"
+                         r"(look|explore) .* in the book)", re.I)
+# a question is a questioner's guess, not the entity's claim (12.4); the pilot found no prediction among 7
+QUESTION = re.compile(r"\?\s*[\"”’']?\s*$")
+# a report of an earlier statement or of the writing itself ("you said this was going to happen in 2008")
+PAST_REPORT = re.compile(r"\b(you|they|he|she|we|i) (said|told|spoke|explained|predicted|mentioned|asked|wrote)\b|"
+                         r"\b(was|were) (going to|to)\b|\bas i (edit|write|type)\b|\bcame across\b|\breminisce", re.I)
 SENTENCE = re.compile(r"(?<=[.!?])\s+(?=[\"'(\[]?[A-Z0-9])")
 
 # time expressions, most specific first; each gives (lo, hi, label) from the year said (None when unknown)
@@ -158,7 +168,7 @@ def candidate(sentence, said_year, undated_floor=UNDATED_FLOOR):
     theme = THEMES.search(sentence)
     if not (window or predict or theme):
         return None
-    if BOILERPLATE.search(sentence):
+    if BOILERPLATE.search(sentence) or QUESTION.search(sentence) or PAST_REPORT.search(sentence):
         return None
     lo, hi, label, expr = window if window else (None, None, "", "")
     floor = said_year if said_year else undated_floor

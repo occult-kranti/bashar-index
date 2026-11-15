@@ -29,11 +29,13 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
   channel, then a timeline of the predictions made on each channel (section 5). Decision 6.6 is made and the
   three queues are built; the downloads run on the owner's computer.
 * **Prediction timelines, first pass (2026-11-15):** `prediction_timeline.py`, the rules pass of ANALYSIS_PLAN
-  12.4, read all 9,467 items with text here and found 6,775 candidate statements about the future for 27 people,
-  1,298 of them with a target window (section 5). They are candidates, not findings, until the model pass.
+  12.4, read all 9,467 items with text here and found 6,132 candidate statements about the future for 27 people,
+  1,017 of them with a target window (section 5). A pilot of the model pass (two independent agent coders on 106
+  sampled candidates) put the share of real predictions among windowed candidates at 42%, and at about 51% after
+  three filters the pilot suggested; they stay candidates, not findings, until the model pass.
 * **Podcast backlog, moving again (2026-11-15):** 351 new episodes queued (250-hour cap) and downloading at about
-  2.2 a minute, with no failures. The first Drive round of the new audio (76 files, 50 episodes) brings Drive to
-  3,496 files (18.3 GB) in the same 77 folders.
+  2.2 a minute, with no failures. Two Drive rounds of the new audio (76 and 170 files, 128 episodes in all) bring
+  Drive to 3,666 files (19.24 GB) in the same 77 folders.
 
 **Since the pause** (03:30 to 07:45 UTC, no collecting): the Drive copy was finished (the last 50 files were
 17 Bashar sessions and 4 podcast episodes that had arrived after the Drive plan was made); the tables were
@@ -197,14 +199,31 @@ as "skipped by rule", not as a failure.
        dropped. Each time expression becomes a target window counted from the date said ("in two years" from
        2021 is 2023; "by 2030" keeps one bound; "soon" gets none). The date said is the published date, else the
        listing's approximate upload date (`--listing`), else an ISO date in the title (L/L Research), else a year
-       and month in the source address (Suzanne Lie's blog, L/L Research); 1,738 candidates are still undated
-       (Swaruu 813, Sam 677, Blossom Goodchild 172, L/L Research 71, Jamie Butler 5). A window that ends before the date said is a past
+       and month in the source address (Suzanne Lie's blog, L/L Research); 1,540 candidates are still undated
+       (Swaruu 703, Sam 627, Blossom Goodchild 153, L/L Research 55, Jamie Butler 2). A window that ends before the date said is a past
        reference and is dropped even with "will" in the sentence; an undated one that ends before 2000, or
        before the person's oldest dated item when that is older (L/L Research: 1974), is dropped too
        (`--undated-floor`).
-       First run, over everything with text here (not yet the YouTube tiers): 9,467 items, 27 people, **6,775
-       candidates, 1,298 with a target window**, from 1974 (L/L Research) to 2116 (Suzanne Lie); an undated
-       range that starts in 1926 ("1926 to 2012", Sam) shows what the model pass must still weed out. Per person
+       Questions are dropped (a questioner's guess is not the entity's claim), and so are reports of earlier
+       statements ("you said this was going to happen in 2008") and page furniture (cross-links, comment counts,
+       "Continue reading", e-mail addresses), each rule checked on the pilot below before it was added.
+       Run over everything with text here (not yet the YouTube tiers): 9,467 items, 27 people, **6,132
+       candidates (6,023 from source texts, 109 from speech-to-text), 1,017 with a target window**, from 1974
+       (L/L Research) to 2116 (Suzanne Lie); an undated range that starts in 1926 ("1926 to 2012", Sam) shows what
+       the model pass must still weed out.
+    8. A pilot of the model pass: **run on 2026-11-15** (`pipeline/prediction_pilot.py`). A seeded sample of 106
+       windowed candidates, at most 8 per person from 19 people, shown without person, title or date (12.5), was
+       labelled by two agent coders working apart, with the 12.4 types (prediction, conditional prediction,
+       warning, prophecy, timeline as schedule, self-validation, refusal to date, future-tense teaching, not
+       future, promotion). Agreement: type 92.5% (Cohen's kappa 0.90), prediction-like or not 99.1% (kappa 0.98).
+       Both coders are runs of one model, so this is agreement between two runs, not between people. Both called
+       44 of the 106 prediction-like (42%): 10 of 14 from speech-to-text, 34 of 92 from source texts; the bare-year
+       rule was weakest (20 of 56). Most of the rest were past or present references (40 and 44) and promotion
+       (12 and 11). The three filters above dropped 20 of the 106 and none of the 44, so about 51% of what remains
+       is prediction-like; that is measured on the sample that suggested the filters, so a fresh sample must
+       measure it again. A filter on full calendar dates would have dropped 2 of the 44 and was left out. The
+       sample, the key and both coders' labels are in `analysis/predictions/pilot_2026-11-15/` (private); the bulk
+       model pass waits for an API key and the owner's go-ahead on cost and data terms (12.5, D14). Per person
        and kind in `plan/prediction_counts.csv` (counts only). The candidates and timelines are in the private
        folder's `analysis/predictions/` (`<person>.jsonl`, `<person>.md`, quotes cut to 30 words). Next: the
        model pass (is it the entity's claim; prediction or future-tense teaching; certainty; repeats linked),
@@ -267,8 +286,8 @@ as "skipped by rule", not as a failure.
   audio: `drive_stage.py plan --out ~/et-drive/stage-all --kinds audio --known-folder "04 Audio=<its id>"`,
   then `batches --link-dir <scratchpad>/drive_up/all`, `round`, the uploads and `done`, then `drive_hold.py`,
   then delete the staged copies (`files/` under the stage folder and the copies in the link folder) and upload
-  the ledger. First round on 2026-11-15: round `5a85b2d7`, 76 files (0.39 GB), 50 episodes fully on Drive;
-  27 newer episodes were held for the next round.
+  the ledger. On 2026-11-15: round `5a85b2d7`, 76 files (0.39 GB), and round `bfd76e68`, 170 files (0.93 GB);
+  128 episodes fully on Drive, 31 newer ones held for the next round.
 * **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
   It also refuses a file with more than one hard link, which is why `--link-dir` copies each file. Subagents
   and other folders are refused too, so the uploads run in the main session, about 2 seconds per 7 MB file.
