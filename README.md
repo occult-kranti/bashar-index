@@ -42,12 +42,15 @@ This repository first held the Bashar Index, a one-page site about Bashar's publ
 | 2026-11-14 | One command for a whole collection cycle; four AI agents (Claude Code helpers, each with one job) to run it, find new sources, read interviews and review changes; and two roadmap phases: 7a, comparing short videos with long recordings after collection, and 7b, how the agents run the cycle. On their first run the reading agents read 39 interview transcripts and found 21 with live channeling. | [`.claude/agents/`](.claude/agents/), [`et-channelers/pipeline/run_cycle.py`](et-channelers/pipeline/run_cycle.py); PR #5 |
 | 2026-11-14 | A table of every source with its link and method; a private GitHub store that can be read back into an empty folder; a browsable Google Drive copy by person, with long recordings cut into playable parts; collection paused, with a handoff, for the move to a GitHub Codespace (a cloud computer for development) with 16 GB of memory. | [`et-channelers/plan/sources.csv`](et-channelers/plan/sources.csv), [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md); PR #6 |
 | 2026-11-14 | After the pause: the Drive copy finished; the YouTube steps switched off, because youtube.com's robots.txt (the file where a site says what automated programs may fetch) disallows them; fixes for the 80 findings that two reviews confirmed; a plan for the analyses after collection. | [`et-channelers/ANALYSIS_PLAN.md`](et-channelers/ANALYSIS_PLAN.md), [`et-channelers/notes/`](et-channelers/notes/); PR #6 |
+| 2026-11-15 | Redirect rules for the feeds, texts and site-pages lanes, as the audio lane already had them: no redirect is followed to a host that is being left alone, every host a redirect leads to gets its own turn and its own Retry-After (the wait a server asks for), and each refusal is charged to the host that gave it. The lane test retries its two-worker setup, and the methods table states the redirect rules. | [`et-channelers/pipeline/feeds.py`](et-channelers/pipeline/feeds.py), [`et-channelers/plan/methods.csv`](et-channelers/plan/methods.csv); PR #7 |
+| 2026-11-15 | Every Bashar session on archive.org collected: all 903 recordings downloaded, with no failures, into the private store, and copied in full to the owner's Google Drive (`04 Audio`) in at least 15 rounds of `drive_stage.py` (plan, batches, round, done), each round's ledger saved to the private store's release `handoff-2026-11-14`. The audio is in the private store and on Drive, not in this repository. | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md), [`et-channelers/ROADMAP.md`](et-channelers/ROADMAP.md); branch `docs/bashar-archive-complete` |
 
 ### Branches
 
 | Branch | Status | Last commit | What it holds |
 |---|---|---|---|
-| `main` | default branch | 2026-11-14 | Everything merged so far. GitHub Pages serves the site from here. |
+| `main` | default branch | 2026-11-15 | Everything merged so far. GitHub Pages serves the site from here. |
+| [`fix/redirect-rules-other-lanes`](https://github.com/occult-kranti/bashar-index/tree/fix/redirect-rules-other-lanes) | merged by PR #7 | 2026-11-15 | Redirect rules for the feeds, texts and site-pages lanes, the lane test's retried two-worker setup, and the redirect rules in the methods table. |
 | [`dashboard/sources-and-private-store`](https://github.com/occult-kranti/bashar-index/tree/dashboard/sources-and-private-store) | merged by PR #6, with this section | 2026-11-14 | The sources table, the private store, the Drive copy, the pause and handoff, and the work after the pause. |
 | [`automate/cycle-and-agents`](https://github.com/occult-kranti/bashar-index/tree/automate/cycle-and-agents) | merged by PR #5 | 2026-11-14 | The one-command cycle, the four AI agents and the reading agents' first run. |
 | [`collect/bashar-host-shows`](https://github.com/occult-kranti/bashar-index/tree/collect/bashar-host-shows) | merged by PR #4 | 2026-11-14 | Interviews by kind, Bashar's sessions on archive.org, the Bashar Index data put to use. |
@@ -64,7 +67,7 @@ Two branches are not merged, and neither has a pull request. `experiment-frequen
 
 ### Outside this repository
 
-The audio, the texts published by the sources and the speech-to-text transcripts are kept in a private store and a Google Drive copy; none of them goes into this repository. On 2026-11-14 the collection held 1,138 audio files (819.5 hours), 8,425 texts published by the sources and 61 speech-to-text transcripts. Of the 903 recordings of Bashar's sessions on archive.org, 262 were downloaded and 641 were still to come.
+The audio, the texts published by the sources and the speech-to-text transcripts are kept in a private store and a Google Drive copy; none of them goes into this repository. On 2026-11-14 the collection held 1,138 audio files (819.5 hours), 8,425 texts published by the sources and 61 speech-to-text transcripts. By 2026-11-15 all 903 recordings of Bashar's sessions on archive.org were downloaded into the private store, with no failures, and copied in full to the Drive copy's `04 Audio` folder; the store and Drive figures in the table below are those of 2026-11-14.
 
 | What | Where |
 |---|---|

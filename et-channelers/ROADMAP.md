@@ -6,12 +6,13 @@ Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos 
 
 Everything was stopped cleanly so the work can go on in a larger Codespace. [`HANDOFF.md`](HANDOFF.md) has the
 setup, the restore commands, the order of work and a prompt for the next session. This table was last
-brought up to date at about 16:00 UTC, after the pre-merge review was fixed.
+brought up to date on 2026-11-15, when all 903 of Bashar's archive.org sessions were downloaded and on Google
+Drive; the other rows give the state at the pause.
 
 | Task | State at the pause |
 |---|---|
 | Collection | 1,138 audio files (819.5 h, 10.11 GB), 8,425 texts from the sources, 61 transcripts made here. All of it is in the private store, and the final sync pass found nothing unstored |
-| Bashar's archive.org sessions | 262 of 903 recordings downloaded (274.6 h; 636.7 h left), and all 262 are on Google Drive. The other 641 are the next task (below) |
+| Bashar's archive.org sessions | **Done** on 2026-11-15, after the pause: all 903 recordings downloaded (911.3 h listed), with no failures, and all 903 are on Google Drive (below) |
 | Podcast backlog | 733 of 2,647 episodes (1,442.6 h left); creators' own audio files 95 of 1,410 (1,315 left, length unknown) |
 | Speech-to-text | 61 transcripts. At 1.3x real time the backlog needs a faster engine or a GPU (HANDOFF section 6) |
 | Private store | release `archive-v1` (bundles); `archiveshelf-podcast-audio-v1` (ArchiveShelf's 16 episodes, checked against GitHub's digests); `handoff-2026-11-14` (state without media, the Drive ledger, the Kimi snapshot, notes, memory files) |
@@ -21,9 +22,9 @@ brought up to date at about 16:00 UTC, after the pre-merge review was fixed.
 | Analysis plan | written: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) (three drafts and a synthesis; families, gates, small-model steps, phases, paper). The deep research on timelines, predictions and question banks is folded in as its own section; the critique is in `notes/2026-11-14/research_critique.md` |
 | Review of dashboard v2 and the store | done: 46 of 47 findings confirmed by skeptics, and all 46 fixed in code, tables and page |
 | Pre-merge review of this work | done: 34 of 37 findings confirmed and fixed, with a test for each code fix that fails without it. The one that mattered most: one refusal from archive.org's own host, or from one of its storage nodes, would have held back every queued Bashar session for a day or more (HANDOFF section 1) |
-| Next | set up and check the new Codespace; decide YouTube (D8); choose the speech-to-text engine; fix the disk hold; the Bashar sessions to Drive (below); phase 4b |
+| Next | set up and check the new Codespace; decide YouTube (D8); choose the speech-to-text engine; fix the disk hold; phase 4b |
 
-### Next task: every Bashar session on archive.org, downloaded and on Google Drive (added 2026-11-14, at the owner's request)
+### Done 2026-11-15: every Bashar session on archive.org, downloaded and on Google Drive (added 2026-11-14, at the owner's request)
 
 The Bashar Index catalogued 684 sessions. 393 point at a recording somebody deposited on archive.org, which
 answers from a cloud server. archive.org lists 937 audio files there; 34 of them are a second encoding of a
@@ -34,28 +35,30 @@ channeled sessions, not interviews: the interview rule (fetch only with live cha
 | | Recordings | Hours |
 |---|---|---|
 | Listed on archive.org | 903 | 911.3 |
-| Downloaded, in the private store | 262 | 274.6 (275.2 measured) |
-| On Google Drive ("04 Audio / Darryl Anka / archive.org sessions") | 262 | 274.6 |
-| Still to download, then to Drive | 641 | 636.7 |
+| Downloaded, in the private store | 903 | 911.3 |
+| On Google Drive ("04 Audio / Darryl Anka / archive.org sessions") | 903 | 911.3 |
+| Still to download, then to Drive | 0 | 0 |
 
-Hours are archive.org's listed lengths, so the rows add up. Six recordings have no listed length (two of them
-are downloaded), so the real total is a little higher.
+Hours are archive.org's listed lengths, so the rows add up. Six recordings have no listed length (all six are
+downloaded), so the real total is a little higher. No download failed. The audio is in the private store (a
+private GitHub repository and its releases) and on Drive, never in this repository.
 
 Steps, in the 16 GB Codespace:
-1. Start the archive.org download (HANDOFF section 4). At the rate so far (about 12 MB per hour of audio)
-   the 641 recordings come to about 7.8 GB.
+1. Start the archive.org download (HANDOFF section 4). Done: all 903 recordings came through.
 2. Fix the disk hold first (HANDOFF section 7). Without the hold, the sync deletes each session's audio once
    it is stored; step 3 must then first pull it into another folder (`sync_archive.py pull --root <folder>
    --store $S --kinds audio --only darryl-anka`) and pass `--audio-from <folder>` to `drive_stage.py plan`.
 3. After each few dozen downloads: `sync_archive.py push`, then `drive_stage.py plan --only darryl-anka
    --kinds audio`, `batches --link-dir <scratchpad>/drive_up`, `round --size 200` (it prints a round id), the
-   uploads, and `done --round <id>` (pipeline README, "A browsable copy on Google Drive"). The 641 recordings make about 1,450 Drive files
-   (2.3 per recording so far), about eight rounds of 200.
+   uploads, and `done --round <id>` (pipeline README, "A browsable copy on Google Drive"). Done: the copy took
+   at least 15 rounds, and each round's ledger (`sync/drive_manifest.jsonl`) was saved to the private store's
+   release `handoff-2026-11-14`.
 4. Rebuild the tables (`catalog.py --publish`, `targets.py`, `sources_table.py`, each with `--root`), so
    `plan/bashar_sessions.csv` and the dashboard count them.
 
 **Done when** all 903 recordings are in the private store and on Drive, `drive_stage.py status` shows
-nothing left, and `plan/bashar_sessions.csv` shows 903 here.
+nothing left, and `plan/bashar_sessions.csv` shows 903 here. The store and Drive parts were done on
+2026-11-15; `plan/bashar_sessions.csv` counts the 262 of 2026-11-14 until the tables are rebuilt (step 4).
 
 ## 0. Update 2026-11-13: the lanes that work from a cloud server
 

@@ -42,7 +42,7 @@ Draft A is the base because it is strongest where most of this plan's work lies:
 
 ## 1. What exists today, in numbers
 
-**Snapshot.** The figures are as of 2026-11-14 at about 03:30 UTC, when all jobs were paused for the move to a 16 GB Codespace. They were recounted for this plan from the private manifests, taking the last record per item and counting only (Appendix A). The handoff has later figures: the Drive copy was finished after this snapshot (1,998 files in 77 folders), and the hours were recounted unrounded (911.3 h listed on archive.org). Collection will resume, so every later number cites its snapshot.
+**Snapshot.** The figures are as of 2026-11-14 at about 03:30 UTC, when all jobs were paused for the move to a 16 GB Codespace. They were recounted for this plan from the private manifests, taking the last record per item and counting only (Appendix A). The handoff has later figures: the Drive copy was finished after this snapshot (1,998 files in 77 folders), the hours were recounted unrounded (911.3 h listed on archive.org), and by 2026-11-15 all 903 Bashar recordings on archive.org were downloaded and on Drive. Collection will resume, so every later number cites its snapshot.
 
 ### 1.1 Held material
 
