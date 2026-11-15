@@ -364,6 +364,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | [`inventory.py`](inventory.py) | channel and video totals and hour/disk estimates from the committed index; rewrites the table in the README | `--update-readme`, `--refresh-bashar75` |
 | [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--newest N`, `--min-seconds`, `--max-seconds`, `--order`, `--shards N`, `--export-ids` |
 | [`prediction_timeline.py`](prediction_timeline.py) | the rules pass of ANALYSIS_PLAN 12.4: statements about the future in each person's texts, each with a target window counted from the date said, laid out as a timeline per person; texts from the source and speech-to-text kept apart. Output stays in the private folder (it quotes, at most 30 words); counts only can go to `plan/` | `--only`, `--kinds made,source`, `--listing <videos_all.jsonl>` (approximate dates for YouTube rows), `--publish-counts` |
+| [`prediction_pilot.py`](prediction_pilot.py) | a pilot of the model pass: a seeded, blinded sample of the candidates with a target window (no person, title or date shown) for two independent coders, and the score of their labels (agreement, Cohen's kappa, and the share each calls prediction-like, by kind and time rule); private, the score holds counts and ids only | `sample --per-person --seed`, `score` |
 | [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing (off unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1`), one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
 | [`targets.py`](targets.py) | the one list of everyone tracked, with origin, channel, sources, capture counts and state; and the channels behind the 75 Bashar recordings | `--no-private`, `--out` |
 | [`list_site_pages.py`](list_site_pages.py) | names the address families in a person's own sitemap and registers the chosen pages | `--only`, `--match`, `--exclude`, `--merge` |
@@ -424,7 +425,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | Real YouTube, from a cloud server (2026-11-11) | 3 of 3 pilot videos refused: two "confirm you're not a bot" responses and one HTTP 403. The breaker stopped the run. No workaround was tried. |
 | Windows, a GPU, large models, long batches | **not tested** |
 
-Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (114 tests, about 80 seconds alone), `tests/test_lanes.py` (251, about 7 minutes alone) and `tests/test_drive_stage.py` (14) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
+Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (116 tests, about 80 seconds alone), `tests/test_lanes.py` (251, about 7 minutes alone) and `tests/test_drive_stage.py` (14) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
 
 ## Known limits
 
