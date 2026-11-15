@@ -124,10 +124,10 @@ sync deletes local audio once its stored copy is checked (`--only <person-id>` p
 
 | Job | Paused where | Start again with |
 |---|---|---|
-| Sync to the private store, every 5 minutes, and the text mirror every 30 | after a final pass: nothing on disk unstored | `ET_GH_TOKEN_FILE=~/.config/et-channelers/github_token ET_HOLD_UNTRANSCRIBED_FOR=darryl-anka bash et-channelers/pipeline/save_to_github.sh` |
+| Sync to the private store, every 5 minutes, and the text mirror every 30 | running again since 2026-11-15, 15:24 UTC, with every new file held until it is transcribed | `ET_GH_TOKEN_FILE=~/.config/et-channelers/github_token ET_HOLD_UNTRANSCRIBED=1 bash et-channelers/pipeline/save_to_github.sh` (with `ET_HOLD_UNTRANSCRIBED=1` the downloads stop at the disk floor until speech-to-text catches up; on a large disk `ET_HOLD_UNTRANSCRIBED_FOR=<person ids>` holds only those) |
 | Bashar's archive.org sessions | finished on 2026-11-15: 903 of 903, no failures (the command skips them all) | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --queue ~/et-channelers-private/jobs/queue_archive_org_all.csv --all --workers 2 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/archive_org_download.log 2>&1 < /dev/null &` |
-| Collection cycles: feeds, new episodes, texts, tables. They wait while another download runs | between cycles | `setsid nohup bash et-channelers/pipeline/keep_collecting.sh >> ~/et-channelers-private/logs/collect.log 2>&1 < /dev/null &` |
-| Speech-to-text, Bashar's sessions first | 61 done | `ET_ASR_WORKERS=2 ET_ASR_THREADS=2 setsid nohup bash et-channelers/pipeline/keep_transcribing.sh >> ~/et-channelers-private/logs/asr.log 2>&1 < /dev/null &` |
+| Collection cycles: feeds, new episodes, texts, tables. They wait while another download runs | running again since 2026-11-15, 15:24 UTC (the listing step is skipped: the cycle does not set the YouTube override). Fixed that day: the 80-hour cap of `select_episodes.py` counted episodes already here, so every cycle chose the same newest, finished episodes and the backlog of about 1,900 did not move; now only new audio counts | `setsid nohup bash et-channelers/pipeline/keep_collecting.sh >> ~/et-channelers-private/logs/collect.log 2>&1 < /dev/null &` |
+| Speech-to-text, Bashar's sessions first | 61 done; running again since 2026-11-15, 15:24 UTC, on new files as they arrive (stored files must be pulled back to be transcribed) | `ET_ASR_WORKERS=2 ET_ASR_THREADS=2 setsid nohup bash et-channelers/pipeline/keep_transcribing.sh >> ~/et-channelers-private/logs/asr.log 2>&1 < /dev/null &` |
 
 Every job skips what is finished. Kill a job by its process id, never with `pkill -f`, which also matches the
 shell that runs it.
@@ -352,8 +352,9 @@ Paste this into Claude Code in the new Codespace, at `/workspaces/bashar-index`:
 >    every kind should show `on_disk_not_stored` 0. Rebuild the tables and check that `drive_stage.py status`
 >    shows 3,420 files on Drive.
 > 2. Run the three test suites in `et-channelers/pipeline/tests/` and both guards in `et-channelers/scripts/`.
-> 3. Size the jobs to the machine (`nproc`, `free -g`, `df -h`), then start the sync loop, the archive.org
->    download of Bashar's sessions and the collection cycles (HANDOFF section 4).
+> 3. Size the jobs to the machine (`nproc`, `free -g`, `df -h`), then start the sync loop (with
+>    `ET_HOLD_UNTRANSCRIBED=1`), the collection cycles (podcast feeds and episodes, creators' files, texts, tables)
+>    and speech-to-text (HANDOFF section 4). Copy what arrives to my Drive in rounds while it is held on disk.
 > 4. All 903 Bashar sessions are already on my Drive. The next task is mine (HANDOFF section 5): the newest 10,
 >    then 20, then 50 videos of every tracked channel, then a timeline of the predictions made on each channel.
 >    `--newest N` and the three queues are done (HANDOFF section 5); the downloads run on my own computer. Pull

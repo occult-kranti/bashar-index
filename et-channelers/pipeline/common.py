@@ -589,14 +589,22 @@ YOUTUBE_DISALLOWED = ("/api/", "/channel_picker", "/comment", "/feeds/videos.xml
                       "/watch_popup", "/watch_queue_ajax", "/youtubei/")
 SKIPPED_BY_RULE = 9          # exit status of a step that sent nothing because a rule forbids its requests
 YOUTUBE_RULE = ("youtube.com's robots.txt disallows /youtubei/ and /feeds/videos.xml, which this step requests; "
-                "owner decision pending (HANDOFF 6)")
-YOUTUBE_WAITS = "the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
+                "the owner opted in on 2026-11-15, but this run does not set the override (HANDOFF 6.6)")
+YOUTUBE_WAITS = ("the YouTube lanes run from the owner's own computer: the owner opted in on youtube.com's robots.txt, and "
+                 "YouTube refuses audio and captions to cloud servers (HANDOFF 5 and 6.6)")
 # Next steps that coverage tables written before the YouTube lanes were held still carry, and their new words
 OLD_YOUTUBE_STEPS = {
     "YouTube only: run the YouTube lane on a home connection": f"YouTube only: {YOUTUBE_WAITS}",
     "no downloadable source found yet: run the YouTube lane on a home connection, or find the maker's own feed or site":
         f"no downloadable source found yet: find the maker's own feed or site; {YOUTUBE_WAITS}",
 }
+# ... and the words of tables written while the owner's decision on robots.txt was pending (until 2026-11-15)
+_PENDING = "the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
+OLD_YOUTUBE_STEPS.update({
+    f"YouTube only: {_PENDING}": f"YouTube only: {YOUTUBE_WAITS}",
+    f"no downloadable source found yet: find the maker's own feed or site; {_PENDING}":
+        f"no downloadable source found yet: find the maker's own feed or site; {YOUTUBE_WAITS}",
+})
 
 
 def youtube_override() -> bool:

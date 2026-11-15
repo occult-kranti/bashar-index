@@ -44,8 +44,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, host_id, host_of,  # noqa: E402
-                    item_id, layout, listed_videos, parse_duration, read_csv, read_jsonl, sha256_file, stable_shard,
-                    utc_now, write_csv)
+                    item_id, latest_by_key, layout, listed_videos, parse_duration, read_csv, read_jsonl, sha256_file,
+                    stable_shard, utc_now, write_csv)
 from feeds import title_similarity, tokens  # noqa: E402
 from fetch_feeds import REGISTRY, read_registry  # noqa: E402
 from find_feeds import fold, load_targets  # noqa: E402
@@ -464,9 +464,20 @@ def main():
         while any(len(g) > depth for g in groups.values()):
             rows += [groups[p][depth] for p in sorted(groups) if len(groups[p]) > depth]
             depth += 1
+    already = 0
     if args.max_hours:
+        # What is already here, or settled for good, costs nothing this cycle: the cap is for new audio. Counted
+        # against it, the same newest episodes (all done) would fill every cycle and the backlog would never move.
+        from download_enclosures import SKIP_LATER
+        last = latest_by_key(read_jsonl(layout(args.root).audio / "audio_manifest.jsonl"))
+        settled = {vid for vid, rec in last.items()
+                   if rec.get("status") == "ok" or rec.get("error_class") in SKIP_LATER}
         kept, total = [], 0.0
         for r in rows:
+            if r["video_id"] in settled:
+                kept.append(r)
+                already += 1
+                continue
             seconds = r["duration_s"] or args.assume_minutes * 60
             if total + seconds > args.max_hours * 3600:
                 continue
@@ -485,7 +496,7 @@ def main():
         per_person[r["channel_dir"]] = per_person.get(r["channel_dir"], 0) + 1
     meta = {"created": utc_now(), "relation": kinds, "only": only, "per_channel": args.per_channel,
             "seed": args.seed, "min_seconds": args.min_seconds, "max_seconds": args.max_seconds, "since": args.since,
-            "max_hours": args.max_hours, "order": args.order, "min_title": args.min_title,
+            "max_hours": args.max_hours, "already_here_not_counted": already, "order": args.order, "min_title": args.min_title,
             "duration_tolerance": args.duration_tolerance, "items": len(rows), "people": len(per_person),
             "by_lane": {lane: sum(1 for r in rows if r["lane"] == lane) for lane in ("pod", "web", "ia")},
             "by_relation": {k: sum(1 for r in rows if r["relation"] == k) for k in ("own", "host", "file", "archive")},

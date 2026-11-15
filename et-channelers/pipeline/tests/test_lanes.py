@@ -1098,6 +1098,25 @@ class TestSelectEpisodes(LaneCase):
         self.assertEqual({r["title"] for r in self.select("--max-seconds", "3600")}, {"Short", "Unknown"})
         self.assertEqual(len(self.select("--max-hours", "1", "--assume-minutes", "30")), 2)
 
+    def test_the_hour_cap_counts_only_new_audio_so_the_backlog_moves(self):
+        self.write_feed("p1", "athina-krol", "own", [(f"E{i}", 1800, []) for i in range(6)])
+        first = self.select("--max-hours", "1")
+        self.assertEqual(len(first), 2)
+        manifest = self.root / "audio" / "audio_manifest.jsonl"
+        for r in first:                                             # the first cycle fetched both
+            common.append_jsonl(manifest, {"video_id": r["video_id"], "status": "ok", "path": "x.opus", "bytes": 1})
+        second = self.select("--max-hours", "1")
+        new = [r for r in second if r["video_id"] not in {x["video_id"] for x in first}]
+        self.assertEqual(len(new), 2)                                # two more, not the same two again
+        self.assertEqual(len(second), 4)                             # the finished two stay listed, free of the cap
+        meta = json.loads((self.root / "jobs" / "queue_enclosures.meta.json").read_text())
+        self.assertEqual(meta["already_here_not_counted"], 2)
+        common.append_jsonl(manifest, {"video_id": new[0]["video_id"], "status": "error", "error_class": "unavailable"})
+        common.append_jsonl(manifest, {"video_id": new[1]["video_id"], "status": "error", "error_class": "timeout"})
+        third = self.select("--max-hours", "1")
+        self.assertIn(new[1]["video_id"], {r["video_id"] for r in third})   # a passing failure is tried again
+        self.assertEqual(len([r for r in third if r["video_id"] not in {x["video_id"] for x in second}]), 1)
+
 
 # --------------------------------------------------------------------------- reading feeds
 class TestFetchFeeds(LaneCase):
@@ -2461,6 +2480,13 @@ class TestCatalogTextKinds(LaneCase):
 
 # --------------------------------------------------------------------------- the one list of everyone tracked
 class TestTargets(LaneCase):
+    def test_older_youtube_steps_are_said_the_current_way(self):
+        pending = "YouTube only: the YouTube lanes wait for the owner's decision on youtube.com's robots.txt (HANDOFF 6)"
+        self.assertEqual(common.OLD_YOUTUBE_STEPS[pending], f"YouTube only: {common.YOUTUBE_WAITS}")
+        for old, new in common.OLD_YOUTUBE_STEPS.items():
+            self.assertIn(common.YOUTUBE_WAITS, new)
+            self.assertNotIn(common.YOUTUBE_WAITS, old)
+
     def targets(self, *extra, catalogue=True):
         if catalogue:
             self.assertEqual(self.cli("catalog.py", "--root", self.root).returncode, 0)
