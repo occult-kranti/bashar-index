@@ -99,8 +99,13 @@ def discover_one(args, entry, limiter, breaker, paths):
                     per_tab[tab] += 1
                     row = {"video_id": vid, "title": e.get("title"), "duration_s": e.get("duration"),
                            "view_count": e.get("view_count"), "person_id": person, "tab": tab}
-                    if e.get("upload_date"):
-                        row["upload_date_approx"] = e["upload_date"]      # worked out from "3 years ago": a guide, not a date
+                    # worked out from "3 years ago": a guide, not a date. yt-dlp's approximate_date gives it as a
+                    # timestamp in a flat listing, and as upload_date in some versions
+                    approx = e.get("upload_date")
+                    if not approx and isinstance(e.get("timestamp"), (int, float)):
+                        approx = datetime.datetime.fromtimestamp(e["timestamp"], datetime.timezone.utc).strftime("%Y%m%d")
+                    if approx:
+                        row["upload_date_approx"] = approx
                     rows.append(row)
         text = "".join(json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n" for r in rows)
         atomic_write_text(paths.discover / "channels" / f"{person}.jsonl", text)

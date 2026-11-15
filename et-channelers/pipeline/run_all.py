@@ -55,10 +55,17 @@ def build_plan(args, root):
             # "all" is every video the channels list, so the channels are listed first: public metadata, no
             # media, and channels already listed are skipped. Without this the queue would hold only the few
             # hundred videos the 2026-10 index happened to record.
-            prepare.append(("list: every video on every tracked channel",
-                            py + [str(HERE / "discover.py"), *base, "--workers", "1", "--min-interval", "5"]))
+            listing = py + [str(HERE / "discover.py"), *base, "--workers", "1", "--min-interval", "5"]
+            if args.newest:
+                # only the head of each Videos tab is wanted: list that much, and list it again if it is a day old
+                listing += ["--tabs", "videos", "--max-per-channel", str(args.newest), "--max-age-days", "1"]
+                prepare.append((f"list: the newest {args.newest} videos of every tracked channel", listing))
+            else:
+                prepare.append(("list: every video on every tracked channel", listing))
         cmd = py + [str(HERE / "select_jobs.py"), *base, "--set", args.set]
-        if args.per_channel:
+        if args.newest:
+            cmd += ["--newest", str(args.newest)]
+        elif args.per_channel:
             cmd += ["--per-channel", str(args.per_channel)]
         prepare.append(("queue: YouTube videos", cmd))
     if "enclosures" in args.lanes:
@@ -103,6 +110,8 @@ def main():
     ap.add_argument("--lanes", default=",".join(LANES), help="comma-separated: " + ", ".join(LANES))
     ap.add_argument("--set", default="all", choices=("bashar75", "indexed", "channeling", "all"), help="which YouTube videos")
     ap.add_argument("--per-channel", type=int, default=0, help="sample at most K items per person (0 = everything)")
+    ap.add_argument("--newest", type=int, default=0,
+                    help="YouTube: the newest N videos of each channel's Videos tab instead of a sample (0 = off)")
     ap.add_argument("--workers", type=int, default=2, help="YouTube downloads at once (the enclosure lane uses 3)")
     ap.add_argument("--min-interval", type=float, default=10.0,
                     help="seconds between YouTube download starts (default 10, yt-dlp's own advice)")

@@ -81,6 +81,8 @@ if "--flat-playlist" in args:
                 "title": "%s %s %d" % (handle, tab, i), "duration": None if tab == "shorts" else 60 + 60 * i,
                 "view_count": 100 + i, "upload_date": "20240105" if tab == "videos" and i == 0 else None}
                for i in range(count)]
+    if tab == "videos" and len(entries) > 1:
+        entries[1]["timestamp"] = 1704499200          # how yt-dlp's approximate_date gives it: 2024-01-06 UTC
     if tab == "streams":
         entries.append(dict(entries[0], id="v" + hashlib.sha1(("%s:%d" % (handle, 0)).encode()).hexdigest()[:10]))  # also on Videos
     print(json.dumps({"id": handle, "entries": entries}))
@@ -509,6 +511,51 @@ class TestSelectJobs(PipelineCase):
         self.select("--set", "bashar75")
         self.assertNotIn(mk("DSC", 1), {r["video_id"] for r in self.queue()})
 
+    def _listing(self):
+        """Two channels in listing order (newest first), with shorts and a live stream mixed in."""
+        recs = []
+        for i in range(6):
+            recs.append({"video_id": mk("NWA", i), "title": f"a{i}", "duration_s": 600 + i, "person_id": "alpha",
+                         "tab": "videos", "upload_date_approx": f"2026110{i}"})
+        recs.append({"video_id": mk("NWS", 0), "title": "short", "duration_s": 30, "person_id": "alpha", "tab": "shorts"})
+        recs.append({"video_id": mk("NWL", 0), "title": "live", "duration_s": 7200, "person_id": "alpha", "tab": "streams"})
+        for i in range(2):
+            recs.append({"video_id": mk("NWB", i), "title": f"b{i}", "duration_s": 900, "person_id": "beta", "tab": "videos"})
+        for r in recs:
+            common.append_jsonl(self.root / "discover" / "videos_all.jsonl", r)
+
+    def test_newest_takes_the_head_of_each_videos_tab(self):
+        self._listing()
+        self.select("--set", "all", "--newest", "3")
+        rows = self.queue()
+        alpha = [r["video_id"] for r in rows if r["channel_dir"] == "alpha"]
+        self.assertEqual(alpha, [mk("NWA", 0), mk("NWA", 1), mk("NWA", 2)])          # listing order, not id order
+        self.assertEqual([r["video_id"] for r in rows if r["channel_dir"] == "beta"], [mk("NWB", 0), mk("NWB", 1)])
+        self.assertFalse({mk("NWS", 0), mk("NWL", 0)} & {r["video_id"] for r in rows})  # no shorts, no live streams
+        self.assertTrue(all(r["tab"] == "videos" for r in rows))
+        first = next(r for r in rows if r["video_id"] == mk("NWA", 0))
+        self.assertEqual((first["listing_rank"], first["upload_date_approx"]), ("0", "20261100"))
+        # rows no channel listing holds (the index, the 75) have no listing order, so --newest leaves them out
+        self.assertTrue(all("discover" in r["sources"] for r in rows))
+
+    def test_newest_tiers_nest_and_keep_their_own_meta(self):
+        self._listing()
+        jobs = self.root / "jobs"
+        for n in (2, 4):
+            self.select("--set", "all", "--newest", str(n), "--out", jobs / f"queue_newest{n}.csv")
+        small = {r["video_id"] for r in common.read_csv(jobs / "queue_newest2.csv")}
+        large = {r["video_id"] for r in common.read_csv(jobs / "queue_newest4.csv")}
+        self.assertTrue(small < large)
+        for n, videos in ((2, 4), (4, 6)):
+            meta = json.loads((jobs / f"queue_newest{n}.meta.json").read_text())
+            self.assertEqual((meta["newest"], meta["videos"]), (n, videos))
+        self.assertFalse((jobs / "queue.meta.json").exists())   # the default queue's meta is not overwritten
+
+    def test_newest_and_per_channel_are_exclusive(self):
+        p = self.cli("select_jobs.py", "--root", self.root, "--set", "all", "--newest", "2", "--per-channel", "2")
+        self.assertNotEqual(p.returncode, 0)
+        self.assertIn("--newest", p.stderr)
+
     def test_export_ids_for_the_caption_tool(self):
         out = self.tmp / "ids.json"
         self.select("--set", "bashar75", "--limit", "5", "--export-ids", out)
@@ -611,7 +658,7 @@ class TestDiscover(PipelineCase):
         rows = read_jsonl(self.root / "discover" / "channels" / "busy.jsonl")
         self.assertEqual(len({r["video_id"] for r in rows}), 7)
         self.assertEqual({r["tab"] for r in rows}, {"videos", "streams", "shorts"})
-        self.assertEqual([r.get("upload_date_approx") for r in rows if r["tab"] == "videos"][:2], ["20240105", None])
+        self.assertEqual([r.get("upload_date_approx") for r in rows if r["tab"] == "videos"][:3], ["20240105", "20240106", None])
         self.assertIn("by tab: 7 videos, 2 streams, 2 shorts", p.stderr)
 
     def test_a_channel_listed_before_tabs_existed_is_listed_again_in_full(self):

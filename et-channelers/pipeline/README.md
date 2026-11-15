@@ -349,14 +349,14 @@ python $P\export_public.py                              # 9. publishable numbers
 
 If step 3 prints `STOPPED` (exit code 3), do not push on: wait, lower `--workers`, raise `--min-interval`, or stop. Finished items are skipped when you rerun. To work from audio you already hold, put files named `<11-character-video-id>.opus` (or `.m4a`, `.mp3`, `.wav`, ...) in `<root>/audio/<channel>/` and start at step 6.
 
-For the other channels: `discover.py` lists every video on each tracked channel (public metadata; off by the same rule), `select_jobs.py --set all --per-channel 20 --seed 7 --min-seconds 300` draws a reproducible sample, and the same download and transcription steps follow. Two machines can split a queue with `--shard 0/2` and `--shard 1/2`.
+For the other channels: `discover.py` lists every video on each tracked channel (public metadata; off by the same rule), `select_jobs.py --set all --per-channel 20 --seed 7 --min-seconds 300` draws a reproducible sample, or `--newest N` takes the first N of each channel's Videos tab in listing order (newest first; `run_all.py --newest N` lists only that much of each channel), and the same download and transcription steps follow. Two machines can split a queue with `--shard 0/2` and `--shard 1/2`.
 
 ## The scripts
 
 | Script | Job | Notable options |
 |---|---|---|
 | [`inventory.py`](inventory.py) | channel and video totals and hour/disk estimates from the committed index; rewrites the table in the README | `--update-readme`, `--refresh-bashar75` |
-| [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--min-seconds`, `--max-seconds`, `--order`, `--shards N`, `--export-ids` |
+| [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--newest N`, `--min-seconds`, `--max-seconds`, `--order`, `--shards N`, `--export-ids` |
 | [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing (off unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1`), one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
 | [`targets.py`](targets.py) | the one list of everyone tracked, with origin, channel, sources, capture counts and state; and the channels behind the 75 Bashar recordings | `--no-private`, `--out` |
 | [`list_site_pages.py`](list_site_pages.py) | names the address families in a person's own sitemap and registers the chosen pages | `--only`, `--match`, `--exclude`, `--merge` |
