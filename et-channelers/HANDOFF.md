@@ -17,9 +17,9 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
 * **Bashar's archive.org sessions** (his own channeled sessions, not interviews): **done on 2026-11-15.** All 903
   recordings are downloaded (911.3 hours by archive.org's listing), with no failures, and all 903 are on Drive
   (section 5). Their audio is in the private store and on Drive, not in this repository.
-* **Podcast episodes:** 733 of 2,647 downloaded, 1,442.6 hours left. **Creators' own audio files** (Kryon's and
-  L/L Research's sites): 95 of 1,410 downloaded, 1,315 left, of unknown length.
-* **Interviews on other shows:** 28 of 29 downloaded.
+* **Podcast episodes:** 1,069 of 2,648 downloaded, 1,206.1 hours left (2026-11-15, 21:33 UTC). **Creators' own
+  audio files** (Kryon's and L/L Research's sites): 111 of 1,410 downloaded, 1,299 left, of unknown length.
+* **Interviews on other shows:** 29 of 30 downloaded.
 * **Speech-to-text is the bottleneck.** This machine made about 1.3 hours of text per hour, so the backlog
   needs a faster engine or a GPU (section 6.1).
 * **YouTube: the owner opted in on 2026-11-15** (section 6.6, choice b). YouTube steps now run with
@@ -29,13 +29,16 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
   channel, then a timeline of the predictions made on each channel (section 5). Decision 6.6 is made and the
   three queues are built; the downloads run on the owner's computer.
 * **Prediction timelines, first pass (2026-11-15):** `prediction_timeline.py`, the rules pass of ANALYSIS_PLAN
-  12.4, read all 9,467 items with text here and found 6,132 candidate statements about the future for 27 people,
-  1,017 of them with a target window (section 5). A pilot of the model pass (two independent agent coders on 106
-  sampled candidates) put the share of real predictions among windowed candidates at 42%, and at about 51% after
-  three filters the pilot suggested; they stay candidates, not findings, until the model pass.
-* **Podcast backlog, moving again (2026-11-15):** 351 new episodes queued (250-hour cap) and downloading at about
-  2.2 a minute, with no failures. Two Drive rounds of the new audio (76 and 170 files, 128 episodes in all) bring
-  Drive to 3,666 files (19.24 GB) in the same 77 folders.
+  12.4, read all 9,467 items with text here and found 5,599 candidate statements about the future for 27 people
+  (5,148 once near-copies are collapsed), 558 of them with a target window (section 5). Two samples labelled by
+  two independent agent coders shaped and measured the rules: 42% of windowed candidates were real predictions at
+  first, 54% to 62% under the rules as they now stand, after cutting blog comment threads that had been read as
+  the source's words. They stay candidates, not findings, until the model pass.
+* **Podcast backlog, this round downloaded (2026-11-15):** 351 new episodes queued (250-hour cap), all tried by
+  20:51 UTC; 2 failed (one would not convert, one Kryon file is no longer offered). Three Drive rounds of the new
+  audio (76, 170 and 348 files) bring Drive to 4,014 files (21.03 GB) in the same 77 folders; no audio is waiting
+  for Drive. The next 250 hours (`select_episodes.py --max-hours 250`) wait for room: about 3 GB of the new
+  audio stays on disk until it is transcribed, and 3.9 GB is free.
 
 **Since the pause** (03:30 to 07:45 UTC, no collecting): the Drive copy was finished (the last 50 files were
 17 Bashar sessions and 4 podcast episodes that had arrived after the Drive plan was made); the tables were
@@ -143,7 +146,7 @@ ET_PRIVATE_DIR=~/et-channelers-private ET_DRIVE_HOLD=1 ET_BACKLOG_QUEUE=~/et-cha
 | Sync to the private store, every 5 minutes, and the text mirror every 30 | running again since 2026-11-15, 15:24 UTC, with every new file held until it is transcribed | `ET_GH_TOKEN_FILE=~/.config/et-channelers/github_token ET_HOLD_UNTRANSCRIBED=1 bash et-channelers/pipeline/save_to_github.sh` (with `ET_HOLD_UNTRANSCRIBED=1` the downloads stop at the disk floor until speech-to-text catches up; on a large disk `ET_HOLD_UNTRANSCRIBED_FOR=<person ids>` holds only those) |
 | Bashar's archive.org sessions | finished on 2026-11-15: 903 of 903, no failures (the command skips them all) | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --queue ~/et-channelers-private/jobs/queue_archive_org_all.csv --all --workers 2 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/archive_org_download.log 2>&1 < /dev/null &` |
 | Collection cycles: feeds, new episodes, texts, tables. They wait while another download runs | running again since 2026-11-15, 15:24 UTC (the listing step is skipped: the cycle does not set the YouTube override). Fixed that day: the 80-hour cap of `select_episodes.py` counted episodes already here, so every cycle chose the same newest, finished episodes and the backlog of about 1,900 did not move; now only new audio counts | `setsid nohup bash et-channelers/pipeline/keep_collecting.sh >> ~/et-channelers-private/logs/collect.log 2>&1 < /dev/null &` |
-| Podcast backlog: the episodes and creators' files not here yet | started 2026-11-15, 16:52 UTC, from `jobs/queue_backlog.csv` (`select_episodes.py --max-hours 250`: 2,113 rows, 1,762 of them already here and not counted, 351 new); the Codespace restarted at about 18:37 UTC and `resume_jobs.sh` started it and the other jobs again: 302 left then, about 2.2 a minute, no failures | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --root ~/et-channelers-private --queue ~/et-channelers-private/jobs/queue_backlog.csv --all --workers 3 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/backlog_download.log 2>&1 < /dev/null &` |
+| Podcast backlog: the episodes and creators' files not here yet | started 2026-11-15, 16:52 UTC, from `jobs/queue_backlog.csv` (`select_episodes.py --max-hours 250`: 2,113 rows, 1,762 of them already here and not counted, 351 new); the Codespace restarted at about 18:37 UTC and `resume_jobs.sh` started it and the other jobs again: 302 left then; all 302 tried by 20:51 UTC, 2 failed (`pod-f2e693c0c4456d22` would not convert, `web-38f4fbcf72f5f65c` no longer offered) | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --root ~/et-channelers-private --queue ~/et-channelers-private/jobs/queue_backlog.csv --all --workers 3 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/backlog_download.log 2>&1 < /dev/null &` |
 | Drive hold: new audio stays on disk until its Drive round is recorded | holder process and note `sync/holds/drive-<pid>.json`, refreshed after each round | `resume_jobs.sh` with `ET_DRIVE_HOLD=1` (a long `sleep` is the holder, found by `pgrep -n -f "^sleep 2592000$"`; `$!` after `setsid` is not its id), then after each Drive round `~/et-venv/bin/python -I et-channelers/pipeline/drive_hold.py --root ~/et-channelers-private` |
 | Speech-to-text, Bashar's sessions first | 61 done; running again since 2026-11-15 on new files as they arrive (stored files must be pulled back to be transcribed). `keep_transcribing.sh` ends when nothing is left, so it runs inside a loop that starts it again every 30 minutes | `ET_ASR_WORKERS=1 ET_ASR_THREADS=2 setsid nohup bash -c 'while true; do bash et-channelers/pipeline/keep_transcribing.sh; sleep 1800; done' >> ~/et-channelers-private/logs/asr.log 2>&1 < /dev/null &` (2 cores: 1 worker; 4 cores: 2) |
 
@@ -195,39 +198,51 @@ as "skipped by rule", not as a failure.
     6. Speech-to-text (6.1): on a 2-core machine the tiers take weeks, with a GPU or the faster engine days.
     7. The rules pass of the timelines: **built on 2026-11-15** (`pipeline/prediction_timeline.py`, ANALYSIS_PLAN
        12.4 step 1). Rules flag each sentence that speaks of the future (or hedges about it with a time) and has
-       a time expression, a prediction word or a prophecy theme; promotion ("register now", prices, links) is
-       dropped. Each time expression becomes a target window counted from the date said ("in two years" from
-       2021 is 2023; "by 2030" keeps one bound; "soon" gets none). The date said is the published date, else the
-       listing's approximate upload date (`--listing`), else an ISO date in the title (L/L Research), else a year
-       and month in the source address (Suzanne Lie's blog, L/L Research); 1,540 candidates are still undated
-       (Swaruu 703, Sam 627, Blossom Goodchild 153, L/L Research 55, Jamie Butler 2). A window that ends before the date said is a past
-       reference and is dropped even with "will" in the sentence; an undated one that ends before 2000, or
-       before the person's oldest dated item when that is older (L/L Research: 1974), is dropped too
-       (`--undated-floor`).
-       Questions are dropped (a questioner's guess is not the entity's claim), and so are reports of earlier
-       statements ("you said this was going to happen in 2008") and page furniture (cross-links, comment counts,
-       "Continue reading", e-mail addresses), each rule checked on the pilot below before it was added.
-       Run over everything with text here (not yet the YouTube tiers): 9,467 items, 27 people, **6,132
-       candidates (6,023 from source texts, 109 from speech-to-text), 1,017 with a target window**, from 1974
-       (L/L Research) to 2116 (Suzanne Lie); an undated range that starts in 1926 ("1926 to 2012", Sam) shows what
-       the model pass must still weed out.
-    8. A pilot of the model pass: **run on 2026-11-15** (`pipeline/prediction_pilot.py`). A seeded sample of 106
-       windowed candidates, at most 8 per person from 19 people, shown without person, title or date (12.5), was
-       labelled by two agent coders working apart, with the 12.4 types (prediction, conditional prediction,
-       warning, prophecy, timeline as schedule, self-validation, refusal to date, future-tense teaching, not
-       future, promotion). Agreement: type 92.5% (Cohen's kappa 0.90), prediction-like or not 99.1% (kappa 0.98).
-       Both coders are runs of one model, so this is agreement between two runs, not between people. Both called
-       44 of the 106 prediction-like (42%): 10 of 14 from speech-to-text, 34 of 92 from source texts; the bare-year
-       rule was weakest (20 of 56). Most of the rest were past or present references (40 and 44) and promotion
-       (12 and 11). The three filters above dropped 20 of the 106 and none of the 44, so about 51% of what remains
-       is prediction-like; that is measured on the sample that suggested the filters, so a fresh sample must
-       measure it again. A filter on full calendar dates would have dropped 2 of the 44 and was left out. The
-       sample, the key and both coders' labels are in `analysis/predictions/pilot_2026-11-15/` (private); the bulk
-       model pass waits for an API key and the owner's go-ahead on cost and data terms (12.5, D14). Per person
-       and kind in `plan/prediction_counts.csv` (counts only). The candidates and timelines are in the private
-       folder's `analysis/predictions/` (`<person>.jsonl`, `<person>.md`, quotes cut to 30 words). Next: the
-       model pass (is it the entity's claim; prediction or future-tense teaching; certainty; repeats linked),
-       then the same over each YouTube tier as it is transcribed.
+       a time expression, a prediction word or a prophecy theme. Each time expression becomes a target window
+       counted from the date said ("in two years" from 2021 is 2023; "by 2030" keeps one bound; "soon" gets
+       none). The date said is the published date, else the listing's approximate upload date (`--listing`), else
+       an ISO date in the title (L/L Research), else a year and month in the source address (Suzanne Lie's blog,
+       L/L Research). What is dropped:
+       - a window that ends before the date said (a past reference, even with "will" in the sentence), and in an
+         undated item one that ends before 2000, or before the person's oldest dated item when that is older
+         (L/L Research: 1974; `--undated-floor`);
+       - promotion ("register now", prices, links) and page furniture (cross-links, comment counts, "Continue
+         reading", e-mail addresses), questions (a questioner's guess is not the entity's claim), reports of
+         earlier statements ("you said this was going to happen in 2008") and blog post date headers;
+       - a blog's reader comments: the text is cut at Blogger's "N comments:" line. 893 of Suzanne Lie's 986
+         posts carry a comment thread, about a quarter of the stored text, and before the cut most of her
+         windowed candidates were readers' words (section 7).
+       Near-copies are collapsed (12.4: shared five-word runs, Broder 1997, at a resemblance of 0.5): the first
+       said keeps the statement, later copies are counted, and the timeline shows each once with how often it was
+       said. Families of one event in different words are the model pass's work.
+       Run over everything with text here (not yet the YouTube tiers): 9,467 items, 27 people, **5,599
+       candidates, 5,148 distinct (5,490 from source texts, 109 from speech-to-text), 558 with a target window**,
+       from 1977 (L/L Research) to 2075 (Aaron Abke), apart from an undated range from 1926 ("1926 to 2012", Sam)
+       that the model pass must weed out; 1,540 are undated (Swaruu 703, Sam 627, Blossom Goodchild
+       153, L/L Research 55, Jamie Butler 2). Per person and kind in `plan/prediction_counts.csv` (counts only);
+       the candidates and timelines are in the private folder's `analysis/predictions/` (`<person>.jsonl`,
+       `<person>.md`, quotes cut to 30 words).
+    8. Two samples for the model pass: **run on 2026-11-15** (`pipeline/prediction_pilot.py`). Each is a seeded
+       sample of windowed candidates shown without person, title or date (12.5), labelled by two agent coders
+       working apart with the 12.4 types (prediction, conditional prediction, warning, prophecy, timeline as
+       schedule, self-validation, refusal to date, future-tense teaching, not future, promotion). Both coders are
+       runs of one model, so agreement is between two runs, not between people.
+
+       | Sample | Units | Type kappa | Prediction-like kappa | Prediction-like (both coders) | Shaped which rules |
+       |---|---|---|---|---|---|
+       | pilot, 8 per person, 19 people | 106 | 0.90 | 0.98 | 44 (42%) | questions, reports, page furniture |
+       | validation, 16 per person, the 7 largest (pilot excluded) | 112 | 0.88 | 0.91 | 61 (54%) | blog comments, post headers |
+
+       Under the rules as they now stand, 82 pilot units and 97 validation units are still candidates, and no
+       prediction of the source was lost (the one prediction-like unit cut was a reader's comment): 44 of 82 (54%)
+       and 60 of 97 (62%) are prediction-like. Weighted by each person's windowed candidates, the validation
+       sample gave 36% before the comment cut, since 528 of the 1,017 windowed candidates were Suzanne Lie's and 14
+       of her 16 were comments or headers; after it, about 68%, but her share now rests on one unit. Both samples
+       shaped the rules they measure, so a third, fresh sample must give the figure to quote. The samples, keys and
+       labels are in `analysis/predictions/pilot_2026-11-15/` and `validation_2026-11-15/` (private). Next: the
+       bulk model pass (is it the entity's claim; prediction or future-tense teaching; certainty; families
+       linked), which waits for an API key and the owner's go-ahead on cost and data terms (12.5, D14); then the
+       same over each YouTube tier as it is transcribed.
   - **The queues** (built on 2026-11-15 from those listings, in the private folder's `jobs/`):
     `queue_newest10.csv` (612 videos, 233.4 h), `queue_newest20.csv` (1,200, 496.2 h) and `queue_newest50.csv`
     (2,920, 1,216.9 h), each with its `.meta.json`. The columns add `tab`, `listing_rank` (0 is the newest) and
@@ -286,8 +301,9 @@ as "skipped by rule", not as a failure.
   audio: `drive_stage.py plan --out ~/et-drive/stage-all --kinds audio --known-folder "04 Audio=<its id>"`,
   then `batches --link-dir <scratchpad>/drive_up/all`, `round`, the uploads and `done`, then `drive_hold.py`,
   then delete the staged copies (`files/` under the stage folder and the copies in the link folder) and upload
-  the ledger. On 2026-11-15: round `5a85b2d7`, 76 files (0.39 GB), and round `bfd76e68`, 170 files (0.93 GB);
-  128 episodes fully on Drive, 31 newer ones held for the next round.
+  the ledger. On 2026-11-15: round `5a85b2d7`, 76 files (0.39 GB), round `bfd76e68`, 170 files (0.93 GB),
+  and round `78de76b5`, 348 files (1.79 GB, 206 recordings); after it all 315 audio files on disk are on Drive
+  and none is held.
 * **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
   It also refuses a file with more than one hard link, which is why `--link-dir` copies each file. Subagents
   and other folders are refused too, so the uploads run in the main session, about 2 seconds per 7 MB file.
@@ -371,6 +387,10 @@ as "skipped by rule", not as a failure.
 * **YouTube from a cloud server.** Apart from robots.txt (section 6.6), audio and captions are refused from a
   cloud server (bot checks, HTTP 403; checked again on 2026-11-15 with the override set). They need the owner's
   own connection (the laptop lane in `pipeline/README.md`).
+* **Reader comments in stored blog texts.** 893 of Suzanne Lie's 986 stored posts end with their Blogger comment
+  thread (about a quarter of the stored text), so her counts of words from the source include readers' words.
+  The prediction pass cuts them (section 5); the texts lane should cut them when it stores a post, and the tables
+  be rebuilt.
 * **tv.bashar.org** is paid and behind a login: not collected.
 * **No video is held.** Every lane keeps audio only. The 153 archive.org video files of Bashar sessions are
   listed, not fetched.

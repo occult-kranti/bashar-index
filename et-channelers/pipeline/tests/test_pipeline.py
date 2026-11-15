@@ -525,6 +525,23 @@ class TestPredictionTimeline(PipelineCase):
         self.assertIsNotNone(c("We will attempt a landing in 1977.", None, floors["old"]))
         self.assertIsNone(c("We will attempt a landing in 1977.", None, floors["none"]))
 
+    def test_blog_comments_and_post_headers_are_not_the_source(self):
+        text = "The ships will come in 2030.\nPosted by\nSue\n4 comments:\nAnn May 1, 2024 at 1:00 PM I will visit in 2030.\nReplyDelete"
+        self.assertEqual(prediction_timeline.without_comments(text).strip(), "The ships will come in 2030.\nPosted by\nSue")
+        self.assertEqual(prediction_timeline.without_comments("No comments here, 2030 will come."), "No comments here, 2030 will come.")
+        c = prediction_timeline.candidate
+        self.assertIsNone(c("Saturday, May 30, 2015 Roadside Assistance - the shift will come in 2015.", 2015))
+        self.assertIsNotNone(c("I feel that 2014 is going to be a very big year for disclosure.", 2014))
+
+    def test_near_copies_collapse_into_the_first_said(self):
+        rows = [{"item_id": "b", "date_said": "2021-01-01", "sentence": "The great shift will arrive by 2030 for all of you here."},
+                {"item_id": "a", "date_said": "2020-01-01", "sentence": "The great shift will arrive by 2030 for all of you."},
+                {"item_id": "c", "date_said": "2022-01-01", "sentence": "Contact with the ships will come in two years."}]
+        prediction_timeline.copy_groups(rows)
+        self.assertEqual([r["copy"] for r in rows], [True, False, False])        # the 2020 one is the first said
+        self.assertEqual(rows[0]["copy_group"], rows[1]["copy_group"])
+        self.assertNotEqual(rows[2]["copy_group"], rows[1]["copy_group"])
+
     def test_quotes_never_pass_thirty_words(self):
         long = " ".join(f"w{i}" for i in range(50))
         self.assertEqual(len(prediction_timeline.quote(long).split()), 31)        # 30 words and the mark
@@ -571,11 +588,15 @@ class TestPredictionPilot(PipelineCase):
         self.assertEqual(Counter(r["person_id"] for r in one), {"a": 3, "b": 3})
         rows = self.rows() + [{"person_id": "c", "item_id": "c-1", "sentence": "x", "window_lo": None, "window_hi": None}]
         self.assertNotIn("c", {r["person_id"] for r in prediction_pilot.draw(rows, 3, 7)})   # no window, not drawn
+        first = {r["sentence"] for r in one}
+        again = prediction_pilot.draw(self.rows(), 3, 7, exclude=first)
+        self.assertFalse(first & {r["sentence"] for r in again})                  # an excluded sentence never returns
 
     def test_kappa_and_the_precision_counts(self):
         self.assertEqual(prediction_pilot.kappa(["x", "y", "x", "y"], ["x", "y", "x", "y"]), 1.0)
         self.assertEqual(prediction_pilot.kappa(["x", "x", "y", "y"], ["x", "y", "x", "y"]), 0.0)
-        key = [{"uid": f"u{i}", "kind": "made" if i < 2 else "source", "time_rule": "year"} for i in range(4)]
+        key = [{"uid": f"u{i}", "kind": "made" if i < 2 else "source", "time_rule": "year", "person_id": "p"}
+               for i in range(4)]
         a = [{"uid": "u0", "type": "prediction"}, {"uid": "u1", "type": "not_future"},
              {"uid": "u2", "type": "warning"}, {"uid": "u3", "type": "future_tense_teaching"}]
         b = [{"uid": "u0", "type": "prophecy"}, {"uid": "u1", "type": "not_future"},
@@ -586,6 +607,11 @@ class TestPredictionPilot(PipelineCase):
         self.assertEqual(res["by_kind"]["made"]["units"], 2)
         self.assertEqual(res["prediction_like_kappa"], 1.0)
         self.assertNotIn("sentence", json.dumps(res))                             # no text in the score
+        key2 = [{"uid": f"u{i}", "kind": "source", "time_rule": "year", "person_id": "big" if i < 2 else "small"}
+                for i in range(4)]
+        a2 = [{"uid": f"u{i}", "type": t} for i, t in enumerate(["prediction", "not_future", "warning", "warning"])]
+        res2 = prediction_pilot.score(a2, a2, key2, {"big": 90, "small": 10})
+        self.assertEqual(res2["weighted_both_prediction_like"], 0.55)              # 90 x 1/2 + 10 x 2/2, over 100
 
 
 # --------------------------------------------------------------------------- select_jobs.py
