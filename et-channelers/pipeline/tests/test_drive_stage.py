@@ -343,5 +343,35 @@ class TestPlan(unittest.TestCase):
         self.assertEqual(self.file_rows(), [])
 
 
+
+class TestDriveHold(unittest.TestCase):
+    """drive_hold.py lists in every Drive hold note the audio on disk that is not yet fully on Drive."""
+
+    def test_the_hold_lists_what_is_on_disk_and_not_fully_on_drive(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            audio = root / "audio" / "zed"
+            audio.mkdir(parents=True)
+            manifest = []
+            for vid in ("pod-full", "pod-half", "pod-none"):
+                (audio / f"{vid}.opus").write_bytes(b"x")
+                manifest.append({"video_id": vid, "status": "ok", "path": f"zed/{vid}.opus", "bytes": 1})
+            manifest.append({"video_id": "pod-gone", "status": "ok", "path": "zed/pod-gone.opus", "bytes": 1})   # stored, deleted
+            (root / "audio" / "audio_manifest.jsonl").write_text("".join(json.dumps(r) + "\n" for r in manifest))
+            (root / "sync" / "holds").mkdir(parents=True)
+            ledger = [{"key": "audio:pod-full#1", "item_id": "pod-full", "part": 1, "parts": 2, "drive_id": "a"},
+                      {"key": "audio:pod-full#2", "item_id": "pod-full", "part": 2, "parts": 2, "drive_id": "b"},
+                      {"key": "audio:pod-half#1", "item_id": "pod-half", "part": 1, "parts": 2, "drive_id": "c"}]
+            (root / "sync" / "drive_manifest.jsonl").write_text("".join(json.dumps(r) + "\n" for r in ledger))
+            note = root / "sync" / "holds" / "drive-123.json"
+            note.write_text(json.dumps({"who": "drive", "pid": 123, "video_ids": ["old"]}))
+            p = subprocess.run([sys.executable, "-I", str(PIPE / "drive_hold.py"), "--root", str(root)],
+                               capture_output=True, text=True, timeout=60)
+            self.assertEqual(p.returncode, 0, p.stderr)
+            data = json.loads(note.read_text())
+            self.assertEqual(data["video_ids"], ["pod-half", "pod-none"])    # one part missing counts as not on Drive
+            self.assertEqual((data["who"], data["pid"]), ("drive", 123))       # the rest of the note is kept
+            self.assertIn("held for Drive 2", p.stdout)
+
 if __name__ == "__main__":
     unittest.main()

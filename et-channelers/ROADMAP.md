@@ -7,19 +7,21 @@ Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos 
 Everything was stopped cleanly so the work can go on in a larger Codespace. [`HANDOFF.md`](HANDOFF.md) has the
 setup, the restore commands, the order of work and a prompt for the next session. This table was last
 brought up to date on 2026-11-15, when all 903 of Bashar's archive.org sessions were downloaded and on Google
-Drive; the other rows give the state at the pause.
+Drive, and again that evening (the podcast backlog moving and on Drive, the first pass of the prediction
+timelines); the other rows give the state at the pause.
 
 | Task | State at the pause |
 |---|---|
 | Collection | 1,138 audio files (819.5 h, 10.11 GB), 8,425 texts from the sources, 61 transcripts made here. All of it is in the private store, and the final sync pass found nothing unstored |
 | Bashar's archive.org sessions | **Done** on 2026-11-15, after the pause: all 903 recordings downloaded (911.3 h listed), with no failures, and all 903 are on Google Drive (below) |
-| Podcast backlog | 733 of 2,647 episodes (1,442.6 h left); creators' own audio files 95 of 1,410 (1,315 left, length unknown) |
+| Podcast backlog | 733 of 2,647 episodes (1,442.6 h left); creators' own audio files 95 of 1,410 (1,315 left, length unknown). Moving again since 2026-11-15: 351 new items queued (`queue_backlog.csv`, 250-hour cap), downloading at about 2.2 a minute with no failures; the first Drive round put 50 of them there (76 files) |
 | Speech-to-text | 61 transcripts. At 1.3x real time the backlog needs a faster engine or a GPU (HANDOFF section 6) |
 | Private store | release `archive-v1` (bundles); `archiveshelf-podcast-audio-v1` (ArchiveShelf's 16 episodes, checked against GitHub's digests); `handoff-2026-11-14` (state without media, the Drive ledger, the Kimi snapshot, notes, memory files) |
-| Google Drive | **Done.** Everything collected is there in the folder "ET Channelers Archive": 1,138 recordings as 1,958 playable files of at most 7.3 MB (10.13 GB) and 40 text volumes (texts from the source and speech-to-text made here never in one file), 1,998 files in 77 folders by person and source at the pause; with the Bashar sessions of 2026-11-15, 3,420 files (17.9 GB). Also the tables, transcript zips by person and the earlier work (Bashar Index, ArchiveShelf, Channeling Atlas) |
+| Google Drive | **Done.** Everything collected is there in the folder "ET Channelers Archive": 1,138 recordings as 1,958 playable files of at most 7.3 MB (10.13 GB) and 40 text volumes (texts from the source and speech-to-text made here never in one file), 1,998 files in 77 folders by person and source at the pause; with the Bashar sessions of 2026-11-15, 3,420 files (17.9 GB); with the first round of the podcast backlog, 3,496 files (18.3 GB). Also the tables, transcript zips by person and the earlier work (Bashar Index, ArchiveShelf, Channeling Atlas) |
 | YouTube's robots.txt | read 2026-11-14: it disallows the channel listing, feed and caption paths for every crawler. The YouTube steps stop with exit code 9 ("skipped by rule") unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1` is set. **Decided by the owner on 2026-11-15: opt in** (D8, HANDOFF 6.6 b). From this Codespace listings work; audio and captions still get YouTube's bot check, so they come from the owner's computer |
 | Kimi snapshot (channels-ET, received 2026-11-14) | read by five agents; it holds no audio or transcript text. Plan in phase 4b below and in `notes/2026-11-14/kimi_integration_plan.md` |
 | Analysis plan | written: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) (three drafts and a synthesis; families, gates, small-model steps, phases, paper). The deep research on timelines, predictions and question banks is folded in as its own section; the critique is in `notes/2026-11-14/research_critique.md` |
+| Prediction timelines | **rules pass built on 2026-11-15** (`pipeline/prediction_timeline.py`, ANALYSIS_PLAN 12.4 step 1) and run over everything with text here, before the YouTube tiers: see HANDOFF section 5 for the figures. Per person and kind in `plan/prediction_counts.csv` (counts only); the candidates and timelines quote the texts, so they stay in the private folder. Rows are candidates until the model pass |
 | Review of dashboard v2 and the store | done: 46 of 47 findings confirmed by skeptics, and all 46 fixed in code, tables and page |
 | Pre-merge review of this work | done: 34 of 37 findings confirmed and fixed, with a test for each code fix that fails without it. The one that mattered most: one refusal from archive.org's own host, or from one of its storage nodes, would have held back every queued Bashar session for a day or more (HANDOFF section 1) |
 | Next | the owner's task of 2026-11-15 (HANDOFF section 5): the newest 10, then 20, then 50 videos of every tracked channel (612, 1,200 and 2,920 videos; 233, 496 and 1,217 hours), then a timeline of the predictions made on each channel. D8 is decided, `select_jobs.py --newest N` is built and the three queues are made from listings refreshed on 2026-11-15; the downloads run on the owner's computer (HANDOFF section 5). Also: choose the speech-to-text engine; fix the disk hold; phase 4b |
@@ -402,7 +404,8 @@ everything below, and replaces the earlier per-channel caps.
   future: what is predicted or warned of, conditional or not, how sure, and the date or period it points to,
   resolved against the recording's own date. The same prediction repeated in several recordings or by several
   channels is linked, not counted twice. From this: **a timeline for each channel and one combined timeline**,
-  each point linked to its recording and time stamp. Checking predictions against what happened comes later,
+  each point linked to its recording and time stamp. The rules pass that finds the candidates and resolves
+  their target windows was built on 2026-11-15 (`pipeline/prediction_timeline.py`); the model pass is next. Checking predictions against what happened comes later,
   only for specific and checkable ones, and with the scoring rules written down first.
 * **Datasets the small model builds** (Claude Haiku in batches through the Message Batches API; agents run
   only the pilots and the adjudication; larger models re-label a sample blind, and agreement is reported): question-and-answer pairs from audience sessions, question banks grouped by theme,

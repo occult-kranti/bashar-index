@@ -229,6 +229,12 @@ also refuses a number outside the round, one given twice, one whose file changed
 round was printed, and a Drive id that the ledger already holds for another file, and records the rest; it records only the lines it is
 given (every round's lines are also kept in `<out>/results.jsonl`). rclone with a one-time Google login would do the same unattended (not set up).
 
+While new audio arrives, the sync would delete each file once it is stored, before its Drive round. A Drive
+hold keeps it: `ET_DRIVE_HOLD=1 bash et-channelers/pipeline/resume_jobs.sh` starts a holder (a long `sleep`)
+and its note, and `drive_hold.py --root <root>`, run after each round, lists in the note every file on disk
+that is not yet on Drive with all its parts. Once a round is recorded, its staged copies (`<out>/files/` and
+the copies in the link folder) can be deleted.
+
 ### What changed in the YouTube lane on 2026-11-13
 
 An independent read of the code found three faults, now fixed and covered by tests:
@@ -357,6 +363,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 |---|---|---|
 | [`inventory.py`](inventory.py) | channel and video totals and hour/disk estimates from the committed index; rewrites the table in the README | `--update-readme`, `--refresh-bashar75` |
 | [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--newest N`, `--min-seconds`, `--max-seconds`, `--order`, `--shards N`, `--export-ids` |
+| [`prediction_timeline.py`](prediction_timeline.py) | the rules pass of ANALYSIS_PLAN 12.4: statements about the future in each person's texts, each with a target window counted from the date said, laid out as a timeline per person; texts from the source and speech-to-text kept apart. Output stays in the private folder (it quotes, at most 30 words); counts only can go to `plan/` | `--only`, `--kinds made,source`, `--listing <videos_all.jsonl>` (approximate dates for YouTube rows), `--publish-counts` |
 | [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing (off unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1`), one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
 | [`targets.py`](targets.py) | the one list of everyone tracked, with origin, channel, sources, capture counts and state; and the channels behind the 75 Bashar recordings | `--no-private`, `--out` |
 | [`list_site_pages.py`](list_site_pages.py) | names the address families in a person's own sitemap and registers the chosen pages | `--only`, `--match`, `--exclude`, `--merge` |
@@ -371,6 +378,8 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | [`export_public.py`](export_public.py) | the publishable table: durations, sizes, hashes, language, word counts, model and revision, speed | `--out` |
 | [`sync_archive.py`](sync_archive.py) | puts audio, transcripts and texts in the private store as checked tar bundles, reads them back into a fresh folder, and frees the disk once a copy is checked | `push`, `pull`, `status`, `--store`, `--kinds`, `--only`, `--delete`, `--hold-untranscribed-for` |
 | [`drive_stage.py`](drive_stage.py) | the Google Drive copy by person and source: names, folders, playable parts of at most 7.3 MB, text volumes, and the ledger of Drive ids | `plan`, `batches`, `round`, `done`, `record`, `status`, `--only`, `--kinds`, `--link-dir`, `--size` |
+| [`drive_hold.py`](drive_hold.py) | writes into each live Drive hold note (`sync/holds/drive-<pid>.json`) the downloaded audio on disk that is not yet on Drive with all its parts, so the sync keeps it until its round is recorded; run it after each round | `--root` |
+| [`resume_jobs.sh`](resume_jobs.sh) | after a restart, starts each standing job that is not running: the sync (new files held until transcribed), the collection cycles, speech-to-text in a loop, a Drive hold (`ET_DRIVE_HOLD=1`) and a backlog download (`ET_BACKLOG_QUEUE`) | environment: `ET_PRIVATE_DIR`, `ET_ASR_WORKERS`, `ET_ASR_THREADS`, `ET_HOLD_UNTRANSCRIBED` |
 | [`doctor.py`](doctor.py) | checks the machine | `--root`, `--need-gb` |
 | [`common.py`](common.py) | shared helpers: manifests, shards, rate limiter, circuit breaker, Git guard | – |
 | [`tests/test_pipeline.py`](tests/test_pipeline.py), [`tests/test_lanes.py`](tests/test_lanes.py), [`tests/test_drive_stage.py`](tests/test_drive_stage.py) | the automated tests | – |
@@ -415,7 +424,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | Real YouTube, from a cloud server (2026-11-11) | 3 of 3 pilot videos refused: two "confirm you're not a bot" responses and one HTTP 403. The breaker stopped the run. No workaround was tried. |
 | Windows, a GPU, large models, long batches | **not tested** |
 
-Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (104 tests, about 80 seconds), `tests/test_lanes.py` (237, about 7 minutes) and `tests/test_drive_stage.py` (13) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
+Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (114 tests, about 80 seconds alone), `tests/test_lanes.py` (251, about 7 minutes alone) and `tests/test_drive_stage.py` (14) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
 
 ## Known limits
 
