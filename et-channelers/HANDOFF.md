@@ -29,11 +29,12 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
   channel, then a timeline of the predictions made on each channel (section 5). Decision 6.6 is made and the
   three queues are built; the downloads run on the owner's computer.
 * **Prediction timelines, first pass (2026-11-15):** `prediction_timeline.py`, the rules pass of ANALYSIS_PLAN
-  12.4, read all 9,467 items with text here and found 5,599 candidate statements about the future for 27 people
-  (5,148 once near-copies are collapsed), 558 of them with a target window (section 5). Two samples labelled by
-  two independent agent coders shaped and measured the rules: 42% of windowed candidates were real predictions at
-  first, 54% to 62% under the rules as they now stand, after cutting blog comment threads that had been read as
-  the source's words. They stay candidates, not findings, until the model pass.
+  12.4, read all 9,862 items with text here and found 5,987 candidate statements about the future for 27 people
+  (5,490 once near-copies are collapsed), 572 of them with a target window (section 5). Two samples labelled by
+  two independent agent coders shaped the rules (42% real predictions among windowed candidates at first); a
+  third, fresh sample measured them: **about 56% of windowed candidates are real predictions** (weighted by
+  person; 95% interval about 47% to 65%), from 19% (Swaruu) to 88% (Sam) by person. They stay candidates, not
+  findings, until the model pass.
 * **Podcast backlog, this round downloaded (2026-11-15):** 351 new episodes queued (250-hour cap), all tried by
   20:51 UTC; 2 failed (one would not convert, one Kryon file is no longer offered). Three Drive rounds of the new
   audio (76, 170 and 348 files) bring Drive to 4,014 files (21.03 GB) in the same 77 folders; no audio is waiting
@@ -215,14 +216,15 @@ as "skipped by rule", not as a failure.
        Near-copies are collapsed (12.4: shared five-word runs, Broder 1997, at a resemblance of 0.5): the first
        said keeps the statement, later copies are counted, and the timeline shows each once with how often it was
        said. Families of one event in different words are the model pass's work.
-       Run over everything with text here (not yet the YouTube tiers): 9,467 items, 27 people, **5,599
-       candidates, 5,148 distinct (5,490 from source texts, 109 from speech-to-text), 558 with a target window**,
+       Run over everything with text here (not yet the YouTube tiers; again at 21:58 UTC, after the texts lane
+       had stored 375 more of Suzanne Lie's posts): 9,862 items, 27 people, **5,987 candidates, 5,490 distinct
+       (5,847 from source texts, 140 from speech-to-text), 572 with a target window**,
        from 1977 (L/L Research) to 2075 (Aaron Abke), apart from an undated range from 1926 ("1926 to 2012", Sam)
        that the model pass must weed out; 1,540 are undated (Swaruu 703, Sam 627, Blossom Goodchild
        153, L/L Research 55, Jamie Butler 2). Per person and kind in `plan/prediction_counts.csv` (counts only);
        the candidates and timelines are in the private folder's `analysis/predictions/` (`<person>.jsonl`,
        `<person>.md`, quotes cut to 30 words).
-    8. Two samples for the model pass: **run on 2026-11-15** (`pipeline/prediction_pilot.py`). Each is a seeded
+    8. Three samples for the model pass: **run on 2026-11-15** (`pipeline/prediction_pilot.py`). Each is a seeded
        sample of windowed candidates shown without person, title or date (12.5), labelled by two agent coders
        working apart with the 12.4 types (prediction, conditional prediction, warning, prophecy, timeline as
        schedule, self-validation, refusal to date, future-tense teaching, not future, promotion). Both coders are
@@ -232,14 +234,24 @@ as "skipped by rule", not as a failure.
        |---|---|---|---|---|---|
        | pilot, 8 per person, 19 people | 106 | 0.90 | 0.98 | 44 (42%) | questions, reports, page furniture |
        | validation, 16 per person, the 7 largest (pilot excluded) | 112 | 0.88 | 0.91 | 61 (54%) | blog comments, post headers |
+       | third, 16 per person, fresh (both earlier samples excluded), under the current rules | 99 | 0.95 | 0.96 | 54 (55%) | none: it only measures |
 
        Under the rules as they now stand, 82 pilot units and 97 validation units are still candidates, and no
        prediction of the source was lost (the one prediction-like unit cut was a reader's comment): 44 of 82 (54%)
        and 60 of 97 (62%) are prediction-like. Weighted by each person's windowed candidates, the validation
        sample gave 36% before the comment cut, since 528 of the 1,017 windowed candidates were Suzanne Lie's and 14
-       of her 16 were comments or headers; after it, about 68%, but her share now rests on one unit. Both samples
-       shaped the rules they measure, so a third, fresh sample must give the figure to quote. The samples, keys and
-       labels are in `analysis/predictions/pilot_2026-11-15/` and `validation_2026-11-15/` (private). Next: the
+       of her 16 were comments or headers; after it, about 68%, but her share rested on one unit. Both samples
+       shaped the rules they measure, so the third, fresh sample gives **the figure to quote: 55.9% of windowed
+       candidates are prediction-like by both coders, weighted by each person's windowed candidates (stratified
+       95% interval about 47% to 65%; unweighted 54 of 99, Wilson 45% to 64%)**. It covers the 9 people with units
+       left, 532 of the 572 windowed candidates; the other 40, of 11 small channels, were all in the first two
+       samples. By person: Sam 14 of 16, Daniel Scranton 10 of 16, Suzanne Lie 9 of 16 (now that comments are
+       cut), L/L Research 8 of 16, Laarkmaa 7 of 12, Darryl Anka 3 of 4, Swaruu 3 of 16 (the other 13 are about the
+       past or present: past events, transcript date headers, hypotheticals, translation listings). What the
+       rules still let through: past or present statements (23 of 99), future-tense teaching (12 to 13) and
+       promotion (6); filters for these must be shaped on a new sample, not this one. The
+       samples, keys and labels are in `analysis/predictions/pilot_2026-11-15/`, `validation_2026-11-15/` and
+       `third_2026-11-15/` (private). Next: the
        bulk model pass (is it the entity's claim; prediction or future-tense teaching; certainty; families
        linked), which waits for an API key and the owner's go-ahead on cost and data terms (12.5, D14); then the
        same over each YouTube tier as it is transcribed.
@@ -387,10 +399,14 @@ as "skipped by rule", not as a failure.
 * **YouTube from a cloud server.** Apart from robots.txt (section 6.6), audio and captions are refused from a
   cloud server (bot checks, HTTP 403; checked again on 2026-11-15 with the override set). They need the owner's
   own connection (the laptop lane in `pipeline/README.md`).
-* **Reader comments in stored blog texts.** 893 of Suzanne Lie's 986 stored posts end with their Blogger comment
-  thread (about a quarter of the stored text), so her counts of words from the source include readers' words.
-  The prediction pass cuts them (section 5); the texts lane should cut them when it stores a post, and the tables
-  be rebuilt.
+* **Reader comments in stored blog texts.** Suzanne Lie's 1,361 posts stored by 2026-11-15 end with their
+  Blogger comment block (2,603,261 words with them, 1,954,916 without: a quarter are readers' words), so her
+  counts of words from the source include readers' words. The prediction pass cuts them (section 5). Since
+  2026-11-15 the texts lane leaves comment threads and reply forms out of what it stores
+  (`fetch_publisher_text.is_comment_block`: Blogger's `comments` block, WordPress's `comments-area`, `respond`);
+  the page as fetched is still kept in `.source.gz`. The posts stored before are not rewritten yet: doing it
+  from their `.source.gz` changes their hashes in the store, so it needs a planned re-sync (the only other change
+  is Jamie Butler's 24 pages, which lose their "Leave a comment" form).
 * **tv.bashar.org** is paid and behind a login: not collected.
 * **No video is held.** Every lane keeps audio only. The 153 archive.org video files of Bashar sessions are
   listed, not fetched.

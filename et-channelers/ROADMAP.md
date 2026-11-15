@@ -7,8 +7,8 @@ Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos 
 Everything was stopped cleanly so the work can go on in a larger Codespace. [`HANDOFF.md`](HANDOFF.md) has the
 setup, the restore commands, the order of work and a prompt for the next session. This table was last
 brought up to date on 2026-11-15, when all 903 of Bashar's archive.org sessions were downloaded and on Google
-Drive, and again that evening (the podcast backlog moving and on Drive, the first pass of the prediction
-timelines); the other rows give the state at the pause.
+Drive, and again that evening (the podcast backlog on Drive, the first pass of the prediction timelines and
+the third sample that measures them); the other rows give the state at the pause.
 
 | Task | State at the pause |
 |---|---|
@@ -21,7 +21,7 @@ timelines); the other rows give the state at the pause.
 | YouTube's robots.txt | read 2026-11-14: it disallows the channel listing, feed and caption paths for every crawler. The YouTube steps stop with exit code 9 ("skipped by rule") unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1` is set. **Decided by the owner on 2026-11-15: opt in** (D8, HANDOFF 6.6 b). From this Codespace listings work; audio and captions still get YouTube's bot check, so they come from the owner's computer |
 | Kimi snapshot (channels-ET, received 2026-11-14) | read by five agents; it holds no audio or transcript text. Plan in phase 4b below and in `notes/2026-11-14/kimi_integration_plan.md` |
 | Analysis plan | written: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) (three drafts and a synthesis; families, gates, small-model steps, phases, paper). The deep research on timelines, predictions and question banks is folded in as its own section; the critique is in `notes/2026-11-14/research_critique.md` |
-| Prediction timelines | **rules pass built on 2026-11-15** (`pipeline/prediction_timeline.py`, ANALYSIS_PLAN 12.4 step 1) and run over everything with text here, before the YouTube tiers: see HANDOFF section 5 for the figures. Per person and kind in `plan/prediction_counts.csv` (counts only); the candidates and timelines quote the texts, so they stay in the private folder. Two samples labelled by two agent coders each (218 units; kappa 0.91 to 0.98 on prediction-like or not) found 42% real predictions among windowed candidates at first and 54% to 62% under the current rules, after filters they suggested and after cutting blog comment threads; near-copies are collapsed. Now 5,599 candidates (5,148 distinct), 558 with a target window. A fresh sample must give the figure to quote; the bulk pass waits for an API key and the owner's go-ahead (D14) |
+| Prediction timelines | **rules pass built on 2026-11-15** (`pipeline/prediction_timeline.py`, ANALYSIS_PLAN 12.4 step 1) and run over everything with text here, before the YouTube tiers: see HANDOFF section 5 for the figures. Per person and kind in `plan/prediction_counts.csv` (counts only); the candidates and timelines quote the texts, so they stay in the private folder. Now 5,987 candidates (5,490 distinct), 572 with a target window. Two samples labelled by two agent coders each shaped the rules (42% real predictions among windowed candidates at first); a third, fresh sample of 99 (kappa 0.96) measured them: **about 56% of windowed candidates are real predictions** (weighted by person; 95% interval about 47% to 65%), from 19% (Swaruu) to 88% (Sam). The texts lane now leaves blog comment threads out of what it stores. The bulk pass waits for an API key and the owner's go-ahead (D14) |
 | Review of dashboard v2 and the store | done: 46 of 47 findings confirmed by skeptics, and all 46 fixed in code, tables and page |
 | Pre-merge review of this work | done: 34 of 37 findings confirmed and fixed, with a test for each code fix that fails without it. The one that mattered most: one refusal from archive.org's own host, or from one of its storage nodes, would have held back every queued Bashar session for a day or more (HANDOFF section 1) |
 | Next | the owner's task of 2026-11-15 (HANDOFF section 5): the newest 10, then 20, then 50 videos of every tracked channel (612, 1,200 and 2,920 videos; 233, 496 and 1,217 hours), then a timeline of the predictions made on each channel. D8 is decided, `select_jobs.py --newest N` is built and the three queues are made from listings refreshed on 2026-11-15; the downloads run on the owner's computer (HANDOFF section 5). Also: choose the speech-to-text engine; fix the disk hold; phase 4b |
@@ -406,7 +406,8 @@ everything below, and replaces the earlier per-channel caps.
   channels is linked, not counted twice. From this: **a timeline for each channel and one combined timeline**,
   each point linked to its recording and time stamp. The rules pass that finds the candidates and resolves
   their target windows was built on 2026-11-15 (`pipeline/prediction_timeline.py`), and a pilot of the model pass
-  ran the same day (`pipeline/prediction_pilot.py`, HANDOFF section 5); the bulk model pass is next. Checking predictions against what happened comes later,
+  ran the same day (`pipeline/prediction_pilot.py`, HANDOFF section 5: three samples, about 56% of windowed
+  candidates real predictions); the bulk model pass is next. Checking predictions against what happened comes later,
   only for specific and checkable ones, and with the scoring rules written down first.
 * **Datasets the small model builds** (Claude Haiku in batches through the Message Batches API; agents run
   only the pilots and the adjudication; larger models re-label a sample blind, and agreement is reported): question-and-answer pairs from audience sessions, question banks grouped by theme,
