@@ -29,6 +29,7 @@ sys.path.insert(0, str(PIPE))
 import common  # noqa: E402
 import inventory  # noqa: E402
 import select_jobs  # noqa: E402
+import prediction_timeline  # noqa: E402
 
 GUARD = ET / "scripts" / "guard_no_raw_media.py"
 
@@ -458,6 +459,98 @@ class TestInventory(unittest.TestCase):
         self.assertIn("40,652 videos", block)
         self.assertEqual(block.count("\n| 1 |"), 2)  # the top-15 table and the full table both start at rank 1
 
+
+# --------------------------------------------------------------------------- prediction_timeline.py
+class TestPredictionTimeline(PipelineCase):
+    def test_time_windows_count_from_the_year_said(self):
+        w = prediction_timeline.time_window
+        self.assertEqual(w("This will happen in two years.", 2021)[:2], (2023, 2023))
+        self.assertEqual(w("It will come within the next five years.", 2020)[:2], (2020, 2025))
+        self.assertEqual(w("By 2030 you will see it.", 2024)[:2], (2024, 2030))      # one bound kept
+        self.assertEqual(w("Between 2012 and 2017 it will build.", 2010)[:2], (2012, 2017))
+        self.assertEqual(w("In the 2030s things will change.", 2020)[:2], (2030, 2039))
+        self.assertEqual(w("Next year will be a big one.", 2019)[:2], (2020, 2020))
+        self.assertEqual(w("It will come soon.", 2019)[:2], (None, None))           # no invented bounds
+        self.assertEqual(w("This will happen in two years.", None)[:2], (None, None))  # no date said, no window
+
+    def test_candidates_need_the_future_and_a_time_word_or_theme(self):
+        c = prediction_timeline.candidate
+        self.assertIsNotNone(c("You are going to see mass awakenings in 2026.", 2025))
+        self.assertIsNone(c("In 1987 we spoke about this.", 2020))                  # the past, no future marker
+        self.assertIsNone(c("You will learn to love yourself.", 2020))              # teaching: no time, no theme
+        self.assertIsNotNone(c("We predict that this will unfold.", 2020))          # a prediction word suffices
+        self.assertIsNone(c("Register now for the 2026 retreat, it will be amazing.", 2025))   # promotion
+        row = c("If you choose it, the shift may come by 2030.", 2024)
+        self.assertTrue(row["conditional"] and row["hedged"])
+        self.assertEqual((row["window_lo"], row["window_hi"]), (2024, 2030))
+
+    def test_a_window_before_the_year_said_is_the_past_even_with_will(self):
+        c = prediction_timeline.candidate
+        self.assertIsNone(c("He will assume it is still 1945.", 2019))
+        self.assertIsNone(c("He will assume it is still 1945.", None))            # undated: before 2000 is the past
+        self.assertIsNotNone(c("He will assume it is still 1945.", None, 0))      # floor 0 keeps it
+        self.assertIsNotNone(c("By 2030 you will see it.", None))
+        self.assertIsNotNone(c("In 2012 the shift will be felt.", 2010))
+
+    def test_dates_from_the_title_or_the_source_address(self):
+        d = prediction_timeline.text_date
+        self.assertEqual(d({"title": "L/L Research channeling 1980-08-27",
+                            "source_url": "https://www.llresearch.org/channeling/1980/0827"}), ("1980-08-27", "title"))
+        self.assertEqual(d({"title": "x", "source_url": "https://www.llresearch.org/channeling/1979/1118_02"}),
+                         ("1979-11-18", "source address"))
+        self.assertEqual(d({"title": "pondering", "source_url":
+                            "https://suzanneliephd.blogspot.com/2012/11/pondering-way-home.html"}), ("2012-11", "source address"))
+        self.assertEqual(d({"title": "x", "source_url": "https://swaruu.org/en/transcripts/galaxies-2020"}), ("", ""))
+        self.assertEqual(d({"title": "x", "source_url": "https://samtheillusionist.com/session-2019"}), ("", ""))
+        self.assertEqual(prediction_timeline.date_said({"item_id": "w", "published": "", "title": "x",
+                                                        "source_url": "https://b.example/2014/07/a.html"}, {}),
+                         ("2014-07", "source address"))
+        self.assertEqual(prediction_timeline.year_of("2014-07"), 2014)
+
+    def test_the_undated_floor_follows_a_persons_oldest_dated_item(self):
+        rows = [{"item_id": "a", "person_id": "old", "published": "1976-06-13", "title": "", "source_url": ""},
+                {"item_id": "b", "person_id": "old", "published": "", "title": "", "source_url": ""},
+                {"item_id": "c", "person_id": "new", "published": "2019-01-01", "title": "", "source_url": ""},
+                {"item_id": "d", "person_id": "none", "published": "", "title": "", "source_url": ""}]
+        floors = prediction_timeline.undated_floors(rows, {}, 2000)
+        self.assertEqual(floors, {"old": 1976, "new": 2000, "none": 2000})
+        self.assertEqual(prediction_timeline.undated_floors(rows, {}, 0), {})
+        c = prediction_timeline.candidate
+        self.assertIsNotNone(c("We will attempt a landing in 1977.", None, floors["old"]))
+        self.assertIsNone(c("We will attempt a landing in 1977.", None, floors["none"]))
+
+    def test_quotes_never_pass_thirty_words(self):
+        long = " ".join(f"w{i}" for i in range(50))
+        self.assertEqual(len(prediction_timeline.quote(long).split()), 31)        # 30 words and the mark
+        self.assertEqual(prediction_timeline.quote("short one"), "short one")
+
+    def test_a_run_keeps_the_kinds_apart_and_stays_private(self):
+        (self.root / "catalog").mkdir(parents=True, exist_ok=True)
+        (self.root / "transcripts" / "zed").mkdir(parents=True)
+        (self.root / "transcripts_publisher" / "zed").mkdir(parents=True)
+        segs = [{"start": 0.0, "text": "Hello there."}, {"start": 65.0, "text": "In two years you will see contact."}]
+        (self.root / "transcripts" / "zed" / "pod-a.json").write_text(json.dumps({"segments": segs}))
+        (self.root / "transcripts" / "zed" / "pod-a.txt").write_text("x")
+        (self.root / "transcripts_publisher" / "zed" / "web-b.txt").write_text(
+            "A long message. The great shift will arrive by 2030 for all of you. Thank you.")
+        common.write_csv(self.root / "catalog" / "catalog.csv", [
+            {"item_id": "pod-a", "person_id": "zed", "lane": "pod", "title": "a", "published": "2021-05-01",
+             "asr_path": "transcripts/zed/pod-a.txt", "publisher_text_path": ""},
+            {"item_id": "web-b", "person_id": "zed", "lane": "web", "title": "b", "published": "",
+             "asr_path": "", "publisher_text_path": "transcripts_publisher/zed/web-b.txt"}],
+            ["item_id", "person_id", "lane", "title", "published", "asr_path", "publisher_text_path"])
+        p = self.cli("prediction_timeline.py", "--root", self.root)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        out = self.root / "analysis" / "predictions"
+        rows = common.read_jsonl(out / "zed.jsonl")
+        made = next(r for r in rows if r["kind"] == "made")
+        self.assertEqual((made["window_lo"], made["offset_s"], made["date_basis"]), (2023, 65.0, "published"))
+        source = next(r for r in rows if r["kind"] == "source")
+        self.assertEqual((source["window_lo"], source["window_hi"]), (None, 2030))   # undated item: one bound only
+        counts = {c["kind"]: c for c in common.read_csv(out / "counts.csv")}
+        self.assertEqual(set(counts), {"made", "source"})                             # never mixed
+        self.assertNotIn("contact", (out / "counts.csv").read_text())                 # counts carry no text
+        self.assertIn("| 2023 |", (out / "zed.md").read_text())
 
 # --------------------------------------------------------------------------- select_jobs.py
 class TestSelectJobs(PipelineCase):

@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-15T03:12:26Z",
+ "generated": "2026-11-15T15:57:32Z",
  "targets": 103,
  "by_state": {
   "captured": 0,
-  "partly captured": 27,
+  "partly captured": 28,
   "planned: source found": 0,
-  "planned: YouTube only": 40,
+  "planned: YouTube only": 39,
   "planned: no source yet": 35,
   "unresolved": 0,
   "excluded": 1
@@ -40,12 +40,12 @@
   {
    "origin": "bashar-index",
    "state": "partly captured",
-   "targets": 18
+   "targets": 19
   },
   {
    "origin": "bashar-index",
    "state": "planned: YouTube only",
-   "targets": 34
+   "targets": 33
   },
   {
    "origin": "bashar-index",
@@ -75,14 +75,14 @@
   "interviews_live_channeling": 30,
   "interviews_other_kinds": 21,
   "interviews_not_classified": 138,
-  "items_listed": 69186,
-  "items_captured": 9475,
-  "captured_audio_files": 1779,
-  "captured_source_texts": 8425,
-  "captured_source_words": 13309693,
-  "captured_machine_transcripts": 61,
+  "items_listed": 69031,
+  "items_captured": 10430,
+  "captured_audio_files": 1781,
+  "captured_source_texts": 9410,
+  "captured_source_words": 15124567,
+  "captured_machine_transcripts": 63,
   "audio_awaiting_transcript": 1694,
-  "captured_audio_hours": 1454.0,
+  "captured_audio_hours": 1454.7,
   "videos_listed": 32570,
   "live_listed": 10014,
   "shorts_listed": 16115,

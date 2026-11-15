@@ -28,6 +28,12 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
 * **Next task (set by the owner on 2026-11-15):** the newest 10, then 20, then 50 videos of every tracked
   channel, then a timeline of the predictions made on each channel (section 5). Decision 6.6 is made and the
   three queues are built; the downloads run on the owner's computer.
+* **Prediction timelines, first pass (2026-11-15):** `prediction_timeline.py`, the rules pass of ANALYSIS_PLAN
+  12.4, read all 9,467 items with text here and found 6,775 candidate statements about the future for 27 people,
+  1,298 of them with a target window (section 5). They are candidates, not findings, until the model pass.
+* **Podcast backlog, moving again (2026-11-15):** 351 new episodes queued (250-hour cap) and downloading at about
+  2.2 a minute, with no failures. The first Drive round of the new audio (76 files, 50 episodes) brings Drive to
+  3,496 files (18.3 GB) in the same 77 folders.
 
 **Since the pause** (03:30 to 07:45 UTC, no collecting): the Drive copy was finished (the last 50 files were
 17 Bashar sessions and 4 podcast episodes that had arrived after the Drive plan was made); the tables were
@@ -122,11 +128,21 @@ sync deletes local audio once its stored copy is checked (`--only <person-id>` p
 
 ## 4. What was paused, and how to start it again
 
+After a Codespace restart, one command starts every job below that is not running, the Drive hold and the
+podcast backlog included:
+
+```bash
+ET_PRIVATE_DIR=~/et-channelers-private ET_DRIVE_HOLD=1 ET_BACKLOG_QUEUE=~/et-channelers-private/jobs/queue_backlog.csv \
+  bash et-channelers/pipeline/resume_jobs.sh
+```
+
 | Job | Paused where | Start again with |
 |---|---|---|
 | Sync to the private store, every 5 minutes, and the text mirror every 30 | running again since 2026-11-15, 15:24 UTC, with every new file held until it is transcribed | `ET_GH_TOKEN_FILE=~/.config/et-channelers/github_token ET_HOLD_UNTRANSCRIBED=1 bash et-channelers/pipeline/save_to_github.sh` (with `ET_HOLD_UNTRANSCRIBED=1` the downloads stop at the disk floor until speech-to-text catches up; on a large disk `ET_HOLD_UNTRANSCRIBED_FOR=<person ids>` holds only those) |
 | Bashar's archive.org sessions | finished on 2026-11-15: 903 of 903, no failures (the command skips them all) | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --queue ~/et-channelers-private/jobs/queue_archive_org_all.csv --all --workers 2 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/archive_org_download.log 2>&1 < /dev/null &` |
 | Collection cycles: feeds, new episodes, texts, tables. They wait while another download runs | running again since 2026-11-15, 15:24 UTC (the listing step is skipped: the cycle does not set the YouTube override). Fixed that day: the 80-hour cap of `select_episodes.py` counted episodes already here, so every cycle chose the same newest, finished episodes and the backlog of about 1,900 did not move; now only new audio counts | `setsid nohup bash et-channelers/pipeline/keep_collecting.sh >> ~/et-channelers-private/logs/collect.log 2>&1 < /dev/null &` |
+| Podcast backlog: the episodes and creators' files not here yet | started 2026-11-15, 16:52 UTC, from `jobs/queue_backlog.csv` (`select_episodes.py --max-hours 250`: 2,113 rows, 1,762 of them already here and not counted, 351 new); the Codespace restarted at about 18:37 UTC and `resume_jobs.sh` started it and the other jobs again: 302 left then, about 2.2 a minute, no failures | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --root ~/et-channelers-private --queue ~/et-channelers-private/jobs/queue_backlog.csv --all --workers 3 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/backlog_download.log 2>&1 < /dev/null &` |
+| Drive hold: new audio stays on disk until its Drive round is recorded | holder process and note `sync/holds/drive-<pid>.json`, refreshed after each round | `resume_jobs.sh` with `ET_DRIVE_HOLD=1` (a long `sleep` is the holder, found by `pgrep -n -f "^sleep 2592000$"`; `$!` after `setsid` is not its id), then after each Drive round `~/et-venv/bin/python -I et-channelers/pipeline/drive_hold.py --root ~/et-channelers-private` |
 | Speech-to-text, Bashar's sessions first | 61 done; running again since 2026-11-15 on new files as they arrive (stored files must be pulled back to be transcribed). `keep_transcribing.sh` ends when nothing is left, so it runs inside a loop that starts it again every 30 minutes | `ET_ASR_WORKERS=1 ET_ASR_THREADS=2 setsid nohup bash -c 'while true; do bash et-channelers/pipeline/keep_transcribing.sh; sleep 1800; done' >> ~/et-channelers-private/logs/asr.log 2>&1 < /dev/null &` (2 cores: 1 worker; 4 cores: 2) |
 
 Every job skips what is finished. Kill a job by its process id, never with `pkill -f`, which also matches the
@@ -175,6 +191,24 @@ as "skipped by rule", not as a failure.
        missed before): 2,919 of 2,920. For older videos they are right to the year only; the download on the
        owner's computer records the exact date.
     6. Speech-to-text (6.1): on a 2-core machine the tiers take weeks, with a GPU or the faster engine days.
+    7. The rules pass of the timelines: **built on 2026-11-15** (`pipeline/prediction_timeline.py`, ANALYSIS_PLAN
+       12.4 step 1). Rules flag each sentence that speaks of the future (or hedges about it with a time) and has
+       a time expression, a prediction word or a prophecy theme; promotion ("register now", prices, links) is
+       dropped. Each time expression becomes a target window counted from the date said ("in two years" from
+       2021 is 2023; "by 2030" keeps one bound; "soon" gets none). The date said is the published date, else the
+       listing's approximate upload date (`--listing`), else an ISO date in the title (L/L Research), else a year
+       and month in the source address (Suzanne Lie's blog, L/L Research); 1,738 candidates are still undated
+       (Swaruu 813, Sam 677, Blossom Goodchild 172, L/L Research 71, Jamie Butler 5). A window that ends before the date said is a past
+       reference and is dropped even with "will" in the sentence; an undated one that ends before 2000, or
+       before the person's oldest dated item when that is older (L/L Research: 1974), is dropped too
+       (`--undated-floor`).
+       First run, over everything with text here (not yet the YouTube tiers): 9,467 items, 27 people, **6,775
+       candidates, 1,298 with a target window**, from 1974 (L/L Research) to 2116 (Suzanne Lie); an undated
+       range that starts in 1926 ("1926 to 2012", Sam) shows what the model pass must still weed out. Per person
+       and kind in `plan/prediction_counts.csv` (counts only). The candidates and timelines are in the private
+       folder's `analysis/predictions/` (`<person>.jsonl`, `<person>.md`, quotes cut to 30 words). Next: the
+       model pass (is it the entity's claim; prediction or future-tense teaching; certainty; repeats linked),
+       then the same over each YouTube tier as it is transcribed.
   - **The queues** (built on 2026-11-15 from those listings, in the private folder's `jobs/`):
     `queue_newest10.csv` (612 videos, 233.4 h), `queue_newest20.csv` (1,200, 496.2 h) and `queue_newest50.csv`
     (2,920, 1,216.9 h), each with its `.meta.json`. The columns add `tab`, `listing_rank` (0 is the newest) and
@@ -229,6 +263,12 @@ as "skipped by rule", not as a failure.
   All of Bashar's archive.org sessions now fill 2,031 files (11.0 GB) on Drive. The tables were rebuilt on
   2026-11-15: `plan/bashar_sessions.csv` shows all 903 here (909.7 hours measured).
 
+* **The podcast backlog, to Drive as it arrives.** The same rounds, with their own stage folder, over all new
+  audio: `drive_stage.py plan --out ~/et-drive/stage-all --kinds audio --known-folder "04 Audio=<its id>"`,
+  then `batches --link-dir <scratchpad>/drive_up/all`, `round`, the uploads and `done`, then `drive_hold.py`,
+  then delete the staged copies (`files/` under the stage folder and the copies in the link folder) and upload
+  the ledger. First round on 2026-11-15: round `5a85b2d7`, 76 files (0.39 GB), 50 episodes fully on Drive;
+  27 newer episodes were held for the next round.
 * **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
   It also refuses a file with more than one hard link, which is why `--link-dir` copies each file. Subagents
   and other folders are refused too, so the uploads run in the main session, about 2 seconds per 7 MB file.
@@ -320,10 +360,12 @@ as "skipped by rule", not as a failure.
 
 1. Set up and check (section 3), with the newer Drive ledger.
 2. YouTube (section 6.6) was decided on 2026-11-15: (b). Decide the commit email (6.7).
-3. Start the sync, the archive.org download and the collection cycles (section 4), sized to the machine.
+3. Start the sync, the collection cycles, speech-to-text, the Drive hold and the podcast backlog (section 4:
+   `resume_jobs.sh` starts whatever is not running), sized to the machine. Copy the backlog to Drive in rounds.
 4. Bashar's sessions on Drive: done on 2026-11-15. Next, the owner's task (section 5): `--newest N` and the
    three queues are done; the owner runs the newest 10, 20 and 50 on their computer, each tier is then stored
-   and put on Drive; then a timeline of predictions per channel.
+   and put on Drive; then a timeline of predictions per channel. The rules pass is built and has run over
+   everything with text here; next is its model pass.
 5. Choose the speech-to-text engine (6.1). Start `keep_transcribing.sh` sized to the machine. Fix the disk
    hold (section 7).
 6. Fold in the Kimi snapshot (ROADMAP phase 4b).
