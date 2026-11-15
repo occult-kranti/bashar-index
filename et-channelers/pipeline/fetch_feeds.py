@@ -9,6 +9,8 @@ No audio is downloaded here. Each feed is one GET of a file its publisher offers
 app. Feeds are read one at a time per host with a pause, a Retry-After is obeyed, and a host that
 answers 403 or 429 three times in a row is left alone for the rest of the run. Any 403 or 429 ends
 the run with exit code 3, and that host is not asked again on later runs until its wait is over.
+A redirect follows the same rules (feeds.Hops): the host it leads to waits for its own turn, an answer
+is charged to the host that gave it, and no redirect is followed to a host that is being left alone.
 
 relation "own"   the tracked person's own podcast: every episode is theirs.
 relation "host"  a show that interviews people: person_id is "host:<show>", and select_episodes.py
@@ -31,9 +33,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, HostGates, add_root_arg, append_jsonl, atomic_write_text, ensure_outside_git,  # noqa: E402
-                    host_of, http_error_class, latest_by_key, layout, read_csv, read_jsonl, resting_hosts, say_refused,
-                    say_resting, utc_now)
-from feeds import FetchError, feed_key, get_bytes, parse_feed  # noqa: E402
+                    host_of, http_error_class, latest_by_key, layout, read_csv, read_jsonl, resting_hosts_along,
+                    say_refused, say_resting, utc_now)
+from feeds import FetchError, Hops, feed_key, get_bytes, parse_feed  # noqa: E402
 from interview_types import from_notes, notes_by_episode  # noqa: E402
 
 REGISTRY = ET_ROOT / "sources" / "podcast_feeds.csv"
@@ -48,7 +50,9 @@ def read_registry(path, accept):
     return rows
 
 
-def fetch_one(row, feeds_dir, gates, timeout):
+def fetch_one(row, feeds_dir, gates, timeout, resting=()):
+    """Read one feed. Returns the manifest record, or None if it was not asked for: its host was already
+    stopped, or the host a redirect leads to is being left alone (on this run, or in `resting` from earlier runs)."""
     host = host_of(row["feed_url"])
     rec = {"feed_key": row["feed_key"], "person_id": row["person_id"], "relation": row["relation"],
            "feed_url": row["feed_url"], "host": host, "started": utc_now()}
@@ -58,23 +62,35 @@ def fetch_one(row, feeds_dir, gates, timeout):
     if gates.blocked(host):
         return None  # it refused while this request waited for its turn
     t0 = time.time()
+    # A feed's address may redirect to another host (rss.pdrl.fm sends its feeds to rss.libsyn.com, which is the
+    # first host of other feeds too): that host waits for its own turn and its own Retry-After, is charged with
+    # its own answers, and is not asked at all while it is being left alone.
+    hops = Hops(host, gates, lambda h: gates.blocked(h) or h in resting)
+    final_url = ""
     try:
-        final_url, _, body = get_bytes(row["feed_url"], timeout=timeout)
+        final_url, _, body = get_bytes(row["feed_url"], timeout=timeout, before_redirect=hops)
         parsed = parse_feed(body, row["feed_url"], row["person_id"])
     except FetchError as err:
+        if err.klass == "held":
+            return None  # the host it leads to is being left alone: nothing was asked of it, nothing recorded
+        refuser = hops.answered(err) or host
         klass = err.klass or (http_error_class(err.status) if err.status else "network")
         if klass in ("rate_limited", "forbidden"):
-            gates.hard_block(host, err.retry_after)
+            gates.hard_block(refuser, err.retry_after)
         elif err.retry_after:
-            gates.unavailable(host, err.retry_after)          # a 503 that says how long to wait: obeyed
-        rec.update(status="error", http_status=err.status, error_class=klass, error_tail=str(err)[-300:])
+            gates.unavailable(refuser, err.retry_after)          # a 503 that says how long to wait: obeyed
+        rec.update(status="error", http_status=err.status, error_class=klass, error_tail=str(err)[-300:],
+                   **hops.record(refuser))
         if err.retry_after is not None:
             rec["retry_after_s"] = err.retry_after
         return rec
     except Exception as err:  # noqa: BLE001 - malformed XML and the like: record it and go on
-        rec.update(status="error", http_status=200, error_class="parse", error_tail=f"{type(err).__name__}: {err}"[-300:])
+        rec.update(status="error", http_status=200, error_class="parse", error_tail=f"{type(err).__name__}: {err}"[-300:],
+                   **hops.record(host_of(final_url) or host))
         return rec
-    gates.success(host)
+    answered = host_of(final_url) or host
+    hops.credit(answered)                                    # every host along the way answered as asked
+    rec.update(hops.record(answered))
     marks = {}
     if row["relation"] == "host":
         # Whether an interview's show notes say the session is channeled live in the episode, read here from
@@ -88,7 +104,7 @@ def fetch_one(row, feeds_dir, gates, timeout):
              for episode in parsed["episodes"]]
     atomic_write_text(feeds_dir / f"{row['feed_key']}.jsonl", "\n".join(lines) + ("\n" if lines else ""))
     feed = parsed["feed"]
-    rec.update(status="ok", http_status=200, final_host=host_of(final_url), elapsed_s=round(time.time() - t0, 1),
+    rec.update(status="ok", http_status=200, elapsed_s=round(time.time() - t0, 1),
                title=feed["title"], author=feed["author"], owner_name=feed["owner_name"], link=feed["link"],
                language=feed["language"], items=feed["items"], episodes=feed["episodes"],
                with_duration=feed["with_duration"], known_hours=feed["known_hours"],
@@ -137,8 +153,9 @@ def main():
 
     todo = [r for r in rows if args.refresh or not fresh(r)]
     recent = len(rows) - len(todo)
-    # a host that refused on an earlier run is not asked again before its wait is over
-    resting = {} if args.ask_resting else resting_hosts(read_jsonl(manifest), lambda r: r.get("host") or "")
+    # a host that refused on an earlier run is not asked again before its wait is over, as the first host of a
+    # feed's address or as the host a redirect leads to; a success counts for every host along the way
+    resting = {} if args.ask_resting else resting_hosts_along(read_jsonl(manifest), "host")
     waiting = collections.Counter(host_of(r["feed_url"]) for r in todo if host_of(r["feed_url"]) in resting)
     say_resting(resting, waiting, "feed(s)")
     todo = [r for r in todo if host_of(r["feed_url"]) not in resting]
@@ -147,7 +164,7 @@ def main():
     gates = HostGates(args.min_interval)
     ok = failed = skipped = 0
     with cf.ThreadPoolExecutor(max_workers=max(1, args.workers)) as pool:
-        for rec in pool.map(lambda r: fetch_one(r, paths.feeds, gates, args.timeout), todo):
+        for rec in pool.map(lambda r: fetch_one(r, paths.feeds, gates, args.timeout, resting), todo):
             if rec is None:
                 skipped += 1
                 continue

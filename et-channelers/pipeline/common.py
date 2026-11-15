@@ -715,6 +715,23 @@ def resting_hosts(records, host_of_record, now=None, in_a_row=3):
     return out
 
 
+def resting_hosts_along(records, first_key, now=None):
+    """resting_hosts for a step whose records name the host that answered (`final_host`; records written before
+    it was kept name only the first host of their address, under `first_key`). A refusal counts for the host that
+    gave it. A success counts for every host along the way: the one that served, the first host of the address,
+    and the hosts a redirect passed through (`via_hosts`). archive.org redirects every download to one of its
+    storage nodes, so its own host never serves a file itself, and one refusal must not leave all of it alone as
+    though it had served nothing; nor must one refusal from a redirector in the middle of a chain."""
+    credited = []
+    for rec in records:
+        credited.append(rec)
+        if rec.get("status") == "ok" and rec.get("final_host"):
+            for passed in dict.fromkeys([rec.get(first_key), *(rec.get("via_hosts") or [])]):
+                if passed and passed != rec["final_host"]:
+                    credited.append({**rec, "final_host": passed})
+    return resting_hosts(credited, lambda r: r.get("final_host") or r.get(first_key) or "", now=now)
+
+
 def say_resting(resting, waiting, what="item(s)"):
     """One line on stderr per host left alone on this run because it refused on an earlier one.
     `waiting` is {host: how many items of this run it holds}."""

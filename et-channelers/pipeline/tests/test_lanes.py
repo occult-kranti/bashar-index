@@ -776,7 +776,14 @@ class TestDownloadEnclosures(LaneCase):
         Publisher.routes["/media/0.mp3"] = (200, "audio/mpeg", slow)
         Publisher.routes["/media/1.mp3"] = (429, "text/plain", b"slow down", {"Retry-After": "3600"})
         self.write_queue(rows[:2])
-        first = self.download("--workers", "2", "--min-interval", "1", "--all")
+        # Two workers race for the host's first turn. Only when file 0 wins does its download outlast file 1's
+        # refusal, which is the case under test; when file 1 wins, the host rests before file 0 is asked, so
+        # the run is set up again (at most three times)
+        for _ in range(3):
+            shutil.rmtree(self.root / "audio", ignore_errors=True)
+            first = self.download("--workers", "2", "--min-interval", "1", "--all")
+            if [r["status"] for r in self.manifest()] == ["error", "ok"]:
+                break
         self.assertEqual(first.returncode, 3, first.stderr)
         self.assertEqual([r["status"] for r in self.manifest()], ["error", "ok"])   # the refusal is written first
         self.write_queue(rows)
@@ -1172,6 +1179,106 @@ class TestFetchFeeds(LaneCase):
         self.run_fetch(registry, "--ask-resting")
         self.assertEqual(Publisher.hits, ["/r.xml"])
 
+    # ---- redirects follow the audio lane's rules (feeds.Hops). A feed's first host (A, 127.0.0.1) may redirect
+    # to a host (B, 127.0.0.2) that is another feed's first host too, as rss.pdrl.fm does to rss.libsyn.com
+    def feed_row(self, person, url):
+        return {"person_id": person, "relation": "own", "feed_url": url, "verification": "verified"}
+
+    def other_host(self):
+        return f"http://127.0.0.2:{self.server.server_address[1]}"
+
+    def test_no_redirect_is_followed_to_a_host_that_refused_three_times_on_this_run(self):
+        b = self.other_host()
+        for i in range(3):
+            Publisher.routes[f"/b/{i}.xml"] = (403, "text/plain", b"no")
+        Publisher.routes["/a/moved.xml"] = (302, "location", f"{b}/b/moved.xml".encode())
+        Publisher.routes["/b/moved.xml"] = (200, "text/xml", feed_xml([item("g1", "One", "https://c.example/1.mp3")]))
+        registry = self.registry([self.feed_row(f"p{i}", f"{b}/b/{i}.xml") for i in range(3)]
+                                 + [self.feed_row("moved", self.base + "/a/moved.xml")])
+        done = self.run_fetch(registry, "--workers", "1")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        self.assertEqual(Publisher.hits, ["/b/0.xml", "/b/1.xml", "/b/2.xml", "/a/moved.xml"])   # B is not asked again
+        records = common.read_jsonl(self.root / "feeds" / "feeds_manifest.jsonl")
+        self.assertEqual([r["person_id"] for r in records], ["p0", "p1", "p2"])   # the feed behind it waits for a later run
+        self.assertEqual({r["final_host"] for r in records}, {"127.0.0.2"})
+
+    def test_a_host_that_rests_is_not_reached_through_a_redirect_and_the_redirector_is_not_left_alone(self):
+        b = self.other_host()
+        Publisher.routes["/b/own.xml"] = (429, "text/plain", b"slow down", {"Retry-After": "3600"})
+        own = self.feed_row("libsyn", f"{b}/b/own.xml")
+        self.assertEqual(self.run_fetch(self.registry([own])).returncode, 3)              # B refused: it rests
+        Publisher.routes["/a/moved.xml"] = (302, "location", f"{b}/b/moved.xml".encode())
+        Publisher.routes["/b/moved.xml"] = (200, "text/xml", feed_xml([item("g1", "One", "https://c.example/1.mp3")]))
+        Publisher.routes["/a/other.xml"] = (200, "text/xml", feed_xml([item("g2", "Two", "https://c.example/2.mp3")]))
+        registry = self.registry([own, self.feed_row("moved", self.base + "/a/moved.xml"),
+                                  self.feed_row("other", self.base + "/a/other.xml")])
+        for _ in range(2):                                     # and the same on the run after: A is never charged for it
+            Publisher.hits.clear()
+            done = self.run_fetch(registry, "--workers", "1")
+            self.assertEqual(done.returncode, 0, done.stderr)
+            self.assertEqual([h for h in Publisher.hits if h.startswith("/b/")], [], done.stderr)   # not even through A
+            self.assertIn("/a/moved.xml", Publisher.hits)
+            self.assertIn("left alone on this run: 127.0.0.2 refused (HTTP 429) 1 time(s)", done.stderr)
+            self.assertNotIn("left alone on this run: 127.0.0.1", done.stderr)
+        latest = common.latest_by_key(common.read_jsonl(self.root / "feeds" / "feeds_manifest.jsonl"), "person_id")
+        self.assertEqual(sorted(latest), ["libsyn", "other"])                          # the moved feed is not recorded
+        self.assertEqual((latest["other"]["status"], latest["other"]["final_host"]), ("ok", "127.0.0.1"))
+
+    def test_a_retry_after_from_the_host_a_redirect_leads_to_is_charged_to_that_host(self):
+        import time
+        b, asked = self.other_host(), []
+        Publisher.routes["/a/moved.xml"] = (302, "location", f"{b}/b/moved.xml".encode())
+        Publisher.routes["/b/moved.xml"] = (429, "text/plain", lambda: asked.append(time.monotonic()) or b"slow down",
+                                            {"Retry-After": "2"})
+        Publisher.routes["/b/own.xml"] = (200, "text/xml", lambda: asked.append(time.monotonic()) or
+                                          feed_xml([item("g1", "One", "https://c.example/1.mp3")]))
+        registry = self.registry([self.feed_row("moved", self.base + "/a/moved.xml"), self.feed_row("libsyn", f"{b}/b/own.xml")])
+        done = self.run_fetch(registry, "--workers", "1")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        self.assertIn("STOPPED for these hosts after 403 / 429 answers: 127.0.0.2 (1).", done.stderr)   # not A, which never refused
+        records = {r["person_id"]: r for r in common.read_jsonl(self.root / "feeds" / "feeds_manifest.jsonl")}
+        self.assertEqual((records["moved"]["host"], records["moved"]["final_host"], records["moved"]["retry_after_s"]),
+                         ("127.0.0.1", "127.0.0.2", 2))
+        self.assertEqual(records["libsyn"]["status"], "ok")
+        self.assertEqual(len(asked), 2, done.stderr)
+        self.assertGreaterEqual(asked[1] - asked[0], 1.9)                 # B's own feed waited for B's Retry-After
+
+    def test_a_refusal_through_a_redirect_is_remembered_for_the_host_that_gave_it(self):
+        b = self.other_host()
+        Publisher.routes["/a/moved.xml"] = (302, "location", f"{b}/b/moved.xml".encode())
+        Publisher.routes["/b/moved.xml"] = (403, "text/plain", b"no")
+        moved = self.feed_row("moved", self.base + "/a/moved.xml")
+        self.assertEqual(self.run_fetch(self.registry([moved])).returncode, 3)
+        Publisher.routes["/a/other.xml"] = (200, "text/xml", feed_xml([item("g2", "Two", "https://c.example/2.mp3")]))
+        Publisher.routes["/b/own.xml"] = (200, "text/xml", feed_xml([item("g3", "Three", "https://c.example/3.mp3")]))
+        Publisher.hits.clear()
+        done = self.run_fetch(self.registry([moved, self.feed_row("other", self.base + "/a/other.xml"),
+                                             self.feed_row("libsyn", f"{b}/b/own.xml")]), "--workers", "1")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(Publisher.hits, ["/a/moved.xml", "/a/other.xml"], done.stderr)      # B rests, A does not
+        self.assertIn("left alone on this run: 127.0.0.2 refused (HTTP 403) 1 time(s)", done.stderr)
+
+    def test_a_success_through_a_redirect_counts_for_every_host_along_the_way(self):
+        # A (the first hop) and C (in the middle) each refused once, having served nothing; then a feed came
+        # through both of them from D. Neither may rest as though it had served nothing.
+        port = self.server.server_address[1]
+        c, d = f"http://127.0.0.3:{port}", f"http://127.0.0.4:{port}"
+        Publisher.routes["/a/own.xml"] = (403, "text/plain", b"no")
+        Publisher.routes["/c/own.xml"] = (403, "text/plain", b"no")
+        Publisher.routes["/a/chain.xml"] = (302, "location", f"{c}/c/chain.xml".encode())
+        Publisher.routes["/c/chain.xml"] = (302, "location", f"{d}/d/chain.xml".encode())
+        Publisher.routes["/d/chain.xml"] = (200, "text/xml", feed_xml([item("g1", "One", "https://c.example/1.mp3")]))
+        registry = self.registry([self.feed_row("first", self.base + "/a/own.xml"), self.feed_row("middle", f"{c}/c/own.xml"),
+                                  self.feed_row("chain", self.base + "/a/chain.xml")])
+        self.assertEqual(self.run_fetch(registry, "--workers", "1").returncode, 3)
+        records = {r["person_id"]: r for r in common.read_jsonl(self.root / "feeds" / "feeds_manifest.jsonl")}
+        self.assertEqual((records["chain"]["final_host"], records["chain"]["via_hosts"]), ("127.0.0.4", ["127.0.0.3"]))
+        Publisher.hits.clear()
+        done = self.run_fetch(registry, "--workers", "1")
+        self.assertEqual(done.returncode, 3, done.stderr)                             # they refuse again, and say so
+        self.assertEqual(Publisher.hits, ["/a/own.xml", "/c/own.xml"], done.stderr)   # but both were asked
+        self.assertNotIn("left alone on this run", done.stderr)
+
 
 # --------------------------------------------------------------------------- publisher texts
 class TestPublisherText(unittest.TestCase):
@@ -1426,6 +1533,112 @@ class TestPublisherTextRun(LaneCase):
         latest = common.latest_by_key(common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl"))
         self.assertEqual(sum(r["status"] == "ok" for r in latest.values()), 2)
         self.assertEqual(latest[rows[-1]["video_id"]]["status"], "error")
+
+    # ---- redirects follow the audio lane's rules (feeds.Hops): a transcript's first host (A, 127.0.0.1) may
+    # redirect to a file store (B, 127.0.0.2) that other transcripts name as their first host
+    VTT = ("WEBVTT\n\n00:00.000 --> 00:05.000\n" + " ".join(f"word{i}" for i in range(80)) + "\n").encode()
+    ALLOW = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+
+    def text_rows(self, urls):
+        rows = [{"video_id": common.item_id("pod", "r", str(i)), "url": f"https://c.example/r{i}.mp3", "channel_dir": "chanA",
+                 "transcript_url": url, "transcript_type": "text/vtt"} for i, url in enumerate(urls)]
+        self.write_queue(rows)
+        return rows
+
+    def other_host(self):
+        return f"http://127.0.0.2:{self.server.server_address[1]}"
+
+    def text_records(self):
+        return common.read_jsonl(self.root / "transcripts_publisher" / "publisher_text_manifest.jsonl")
+
+    def test_no_redirect_is_followed_to_a_host_that_refused_three_times_on_this_run(self):
+        b = self.other_host()
+        Publisher.routes["/robots.txt"] = self.ALLOW
+        for i in range(3):
+            Publisher.routes[f"/t/b{i}.vtt"] = (429, "text/plain", b"slow down")
+        Publisher.routes["/t/a.vtt"] = (302, "location", f"{b}/t/moved.vtt".encode())
+        Publisher.routes["/t/moved.vtt"] = (200, "text/vtt", self.VTT)
+        rows = self.text_rows([f"{b}/t/b{i}.vtt" for i in range(3)] + [self.base + "/t/a.vtt"])
+        done = self.fetch_text("--workers", "1")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        self.assertEqual(self.asked(), ["/t/b0.vtt", "/t/b1.vtt", "/t/b2.vtt", "/t/a.vtt"])     # B is not asked again
+        records = self.text_records()
+        self.assertEqual([r["video_id"] for r in records], [r["video_id"] for r in rows[:3]])   # the text behind it waits
+        self.assertEqual({r["final_host"] for r in records}, {"127.0.0.2"})
+
+    def test_a_host_that_rests_is_not_reached_through_a_redirect_and_the_redirector_is_not_left_alone(self):
+        b = self.other_host()
+        Publisher.routes["/robots.txt"] = self.ALLOW
+        Publisher.routes["/t/b0.vtt"] = (429, "text/plain", b"slow down")
+        self.text_rows([f"{b}/t/b0.vtt"])
+        self.assertEqual(self.fetch_text().returncode, 3)                                # B refused: it rests
+        Publisher.routes["/t/a1.vtt"] = (302, "location", f"{b}/t/moved.vtt".encode())
+        Publisher.routes["/t/moved.vtt"] = (200, "text/vtt", self.VTT)
+        Publisher.routes["/t/a2.vtt"] = (200, "text/vtt", self.VTT)
+        rows = self.text_rows([f"{b}/t/b0.vtt", self.base + "/t/a1.vtt", self.base + "/t/a2.vtt"])
+        for asked in (["/t/a1.vtt", "/t/a2.vtt"], ["/t/a1.vtt"]):   # and the same on the run after: A is never charged for it
+            Publisher.hits.clear()
+            done = self.fetch_text("--workers", "1")
+            self.assertEqual(done.returncode, 0, done.stderr)
+            self.assertEqual(self.asked(), asked, done.stderr)                          # not B, not even through A
+            self.assertIn("left alone on this run: 127.0.0.2 refused (HTTP 429) 1 time(s)", done.stderr)
+            self.assertNotIn("left alone on this run: 127.0.0.1", done.stderr)
+        latest = common.latest_by_key(self.text_records())
+        self.assertNotIn(rows[1]["video_id"], latest)                                  # the text behind B is not recorded
+        self.assertEqual((latest[rows[2]["video_id"]]["status"], latest[rows[2]["video_id"]]["final_host"]), ("ok", "127.0.0.1"))
+
+    def test_a_robots_file_that_redirects_to_a_host_that_rests_is_not_followed(self):
+        b = self.other_host()
+        Publisher.routes["/robots.txt"] = self.ALLOW
+        Publisher.routes["/t/b0.vtt"] = (429, "text/plain", b"slow down")
+        self.text_rows([f"{b}/t/b0.vtt"])
+        self.assertEqual(self.fetch_text().returncode, 3)                                # B refused: it rests
+        Publisher.routes["/robots.txt"] = (302, "location", f"{b}/b-robots.txt".encode())  # every robots.txt now leads to B
+        Publisher.routes["/b-robots.txt"] = self.ALLOW
+        Publisher.routes["/t/a1.vtt"] = (200, "text/vtt", self.VTT)
+        self.text_rows([f"{b}/t/b0.vtt", self.base + "/t/a1.vtt"])
+        Publisher.hits.clear()
+        done = self.fetch_text("--workers", "1")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(Publisher.hits, ["/robots.txt"], done.stderr)                 # A's robots.txt, not where it leads
+        self.assertEqual(len(self.text_records()), 1)                                 # nothing recorded: tried again next run
+        self.assertNotIn("left alone on this run: 127.0.0.1", done.stderr)
+
+    def test_a_retry_after_from_the_host_a_redirect_leads_to_is_charged_to_that_host(self):
+        import time
+        b, asked = self.other_host(), []
+        Publisher.routes["/robots.txt"] = self.ALLOW
+        Publisher.routes["/t/a0.vtt"] = (302, "location", f"{b}/t/moved.vtt".encode())
+        Publisher.routes["/t/moved.vtt"] = (429, "text/plain", lambda: asked.append(time.monotonic()) or b"slow down",
+                                            {"Retry-After": "2"})
+        Publisher.routes["/t/b1.vtt"] = (200, "text/vtt", lambda: asked.append(time.monotonic()) or self.VTT)
+        rows = self.text_rows([self.base + "/t/a0.vtt", f"{b}/t/b1.vtt"])
+        done = self.fetch_text("--workers", "1")
+        self.assertEqual(done.returncode, 3, done.stderr)
+        self.assertIn("STOPPED for these hosts after 403 / 429 answers: 127.0.0.2 (1).", done.stderr)   # not A, which never refused
+        latest = common.latest_by_key(self.text_records())
+        first = latest[rows[0]["video_id"]]
+        self.assertEqual((first["source_host"], first["final_host"], first["error_class"], first["retry_after_s"]),
+                         ("127.0.0.1", "127.0.0.2", "rate_limited", 2))
+        self.assertEqual(latest[rows[1]["video_id"]]["status"], "ok")
+        self.assertEqual(len(asked), 2, done.stderr)
+        self.assertGreaterEqual(asked[1] - asked[0], 1.9)                 # B's own text waited for B's Retry-After
+
+    def test_a_refusal_through_a_redirect_is_remembered_for_the_host_that_gave_it(self):
+        b = self.other_host()
+        Publisher.routes["/robots.txt"] = self.ALLOW
+        Publisher.routes["/t/a0.vtt"] = (302, "location", f"{b}/t/moved.vtt".encode())
+        Publisher.routes["/t/moved.vtt"] = (403, "text/plain", b"no")
+        self.text_rows([self.base + "/t/a0.vtt"])
+        self.assertEqual(self.fetch_text().returncode, 3)
+        Publisher.routes["/t/a1.vtt"] = (200, "text/vtt", self.VTT)
+        Publisher.routes["/t/b2.vtt"] = (200, "text/vtt", self.VTT)
+        self.text_rows([self.base + "/t/a0.vtt", self.base + "/t/a1.vtt", f"{b}/t/b2.vtt"])
+        Publisher.hits.clear()
+        done = self.fetch_text("--workers", "1")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.asked(), ["/t/a0.vtt", "/t/a1.vtt"], done.stderr)          # B rests, A does not
+        self.assertIn("left alone on this run: 127.0.0.2 refused (HTTP 403) 1 time(s)", done.stderr)
 
     def test_dry_run_fetches_nothing(self):
         self.write_queue([{"video_id": common.item_id("pod", "f", "1"), "url": "https://c.example/1.mp3",
@@ -2466,11 +2679,20 @@ class TestListSitePages(LaneCase):
         import fetch_publisher_text as fpt
         case = self
 
-        def fake_get(url, timeout=60, max_bytes=0):
+        def fake_get(url, timeout=60, max_bytes=0, before_redirect=None):
             case.asked.append(url)
-            if url not in case.served:
+            answer = case.served.get(url)
+            while isinstance(answer, tuple):          # ("redirect", address): followed as feeds.open_url does
+                url = answer[1]
+                if before_redirect is not None:
+                    before_redirect(url)
+                case.asked.append(url)
+                answer = case.served.get(url)
+            if isinstance(answer, feeds.FetchError):
+                raise answer
+            if answer is None:
                 raise feeds.FetchError(404, "HTTP Error 404", url)
-            return url, "text/xml", case.served[url]
+            return url, "text/xml", answer
         saved = (self.mod.get_bytes, fpt.get_bytes, sys.argv)
         self.mod.get_bytes = fpt.get_bytes = fake_get
         sys.argv = ["list_site_pages.py", "--root", str(self.root), "--official-sites", str(self.sites), "--pages", str(self.pages),
@@ -2529,6 +2751,20 @@ class TestListSitePages(LaneCase):
         self.assertEqual(code, 0, out)
         self.assertEqual(sorted(r["page_url"] for r in common.read_csv(self.pages)),
                          [f"https://maker.example/a-message-{i}/" for i in range(4)])     # not the pages, not the home page
+
+    def test_no_redirect_is_followed_to_a_host_that_is_being_left_alone(self):
+        # the maker's sitemap index has moved to another of their sites, which asked to be left alone for an hour
+        base, cdn = "https://maker.example", "https://cdn.example"
+        common.write_csv(self.sites, [{"person_id": "maker", "domain": domain, "evidence": "declared on the channel page"}
+                                      for domain in ("cdn.example", "maker.example")], ["person_id", "domain", "evidence"])
+        self.served[cdn + "/robots.txt"] = feeds.FetchError(429, "HTTP Error 429: Too Many Requests", cdn + "/robots.txt", 3600)
+        self.served[cdn + "/maker/sitemap_index.xml"] = self.served[base + "/sitemap_index.xml"]
+        self.served[base + "/sitemap_index.xml"] = ("redirect", cdn + "/maker/sitemap_index.xml")
+        code, out = self.run_tool("--only", "maker", "--match", "^/post/")
+        self.assertEqual(code, 3, out)                                            # cdn.example refused
+        self.assertNotIn(cdn + "/maker/sitemap_index.xml", self.asked)            # not asked through maker.example
+        self.assertEqual([u for u in self.asked if u.startswith(cdn)], [cdn + "/robots.txt"])
+        self.assertIn(base + "/sitemap.xml", self.asked)                          # maker.example itself is still read
 
     def test_someone_without_an_official_site_is_refused(self):
         code, _ = self.run_tool("--only", "nobody")

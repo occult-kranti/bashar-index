@@ -21,7 +21,7 @@ import xml.etree.ElementTree as ET
 import zlib
 from email.utils import parsedate_to_datetime
 
-from common import item_id, retry_after_seconds, youtube_disallowed, youtube_override
+from common import host_of, item_id, retry_after_seconds, youtube_disallowed, youtube_override
 
 # A plain, honest client name. No project, account or contact details are sent to third parties.
 USER_AGENT = "podcast-feed-reader/1.0 (python-urllib)"
@@ -49,6 +49,54 @@ class FetchError(Exception):
         self.status, self.final_url, self.retry_after, self.klass = status, final_url, retry_after, klass
 
 
+class Hops:
+    """Called before each redirect is followed (open_url's and get_bytes' before_redirect): every host along the
+    way gets its own turn and its own Retry-After, and a host that is being left alone (it refused, or stopped
+    answering) is not asked at all, whichever first hop leads to it: FetchError with klass "held", which means
+    the item was not asked for and is not recorded. `stopped(host)` says whether a host is being left alone
+    (on this run, gates.blocked; across runs, the step's resting hosts). `last` is the last host led to,
+    `passed` every host led to other than the first, in order."""
+
+    def __init__(self, first, gates, stopped):
+        self.first, self.gates, self.stopped, self.last, self.passed = first, gates, stopped, "", []
+
+    def __call__(self, url):
+        host = host_of(url)
+        if host and host != self.first:
+            if self.stopped(host):
+                raise FetchError(0, f"redirect not followed: {host} is being left alone (it refused or stopped "
+                                    "answering)", url, klass="held")
+            self.gates.wait(host)
+            if self.stopped(host):
+                raise FetchError(0, f"redirect not followed: {host} refused while this request waited for its turn",
+                                 url, klass="held")
+        self.last = host or self.last
+        if host and host != self.first and host not in self.passed:
+            self.passed.append(host)
+
+    def answered(self, err):
+        """The host that gave the answer `err` stands for: the one its address names, or, for a connection that
+        failed after a redirect, the host the redirect led to. '' when neither is known."""
+        if not err.status and err.klass is None and self.last:
+            return self.last
+        return host_of(err.final_url or "")
+
+    def via(self, final_host):
+        """The hosts a redirect passed through on its way to `final_host`, the first host not counted."""
+        return [h for h in self.passed if h != final_host]
+
+    def record(self, final_host):
+        """What a manifest record says about where its answer came from: `final_host`, and `via_hosts` when a
+        redirect passed through other hosts on the way."""
+        via = self.via(final_host)
+        return {"final_host": final_host, **({"via_hosts": via} if via else {})}
+
+    def credit(self, final_host):
+        """Every host along the way answered as asked: the one that answered last, the first, and those between."""
+        for host in dict.fromkeys([final_host or self.first, self.first, *self.passed]):
+            self.gates.success(host)
+
+
 def robots_refusal(url, redirect=False):
     """The FetchError for an address on YouTube that its robots.txt disallows, or None (also None when the
     owner opted in with ET_YOUTUBE_ROBOTS_OVERRIDE=1)."""
@@ -61,7 +109,7 @@ def robots_refusal(url, redirect=False):
 
 class _ObeyYouTubeRobots(urllib.request.HTTPRedirectHandler):
     """Follows a redirect only to an address the rules allow: a YouTube path its robots.txt disallows is not
-    requested, wherever the redirect came from. A request opened with `before_redirect` (see open_url) has
+    requested, wherever the redirect came from. A request opened with `before_redirect` (see open_url; Hops) has
     that hook called with each address it is about to be redirected to, after the redirect answer is closed."""
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):
@@ -127,13 +175,14 @@ def open_url(url, timeout=60, headers=None, before_redirect=None):
         raise FetchError(0, f"{type(err).__name__}: {err}"[:300], url) from None
 
 
-def get_bytes(url, timeout=60, max_bytes=MAX_FEED_BYTES):
-    """(final_url, content_type, body) for a small resource such as a feed or a transcript."""
-    with open_url(url, timeout, {"Accept-Encoding": "gzip"}) as response:
+def get_bytes(url, timeout=60, max_bytes=MAX_FEED_BYTES, before_redirect=None):
+    """(final_url, content_type, body) for a small resource such as a feed or a transcript. `before_redirect`
+    is passed to open_url (a Hops, so that a redirect follows the same rules as the first request)."""
+    with open_url(url, timeout, {"Accept-Encoding": "gzip"}, before_redirect) as response:
         try:
             body = response.read(max_bytes + 1)
         except (OSError, http.client.HTTPException) as err:
-            raise FetchError(0, f"{type(err).__name__}: {err}"[:300], url) from None
+            raise FetchError(0, f"{type(err).__name__}: {err}"[:300], response.geturl()) from None
         if len(body) > max_bytes:
             raise FetchError(0, f"response larger than {max_bytes} bytes", response.geturl())
         if (response.headers.get("Content-Encoding") or "").lower() == "gzip" or body[:2] == b"\x1f\x8b":
