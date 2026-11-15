@@ -10,11 +10,13 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
 
 * **Collected:** 1,138 audio files (819.5 hours, 10.11 GB, mono 24 kbps Opus), 8,425 texts published by the
   sources themselves, and 61 speech-to-text transcripts (30.6 hours). Every one of them is in the private store.
-* **Google Drive: done.** Everything collected is in the folder "ET Channelers Archive": 1,138 recordings as
-  1,958 playable files of at most 7.3 MB (10.13 GB), and 40 text volumes. That is 1,998 files in 77 folders, by
-  person and source.
-* **Bashar's archive.org sessions** (his own channeled sessions, not interviews): 262 of 903 recordings
-  downloaded (274.6 hours), all 262 on Drive; 641 (636.7 hours) still to download and to put on Drive (section 5).
+* **Google Drive: done.** Everything collected by the pause is in the folder "ET Channelers Archive": 1,138
+  recordings as 1,958 playable files of at most 7.3 MB (10.13 GB), and 40 text volumes. That is 1,998 files in
+  77 folders, by person and source. The Bashar sessions downloaded since then are there too (next line): with
+  them Drive holds 3,420 files (17.9 GB) in the same 77 folders.
+* **Bashar's archive.org sessions** (his own channeled sessions, not interviews): **done on 2026-11-15.** All 903
+  recordings are downloaded (911.3 hours by archive.org's listing), with no failures, and all 903 are on Drive
+  (section 5). Their audio is in the private store and on Drive, not in this repository.
 * **Podcast episodes:** 733 of 2,647 downloaded, 1,442.6 hours left. **Creators' own audio files** (Kryon's and
   L/L Research's sites): 95 of 1,410 downloaded, 1,315 left, of unknown length.
 * **Interviews on other shows:** 28 of 29 downloaded.
@@ -25,7 +27,7 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
 
 **Since the pause** (03:30 to 07:45 UTC, no collecting): the Drive copy was finished (the last 50 files were
 17 Bashar sessions and 4 podcast episodes that had arrived after the Drive plan was made); the tables were
-rebuilt from the store, so `plan/bashar_sessions.csv` now counts the 262 sessions; the review fixes and the
+rebuilt from the store, so `plan/bashar_sessions.csv` counted the 262 sessions held then; the review fixes and the
 YouTube robots.txt gate were finished; the deep research on the analyses was folded into `ANALYSIS_PLAN.md`;
 `drive_stage.py` gained `round` and `done` for uploads made one call at a time.
 
@@ -119,7 +121,7 @@ sync deletes local audio once its stored copy is checked (`--only <person-id>` p
 | Job | Paused where | Start again with |
 |---|---|---|
 | Sync to the private store, every 5 minutes, and the text mirror every 30 | after a final pass: nothing on disk unstored | `ET_GH_TOKEN_FILE=~/.config/et-channelers/github_token ET_HOLD_UNTRANSCRIBED_FOR=darryl-anka bash et-channelers/pipeline/save_to_github.sh` |
-| Bashar's archive.org sessions | 262 of 903 | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --queue ~/et-channelers-private/jobs/queue_archive_org_all.csv --all --workers 2 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/archive_org_download.log 2>&1 < /dev/null &` |
+| Bashar's archive.org sessions | finished on 2026-11-15: 903 of 903, no failures (the command skips them all) | `setsid nohup ~/et-venv/bin/python -I et-channelers/pipeline/download_enclosures.py --queue ~/et-channelers-private/jobs/queue_archive_org_all.csv --all --workers 2 --per-host 2 --min-interval 1.5 --min-free-gb 3 >> ~/et-channelers-private/logs/archive_org_download.log 2>&1 < /dev/null &` |
 | Collection cycles: feeds, new episodes, texts, tables. They wait while another download runs | between cycles | `setsid nohup bash et-channelers/pipeline/keep_collecting.sh >> ~/et-channelers-private/logs/collect.log 2>&1 < /dev/null &` |
 | Speech-to-text, Bashar's sessions first | 61 done | `ET_ASR_WORKERS=2 ET_ASR_THREADS=2 setsid nohup bash et-channelers/pipeline/keep_transcribing.sh >> ~/et-channelers-private/logs/asr.log 2>&1 < /dev/null &` |
 
@@ -138,16 +140,17 @@ as "skipped by rule", not as a failure.
 ## 5. The next big task, and other work in progress
 
 * **Every Bashar session on archive.org, downloaded and on Google Drive** (added at the owner's request).
-  The Bashar Index catalogued 684 sessions. 393 point at a recording somebody deposited on archive.org, which
-  answers from a cloud server. archive.org lists 937 audio files there; 34 are a second encoding of a
-  recording already counted, so there are **903 recordings (911.3 hours by archive.org's listing; six have no
-  listed length, two of them downloaded)**. 262 are
-  downloaded (274.6 hours by the listing; 275.2 measured) and all of them are on Drive in "04 Audio / Darryl Anka / archive.org sessions" (609 files). **641
-  recordings (636.7 hours, about 7.8 GB) are left.** 274 sessions are only on the official streaming site,
-  which is paid and behind a login: not collected. These are channeled sessions, not interviews, so the
+  **Done on 2026-11-15.** The Bashar Index catalogued 684 sessions. 393 point at a recording somebody deposited
+  on archive.org, which answers from a cloud server. archive.org lists 937 audio files there; 34 are a second
+  encoding of a recording already counted, so there are **903 recordings (911.3 hours by archive.org's listing;
+  six have no listed length)**. **All 903 are downloaded, with no failures, and all of them are on Drive** in
+  "04 Audio / Darryl Anka / archive.org sessions". Their audio is in the private store (the private repository
+  and its releases) and on Drive, never in this repository. 274 sessions are only on the official streaming
+  site, which is paid and behind a login: not collected. These are channeled sessions, not interviews, so the
   interview rule (fetch only with live channeling) does not apply.
 
-  How: start the archive.org download (section 4). As sessions arrive and are stored, put them on Drive:
+  How it was done: the archive.org download (section 4), and, as sessions arrived and were stored, rounds to
+  Drive:
 
   ```bash
   S=~/et-drive/stage-bashar; X=<the Claude session's scratchpad>/drive_up
@@ -160,9 +163,10 @@ as "skipped by rule", not as a failure.
   gh release upload handoff-2026-11-14 ~/et-channelers-private/sync/drive_manifest.jsonl -R occult-kranti/et-channelers-archive --clobber
   ```
 
-  About 1,450 Drive files, eight rounds of 200 (two messages of 100 calls each). Then rebuild the tables
-  (section 3, step 5). Done when all 903 are in the store and on Drive, `drive_stage.py status` shows nothing
-  left, and `plan/bashar_sessions.csv` shows 903 here.
+  The copy of the 641 later sessions took 18 rounds (1,422 files) of `plan`, `batches`, `round` and `done`, and
+  after each round its ledger (`sync/drive_manifest.jsonl`) was uploaded to the release `handoff-2026-11-14`.
+  All of Bashar's archive.org sessions now fill 2,031 files (11.0 GB) on Drive. The tables were rebuilt on
+  2026-11-15: `plan/bashar_sessions.csv` shows all 903 here (909.7 hours measured).
 
 * **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
   It also refuses a file with more than one hard link, which is why `--link-dir` copies each file. Subagents
@@ -216,7 +220,8 @@ as "skipped by rule", not as a failure.
 * **Disk.** `--hold-untranscribed-for darryl-anka` keeps every untranscribed Bashar session on disk. At the
   speed of this machine's speech-to-text, that fills the disk before the download ends. Planned fix: keep only
   a window of the sessions the transcriber reaches next, and pull the rest back when it gets to them. Until
-  then, watch `df -h` while the 641 sessions download (about 7.8 GB).
+  then, watch `df -h` while Bashar's sessions are held for speech-to-text; their download is finished (all 903,
+  section 5).
 * **A pull can race the sync.** The sync deletes local audio once its stored copy is checked. Audio pulled for
   transcription is safe only once `transcribe.py` has it queued (each run names its files in
   `<root>/sync/holds/`) or when its person is in `ET_HOLD_UNTRANSCRIBED_FOR`. Pull with the sync loop stopped,
@@ -253,7 +258,8 @@ as "skipped by rule", not as a failure.
 1. Set up and check (section 3), with the newer Drive ledger.
 2. Decide YouTube (section 6.6) before any YouTube step runs. Decide the commit email (6.7).
 3. Start the sync, the archive.org download and the collection cycles (section 4), sized to the machine.
-4. Put each stored Bashar session on Drive as it arrives (section 5), until all 903 are there.
+4. Put each stored Bashar session on Drive as it arrives (section 5), until all 903 are there. Done on
+   2026-11-15.
 5. Choose the speech-to-text engine (6.1). Start `keep_transcribing.sh` sized to the machine. Fix the disk
    hold (section 7).
 6. Fold in the Kimi snapshot (ROADMAP phase 4b).
@@ -280,7 +286,7 @@ Paste this into Claude Code in the new Codespace, at `/workspaces/bashar-index`:
 >    the memory files from the release `handoff-2026-11-14`, copy its newer `drive_manifest.jsonl` over the
 >    restored one, pull the transcripts, the texts and Bashar's audio, and show me `sync_archive.py status`:
 >    every kind should show `on_disk_not_stored` 0. Rebuild the tables and check that `drive_stage.py status`
->    shows 1,998 files on Drive.
+>    shows 3,420 files on Drive.
 > 2. Run the three test suites in `et-channelers/pipeline/tests/` and both guards in `et-channelers/scripts/`.
 > 3. Size the jobs to the machine (`nproc`, `free -g`, `df -h`), then start the sync loop, the archive.org
 >    download of Bashar's sessions and the collection cycles (HANDOFF section 4).
