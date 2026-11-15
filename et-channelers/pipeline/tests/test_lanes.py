@@ -776,7 +776,14 @@ class TestDownloadEnclosures(LaneCase):
         Publisher.routes["/media/0.mp3"] = (200, "audio/mpeg", slow)
         Publisher.routes["/media/1.mp3"] = (429, "text/plain", b"slow down", {"Retry-After": "3600"})
         self.write_queue(rows[:2])
-        first = self.download("--workers", "2", "--min-interval", "1", "--all")
+        # Two workers race for the host's first turn. Only when file 0 wins does its download outlast file 1's
+        # refusal, which is the case under test; when file 1 wins, the host rests before file 0 is asked, so
+        # the run is set up again (at most three times)
+        for _ in range(3):
+            shutil.rmtree(self.root / "audio", ignore_errors=True)
+            first = self.download("--workers", "2", "--min-interval", "1", "--all")
+            if [r["status"] for r in self.manifest()] == ["error", "ok"]:
+                break
         self.assertEqual(first.returncode, 3, first.stderr)
         self.assertEqual([r["status"] for r in self.manifest()], ["error", "ok"])   # the refusal is written first
         self.write_queue(rows)
