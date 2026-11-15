@@ -22,7 +22,7 @@ Drive; the other rows give the state at the pause.
 | Analysis plan | written: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) (three drafts and a synthesis; families, gates, small-model steps, phases, paper). The deep research on timelines, predictions and question banks is folded in as its own section; the critique is in `notes/2026-11-14/research_critique.md` |
 | Review of dashboard v2 and the store | done: 46 of 47 findings confirmed by skeptics, and all 46 fixed in code, tables and page |
 | Pre-merge review of this work | done: 34 of 37 findings confirmed and fixed, with a test for each code fix that fails without it. The one that mattered most: one refusal from archive.org's own host, or from one of its storage nodes, would have held back every queued Bashar session for a day or more (HANDOFF section 1) |
-| Next | set up and check the new Codespace; decide YouTube (D8); choose the speech-to-text engine; fix the disk hold; phase 4b |
+| Next | the owner's task of 2026-11-15 (HANDOFF section 5): the newest 10, then 20, then 50 videos of every tracked channel (612, 1,200 and 2,920 videos; 233, 496 and 1,217 hours), then a timeline of the predictions made on each channel. It needs decision D8 and the owner's own connection, and a `--newest N` choice in `select_jobs.py`. Also: choose the speech-to-text engine; fix the disk hold; phase 4b |
 
 ### Done 2026-11-15: every Bashar session on archive.org, downloaded and on Google Drive (added 2026-11-14, at the owner's request)
 
