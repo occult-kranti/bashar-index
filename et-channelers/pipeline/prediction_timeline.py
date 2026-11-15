@@ -23,12 +23,14 @@ a past reference: the web sources still undated began publishing after 2000.
 Writes, inside the private folder only (it quotes the texts):
     <root>/analysis/predictions/<person>.jsonl      every candidate, with its sentence
     <root>/analysis/predictions/<person>.md         the timeline: by target window, quotes cut to 30 words
-    <root>/analysis/predictions/counts.csv          counts per person and kind (no text)
+    <root>/analysis/predictions/counts.csv          counts per person and kind (no text); near-copies are
+                                                    collapsed by shared five-word runs (12.4) and counted apart
 --publish-counts also copies counts.csv to plan/prediction_counts.csv (counts only, never text).
 """
 from __future__ import annotations
 
 import argparse
+import collections
 import csv
 import datetime
 import json
@@ -42,6 +44,7 @@ from common import (ET_ROOT, add_root_arg, atomic_write_text, ensure_outside_git
                     read_jsonl, utc_now, write_csv)
 
 QUOTE_WORDS = 30          # the project's limit for any quote
+COPY_RESEMBLANCE = 0.5    # Broder 1997: near-copies share at least half their five-word runs
 UNDATED_FLOOR = 2000      # the web sources still undated (Blossom Goodchild, Swaruu, Sam, Jamie Butler) began after
 #                           it; a person with older dated items (L/L Research, 1974) gets their earliest year instead
 NUM = {"a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8,
@@ -168,7 +171,8 @@ def candidate(sentence, said_year, undated_floor=UNDATED_FLOOR):
     theme = THEMES.search(sentence)
     if not (window or predict or theme):
         return None
-    if BOILERPLATE.search(sentence) or QUESTION.search(sentence) or PAST_REPORT.search(sentence):
+    if (BOILERPLATE.search(sentence) or QUESTION.search(sentence) or PAST_REPORT.search(sentence)
+            or POST_HEADER.search(sentence)):
         return None
     lo, hi, label, expr = window if window else (None, None, "", "")
     floor = said_year if said_year else undated_floor
@@ -264,6 +268,19 @@ def listing_dates(paths):
     return dates
 
 
+# a blog's reader comments follow the post ("4 comments:", then "ReplyDelete" under each); they are readers'
+# words, not the source's (validation of 2026-11-15: 11 of 16 sampled Suzanne Lie candidates were comments)
+COMMENTS = re.compile(r"\n\s*\d+ comments?:\s*\n|ReplyDelete")
+# a post's date header ("Saturday, May 30, 2015 Title ..."): the year is the date of the post, not a target
+POST_HEADER = re.compile(r"^(monday|tuesday|wednesday|thursday|friday|saturday|sunday),? [a-z]+\.? \d{1,2},? "
+                         r"(19|20)\d\d\b", re.I)
+
+
+def without_comments(text):
+    m = COMMENTS.search(text)
+    return text[:m.start()] if m else text
+
+
 def read_item_texts(root, row):
     """[(kind, [(offset, sentence)])] for one catalogue row: speech-to-text made here and texts from the
     source, kept apart."""
@@ -280,32 +297,68 @@ def read_item_texts(root, row):
             out.append(("made", sentences_of_text((root / asr).read_text(encoding="utf-8", errors="replace"))))
     src = row.get("publisher_text_path") or ""
     if src and (root / src).exists():
-        out.append(("source", sentences_of_text((root / src).read_text(encoding="utf-8", errors="replace"))))
+        out.append(("source", sentences_of_text(without_comments((root / src).read_text(encoding="utf-8",
+                                                                                         errors="replace")))))
     return out
 
 
+def shingles(sentence, n=5):
+    w = re.sub(r"[^a-z0-9 ]", "", sentence.lower()).split()
+    return {" ".join(w[i:i + n]) for i in range(max(1, len(w) - n + 1))}
+
+
+def copy_groups(rows, threshold=COPY_RESEMBLANCE):
+    """Collapse near-copies (12.4: copies first, by shared five-word runs; Broder 1997). In the order said, a row
+    whose set of five-word runs resembles (Jaccard) an earlier group's first row by at least threshold joins that
+    group: it gets the group's number in copy_group and copy True; any other row starts a group. Families of one
+    event in different words are the model pass's work, not this."""
+    order = sorted(range(len(rows)), key=lambda i: (rows[i].get("date_said") or "9999", rows[i]["item_id"],
+                                                     rows[i].get("offset_s") or 0))
+    heads, index = [], collections.defaultdict(set)
+    for i in order:
+        s = shingles(rows[i]["sentence"])
+        best, group = 0.0, None
+        for h in set().union(*(index[x] for x in s)):
+            r = len(s & heads[h]) / len(s | heads[h])
+            if r > best:
+                best, group = r, h
+        if group is not None and best >= threshold:
+            rows[i]["copy_group"], rows[i]["copy"] = group, True
+        else:
+            heads.append(s)
+            rows[i]["copy_group"], rows[i]["copy"] = len(heads) - 1, False
+            for x in s:
+                index[x].add(len(heads) - 1)
+    return rows
+
+
 def timeline_md(person, rows, items_read):
+    times = collections.Counter(r["copy_group"] for r in rows)
+    all_rows, rows = rows, [r for r in rows if not r.get("copy")]
     dated = sorted((r for r in rows if r["window_lo"] is not None or r["window_hi"] is not None),
                    key=lambda r: ((r["window_lo"] if r["window_lo"] is not None else r["window_hi"]),
                                   r["window_hi"] or 0, r["date_said"] or "", r["item_id"]))
     undated = [r for r in rows if r["window_lo"] is None and r["window_hi"] is None]
     lines = [f"# Statements about the future: {person}", "",
-             f"Rules pass of ANALYSIS_PLAN 12.4, made {utc_now()}. {items_read} items read; {len(rows)} candidates, "
-             f"{len(dated)} with a target window. These are candidates, not findings: a model pass is still to check "
+             f"Rules pass of ANALYSIS_PLAN 12.4, made {utc_now()}. {items_read} items read; {len(all_rows)} candidates, "
+             f"{len(rows)} once near-copies are collapsed (each shown once, with how often it was said), {len(dated)} "
+             "of these with a target window. These are candidates, not findings: a model pass is still to check "
              "each one. Private: the quotes are from the texts (at most 30 words).", "",
-             "| Target | Said | Kind | Item | Time | Cues | Quote |", "|---|---|---|---|---|---|---|"]
+             "| Target | Said | Kind | Item | Times | Time | Cues | Quote |", "|---|---|---|---|---|---|---|---|"]
     for r in dated:
         lo, hi = r["window_lo"], r["window_hi"]
         target = f"{lo}" if lo == hi else f"{lo if lo is not None else '…'}–{hi if hi is not None else '…'}"
         cues = ", ".join(c for c, on in (("if", r["conditional"]), ("hedged", r["hedged"]), ("strong", r["strong"])) if on)
         when = f" @{int(r['offset_s'] // 60)}:{int(r['offset_s'] % 60):02d}" if r["offset_s"] is not None else ""
-        lines.append(f"| {target} | {r['date_said'] or '?'} | {r['kind']} | {r['item_id']}{when} | {r['time_expr']} | "
+        lines.append(f"| {target} | {r['date_said'] or '?'} | {r['kind']} | {r['item_id']}{when} | "
+                     f"{times[r['copy_group']]} | {r['time_expr']} | "
                      f"{cues} | {quote(r['sentence']).replace('|', '/')} |")
     lines += ["", f"## Without a target window ({len(undated)})", "",
               "\"Soon\" and statements with a prediction word or theme but no time; and relative times in items "
               "whose date is unknown.", ""]
     for r in sorted(undated, key=lambda r: (r["date_said"] or "", r["item_id"])):
-        lines.append(f"- {r['date_said'] or '?'} · {r['kind']} · {r['item_id']}: {quote(r['sentence'])}")
+        more = f" (said {times[r['copy_group']]} times)" if times[r["copy_group"]] > 1 else ""
+        lines.append(f"- {r['date_said'] or '?'} · {r['kind']} · {r['item_id']}{more}: {quote(r['sentence'])}")
     return "\n".join(lines) + "\n"
 
 
@@ -351,7 +404,7 @@ def main():
     counts = []
     people = sorted({p for p, _ in read})
     for person in people:
-        rows = by_person.get(person, [])
+        rows = copy_groups(by_person.get(person, []))
         text = "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows)
         atomic_write_text(out / f"{person}.jsonl", text)
         items = sum(read.get((person, k), 0) for k in kinds)
@@ -363,16 +416,20 @@ def main():
             dated = [r for r in mine if r["window_lo"] is not None or r["window_hi"] is not None]
             years = sorted(y for r in dated for y in (r["window_lo"], r["window_hi"]) if y is not None)
             counts.append({"person_id": person, "kind": kind, "items_read": read.get((person, kind), 0),
-                           "candidates": len(mine), "with_window": len(dated), "without_window": len(mine) - len(dated),
+                           "candidates": len(mine), "distinct": sum(not r["copy"] for r in mine),
+                           "with_window": len(dated), "distinct_with_window": sum(not r["copy"] for r in dated),
+                           "without_window": len(mine) - len(dated),
                            "conditional": sum(r["conditional"] for r in mine), "hedged": sum(r["hedged"] for r in mine),
                            "earliest_target": years[0] if years else "", "latest_target": years[-1] if years else ""})
-    fields = ["person_id", "kind", "items_read", "candidates", "with_window", "without_window", "conditional",
+    fields = ["person_id", "kind", "items_read", "candidates", "distinct", "with_window", "distinct_with_window",
+              "without_window", "conditional",
               "hedged", "earliest_target", "latest_target"]
     write_csv(out / "counts.csv", counts, fields)
     if args.publish_counts:
         shutil.copyfile(out / "counts.csv", ET_ROOT / "plan" / "prediction_counts.csv")
     total = sum(c["candidates"] for c in counts)
-    print(f"{len(catalogue)} items with text for {len(people)} people; {total} candidates "
+    print(f"{len(catalogue)} items with text for {len(people)} people; {total} candidates, "
+          f"{sum(c['distinct'] for c in counts)} distinct "
           f"({sum(c['with_window'] for c in counts)} with a target window) -> {out}")
 
 
