@@ -24,6 +24,9 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
   needs a faster engine or a GPU (section 6.1).
 * **YouTube steps are off by rule.** youtube.com's robots.txt disallows the listing, feed and caption paths for
   every crawler. The owner decides what happens next (section 6.6).
+* **Next task (set by the owner on 2026-11-15):** the newest 10, then 20, then 50 videos of every tracked
+  channel, then a timeline of the predictions made on each channel (section 5). It waits for decision 6.6 and
+  the owner's own connection.
 
 **Since the pause** (03:30 to 07:45 UTC, no collecting): the Drive copy was finished (the last 50 files were
 17 Bashar sessions and 4 podcast episodes that had arrived after the Drive plan was made); the tables were
@@ -138,6 +141,45 @@ next step, and `run_all.py` leaves the YouTube lanes out of its plan. In the cyc
 as "skipped by rule", not as a failure.
 
 ## 5. The next big task, and other work in progress
+
+* **Next task (set by the owner on 2026-11-15): the newest videos of every tracked channel, then a timeline of
+  predictions for each channel.**
+  - **What.** The audio of the newest 10 videos of each of the 63 tracked YouTube channels first, then the newest
+    20, then the newest 50; each tier includes the one before. Only the channel's "videos" tab: no shorts and no
+    live streams. Audio only (mono 24 kbps Opus), like every lane.
+  - **Size.** From the channel listings made on 2026-11-13, before the robots.txt rule (newest first; they carry no
+    upload dates). None of these videos is here already by another route.
+
+    | Tier | Videos | Hours | Audio, about | Speech-to-text at 1.3x / 9.2x real time |
+    |---|---|---|---|---|
+    | newest 10 | 612 | 233.4 | 2.7 GB | 7.5 / 1.1 days |
+    | newest 20 | 1,200 | 496.0 | 5.7 GB | 15.9 / 2.2 days |
+    | newest 50 | 2,920 | 1,217.0 | 14.0 GB | 39.0 / 5.5 days |
+
+    3 channels have fewer than 10 videos, 5 fewer than 20 and 7 fewer than 50; for them the tier takes them all.
+  - **What it needs first.**
+    1. Decision 6.6. robots.txt disallows the listing and player paths, so `download_audio.py` sends nothing until
+       the owner sets `ET_YOUTUBE_ROBOTS_OVERRIDE=1` (6.6 b). A session never sets it.
+    2. The owner's own connection. From this Codespace and any cloud server YouTube answers with bot checks or
+       HTTP 403, and nothing here gets around that. So the downloads run on the owner's computer
+       (`pipeline/README.md`, "One command on your own computer"), which puts each file in the private store;
+       from there `drive_stage.py` copies it to Drive as before.
+    3. A "newest N per channel" choice. `select_jobs.py --per-channel K` takes a random sample, so a `--newest N`
+       option is to be added: the first N of each channel's videos tab in listing order. It sends no request.
+    4. Fresh listings, if "newest" must mean newest on the day of the run: the listings are from 2026-11-13, and a
+       new listing is a disallowed request too, so it waits for 6.6 as well.
+    5. Upload dates. The listings have none, and a timeline needs the date each video was published
+       (ANALYSIS_PLAN 5.6); the download on the owner's computer records it.
+    6. Speech-to-text (6.1): on a 2-core machine the tiers take weeks, with a GPU or the faster engine days.
+  - **Then the analysis, tier by tier.** For each channel, a timeline of the predictions in its videos, as
+    ANALYSIS_PLAN 5.6 and 12.4 define them: every statement about the future (prediction, conditional
+    prediction, warning, prophecy, "timeline" as a schedule; future-tense teaching is not one), with the date it
+    was said (the upload date), its target window resolved from the time expression ("soon" gets no invented
+    bounds), its certainty and specificity, and repeats linked into one claim. Texts from the source and
+    speech-to-text stay apart. First a timeline from the newest 10, then grown with 20 and 50.
+  - **Where it goes.** The timelines quote and paraphrase transcripts, so they stay private: the private store
+    and Drive's "05 Analysis", quotes at most 30 words. This repository and the dashboard show counts only
+    until the owner decides D16.
 
 * **Every Bashar session on archive.org, downloaded and on Google Drive** (added at the owner's request).
   **Done on 2026-11-15.** The Bashar Index catalogued 684 sessions. 393 point at a recording somebody deposited
@@ -258,8 +300,9 @@ as "skipped by rule", not as a failure.
 1. Set up and check (section 3), with the newer Drive ledger.
 2. Decide YouTube (section 6.6) before any YouTube step runs. Decide the commit email (6.7).
 3. Start the sync, the archive.org download and the collection cycles (section 4), sized to the machine.
-4. Put each stored Bashar session on Drive as it arrives (section 5), until all 903 are there. Done on
-   2026-11-15.
+4. Bashar's sessions on Drive: done on 2026-11-15. Next, the owner's task (section 5): add `--newest N` to
+   `select_jobs.py`; once 6.6 is decided, the newest 10, 20 and 50 videos of every channel through the owner's
+   computer, each tier stored and on Drive; then a timeline of predictions per channel.
 5. Choose the speech-to-text engine (6.1). Start `keep_transcribing.sh` sized to the machine. Fix the disk
    hold (section 7).
 6. Fold in the Kimi snapshot (ROADMAP phase 4b).
@@ -290,11 +333,13 @@ Paste this into Claude Code in the new Codespace, at `/workspaces/bashar-index`:
 > 2. Run the three test suites in `et-channelers/pipeline/tests/` and both guards in `et-channelers/scripts/`.
 > 3. Size the jobs to the machine (`nproc`, `free -g`, `df -h`), then start the sync loop, the archive.org
 >    download of Bashar's sessions and the collection cycles (HANDOFF section 4).
-> 4. As Bashar's sessions arrive and are stored, put them on my Google Drive with `drive_stage.py` (`plan`,
->    `batches --link-dir <your scratchpad>/drive_up`, `round --size 200`, the uploads in two messages of 100
->    calls, `done --round <the id round printed>`), and upload the ledger to the handoff release after each
->    round, until all 903 are there.
->    They are channeled sessions, not interviews.
+> 4. All 903 Bashar sessions are already on my Drive. The next task is mine (HANDOFF section 5): the newest 10,
+>    then 20, then 50 videos of every tracked channel, then a timeline of the predictions made on each channel.
+>    Add `--newest N` to `select_jobs.py` and build the three queues; the downloads run on my own computer once
+>    I decide 6.6. Put each stored tier on my Drive with `drive_stage.py` (`plan`, `batches --link-dir <your
+>    scratchpad>/drive_up`, `round --size 200`, the uploads, `done --round <the id round printed>`), and upload
+>    the ledger to the handoff release after each round. Then transcribe each tier and build the timelines
+>    (ANALYSIS_PLAN 5.6 and 12.4); they stay private.
 > 5. Do not run any YouTube step and do not set `ET_YOUTUBE_ROBOTS_OVERRIDE`: that is my decision (HANDOFF 6.6).
 >    Bring me decisions 6.1 to 6.7 when you reach them, with your recommendation.
 > 6. Keep `ROADMAP.md`, `HANDOFF.md` and the dashboard up to date; work on a branch, run the three test suites and

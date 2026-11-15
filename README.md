@@ -80,7 +80,7 @@ The audio, the texts published by the sources and the speech-to-text transcripts
 | Collection dashboard | <https://claude.ai/artifact/898o4zpkocZ8qXjvR1xDfb>, a dashboard page on claude.ai (Anthropic's Claude website) whose tables come from the CSV files in [`et-channelers/plan/`](et-channelers/plan/). Like every claude.ai page, it opens only for the people the owner shares it with. |
 | Handoff | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md): the state, how to set up the next Codespace and read the store back, the decisions waiting for the owner, and a prompt for the next session. |
 
-The current state and the next steps are in [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) and [`et-channelers/ROADMAP.md`](et-channelers/ROADMAP.md).
+The current state and the next steps are in [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) and [`et-channelers/ROADMAP.md`](et-channelers/ROADMAP.md). The next task, set by the owner on 2026-11-15: the newest 10, then 20, then 50 videos of every tracked channel, then a timeline of the predictions made on each channel (HANDOFF section 5). It waits for the owner's decision on YouTube's robots.txt and runs from the owner's own connection.
 
 ## What is here
 
