@@ -1,11 +1,22 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
-**Dashboard update, 16 November 2026:** the [dashboard directory](../dashboards/index.html) joins the redesigned prediction workbench, collection monitor, standalone channel index, Atlas, original Bashar Index and research report. Current collection stages are newest 20 -> extend to 50 -> index the remainder; published operational counts have their own timestamp and do not replace historical research denominators. Interface changes preserve the published evidence. Rebuild notes are in [`../dashboards/README.md`](../dashboards/README.md).
+**Current archive instruction, 16 November 2026 after the dashboard release:** finish newest 20, extend to newest 50, then collect the entire remaining saved catalogue as native audio plus full sanitized metadata and available English published/original automatic captions. Use bounded download/upload stages and the private incremental catalog; preserve the 17 GB private-root ceiling, up to 1 GB of tool/repository overhead, the requested 2 GB reserve and the checksum-before-delete rule. Caption endpoint cooldowns defer English text independently while audio continues; captions use one request slot with at least 15 seconds between starts. No transcription in this pass.
+
+
+**Dashboard update, 16 November 2026:** the [dashboard directory](../dashboards/index.html) joins the redesigned prediction workbench, collection monitor, standalone channel index, Atlas, original Bashar Index and research report. Current collection stages are newest 20 -> extend to 50 -> archive the indexed remainder; published operational counts have their own timestamp and do not replace historical research denominators. Interface changes preserve the published evidence. Rebuild notes are in [`../dashboards/README.md`](../dashboards/README.md).
 
 
 Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos indexed, 75 Bashar recordings partly read" to "every video on every tracked channel as private audio plus a timestamped transcript", and then to analysis and a paper. The tooling is in [`pipeline/`](pipeline/README.md); the channel table is in the [README](README.md#plan-for-the-rest) and in [`plan/channel_inventory.csv`](plan/channel_inventory.csv). Everything here is an AI-written plan and has not been reviewed by a person; figures marked "estimate" are arithmetic on a sample, not measurements.
 
 ## 00. Update 2026-11-14: paused for the move to a 16 GB Codespace
+
+**Local priority, 2026-11-16:** the owner now requests native audio and available metadata for every tracked
+YouTube channel: newest 20 per channel, then newest 50, then index the rest for a separate final round.
+No duration filter is applied, and source Videos, Shorts, and recorded streams stay distinguishable.
+The bounded Windows-to-Drive workflow is in
+[`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md). It uses four workers, a 17 GB working-folder cap within
+the 20 GB total local allowance, verified uploads before deletion, and no project size cap on Drive.
+Transcription is deferred. This continuation does not restart the older Codespace jobs.
 
 Everything was stopped cleanly so the work can go on in a larger Codespace. [`HANDOFF.md`](HANDOFF.md) has the
 setup, the restore commands, the order of work and a prompt for the next session. This table was last

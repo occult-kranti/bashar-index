@@ -1,10 +1,59 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Local Windows continuation, 2026-11-16
+
+PR #28 is merged on `main` at `22d89f2`; the published dashboards are current. PR #26 and its branch are retained. The new ingestion work is on
+`feat/windows-drive-ingest`. The owner's current priority supersedes the older restart instructions below:
+collect native YouTube audio plus available metadata, newest 20 per tracked channel first, then newest 50,
+then the entire remaining catalogue. The owner explicitly authorized the full archive after the dashboard release; `RunAll` now advances through all three receipt-gated phases. Do not start transcription or the legacy collection loops for this task.
+
+The local rclone remote `etdrive` points at the existing ET Channelers Archive. A dedicated Desktop
+OAuth client is now authenticated and its Drive API is enabled. The owner chose to retain Testing
+mode; expect Google reauthorization around November 23, 2026 if collection is still running.
+The working folder is outside Git. [`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md) gives the commands,
+recovery rules and Drive client setup. The launcher separates source workers (default four, configurable up to eight) from up to four upload transfers, batches up to 16 pairs, and caps the working folder at 17 GB
+(the owner's total local ceiling is 20 GB, with 2 GB reserved and up to 1 GB for tools/repositories), and applies no project storage cap on Drive. Native audio uses
+no transcoding or GPU inference. A pilot audio upload was read back by size and MD5 before local deletion;
+ordinary 1 MiB HTTP range requests substantially improved a second pilot's download speed.
+
+The restored newest-20 snapshot has 1,320 items across 69 channels. Newest 50 contains 3,220 items, including
+the 1,320 in the first phase. There is no duration filter or default per-item size cutoff; storage admission
+uses the selected stream's byte length within the total local budget. Insufficient space defers an item,
+never silently excludes it. New Drive files use source-tab folders (Videos, Shorts, Recorded streams,
+Unclassified); old verified receipts retain their original paths. The older all-items snapshot has 58,766
+unique IDs and lacks six channels' full histories; those six have now been listed successfully across
+Videos, Shorts and recorded Streams (5,130 listing rows). `prepare_all_queue.py` merges these snapshots,
+preserves provenance, and records known source-person mappings without inventing entity labels. The merged
+queue contains 63,929 unique items and has full listing snapshots for all 69 tracked channels. The remaining
+60,709 items are indexed for the final round after the newest-50 tier. Its output
+and per-item metadata remain private. Saved snapshots are not a claim that future uploads are already listed.
+
+The new `drive_ingest_manifest.jsonl` records this lane's Drive objects and checksums. It is independent of
+the older `sync_manifest.jsonl` and `drive_manifest.jsonl`; use the new runner's status and Drive restore
+instructions for these files. Never overwrite the shared historical Drive ledger with this lane's receipts.
+
+The initial four-worker run stopped on a confirmed Drive HTTP 403 `rateLimitExceeded` response. Two pilot
+pairs were verified and cleaned up; four complete local audio/metadata pairs were retained. The Drive
+cooldown prevents new upload/preflight requests until its wait expires; this is separate from YouTube's
+refusal rest period. Resume the new phase launcher after Drive access recovers, draining retained pairs first. A later bounded prefetch added eight new pairs: 12 await upload, two are verified on Drive, and local usage was about 0.45 GB. These are dated observations, not a live job claim. After the dedicated Desktop OAuth client was authorized and its Drive API enabled, a 12-pair upload pilot passed every size/hash/Drive-ID check and removed both artifacts locally: 14 pairs are now verified, with about 54 MB remaining in the private root. This observation supersedes the earlier quota-blocked status. The new bounded supervisor preserves cooldown deadlines and a persisted retry budget. The private catalog uses a compressed full baseline plus changed-item deltas and hash-verified manifests; see `pipeline/ARCHIVE_CATALOG.md`.
+
+At 22:44 UTC the reviewed supervisor was restarted in `RunAll` with six download workers, two upload transfers, eight pairs per batch and at most 32 ready/in-flight pairs. The private catalog checkpoint was uploaded and verified (63,929 indexed items, 14 verified pairs at that checkpoint); a subsequent live collection pair brought media receipts to 15. Upcoming premieres are deferred without halting other channels and receive one late revisit after useful stage work. This is a dated observation; consult the private supervisor state and receipts for current progress. The owner kept the OAuth app in Testing mode.
+
+At 23:16 UTC the owner-selected configuration was running with eight download workers, four Drive upload transfers, 12-pair batches and a 64-item ready/in-flight bound. The private root is capped at 17 GB: measured tools/repositories used 0.66 GB, preserving about 2.34 GB below the 20 GB total allowance. The user narrowed text collection to English published captions and original English automatic captions; translations and other languages are excluded. Existing audio is backfilled with metadata-only requests. Caption ZIPs and receipts are independent of audio pairs.
+
+The previous YouTube media 403 was repaired using the official yt-dlp nightly 2026.11.15.232800 (upstream fix #18051). At the owner's explicit request to override/fix and continue, one bounded normal-client recheck returned the exact HTTP 206 range; an append-only repair acknowledgement superseded only that item's old cooldown. A full audio/upload/verification run then passed, and English-caption backfill on the same item passed without redownloading audio. At 23:16 UTC there were 35 verified audio/metadata pairs, one verified English caption ZIP and 34 earlier audio items awaiting captions. Future source refusals still establish their own persisted rest windows. Caption refusals now pause only caption acquisition; audio refusals and Drive quotas retain their independent controls. See `pipeline/YOUTUBE_CAPTIONS_RESEARCH.md` for the investigated alternatives and limitations.
+
+At 23:30 UTC, receipts confirmed 35 audio/metadata pairs and 20 English caption ZIPs across 17 videos; 15 videos had complete requested caption inventories, and one had no English track. A timedtext HTTP 429 at 23:20 UTC established a caption-only wait until 2026-11-17 23:20 UTC. The updated collector serializes caption requests with at least 15 seconds between starts, preserves pending English tracks and continues audio while that endpoint rests. The bounded supervisor can revisit earlier tiers after the caption deadline, using the existing attempt budget. The caption journal and atomic backfill summary preserve this state independently of audio receipts.
+
+At 23:36 UTC the updated supervisor resumed with 8 download workers and 4 upload transfers. Two fresh audio downloads reached the ready queue while caption requests stayed deferred. Isolated missing-format items now remain pending, receive one late revisit after audio progress, and no longer halt other channels; three such failures without audio progress stop dispatch for tool review. The operator reset the bounded retry budget for this reviewed restart without clearing any caption/source/Drive deadline. Logs and runtime state remain private; public progress is a dated aggregate snapshot.
+
+The 23:39 UTC checkpoint supersedes that running status: 11 additional audio/metadata pairs were uploaded, verified and retired locally, for 46 total. A new media HTTP 403 on a different item established an audio-source rest until 2026-11-17 23:37:28 UTC; the still-running bounded supervisor waits for that deadline. All completed pairs drained to Drive, while incomplete bytes remain for recovery. The caption-only deadline remains 23:20:02 UTC that day. This later refusal was not cleared by the earlier upstream-repair acknowledgement. The published status distinguishes these source waits; it does not claim continuing downloads.
+
 ## Dashboard interface update - 16 November 2026
 
 The maintained dashboard directory is [`../dashboards/index.html`](../dashboards/index.html) ([published URL](https://occult-kranti.github.io/bashar-index/dashboards/)). Six repository pages now share navigation. The prediction workbench preserves the exact 480 public records and their 2026-11-16T19:36:03Z build date; it adds no new evidence or verdicts. Its public-only refresh mode re-renders already-published records, while a fresh evidence build still requires the original private catalogue and quote-share guard.
 
-The channel index now runs standalone and has a reproducible template/generator. Its historical sample (92 channel entries, 466 video rows, 457 nonempty video IDs, nine rows without an ID) is distinct from the current collection queue. The collection page reads a sanitized counts-only `plan/ingestion_status.json` beside the dated archive tables. It shows newest 20, extension to 50, then indexing the remainder; rows marked indexed are not presented as downloaded. No private media, titles, paths, contacts or raw errors are exported by that status file. An expired cooldown alone does not establish that a worker is running.
+The channel index now runs standalone and has a reproducible template/generator. Its historical sample (92 channel entries, 466 video rows, 457 nonempty video IDs, nine rows without an ID) is distinct from the current collection queue. The collection page reads a sanitized counts-only `plan/ingestion_status.json` beside the dated archive tables. It shows newest 20, extension to 50, then the remaining archive when the full-archive supervisor is configured; indexed coverage is never presented as downloaded media. No private media, titles, paths, contacts or raw errors are exported by that status file. An expired cooldown alone does not establish that a worker is running.
 
 See [`../dashboards/README.md`](../dashboards/README.md) for rebuild and verification commands. This interface change was developed in an isolated worktree; it does not restart collection jobs or merge the separate Windows ingestion branch. Older handoff sections below retain their original observation dates.
 

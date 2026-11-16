@@ -18,7 +18,7 @@ The collection monitor and directory read a **published snapshot**, not a live p
 python et-channelers/pipeline/ingestion_status.py --root "$env:USERPROFILE/et-channelers-private" --out et-channelers/plan/ingestion_status.json
 ```
 
-The exporter uses an explicit allowlist. It emits no titles, video IDs, contacts, local paths, media or raw errors. An expired cooldown is labeled ready to resume; it is not evidence that a worker is running. Newest-50 counts include the newest-20 cohort. The remaining index is metadata coverage, not completed audio collection. The 19 GB operational ceiling leaves room beneath the owner's 20 GB limit.
+The exporter uses an explicit allowlist. It emits no titles, video IDs, contacts, local paths, media or raw errors. An expired cooldown is labeled ready to resume; it is not evidence that a worker is running. Newest-50 counts include the newest-20 cohort. The remaining index is metadata coverage, not completed audio collection. The 17 GB private-root ceiling reserves up to 1 GB for tools and repositories plus the owner's requested 2 GB buffer beneath the 20 GB total limit. Source and Drive cooldowns are labeled separately.
 
 The original Bashar builder and report builder also include the shared navigation. The Bashar builder retains historical machine-specific input paths; this interface refresh updates its template and the published artifact without rerunning its research analysis. The Atlas application is maintained directly in `channeling-atlas/dist/`. Scientific release files, hashes and old review receipts remain tied to their October release.
 

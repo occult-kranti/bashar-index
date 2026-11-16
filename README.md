@@ -11,7 +11,7 @@ An independent research site that indexes the public channeling sessions of **Ba
 | Dashboard | What it shows |
 |---|---|
 | [Prediction timelines](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html) | 480 published candidates, filters, target windows and source evidence; these are not verified outcomes |
-| [Collection](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/) | Current newest-20 -> newest-50 -> remaining-index snapshot, separately from older archive coverage |
+| [Collection](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/) | Current newest-20 -> newest-50 -> remaining-archive snapshot, separately from older archive coverage |
 | [Channeler YouTube index](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/) | Standalone, searchable historical channel/video/playlist records |
 | [Channeling Atlas](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/) | People, entities, sources and analysis from the October research edition |
 | [Bashar Index](https://occult-kranti.github.io/bashar-index/) | The original focused reference and analysis |

@@ -1,0 +1,4 @@
+# Download/Drive ingestion only: no ASR models, CUDA libraries, or numpy.
+# rclone is installed separately from https://rclone.org/downloads/.
+yt-dlp[default]>=2026.10.26
+deno>=2.9
