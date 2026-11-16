@@ -8,17 +8,24 @@ plays the encoder, so nothing here touches the network or a real podcast host.
 """
 from __future__ import annotations
 
+import argparse
 import collections
+import contextlib
+import gzip
+import hashlib
 import http.server
+import io
 import json
 import os
 import shutil
 import subprocess
 import sys
+import tarfile
 import tempfile
 import threading
 import unittest
 from pathlib import Path
+from unittest import mock
 
 HERE = Path(__file__).resolve().parent
 PIPE = HERE.parent
@@ -1320,6 +1327,16 @@ class TestPublisherText(unittest.TestCase):
         plain = "<html><body><main><p>No comments here, and a class of <span class='comment'>note</span>.</p></main></body></html>"
         self.assertEqual(fetch_publisher_text.html_to_text(plain), "No comments here, and a class of note.")
 
+    def test_deletions_only_means_the_new_lines_are_old_ones_in_the_same_order(self):
+        only = fetch_publisher_text.only_deletions
+        self.assertTrue(only(["a", "b", "c"], ["a", "c"]))
+        self.assertTrue(only(["a", "a", "b"], ["a", "b"]))
+        self.assertTrue(only(["a", "b"], ["a", "b"]))
+        self.assertFalse(only(["a", "b"], ["b", "a"]))          # moved
+        self.assertFalse(only(["a", "b"], ["a", "x"]))          # added, or changed
+        self.assertFalse(only(["a", "b"], ["a", "a"]))          # one old line used twice
+        self.assertEqual(fetch_publisher_text.text_lines("  One   line \n\n\tTwo\n"), ["One line", "Two"])
+
     def test_webvtt_and_srt_lose_their_timings(self):
         vtt = "WEBVTT\n\n1\n00:00:00.000 --> 00:00:02.000\n<v Host>Hello there\n\n2\n00:00:02.000 --> 00:00:04.000\nHello there\nand welcome\n"
         self.assertEqual(fetch_publisher_text.cues_to_text(vtt), "Hello there\nand welcome")
@@ -1340,6 +1357,29 @@ class TestPublisherText(unittest.TestCase):
         page = '<a href="https://s3.example/audio/session-1.m4a">audio</a><img src="/x.png"><a href="/y.MP3?dl=1">'
         self.assertEqual(fetch_publisher_text.MEDIA_LINK.findall(page),
                          ["https://s3.example/audio/session-1.m4a", "/y.MP3?dl=1"])
+
+    def test_video_ids_and_media_links_are_the_posts_not_the_readers(self):
+        links = fetch_publisher_text.page_links
+        self.assertEqual(links(EMBED_POST), (["Invented-01"], ["https://audio.example/invented/post.mp3"]))
+        self.assertEqual(links(EMBED_POST, r"nothing\.example"), (["Invented-01"], []))     # the row's media_pattern
+        # an id that only a reader's comment holds is no id of the post's
+        self.assertEqual(links(COMMENT_ONLY_ID_POST), ([], []))
+        self.assertEqual(sorted(set(feeds.YOUTUBE_ID_IN_TEXT.findall(COMMENT_ONLY_ID_POST))), ["Invented-02"])
+        # WordPress: the comment list and the reply form; an id after them, in the post's own footer, is kept
+        wordpress = ("<html><body><article><p>Channelled text.</p><div id='comments' class='comments-area'><ol class="
+                     "'comment-list'><li>https://youtu.be/Invented-04</li></ol><div id='respond' class='comment-respond'>"
+                     "<form><textarea>https://youtu.be/Invented-05</textarea></form></div></div>"
+                     "<p>Watch https://www.youtube.com/watch?v=Invented-06</p></article></body></html>")
+        self.assertEqual(links(wordpress)[0], ["Invented-06"])
+        # a thread that is never closed runs to the end of the page; a void element named "comments" holds nothing
+        self.assertEqual(links("<p>youtu.be/Invented-07</p><div id='comments'><p>youtu.be/Invented-08</p>")[0], ["Invented-07"])
+        self.assertEqual(links("<input id='comments'><p>youtu.be/Invented-09</p>")[0], ["Invented-09"])
+        # outside the threads the markup is kept as it was, scripts and the head included
+        page = "<html><head><script>var v = 'youtube.com/embed/Invented-10';</script></head><body><p>x</p></body></html>"
+        self.assertEqual(fetch_publisher_text.post_markup(page), page)
+        self.assertEqual(links(page)[0], ["Invented-10"])
+        cut = fetch_publisher_text.post_markup("<p>a</p>\r\n<div class='comments'>\r\n<p>b</p>\n</div>\nc")
+        self.assertEqual(cut, "<p>a</p>\r\n\n\nc")
 
 
 class TestPublisherTextRun(LaneCase):
@@ -1679,6 +1719,460 @@ class TestPublisherTextRun(LaneCase):
         self.assertEqual(Publisher.hits, [])
 
 
+# invented pages for --rederive: a Blogger post with a readers' comment thread, and a page without one
+BLOGGER_POST = ("<html><head><title>An invented post</title></head><body><div class='post-body entry-content'>"
+                "<p>The invented message begins here.</p><p>It goes on with a second invented line.</p></div>"
+                "<div class='comments' id='comments'><h4>2 comments:</h4><div class='comment-thread'>"
+                "<div class='comment-block'><p>An invented reader writes thank you.</p><div>Reply</div></div>"
+                "<div class='comment-block'><p>Another invented reader agrees.</p></div></div></div>"
+                "<div class='post-footer'>Labels: invented</div></body></html>")
+BLOGGER_POST_TEXT = "The invented message begins here.\nIt goes on with a second invented line.\nLabels: invented"
+PLAIN_PAGE = ("<html><body><nav>Home</nav><main><h1>An invented session</h1><p>Only the publisher's invented words.</p>"
+              "</main></body></html>")
+TWO_LINES_AND_A_THREAD = ("<html><body><article><p>First invented line.</p><p>Second invented line.</p>"
+                          "<div id='comments'><p>An invented remark.</p></div></article></body></html>")
+# invented pages with video ids: one the post embeds, and ones only readers' comments hold
+EMBED_POST = ("<html><head><title>An invented embed</title></head><body><div class='post-body'>"
+              "<p>The invented post shows its own video.</p>"
+              "<iframe src='https://www.youtube.com/embed/Invented-01'></iframe>"
+              "<p><a href='https://audio.example/invented/post.mp3'>The invented audio</a></p></div>"
+              "<div class='comments' id='comments'><div class='comment-thread'><div class='comment-block'>"
+              "<p>An invented reader links https://youtu.be/Invented-02 here.</p>"
+              "<p><a href='https://reader.example/invented/reply.mp3'>an invented reply</a></p></div></div>"
+              "<div class='comment-form'><p>Post an invented comment, like https://www.youtube.com/watch?v=Invented-03</p>"
+              "</div></div></body></html>")
+COMMENT_ONLY_ID_POST = ("<html><head><title>An invented message</title></head><body><div class='post-body'>"
+                        "<p>The invented message has no video of its own.</p><p>It has a second invented line.</p></div>"
+                        "<div class='comments' id='comments'><div class='comment-thread'><div class='comment-block'>"
+                        "<p>An invented reader posts a video: https://youtu.be/Invented-02</p></div></div></div>"
+                        "</body></html>")
+
+
+class TestPublisherTextRederive(LaneCase):
+    """--rederive: stored page texts built again from their .source.gz with the current extractor, written only
+    where that takes lines out (here: readers' comment threads), after a backup, and never over the network."""
+
+    def setUp(self):
+        super().setUp()
+        self.pub = self.root / "transcripts_publisher"
+        self.manifest_path = self.pub / "publisher_text_manifest.jsonl"
+
+    @staticmethod
+    def old_extractor(markup):
+        """What html_to_text made of a page before it knew readers' comment threads."""
+        with mock.patch.object(fetch_publisher_text, "is_comment_block", lambda attrs: False):
+            return fetch_publisher_text.html_to_text(markup)
+
+    def store(self, person, name, source, text=None, kind="page", origin="page", **extra):
+        """One item as a fetch leaves it: its source, its text (by default the old extractor's) and its manifest line."""
+        source = source.encode() if isinstance(source, str) else source
+        text = self.old_extractor(source.decode()) if text is None else text
+        ident = common.item_id("web", f"https://blog.example/{person}/{name}")
+        folder = self.pub / person
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / f"{ident}.source.gz").write_bytes(gzip.compress(source, compresslevel=6, mtime=0))
+        common.atomic_write_text(folder / f"{ident}.txt", text + "\n")
+        rec = {"video_id": ident, "channel_dir": person, "origin": origin, "source_host": "127.0.0.1",
+               "source_url": f"{self.base}/{name}.html", "started": "2026-11-01T10:00:00Z", "final_host": "127.0.0.1",
+               "status": "ok", "http_status": 200, "kind": kind, "content_type": "text/html", "bytes": len(source),
+               "sha256": hashlib.sha256(source).hexdigest(), "n_words": len(text.split()),
+               "text_sha256": common.sha256_text(common.normalise_text(text)), "media_links": [],
+               "title": "An invented post", "published": "", "youtube_ids": [], "error_class": "", "error_tail": "",
+               **extra}
+        common.append_jsonl(self.manifest_path, rec)
+        return rec
+
+    def fixtures(self):
+        """One item of each sort the mode meets."""
+        page3 = TWO_LINES_AND_A_THREAD
+        return {
+            "comments": self.store("blogger-person", "post-1", BLOGGER_POST),
+            "same": self.store("blogger-person", "post-2", PLAIN_PAGE),
+            # stored texts the current extractor would not only shorten: lines in another order, a line it would
+            # add, a line it would change
+            "moved": self.store("blogger-person", "post-3", page3,
+                                text="Second invented line.\nFirst invented line.\nAn invented remark."),
+            "added": self.store("blogger-person", "post-4", page3, text="First invented line.\nAn invented remark."),
+            "changed": self.store("blogger-person", "post-5", page3,
+                                  text="First invented lines.\nSecond invented line.\nAn invented remark."),
+            # a page that is all comment thread: the new text would be empty
+            "empty": self.store("blogger-person", "post-6",
+                                "<html><body><div id='comments'><p>Only an invented reader remark.</p></div></body></html>"),
+            # not pages: never touched, even a plain text whose source would read differently as a page
+            "vtt": self.store("blogger-person", "ep-1", "WEBVTT\n\n00:00.000 --> 00:02.000\nAn invented cue.\n",
+                              text="An invented cue.", kind="vtt", origin="episode", content_type="text/vtt"),
+            "plain": self.store("other-person", "import-1", BLOGGER_POST, kind="plain", origin="import", content_type=""),
+        }
+
+    def snapshot(self):
+        return {p.relative_to(self.root).as_posix(): p.read_bytes() for p in sorted(self.root.rglob("*")) if p.is_file()}
+
+    def rederive(self, *extra):
+        return self.cli("fetch_publisher_text.py", "--root", self.root, "--rederive", *extra)
+
+    def txt(self, rec):
+        return self.pub / rec["channel_dir"] / f"{rec['video_id']}.txt"
+
+    def test_the_old_extractor_kept_the_thread(self):
+        self.assertIn("An invented reader writes thank you.", self.old_extractor(BLOGGER_POST))
+        self.assertEqual(fetch_publisher_text.html_to_text(BLOGGER_POST), BLOGGER_POST_TEXT)
+
+    def test_dry_run_writes_nothing_and_says_what_it_would_do(self):
+        items = self.fixtures()
+        before = self.snapshot()
+        done = self.rederive()
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse((self.root / "backups").exists())
+        self.assertFalse((self.root / "jobs").exists())                      # not even a lock file
+        self.assertEqual(Publisher.hits, [])                                 # and nothing asked of the network
+        words = sum(r["n_words"] for k, r in items.items() if k != "plain")
+        cut = len(self.old_extractor(BLOGGER_POST).split()) - len(BLOGGER_POST_TEXT.split())
+        self.assertIn("rederive (dry run) blogger-person: checked 7 | changed 1 | unchanged 1 | skipped 5 ("
+                      "not a page (vtt): 1; the extractor would add, change or move lines: 3; "
+                      f"the new text would be empty: 1) | words {words:,} -> {words - cut:,}", done.stdout)
+        self.assertIn("rederive (dry run) other-person: checked 1 | changed 0 | unchanged 0 | skipped 1 "
+                      "(not a page (plain): 1)", done.stdout)
+        self.assertIn("dry run: nothing was written; pass --apply to rewrite 1 text(s)", done.stdout)
+
+    def test_apply_backs_up_then_rewrites_only_the_page_that_lost_its_thread(self):
+        items = self.fixtures()
+        rec = items["comments"]
+        name = f"transcripts_publisher/blogger-person/{rec['video_id']}.txt"
+        before, lines_before = self.snapshot(), common.read_jsonl(self.manifest_path)
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(Publisher.hits, [])
+        self.assertIn("rewrote 1 text(s), appended 1 manifest line(s)", done.stdout)
+        self.assertEqual(self.txt(rec).read_text(encoding="utf-8"), BLOGGER_POST_TEXT + "\n")
+        after = self.snapshot()
+        self.assertEqual({k for k in before if after.get(k) != before[k]},
+                         {name, "transcripts_publisher/publisher_text_manifest.jsonl"})   # nothing else was touched
+        # the backup: one tar.gz named with the UTC time, holding the replaced text as it was
+        backups = sorted((self.root / "backups").iterdir())
+        self.assertEqual(len(backups), 1)
+        self.assertRegex(backups[0].name, r"^publisher-texts-before-rederive-\d{8}T\d{6}Z\.tar\.gz$")
+        self.assertEqual(set(after) - set(before), {f"backups/{backups[0].name}", "jobs/fetch_publisher_text.rederive.lock"})
+        with tarfile.open(backups[0], "r:gz") as tar:
+            self.assertEqual(tar.getnames(), [name])
+            self.assertEqual(tar.extractfile(name).read(), before[name])
+        # the manifest: the old lines as they were, and one line more that copies the record
+        lines = common.read_jsonl(self.manifest_path)
+        self.assertEqual(lines[:-1], lines_before)
+        line = lines[-1]
+        self.assertEqual(line["n_words"], len(BLOGGER_POST_TEXT.split()))
+        self.assertEqual(line["text_sha256"], common.sha256_text(common.normalise_text(BLOGGER_POST_TEXT)))
+        self.assertEqual((line["rederived_from"], line["rederived_reason"]), ("source.gz", "readers' comment threads left out"))
+        self.assertRegex(line["rederived_at"], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$")
+        self.assertEqual(line["rederived_backup"], f"backups/{backups[0].name}")
+        self.assertEqual((line["rederived_words_before"], line["rederived_text_sha256_before"]),
+                         (rec["n_words"], rec["text_sha256"]))
+        for key, value in rec.items():
+            if key not in ("n_words", "text_sha256"):
+                self.assertEqual(line[key], value, key)          # the fetch time and every other field as they were
+        # a second run finds nothing more to do
+        again = self.rederive("--apply")
+        self.assertEqual(again.returncode, 0, again.stderr)
+        self.assertIn("checked 7 | changed 0 | unchanged 2 | skipped 5", again.stdout)
+        self.assertIn("nothing to rewrite", again.stdout)
+        self.assertEqual(len(list((self.root / "backups").iterdir())), 1)
+        self.assertEqual(common.read_jsonl(self.manifest_path), lines)
+
+    def test_the_new_text_and_its_counts_are_what_a_fetch_of_the_page_saves(self):
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+        Publisher.routes["/post.html"] = (200, "text/html; charset=UTF-8", BLOGGER_POST.encode())
+        job = {"video_id": common.item_id("web", self.base + "/post.html"), "channel_dir": "blogger-person",
+               "url": self.base + "/post.html", "declared": "text/html", "title": "", "origin": "page", "media_pattern": ""}
+
+        def fetch(out_dir):
+            return fetch_publisher_text.fetch_one(job, out_dir, common.HostGates(interval=0), fetch_publisher_text.Robots(),
+                                                  argparse.Namespace(timeout=20, min_words=1))
+        with mock.patch.object(fetch_publisher_text, "is_comment_block", lambda attrs: False):
+            old = fetch(self.pub)                     # fetched before the extractor knew comment threads
+        common.append_jsonl(self.manifest_path, old)
+        self.assertIn("An invented reader", self.txt(old).read_text(encoding="utf-8"))
+        fresh = fetch(self.tmp / "fetched-today")
+        Publisher.hits = []
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(Publisher.hits, [])
+        line = common.read_jsonl(self.manifest_path)[-1]
+        for key in ("n_words", "text_sha256", "bytes", "sha256", "kind", "content_type", "title", "media_links", "youtube_ids"):
+            self.assertEqual(line[key], fresh[key], key)
+        self.assertEqual(line["started"], old["started"])
+        self.assertEqual(self.txt(old).read_bytes(), (self.tmp / "fetched-today" / "blogger-person" / f"{job['video_id']}.txt").read_bytes())
+
+    def test_no_backup_no_writes(self):
+        self.fixtures()
+        (self.root / "backups").write_text("a file where the backup folder would go\n", encoding="utf-8")
+        before = self.snapshot()
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 1, done.stdout)
+        self.assertIn("the backup failed", done.stderr)
+        self.assertIn("nothing was written", done.stderr)
+        after = self.snapshot()
+        after.pop("jobs/fetch_publisher_text.rederive.lock", None)
+        self.assertEqual(after, before)
+
+    def test_only_limits_the_people(self):
+        mine = self.store("blogger-person", "post-1", BLOGGER_POST)
+        theirs = self.store("other-person", "post-1", BLOGGER_POST)
+        done = self.rederive("--apply", "--only", "other-person")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertNotIn("blogger-person", done.stdout)
+        self.assertIn("rederive (apply) other-person: checked 1 | changed 1", done.stdout)
+        self.assertIn("An invented reader", self.txt(mine).read_text(encoding="utf-8"))
+        self.assertEqual(self.txt(theirs).read_text(encoding="utf-8"), BLOGGER_POST_TEXT + "\n")
+
+    def test_doubtful_items_are_skipped_and_said_so(self):
+        self.store("p", "post-1", BLOGGER_POST, sha256="0" * 64)              # the saved source is not the page fetched
+        edited = self.store("p", "post-2", BLOGGER_POST)
+        with open(self.txt(edited), "a", encoding="utf-8") as handle:
+            handle.write("A line added by hand.\n")                            # the text is not the one the manifest has
+        gone = self.store("p", "post-3", BLOGGER_POST)
+        (self.pub / "p" / f"{gone['video_id']}.source.gz").unlink()
+        archived = self.store("p", "post-4", BLOGGER_POST)
+        self.txt(archived).unlink()
+        self.store("p", "post-5", BLOGGER_POST, status="error", error_class="too_short")     # not a stored text
+        before = self.snapshot()
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertIn("rederive (apply) p: checked 4 | changed 0 | unchanged 0 | skipped 4 (no .source.gz: 1; "
+                      "no text on disk: 1; the .source.gz is not the page the manifest describes: 1; "
+                      "the text on disk is not the one the manifest describes: 1)", done.stdout)
+        self.assertIn("nothing to rewrite", done.stdout)
+        after = self.snapshot()
+        after.pop("jobs/fetch_publisher_text.rederive.lock", None)
+        self.assertEqual(after, before)
+
+    def test_a_text_written_without_its_manifest_line_gets_the_line_on_the_next_run(self):
+        rec = self.store("p", "post-1", BLOGGER_POST)
+        common.atomic_write_text(self.txt(rec), BLOGGER_POST_TEXT + "\n")      # an --apply that stopped right here
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertIn("rewrote 0 text(s), appended 1 manifest line(s)", done.stdout)
+        self.assertFalse((self.root / "backups").exists())                     # no text was replaced
+        line = common.read_jsonl(self.manifest_path)[-1]
+        self.assertEqual((line["n_words"], line["started"]), (len(BLOGGER_POST_TEXT.split()), rec["started"]))
+        self.assertNotIn("rederived_backup", line)
+        self.assertIn("changed 0 | unchanged 1", self.rederive().stdout)
+
+    def test_apply_needs_rederive(self):
+        done = self.cli("fetch_publisher_text.py", "--root", self.root, "--apply")
+        self.assertNotEqual(done.returncode, 0)
+        self.assertIn("--apply goes with --rederive", done.stderr)
+        self.assertFalse(self.root.exists())
+
+    # ------------------------------------------------ video ids and media links: the post's, not the readers'
+    def fetch_page(self, name, markup, out_dir, old=False, media_pattern=""):
+        """fetch_one of an invented page served on loopback; `old`: as a fetch did before it knew comment threads
+        (the whole page read for ids and links, comments in the text)."""
+        Publisher.routes["/robots.txt"] = (200, "text/plain", b"User-agent: *\nAllow: /\n")
+        Publisher.routes[f"/{name}.html"] = (200, "text/html; charset=UTF-8", markup.encode())
+        url = f"{self.base}/{name}.html"
+        job = {"video_id": common.item_id("web", url), "channel_dir": "blogger-person", "url": url,
+               "declared": "text/html", "title": "", "origin": "page", "media_pattern": media_pattern}
+
+        def fetch():
+            return fetch_publisher_text.fetch_one(job, out_dir, common.HostGates(interval=0), fetch_publisher_text.Robots(),
+                                                  argparse.Namespace(timeout=20, min_words=1))
+        if not old:
+            return fetch()
+        with mock.patch.object(fetch_publisher_text, "is_comment_block", lambda attrs: False):
+            return fetch()
+
+    def test_a_fetch_keeps_the_posts_video_ids_and_leaves_the_readers_out(self):
+        embed = self.fetch_page("embed", EMBED_POST, self.pub)
+        self.assertEqual(embed["status"], "ok", embed)
+        self.assertEqual(embed["youtube_ids"], ["Invented-01"])                  # the post's own embed is kept
+        self.assertEqual(embed["media_links"], ["https://audio.example/invented/post.mp3"])
+        only = self.fetch_page("comment-only", COMMENT_ONLY_ID_POST, self.pub)
+        self.assertEqual(only["status"], "ok", only)
+        self.assertEqual(only["youtube_ids"], [])                                # an id only a comment holds is dropped
+        # the saved source still holds the whole page, comments included
+        source = gzip.decompress((self.pub / "blogger-person" / f"{only['video_id']}.source.gz").read_bytes())
+        self.assertIn(b"Invented-02", source)
+        # and as the pages were fetched before: the whole page's ids
+        before = self.fetch_page("embed", EMBED_POST, self.tmp / "before", old=True)
+        self.assertEqual(before["youtube_ids"], ["Invented-01", "Invented-02", "Invented-03"])
+
+    def test_rederive_reads_the_ids_and_links_again_as_a_fetch_does_today(self):
+        old = {name: self.fetch_page(name, markup, self.pub, old=True)
+               for name, markup in (("embed", EMBED_POST), ("comment-only", COMMENT_ONLY_ID_POST))}
+        for rec in old.values():
+            common.append_jsonl(self.manifest_path, rec)
+        self.assertEqual(old["comment-only"]["youtube_ids"], ["Invented-02"])
+        fresh = {name: self.fetch_page(name, markup, self.tmp / "fetched-today")
+                 for name, markup in (("embed", EMBED_POST), ("comment-only", COMMENT_ONLY_ID_POST))}
+        Publisher.hits = []
+        before = self.snapshot()
+        dry = self.rederive()
+        self.assertEqual(dry.returncode, 0, dry.stderr)
+        self.assertEqual(self.snapshot(), before)                                # a dry run writes nothing
+        self.assertIn("checked 2 | changed 2 | unchanged 0 | skipped 0", dry.stdout)
+        self.assertIn("| ids changed 2 (0 of them with the text as it is) | media links changed 1", dry.stdout)
+        self.assertIn(f"ids blogger-person {old['comment-only']['video_id']}: Invented-02 -> -", dry.stdout)
+        self.assertIn(f"ids blogger-person {old['embed']['video_id']}: Invented-01 Invented-02 Invented-03 -> Invented-01",
+                      dry.stdout)
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(Publisher.hits, [])
+        self.assertIn("rewrote 2 text(s), appended 2 manifest line(s)", done.stdout)
+        latest = common.latest_by_key(common.read_jsonl(self.manifest_path))
+        for name in old:
+            line = latest[old[name]["video_id"]]
+            for key in ("n_words", "text_sha256", "youtube_ids", "media_links", "bytes", "sha256", "title"):
+                self.assertEqual(line[key], fresh[name][key], (name, key))
+            self.assertEqual(line["rederived_youtube_ids_before"], old[name]["youtube_ids"])
+            self.assertEqual(line["started"], old[name]["started"])
+        self.assertEqual(latest[old["embed"]["video_id"]]["rederived_media_links_before"],
+                         ["https://audio.example/invented/post.mp3", "https://reader.example/invented/reply.mp3"])
+        self.assertNotIn("rederived_media_links_before", latest[old["comment-only"]["video_id"]])
+        again = self.rederive()
+        self.assertIn("checked 2 | changed 0 | unchanged 2 | skipped 0", again.stdout)
+        self.assertIn("| ids changed 0", again.stdout)
+
+    def test_a_page_whose_ids_alone_change_gets_a_manifest_line_and_keeps_its_text(self):
+        text = fetch_publisher_text.html_to_text(COMMENT_ONLY_ID_POST)         # the text is right already
+        rec = self.store("p", "post-1", COMMENT_ONLY_ID_POST, text=text, youtube_ids=["Invented-02"])
+        self.store("p", "post-2", PLAIN_PAGE)                                   # nothing to change here
+        before = self.snapshot()
+        dry = self.rederive()
+        self.assertEqual(dry.returncode, 0, dry.stderr)
+        self.assertEqual(self.snapshot(), before)
+        self.assertFalse((self.root / "jobs").exists())
+        words = len(text.split()) + len(fetch_publisher_text.html_to_text(PLAIN_PAGE).split())
+        self.assertIn(f"rederive (dry run) p: checked 2 | changed 1 | unchanged 1 | skipped 0 | words {words:,} -> "
+                      f"{words:,} | ids changed 1 (1 of them with the text as it is)\n", dry.stdout)
+        self.assertIn(f"rederive (dry run) ids p {rec['video_id']}: Invented-02 -> -", dry.stdout)
+        self.assertIn("pass --apply to rewrite 0 text(s) and append 1 manifest line(s)", dry.stdout)
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertIn("rewrote 0 text(s), appended 1 manifest line(s)", done.stdout)
+        self.assertFalse((self.root / "backups").exists())                     # no text replaced, nothing to back up
+        after = self.snapshot()
+        self.assertEqual({k for k in after if after[k] != before.get(k)},
+                         {"transcripts_publisher/publisher_text_manifest.jsonl", "jobs/fetch_publisher_text.rederive.lock"})
+        line = common.read_jsonl(self.manifest_path)[-1]
+        self.assertEqual((line["video_id"], line["youtube_ids"], line["rederived_youtube_ids_before"]),
+                         (rec["video_id"], [], ["Invented-02"]))
+        self.assertEqual((line["n_words"], line["text_sha256"]), (rec["n_words"], rec["text_sha256"]))
+        self.assertEqual((line["rederived_words_before"], line["rederived_text_sha256_before"]),
+                         (rec["n_words"], rec["text_sha256"]))
+        self.assertNotIn("rederived_backup", line)
+        self.assertNotIn("rederived_media_links_before", line)
+        again = self.rederive("--apply")
+        self.assertIn("checked 2 | changed 0 | unchanged 2", again.stdout)
+        self.assertIn("nothing to rewrite", again.stdout)
+
+    def test_ids_an_older_id_reader_missed_are_said_to_be_read_again(self):
+        page = ("<html><body><div class='post-body'><p>An invented post with a privacy-mode embed.</p>"
+                "<iframe src='//www.youtube-nocookie.com/embed/Invented-11'></iframe></div></body></html>")
+        rec = self.store("p", "post-1", page, text=fetch_publisher_text.html_to_text(page), youtube_ids=[])
+        dry = self.rederive()
+        self.assertIn("| ids changed 1 (1 of them with the text as it is; 1 read again with the current id reader)",
+                      dry.stdout)
+        self.assertIn(f"ids p {rec['video_id']}: - -> Invented-11 (video ids read again with the current id reader)\n",
+                      dry.stdout)
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        line = common.read_jsonl(self.manifest_path)[-1]
+        self.assertEqual((line["youtube_ids"], line["rederived_youtube_ids_before"]), (["Invented-11"], []))
+        self.assertEqual(line["rederived_reason"], "video ids read again with the current id reader")
+        # a page that loses a reader's id and gains one an older reader missed says both
+        both = self.store("p", "post-2", COMMENT_ONLY_ID_POST.replace(
+            "</div><div class='comments'", "<iframe src='https://www.youtube-nocookie.com/embed/Invented-12'></iframe>"
+                                           "</div><div class='comments'"), youtube_ids=["Invented-02"])
+        result = fetch_publisher_text.rederive_item(both, self.pub)
+        self.assertEqual(result["record"]["youtube_ids"], ["Invented-12"])
+        self.assertEqual(result["record"]["rederived_reason"],
+                         "readers' comment threads left out; video ids read again with the current id reader")
+
+    def test_the_restore_the_docstring_describes_puts_everything_back(self):
+        self.fixtures()
+        self.store("p", "ids-only", COMMENT_ONLY_ID_POST, text=fetch_publisher_text.html_to_text(COMMENT_ONLY_ID_POST),
+                   youtube_ids=["Invented-02"])
+        self.store("p", "embed", EMBED_POST, youtube_ids=["Invented-01", "Invented-02", "Invented-03"],
+                   media_links=["https://audio.example/invented/post.mp3", "https://reader.example/invented/reply.mp3"])
+        before, latest_before = self.snapshot(), common.latest_by_key(common.read_jsonl(self.manifest_path))
+        done = self.rederive("--apply")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertIn("rewrote 2 text(s), appended 3 manifest line(s)", done.stdout)
+        # 1. the backup, extracted into the root
+        (backup,) = (self.root / "backups").iterdir()
+        with tarfile.open(backup, "r:gz") as tar:
+            tar.extractall(self.root, filter="data")
+        # 2. for each item of that run, its latest line again with the *_before values and no rederived_* fields
+        lines = common.read_jsonl(self.manifest_path)
+        run_at = lines[-1]["rederived_at"]
+        for line in common.latest_by_key(lines).values():
+            if line.get("rederived_at") != run_at:
+                continue
+            copy = {k: v for k, v in line.items() if not k.startswith("rederived_")}
+            copy.update(n_words=line["rederived_words_before"], text_sha256=line["rederived_text_sha256_before"])
+            for field in ("youtube_ids", "media_links"):
+                if f"rederived_{field}_before" in line:
+                    copy[field] = line[f"rederived_{field}_before"]
+            common.append_jsonl(self.manifest_path, copy)
+        self.assertEqual(common.latest_by_key(common.read_jsonl(self.manifest_path)), latest_before)
+        after = self.snapshot()
+        self.assertEqual({k: v for k, v in after.items() if k.endswith(".txt")},
+                         {k: v for k, v in before.items() if k.endswith(".txt")})
+        self.assertIn("checked 10 | changed 3", self.rederive().stdout)          # and the change can be made again
+
+    def test_a_listed_pages_media_pattern_is_used_again(self):
+        rec = self.fetch_page("embed", EMBED_POST, self.pub, old=True, media_pattern=r"audio\.example")
+        common.append_jsonl(self.manifest_path, rec)
+        self.assertEqual(rec["media_links"], ["https://audio.example/invented/post.mp3"])
+        pages = self.tmp / "publisher_pages.csv"
+        common.write_csv(pages, [{"person_id": "blogger-person", "title": "", "page_url": rec["source_url"],
+                                  "media_pattern": r"nothing\.example", "evidence": "invented"}],
+                         ["person_id", "title", "page_url", "media_pattern", "evidence"])
+        with mock.patch.object(fetch_publisher_text, "PAGES", pages), contextlib.redirect_stderr(io.StringIO()):
+            report = fetch_publisher_text.rederive(common.layout(self.root), stream=io.StringIO())
+        (res,) = report["results"]
+        self.assertEqual((res["verdict"], res["record"]["media_links"]), ("changed", []))     # the row's pattern now
+        self.assertEqual(res["record"]["youtube_ids"], ["Invented-01"])
+        # a page no longer listed keeps only the links it had that are still found outside the comments
+        with contextlib.redirect_stderr(io.StringIO()):
+            report = fetch_publisher_text.rederive(common.layout(self.root), stream=io.StringIO())
+        self.assertEqual(report["results"][0]["record"]["media_links"], ["https://audio.example/invented/post.mp3"])
+        self.assertFalse(report["results"][0]["media_changed"])
+
+    def test_rescan_reads_the_posts_ids(self):
+        rec = self.store("p", "post-1", COMMENT_ONLY_ID_POST, youtube_ids=["Invented-02"])
+        embed = self.store("p", "post-2", EMBED_POST, youtube_ids=[])
+        done = self.cli("fetch_publisher_text.py", "--root", self.root, "--rescan")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertIn("rescan: video ids refreshed on 2 saved page(s)", done.stdout)
+        latest = common.latest_by_key(common.read_jsonl(self.manifest_path))
+        self.assertEqual(latest[rec["video_id"]]["youtube_ids"], [])
+        self.assertEqual(latest[embed["video_id"]]["youtube_ids"], ["Invented-01"])
+
+    def test_rescan_and_compact_sources_wait_for_the_rederive_lock(self):
+        self.store("p", "post-1", COMMENT_ONLY_ID_POST, youtube_ids=["Invented-02"])
+        old_source = self.pub / "p" / "web-0123456789abcdef.source"
+        for mode in ("--rescan", "--compact-sources"):
+            with self.subTest(mode=mode):
+                old_source.write_bytes(b"<html><p>An invented page kept the old way.</p></html>")
+                held = common.file_lock(self.root / "jobs" / "fetch_publisher_text.rederive.lock", "test")
+                before = self.snapshot()
+                proc = subprocess.Popen([sys.executable, "-I", str(PIPE / "fetch_publisher_text.py"), "--root",
+                                         str(self.root), mode], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                try:
+                    first = proc.stderr.readline()                     # "" at the end, if it never waited
+                    self.assertIn("waiting: another fetch_publisher_text.py --rederive --apply, --rescan or "
+                                  "--compact-sources is running", first)
+                    self.assertIsNone(proc.poll())
+                    self.assertEqual(self.snapshot(), before)          # nothing done while the lock is held
+                finally:
+                    held.close()
+                    out, err = proc.communicate(timeout=120)
+                self.assertEqual(proc.returncode, 0, err)
+                self.assertIn("has finished: going on", err)
+                self.assertNotEqual(self.snapshot(), before)           # and done once it is free
+
+
 # --------------------------------------------------------------------------- catalogue
 class TestCatalog(LaneCase):
     def test_coverage_holds_numbers_only_and_text_counts_once(self):
@@ -1802,6 +2296,21 @@ class TestSync(LaneCase):
         self.assertTrue((self.root / "audio" / "audio_manifest.jsonl").exists())
         again = self.sync("push", f"dir:{store}", "--delete", "audio")            # nothing left to do
         self.assertIn("to upload 0", again.stderr)
+
+    def test_a_hold_note_keeps_transcribed_audio_too(self):
+        # until 2026-11-16 audio with a transcript was deleted before the hold notes were read, so a file could
+        # leave the disk before its Drive copy was made (drive_hold.py's note); now a live note keeps any audio
+        store = self.tmp / "disk"
+        holds = self.root / "sync" / "holds"
+        holds.mkdir(parents=True)
+        (holds / "drive-test.json").write_text(json.dumps({"who": "drive", "pid": os.getpid(),
+                                                            "video_ids": [self.ids[0], self.ids[1]]}))
+        done = self.sync("push", f"dir:{store}", "--delete", "audio")
+        self.assertEqual(done.returncode, 0, done.stderr)
+        self.assertEqual(self.local_audio(), sorted(f"{i}.opus" for i in self.ids[:2]))   # ids[0] has a transcript
+        (holds / "drive-test.json").write_text(json.dumps({"who": "drive", "pid": os.getpid(), "video_ids": []}))
+        self.sync("push", f"dir:{store}", "--delete", "audio")
+        self.assertEqual(self.local_audio(), [])                                          # released: deleted
 
     def test_a_later_run_deletes_what_an_earlier_run_stored(self):
         store = self.tmp / "disk"

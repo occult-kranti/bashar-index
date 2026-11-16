@@ -6,7 +6,10 @@ the future and carry a time expression, a prediction word or a prophecy theme, a
 expression into a target window counted from the date the text was said (TimeML-style: "in two years" from
 a 2021 recording is 2023; "by 2030" keeps one bound; "soon" gets no invented bounds). A later model pass
 checks each candidate (is it the entity's claim, is it a prediction or future-tense teaching); until then
-every row is a candidate, not a finding.
+every row is a candidate, not a finding. Filters measured on the labelled samples leave out what passes the
+gates without being the entity's dated claim: promotion, page furniture, editors' notes, questions, reports,
+lists of any-time spans, and a time expression that is a date header or a past date. Their counts on those
+samples are in-sample (the rules were written on them); only a fresh sample measures them.
 
 Texts from the source and speech-to-text made here are read separately and every row says which it is.
 The date said is the item's published date in the catalogue, else the approximate upload date of a
@@ -98,6 +101,115 @@ RULES = [
     ("soon", re.compile(r"\b(soon|very soon|shortly|imminent\w*|any (day|time) now|near future)\b", re.I)),
 ]
 
+# Filters on what passed the gates (design set of 2026-11-15: 275 candidates of three samples, each labelled by two
+# coders). Each filter below dropped at least 3 of the 112 that neither coder took for a prediction, in at least two
+# of the three samples, and none of the 156 that both did. Those counts are in-sample: the rules were written on
+# these rows. A phrase that matched one labelled sentence and no other candidate is left out as tailored to it, and
+# on the windowed candidates never sampled every filter but FURNITURE fires well below its design rate.
+_Y = r"(?:19|20)\d\d"
+_MON = (r"(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|"
+        r"oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?")
+_DAY = r"\d{1,2}(?:st|nd|rd|th)?"
+# a calendar date: "4 June 2019", "June 4 2019", "June 4, 2019", "4th of June 2019", "2019 June", "2019-06-04"
+_DATE = (rf"(?i:\b(?:{_DAY}\s+(?:of\s+)?)?{_MON},?\s+(?:{_DAY},?\s+)?(?:of\s+)?{_Y}|\b{_Y}\s+{_MON}(?:\s+{_DAY})?|"
+         rf"\b{_Y}-\d\d-\d\d)")
+# a date, a year or a decade as the object of "since", "back in", "from ... until now"
+_DATEISH = (rf"(?:(?:the\s+)?(?:year\s+(?:of\s+)?)?(?:(?:{_DAY}\s+(?:of\s+)?)?{_MON},?\s+(?:{_DAY},?\s+)?(?:of\s+)?)?{_Y}|"
+            rf"(?:the\s+)?(?:19|20)\d0['’]?s)")
+# page furniture: translation listings (translator, date, links to read or download), "Related Posts"
+# blocks, a post's title and byline ("<title> ∞<council> <title> ∞<council>, Channeled by <name>"), shop sidebars,
+# " | " lists of video titles. Other pages' titles, not the entity's speech (design: 8; of the 37 windowed drops in
+# the full set none is a claim, about 4 are post titles worded as headlines, and those posts are read on their own).
+# "channeled by" and "translated by" count only in their page forms: a byline after ∞ or after a title (capitalised,
+# with a capitalised name: "... Will Be Gentle Channeled by Jo Doe"), or a listing line ("by <name> · 2024-03-02");
+# in a body sentence ("the message channelled by the council says ...") they are the source's own words
+_BY = r"(?:channel+ed|translated) by"
+FURNITURE = re.compile(r"\bread translation\b|\bdownload (?:the )?pdf\b|\brelated posts\b|"
+                       r"\bbuy it here\b|∞[^∞]*∞| \| |"
+                       rf"∞[^∞]*?\b{_BY}\b|(?-i:\b(?:Channel+ed|CHANNEL+ED|Translated|TRANSLATED) (?:by|By|BY) [A-Z])|"
+                       rf"\b{_BY}\s+[^·]{{1,60}}?\s·\s+{_Y}-\d\d-\d\d\b", re.I)
+# an editor's note, not the source: transcript footnotes (L/L Research ends each with ↩: past sessions, editions,
+# events) and citations of print ("reprinted from", "the June/July 2012 issue") (design: 6)
+EDITORIAL = re.compile(rf"↩|\b(?:adapted|reprinted|excerpted) from\b|\b{_MON}/{_MON}\s+{_Y}\b|\b{_Y} issue\b", re.I)
+# the speaker's own events and products, which BOILERPLATE misses: workshops, fund raisers, services streamed,
+# editions of a book or calendar (design: 8). Left out as they also serve predictions: "will be held" (trials),
+# bare "launch", "available until", clock times and prices, "the 2012 Mayan calendar"
+PROMOTION = re.compile(r"\b(?:workshops?|seminars?|master ?class(?:es)?|intensives|fund ?rais\w*|live[- ]?stream\w*|"
+                       r"streamed live)\b|"
+                       r"\b(?:print(?:ed)?|digital|paperback|hardcover|kindle|e-?book|audio ?book|downloadable) "
+                       r"(?:version|edition|copy|copies|format)s?\b|"
+                       r"\b(?:version|edition|translation)s? of (?:the|my|our|this|his|her) (?:new )?"
+                       r"(?:book|calendar|album|course|deck|cards)\b|"
+                       rf"\b(?:the|our|my|this|a|new) {_Y} (?!maya)(?:\S+ ){{0,2}}(?:calendars?|editions?|planners?|"
+                       r"almanacs?)\b", re.I)
+# three or more spans of time in a list ("today, next month or next year", "in a month, or two, or three"): any time
+# at all, not the date of a coming event; kept when a prophecy theme or a prediction word is named (design: 6; a
+# strong marker is no exception: "rain falls today, next month or next year, and surely" is no forecast). Every
+# item needs a number or next/this, so years and bare "days, weeks and months" are not lists here
+_NUMW = (r"(?:\d{1,3}|a|an|one|two|three|four|five|six|seven|eight|nine|ten|twelve|fifteen|twenty|thirty|fifty|"
+         r"a hundred|a thousand|a million|hundred|thousand|million|a few|few|several)")
+_UNITW = r"(?:moments?|minutes?|hours?|days?|weeks?|months?|years?|decades?|lifetimes?|life|lives|centur(?:y|ies)|millenni(?:um|a))"
+_PREP = r"(?:(?:in|within|over|for|until|after) )?(?:(?:your|the|this|a) )?"
+_SPAN = rf"(?:tomorrow|today|tonight|{_PREP}(?:next |coming )?{_NUMW} {_UNITW}|{_PREP}(?:next|this) {_UNITW})"
+_LIST_SEP = r"(?:,\s*(?:or\s+)?(?:even\s+)?|\s+or\s+(?:even\s+)?)"
+TIME_LIST = re.compile(rf"\b{_SPAN}{_LIST_SEP}(?:{_SPAN}|{_NUMW}){_LIST_SEP}(?:{_SPAN}|{_NUMW})\b", re.I)
+
+# The filters below look at the time expression itself (the first match of RULES) and drop the sentence only when
+# it is that expression which is a date header or a past date, so a sentence dated by another expression is kept.
+# None of them drops a sentence whose year said is known and earlier than every year in that expression: a date
+# ahead of the speaker is not a past reference or the date of the session (see future_dated).
+YEAR_IN = re.compile(r"(?<!\d)(?:19|20)\d\d(?!\d)")
+# a transcript's date header or speaker line ("4 June 2019 Lumi (2):", "---------- LATER - JUNE 9 2019", a heading
+# "AUGUST 2019 Our circle ..."): the date of the session, not a target (design: 12)
+DATED_HEADER = re.compile(rf"{_DATE}\s*[-–—:]?\s*[A-Z][\w’'.-]*(?:\s+[A-Z0-9][\w’'.-]*){{0,2}}\s*(?:\([^()]{{1,25}}\))?:"
+                          rf"(?=\s|$)|^\W*(?:{_DAY}\s+)?(?:JANUARY|FEBRUARY|MARCH|APRIL|MAY|JUNE|JULY|AUGUST|SEPTEMBER|"
+                          rf"OCTOBER|NOVEMBER|DECEMBER)\s+(?:{_DAY},?\s+)?{_Y}\b|-{{3,}}\s*(?:[A-Za-z ]{{1,30}}?\s[-–]\s*)?"
+                          rf"{_DATE}")
+# a date anchored in the past or the present: "since 2001" (not "since 2031 will be", where since means because),
+# "back in March 2019", "back to 2015" (time travel), "from June of 2014 until now"; then "<n> years ago" (design: 7)
+PAST_ANCHOR = re.compile(rf"\bsince\s+(?:(?:early|late|mid|about|around|at least|roughly)[- ]\s*)?{_DATEISH}\b"
+                         r"(?!,?\s+(?:is|was|will|shall|would|has|had|are)\b)|"
+                         rf"\bfrom\s+{_DATEISH}\s+(?:until|till|to|up to|through)\s+(?:now|today|the present|this day)\b",
+                         re.I)
+BACK_ANCHOR = re.compile(rf"\bback\s+(?:in|to)\s+(?:(?:early|late|mid)[- ]\s*)?{_DATEISH}\b", re.I)
+# ... but "back in 2027" after a return still to come is a target: "the ships will come back in 2027", "they are
+# coming back", "be back", "return", "go back", or a future marker within the three words before "back"
+# ("came back in 2019" stays a past date)
+RETURNING = re.compile(r"\b(?:come|coming|be|return\w*|go|going|will|won['’]t|shall|gonna|about to)\b|['’]ll\b", re.I)
+AGO = re.compile(r"\s+ago\b", re.I)
+# a past-tense verb governs the dated clause (design: 15): (a) it comes just before the date ("the bridge they built
+# in 2015", "which was on 4 June 2010") with no auxiliary or modal among the three words before it, read back to a
+# clause edge, and no "to" right before it ("will soon be completed in 2027" is not past; "this is what happened in
+# 2019" and "next to the house built in 2015" are); (b) the date is
+# its subject ("2009 was a hard year"); (c) a fronted date ("On June 4, 2019, ...", "At the start of March 2020 ...")
+# is followed by a past or present-perfect main verb and by no future marker or modal, neither in the next 20 words
+# nor anywhere in the main clause (to MAIN_CLAUSE_END).
+# Only for a date, a decade, "this year" and "in two years": "by 2030",
+# ranges and "the next two years" reach forward. "left", "set" and "put" are left out: they are also presents
+_PAST_VERB = (r"(?:was|were|had|did|began|became|came|went|saw|took|gave|got|made|met|lost|found|felt|heard|told|said|"
+              r"wrote|bought|brought|thought|knew|grew|fell|rose|ran|won|sent|spent|built|held|stood|kept|paid|sold|chose|"
+              r"broke|drove|flew|meant|struck|taught|threw|understood|woke|wore|entered|started|ended|happened|occurred|"
+              r"arrived|landed|appeared|visited|joined|returned|received|learned|learnt|offered|invited|decided|realized|"
+              r"realised|noticed|experienced|passed|moved|changed|opened|closed|died|published|released|recorded|reached|"
+              r"showed|asked|answered|talked|spoke|stopped|continued|finished|completed|signed|lived|worked|tried|stayed|"
+              r"remained|purchased|predicted|foretold|prophesied)")
+PAST_BEFORE = re.compile(rf"(?:^|[\w'’]\s+)\b(?P<verb>{_PAST_VERB})(?P<rest>(?:\s+[\w,'’-]+){{0,3}}?)\s*$", re.I)
+NON_FINITE = re.compile(r"(?:will|won['’]t|shall|would|could|should|may|might|must|can|to|be|been|being|have|has|having|"
+                        r"is|are|am|\w*['’]ll)", re.I)
+# where the words before a verb stop being its own: a relative or a conjunction, or the end of a clause
+CLAUSE_EDGE = re.compile(r"(?:who|whom|whose|which|that|what|when|where|while|and|but|or|as|because|if|since)", re.I)
+FORWARD = re.compile(r"\b(?:will|won['’]t|shall|going to|gonna|about to|would|could|should|can|must|may|might|coming|"
+                     r"upcoming|approaching|next|future)\b|['’]ll\b", re.I)
+DATE_SUBJECT = re.compile(r",?\s+(?:was|were|had been|had|became|began|ended|saw|brought)\b", re.I)
+FRONTED = re.compile(r"\b(?:on|in|at|during|of)\s+(?:the\s+)?(?:[\w,]+\s+){0,3}$", re.I)
+PAST_MAIN = re.compile(rf"\b(?:{_PAST_VERB}|(?:has|have)\s+(?:\w+\s+)?\w+(?:ed|en|wn|ght))\b", re.I)
+FUTURE_OR_MODAL = re.compile(r"\b(?:will|won['’]t|shall|going to|gonna|about to)\b|['’]ll\b|"
+                             r"\b(?:may|might|could|would|can|should)\s+(?!not\b)\w+", re.I)
+# the end of the main clause after a fronted date: a future marker beyond its first 20 words still counts up to here
+# ("On May 3, 2027, after the long years ... and on the hills, the ships will land"), but not in a clause after
+# ", however" ("In this year the valley became a lake, however, ... what you would call ..." is a past account)
+MAIN_CLAUSE_END = re.compile(r"[;:]|,\s+(?:however|but|and|yet|so|whereas)\b", re.I)
+
 
 def number(word):
     word = word.lower()
@@ -109,14 +221,22 @@ def span(n, unit):
     return n * 10 if unit.startswith("decade") else (n / 12 if unit.startswith("month") else n)
 
 
-def time_window(sentence, said_year):
-    """(lo, hi, label, matched text) for the first time expression in the sentence, or None. lo and hi are
-    years (hi may equal lo); either may be None when the expression gives no bound or the year said is
-    unknown. "soon" gets (None, None)."""
+def time_expression(sentence):
+    """(label, match) for the first time expression in the sentence, the rules tried most specific first; or None."""
     for label, rx in RULES:
         m = rx.search(sentence)
-        if not m:
-            continue
+        if m:
+            return label, m
+    return None
+
+
+def time_window(sentence, said_year, found=False):
+    """(lo, hi, label, matched text) for the first time expression in the sentence, or None. lo and hi are
+    years (hi may equal lo); either may be None when the expression gives no bound or the year said is
+    unknown. "soon" gets (None, None). found: time_expression(sentence) when the caller has it already."""
+    found = time_expression(sentence) if found is False else found
+    if found:
+        label, m = found
         g = m.groups()
         if label in ("between", "range"):
             lo, hi = sorted((int(g[0]), int(g[1])))
@@ -155,6 +275,83 @@ def time_window(sentence, said_year):
     return None
 
 
+def overlaps(rx, sentence, m):
+    """True when a match of rx overlaps the matched time expression m."""
+    return any(x.start() < m.end() and m.start() < x.end() for x in rx.finditer(sentence))
+
+
+def future_dated(m, said_year):
+    """True when the year said is known and the smallest year in the time expression m is later than it."""
+    years = [int(y) for y in YEAR_IN.findall(m.group(0))]
+    return bool(said_year and years and min(years) > said_year)
+
+
+def auxiliary_before(text, n=3):
+    """True when an auxiliary or a modal is among the last n words of text, read back to a clause edge, or "to" is
+    the last word ("next to the house built in 1990" is a preposition, not "to" + verb)."""
+    for i, word in enumerate(reversed(text.split()[-n:])):
+        w = word.strip("\"“”‘’'()[]").rstrip(",")
+        if NON_FINITE.fullmatch(w) and (i == 0 or w.lower() != "to"):
+            return True
+        if CLAUSE_EDGE.fullmatch(w) or w[-1:] in (";", ":", ".", "!", "?") or not re.search(r"\w", w):
+            return False
+    return False
+
+
+def back_anchor(sentence, m):
+    """True when "back in/to <date>" covers the time expression m and no return to come precedes "back"."""
+    return any(x.start() < m.end() and m.start() < x.end() and not RETURNING.search(" ".join(sentence[:x.start()].split()[-3:]))
+               for x in BACK_ANCHOR.finditer(sentence))
+
+
+def past_verb_governs(sentence, label, m):
+    """True when a past-tense verb governs the time expression m (see PAST_BEFORE, DATE_SUBJECT, FRONTED)."""
+    if not (label in ("year", "decade", "this_unit") or (label == "in_n" and not FORWARD.search(m.group(0)))):
+        return False
+    before, after = sentence[:m.start()], sentence[m.end():]
+    v = PAST_BEFORE.search(before)
+    if v and not auxiliary_before(before[:v.start("verb")]) and not FORWARD.search(v.group("rest")):
+        return True
+    if DATE_SUBJECT.match(after):
+        return True
+    if len(before.split()) <= 8 and (re.match(r"(?:in|during|around|on|at)\b", m.group(0), re.I) or FRONTED.search(before)):
+        main = " ".join(after.split()[:20])
+        clause = MAIN_CLAUSE_END.split(after, 1)[0]
+        return bool(PAST_MAIN.search(main)) and not (FUTURE_OR_MODAL.search(main) or FUTURE_OR_MODAL.search(clause))
+    return False
+
+
+def screened_out(sentence, found, theme, said_year, undated_floor=UNDATED_FLOOR):
+    """The name of the first filter above (FURNITURE to PAST_VERB) that takes a sentence past the gates for
+    something other than the entity's dated claim, or "" when none does. found is time_expression(sentence)."""
+    m = FURNITURE.search(sentence)
+    if m:
+        # the splitter does not cut after .” so a post's last line can be glued to the links that follow it: kept
+        # when the text before the closing quote ahead of the links is a candidate by itself
+        head = sentence[:m.start()]
+        q = max(head.rfind("”"), head.rfind('"'))
+        if not (q > 0 and candidate(head[:q].strip(), said_year, undated_floor)):
+            return "furniture"
+    if EDITORIAL.search(sentence):
+        return "editorial"
+    if PROMOTION.search(sentence):
+        return "promotion"
+    if not (theme or PREDICT.search(sentence)) and TIME_LIST.search(sentence):
+        return "time list"
+    if not found:
+        return ""
+    label, m = found
+    if future_dated(m, said_year):
+        return ""
+    if overlaps(DATED_HEADER, sentence, m):
+        return "dated header"
+    if overlaps(PAST_ANCHOR, sentence, m) or back_anchor(sentence, m) or AGO.match(sentence, m.end()):
+        return "past anchor"
+    if past_verb_governs(sentence, label, m):
+        return "past verb"
+    return ""
+
+
 def candidate(sentence, said_year, undated_floor=UNDATED_FLOOR):
     """A dict for a sentence that speaks of the future with a time, a prediction word or a prophecy theme;
     None otherwise. A window that ends before the year said is a past reference, future marker or not ("he
@@ -164,7 +361,8 @@ def candidate(sentence, said_year, undated_floor=UNDATED_FLOOR):
     future, predict, hedge = FUTURE.search(sentence), PREDICT.search(sentence), HEDGE.search(sentence)
     if not (future or predict or hedge):
         return None
-    window = time_window(sentence, said_year)
+    found = time_expression(sentence)
+    window = time_window(sentence, said_year, found)
     # "may come by 2030" is a hedged statement about the future: a hedging modal with a time counts too
     if not (future or predict or (hedge and window)):
         return None
@@ -172,7 +370,7 @@ def candidate(sentence, said_year, undated_floor=UNDATED_FLOOR):
     if not (window or predict or theme):
         return None
     if (BOILERPLATE.search(sentence) or QUESTION.search(sentence) or PAST_REPORT.search(sentence)
-            or POST_HEADER.search(sentence)):
+            or POST_HEADER.search(sentence) or screened_out(sentence, found, theme, said_year, undated_floor)):
         return None
     lo, hi, label, expr = window if window else (None, None, "", "")
     floor = said_year if said_year else undated_floor
