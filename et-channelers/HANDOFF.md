@@ -447,6 +447,34 @@ as "skipped by rule", not as a failure.
   `analysis/themes/blackouts/`; `theme_search.py leaks` proves no stored text entered the lexicon file or the
   tests. An adversarial review found two example sentences too close to stored text, twin titles counted twice
   and kinds pooled in the precision figure; all fixed before this commit.
+* **Typd (SameRainbows/typd-app) was checked on 2026-11-16 at the owner's request** as a possible speech-to-text
+  engine: it is an Electron dictation app whose model (Qwen3-ASR 1.7B, trained further for dictation) needs an
+  NVIDIA GPU with 4 GB or an Apple-silicon Mac, calls its CPU fallback "much slower", and is trained to write
+  what the speaker meant (fillers gone, self-corrections resolved) rather than every word, so it cannot run on
+  this 2-core machine and would not give the verbatim, time-aligned transcripts the quotes and offsets need.
+  The engine stays faster-whisper (base.en, int8, CPU). **Speech-to-text was paused at 05:39 UTC the same
+  day** (the `keep_transcribing.sh` loop and its worker killed by process id) to give both cores to the
+  downloads and their Opus conversion while the backlog is fetched and copied to Drive; start it again with
+  `resume_jobs.sh` (or `setsid nohup bash -c 'while true; do bash et-channelers/pipeline/keep_transcribing.sh;
+  sleep 1800; done' >> ~/et-channelers-private/logs/asr.log 2>&1 < /dev/null &`) once the downloads are done.
+  With the loop paused, untranscribed audio stays on disk (the sync's hold rule), so watch the free space.
+* **The public predictions page was redesigned on 2026-11-16** (`prediction_page.py`, same guard, 54 tests): a
+  zoomable and pannable timeline over the full data extent with semantic ticks, counted stacks for dense years, a
+  shaded past and a now line, a brush mini-map, zoom buttons and keyboard keys, a hover lead line from the year said
+  to the target; rows by person, kind of text, decade said or certainty; cards regrouped by moving the same nodes (so
+  every quote still occurs once); faceted filters with counts, search with quoted phrases and minus exclusion, window
+  presets, a "list follows the window" switch, a sortable table and a CSV of the public fields; the whole view lives
+  in the URL hash (old `d=` fragments still work); the page degrades to the lists and table without d3 (the one
+  external script, from cdnjs). Built by a workflow of three design agents, a judge, one implementer, an adversarial
+  reviewer and a fix pass (three majors fixed: a wheel-scroll trap, a sticky axis misaligned with a classic
+  scrollbar, a focusable link inside aria-hidden). No browser on this machine: verified by the tests, node --check
+  and the guard on the real data (480 statements, 442 quotes, max item share 5.0%, 925 KB).
+* **Speech-to-text restarted at 15:13 UTC on 2026-11-16** (`resume_jobs.sh` with the Drive hold and the backlog
+  queue) once the backlog download of 389 episodes had finished (387 fetched, 2 failed). Disk: the root volume was
+  at 3.2 GB free; 4.4 GB were freed (the Copilot cache, the pip caches, the local copy of the ArchiveShelf release
+  shards, which match the GitHub release byte for byte, and the staging cut pieces of files already recorded on
+  Drive). The Drive staging copies live on the separate /tmp volume (34 GB free), so they cost the root volume
+  nothing.
 * **Keywords and TF-IDF of the newest tiers** (`keywords.py`, 2026-11-16; `plan/keywords_newest10.csv`, counts
   and p-values only): each channel's newest 10/20/50 titles against its own history and the other channels,
   and its texts as they arrive (kinds apart). In the newest 10: "2026" is the term rising most across channels
