@@ -221,7 +221,12 @@ as "skipped by rule", not as a failure.
          three"), dated headers (a session date followed by a speaker label), past anchors ("since 2019", "back
          in 2017", "ago") and a past verb governing the dated clause. None drops a sentence whose year is later
          than the date said, and none lost a labelled real prediction (156 of 156); together they drop 58 of the
-         112 labelled false positives (in-sample: the fourth sample will measure them).
+         112 labelled false positives. **The fourth fresh sample measured them on 2026-11-16** (`fourth_2026-11-16`, 90
+         windowed candidates from 10 people, none seen before, two independent blinded coders, kappa 0.93 on
+         prediction-like): 45 of 90 real predictions, **54.7% weighted by person (95% about 45% to 65%)**, against
+         55.9% before the filters, so the filters cut false positives without moving the measured precision; by
+         person 38% (Gosia) to 69% (Scranton) among those with 16 units; speech-to-text 2 of 10. Row 4 of
+         `plan/prediction_samples.csv`.
        Near-copies are collapsed (12.4: shared five-word runs, Broder 1997, at a resemblance of 0.5): the first
        said keeps the statement, later copies are counted, and the timeline shows each once with how often it was
        said. Families of one event in different words are the model pass's work.
@@ -423,6 +428,25 @@ as "skipped by rule", not as a failure.
   questioner quotes, five third-party names and a count off by 29; all fixed before the first publish. The full
   private timelines (54 files) are zipped in Drive "05 Analysis" as
   `Prediction timelines, full private copy 2026-11-16`.
+* **Blackouts of the power grid and the internet** (`theme_search.py` with `themes/blackouts.json`, 2026-11-16,
+  ANALYSIS_PLAN 12.4.1; the owner's question of 2026-11-16, centred on each channel's newest 10 videos). A hit is
+  a sentence or title that speaks literally of electric power, the grid, a blackout or outage, or of the internet,
+  communications, satellites or electronics failing or being cut (metaphysical grids, media blackouts, fainting
+  and the like are excluded by scoped rules); precision 0.87 on texts from the source and 0.83 on titles against
+  the design labels, 0.93 and 0.97 on a fresh blinded sample of 63 hits coded by two coders (kappa 0.88). Newest
+  10 (612 videos, 63 channels): 4 titles match, in 3 channels (Aaron Abke, a global blackout; Gigi Young, cyber
+  attacks; Michelle Robinson, twice: cyber attacks and power outages with a 2027 target, and power-grid risks);
+  38 of the videos have a text here through a twin, with 0 hits in those texts; the rest waits for the captions
+  and audio the owner's computer fetches, the four matching videos first (`jobs/queue_blackouts_newest10.csv`,
+  and `_newest20`, `_newest50`, `_all` with 40 videos). Everything stored: 9,998 source texts hold 80 distinct
+  hits in 38 texts (Gosia 40, Sam 27, L/L Research 6, Suzanne Lie 4, Blossom Goodchild 2, Scranton 1), 198
+  speech-to-text transcripts hold 4 (Stewart Pearce), 72,655 video titles hold 30 (Elizabeth April 7, Ismael
+  Perez 4, Michelle Robinson 4, Ivan Teller 3, Sam 3, Paul White Gold Eagle 2, seven others 1); 32 hits speak of
+  the future, 13 are prediction candidates, 3 name a target year (2021, 2024 to 2027). Counts in
+  `plan/theme_blackouts.csv` and `plan/theme_blackouts_newest10.csv`; the hits and the coders' sample stay in
+  `analysis/themes/blackouts/`; `theme_search.py leaks` proves no stored text entered the lexicon file or the
+  tests. An adversarial review found two example sentences too close to stored text, twin titles counted twice
+  and kinds pooled in the precision figure; all fixed before this commit.
 * **Keywords and TF-IDF of the newest tiers** (`keywords.py`, 2026-11-16; `plan/keywords_newest10.csv`, counts
   and p-values only): each channel's newest 10/20/50 titles against its own history and the other channels,
   and its texts as they arrive (kinds apart). In the newest 10: "2026" is the term rising most across channels

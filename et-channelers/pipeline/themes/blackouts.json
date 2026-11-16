@@ -1,0 +1,2051 @@
+{
+ "theme": "blackouts",
+ "description": "Statements that the electric power grid will fail or go down, power outages or blackouts (local, national, global), electricity cut off; the internet, communications, satellites, phones or electronics failing or being shut down, an internet blackout or kill switch; and the causes channelers name (solar flares, CMEs, an EMP, a Carrington event, cyber attacks, 'three days of darkness' or the Event only when power or technology fails with it). Not the theme: metaphysical grids, a media blackout, blackout as fainting, the Schumann chart's 'blackout'.",
+ "history": "Merged on 2026-11-16 from three proposals of one sweep of the stored texts (grid, internet and prophetic lenses). Overlapping patterns were joined (blackout, outage, power outage, grid failure, cyber attack, cause with technology, Carrington event, darkness with technology), the narrow forms kept, the excludes scoped to the includes they guard, and patterns each lens measured below about 0.7 left out (bare grid, power grid, EMP, solar flash, days of darkness, satellites failing, GPS, kill switch, communication). Changes made after reading the joined labels (in-sample): lines_down, the failure verbs downed, burnt and bringing down, one more word in 'disrupt ... communications', lights going without 'out', carrington only as an event or storm, 'electricity goes out' without a determiner, and wider x_blackout_body and x_outage_metaphor. Review of 2026-11-16, after the coders' sample was drawn: examples that repeated or paraphrased stored text replaced by invented ones; a pattern branch copied from a stored sentence replaced by a general one; x_schumann, x_blackout_body, x_own_link, x_light_transformer, x_moon_satellite and x_dreamspell narrowed so that they cannot void a real failure named in the same sentence (each has keeps); power_outage takes 'fail' after a modal; the advice markers lost bare 'supplies' and 'warn...'; precision is measured per kind. Over every stored sentence and title the narrowed lexicon keeps exactly the hits the earlier one kept.",
+ "after_sample": "Patterns changed after the coders' sample was drawn: power_outage (include) and the excludes x_schumann, x_blackout_body, x_own_link, x_light_transformer, x_moon_satellite and x_dreamspell, and markers.advice; no include was added. Each has its own after_sample note. None of them changes a stored hit (checked over every stored sentence and title on 2026-11-16); they matter for texts still to come (the owner's audio and captions).",
+ "sample": {
+  "folder": "analysis/themes/blackouts/sample_2026-11-16 (private)",
+  "drawn": "2026-11-16",
+  "lexicon": "the version before the review (sha1 a6e42b0f)",
+  "units": 63,
+  "note": "The coders labelled what that version kept. The changes listed in after_sample came later; on the stored texts and titles they change no hit, so the sample still stands for the lexicon now."
+ },
+ "format": "include: id, topic, group (strong or weak, as pipeline/keywords.py reads it), pattern (Python re, matched case-insensitively against one sentence or one title, titles read with '_' as a space), optional kinds (source, made, captions, title; default all), optional screen (a cheap pattern every match contains, required for patterns that start with ^ or look ahead over .*), optional terms (what to report as the matched terms; default the match), precision (the lowest on-topic share among the kinds in measured.by_kind: a figure never pooled across kinds, for tools that read one number), measured (per kind: hits, distinct hits, labelled matches read, on, edge, off, precision with its Wilson interval; coded: the two coders' sample per kind) and examples (invented sentences it must match). exclude: id, pattern, scope (include ids or topics, or all), mode (unit: a match anywhere in the sentence voids the includes in scope; overlap: only include matches it overlaps; a look-ahead include's match is the whole sentence), optional kinds, why, examples (invented sentences in which it must void every include), keeps (invented sentences it must leave as they are, each still a hit), measured (per kind). after_sample: what changed after the coders' sample of 2026-11-16 was drawn (see sample). generic_topics: topics dropped from a hit that also has a more specific one. markers: the theme's warning words (advice to prepare), used beside prediction_timeline's future, prediction and hedge words.",
+ "generic_topics": [
+  "unspecified"
+ ],
+ "topics": [
+  "power_grid",
+  "internet_communications",
+  "electronics_general",
+  "darkness_event",
+  "unspecified"
+ ],
+ "markers": {
+  "advice": "\\b(?:prepar\\w*|be ready|get ready|stock(?:ing)? up|stockpil\\w*|store (?:some |enough |extra )?(?:water|food|fuel|cash)|storing (?:water|food|supplies)|candles?|flashlights?|torch(?:es)?|batter(?:y|ies)|generators?|back-?up power|power banks?|solar panels?|(?:have|keep|withdraw) (?:some )?cash|water (?:supply|supplies)|non-?perishable|emergency (?:kits?|plans?)|survival kits?|precautions?|be careful|beware)\\b",
+  "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): bare 'supplies' and 'warn...' left out: in titles they are topic words ('Food Supplies', 'WARNINGS'), not advice."
+ },
+ "include": [
+  {
+   "id": "blackout",
+   "topic": "unspecified",
+   "group": "strong",
+   "pattern": "\\bblack-?outs?\\b|\\b(?:a|the|global|national|total|massive|power|grid|internet)\\s+black\\s+outs?\\b",
+   "precision": 0.769,
+   "from": [
+    "grid:blackout",
+    "prophetic:blackout"
+   ],
+   "notes": "Any blackout, power or internet (the word does not say which). Needs the excludes for the Schumann chart, a news blackout and blackout as fainting or trance. Proposals: grid 25 of 26 source sentences and 9 of 12 YouTube titles on the theme; prophetic 27 of 35 (texts and titles). The second branch is for speech-to-text writing 'black out' as two words, only after a determiner or a power word (unmeasured: no stored match).",
+   "examples": [
+    "A national blackout left the cities dark for two days.",
+    "The town council fears a blackout before the harvest fair.",
+    "There may be a black out across the region."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 19,
+      "distinct": 19,
+      "read": 19,
+      "on": 17,
+      "edge": 1,
+      "off": 1,
+      "precision": 0.895,
+      "wilson95": [
+       0.686,
+       0.971
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 13,
+      "distinct": 13,
+      "read": 13,
+      "on": 10,
+      "edge": 2,
+      "off": 1,
+      "precision": 0.769,
+      "wilson95": [
+       0.497,
+       0.918
+      ]
+     }
+    },
+    "precision": 0.769,
+    "coded": {
+     "source": {
+      "units": 3,
+      "both_on": 3,
+      "either_on": 3,
+      "precision": 1.0,
+      "wilson95": [
+       0.438,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 12,
+      "both_on": 11,
+      "either_on": 12,
+      "precision": 0.917,
+      "wilson95": [
+       0.646,
+       0.985
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "blackout_power",
+   "topic": "power_grid",
+   "group": "strong",
+   "pattern": "\\b(?:power|electric(?:al|ity)?|grid|energy|rolling|nation-?wide|national|country-?wide|city-?wide|regional)\\s+black-?\\s?outs?\\b|\\bblack-?\\s?outs?\\s+(?:of|in|across)\\s+(?:the\\s+)?(?:power|electric\\w*|grid)\\b",
+   "precision": null,
+   "from": [
+    "grid:blackout_qualified"
+   ],
+   "notes": "A blackout named as one of power, the grid or electricity, or by a size that only power blackouts have here (rolling, national, regional). A subset of blackout that sets the topic to power_grid. Proposal (wider, with place names): grid 1 of 1 source sentence, 4 of 4 YouTube titles. After the merge it has 0 stored matches: the stored blackouts are named by a place or a size (a country's blackout, a global or large-scale one), which does not say power or internet, so they stay 'unspecified'. Kept for speech-to-text of the newest audio.",
+   "examples": [
+    "Rolling blackouts are coming to the whole country.",
+    "A power blackout hit three states."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    },
+    "precision": null,
+    "coded": {
+     "source": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  {
+   "id": "outage",
+   "topic": "unspecified",
+   "group": "strong",
+   "pattern": "\\boutages?\\b",
+   "precision": 0.778,
+   "from": [
+    "grid:outage",
+    "prophetic:outage"
+   ],
+   "notes": "Outages of any kind: power, cellular, phone, platform. Needs the quoted-metaphor exclude and the link-list exclude. Proposals: grid 19 of 21 source sentences, 7 of 8 YouTube titles; prophetic 25 of 31 with the power forms below.",
+   "examples": [
+    "The outage lasted most of the day.",
+    "Expect more cellular outages this month."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 15,
+      "distinct": 15,
+      "read": 15,
+      "on": 14,
+      "edge": 1,
+      "off": 0,
+      "precision": 0.933,
+      "wilson95": [
+       0.702,
+       0.988
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 10,
+      "distinct": 9,
+      "read": 9,
+      "on": 7,
+      "edge": 2,
+      "off": 0,
+      "precision": 0.778,
+      "wilson95": [
+       0.453,
+       0.937
+      ]
+     }
+    },
+    "precision": 0.778,
+    "coded": {
+     "source": {
+      "units": 11,
+      "both_on": 11,
+      "either_on": 11,
+      "precision": 1.0,
+      "wilson95": [
+       0.741,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 9,
+      "both_on": 9,
+      "either_on": 9,
+      "precision": 1.0,
+      "wilson95": [
+       0.701,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "power_outage",
+   "topic": "power_grid",
+   "group": "strong",
+   "pattern": "\\b(?:power|electric(?:al|ity)?|grid)\\s+(?:outages?|failures?|cuts?|shortages?|interruptions?|disruptions?)\\b|\\benergy\\s+(?:outages?|black-?outs?)\\b|\\b(?:the|all|electrical|electric)\\s+power\\s+(?:\\w+\\s+)?(?:fail|fails|failed|failing)\\b",
+   "precision": 0.875,
+   "from": [
+    "grid:power_outage",
+    "prophetic:outage (power forms)"
+   ],
+   "notes": "Power outages, failures and cuts. Proposals: grid 4 of 4 source sentences and 8 of 8 YouTube titles; prophetic's 'power outage' part 19 of 23.",
+   "examples": [
+    "There will be power outages in the north.",
+    "When the power fails, have candles ready.",
+    "The power could fail in the valley towns."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 5,
+      "distinct": 5,
+      "read": 5,
+      "on": 5,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.566,
+       1.0
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 9,
+      "distinct": 8,
+      "read": 8,
+      "on": 7,
+      "edge": 1,
+      "off": 0,
+      "precision": 0.875,
+      "wilson95": [
+       0.529,
+       0.978
+      ]
+     }
+    },
+    "precision": 0.875,
+    "coded": {
+     "source": {
+      "units": 4,
+      "both_on": 4,
+      "either_on": 4,
+      "precision": 1.0,
+      "wilson95": [
+       0.51,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 8,
+      "both_on": 8,
+      "either_on": 8,
+      "precision": 1.0,
+      "wilson95": [
+       0.676,
+       1.0
+      ]
+     }
+    }
+   },
+   "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): 'fail' added beside fails, failed and failing, so the one-word slot before it can hold a modal ('the power will fail'); 0 more stored matches."
+  },
+  {
+   "id": "power_goes_out",
+   "topic": "power_grid",
+   "group": "strong",
+   "pattern": "\\b(?:(?:the|all|our|your|their)\\s+(?:electricity|power|lights)|electricity)\\s+(?:will |would |could |may |might |to )?(?:go(?:es)?|going|went|gone|be|is|was)\\s+(?:out|off|down)\\b|\\b(?:will|would|could|might|may)\\s+(?:not|no longer)\\s+have\\s+(?:any\\s+)?(?:electricity|power)\\b|\\b(?:will|would|could|might|may)\\s+(?:be\\s+)?(?:without|lose|losing)\\s+(?:all\\s+)?(?:electricity|power)\\b|\\b(?:lose|losing|lost|loss of)\\s+(?:all\\s+)?(?:electricity|electrical power|electric power|power supply)\\b",
+   "precision": 1.0,
+   "from": [
+    "grid:power_goes_out"
+   ],
+   "notes": "The power going out, said in plain speech: a recall pattern for speech-to-text. Proposal: grid 0 source sentences, 1 of 1 made here. The broader first-round forms were 2 of 6.",
+   "examples": [
+    "The electricity will go out for three days.",
+    "Many homes could be without power.",
+    "That is why electricity goes out when they are near."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "made": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "title": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    },
+    "precision": 1.0,
+    "coded": {
+     "source": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "title": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  {
+   "id": "grid_failure",
+   "topic": "power_grid",
+   "group": "strong",
+   "pattern": "^(?=.*\\b(?:power|electric(?:al|ity)?|national|utility)[- ]grids?\\b)(?=.*\\b(?:fail\\w*|collaps\\w*|go(?:es|ing)? (?:down|out|off|dark)|went (?:down|out|off|dark)|gone (?:down|out|off|dark)|shut\\w* (?:off|down)|knock\\w* out|black(?:s|ed|ing)? out|black-?outs?|outages?|crash\\w*|cut off|destroy\\w*|disrupt\\w*|overload\\w*|sabotag\\w*|attack\\w*|vulnerab\\w*|risks?|taken down|take down|brought down|bring\\w* down|tak\\w+ down|took down|knock\\w* down|downed|burn(?:t|ed|ing)|fried|wip\\w* out|down for)\\b)|\\bthe grids?\\s+(?:will |would |could |may |might |is |are |to )?(?:be )?(?:fail\\w*|collaps\\w*|go(?:es|ing)? down|went down|gone down|crash\\w*|shut\\w* down|knocked out|taken down|brought down|down)\\b|\\bgrid[- ]down\\b|\\bgrid (?:failures?|collapse|crash(?:es)?|outages?|shut-?downs?)\\b",
+   "screen": "\\b(?:power|electric(?:al|ity)?|national|utility)[- ]grids?\\b|\\bthe grids?\\b|\\bgrid[- ]down\\b|\\bgrid (?:failures?|collapse|crash(?:es)?|outages?|shut-?downs?)\\b",
+   "terms": "\\b(?:power|electric(?:al|ity)?|national|utility)[- ]grids?\\b|\\bthe grids?\\b|\\bgrid[- ]down\\b|\\bgrid (?:failures?|collapse|crash(?:es)?|outages?|shut-?downs?)\\b|\\b(?:fail\\w*|collaps\\w*|go(?:es|ing)? (?:down|out|off|dark)|went (?:down|out|off|dark)|gone (?:down|out|off|dark)|shut\\w* (?:off|down)|knock\\w* out|black(?:s|ed|ing)? out|black-?outs?|outages?|crash\\w*|cut off|destroy\\w*|disrupt\\w*|overload\\w*|sabotag\\w*|attack\\w*|vulnerab\\w*|risks?|taken down|take down|brought down|bring\\w* down|tak\\w+ down|took down|knock\\w* down|downed|burn(?:t|ed|ing)|fried|wip\\w* out|down for)\\b",
+   "precision": 1.0,
+   "from": [
+    "grid:grid_failure",
+    "prophetic:grid_fail"
+   ],
+   "notes": "A power, electric, national or utility grid with a failure word in the same sentence, or 'the grid' going down, grid-down, grid failure. Bare 'power grid' is not the theme here (grid lens 5 of 20; prophetic 4 of 20: grids of ships and other worlds). Proposals: grid 4 of 4 source, 1 of 1 made, 1 of 1 title; prophetic 6 of 6.",
+   "examples": [
+    "The power grid could collapse after the storm.",
+    "When the grid goes down, stay calm.",
+    "They will attack the electrical grid."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 4,
+      "distinct": 4,
+      "read": 4,
+      "on": 4,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.51,
+       1.0
+      ]
+     },
+     "made": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "title": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     }
+    },
+    "precision": 1.0,
+    "coded": {
+     "source": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "title": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "lines_down",
+   "topic": "power_grid",
+   "group": "strong",
+   "pattern": "^(?=.*\\b(?:power|electric(?:al|ity)?|telephone|phone|transmission|utility)\\s+(?:and\\s+\\w+\\s+)?(?:lines?|cables?|poles?|plants?|stations?|substations?)\\b)(?=.*\\b(?:fail\\w*|collaps\\w*|go(?:es|ing)? (?:down|out|off|dark)|went (?:down|out|off|dark)|gone (?:down|out|off|dark)|shut\\w* (?:off|down)|knock\\w* out|black(?:s|ed|ing)? out|black-?outs?|outages?|crash\\w*|cut off|destroy\\w*|disrupt\\w*|overload\\w*|sabotag\\w*|attack\\w*|vulnerab\\w*|risks?|taken down|take down|brought down|bring\\w* down|tak\\w+ down|took down|knock\\w* down|downed|burn(?:t|ed|ing)|fried|wip\\w* out|down for)\\b)",
+   "screen": "\\b(?:power|electric(?:al|ity)?|telephone|phone|transmission|utility)\\s+(?:and\\s+\\w+\\s+)?(?:lines?|cables?|poles?|plants?|stations?|substations?)\\b",
+   "terms": "\\b(?:power|electric(?:al|ity)?|telephone|phone|transmission|utility)\\s+(?:and\\s+\\w+\\s+)?(?:lines?|cables?|poles?|plants?|stations?|substations?)\\b|\\b(?:fail\\w*|collaps\\w*|go(?:es|ing)? (?:down|out|off|dark)|went (?:down|out|off|dark)|gone (?:down|out|off|dark)|shut\\w* (?:off|down)|knock\\w* out|black(?:s|ed|ing)? out|black-?outs?|outages?|crash\\w*|cut off|destroy\\w*|disrupt\\w*|overload\\w*|sabotag\\w*|attack\\w*|vulnerab\\w*|risks?|taken down|take down|brought down|bring\\w* down|tak\\w+ down|took down|knock\\w* down|downed|burn(?:t|ed|ing)|fried|wip\\w* out|down for)\\b",
+   "precision": 0.75,
+   "from": [
+    "merged: written on two labelled misses (in-sample)"
+   ],
+   "notes": "Power, electricity or telephone lines, cables, poles, plants or stations with a failure word in the same sentence (lines or cables downed by weather, overloaded lines, an attack on a plant). Written after reading two on-theme sentences the proposals missed, so its precision is in-sample until a fresh sample is read.",
+   "examples": [
+    "Ice on the transmission lines knocked out the valley for a week.",
+    "A falcon nested on the substation and the power lines failed at dawn."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 5,
+      "distinct": 5,
+      "read": 4,
+      "on": 3,
+      "edge": 0,
+      "off": 1,
+      "precision": 0.75,
+      "wilson95": [
+       0.301,
+       0.954
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    },
+    "precision": 0.75,
+    "coded": {
+     "source": {
+      "units": 1,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": 0.0,
+      "wilson95": [
+       0.0,
+       0.793
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  {
+   "id": "internet_down",
+   "topic": "internet_communications",
+   "group": "strong",
+   "pattern": "\\binternet\\b.{0,50}?\\b(?:go(?:es|ing)? down|went down|gone down|be(?:ing)? down|down for|shut(?:s|ting)? ?(?:down|off)|cut(?:s|ting)? off|turned off|off ?line|outages?|black ?outs?|fail(?:s|ed|ing|ures?)?|collaps\\w*|crash\\w*|disrupt\\w*|interrupt\\w*|stop(?:s|ped)? working|won'?t work|will not work|wouldn'?t work|not work\\w*|knock\\w* out|taken out|wip(?:e|ed|es|ing) out|out of commission|fr(?:y|ies|ied)|go(?:es)? dead|went dead|go(?:es|ing)? dark|went dark|gone dark|break(?:s|ing)? down|broke(?:n)? down|breakdowns?|malfunction\\w*|haywire|useless|disabl\\w*|cease(?:s|d)? to (?:work|function))\\b|\\b(?:shut(?:s|ting)? (?:down|off)|turn(?:s|ed|ing)? off|cut(?:s|ting)?(?: off)?|tak(?:e|es|ing|en) down|took down|switch(?:ed|ing|es)? off|kill\\w*|pull(?:s|ed|ing)? the plug on|black ?outs? of|shut ?down of|collapse of)\\b.{0,30}?\\b(?:the )?internet\\b|\\binternet[- ](?:black ?outs?|outages?|shut ?downs?|kill ?switch\\w*|cut ?offs?|collapse|failures?|down ?time|disruptions?|crash\\w*)\\b|\\binternet\\s+(?:\\w+\\s+){0,4}?no\\s+longer\\s+exists?\\b|\\b(?:internet|cell\\s?phones?)\\s+(?:and\\s+\\w+\\s+)?shut-?downs?\\b",
+   "precision": 0.7,
+   "from": [
+    "internet:internet_down",
+    "prophetic:internet_down"
+   ],
+   "notes": "The internet going down, shut down, cut off or blacked out, and its kill switch. Needs the own-link exclude (in one source the speakers' own link being cut). Proposals: internet 7 of 10 (1 edge), prophetic 5 of 9 (4 unclear). All matches were source texts.",
+   "examples": [
+    "The internet will go down for several days.",
+    "They plan to shut down the internet.",
+    "An internet kill switch is ready."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 10,
+      "distinct": 10,
+      "read": 10,
+      "on": 7,
+      "edge": 1,
+      "off": 2,
+      "precision": 0.7,
+      "wilson95": [
+       0.397,
+       0.892
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    },
+    "precision": 0.7,
+    "coded": {
+     "source": {
+      "units": 4,
+      "both_on": 3,
+      "either_on": 3,
+      "precision": 0.75,
+      "wilson95": [
+       0.301,
+       0.954
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  {
+   "id": "platform_outage",
+   "topic": "internet_communications",
+   "group": "strong",
+   "pattern": "\\b(?:social (?:media|networks?)|facebook|whatsapp|instagram|twitter|platforms?|service providers?)\\b.{0,40}?\\b(?:cut(?: off)?|shut ?(?:down|off)|go(?:es|ing)? down|went down|black ?outs?|outages?|offline|crash\\w*|disrupt\\w*)\\b|\\b(?:cut(?:s|ting)?(?: off)?|shut(?:s|ting)? (?:down|off)|black ?outs? (?:of|in|on))\\b.{0,30}?\\b(?:social (?:media|networks?)|facebook|whatsapp|instagram|twitter)\\b|\\b(?:outages?|black[- ]?outs?)\\b.{0,60}?\\b(?:internet|online|servers?|platforms?|social media|social networks?|facebook|whatsapp|instagram|networks?|telecom\\w*|(?:tele)?communications?|(?:cell ?|mobile |smart ?|tele)?phones?|cell(?:ular)? (?:service|networks?)|satellites?|wi-?fi|gps|computers?|electronics?|atms?|banking|card payments?|cellular|cell|fb|computer systems?|devices?)\\b|\\b(?:internet|online|servers?|platforms?|social media|social networks?|facebook|whatsapp|instagram|networks?|telecom\\w*|(?:tele)?communications?|(?:cell ?|mobile |smart ?|tele)?phones?|cell(?:ular)? (?:service|networks?)|satellites?|wi-?fi|gps|computers?|electronics?|atms?|banking|card payments?|cellular|cell|fb|computer systems?|devices?)\\b.{0,60}?\\b(?:outages?|black[- ]?outs?)\\b|\\b(?:servers?|data cent(?:er|re)s?|(?:social )?networks?)\\b.{0,30}?\\b(?:go(?:es|ing)? down|went down|be down|cut(?: off)?|crash\\w*)\\b",
+   "precision": 0.75,
+   "from": [
+    "internet:platform_outage"
+   ],
+   "notes": "Social media, platforms, servers, cellular and computer systems cut or out. Needs the link-list exclude. Proposal: internet 21 of 24 read (source 23, titles 4).",
+   "examples": [
+    "Social media will be cut off in many countries.",
+    "A cellular outage hit the east coast."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 23,
+      "distinct": 23,
+      "read": 23,
+      "on": 21,
+      "edge": 1,
+      "off": 1,
+      "precision": 0.913,
+      "wilson95": [
+       0.732,
+       0.976
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 4,
+      "distinct": 4,
+      "read": 4,
+      "on": 3,
+      "edge": 1,
+      "off": 0,
+      "precision": 0.75,
+      "wilson95": [
+       0.301,
+       0.954
+      ]
+     }
+    },
+    "precision": 0.75,
+    "coded": {
+     "source": {
+      "units": 9,
+      "both_on": 9,
+      "either_on": 9,
+      "precision": 1.0,
+      "wilson95": [
+       0.701,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 3,
+      "both_on": 3,
+      "either_on": 3,
+      "precision": 1.0,
+      "wilson95": [
+       0.438,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "telecom_fail",
+   "topic": "internet_communications",
+   "group": "strong",
+   "pattern": "\\b(?:telecommunications?|telecoms?|(?:satellite|cellular|mobile|radio|earthly|global|electronic) communications?|communications? (?:systems?|networks?|infrastructure|satellites?|grids?))\\b.{0,50}?\\b(?:(?:go(?:es|ing)? down|went down|gone down|be(?:ing)? down|down for|shut(?:s|ting)? ?(?:down|off)|cut(?:s|ting)? off|turned off|off ?line|outages?|black ?outs?|fail(?:s|ed|ing|ures?)?|collaps\\w*|crash\\w*|disrupt\\w*|interrupt\\w*|stop(?:s|ped)? working|won'?t work|will not work|wouldn'?t work|not work\\w*|knock\\w* out|taken out|wip(?:e|ed|es|ing) out|out of commission|fr(?:y|ies|ied)|go(?:es)? dead|went dead|go(?:es|ing)? dark|went dark|gone dark|break(?:s|ing)? down|broke(?:n)? down|breakdowns?|malfunction\\w*|haywire|useless|disabl\\w*|cease(?:s|d)? to (?:work|function))|issues|problems)\\b|\\b(?:(?:go(?:es|ing)? down|went down|gone down|be(?:ing)? down|down for|shut(?:s|ting)? ?(?:down|off)|cut(?:s|ting)? off|turned off|off ?line|outages?|black ?outs?|fail(?:s|ed|ing|ures?)?|collaps\\w*|crash\\w*|disrupt\\w*|interrupt\\w*|stop(?:s|ped)? working|won'?t work|will not work|wouldn'?t work|not work\\w*|knock\\w* out|taken out|wip(?:e|ed|es|ing) out|out of commission|fr(?:y|ies|ied)|go(?:es)? dead|went dead|go(?:es|ing)? dark|went dark|gone dark|break(?:s|ing)? down|broke(?:n)? down|breakdowns?|malfunction\\w*|haywire|useless|disabl\\w*|cease(?:s|d)? to (?:work|function))|disrupt\\w*|knock\\w* out|destroy\\w*|loss of)\\b.{0,30}?\\b(?:telecommunications?|telecoms?|(?:satellite|cellular|mobile|radio|earthly|global|electronic) communications?|communications? (?:systems?|networks?|infrastructure|satellites?|grids?))\\b",
+   "precision": 0.6,
+   "from": [
+    "internet:telecom_fail"
+   ],
+   "notes": "Telecommunications or a qualified 'communications' (satellite, cellular, systems, networks) failing. The bare 'communication' is the channelers' word for their own messages and is not used. Proposal: internet 5 of 7 (source 5, made 2).",
+   "examples": [
+    "Satellite communications will fail during the event.",
+    "The storm could knock out telecommunications."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 5,
+      "distinct": 5,
+      "read": 5,
+      "on": 3,
+      "edge": 1,
+      "off": 1,
+      "precision": 0.6,
+      "wilson95": [
+       0.231,
+       0.882
+      ]
+     },
+     "made": {
+      "hits": 2,
+      "distinct": 2,
+      "read": 2,
+      "on": 2,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.342,
+       1.0
+      ]
+     },
+     "title": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    },
+    "precision": 0.6,
+    "coded": {
+     "source": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 2,
+      "both_on": 2,
+      "either_on": 2,
+      "precision": 1.0,
+      "wilson95": [
+       0.342,
+       1.0
+      ]
+     },
+     "title": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    }
+   }
+  },
+  {
+   "id": "cyber_attack",
+   "topic": "internet_communications",
+   "group": "strong",
+   "pattern": "\\bcyber[- ]?(?:attacks?|attacked|warfare|war|terror\\w*|assaults?|strikes?|events?|pandemic|polygon|9/?11|threats?|sabotage|risks?|pirates?|criminals?)\\b",
+   "precision": 1.0,
+   "from": [
+    "grid:cyber_attack",
+    "internet:cyber_attack",
+    "prophetic:cyber_attack"
+   ],
+   "notes": "A cyber attack, named cause of grid and network failure. Proposals: grid 5 of 5, internet 10 of 10, prophetic 8 of 8. Plain 'cyber' is not used (a film series and meditations).",
+   "examples": [
+    "A cyber attack will be blamed for the outage.",
+    "Prepare for cyberattacks on the banks."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 6,
+      "distinct": 6,
+      "read": 6,
+      "on": 6,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.61,
+       1.0
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 4,
+      "distinct": 4,
+      "read": 4,
+      "on": 4,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.51,
+       1.0
+      ]
+     }
+    },
+    "precision": 1.0,
+    "coded": {
+     "source": {
+      "units": 4,
+      "both_on": 4,
+      "either_on": 4,
+      "precision": 1.0,
+      "wilson95": [
+       0.51,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 4,
+      "both_on": 4,
+      "either_on": 4,
+      "precision": 1.0,
+      "wilson95": [
+       0.51,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "flare_tech",
+   "topic": "electronics_general",
+   "group": "strong",
+   "pattern": "^(?=.*\\b(?:solar (?:flares?|storms?|eruptions?|maximum|max|winds?|bursts?|plasma|activity|events?)|flares? from the sun|x-?class flares?|geo-?magnetic (?:storms?|flares?|events?)|CMEs?|coronal mass ejections?|carrington[- ](?:events?|class|level|storms?|flares?)|E\\.?M\\.?P\\.?s?|electro-?magnetic pulses?)\\b)(?=.*\\b(?:power grids?|electric(?:al)? grids?|the grid|electricity|electric(?:al)? (?:power|systems?|supply|equipment|devices?|infrastructure|networks?)|power (?:outages?|failures?|plants?|lines?|stations?|supply|cuts?)|electronics?|electronic (?:devices|equipment|systems|instruments)|satellites?|telecommunications?|(?:satellite|cellular|mobile|radio|earthly|global|electronic) communications?|communications? (?:systems?|networks?|lines?|satellites?|infrastructure)|disrupt\\w*\\s+(?:\\w+\\s+){0,3}?communications|internet|GPS|wi-?fi|(?<!holographic )computers?|black-?outs?|outages?|transformers?|radio (?:blackouts?|communications?|signals?)|(?:cell ?|mobile |smart ?)?phones?|cell towers?|(?:earth['’]?s|your|our|human|modern) technolog(?:y|ies)|technological systems?|lights?\\s+(?:\\w+\\s+){0,2}?(?:go|goes|going|went))\\b)|\\b(?:radio|shortwave|hf) black[- ]?outs?\\b",
+   "screen": "\\b(?:solar (?:flares?|storms?|eruptions?|maximum|max|winds?|bursts?|plasma|activity|events?)|flares? from the sun|x-?class flares?|geo-?magnetic (?:storms?|flares?|events?)|CMEs?|coronal mass ejections?|carrington[- ](?:events?|class|level|storms?|flares?)|E\\.?M\\.?P\\.?s?|electro-?magnetic pulses?)\\b|\\b(?:radio|shortwave|hf) black[- ]?outs?\\b",
+   "terms": "\\b(?:solar (?:flares?|storms?|eruptions?|maximum|max|winds?|bursts?|plasma|activity|events?)|flares? from the sun|x-?class flares?|geo-?magnetic (?:storms?|flares?|events?)|CMEs?|coronal mass ejections?|carrington[- ](?:events?|class|level|storms?|flares?)|E\\.?M\\.?P\\.?s?|electro-?magnetic pulses?)\\b|\\b(?:power grids?|electric(?:al)? grids?|the grid|electricity|electric(?:al)? (?:power|systems?|supply|equipment|devices?|infrastructure|networks?)|power (?:outages?|failures?|plants?|lines?|stations?|supply|cuts?)|electronics?|electronic (?:devices|equipment|systems|instruments)|satellites?|telecommunications?|(?:satellite|cellular|mobile|radio|earthly|global|electronic) communications?|communications? (?:systems?|networks?|lines?|satellites?|infrastructure)|disrupt\\w*\\s+(?:\\w+\\s+){0,3}?communications|internet|GPS|wi-?fi|(?<!holographic )computers?|black-?outs?|outages?|transformers?|radio (?:blackouts?|communications?|signals?)|(?:cell ?|mobile |smart ?)?phones?|cell towers?|(?:earth['’]?s|your|our|human|modern) technolog(?:y|ies)|technological systems?|lights?\\s+(?:\\w+\\s+){0,2}?(?:go|goes|going|went))\\b|\\b(?:radio|shortwave|hf) black[- ]?outs?\\b",
+   "precision": 0.857,
+   "from": [
+    "grid:cause_effect",
+    "internet:solar_tech",
+    "prophetic:flare_tech"
+   ],
+   "notes": "A named cause (solar flare or storm, CME, geomagnetic storm, Carrington, EMP) with a narrow technology word in the same sentence, and a radio blackout. A cause alone is not the theme (solar flare 1 of 20, CME or solar storm 3 of 20, EMP 0 of 20). Proposals: grid 11 of 12, internet 10 of 10 (tuned in-sample; 9 of 13 before), prophetic 10 of 10.",
+   "examples": [
+    "A large solar flare could knock out satellites and GPS.",
+    "An EMP would destroy the power grid.",
+    "An R3 radio blackout was reported today."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 14,
+      "distinct": 14,
+      "read": 14,
+      "on": 12,
+      "edge": 1,
+      "off": 1,
+      "precision": 0.857,
+      "wilson95": [
+       0.601,
+       0.96
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     }
+    },
+    "precision": 0.857,
+    "coded": {
+     "source": {
+      "units": 2,
+      "both_on": 2,
+      "either_on": 2,
+      "precision": 1.0,
+      "wilson95": [
+       0.342,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "carrington_event",
+   "topic": "electronics_general",
+   "group": "strong",
+   "pattern": "\\b(?:near[- ])?carrington[- ](?:class[- ]|level[- ]|type[- ])?(?:events?|class|level|storms?|flares?|type|scale)(?![a-z0-9])|\\bnear[- ]carrington\\b",
+   "precision": 0.5,
+   "from": [
+    "grid:carrington_event",
+    "internet:carrington_event",
+    "prophetic:carrington_event"
+   ],
+   "notes": "A Carrington event or storm. The bare surname is not used. Saved YouTube titles put '_' for ':', so the end is (?![a-z0-9]) and titles are read with '_' as a space. Proposals: internet 3 of 5 (2 edge), prophetic 5 of 5; titles 3 of 3.",
+   "examples": [
+    "Is a Carrington event coming?",
+    "A near-Carrington storm missed the Earth."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "made": {
+      "hits": 2,
+      "distinct": 2,
+      "read": 2,
+      "on": 1,
+      "edge": 1,
+      "off": 0,
+      "precision": 0.5,
+      "wilson95": [
+       0.095,
+       0.905
+      ]
+     },
+     "title": {
+      "hits": 3,
+      "distinct": 3,
+      "read": 3,
+      "on": 3,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.438,
+       1.0
+      ]
+     }
+    },
+    "precision": 0.5,
+    "coded": {
+     "source": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "made": {
+      "units": 2,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": 0.0,
+      "wilson95": [
+       0.0,
+       0.658
+      ]
+     },
+     "title": {
+      "units": 3,
+      "both_on": 3,
+      "either_on": 3,
+      "precision": 1.0,
+      "wilson95": [
+       0.438,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "darkness_tech",
+   "topic": "darkness_event",
+   "group": "strong",
+   "pattern": "^(?=.*(?:\\bdays?\\s+of\\s+(?:total\\s+|complete\\s+)?dark(?:ness)?\\b|\\b[Tt]he\\s+(?-i:Event)\\b|\\bsolar\\s+flash(?:es)?\\b))(?=.*\\b(?:power grids?|electric(?:al)? grids?|the grid|electricity|electric(?:al)? (?:power|systems?|supply|equipment|devices?|infrastructure|networks?)|power (?:outages?|failures?|plants?|lines?|stations?|supply|cuts?)|electronics?|electronic (?:devices|equipment|systems|instruments)|satellites?|telecommunications?|(?:satellite|cellular|mobile|radio|earthly|global|electronic) communications?|communications? (?:systems?|networks?|lines?|satellites?|infrastructure)|disrupt\\w*\\s+(?:\\w+\\s+){0,3}?communications|internet|GPS|wi-?fi|(?<!holographic )computers?|black-?outs?|outages?|transformers?|radio (?:blackouts?|communications?|signals?)|(?:cell ?|mobile |smart ?)?phones?|cell towers?|(?:earth['’]?s|your|our|human|modern) technolog(?:y|ies)|technological systems?|lights?\\s+(?:\\w+\\s+){0,2}?(?:go|goes|going|went))\\b)",
+   "screen": "\\bdays?\\s+of\\s+(?:total\\s+|complete\\s+)?dark|\\bthe\\s+event\\b|\\bsolar\\s+flash",
+   "terms": "(?:\\bdays?\\s+of\\s+(?:total\\s+|complete\\s+)?dark(?:ness)?\\b|\\b[Tt]he\\s+(?-i:Event)\\b|\\bsolar\\s+flash(?:es)?\\b)|\\b(?:power grids?|electric(?:al)? grids?|the grid|electricity|electric(?:al)? (?:power|systems?|supply|equipment|devices?|infrastructure|networks?)|power (?:outages?|failures?|plants?|lines?|stations?|supply|cuts?)|electronics?|electronic (?:devices|equipment|systems|instruments)|satellites?|telecommunications?|(?:satellite|cellular|mobile|radio|earthly|global|electronic) communications?|communications? (?:systems?|networks?|lines?|satellites?|infrastructure)|disrupt\\w*\\s+(?:\\w+\\s+){0,3}?communications|internet|GPS|wi-?fi|(?<!holographic )computers?|black-?outs?|outages?|transformers?|radio (?:blackouts?|communications?|signals?)|(?:cell ?|mobile |smart ?)?phones?|cell towers?|(?:earth['’]?s|your|our|human|modern) technolog(?:y|ies)|technological systems?|lights?\\s+(?:\\w+\\s+){0,2}?(?:go|goes|going|went))\\b",
+   "precision": 0.5,
+   "from": [
+    "grid:darkness_no_power",
+    "prophetic:darkness_tech"
+   ],
+   "notes": "'Days of darkness', 'the Event' (capital E) or the solar flash, only with a technology word in the same sentence. Alone they are ascension senses here (days of darkness 1 of 20 texts and 0 of 15 titles; solar flash 0 of 48). Proposals: grid 1 of 1 made; prophetic 2 of 3 (1 unclear).",
+   "examples": [
+    "Once the days of darkness begin, the electricity stays off.",
+    "When the Event comes, satellites will fail."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 2,
+      "distinct": 2,
+      "read": 2,
+      "on": 1,
+      "edge": 1,
+      "off": 0,
+      "precision": 0.5,
+      "wilson95": [
+       0.095,
+       0.905
+      ]
+     },
+     "made": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "title": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     }
+    },
+    "precision": 0.5,
+    "coded": {
+     "source": {
+      "units": 2,
+      "both_on": 2,
+      "either_on": 2,
+      "precision": 1.0,
+      "wilson95": [
+       0.342,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "title": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     }
+    }
+   }
+  },
+  {
+   "id": "technology_goes_down",
+   "topic": "electronics_general",
+   "group": "strong",
+   "pattern": "\\b(?:most|all)\\s+(?:of\\s+(?:your|the|our)\\s+)?(?:technology|electronics)\\s+(?:\\w+\\s+){0,2}?(?:will|would|is going to)\\s+(?:go\\s+down|stop|fail|shut\\s+down)\\b|\\btechnolog(?:y|ies)\\s+(?:will|would)\\s+(?:all\\s+)?(?:go\\s+down|stop\\s+working|fail)\\b",
+   "precision": 1.0,
+   "from": [
+    "prophetic:technology_goes_down"
+   ],
+   "notes": "Most or all technology going down. Proposal: prophetic 1 of 1 (the broad form was 1 of 7).",
+   "examples": [
+    "Most of your technology will go down for a while."
+   ],
+   "measured": {
+    "scope": "all",
+    "by_kind": {
+     "source": {
+      "hits": 1,
+      "distinct": 1,
+      "read": 1,
+      "on": 1,
+      "edge": 0,
+      "off": 0,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "made": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "hits": 0,
+      "distinct": 0,
+      "read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    },
+    "precision": 1.0,
+    "coded": {
+     "source": {
+      "units": 1,
+      "both_on": 1,
+      "either_on": 1,
+      "precision": 1.0,
+      "wilson95": [
+       0.207,
+       1.0
+      ]
+     },
+     "made": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     },
+     "title": {
+      "units": 0,
+      "both_on": 0,
+      "either_on": 0,
+      "precision": null,
+      "wilson95": null
+     }
+    }
+   }
+  }
+ ],
+ "exclude": [
+  {
+   "id": "x_link_list",
+   "mode": "unit",
+   "scope": "all",
+   "kinds": [
+    "source",
+    "made",
+    "captions"
+   ],
+   "pattern": "\\bcontinue reading:|\\bread translation\\b|\\brelated posts\\b|\\bbuy it here\\b|∞[^∞]*∞|\\bdownload (?:the )?pdf\\b|\\bshare to (?:x|facebook|pinterest)\\b|\\bposted by\\b",
+   "why": "Page furniture: link lists that repeat other posts' titles, translation lists, share buttons, bylines. Texts only, as ' | ' and '∞' are normal in titles. Proposals: internet 9 removed (all off), prophetic 134 text sentences removed, 32 read, 0 on. Narrower than prediction_timeline.FURNITURE, whose ' | ' would remove on-theme titles.",
+   "examples": [
+    "Continue Reading: Facebook outage today | Cellular outage report"
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 11,
+      "on": 0,
+      "edge": 7,
+      "off": 4,
+      "removed_read": 11,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_schumann",
+   "mode": "unit",
+   "scope": [
+    "blackout",
+    "blackout_power",
+    "darkness_tech",
+    "flare_tech"
+   ],
+   "pattern": "^(?!.*\\b(?:(?:power|electric(?:al)?|national|utility)[- ]grids?|the grids?|grid[- ]down|outages?|electricity|power\\s+(?:went|goes|go|going|will|is|was|failures?|cuts?|lines?|plants?|stations?|supply|black-?\\s?outs?)|satellites?|internet|telecommunications?|(?:cell\\s?|mobile\\s|smart\\s?)?phones?|gps|wi-?fi|electronic\\s+instruments|cyber\\w*)\\b).*\\bschumann\\b",
+   "why": "The Schumann resonance chart and its 'blackouts' and 'days of darkness'. It voids only the includes a chart sentence can trigger (blackout, blackout_power, darkness_tech, flare_tech), and not when the sentence also names a real failure (a power grid or the grid, an outage, electricity, the power going out, satellites, the internet, phones, a cyber attack; 'blackout' alone is left out of that guard on purpose). Grid failure, the power going out, a cyber attack and the other includes are out of its scope. Proposals: grid 8 titles removed (7 read, all off), prophetic 122 removed (28 read, 0 on).",
+   "examples": [
+    "Schumann resonance blackout for four days."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 8,
+      "on": 0,
+      "edge": 0,
+      "off": 8,
+      "removed_read": 8,
+      "removed_on": 0
+     }
+    }
+   },
+   "keeps": [
+    "Right after the Schumann spike the grid went down across two provinces.",
+    "After the Schumann spike the power went out in our street.",
+    "The Schumann chart went black, and then a cyber attack hit the banks.",
+    "A Schumann spike and a power blackout came on the same night."
+   ],
+   "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): scope narrowed from all includes to four, and the guard widened (the grid, the power going out, phones, cyber), so a Schumann sentence that names a failure keeps its hit."
+  },
+  {
+   "id": "x_media_blackout",
+   "mode": "overlap",
+   "scope": [
+    "blackout",
+    "blackout_power",
+    "platform_outage"
+   ],
+   "pattern": "\\b(?:media|news|information|press)\\s+black(?:-|\\s)?outs?\\b",
+   "why": "A news blackout (only the matched blackout is void, so a power blackout in the same sentence stays). Proposals: grid 2 removed (off), internet 4 (off), prophetic 4 (1 on, removed wrongly).",
+   "examples": [
+    "There is a media blackout on the subject."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 1,
+      "on": 0,
+      "edge": 1,
+      "off": 0,
+      "removed_read": 1,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 1,
+      "on": 0,
+      "edge": 0,
+      "off": 1,
+      "removed_read": 1,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_blackout_body",
+   "mode": "overlap",
+   "scope": [
+    "blackout",
+    "blackout_power",
+    "darkness_tech"
+   ],
+   "pattern": "\\b(?:i|you|he|she|they|we|just)\\s+(?:just\\s+)?black(?:ed|s)?\\s+out\\b|\\b(?:memory|alcohol\\w*|drunk(?:en)?|drinking)\\s+black-?\\s?outs?\\b|\\bblack-?\\s?outs?\\b.{0,80}\\b(?:seizures?|fever|unconscious\\w*|near-death|immersion\\s+pod|faint\\w*|epilep\\w*|concussion|neurons?)\\b|\\b(?:drinker|drinking|drunk|faint\\w*|seizures?|epilep\\w*|unconscious\\w*|fever|neurons?)\\b.{0,80}\\bblack-?\\s?outs?\\b|\\bblackout\\s+(?:tran(?:ce|s)|state)\\b|\\btrans?\\s+channel\\w*.{0,40}\\bblack-?outs?\\b",
+   "why": "Blackout as fainting, drinking, illness or a deep trance, tied to the blackout word (a bodily word anywhere in the sentence was too broad: 'the collective unconscious'). Overlap mode: only the blackout it covers is void, so a power blackout in the same sentence stays; out of its scope (grid failure, lines down), 'blacked out' is the power going out. Proposals: grid 7 removed (all off), internet 5 (off), prophetic 10 (off).",
+   "examples": [
+    "He drank too much and had a memory blackout.",
+    "I am a blackout trance channel.",
+    "Nobody at the retreat uses the blackout trans method."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 8,
+      "on": 0,
+      "edge": 0,
+      "off": 8,
+      "removed_read": 8,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   },
+   "keeps": [
+    "We blacked out for a week after ice hit the power lines.",
+    "A blackout trance state is not needed for this work, but a power blackout is coming."
+   ],
+   "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): unit mode over all includes became overlap mode over blackout, blackout_power and darkness_tech."
+  },
+  {
+   "id": "x_metaphysical_grid",
+   "mode": "unit",
+   "scope": [
+    "grid_failure",
+    "flare_tech",
+    "darkness_tech"
+   ],
+   "pattern": "^(?!.*(?:\\b(?:power|electric(?:al|ity)?|national|utility)[- ]grids?\\b|\\b(?:power\\s+grids?|electric(?:al)?\\s+grids?|outages?|electricity|power\\s+failures?|satellites?|internet|telecommunications?|cell\\s?phones?|gps|wi-?fi|electronic\\s+instruments)\\b|\\bblack-?outs?\\b)).*(?:\\bcrystal(?:line)?\\s+(?:\\w+\\s+)?grids?\\b|\\b(?:[3-9]d|fifth[- ]dimensional|planetary|earth['’]?s|gaia['’]?s|light|christ(?:ed|ic)?|ascension|unity|consciousness|ley|morphogenetic|etheric|heart|love|diamond|golden|matrix|healing|energetic|spiritual|cosmic|galactic|celestial|lemurian|kingdom|angelic|new earth|energy|archon\\w*)\\s+grids?\\b|\\bley[- ]?lines?\\b|\\bgrid[- ]?work\\w*\\b|\\bgrid\\s+(?:activation|points?|system|transmission)\\b|\\bgrids?\\s+of\\s+(?:light|love|consciousness|crystal\\w*)\\b)",
+   "why": "Metaphysical grids (crystalline, light, Christ, unity, planetary, energy grids, ley lines, grid work), unless the sentence also names a power grid or a real failure. Proposals: grid 463 removed on the broad grid pattern (all read off), prophetic 529 (101 read, 0 on).",
+   "examples": [
+    "The solar flare wakes the grid of light above the hills."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_dreamspell",
+   "mode": "unit",
+   "scope": [
+    "flare_tech",
+    "darkness_tech"
+   ],
+   "pattern": "\\bkin\\s*\\d+\\b|\\b(?-i:(?:Blue|Red|White|Yellow|BLUE|RED|WHITE|YELLOW))\\s+(?-i:(?=[A-Z]))(?:magnetic|lunar|electric|self-existing|overtone|rhythmic|resonant|galactic|solar|planetary|spectral|crystal|cosmic)\\s+(?-i:(?=[A-Z]))(?:storm|monkey|eagle|serpent|worldbridger|night|dragon|wind|seed|hand|star|moon|dog|human|skywalker|wizard|warrior|earth|mirror|sun)s?\\b",
+   "why": "Mayan Dreamspell day names in one channel's titles (a kin number, or a colour, a tone and a sign written with capitals) beside flares or the Event. The names count only with capitals, so 'a red solar storm' in a sentence stays. Proposals: grid 6 titles removed (off), prophetic 24 titles (9 read, 0 on).",
+   "examples": [
+    "Kin 300 day: solar flare energy reaches the satellites.",
+    "Yellow Solar Dragon day: a solar flare and the satellites"
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   },
+   "keeps": [
+    "A solar flare from a red solar storm could fry the satellites."
+   ],
+   "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): the day names count only with capitals."
+  },
+  {
+   "id": "x_nanotech_emp",
+   "mode": "unit",
+   "scope": [
+    "flare_tech"
+   ],
+   "pattern": "^(?!.*\\b(?:solar|flares?|CMEs?|coronal|geo-?magnetic|carrington)\\b).*(?:\\bnano\\w*|\\bvaccin\\w*|\\bmicro ?bots?\\b)",
+   "why": "EMP devices against nanoparticles in the body, unless a solar cause is named too. Proposal: grid 11 removed (all read off).",
+   "examples": [
+    "The EMP device clears the nanobots from your computer and your body."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 1,
+      "on": 0,
+      "edge": 0,
+      "off": 1,
+      "removed_read": 1,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_light_transformer",
+   "mode": "unit",
+   "scope": [
+    "flare_tech"
+   ],
+   "pattern": "\\bstep[- ]?down transformers?\\b|\\btransformers? of (?:the\\s+)?(?:\\w+\\s+)?(?:light|energy|energies|frequenc\\w*|consciousness|love|spirit)\\b|\\b(?:you|we|they)\\s+are\\s+(?:the\\s+|a\\s+)?(?:\\w+\\s+)?transformers?\\b|\\b(?:great|human|living|divine|cosmic|spiritual)\\s+transformers?\\b",
+   "why": "Someone described as a step-down transformer for light or energy. Proposal: grid 13 removed (all read off).",
+   "examples": [
+    "Each of them works like a step-down transformer, taming the solar flare light."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   },
+   "keeps": [
+    "A solar storm could burn out a transformer and leave the town dark.",
+    "The CME could destroy the transformers of the electrical system."
+   ],
+   "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): 'a transformer' and every 'transformers of' left out: only step-down transformers, transformers of light or energy, people who 'are' transformers."
+  },
+  {
+   "id": "x_outage_metaphor",
+   "mode": "overlap",
+   "scope": [
+    "outage",
+    "power_outage",
+    "platform_outage"
+   ],
+   "pattern": "\\b(?:outrageous|spiritual|inner|soul)['’\\\"”]?\\s+outages?\\b|['‘\\\"“](?:power\\s+)?outages?['’\\\"”]|\\bthe word\\s+['‘\\\"“]?outages?\\b",
+   "why": "'Outage' as a metaphor (in quotation marks, or an inner or spiritual outage). Proposals: grid 1 removed (off), prophetic 1 (off).",
+   "examples": [
+    "Worry brings on a ‘power outage’ of the soul.",
+    "The ‘outrageous’ outages of the heart.",
+    "I looked up the word ‘outage’ again."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 3,
+      "on": 0,
+      "edge": 0,
+      "off": 3,
+      "removed_read": 3,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_own_link",
+   "mode": "unit",
+   "scope": [
+    "internet_down",
+    "platform_outage",
+    "telecom_fail"
+   ],
+   "pattern": "\\b(?:our|the taygetans[´'’]?) internet\\b|\\bcut(?:ting)? us off\\b|\\bour (?:internet )?connection\\b|\\b(?:ship|toleka|viera)\\b.{0,50}?\\binternet\\b|\\binternet\\b.{0,30}?\\b(?:starship|ship|toleka|viera)\\b|\\btaygetans?\\b.{0,80}?\\binternet\\b|\\binternet\\b.{0,80}?\\btaygetans?\\b|\\bisolated bubble\\b|\\b(?:we|us)\\b.{0,30}?\\b(?:enter|access) the internet\\b|\\b(?:continue|keep|go on)\\s+(?:talking|speaking|communicating|in contact|in touch)\\s+(?:to|with)\\b.{0,80}?\\binternet\\b|\\binternet\\b.{0,80}?\\b(?:continue|keep|go on)\\s+(?:talking|speaking|communicating|in contact|in touch)\\s+(?:to|with)\\b",
+   "why": "The speakers' own link to Earth's internet being cut (one source's narrative), not an internet blackout. Proposal: internet 8 removed (all read, all edge); some branches were written after reading.",
+   "examples": [
+    "They cut us off from your internet on the ship.",
+    "Will we keep talking with you if they cut the internet?"
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 8,
+      "on": 0,
+      "edge": 8,
+      "off": 0,
+      "removed_read": 8,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   },
+   "keeps": [
+    "Governments will shut down their internet during the protests.",
+    "One country switched off their internet for a week."
+   ],
+   "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): 'their internet' left out (a country shutting down its internet is the theme); a branch copied from a stored sentence replaced by a general one (keep talking with someone over the internet), which voids the same stored sentence and no other."
+  },
+  {
+   "id": "x_internet_of_things",
+   "mode": "overlap",
+   "scope": [
+    "internet_down"
+   ],
+   "pattern": "\\binternet of things\\b",
+   "why": "Devices run through the web, not the internet failing. Proposal: internet 1 removed (off).",
+   "examples": [
+    "Through the internet of things they can shut off a fridge."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 1,
+      "on": 0,
+      "edge": 0,
+      "off": 1,
+      "removed_read": 1,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_metaphysical_internet",
+   "mode": "overlap",
+   "scope": [
+    "internet_down",
+    "platform_outage",
+    "flare_tech",
+    "darkness_tech"
+   ],
+   "pattern": "\\b(?:cosmic|galactic|universal|spiritual|celestial|divine|inner|crystalline|quantum|akashic|etheric|psychic|telepathic|mental|organic|living|natural|biological|mycelial|fungal|heart|soul|internal|interstellar|intergalactic|multidimensional|fifth[- ]dimensional|5d) (?:internet|wi-?fi|web|gps)\\b|\\binternet of (?:the )?(?:consciousness|mind|spirit|heart|nature|trees|light|souls?|god)\\b",
+   "why": "A cosmic, inner or crystalline internet. Proposal: internet 3 removed (off).",
+   "examples": [
+    "The cosmic internet never goes down."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_internal_gps",
+   "mode": "overlap",
+   "scope": [
+    "flare_tech",
+    "darkness_tech"
+   ],
+   "pattern": "\\b(?:internal|inner|own|spiritual|soul'?s?|heart'?s?) gps\\b|\\bno (?:map|roadmap|compass)\\b.{0,40}?\\bgps\\b|\\bgps\\b.{0,40}?\\bno (?:map|compass)\\b|\\bthe gps of\\b",
+   "why": "'Your internal GPS' as a metaphor. Proposal: internet 6 removed (off).",
+   "examples": [
+    "The solar flash recalibrates your internal GPS."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   }
+  },
+  {
+   "id": "x_moon_satellite",
+   "mode": "overlap",
+   "scope": [
+    "flare_tech",
+    "darkness_tech",
+    "telecom_fail"
+   ],
+   "pattern": "\\bmoon satellites?\\b|\\bsatellites? of (?:the )?(?:saturn|jupiter|mars|neptune|uranus)\\b|\\bnatural satellites?\\b",
+   "why": "Moons, not spacecraft. Proposal: internet 1 removed (off).",
+   "examples": [
+    "The solar flare lit the natural satellites of Saturn."
+   ],
+   "measured": {
+    "by_kind": {
+     "source": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "made": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     },
+     "title": {
+      "voided_read": 0,
+      "on": 0,
+      "edge": 0,
+      "off": 0,
+      "removed_read": 0,
+      "removed_on": 0
+     }
+    }
+   },
+   "keeps": [
+    "The CME will damage many satellites of the Earth."
+   ],
+   "after_sample": "changed after the coders' sample was drawn (review of 2026-11-16): 'satellites of the Earth' left out (those are spacecraft)."
+  }
+ ],
+ "measured": {
+  "date": "2026-11-16",
+  "scope": "all",
+  "labelled_units_missing": 0,
+  "labels_not_hits": {
+   "off": 35,
+   "on": 2
+  },
+  "by_kind": {
+   "source": {
+    "labelled_units": 641,
+    "kept_by_lexicon": {
+     "read": 79,
+     "on": 69,
+     "edge": 4,
+     "off": 6,
+     "precision": 0.873,
+     "wilson95": [
+      0.782,
+      0.93
+     ]
+    },
+    "on_units": 70,
+    "on_units_found": 69
+   },
+   "made": {
+    "labelled_units": 22,
+    "kept_by_lexicon": {
+     "read": 4,
+     "on": 3,
+     "edge": 1,
+     "off": 0,
+     "precision": 0.75,
+     "wilson95": [
+      0.301,
+      0.954
+     ]
+    },
+    "on_units": 3,
+    "on_units_found": 3
+   },
+   "title": {
+    "labelled_units": 290,
+    "kept_by_lexicon": {
+     "read": 30,
+     "on": 25,
+     "edge": 4,
+     "off": 1,
+     "precision": 0.833,
+     "wilson95": [
+      0.664,
+      0.927
+     ]
+    },
+    "on_units": 25,
+    "on_units_found": 25
+   }
+  },
+  "on_labels_not_hits": 2,
+  "labels": "The labels of the three lexicon sweeps of 2026-11-16 (grid, internet and prophetic lenses; one reader each; seeded samples of up to 20 per candidate pattern and every match of each lens's proposed patterns), joined to the texts as stored on 2026-11-16 (lexicon-merged/convert_labels.py: 1378 labels, 32 lost to changed texts). A sentence labelled by more than one lens takes the majority, a tie is edge. In-sample: the proposals were written on these labels, and the merge's own changes (lines_down, the wider failure verbs, the fixes to x_blackout_body and x_outage_metaphor, carrington only as an event) on the misses and false hits they showed; a fresh sample measures them. Precision is per kind (source, made, title; no captions are stored); a hash-only label that is no hit now is counted as missed. coded: the two coders of sample_2026-11-16 (63 blinded units drawn from scope all before the review), both coders on topic counted as on; it is the only out-of-sample measure.",
+  "coded": {
+   "sample": "sample_2026-11-16",
+   "by_kind": {
+    "source": {
+     "units": 30,
+     "both_on": 28,
+     "either_on": 28,
+     "precision": 0.933,
+     "wilson95": [
+      0.787,
+      0.982
+     ],
+     "no_longer_hits": 0,
+     "no_longer_hits_both_on": 0
+    },
+    "made": {
+     "units": 4,
+     "both_on": 2,
+     "either_on": 2,
+     "precision": 0.5,
+     "wilson95": [
+      0.15,
+      0.85
+     ],
+     "no_longer_hits": 0,
+     "no_longer_hits_both_on": 0
+    },
+    "title": {
+     "units": 29,
+     "both_on": 28,
+     "either_on": 29,
+     "precision": 0.966,
+     "wilson95": [
+      0.828,
+      0.994
+     ],
+     "no_longer_hits": 0,
+     "no_longer_hits_both_on": 0
+    }
+   }
+  }
+ }
+}
