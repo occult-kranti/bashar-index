@@ -19,6 +19,11 @@ reproduced and reported.
 --newest N takes the first N videos of each channel's Videos tab in the order the channel lists them
 (newest first, as discover.py recorded it): no shorts, no live streams, and only videos a channel
 listing holds. It reads only what is on disk and sends no request.
+
+The queue is then in rank order unless --order says otherwise: every channel's newest video first, then
+every channel's second newest, and so on (ties by channel). The lanes work down the queue in that order,
+so a run stopped halfway has the newest videos of every channel rather than all of a few channels.
+--order rank works without --newest too; rows no channel listing ranks go last.
 """
 from __future__ import annotations
 
@@ -37,6 +42,7 @@ BASHAR_IDS = ET_ROOT / "transcripts" / "scripts" / "all_ids.txt"
 BASHAR_CSV = ET_ROOT / "draft-package" / "csv" / "bashar_videos_in_repo_by_channel.csv"
 FIELDS = ["video_id", "url", "channel_dir", "title", "duration_s", "channeling", "entity", "sources", "shard",
           "tab", "listing_rank", "upload_date_approx"]
+ORDERS = ("rank", "longest-first", "shortest-first", "shuffle", "as-is")
 
 
 def blank(video_id):
@@ -86,6 +92,12 @@ def load_sources(root):
     return rows, used
 
 
+def rank_order(rows):
+    """Every channel's newest first, then every channel's second newest, and so on: sorted by listing_rank, ties
+    by channel, and otherwise in the order given (the sort is stable). Rows without a rank go last, by channel."""
+    return sorted(rows, key=lambda r: (r["listing_rank"] is None, r["listing_rank"] or 0, r["channel_dir"]))
+
+
 def wanted(row, which):
     s = row["sources"]
     return {"bashar75": "bashar75" in s, "indexed": "index" in s,
@@ -102,7 +114,9 @@ def main():
     ap.add_argument("--seed", type=int, default=20261111)
     ap.add_argument("--min-seconds", type=int, default=0, help="drop videos known to be shorter (Shorts are < 60)")
     ap.add_argument("--max-seconds", type=int, default=0, help="drop videos known to be longer (0 = no limit)")
-    ap.add_argument("--order", choices=("longest-first", "shortest-first", "shuffle", "as-is"), default="as-is")
+    ap.add_argument("--order", choices=ORDERS, default=None,
+                    help="queue order (default: rank with --newest, as-is otherwise). rank: every channel's newest "
+                         "first, then every channel's second newest, and so on")
     ap.add_argument("--shards", type=int, default=1, help="add a stable shard number 0..N-1 to each row")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--out", type=Path, help="queue CSV (default <root>/jobs/queue.csv)")
@@ -113,6 +127,7 @@ def main():
     if args.newest < 0:
         ap.error("--newest must be a positive number")
 
+    order = args.order or ("rank" if args.newest else "as-is")
     out = args.out or layout(args.root).jobs / "queue.csv"
     rows, used = load_sources(args.root)
     picked = [r for r in rows.values() if wanted(r, args.which)]
@@ -138,12 +153,14 @@ def main():
         picked = []
         for chan in sorted(groups):
             picked += sorted(groups[chan], key=lambda r: r["listing_rank"])[:args.newest]
-    if args.order == "longest-first":
+    if order == "longest-first":
         picked.sort(key=lambda r: (-(r["duration_s"] or 0), r["video_id"]))
-    elif args.order == "shortest-first":
+    elif order == "shortest-first":
         picked.sort(key=lambda r: (r["duration_s"] is None, r["duration_s"] or 0, r["video_id"]))
-    elif args.order == "shuffle":
+    elif order == "shuffle":
         random.Random(args.seed).shuffle(picked)
+    elif order == "rank":
+        picked = rank_order(picked)
     if args.limit:
         picked = picked[:args.limit]
 
@@ -156,7 +173,8 @@ def main():
     known = [r["duration_s"] for r in picked if r["duration_s"]]
     meta = {"created": utc_now(), "set": args.which, "per_channel": args.per_channel, "newest": args.newest,
             "seed": args.seed,
-            "min_seconds": args.min_seconds, "max_seconds": args.max_seconds, "order": args.order,
+            "min_seconds": args.min_seconds, "max_seconds": args.max_seconds, "order": order,
+            "order_from": "--order" if args.order else ("the default with --newest" if args.newest else "the default"),
             "shards": args.shards, "limit": args.limit, "videos": len(picked),
             "channels": len({r["channel_dir"] for r in picked}), "with_known_duration": len(known),
             "known_hours": round(sum(known) / 3600, 1), "inputs_sha256": used}
@@ -165,7 +183,7 @@ def main():
     if args.export_ids:
         atomic_write_text(args.export_ids, json.dumps({"records": [{"video_id": r["video_id"]} for r in picked]}) + "\n")
     print(f"{len(picked)} videos from {meta['channels']} channels, {meta['known_hours']} h with known length "
-          f"({len(picked) - len(known)} unknown) -> {out}")
+          f"({len(picked) - len(known)} unknown), {order} order -> {out}")
 
 
 if __name__ == "__main__":

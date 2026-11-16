@@ -16,7 +16,9 @@ variable it sends nothing, says so in one line, and ends with exit code 9 (skipp
 Reads   <root>/jobs/queue.csv (from select_jobs.py)
 Writes  <root>/captions/<channel_dir>/<video_id>.<lang>.vtt
         <root>/captions/<channel_dir>/<video_id>.txt          plain text of the preferred track
-        <root>/captions/captions_manifest.jsonl               one line per video: tracks, kind, words
+        <root>/captions/captions_manifest.jsonl               one line per video: tracks, kind, words, and
+                                                              "published": the video's own date (YYYY-MM-DD),
+                                                              which the same call writes (--print-to-file)
 
     python3 pipeline/fetch_captions.py --limit 3
     python3 pipeline/fetch_captions.py --all --workers 2
@@ -35,6 +37,7 @@ from common import (HARD_BLOCKS, ID_RE, Breaker, Progress, RateLimiter, add_root
                     atomic_write_text, classify_error, ensure_outside_git, latest_by_key, layout, normalise_text,
                     parse_shard, read_csv, read_jsonl, run_cmd, sha256_text, stable_shard, utc_now, youtube_gate)
 from fetch_publisher_text import cues_to_text  # noqa: E402
+from download_audio import DATE_FILE, date_args, read_published  # noqa: E402
 
 SKIP_LATER = {"unavailable", "login_required", "no_captions"}
 
@@ -43,7 +46,9 @@ def ytdlp_cmd(args, row, work):
     return [args.ytdlp, "--ignore-config", "--no-playlist", "--no-warnings", "--no-progress", "--skip-download",
             "--write-subs", "--write-auto-subs", "--sub-langs", args.languages, "--sub-format", "vtt",
             "--retries", "2", "--socket-timeout", "30", "--sleep-requests", "0.75", "--sleep-subtitles", "5",
-            "-o", str(work / "%(id)s.%(ext)s"), row["url"]]
+            "-o", str(work / "%(id)s.%(ext)s"),
+            # the video's dates, from the page this call reads anyway; "video" runs with --skip-download too
+            *date_args("video", work), row["url"]]
 
 
 def fetch_one(args, row, out_root, limiter, breaker):
@@ -62,6 +67,9 @@ def fetch_one(args, row, out_root, limiter, breaker):
         t0 = time.time()
         code, _, err = run_cmd(ytdlp_cmd(args, row, work), args.timeout)
         rec["elapsed_s"] = round(time.time() - t0, 1)
+        rec["published"], field = read_published(work / DATE_FILE)      # '' when yt-dlp did not say
+        if field:
+            rec["published_from"] = field
         tracks = sorted(work.glob(f"{video_id}.*.vtt"))
         saved = []
         if tracks:

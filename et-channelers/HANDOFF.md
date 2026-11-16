@@ -188,8 +188,10 @@ as "skipped by rule", not as a failure.
        cookies, which this project does not use). So the downloads run on the owner's computer (below), which
        puts each file in the private store; from there `drive_stage.py` copies it to Drive as before.
     3. A "newest N per channel" choice: **added on 2026-11-15**. `select_jobs.py --newest N` takes the first N of
-       each channel's Videos tab in listing order (no request); `run_all.py --newest N` passes it on and lists
-       only that much of each channel. Each queue now has its own meta file.
+       each channel's Videos tab (no request), since 2026-11-16 in rank order by default (every channel's newest,
+       then every channel's second newest, ...; `--order as-is` keeps channel by channel); `run_all.py --newest N`
+       passes it on and lists only that much of each channel, and `run_all.py --queue FILE` runs the lanes over a
+       queue file instead (below). Each queue has its own meta file.
     4. Fresh listings: **made on 2026-11-15** from this Codespace, Videos tab only, 50 per channel, one request
        every 5 seconds: 63 channels, 2,920 videos, no failures, 15 of them new since 2026-11-13. They are in
        `/workspaces/et-yt-newest` (a root of their own, so the full listings of 58,699 videos are untouched).
@@ -255,18 +257,83 @@ as "skipped by rule", not as a failure.
        bulk model pass (is it the entity's claim; prediction or future-tense teaching; certainty; families
        linked), which waits for an API key and the owner's go-ahead on cost and data terms (12.5, D14); then the
        same over each YouTube tier as it is transcribed.
-  - **The queues** (built on 2026-11-15 from those listings, in the private folder's `jobs/`):
-    `queue_newest10.csv` (612 videos, 233.4 h), `queue_newest20.csv` (1,200, 496.2 h) and `queue_newest50.csv`
-    (2,920, 1,216.9 h), each with its `.meta.json`. The columns add `tab`, `listing_rank` (0 is the newest) and
-    `upload_date_approx`.
-  - **On the owner's computer**, one tier after the other (each run skips what is already stored):
+  - **The queues** (built on 2026-11-15 from those listings, in the private folder's `jobs/` and on the private
+    store's release `handoff-2026-11-14`), each with its `.meta.json`; the columns add `tab`, `listing_rank` (0 is
+    the newest) and `upload_date_approx`:
+
+    | Queue file | Videos | Known hours | What it holds |
+    |---|---|---|---|
+    | `queue_blackouts_titles_all.csv` | 43 | 17.6 | titles that name blackouts, the power grid or the internet going down |
+    | `queue_blackouts_titles_weak_all.csv` | 225 | | titles that name solar flares, storms or CMEs (a weaker sign) |
+    | `queue_newest10.csv` | 612 | 233.4 | the newest 10 of every channel's Videos tab |
+    | `queue_newest20.csv` | 1,200 | 496.2 | the newest 20 (includes the 10) |
+    | `queue_newest50.csv` | 2,920 | 1,216.9 | the newest 50 (includes the 20) |
+    | `queue_youtube_all.csv` | 58,766 | | every video the channel listings hold; captions only is the realistic use |
+
+    The three newest tiers were written channel by channel (their meta says `"order": "as-is"`); `--newest N`
+    lists again and builds its queue in rank order, `--queue` keeps the file's order.
+  - **On the owner's computer.** What `run_all.py` does now (2026-11-16): with `--newest N` the queue is in rank
+    order by default (every channel's newest video, then every channel's second newest, and so on, so a run stopped
+    halfway has the newest of every channel); `--queue PATH` (repeatable) runs the YouTube lanes over queue files
+    instead of listing and building a queue, merged in order into `<root>/jobs/queue_run.csv` with a repeated video
+    kept once (not with `--newest`, `--per-channel` or `--set`; a missing file or one without a `video_id` column stops the
+    run with exit code 2 before anything starts); with `--transcribe MODEL` speech-to-text runs beside the
+    downloads, one pass every 300 s (`--transcribe-every`), and once more at the end; before anything starts the
+    tools are run for their versions (`TOOLS`; `--ytdlp`, `--ffmpeg`, `--ffprobe` name other paths), a yt-dlp or
+    ffmpeg that is missing or cannot be run stops the run with exit code 6, and a yt-dlp released more than 60 days
+    ago gets a warning (YouTube changes often; an old yt-dlp fails in ways that look like blocks: update it first);
+    the plan and the run print an `ESTIMATE` (videos, known hours, what each lane still has to do and the least
+    time it takes at its pace); and each download records the video's exact upload date as `published`. The pace
+    is unchanged: audio 2 workers and one start every 10 s, captions 1 worker and never faster than every 5 s nor
+    than the audio lane; no cookies, logins or proxies.
+
+    The runs, in this order (each run skips what is already stored, so a stopped run is started again with the
+    same command). PowerShell first, then the same in a Unix shell:
 
     ```powershell
-    $env:ET_YOUTUBE_ROBOTS_OVERRIDE = "1"           # Unix shell: export ET_YOUTUBE_ROBOTS_OVERRIDE=1
-    python et-channelers\pipeline\run_all.py --store gh:occult-kranti/et-channelers-archive@archive-v1 --lanes youtube,captions --newest 10        # the plan
-    python et-channelers\pipeline\run_all.py --store gh:occult-kranti/et-channelers-archive@archive-v1 --lanes youtube,captions --newest 10 --go   # run it
-    # then --newest 20 --go, then --newest 50 --go
+    $env:ET_YOUTUBE_ROBOTS_OVERRIDE = "1"
+    $S = "gh:occult-kranti/et-channelers-archive@archive-v1"
+    $Q = "$HOME\et-queues"
+    # 1. the queues from the release of the private store
+    gh release download handoff-2026-11-14 -R occult-kranti/et-channelers-archive -p "queue_*.csv" -D $Q --clobber
+    # 2. the blackout-titled videos first: audio and captions (43 videos, about 18 h; the plan, then --go)
+    python et-channelers\pipeline\run_all.py --store $S --lanes "youtube,captions" --queue $Q\queue_blackouts_titles_all.csv
+    python et-channelers\pipeline\run_all.py --store $S --lanes "youtube,captions" --queue $Q\queue_blackouts_titles_all.csv --go
+    # 3. the newest 10 of every channel: --newest 10 lists again and takes them in rank order ...
+    python et-channelers\pipeline\run_all.py --store $S --lanes "youtube,captions" --newest 10 --go
+    #    ... or the queue as built on 2026-11-15, in the file's order, without listing
+    python et-channelers\pipeline\run_all.py --store $S --lanes "youtube,captions" --queue $Q\queue_newest10.csv --go
+    # 4. then the newest 20, then 50 (the same two ways)
+    python et-channelers\pipeline\run_all.py --store $S --lanes "youtube,captions" --newest 20 --go
+    python et-channelers\pipeline\run_all.py --store $S --lanes "youtube,captions" --newest 50 --go
+    # 5. captions only, for everything listed: runs in the background over days, resumable
+    python et-channelers\pipeline\run_all.py --store $S --lanes captions --queue $Q\queue_youtube_all.csv --go
     ```
+
+    ```bash
+    export ET_YOUTUBE_ROBOTS_OVERRIDE=1
+    S=gh:occult-kranti/et-channelers-archive@archive-v1
+    Q=~/et-queues
+    gh release download handoff-2026-11-14 -R occult-kranti/et-channelers-archive -p "queue_*.csv" -D $Q --clobber    # 1
+    python3 et-channelers/pipeline/run_all.py --store $S --lanes "youtube,captions" --queue $Q/queue_blackouts_titles_all.csv        # 2, the plan
+    python3 et-channelers/pipeline/run_all.py --store $S --lanes "youtube,captions" --queue $Q/queue_blackouts_titles_all.csv --go   # 2, run it
+    python3 et-channelers/pipeline/run_all.py --store $S --lanes "youtube,captions" --newest 10 --go                                 # 3 (or --queue $Q/queue_newest10.csv)
+    python3 et-channelers/pipeline/run_all.py --store $S --lanes "youtube,captions" --newest 20 --go                                 # 4
+    python3 et-channelers/pipeline/run_all.py --store $S --lanes "youtube,captions" --newest 50 --go
+    python3 et-channelers/pipeline/run_all.py --store $S --lanes captions --queue $Q/queue_youtube_all.csv --go                    # 5
+    ```
+
+    Add `--transcribe large-v3 --devices 0` (a GPU) or `--transcribe base.en` (CPU) to a run to transcribe beside
+    the downloads. Step 5 is 58,766 caption requests at one every 10 s: about 7 days of pacing alone, so it runs in
+    the background over days; stop it whenever the computer is needed and start it again with the same command,
+    and everything already fetched is skipped. The weak blackout queue (`queue_blackouts_titles_weak_all.csv`, 225
+    videos) can follow step 2 the same way if the owner wants it before the tiers. If a run prints `STOPPED` with
+    exit code 3, YouTube refused requests: wait and run the same command again, do not push on. The quotes around
+    `"youtube,captions"` matter in PowerShell: unquoted, the comma makes a list and python is handed two words.
+    `--clobber` lets step 1 be run again over files already downloaded. A `--queue` run has no channel listing of
+    its own and `catalog.py` reads only `jobs/queue.csv`, so the local catalogue of a `--queue` run carries the
+    manifests' fields (the upload date among them) but no title or source url; those come with the Codespace
+    rebuild below, which has the full listing.
 
     Then, in the Codespace: `sync_archive.py pull` the new audio and captions, `drive_stage.py` to Drive, rebuild
     the tables.
