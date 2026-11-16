@@ -533,6 +533,107 @@ class TestPredictionTimeline(PipelineCase):
         self.assertIsNone(c("Saturday, May 30, 2015 Roadside Assistance - the shift will come in 2015.", 2015))
         self.assertIsNotNone(c("I feel that 2014 is going to be a very big year for disclosure.", 2014))
 
+    def test_page_furniture_editors_notes_and_promotion_are_not_the_source(self):
+        c = prediction_timeline.candidate
+        # a post's title and byline, a translation listing, a title glued to "Related Posts"
+        self.assertIsNone(c("The Shift of 2027 Will Be Gentle ∞The Star Council The Shift of 2027 Will Be Gentle "
+                            "∞The Star Council, Channeled by Jo Doe “Greetings.", 2026))
+        self.assertIsNone(c("Waves of Light, a Warning Translated by Ana · 2024-03-02 Read translation Download PDF", 2024))
+        self.assertIsNone(c("Farewell for now from the Star Council.” The Shift of 2027 Will Be Gentle "
+                            "∞The Star Council Related Posts", 2026))
+        self.assertIsNotNone(c("The shift of 2027 will be gentle for all of you.", 2026))
+        # a post's last line glued to the links after it is still the post's
+        self.assertIsNotNone(c("Your world will shift in 2027 and it will be gentle.” Related Posts The Light Within", 2026))
+        # an editor's footnote, a citation of print
+        self.assertIsNone(c("The second edition of these talks will follow in 2011. ↩", 2010))
+        self.assertIsNone(c("This bread will keep for days; reprinted from Kitchen Notes, June/July 2016.", 2016))
+        self.assertIsNotNone(c("The second wave of awakening will follow in 2031.", 2025))
+        # the speaker's own events and products; "the 2012 Mayan calendar" is not one
+        self.assertIsNone(c("In 2026 I will teach a workshop on the coast.", 2025))
+        self.assertIsNone(c("Our 2027 star planner will come out in a paperback edition.", 2026))
+        self.assertIsNotNone(c("In 2026 the old systems will give way on the coast.", 2025))
+        self.assertIsNotNone(c("The 2012 Mayan calendar will close a great cycle.", 2010))
+
+    def test_lists_of_any_time_are_not_dated_claims(self):
+        c = prediction_timeline.candidate
+        self.assertIsNone(c("Nobody can say what you will cook today, next month or next year.", 2025))
+        self.assertIsNotNone(c("The shift may come today, in a month or in a year, and it will come.", 2025))  # a theme
+        self.assertIsNotNone(c("The ships will be seen next year.", 2025))
+
+    def test_a_date_header_or_a_past_date_is_not_a_target(self):
+        c = prediction_timeline.candidate
+        # the date of a session or a chronology heading
+        self.assertIsNone(c("12 March 2019 Lumi (4): The ships will come when you are ready.", 2019))
+        self.assertIsNone(c("AUGUST 2019 Our small circle met again, and we felt the ships will come.", 2019))
+        self.assertIsNotNone(c("On 12 March 2027 the ships will come to the lake.", 2026))
+        # a date anchored in the past; "since" as "because" is not
+        self.assertIsNone(c("Since 2010 the river has been rising, and it will rise more.", None))
+        self.assertIsNotNone(c("Since 2026 will be a year of change, the ships will come.", None))
+        self.assertIsNone(c("Back in 2019 we sensed the ships will come.", None))
+        self.assertIsNotNone(c("Back home, in 2027, the ships will come.", None))
+        self.assertIsNone(c("From 2015 until now the lake has risen, and it will rise more.", None))
+        self.assertIsNotNone(c("From 2027 the lake will rise, and it will rise more.", None))
+        self.assertIsNone(c("We heard of it over a year ago and the rain will come.", 2025))
+        self.assertIsNotNone(c("The ships will come over a year from now.", 2025))
+        # a past verb governs the date: just before it, with the date as its subject, or after a fronted date
+        self.assertIsNone(c("How long the town will keep the bridge it built in 2015 is not known.", None))
+        self.assertIsNotNone(c("The town will build the bridge in 2027.", None))
+        self.assertIsNone(c("Some will tell you that 2009 was a year of great change.", None))
+        self.assertIsNotNone(c("Some will tell you that 2029 is a year of great change.", None))
+        self.assertIsNone(c("On May 3, 2022, a bright comet was seen over the hills.", None))   # "May" let it in
+        self.assertIsNotNone(c("On May 3, 2027, a bright comet will be seen over the hills.", None))
+        self.assertIsNotNone(c("In 2027, those who have awakened will lead the way.", None))   # a future main verb
+        # the filters look at the first time expression and give their name
+        s = "5 May 2019 Lumi (2): You will see."
+        self.assertEqual(prediction_timeline.screened_out(s, prediction_timeline.time_expression(s), None, 2019),
+                         "dated header")
+
+    def test_a_date_ahead_of_the_year_said_is_not_a_past_date(self):
+        c = prediction_timeline.candidate
+        for s, ahead, said in (("12 March 2027 Lumi (4): The ships will come when you are ready.", 2026, 2027),  # header
+                               ("Since 2030 the cities have been at peace, and they will stay so.", 2025, 2030),  # since
+                               ("On May 3, 2022, a bright comet was seen over the hills.", 2021, 2022)):          # past verb
+            self.assertIsNotNone(c(s, ahead), s)
+            self.assertIsNone(c(s, said), s)
+            self.assertIsNone(c(s, None), s)                                       # year said unknown: still dropped
+
+    def test_a_return_or_an_auxiliary_still_to_come_is_not_a_past_date(self):
+        c = prediction_timeline.candidate
+        # an auxiliary among the three words before the participle, read back to a clause edge
+        self.assertIsNotNone(c("The bridge will be fully completed in 2027.", None))
+        self.assertIsNotNone(c("The truth will soon be revealed in 2027.", None))
+        self.assertIsNone(c("This is what happened in 2019, and the rains will come.", None))
+        self.assertIsNone(c("The rains will come next to the house built in 2015.", None))   # "to" as a preposition
+        # a fronted date: a future marker anywhere in the main clause, not only in the first 20 words after the date,
+        # but not in a clause after ", however"
+        self.assertIsNotNone(c("On May 3, 2027, after the long years of waiting and the many signs that the people have "
+                               "seen and felt in the valley and on the hills, the ships will land.", None))
+        self.assertIsNone(c("In this year the valley became a lake of light, however, the hills have been slow in the "
+                            "gathering of the folk and in their wish to make what you would call, shall we say, the long "
+                            "climb.", 2016))
+        # "back in <date>" after a return still to come; "came back" stays a past date
+        self.assertIsNotNone(c("The ships will come back in 2027.", None))
+        self.assertIsNotNone(c("They’ll be back in 2027 and will stay.", None))
+        self.assertIsNone(c("They came back in 2019, and the ships will come.", None))
+        # curly apostrophes count as straight ones
+        self.assertIsNotNone(c("The ships that came won’t be seen in 2027, and the shift will come.", None))
+        self.assertIsNotNone(c("As foreseen, in 2027 those who have awakened won’t look back.", None))
+
+    def test_bylines_and_listings_are_furniture_but_the_words_in_a_body_are_not(self):
+        c = prediction_timeline.candidate
+        self.assertIsNotNone(c("The message channelled by the council says the grid will be complete by 2030.", 2025))
+        self.assertIsNotNone(c("The book translated by the council says the grid will be complete by 2030.", 2025))
+        self.assertIsNone(c("The Grid Will Be Complete by 2030 Channeled by Jo Doe", 2025))            # after a title
+        self.assertIsNone(c("∞The Star Council, channeled by jo doe The grid will be complete by 2030.", 2025))  # after ∞
+        self.assertIsNone(c("The Grid Will Be Complete by 2030 translated by ana · 2026-03-02", 2025))  # a listing
+
+    def test_a_time_list_with_a_prediction_word_is_kept(self):
+        c = prediction_timeline.candidate
+        self.assertIsNotNone(c("I predict that in one year, two years or three years, contact with us will be normal.",
+                               2025))
+        self.assertIsNone(c("Nobody can say what you will cook today, next month or next year.", 2025))
+        self.assertIsNone(c("Rain will fall today, next month or next year, and surely.", 2025))   # strong: no exception
+
     def test_near_copies_collapse_into_the_first_said(self):
         rows = [{"item_id": "b", "date_said": "2021-01-01", "sentence": "The great shift will arrive by 2030 for all of you here."},
                 {"item_id": "a", "date_said": "2020-01-01", "sentence": "The great shift will arrive by 2030 for all of you."},
@@ -612,6 +713,46 @@ class TestPredictionPilot(PipelineCase):
         a2 = [{"uid": f"u{i}", "type": t} for i, t in enumerate(["prediction", "not_future", "warning", "warning"])]
         res2 = prediction_pilot.score(a2, a2, key2, {"big": 90, "small": 10})
         self.assertEqual(res2["weighted_both_prediction_like"], 0.55)              # 90 x 1/2 + 10 x 2/2, over 100
+
+    def test_intervals_of_the_shares(self):
+        self.assertEqual(prediction_pilot.wilson(0, 0), None)
+        lo, hi = prediction_pilot.wilson(54, 99)
+        self.assertEqual((lo, hi), (0.448, 0.64))                                  # the third sample of 2026-11-15
+        self.assertEqual(prediction_pilot.wilson(5, 5)[1], 1.0)                    # never above 1
+        by = {"big": {"units": 4, "both_prediction_like": 2}, "small": {"units": 2, "both_prediction_like": 2}}
+        lo, hi = prediction_pilot.weighted_interval(by, {"big": 90, "small": 10})
+        self.assertLess(lo, 0.55)
+        self.assertGreater(hi, 0.55)                                               # around the weighted share
+        whole = prediction_pilot.weighted_interval({"p": {"units": 10, "both_prediction_like": 5}}, {"p": 10})
+        self.assertEqual(whole, [0.5, 0.5])                                        # a stratum read in full has no error
+        self.assertIsNone(prediction_pilot.weighted_interval(by, {}))
+
+    def test_summary_is_counts_only(self):
+        folder = self.tmp / "sample_x"
+        folder.mkdir()
+        key = [{"uid": f"u{i}", "kind": "source", "time_rule": "year", "person_id": "big" if i < 2 else "small"}
+               for i in range(4)]
+        labels = [{"uid": f"u{i}", "type": t, "note": "a private note"}
+                  for i, t in enumerate(["prediction", "not_future", "warning", "warning"])]
+        for name, rows in (("key.jsonl", key), ("labels_a.jsonl", labels), ("labels_b.jsonl", labels)):
+            (folder / name).write_text("".join(json.dumps(r) + "\n" for r in rows))
+        (folder / "strata.json").write_text(json.dumps({"big": 90, "small": 10}))
+        (folder / "meta.json").write_text(json.dumps({"name": "sample_x", "purpose": "measures rules", "seed": 3,
+                                                      "per_person": 2, "excluded": ["a", "b"]}))
+        out = self.tmp / "plan" / "prediction_samples.csv"
+        out.parent.mkdir()
+        p = subprocess.run([sys.executable, "-I", str(PIPE / "prediction_pilot.py"), "summary", "--publish", str(out),
+                            str(folder)], capture_output=True, text=True, timeout=60)
+        self.assertEqual(p.returncode, 0, p.stderr)
+        with out.open(newline="") as fh:
+            rows = list(csv.DictReader(fh))
+        self.assertEqual(len(rows), 1)
+        row = rows[0]
+        self.assertEqual(tuple(row), prediction_pilot.SUMMARY_COLUMNS)
+        self.assertEqual((row["units"], row["both_prediction_like"], row["weighted_share"]), ("4", "3", "0.55"))
+        self.assertEqual((row["excluded"], row["windowed_candidates"]), ("a b", "100"))
+        self.assertNotIn("private note", out.read_text())                         # no text, no uids
+        self.assertNotIn("u0", out.read_text())
 
 
 # --------------------------------------------------------------------------- select_jobs.py

@@ -29,8 +29,9 @@ a browsable copy of everything is on the owner's Google Drive. Section 9 is a pr
   channel, then a timeline of the predictions made on each channel (section 5). Decision 6.6 is made and the
   three queues are built; the downloads run on the owner's computer.
 * **Prediction timelines, first pass (2026-11-15):** `prediction_timeline.py`, the rules pass of ANALYSIS_PLAN
-  12.4, read all 9,862 items with text here and found 5,987 candidate statements about the future for 27 people
-  (5,490 once near-copies are collapsed), 572 of them with a target window (section 5). Two samples labelled by
+  12.4, read all 10,150 items with text here and found 6,041 candidate statements about the future for 27 people
+  (5,517 once near-copies are collapsed), 499 of them with a target window (section 5; seven filters added on
+  2026-11-16 drop page furniture, editorial notes, promotion and past references). Two samples labelled by
   two independent agent coders shaped the rules (42% real predictions among windowed candidates at first); a
   third, fresh sample measured them: **about 56% of windowed candidates are real predictions** (weighted by
   person; 95% interval about 47% to 65%), from 19% (Swaruu) to 88% (Sam) by person. They stay candidates, not
@@ -212,18 +213,26 @@ as "skipped by rule", not as a failure.
        - promotion ("register now", prices, links) and page furniture (cross-links, comment counts, "Continue
          reading", e-mail addresses), questions (a questioner's guess is not the entity's claim), reports of
          earlier statements ("you said this was going to happen in 2008") and blog post date headers;
-       - a blog's reader comments: the text is cut at Blogger's "N comments:" line. 893 of Suzanne Lie's 986
-         posts carry a comment thread, about a quarter of the stored text, and before the cut most of her
-         windowed candidates were readers' words (section 7).
+       - a blog's reader comments: the text is cut at Blogger's "N comments:" line (and since 2026-11-16 the
+         stored texts themselves no longer carry them, section 7);
+       - **since 2026-11-16 (PR #18), seven filters designed on the three labelled samples and reviewed**: page
+         furniture (translation listings, related-post blocks, bylines after a title), editorial notes (footnotes,
+         citations), promotion (event logistics, product notices), lists of any time ("in a month, or two, or
+         three"), dated headers (a session date followed by a speaker label), past anchors ("since 2019", "back
+         in 2017", "ago") and a past verb governing the dated clause. None drops a sentence whose year is later
+         than the date said, and none lost a labelled real prediction (156 of 156); together they drop 58 of the
+         112 labelled false positives (in-sample: the fourth sample will measure them).
        Near-copies are collapsed (12.4: shared five-word runs, Broder 1997, at a resemblance of 0.5): the first
        said keeps the statement, later copies are counted, and the timeline shows each once with how often it was
        said. Families of one event in different words are the model pass's work.
-       Run over everything with text here (not yet the YouTube tiers; again at 21:58 UTC, after the texts lane
-       had stored 375 more of Suzanne Lie's posts): 9,862 items, 27 people, **5,987 candidates, 5,490 distinct
-       (5,847 from source texts, 140 from speech-to-text), 572 with a target window**,
+       Run over everything with text here (not yet the YouTube tiers; last on 2026-11-16, 03:50 UTC, after the
+       stored blog texts were rewritten without reader comments and with the seven new filters): 10,150 items, 27
+       people, **6,041 candidates, 5,517 distinct (5,344 from source texts, 173 from speech-to-text), 499 with a
+       target window (480 distinct)**; the texts lane had added items since the last run, so the candidates rose
+       while the filters cut the windowed share,
        from 1977 (L/L Research) to 2075 (Aaron Abke), apart from an undated range from 1926 ("1926 to 2012", Sam)
-       that the model pass must weed out; 1,540 are undated (Swaruu 703, Sam 627, Blossom Goodchild
-       153, L/L Research 55, Jamie Butler 2). Per person and kind in `plan/prediction_counts.csv` (counts only);
+       that the model pass must weed out; 1,480 are undated (Swaruu 659, Sam 615, Blossom Goodchild
+       152, L/L Research 52, Jamie Butler 2). Per person and kind in `plan/prediction_counts.csv` (counts only);
        the candidates and timelines are in the private folder's `analysis/predictions/` (`<person>.jsonl`,
        `<person>.md`, quotes cut to 30 words).
     8. Three samples for the model pass: **run on 2026-11-15** (`pipeline/prediction_pilot.py`). Each is a seeded
@@ -469,9 +478,17 @@ as "skipped by rule", not as a failure.
   counts of words from the source include readers' words. The prediction pass cuts them (section 5). Since
   2026-11-15 the texts lane leaves comment threads and reply forms out of what it stores
   (`fetch_publisher_text.is_comment_block`: Blogger's `comments` block, WordPress's `comments-area`, `respond`);
-  the page as fetched is still kept in `.source.gz`. The posts stored before are not rewritten yet: doing it
-  from their `.source.gz` changes their hashes in the store, so it needs a planned re-sync (the only other change
-  is Jamie Butler's 24 pages, which lose their "Leave a comment" form).
+  the page as fetched is still kept in `.source.gz`. **Rewritten on 2026-11-16** (`fetch_publisher_text.py
+  --rederive --apply`): 1,384 stored texts rebuilt from their `.source.gz` without the comment threads (16.25M
+  words to 15.60M; Suzanne Lie's 1,361 posts 2.94M to 2.29M), 1,389 manifest lines appended, 58 pages' YouTube
+  ids corrected (29 false "page-embed" twins gone), the old texts saved in `backups/publisher-texts-before-
+  rederive-20261116T033153Z.tar.gz`; the store sync uploads the changed texts as new versions. Still open: 42 of
+  her pages keep as their only YouTube id a sidebar link to an archive post, which the catalogue still reads as a
+  twin; the fix is to read ids inside the post body only.
+* **Transcribed audio could be deleted before its Drive copy was made.** `sync_archive.py` deleted audio that had a
+  transcript before reading the hold notes, so a file transcribed quickly left the disk before a Drive round took
+  it: two Steve Nobel episodes were in the store but not on Drive. Fixed on 2026-11-16 (the holds are read first;
+  `pull --ids` brings a few items back from the store); both are on Drive (round `624da673`).
 * **tv.bashar.org** is paid and behind a login: not collected.
 * **No video is held.** Every lane keeps audio only. The 153 archive.org video files of Bashar sessions are
   listed, not fetched.

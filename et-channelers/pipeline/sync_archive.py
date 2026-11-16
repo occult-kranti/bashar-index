@@ -392,14 +392,20 @@ def push_once(args, paths, store):
         {v for (v, k, s) in done if k == "asr" and s == store.spec}
 
     hold_for = {x.strip() for x in (args.hold_untranscribed_for or "").split(",") if x.strip()}
-    claimed = held_items(paths.root)        # files a running transcribe.py has queued or open
+    claimed = held_items(paths.root)        # files a hold note names: a running transcribe.py's queue, or audio not yet on Drive
+    # (until 2026-11-16 transcribed audio was deletable before the holds were read, so a transcribed file could be
+    # deleted here before its Drive copy was made; two such files had to be pulled back from the store)
 
     def deletable(item):
         if args.delete == "none" or (args.delete == "audio" and item["kind"] != "audio"):
             return False
-        if item["kind"] != "audio" or item["video_id"] in transcribed:
+        if item["kind"] != "audio":
             return True
-        return not (args.hold_untranscribed or item["person"] in hold_for or item["video_id"] in claimed)
+        if item["video_id"] in claimed:
+            return False      # a hold note names it (drive_hold.py: not yet on Drive; transcribe.py: queued or open)
+        if item["video_id"] in transcribed:
+            return True
+        return not (args.hold_untranscribed or item["person"] in hold_for)
 
     todo, safe, lost = [], [], 0
     for item in items:
@@ -494,7 +500,8 @@ def cmd_pull(args, paths, store):
             theirs.unlink(missing_ok=True)
             print(f"[sync] read the ledger kept in {store.spec}", file=sys.stderr)
     wanted = [r for (v, k, s), r in ledger(paths).items()
-              if s == store.spec and k in args.kinds and (not args.only or r.get("person") in args.only)]
+              if s == store.spec and k in args.kinds and (not args.only or r.get("person") in args.only)
+              and (not args.ids or v in args.ids)]
     if args.limit:
         wanted = wanted[:args.limit]
     got, skipped = store.fetch(wanted, paths, args.overwrite)
@@ -517,6 +524,8 @@ def main():
     ap.add_argument("--hold-untranscribed-for", default="",
                     help="like --hold-untranscribed, for these person ids only (comma-separated): their audio stays until it has a transcript")
     ap.add_argument("--overwrite", action="store_true", help="pull: replace files that already exist locally")
+    ap.add_argument("--ids", default="", help="pull: comma-separated item ids, to bring back a few items (for example audio "
+                                              "deleted here before its Drive copy was made)")
     ap.add_argument("--watch", type=float, default=0, help="repeat every N seconds until interrupted")
     ap.add_argument("--stop-file", default="", help="with --watch: leave when this file exists")
     ap.add_argument("--bundle-mb", type=int, default=400, help="gh store: target size of one bundle")
@@ -526,6 +535,7 @@ def main():
     args = ap.parse_args()
     args.kinds = [k.strip() for k in args.kinds.split(",") if k.strip() in KINDS]
     args.only = {x.strip() for x in args.only.split(",") if x.strip()}
+    args.ids = {x.strip() for x in args.ids.split(",") if x.strip()}
     paths = layout(ensure_outside_git(args.root))
     try:
         store = open_store(args.store, args.gh, paths.root)

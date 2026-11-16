@@ -6,6 +6,7 @@ independent coders, and the scores of their labels.
     python3 -I pipeline/prediction_pilot.py sample --root ~/et-channelers-private --out <new dir> --seed 2 \
         --exclude <earlier dir>                                  (a fresh sample, to measure rules the first one shaped)
     python3 -I pipeline/prediction_pilot.py score  --out <dir> labels_a.jsonl labels_b.jsonl
+    python3 -I pipeline/prediction_pilot.py summary --publish plan/prediction_samples.csv <dir> [<dir> ...]
 
 `sample` draws, with a fixed seed, up to --per-person candidates that have a target window from each person's
 `analysis/predictions/<person>.jsonl`, shuffles them and writes `sample.jsonl` (uid, sentence, time expression:
@@ -13,14 +14,20 @@ no person, title, item or date, as 12.5 asks) and `key.jsonl` (what the coders m
 coders' labels and the key and writes `score.json`: agreement and Cohen's kappa on the type and on "prediction
 like", and the share of candidates each coder and both coders call prediction-like (the rules pass's precision),
 by kind (texts from the source apart from speech-to-text), by time rule and by person, and, from the
-`strata.json` that `sample` writes, the share weighted by each person's windowed candidates. Everything stays private; score.json
-holds counts and uids only, no text.
+`strata.json` that `sample` writes, the share weighted by each person's windowed candidates, with a Wilson
+interval for the plain share and a stratified interval (finite population correction) for the weighted one.
+Everything stays private; score.json holds counts and uids only, no text. `sample` also writes `meta.json`
+(seed, per person, the folders excluded, and --purpose). `summary` writes one row of counts per sample folder
+(no text, no uids), which may be published as plan/prediction_samples.csv.
 """
 from __future__ import annotations
 
 import argparse
 import collections
+import csv
+import io
 import json
+import math
 import random
 import sys
 from pathlib import Path
@@ -74,6 +81,35 @@ def weighted_share(res_by_person, strata):
     return round(num / den, 3) if den else None
 
 
+def wilson(k, n, z=1.96):
+    """Wilson score interval for k of n (95% by default); None for n = 0."""
+    if not n:
+        return None
+    p = k / n
+    centre = (p + z * z / (2 * n)) / (1 + z * z / n)
+    half = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / (1 + z * z / n)
+    return [round(max(0.0, centre - half), 3), round(min(1.0, centre + half), 3)]
+
+
+def weighted_interval(res_by_person, strata, z=1.96):
+    """95% interval of weighted_share: stratified by person, each stratum's variance p(1-p)/(n-1) with the
+    finite population correction (1 - n/N), over the people sampled; None without strata."""
+    den = sum(strata.get(p, 0) for p, s in res_by_person.items() if s["units"] and strata.get(p))
+    if not den:
+        return None
+    est = var = 0.0
+    for person, s in res_by_person.items():
+        n, big = s["units"], strata.get(person, 0)
+        if not n or not big:
+            continue
+        w, p = big / den, s["both_prediction_like"] / n
+        est += w * p
+        if n > 1:
+            var += w * w * max(0.0, 1 - n / big) * p * (1 - p) / (n - 1)
+    half = z * math.sqrt(var)
+    return [round(max(0.0, est - half), 3), round(min(1.0, est + half), 3)]
+
+
 def score(a_rows, b_rows, key_rows, strata=None):
     a = {r["uid"]: r for r in a_rows}
     b = {r["uid"]: r for r in b_rows}
@@ -111,10 +147,41 @@ def score(a_rows, b_rows, key_rows, strata=None):
            "types_a": dict(collections.Counter(ta).most_common()),
            "types_b": dict(collections.Counter(tb).most_common()),
            "disagree_prediction_like": [u for u, x, y in zip(uids, la, lb) if x != y]}
+    out["both_prediction_like_wilson95"] = wilson(out["all"]["both_prediction_like"], out["all"]["units"])
     if strata:
         out["weighted_both_prediction_like"] = weighted_share(out["by_person"], strata)
+        out["weighted_ci95"] = weighted_interval(out["by_person"], strata)
         out["weighted_over_candidates"] = sum(strata.get(p, 0) for p in out["by_person"])
+        out["windowed_candidates"] = sum(strata.values())
     return out
+
+
+SUMMARY_COLUMNS = ("sample", "purpose", "seed", "per_person", "excluded", "units", "people", "type_kappa",
+                   "prediction_like_kappa", "dates_event_kappa", "coder_a_prediction_like", "coder_b_prediction_like",
+                   "both_prediction_like", "share_both", "wilson95_lo", "wilson95_hi", "weighted_share",
+                   "weighted95_lo", "weighted95_hi", "weighted_over_candidates", "windowed_candidates")
+
+
+def summary_row(folder):
+    """One row of counts (no text, no uids) for a sample folder: its meta.json, and the score of its two
+    coders' labels recomputed with the current code."""
+    folder = Path(folder)
+    meta = json.loads((folder / "meta.json").read_text()) if (folder / "meta.json").exists() else {}
+    strata = json.loads((folder / "strata.json").read_text()) if (folder / "strata.json").exists() else None
+    res = score(read_jsonl(folder / "labels_a.jsonl"), read_jsonl(folder / "labels_b.jsonl"),
+                read_jsonl(folder / "key.jsonl"), strata)
+    al, wil, wci = res["all"], res["both_prediction_like_wilson95"] or [None, None], res.get("weighted_ci95") or [None, None]
+    return {"sample": meta.get("name", folder.name), "purpose": meta.get("purpose", ""), "seed": meta.get("seed", ""),
+            "per_person": meta.get("per_person", ""), "excluded": " ".join(meta.get("excluded", [])),
+            "units": res["units"], "people": len(res["by_person"]), "type_kappa": res["type_kappa"],
+            "prediction_like_kappa": res["prediction_like_kappa"], "dates_event_kappa": res["dates_event_kappa"],
+            "coder_a_prediction_like": al["coder_a_prediction_like"], "coder_b_prediction_like": al["coder_b_prediction_like"],
+            "both_prediction_like": al["both_prediction_like"],
+            "share_both": round(al["both_prediction_like"] / res["units"], 3) if res["units"] else "",
+            "wilson95_lo": wil[0], "wilson95_hi": wil[1], "weighted_share": res.get("weighted_both_prediction_like", ""),
+            "weighted95_lo": wci[0], "weighted95_hi": wci[1],
+            "weighted_over_candidates": res.get("weighted_over_candidates", ""),
+            "windowed_candidates": res.get("windowed_candidates", "")}
 
 
 def main():
@@ -127,10 +194,23 @@ def main():
     s.add_argument("--seed", type=int, default=20261115)
     s.add_argument("--exclude", type=Path, action="append", default=[],
                    help="an earlier sample folder whose sentences must not be drawn again (repeatable)")
+    s.add_argument("--purpose", default="", help='what the sample is for, e.g. "shapes rules" or "measures rules"')
     c = sub.add_parser("score")
     c.add_argument("--out", type=Path, required=True, help="the sample folder, which holds key.jsonl")
     c.add_argument("labels", nargs=2, type=Path)
+    m = sub.add_parser("summary", help="one row of counts per sample folder, for plan/prediction_samples.csv")
+    m.add_argument("--publish", type=Path, required=True, help="the CSV to write (counts only; it may be in the repository)")
+    m.add_argument("folders", nargs="+", type=Path)
     args = ap.parse_args()
+    if args.cmd == "summary":
+        rows = [summary_row(f) for f in args.folders]
+        buf = io.StringIO()
+        w = csv.DictWriter(buf, fieldnames=SUMMARY_COLUMNS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+        atomic_write_text(args.publish, buf.getvalue())
+        print(f"{len(rows)} samples -> {args.publish}")
+        return
     out = ensure_outside_git(args.out)
     if args.cmd == "sample":
         rows = [r for f in sorted((Path(args.root) / "analysis" / "predictions").glob("*.jsonl")) for r in read_jsonl(f)]
@@ -148,6 +228,10 @@ def main():
         strata = collections.Counter(r["person_id"] for r in rows
                                      if r.get("window_lo") is not None or r.get("window_hi") is not None)
         atomic_write_text(out / "strata.json", json.dumps(dict(sorted(strata.items())), indent=1))
+        atomic_write_text(out / "meta.json", json.dumps({
+            "name": out.name, "purpose": args.purpose, "seed": args.seed, "per_person": args.per_person,
+            "excluded": [Path(d).name for d in args.exclude], "units": len(picked),
+            "people": len({k["person_id"] for k in key})}, indent=1))
         print(f"{len(picked)} units from {len({k['person_id'] for k in key})} people -> {out}")
     else:
         strata = json.loads((out / "strata.json").read_text()) if (out / "strata.json").exists() else None
