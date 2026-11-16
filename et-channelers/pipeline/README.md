@@ -21,8 +21,7 @@ the variable, no Python request goes to a YouTube path that robots.txt disallows
 requests too, in every step of the process that has it. The two steps that read allowed YouTube pages (a channel's
 page in `discover_sites.py`, the oEmbed lookup in `host_channels.py`) read robots.txt first. Setting the variable
 is the owner's decision, not a workaround: it says the owner accepts sending requests that robots.txt
-disallows. The YouTube Data API is a different route, with its own terms and an API key of the owner's; it is
-not used here.
+disallows.
 
 | Lane | Source | Script | Works from a cloud server? |
 |---|---|---|---|

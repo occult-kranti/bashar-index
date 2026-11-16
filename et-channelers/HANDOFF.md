@@ -352,8 +352,6 @@ as "skipped by rule", not as a failure.
    (a) leave the YouTube lanes off (the default);
    (b) opt in yourself, on your own connection, by setting the variable: it says you accept sending requests
    that robots.txt disallows (it does not get past bot checks, and nothing here tries to);
-   (c) use the YouTube Data API v3 with your own key for listings (not built; captions of other people's
-   videos are not available through it).
    **Decided by the owner on 2026-11-15: (b).** The override is set for YouTube steps. From this Codespace only
    listings work; audio and captions get the bot check, and nothing is done to get past it (section 5).
    Also decide what to keep of what came through those paths before the rule: 63 channel listings (58,699

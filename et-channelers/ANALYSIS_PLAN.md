@@ -33,7 +33,7 @@ Draft A is the base because it is strongest where most of this plan's work lies:
 - **Machines.**
   - The present two-core machine runs metadata, counting, networks, keyness and small embeddings.
   - A GPU is needed for large-v3 transcription, speaker separation, an open-weight coder and larger encoders.
-  - Only the owner's own computer can reach YouTube text. That route, like the listings, reads paths YouTube's robots.txt disallows, so it waits for the owner's decision D12 (12.1).
+  - Only the owner's own computer can reach YouTube text. That route, like the listings, reads paths YouTube's robots.txt disallows, so it runs only on the owner's computer, under the owner's opt-in (HANDOFF 6.6).
   - The whole main corpus (about 23,200 h) needs about 250 GB of private storage, about 3 weeks of CPU for the audio off YouTube and about 500 GPU-hours for YouTube's (12.10, step 0).
 - **Order of work.**
   - Preparation and measurement happen now, because they decide how collection transcribes and what gets registered.
@@ -873,7 +873,7 @@ The numbers behind each figure (counts, edge lists, effect tables) are published
 
 **Groups,** as the roadmap defines them and 12.1 counts them. The main corpus is every recording over 5 minutes, with no upper length limit and no cap per channel. Shorts and anything of 5 minutes or less form the short group. Archive.org files and multi-part uploads merge into whole recordings before the 5-minute rule.
 
-**What must be transcribed,** by the laptop lane once the owner settles the YouTube question (D12):
+**What must be transcribed,** by the owner's computer, under the owner's opt-in (HANDOFF 6.6):
 - every short-group item in qualifying channels: at most about 1,200 h, even if every short ran 3 minutes (about 800 h of shorts, 300 h of videos of 5 minutes or less and under 70 h of short streams; 1.6);
 - every long video over 5 minutes, with no cap. In the 47 qualifying channels that is 33,307 items and 19,718 h by Draft A's listing count (1.6), all of it part of the main corpus that section 12 transcribes anyway. The earlier caps of 20, 50 or 100 long videos per channel (default 50, D11) are retired.
 - Both sides use one engine. Captions serve as a cross-check only (roadmap decision D6).
@@ -1332,12 +1332,12 @@ Also fix the year table's raw JSON strings, and the README's claim that the page
 | Embeddings | Model2Vec in minutes; MiniLM on the source texts about 5 h, on the whole main corpus about 2 days (4.6) | MiniLM in hours; UMAP and HDBSCAN up to about 100k windows | E5/BGE class in minutes | | |
 | Reading passes R1-R3 | At most a 20-unit smoke test | | 7-9B open weights: about 145 GPU-hours for the source texts and the main corpus; the 20% replication | Haiku 5.5: about $150 to $300 (4.6, 12.5); the 10% Sonnet 5.5 audit, about $270 | |
 | NLI checks | Samples up to about 5,000 pairs | Yes | Beyond that | | |
-| Speech-to-text | base.en at 1.3x (under load) to 5.9x (idle) real time | About twice that (to measure); Parakeet TDT 0.6b v3 int8: measured slower than base.en on 2 threads (3.2x against 9.2x real time; pipeline/README); to measure again | large-v3 for the confirmatory strata (about 1,000 h; 1 to 2 GPU-days, estimate); the 2,870 h backlog in about 62 GPU-hours; YouTube's audio in about 500 (12.10, step 0) | | YouTube lane, transcribed with the same engine, once D12 is settled |
+| Speech-to-text | base.en at 1.3x (under load) to 5.9x (idle) real time | About twice that (to measure); Parakeet TDT 0.6b v3 int8: measured slower than base.en on 2 threads (3.2x against 9.2x real time; pipeline/README); to measure again | large-v3 for the confirmatory strata (about 1,000 h; 1 to 2 GPU-days, estimate); the 2,870 h backlog in about 62 GPU-hours; YouTube's audio in about 500 (12.10, step 0) | | YouTube lane, transcribed with the same engine, on the owner's computer |
 | Speaker separation (pyannote) | No | Slow (to measure) | Yes | | |
 | GPT-2-small fine-tune for ΔCE | No | Slow | Yes | | |
 | Chromaprint fingerprints of all audio | Slowly | Yes | | | For YouTube audio |
 | Audio stream-extraction from the 146 video-only sessions (300 h; about 529 GB transferred; only Opus stored) | No | Yes, one file at a time, E4 first, within archive.org's rate rules | | | |
-| YouTube audio, captions and upload dates (Phase 7a; the 75; official sessions 2021-2026) | Refused from the cloud. Listings and upload dates could come from the YouTube Data API, which works from the cloud with the owner's own key (D12) | Refused, as before | | | Yes (`run_all.py`), once D12 is settled |
+| YouTube audio, captions and upload dates (Phase 7a; the 75; official sessions 2021-2026) | Refused from the cloud. Downloaded and dated on the owner's computer (`run_all.py`) | Refused, as before | | | Yes (`run_all.py`) |
 
 **Software.**
 - *Analysis environment:* a separate environment built from a lockfile, containing numpy, scipy, pandas, statsmodels, scikit-learn, matplotlib, networkx, python-igraph, leidenalg, krippendorff, datasketch, tomotopy, model2vec or fastembed, umap-learn, hdbscan, jiwer, kenlm and the `anthropic` SDK. Use Python 3.12 if wheels for 3.14 are missing.
@@ -1400,7 +1400,7 @@ Also fix the year table's raw JSON strings, and the README's claim that the page
 **Phase 7 work:**
 - the 75 recordings;
 - shorts and long videos of channels with at least 20 of each: every long video over 5 minutes, with no cap per channel (12.1);
-- YouTube audio and captions only once the owner has settled D12;
+- YouTube audio and captions only on the owner's computer, under the opt-in;
 - official sessions from 2021 to 2026;
 - family Y registered as an amendment before any of these data are opened.
 
@@ -1580,7 +1580,6 @@ Also fix the year table's raw JSON strings, and the README's claim that the page
 | D9 | Stream-extract the audio of the 146 video-only sessions | Yes, one file at a time, E4 first |
 | D10 | Light discovery work during collection (codebook development, pilots) | Allowed only when it does not compete with collection for the CPU; no content results before the freeze |
 | D11 | Phase 7a: whether to fingerprint all long audio. The cap on long videos per channel was retired on 2026-11-14: every recording over 5 minutes is analysed, with no upper length limit and no cap per channel (12.1) | Fingerprints where the audio is held |
-| D12 | YouTube: a written, scoped exception to "robots.txt obeyed" for the YouTube lane, or listings and dates through the YouTube Data API (about 2,400 of 10,000 daily units, refreshed monthly; 12.1, 12.10) | Lanes off; the listings already made are kept, labelled by route and not refreshed (roadmap D8, HANDOFF 6.6). The Data API needs the owner's own key and is not built |
 | D13 | Machines and storage for the whole main corpus: about 3 weeks of cloud CPU for the about 3,100 h off YouTube, about 500 GPU-hours for YouTube's audio (not measured), and about 250 GB of private storage, against 10 GB free | None given for storage. Until it is sized, audio is kept only in a window ahead of the transcriber (10.1) |
 | D14 | The account's data terms, which decide what sending text to the API means for privacy (12.5) | No batch is sent until they are checked |
 | D15 | Deletion tracking: first-seen and last-seen dates per id, seeded from earlier inventories, because 6 of the Index's 75 recordings have left YouTube | On, from step 1 of 12.10 |
@@ -1595,7 +1594,7 @@ Also fix the year table's raw JSON strings, and the README's claim that the page
 ### 12.1 Corpus groups
 
 - **Main corpus: every recording over 5 minutes, with no upper limit,** all downloaded and analysed at the owner's request: 45,515 works, 23,200 hours of known length, and 7,647 works of unknown length. A one-hour cap would lose 49% of the hours; 299 works run over 3 hours (1,300 hours), 179 of them Bashar sessions. Long recordings are to be cut into windows, never dropped. Corrected after the critique: the code does not do this yet. Downloads time out after 3,600 seconds on YouTube and 1,800 on files, the cycle budget skips items that would overflow it, and transcription decodes each file whole; step 1 of 12.10 lifts these limits.
-- **YouTube holds about 21,000 of these hours.** yt-dlp reads `/youtubei/`, which YouTube's [robots.txt](https://www.youtube.com/robots.txt) disallows. So its audio, captions, listings and dates, the listings used here included, break the rule "robots.txt obeyed". Step 0 of 12.10 settles this (D12).
+- **YouTube holds about 21,000 of these hours.** yt-dlp reads `/youtubei/`, which YouTube's [robots.txt](https://www.youtube.com/robots.txt) disallows. So its audio, captions, listings and dates, the listings used here included, break the rule "robots.txt obeyed". The owner's opt-in (HANDOFF 6.6) and the owner's computer are the route; there is no other.
 - **Short group:** 16,115 shorts and 6,743 other works of 5 minutes or less. It meets the main corpus only through the Phase 7a method (5.5), whose distinctive-word measure follows [Monroe et al. 2008](https://doi.org/10.1093/pan/mpn018).
 - **Units:** a video, its podcast episode and its page are one work only through a verified twin (12.2), which also lends a text its length. Archive.org files (903 files, 245 Bashar sessions) and multi-part uploads merge before the 5-minute rule, which applies to the whole recording. Source texts and speech-to-text made here are never pooled. Interviews count only with live channeling, and only the entity's turns.
 
@@ -1606,12 +1605,12 @@ Each work gets two dates, said and published, each with its source and precision
 2. a date in the address (L/L's `/channeling/YYYY/MMDD`);
 3. a full date in the title, checked per channel, never a bare year, which may be a target;
 4. a verified twin;
-5. YouTube's upload date from the Data API;
+5. YouTube's upload date, read on the owner's computer with the audio (`download_audio.py`, `published`);
 6. failing these, the interval between the nearest dated items of the same tab.
 
 No year is guessed from content.
 
-A twin counts only if it is one-to-one and its title and date agree; 675 Scranton videos each link to 2 to 4 posts, often years apart. Corrected after the critique: the listings give no upload dates (0 of 58,699 rows). So for a video with no full date in its title, a text-overlap check after transcription stands in for the date check until the Data API supplies one. 16% of main works are dated now (7,394 of 45,515), about a quarter once addresses and titles are parsed. Works with only a list position enter last-N views, not yearly ones.
+A twin counts only if it is one-to-one and its title and date agree; 675 Scranton videos each link to 2 to 4 posts, often years apart. Corrected after the critique: the listings give no upload dates (0 of 58,699 rows). So for a video with no full date in its title, a text-overlap check after transcription stands in for the date check until the owner's computer supplies the upload date with the download. 16% of main works are dated now (7,394 of 45,515), about a quarter once addresses and titles are parsed. Works with only a list position enter last-N views, not yearly ones.
 
 One row per person, year, corpus group and text kind: works, hours, words, median length, uploads per month, format mix, and per-recording means of text features. The features are those the old 5.15 listed: Layer A code shares, type-token ratio on fixed-size samples, the share of audience questions, and named beings, star systems and places. Because sampling is uneven:
 - years with under 20 works are flagged, not tested, and merge into periods of 20 or more by a rule fixed in advance;
@@ -1657,6 +1656,20 @@ The headline compares the last N with the N just before, or with the GAM's forec
 - Open windows, such as Bashar's 2027, enter family PR's registry before 2027-01-01.
 - Responses after a date passes are coded: re-dating, spiritualising, "the probable reality shifted", blame, denial, silence, deletion ([Tumminia 1998](https://doi.org/10.2307/3712078); [Dawson 1999](https://doi.org/10.1525/nr.1999.3.1.60)).
 - Personal readings are never scored.
+
+### 12.4.1 Theme checks: blackouts of the power grid and the internet (added 2026-11-16, at the owner's request)
+
+**Question.** Who has predicted or warned that the electric power grid will fail or be cut (outages and blackouts, local to global), or that the internet, communications, satellites, phones or electronics will fail or be shut down; when it was said, what time it was given for, and whether that time has passed. **Especially in each channel's newest 10 videos**, then the newest 20 and 50, then everything stored.
+
+**Scope.** The causes named are part of the theme (solar flares and CMEs, the "solar flash", an EMP, cyber attacks, "three days of darkness" when it means no power). Metaphysical grids (crystalline grid, planetary energy grid, ley lines, "grid work"), media blackouts and blackouts as fainting are not.
+
+**Method.** A theme is a data file (`pipeline/themes/<theme>.json`: include patterns with a topic, exclude patterns for the false senses, each with its measured precision), read by one reusable tool (`pipeline/theme_search.py`):
+- Every sentence of every stored text that matches is a hit, with the date said, the target window (12.4's code), future and warning markers and copy groups. Texts from the source, speech-to-text made here, YouTube captions and titles stay apart in every count.
+- For a tier, an item counts when it is a queued video or a twin of one (a podcast episode or page of the same recording), so the newest tiers are covered as far as their twins already are. The queued titles are searched too, and the videos whose titles name the theme go into a priority queue for the owner's computer, so they are fetched first.
+- Lexicon by three sweeps (power grid; internet and communications; prophetic framings and false senses), each measured on matches read. Precision by two blinded coders on a stratified sample (on topic or not, topic, the 12.4 type, certainty, the time given, the speaker), with kappa and intervals. Recall by a probe: a seeded sample of near misses (sentences with broad words such as power, grid, internet or solar that the lexicon does not match), read to measure what it misses.
+- Dated claims whose window has passed are checkable as in 12.4 "Checking, later", with the same caution: criteria first, two coders, no scoring of personal readings.
+
+**Outputs.** Private: hits, timelines and the report (`analysis/themes/blackouts/`, quotes at most 30 words). Public: counts per person and kind only (`plan/theme_blackouts.csv`, `plan/theme_blackouts_newest10.csv`) and the dashboard's counts, until D16. Later themes use the same tool with their own file.
 
 ### 12.5 The small-model reading
 
@@ -1728,8 +1741,7 @@ This is looser than 5.6, whose public timeline shows counts only. Until the owne
 
 ### 12.10 Order of work
 
-0. **Owner decisions,** with defaults, in the decisions tables (roadmap section 4; section 11 here: D1, D2, D5 and D12 to D16). *Done when* each is settled.
-   - **YouTube (D12):** a written, scoped robots.txt exception, or listings and dates through the [YouTube Data API](https://developers.google.com/youtube/v3/determine_quota_cost), which no robots.txt bars: about 2,400 of 10,000 daily units, refreshed monthly as its [policies](https://developers.google.com/youtube/terms/developer-policies) require. Default: the YouTube lanes stay off; the listings are kept, labelled by route and not refreshed (roadmap D8, HANDOFF 6.6). The Data API needs the owner's own key and is not built.
+0. **Owner decisions,** with defaults, in the decisions tables (roadmap section 4; section 11 here: D1, D2, D5 and D13 to D16). *Done when* each is settled.
    - **Speech-to-text (D2):** the engine chosen by benchmark first (base.en: word error rate 0.729 on a 1981 tape). Language is detected per recording; about 2,050 main works (1,310 hours) need a multilingual model and analysis per language.
    - **Machines (D1, D13):** off-YouTube audio (about 3,100 hours, counting the 146 video-only archive.org sessions) needs about 3 weeks of cloud CPU; YouTube audio, about 500 GPU-hours with large-v3 on the owner's computer (not measured). Storage: about 250 GB, against 10 GB free.
    - **Also:** the account's data terms, before any batch (D14); coders, hours, pay and blinding (D5); deletion tracking, as 6 of the Index's 75 recordings have left YouTube (D15); hit rates only in aggregate (D16).
