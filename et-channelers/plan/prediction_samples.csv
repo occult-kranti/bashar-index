@@ -2,3 +2,4 @@ sample,purpose,seed,per_person,excluded,units,people,type_kappa,prediction_like_
 pilot_2026-11-15,shaped rules: questions; reports; page furniture,20261115,8,,106,19,0.899,0.981,0.925,45,44,44,0.415,0.326,0.51,,,,,
 validation_2026-11-15,shaped rules: blog comments; post headers,20261116,16,pilot_2026-11-15,112,7,0.878,0.909,0.963,63,64,61,0.545,0.452,0.634,0.359,0.26,0.457,975,1017
 third_2026-11-15,measures the rules of PR #14 (shaped nothing),20261117,16,pilot_2026-11-15 validation_2026-11-15,99,9,0.95,0.959,0.958,55,55,54,0.545,0.448,0.64,0.559,0.469,0.65,532,572
+fourth_2026-11-16,measures the seven filters of PR #18 (shaped nothing),20261118,16,pilot_2026-11-15 validation_2026-11-15 third_2026-11-15,90,10,0.896,0.933,0.905,45,48,45,0.5,0.399,0.601,0.547,0.449,0.645,418,499
