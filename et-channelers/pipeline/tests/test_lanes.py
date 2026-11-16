@@ -4419,7 +4419,7 @@ class TestYouTubeRobotsRule(LaneCase):
         # Python's own requests to YouTube: every step that builds a YouTube address and fetches it reads robots.txt
         fetchers = sorted(p.name for p in PIPE.glob("*.py") if re.search(r"get_bytes\(|open_url\(", p.read_text(encoding="utf-8"))
                           and "https://www.youtube.com/" in p.read_text(encoding="utf-8"))
-        self.assertEqual(fetchers, ["discover_sites.py", "host_channels.py"])
+        self.assertEqual(fetchers, ["channel_about.py", "discover_sites.py", "host_channels.py"])
         for name in fetchers:
             self.assertIn("robots.allowed(", (PIPE / name).read_text(encoding="utf-8"), name)
 
