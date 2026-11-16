@@ -391,7 +391,45 @@ as "skipped by rule", not as a failure.
   then delete the staged copies (`files/` under the stage folder and the copies in the link folder) and upload
   the ledger. On 2026-11-15: round `5a85b2d7`, 76 files (0.39 GB), round `bfd76e68`, 170 files (0.93 GB),
   and round `78de76b5`, 348 files (1.79 GB, 206 recordings); after it all 315 audio files on disk are on Drive
-  and none is held.
+  and none is held. On 2026-11-16: round `dc630af7` (195 files), `624da673` (2 transcribed episodes the sync had
+  deleted before their Drive copy; rule fixed in PR #18), `8e25cdd8` (181 files, 1.02 GB) and `98788010` (7): the
+  L/L Research "Ra Contact" session recordings, the last of the 86 transcribed recordings whose audio was not
+  yet here (`transcript_audio.py --gaps` listed them; `download_enclosures.py` fetched 85, one file on
+  llresearch.org's storage failed). After them 4,399 files (23.05 GB) are on Drive and every audio file on disk
+  is among them. `drive_stage.py done` takes `--out <stage folder>` as well as `--round`.
+* **The audio behind every transcript** (`transcript_audio.py`, PR #17; `plan/transcript_audio.csv`, the
+  dashboard's "Audio behind the transcripts"): of 10,175 items with a transcript of any kind, 324 have their
+  recording downloaded (all 324 in the store and on Drive, 88 still on disk); 5,272 are web pages with no
+  recording, 4,565 are YouTube videos that only the owner's computer can fetch, 13 are interview episodes held by
+  the live-channeling rule, 1 download failed. A recording whose audio is in the store or on Drive in every part
+  counts as downloaded whatever the audio manifest says (since 2026-11-16: a download run that the full disk
+  stopped between writing 13 files and their finished lines had left them as "not yet").
+* **Contacts.** The websites-and-contacts table (`analysis/coverage/contacts.csv`, private; the dashboard's
+  "Websites and contacts") carries, since 2026-11-16, each channel's public About page (`channel_about.py`,
+  64 channels read, 57 declare links, 5 write an address in the description; the address behind YouTube's
+  "view email" button sits behind a captcha and is not read) beside the addresses the makers' own podcast feeds
+  publish (7); 11 rows have an address, each with its source named. Nothing of it is in the repository.
+* **The public page of prediction timelines** (the owner's decision of 2026-11-16, within ANALYSIS_PLAN 12.9):
+  `dashboard/predictions.html`, served by GitHub Pages at
+  <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html>, built by
+  `prediction_page.py --root <private> --out dashboard/predictions.html --publish-counts`. It lists the 480
+  distinct candidates with a target window (20 people; 331 items), each with the person, the date said and its
+  basis, the window, the kind of text, conditional and hedged, the item id, a public link and a quote of at most
+  30 words (442 shown, 38 withheld: an item's quotes stay within 5% of its words, and a quote that is a
+  questioner's turn, names a third party from the private list `analysis/predictions/questioner_names.txt`, or
+  reproduces another author's byline shows its time expression instead); a timeline chart per person, a table
+  view, filters, an index by target year, a methods note with the 56% caveat. The guard runs on the records and
+  on the finished page and refuses to write it (exit 2) on any rule broken. An adversarial review found two
+  questioner quotes, five third-party names and a count off by 29; all fixed before the first publish. The full
+  private timelines (54 files) are zipped in Drive "05 Analysis" as
+  `Prediction timelines, full private copy 2026-11-16`.
+* **Keywords and TF-IDF of the newest tiers** (`keywords.py`, 2026-11-16; `plan/keywords_newest10.csv`, counts
+  and p-values only): each channel's newest 10/20/50 titles against its own history and the other channels,
+  and its texts as they arrive (kinds apart). In the newest 10: "2026" is the term rising most across channels
+  (7.0% of titles against 0.9% before), with "channeled message", "november", "starseeds" and "activation";
+  "channeling" and "love" fall. Titles naming blackouts, the grid or outages: 4 of 612 against 37 of 58,105
+  before (Fisher p 0.0009; Aaron Abke, Gigi Young, Michelle Robinson ×2); 5 of 1,200 in the newest 20, 7 of
+  2,920 in the newest 50. The terms and titles themselves are in `analysis/keywords/<scope>/` (private).
 * **The Claude Drive connector reads a file by reference only from the main session's scratchpad folder.**
   It also refuses a file with more than one hard link, which is why `--link-dir` copies each file. Subagents
   and other folders are refused too, so the uploads run in the main session, about 2 seconds per 7 MB file.
