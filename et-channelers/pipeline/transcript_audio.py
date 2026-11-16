@@ -19,7 +19,10 @@ Every other item is its own recording (audio_item == item_id), twin or not.
 The partition. For one kind, every item with that kind of text falls in exactly one of six classes, and
     items_with_text == audio_downloaded + no_audio_page + no_audio_youtube + no_audio_interview_held
                        + no_audio_not_yet + download_failed
-  audio_downloaded   the recording's audio_status is "ok" (the item's own, or its twin's for a page)
+  audio_downloaded   the recording's audio_status is "ok" (the item's own, or its twin's for a page); or,
+                     whatever the status, the recording's audio is in the store or on Drive in every part
+                     (a download run that stopped between writing the file and its finished manifest line
+                     leaves the status empty, and the copies settle it)
   download_failed    the recording's audio_status is "error" (the audio manifest's error_class says what
                      went wrong)
   no_audio_youtube   neither of the above, and the recording is a YouTube video, which only the owner's
@@ -162,6 +165,28 @@ def resolve(row, catalog):
     return state, why, row
 
 
+def settle_by_copies(state, why, audio, row, catalog, stored, on_drive):
+    """A recording whose audio is in the store, or on Drive in every part, was downloaded, whatever the audio
+    manifest says: a download run that stops after writing the file and before its finished line (a full
+    disk, a kill) leaves the catalogue's audio_status empty, and the next run skips the item because the
+    store has it. The copies settle it; so they do for a YouTube video the owner's computer fetched and this
+    machine only pulled. A page looks at its twin's copies when the twin is in the catalogue."""
+    if state not in ("no_audio_not_yet", "no_audio_youtube", "failed"):
+        return state, why, audio
+    twin = catalog.get(row.get("twin_of", "")) if is_page(row) else None
+    candidate = twin if twin is not None else (None if is_page(row) else audio)
+    if candidate is None:
+        return state, why, audio
+    item = candidate["item_id"]
+    copies = ("in the store" if item in stored else "") or ("on Drive" if drive_state(*on_drive.get(item, (0, 0))) == "all" else "")
+    if not copies:
+        return state, why, audio
+    note = f"the audio is {copies} (the audio manifest has no finished line for it)"
+    if twin is not None:
+        return "downloaded", f"the recording is the twin {item}: {note}", twin
+    return "downloaded", note, audio
+
+
 def drive_index(records):
     """{item_id: (distinct audio parts seen, parts the item has)} from the Drive ledger's audio lines.
 
@@ -215,6 +240,7 @@ def build_rows(paths, only=()):
         if not kinds or (only and row.get("person_id", "") not in only):
             continue
         state, why, audio = resolve(row, by_id)
+        state, why, audio = settle_by_copies(state, why, audio, row, by_id, stored, on_drive)
         audio_id = audio["item_id"]
         rec = manifest.get(audio_id, {})
         audio_path = audio.get("audio_path", "")
