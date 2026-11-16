@@ -112,9 +112,19 @@ class CaptionNormalizationTests(unittest.TestCase):
                 self.assertEqual(caught.exception.kind, "caption_response")
                 self.assertNotIn("private", str(caught.exception))
 
-    def test_empty_valid_caption_document_is_not_invented_text(self):
-        for raw, ext in [(b'{"events":[]}', "json3"), (b"WEBVTT\n\n", "vtt")]:
-            self.assertEqual(captions.normalize_caption(raw, ext)["segments"], [])
+    def test_empty_json3_is_pending_instead_of_a_completed_caption(self):
+        for raw in (b'{"events":[]}', b'{"events":[{"tStartMs":0,"segs":[{"utf8":"  "}]}]}'):
+            with self.subTest(raw=raw):
+                with self.assertRaises(captions.CaptionError) as caught:
+                    captions.normalize_caption(raw, "json3")
+                self.assertEqual(caught.exception.kind, "caption_empty")
+
+    def test_vtt_header_or_notes_without_text_is_pending(self):
+        for raw in (b"WEBVTT\n\n", b"WEBVTT\nKind: captions\n\nNOTE no cues yet\nprovider note\n"):
+            with self.subTest(raw=raw):
+                with self.assertRaises(captions.CaptionError) as caught:
+                    captions.normalize_caption(raw, "vtt")
+                self.assertEqual(caught.exception.kind, "caption_empty")
 
 
 class Response(io.BytesIO):

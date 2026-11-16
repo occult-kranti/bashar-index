@@ -327,5 +327,7 @@ def normalize_caption(rawbytes, ext):
                 segments.append({"start": start, "end": end, "text": text})
     else:
         raise CaptionError("unsupported_caption_format")
+    if not segments or not any(segment["text"].strip() for segment in segments):
+        raise CaptionError("caption_empty")
     return {"segments": segments, "text": "\n".join(segment["text"] for segment in segments),
             "raw_format": ext, "normalization_version": 1}
