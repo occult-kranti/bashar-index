@@ -208,9 +208,25 @@ class StatusExportTests(unittest.TestCase):
             target = root / 'sync/drive_caption_manifest.jsonl'
             target.write_text(''.join(json.dumps(row)+'\n' for row in rows), encoding='utf-8-sig')
             result = ingestion_status.snapshot(root, now=1800000000)
-            self.assertEqual(result['operation']['cooldown_provider'], 'youtube')
-            self.assertEqual(result['operation']['retry_after'], ingestion_status.stamp(1800001200))
+            self.assertIsNone(result['operation']['cooldown_provider'])
+            self.assertIsNone(result['operation']['retry_after'])
+            self.assertEqual(result['operation']['state'], 'ready')
+            self.assertEqual(result['operation']['caption_state'], 'cooldown')
+            self.assertEqual(result['operation']['caption_retry_after'], ingestion_status.stamp(1800001200))
+            (root / 'sync/drive_ingest_resume_state.json').write_text(json.dumps({
+                'schema_version':2, 'state':'waiting_for_caption_cooldown', 'await_caption_backfill':True,
+                'until_epoch':1800001200, 'cooldown_provider':'captions'}), encoding='utf-8')
+            waiting = ingestion_status.snapshot(root, now=1800000000)
+            self.assertEqual(waiting['operation']['state'], 'ready')
+            self.assertIsNone(waiting['operation']['retry_after'])
+            (root / 'sync/drive_ingest_resume_state.json').write_text(json.dumps({
+                'schema_version':2, 'state':'waiting_for_youtube_cooldown', 'source_until_epoch':1800001200,
+                'until_epoch':1800001201, 'cooldown_provider':'youtube'}), encoding='utf-8')
+            migrated = ingestion_status.snapshot(root, now=1800000000)
+            self.assertEqual(migrated['operation']['state'], 'ready')
+            self.assertIsNone(migrated['operation']['retry_after'])
             self.assertNotIn('SECRET', json.dumps(result))
+            (root / 'sync/drive_ingest_resume_state.json').unlink()
             with target.open('a', encoding='utf-8') as handle:
                 handle.write(json.dumps({'video_id':'PRIVATEidA1','status':'deleted'})+'\n')
             self.assertNotEqual(ingestion_status.snapshot(root, now=1800000000)['operation']['state'], 'cooldown')

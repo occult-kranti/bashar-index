@@ -124,6 +124,18 @@ source-access failures; `downloaded_unverified` retains work awaiting Drive proo
 receipt/deletion workflow has not finished; `verified` means that workflow completed
 under the current policy.
 
+Caption endpoint requests are serialized and start at least 15 seconds apart,
+including redirects. Caption HTTP 403/429 responses trigger a separate 24-hour
+caption cooldown. The caption journal retains `source_error_class` and
+`retry_not_before_epoch`; `sync/drive_caption_backfill_state.json` summarizes pending
+work and its deadline across the journal. No caption source retry occurs before
+that deadline, including after a restart. Audio collection, Drive uploads and ready
+caption ZIP uploads continue under their own controls. A future caption deadline
+can schedule bounded later backfill; unknown failures remain explicitly pending.
+Neither a caption cooldown nor an empty/unusable caption response counts as `none`
+or reverses verified audio status. The catalog is a checkpoint of that evidence,
+not the scheduler or a guarantee that the endpoint will recover at the deadline.
+
 `caption_bundles` is a compact JSON array of verified track identities, languages,
 types, source formats, exact Drive paths, object IDs, byte counts and hashes. It
 excludes local paths, request URLs, track names and transcript bodies. The JSON

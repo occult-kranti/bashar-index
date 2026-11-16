@@ -6,6 +6,7 @@ import threading
 import time
 import unittest
 import zipfile
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -107,7 +108,8 @@ class CaptionIntegrationTests(StageFixture):
             result = ingest.ingest_one(args, item.row, budget, Mock(), stop, Mock(), self.state,
                                        item.record, stage_only=True)
         self.assertEqual(result.status, 'ready')
-        self.assertTrue(stop.is_set())
+        self.assertFalse(stop.is_set())
+        self.assertTrue(args.caption_control.active())
         self.assertEqual(result.captions['error_class'], 'forbidden')
         self.assertEqual(result.captions['source_error_class'], 'forbidden')
         self.assertGreater(result.captions['retry_not_before_epoch'], time.time())
@@ -192,7 +194,8 @@ class CaptionIntegrationTests(StageFixture):
         stop = threading.Event()
         with patch.object(captions, 'fetch_track', side_effect=fetch):
             item.captions = ingest.prepare_captions(args, item.row, item.record, budget, Mock(), stop, info)
-        self.assertTrue(stop.is_set())
+        self.assertFalse(stop.is_set())
+        self.assertTrue(args.caption_control.active())
         self.assertEqual(len(item.captions['tracks']), 2)
         ready = [track for track in item.captions['tracks'] if track.get('bundle')]
         self.assertEqual(len(ready), 1)
@@ -217,29 +220,147 @@ class CaptionIntegrationTests(StageFixture):
         self.assertEqual(latest['source_error_class'], 'forbidden')
         self.assertEqual(latest['retry_not_before_epoch'], deadline)
 
-    def test_caption_cooldown_blocks_new_audio_requests(self):
+    def test_caption_cooldown_does_not_block_new_audio_requests(self):
         args, item, _, _ = self.setup_caption()
         for record in (item.record, item.record['metadata']):
             ingest.remove_local(self.root / record['path'])
         ingest.journal(self.root / 'sync/drive_caption_manifest.jsonl',
                        {'video_id': item.row['video_id'], 'status': 'pending', 'error_class': 'forbidden',
                         'retry_not_before_epoch': time.time() + 1000})
-        with patch.object(ingest, 'Rclone'), patch.object(ingest, 'ingest_one') as source:
-            self.assertEqual(ingest.run(args, [item.row]), 3)
-        source.assert_not_called()
+        with patch.object(ingest, 'Rclone'), patch.object(ingest, 'ingest_one', return_value='downloaded') as source:
+            self.assertEqual(ingest.run(args, [item.row]), 0)
+        source.assert_called_once()
 
-    def test_final_item_caption403_drains_audio_and_returns_pending_exit(self):
+    def test_final_item_caption403_drains_audio_and_reports_separate_pending(self):
         args, item, _, info = self.setup_caption()
         ingest.journal(self.state, item.record)
         drive = self.proof_drive([item])
         with patch.object(ingest, 'Rclone', return_value=drive), \
                 patch.object(ingest, 'extract_audio', return_value=info), \
                 patch.object(captions, 'fetch_track', side_effect=captions.CaptionError('forbidden')):
-            self.assertEqual(ingest.run(args, [item.row]), 3)
+            self.assertEqual(ingest.run(args, [item.row]), 0)
         done = ingest.load_state(self.state)[item.row['video_id']]
         self.assertTrue(ingest.receipt_complete(done, item.row, args.remote))
         self.assertEqual(ingest.load_state(self.root / 'sync/drive_caption_manifest.jsonl')[item.row['video_id']]['error_class'],
                          'forbidden')
+        summary = json.loads((self.root / 'sync/drive_caption_backfill_state.json').read_text())
+        self.assertEqual(summary['pending_verified_audio_videos'], 1)
+        self.assertEqual(summary['pending_source_videos'], 1)
+        self.assertGreater(summary['retry_not_before_epoch'], time.time())
+
+    def test_caption_only_backfill_waits_without_metadata_or_timedtext_calls(self):
+        args, item, _, _ = self.setup_caption()
+        item.record.update(status='deleted', drive_id='audio-id')
+        item.record['metadata']['drive_id'] = 'info-id'
+        ingest.journal(self.state, item.record)
+        for record in (item.record, item.record['metadata']):
+            ingest.remove_local(self.root / record['path'])
+        ingest.journal(self.root / 'sync/drive_caption_manifest.jsonl',
+                       {'video_id': item.row['video_id'], 'status': 'pending', 'source_error_class': 'rate_limited',
+                        'retry_not_before_epoch': time.time() + 1000})
+        with patch.object(ingest, 'Rclone'), patch.object(ingest, 'extract_audio') as extract, \
+                patch.object(captions, 'fetch_track') as fetch:
+            self.assertEqual(ingest.run(args, [item.row]), 0)
+        extract.assert_not_called()
+        fetch.assert_not_called()
+        summary = json.loads((self.root / 'sync/drive_caption_backfill_state.json').read_text())
+        self.assertEqual(summary['pending_source_videos'], 1)
+        self.assertEqual(summary['error_class'], 'rate_limited')
+
+    def test_caption_summary_includes_verified_audio_from_earlier_queue_stages(self):
+        args, item, _, _ = self.setup_caption()
+        item.record.update(status='deleted', drive_id='audio-id')
+        item.record['metadata']['drive_id'] = 'info-id'
+        ingest.journal(self.state, item.record)
+        with patch.object(ingest, 'Rclone'):
+            self.assertEqual(ingest.run(args, []), 0)
+        summary = json.loads((self.root / 'sync/drive_caption_backfill_state.json').read_text())
+        self.assertEqual(summary['pending_verified_audio_videos'], 1)
+        self.assertEqual(summary['pending_source_videos'], 1)
+
+    def test_summary_preserves_elapsed_caption_block_for_earlier_stage_backfill(self):
+        args, item, _, _ = self.setup_caption()
+        item.record.update(status='deleted', drive_id='audio-id')
+        item.record['metadata']['drive_id'] = 'info-id'
+        ingest.journal(self.state, item.record)
+        elapsed_deadline = time.time() - 60
+        ingest.journal(self.root / 'sync/drive_caption_manifest.jsonl',
+                       {'video_id': item.row['video_id'], 'status': 'pending', 'source_error_class': 'rate_limited',
+                        'retry_not_before_epoch': elapsed_deadline})
+        with patch.object(ingest, 'Rclone'), patch.object(ingest, 'extract_audio') as extract:
+            self.assertEqual(ingest.run(args, []), 0)
+        extract.assert_not_called()
+        summary = json.loads((self.root / 'sync/drive_caption_backfill_state.json').read_text())
+        self.assertEqual(summary['pending_source_videos'], 1)
+        self.assertEqual(summary['retry_not_before_epoch'], elapsed_deadline)
+        self.assertEqual(summary['error_class'], 'rate_limited')
+
+    def test_pending_caption_revisited_once_after_audio_work_when_window_has_elapsed(self):
+        args, old, _, _ = self.setup_caption()
+        old.record.update(status='deleted', drive_id='old-audio')
+        old.record['metadata']['drive_id'] = 'old-info'
+        ingest.journal(self.state, old.record)
+        ingest.journal(self.root / 'sync/drive_caption_manifest.jsonl',
+                       {'video_id': old.row['video_id'], 'status': 'pending', 'source_error_class': 'rate_limited',
+                        'retry_not_before_epoch': time.time() + 1000})
+        new = self.item(2)
+        order = []
+
+        def source(options, row, *unused, **extra):
+            order.append(row['video_id'])
+            if row['video_id'] == new.row['video_id']:
+                options.caption_control.until = time.time() - 1  # audio work outlasted the recorded window
+                new.record.update(status='deleted', drive_id='new-audio')
+                new.record['metadata']['drive_id'] = 'new-info'
+                return ingest.IngestResult(row, new.record, status='deleted')
+            cap = {'video_id': row['video_id'], 'policy': ingest.CAPTION_POLICY, 'captured_at': 'now',
+                   'tracks': [], 'unresolved': [], 'status': 'none'}
+            return ingest.IngestResult(row, old.record, status='deleted', captions=cap, caption_only=True)
+
+        with patch.object(ingest, 'Rclone'), patch.object(ingest, 'ingest_one', side_effect=source):
+            self.assertEqual(ingest.run(args, [old.row, new.row]), 0)
+        self.assertEqual(order, [new.row['video_id'], old.row['video_id']])
+
+    def test_queued_caption_slot_cannot_send_after_first_request_is_rate_limited(self):
+        control, stop = ingest.CaptionControl(min_interval=0), threading.Event()
+        started, release = threading.Event(), threading.Event()
+
+        def first():
+            try:
+                with control.slot(stop):
+                    started.set()
+                    release.wait(2)
+                    raise captions.CaptionError('rate_limited')
+            except captions.CaptionError:
+                return 'blocked'
+
+        def second():
+            try:
+                with control.slot(stop):
+                    return 'unexpected network request'
+            except ingest.IngestError as exc:
+                return exc.kind
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            one = pool.submit(first)
+            self.assertTrue(started.wait(2))
+            two = pool.submit(second)
+            release.set()
+            self.assertEqual(one.result(2), 'blocked')
+            self.assertEqual(two.result(2), 'caption_cooldown')
+        self.assertFalse(stop.is_set())
+        self.assertTrue(control.active())
+
+    def test_caption_request_starts_are_at_least_fifteen_seconds_apart(self):
+        control = ingest.CaptionControl()
+        stop = Mock()
+        stop.is_set.return_value = False
+        stop.wait.return_value = False
+        with control.slot(stop), patch.object(ingest.time, 'monotonic', side_effect=[100, 100, 105, 115]):
+            control.wait()
+            control.wait()
+        stop.wait.assert_called_once_with(10)
+        self.assertEqual(control.next_start, 130)
 
     def test_caption_only_extraction_has_no_audio_selector_and_keeps_access_warning(self):
         args, item, _, _ = self.setup_caption()

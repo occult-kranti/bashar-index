@@ -177,7 +177,12 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
-      if (Number.isFinite(data.counts.caption_verified_videos)) put('cc-captions-summary', number(data.counts.caption_verified_videos) + ' videos have English caption text verified on Drive (' + number(data.counts.caption_verified_tracks) + ' tracks). ' + number(data.counts.caption_pending_videos) + ' await caption completion; ' + number(data.counts.caption_none_english) + ' have no English track in the saved source inventory.');
+      if (Number.isFinite(data.counts.caption_verified_videos)) {
+        let captionSummary = number(data.counts.caption_verified_videos) + ' videos have English caption text verified on Drive (' + number(data.counts.caption_verified_tracks) + ' tracks). ' + number(data.counts.caption_pending_videos) + ' await caption completion; ' + number(data.counts.caption_none_english) + ' have no English track in the saved source inventory.';
+        if (data.operation.caption_state === 'cooldown') captionSummary += ' Caption requests are waiting for YouTube' + (data.operation.caption_retry_after ? ' until ' + date(data.operation.caption_retry_after) : '') + '. Audio collection can continue independently.';
+        else if (data.operation.caption_state === 'paused') captionSummary += ' Caption backfill is paused.';
+        put('cc-captions-summary', captionSummary);
+      }
       put('cc-final-policy', data.operation.full_archive_requested ? 'Full archive follows the newest-50 tier.' : 'Final-round downloads are not enabled in this snapshot.');
       put('cc-local-storage', (data.storage.local_bytes / 1e9).toFixed(2) + ' / ' + number(data.storage.ceiling_bytes / 1e9) + ' GB');
       const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;

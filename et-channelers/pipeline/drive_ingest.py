@@ -899,6 +899,86 @@ def load_state(path):
 CAPTION_POLICY = "english-published-and-original-automatic-v1"
 
 
+class CaptionControl:
+    """Serialize timedtext requests and keep their rest window separate from audio."""
+    def __init__(self, records=(), min_interval=15.0):
+        self.request_lock = threading.Lock()
+        self.state_lock = threading.Lock()
+        self.min_interval, self.next_start = min_interval, 0.0
+        self.until, self.reason, self.stop = 0.0, "", None
+        for record in records:
+            kind = record.get("source_error_class", record.get("error_class", ""))
+            until = float(record.get("retry_not_before_epoch", 0))
+            if kind in HARD_BLOCKS and until > self.until:
+                self.until, self.reason = until, kind
+
+    def active(self):
+        with self.state_lock:
+            return self.until > time.time()
+
+    def block(self, kind):
+        with self.state_lock:
+            self.until, self.reason = max(self.until, time.time() + 86400), kind
+
+    @contextlib.contextmanager
+    def slot(self, stop):
+        while not self.request_lock.acquire(timeout=0.25):
+            if stop.is_set():
+                raise IngestError("stopped", "Caption request stopped while waiting for its slot")
+            if self.active():
+                raise IngestError("caption_cooldown", "Caption endpoint is resting; audio may continue")
+        try:
+            if self.active():
+                raise IngestError("caption_cooldown", "Caption endpoint is resting; audio may continue")
+            if stop.is_set():
+                raise IngestError("stopped", "Caption request stopped before starting")
+            self.stop = stop
+            try:
+                yield
+            except Exception as exc:
+                if getattr(exc, "kind", "") in HARD_BLOCKS:
+                    self.block(exc.kind)  # close the breaker before another worker gets its slot
+                raise
+        finally:
+            self.stop = None
+            self.request_lock.release()
+
+    def wait(self):
+        """Passed to fetch_track, including redirects: every request start is paced."""
+        if self.active():
+            raise IngestError("caption_cooldown", "Caption endpoint is resting; audio may continue")
+        pause = self.next_start - time.monotonic()
+        if pause > 0 and self.stop.wait(pause):
+            raise IngestError("stopped", "Caption request stopped during its pacing interval")
+        if self.stop.is_set():
+            raise IngestError("stopped", "Caption request stopped before its network call")
+        self.next_start = time.monotonic() + self.min_interval
+
+
+def caption_needs_source(record):
+    return not record.get("captured_at") or bool(record.get("unresolved")) or any(
+        not track.get("bundle") for track in record.get("tracks", []))
+
+
+def write_caption_backfill_summary(args, audio_state, caption_state, control):
+    pending, source = 0, 0
+    for video_id, record in audio_state.items():
+        if not receipt_complete(record, record, args.remote or ""):
+            continue
+        captions = caption_state.get(video_id, {})
+        if not caption_receipt_complete(captions, record, args.remote or ""):
+            pending += 1
+            source += int(caption_needs_source(captions))
+    summary = {"schema_version": 1, "policy": CAPTION_POLICY, "remote": args.remote or "",
+               "updated_at": utc_now(), "endpoint": "youtube_captions",
+               "pending_verified_audio_videos": pending, "pending_source_videos": source,
+               "retry_not_before_epoch": control.until if source and control.until > 0 else 0,
+               "error_class": control.reason if source and control.until > 0 else ""}
+    control_file(args.root / "sync" / "drive_caption_backfill_state.json",
+                 (json.dumps(summary) + "\n").encode("utf-8"), atomic=True)
+    return summary
+
+
 def caption_track_verified(track, row, remote):
     bundle = track.get("bundle") or {}
     identity = track.get("track_id", "")
@@ -959,10 +1039,11 @@ def caption_bundle(args, row, audio, spec, budget, limiter, stop, state, state_p
     key = f"caption:{row['video_id']}:{identity}"
     budget.reserve_item(key, raw, CHUNK)
     try:
-        with open(raw, "wb") as output:
-            measured = fetch_track(spec, output, budget=budget, limiter=limiter, stop=stop)
-            output.flush()
-            os.fsync(output.fileno())
+        with args.caption_control.slot(stop):
+            with open(raw, "wb") as output:
+                measured = fetch_track(spec, output, budget=budget, limiter=args.caption_control, stop=stop)
+                output.flush()
+                os.fsync(output.fileno())
         normalized = normalize_caption(raw.read_bytes(), spec["ext"])
         detail = dict(provenance(spec), captured_at=state["captured_at"], policy=CAPTION_POLICY,
                       raw={key: measured[key] for key in ("bytes", "md5", "sha256")},
@@ -998,6 +1079,9 @@ def prepare_captions(args, row, audio, budget, limiter, stop, info=None):
     if not hasattr(args, "caption_state"):
         args.caption_state = {}
     args.caption_state[row["video_id"]] = state
+    if not hasattr(args, "caption_control"):
+        args.caption_control = CaptionControl(args.caption_state.values())
+    control = args.caption_control
     if caption_receipt_complete(state, row, args.remote or ""):
         return state
     try:
@@ -1026,6 +1110,8 @@ def prepare_captions(args, row, audio, budget, limiter, stop, info=None):
             journal(state_path, state)
             return state
         if info is None:
+            if control.active():
+                raise IngestError("caption_cooldown", "Caption backfill waits for its endpoint rest period")
             if stop.is_set() or getattr(args, "youtube_blocked", False):
                 raise IngestError("youtube_cooldown", "Caption discovery waits for the source rest period")
             limiter.wait()
@@ -1047,6 +1133,8 @@ def prepare_captions(args, row, audio, budget, limiter, stop, info=None):
         for spec in selected["tracks"]:
             if old[spec["track_id"]].get("bundle"):
                 continue
+            if control.active():
+                raise IngestError("caption_cooldown", "Caption endpoint is resting; audio may continue")
             if stop.is_set() or getattr(args, "youtube_blocked", False):
                 raise IngestError("stopped", "Caption fetch stopped before another request")
             caption_bundle(args, row, audio, spec, budget, limiter, stop, state, state_path)
@@ -1057,9 +1145,13 @@ def prepare_captions(args, row, audio, budget, limiter, stop, info=None):
     except (IngestError, CaptionError) as exc:
         state.update(status="pending", error_class=exc.kind, error=str(exc), updated_at=utc_now())
         if exc.kind in HARD_BLOCKS:
+            if not control.active():
+                control.block(exc.kind)
             state["source_error_class"] = exc.kind
-            state["retry_not_before_epoch"] = time.time() + 86400
-            stop.set()
+            state["retry_not_before_epoch"] = control.until
+        elif exc.kind == "caption_cooldown":
+            state["source_error_class"] = control.reason
+            state["retry_not_before_epoch"] = control.until
         print(f"{row['video_id']}: captions: {exc.kind}", file=sys.stderr, flush=True)
     journal(state_path, state)
     return state
@@ -1260,7 +1352,8 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
         return "deleted"
     except IngestError as exc:
         # Preserve completion evidence alongside an upload failure for restart.
-        outcome = {"deferred_storage": "deferred_storage", "live": "deferred_live", "stopped": "paused"}.get(exc.kind, "error")
+        outcome = {"deferred_storage": "deferred_storage", "live": "deferred_live",
+                   "no_formats": "deferred_format", "stopped": "paused"}.get(exc.kind, "error")
         if exc.kind == "unavailable" and not rec.get("sha256") and not rec.get("metadata"):
             outcome = "unavailable"
         rec.update(status=outcome, error_class=exc.kind, error=str(exc), updated_at=utc_now())
@@ -1268,7 +1361,7 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
             rec["source_error_class"] = exc.kind
             rec["retry_not_before_epoch"] = time.time() + 86400
         journal(state_path, rec)
-        if exc.kind not in {"unavailable", "login_required", "deferred_storage", "live", "unsupported_format"}:
+        if exc.kind not in {"unavailable", "login_required", "deferred_storage", "live", "unsupported_format", "no_formats"}:
             stop.set()  # One block or Drive fault stops new work immediately.
         print(f"{row['video_id']}: {exc.kind}: {exc}", file=sys.stderr, flush=True)
         return IngestResult(row, rec, status=outcome) if stage_only else outcome
@@ -1387,13 +1480,14 @@ def run(args, rows):
         state_path = root / "sync" / "drive_ingest_manifest.jsonl"
         state = load_state(state_path)
         args.caption_state = load_state(root / "sync" / "drive_caption_manifest.jsonl")
+        args.caption_control = CaptionControl(args.caption_state.values())
         youtube_blocked = any(float(rec.get("retry_not_before_epoch", 0)) > time.time()
-                              for rec in [*state.values(), *args.caption_state.values()])
+                              for rec in state.values())
         args.youtube_blocked = youtube_blocked
         drive = None if args.download_only else Rclone(args.rclone, args.rclone_config, cooldown_path=cooldown_path)
         if drive:
             drive.preflight(args.remote)  # prove connection before any media download
-        todo = []
+        todo, caption_waiting_rows = [], []
         for row in rows:
             rec = state.get(row["video_id"], {})
             if terminal_unavailable(rec):
@@ -1407,6 +1501,13 @@ def run(args, rows):
                 raise IngestError("drive_destination", "Receipt belongs to a different remote; use the original destination")
             if receipt_complete(rec, row, args.remote or "") and captions_done:
                 continue
+            if receipt_complete(rec, row, args.remote or "") and args.caption_control.active():
+                cap = args.caption_state.get(row["video_id"], {})
+                has_ready = any(track.get("bundle") and track.get("status") != "deleted"
+                                for track in cap.get("tracks", []))
+                if not has_ready:
+                    caption_waiting_rows.append(row)
+                    continue  # do not extract metadata solely for captions during its rest window
             if not getattr(args, "collect_metadata", True) and rec.get("status") == "verified" and not local_path(root, rec["path"]).exists():
                 if drive:
                     verify_remote(drive.stat(rec["remote"]), rec)
@@ -1431,8 +1532,7 @@ def run(args, rows):
             if not getattr(args, "collect_captions", False):
                 return False
             cap = args.caption_state.get(row["video_id"], {})
-            return not cap.get("captured_at") or bool(cap.get("unresolved")) or any(
-                not track.get("bundle") for track in cap.get("tracks", []))
+            return caption_needs_source(cap)
 
         cooldown_waiting = youtube_blocked and any(not complete_local(row) or captions_need_source(row) for row in todo)
         if youtube_blocked:
@@ -1446,18 +1546,36 @@ def run(args, rows):
         source = collections.deque(todo)
         active_channels = set()
         deferred_rows, deferred_ids, retried_storage = [], set(), False
-        deferred_live_rows, retried_live = [], False
+        deferred_source_rows, retried_source = [], False
+        retried_captions = False
         batch_items = getattr(args, "upload_batch_items", 8)
         batch_seconds = getattr(args, "upload_batch_seconds", 10)
         ready_limit = getattr(args, "ready_items", 16)
         upload_future, uploading, drive_failed, pressure_paused = None, [], False, False
+        audio_progress = False
+        format_failure_streak = 0
 
         def observe(row, result):
+            nonlocal audio_progress, format_failure_streak
             outcome = result.status if isinstance(result, IngestResult) else result
+            if outcome in {"deleted", "downloaded"} and not (
+                    isinstance(result, IngestResult) and result.caption_only):
+                audio_progress = True
+            if outcome in {"ready", "deleted", "downloaded"} and not (
+                    isinstance(result, IngestResult) and result.caption_only):
+                format_failure_streak = 0
+            elif outcome == "deferred_format":
+                format_failure_streak += 1
+                if format_failure_streak >= 3:
+                    stop.set()
+                    print("Three format-selection failures without audio progress; pending items retained for tool review",
+                          file=sys.stderr, flush=True)
             if isinstance(result, IngestResult):
                 state[row["video_id"]] = result.record
                 if result.captions:
                     args.caption_state[row["video_id"]] = result.captions
+                    if result.captions.get("retry_not_before_epoch", 0) and caption_needs_source(result.captions):
+                        caption_waiting_rows.append(row)
             if outcome == "ready":
                 ready.append((time.monotonic(), result))
             else:
@@ -1466,8 +1584,8 @@ def run(args, rows):
                     deferred_ids.add(row["video_id"])
                     if outcome == "deferred_storage" and not retried_storage:
                         deferred_rows.append(row)
-                    elif outcome == "deferred_live" and not retried_live:
-                        deferred_live_rows.append(row)
+                    elif outcome in {"deferred_live", "deferred_format"} and not retried_source:
+                        deferred_source_rows.append(row)
                 elif outcome in {"deleted", "downloaded", "unavailable"}:
                     deferred_ids.discard(row["video_id"])
             print(json.dumps({"video_id": row["video_id"], "status": outcome,
@@ -1505,12 +1623,21 @@ def run(args, rows):
                         deferred_rows.clear()
                         retried_storage = True
                         continue
-                    if not stop.is_set() and not source and not ready and deferred_live_rows and not retried_live and (
-                            counts["deleted"] or counts["downloaded"]) and not counts["error"] and not counts["paused"]:
+                    if not stop.is_set() and not source and not ready and deferred_source_rows and not retried_source and (
+                            audio_progress) and not counts["error"] and not counts["paused"]:
                         # One late revisit after useful stage work, never an immediate polling loop.
-                        source.extend(deferred_live_rows)
-                        deferred_live_rows.clear()
-                        retried_live = True
+                        source.extend(deferred_source_rows)
+                        deferred_source_rows.clear()
+                        retried_source = True
+                        continue
+                    if (not stop.is_set() and not source and not ready and caption_waiting_rows and
+                            not retried_captions and not args.caption_control.active() and
+                            audio_progress and not counts["error"]):
+                        # One revisit after useful audio work if the endpoint window elapsed;
+                        # a still-active window is scheduled separately, never waited out here.
+                        source.extend({row["video_id"]: row for row in caption_waiting_rows}.values())
+                        caption_waiting_rows.clear()
+                        retried_captions = True
                         continue
                     break
                 done, _ = cf.wait(waiting, timeout=0.25, return_when=cf.FIRST_COMPLETED)
@@ -1540,13 +1667,18 @@ def run(args, rows):
                     observe(row, result)
         unfinished = len(source) + len(ready)
         source_cooldown = any(float(rec.get("retry_not_before_epoch", 0)) > time.time()
-                              for rec in [*state.values(), *args.caption_state.values()])
+                              for rec in state.values())
         caption_counts = collections.Counter(args.caption_state.get(row["video_id"], {}).get("status", "unknown")
                                              for row in rows) if getattr(args, "collect_captions", False) else {}
+        caption_summary = write_caption_backfill_summary(args, state, args.caption_state, args.caption_control) \
+            if getattr(args, "collect_captions", False) else {}
         print(json.dumps({"outcomes": counts, "local_bytes": tree_bytes(root),
                           "stopped": stop.is_set(), "youtube_cooldown": source_cooldown,
                           "deferred_items": len(deferred_ids), "pending_items": unfinished,
-                          "storage_backpressure": pressure_paused, "captions": caption_counts}), flush=True)
+                          "storage_backpressure": pressure_paused, "captions": caption_counts,
+                          "caption_deferred": caption_summary.get("pending_verified_audio_videos", 0),
+                          "consecutive_format_failures": format_failure_streak,
+                          "caption_retry_not_before_epoch": caption_summary.get("retry_not_before_epoch", 0)}), flush=True)
         if stop.requested:
             return 130
         if not args.download_only and read_drive_cooldown(cooldown_path):

@@ -69,7 +69,8 @@ Captions use the separate **Subs** proof-of-origin context. Successful audio dow
 does not establish caption access. The [yt-dlp PO-token guide](https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide)
 describes this distinction; missing-token warnings can accompany omitted tracks.
 Treat `blocked`, `rate_limited`, `token_required`, `no_requested_language` and confirmed
-`no_captions` as distinct outcomes. An empty response or empty track list with warnings
+`no_captions` as distinct outcomes. An empty response, unusable caption text
+(`caption_empty`), or an empty track list with access warnings remains pending; it
 is not evidence that captions do not exist.
 
 The [transcript API issue 592](https://github.com/jdepoix/youtube-transcript-api/issues/592)
@@ -90,13 +91,32 @@ install or activate them automatically in response to a refusal. Existing projec
 source-access controls and cooldowns still apply; this research does not authorize
 proxy rotation, cookie harvesting, alternate-client retries or access bypasses.
 
-Start with one caption worker sharing source pacing with audio ingestion. Retry
-transient network/5xx failures sparingly; honor server retry delays and stop/cool down
-on systemic 403/429 responses. Preserve successful tracks when another fails. Reuse
-durable receipts so a resume does not redownload verified tracks. Keep caption
-completion separate from audio-pair completion, upload exact files with existing
-size/MD5 verification, and delete local caption files only after durable Drive proof.
-All local artifacts count toward the same private-root storage budget.
+The caption endpoint has its own shared request control: **one request at a time,
+with starts at least 15 seconds apart**, including redirects. The slot remains held
+while the response body is read, so parallel audio workers cannot multiply caption
+concurrency. A caption HTTP 403/429 or other classified hard refusal closes this
+caption lane for 24 hours. `sync/drive_caption_manifest.jsonl` retains the source
+error and `retry_not_before_epoch`; restarting does not clear the deadline.
+
+During that window, audio downloads and Drive uploads continue under their own
+controls. Already prepared caption ZIPs can also upload and verify. New audio can
+reuse its metadata for the caption inventory, but unfinished caption work remains
+explicitly pending. Older caption-only backfill does not request fresh metadata or
+caption bodies before the deadline. The caption refusal does not set the global
+audio stop or create an audio-source cooldown.
+
+After audio work, the runner may revisit pending captions if the deadline has
+elapsed. Otherwise `sync/drive_caption_backfill_state.json` records whole-journal
+pending counts and the retry deadline. The supervisor can schedule a bounded
+post-deadline backfill using existing audio receipts. Missing deadlines or unknown
+errors remain `caption_backfill_pending` instead of an automatic retry loop; STOP
+and attempt limits still apply. An elapsed deadline permits a retry, not a claim
+that caption access has recovered.
+
+Preserve successful tracks when another fails and reuse durable receipts on resume.
+Caption completion remains separate from audio-pair completion. Upload exact files
+with existing size/MD5 verification, and delete local caption files only after
+durable Drive proof. All local artifacts count toward the same private-root budget.
 
 ## Existing code and stale examples
 

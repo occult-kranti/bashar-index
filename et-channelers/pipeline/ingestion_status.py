@@ -77,6 +77,13 @@ def latest_records(path):
     return records
 
 
+def source_deadline(records):
+    return max((rec.get('retry_not_before_epoch', 0) for rec in records
+                if (rec.get('source_error_class') or rec.get('error_class')) in HARD_BLOCKS
+                and type(rec.get('retry_not_before_epoch')) in (int, float)
+                and 0 < rec['retry_not_before_epoch'] < 253402300799), default=0)
+
+
 def snapshot(root, now=None, remote=DEFAULT_REMOTE):
     """Allowlisted public values only; no private strings are copied to the result."""
     now = dt.datetime.now(dt.timezone.utc).timestamp() if now is None else now
@@ -110,10 +117,8 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE):
     until = cooldown.get("until_epoch")
     until = float(until) if isinstance(until, (int, float)) and 0 < until < 253402300799 else None
     drive_until = until or 0
-    source_until = max((rec.get('retry_not_before_epoch', 0) for rec in [*latest.values(), *captions.values()]
-                        if (rec.get('source_error_class') or rec.get('error_class')) in HARD_BLOCKS
-                        and type(rec.get('retry_not_before_epoch')) in (int, float)
-                        and 0 < rec['retry_not_before_epoch'] < 253402300799), default=0)
+    source_until = source_deadline(latest.values())
+    caption_until = source_deadline(captions.values())
     until = max(until or 0, source_until) or None
     supervisor = read_object(root / "sync" / "drive_ingest_resume_state.json")
     configured = supervisor.get("schema_version") == 2
@@ -123,7 +128,14 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE):
     ceiling = supervisor.get('private_root_ceiling_bytes') if configured else None
     ceiling = ceiling if type(ceiling) is int and 1_000_000_000 <= ceiling <= 17_000_000_000 else 17_000_000_000
     retry = supervisor.get("until_epoch") if configured else None
-    if type(retry) in (int, float) and 0 < retry < 253402300799:
+    caption_wait = configured and (supervisor.get('await_caption_backfill') is True or
+        supervisor.get('state') in {'waiting_for_caption_cooldown', 'caption_backfill_retry_budget_exhausted'})
+    legacy_source = supervisor.get('source_until_epoch') if configured else None
+    legacy_caption_wait = (configured and supervisor.get('cooldown_scope_version') != 1
+        and type(legacy_source) in (int, float) and type(retry) in (int, float)
+        and caption_until > now and abs(legacy_source - caption_until) < 0.001
+        and abs(retry - legacy_source) <= 1.001)
+    if type(retry) in (int, float) and 0 < retry < 253402300799 and not caption_wait and not legacy_caption_wait:
         until = max(until or 0, retry)
     provider = 'both' if source_until > now and drive_until > now else \
         'youtube' if source_until > now else 'drive' if drive_until > now else None
@@ -135,6 +147,10 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE):
         "stopped", "retry_budget_exhausted", "stopped_after_nonquota_result"}
     state = "paused" if (root / "sync" / "STOP_DRIVE_INGEST").exists() else \
         "paused" if halted else "cooldown" if until and until > now else "ready" if latest or captions else "unknown"
+    caption_state = 'paused' if (root / 'sync' / 'STOP_DRIVE_INGEST').exists() or (
+        configured and supervisor.get('state') == 'caption_backfill_retry_budget_exhausted') else \
+        'cooldown' if caption_until > now else 'pending' if caption_pending else \
+        'complete' if captions or verified else 'unknown'
     local_bytes = 0
     for base, dirs, files in os.walk(root, followlinks=False):
         dirs[:] = [name for name in dirs if not (Path(base) / name).is_symlink()]
@@ -150,7 +166,8 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE):
     return {"schema_version": 1, "generated_at": stamp(now), "scope": "local_youtube_collection",
             "operation": {"state": state, "retry_after": stamp(until) if until else None,
                           "workers": workers, "full_archive_requested": archive_all,
-                          "cooldown_provider": provider},
+                          "cooldown_provider": provider, "caption_state": caption_state,
+                          "caption_retry_after": stamp(caption_until) if caption_until else None},
             "counts": {"verified_pairs": len(verified), "audio_downloaded": len(audio),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),

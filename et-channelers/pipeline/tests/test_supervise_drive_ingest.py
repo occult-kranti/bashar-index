@@ -60,6 +60,13 @@ class SupervisorTests(unittest.TestCase):
     def write_state(self, value):
         (self.sync / "drive_ingest_resume_state.json").write_text(json.dumps(value), encoding="utf-8")
 
+    def write_caption_summary(self, deadline=0, pending=1, error_class='rate_limited'):
+        value = {'schema_version':1, 'policy':'english-published-and-original-automatic-v1',
+                 'remote':'etdrive:04 Audio', 'updated_at':'2026-11-16T00:00:00Z',
+                 'pending_verified_audio_videos':pending, 'pending_source_videos':pending,
+                 'retry_not_before_epoch':deadline, 'error_class':error_class}
+        (self.sync / 'drive_caption_backfill_state.json').write_text(json.dumps(value), encoding='utf-8')
+
     def waiting_process(self, *extra, state_name="waiting_for_drive_cooldown"):
         process = subprocess.Popen(self.command(*extra), stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                    text=True)
@@ -71,7 +78,8 @@ class SupervisorTests(unittest.TestCase):
                 self.fail(f"Supervisor exited before waiting: {stdout} {stderr}")
             if (self.sync / "drive_ingest_resume_state.json").exists():
                 try:
-                    if self.state().get("state") == state_name:
+                    current = self.state()
+                    if current.get("state") == state_name and current.get("supervisor_pid") == process.pid:
                         return process
                 except (OSError, ValueError):
                     pass  # Windows can briefly deny a read during atomic replacement.
@@ -197,7 +205,7 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(first.returncode, 130)
         self.assertEqual(len(self.calls()), 1)
 
-    def test_caption_cooldown_survives_resolved_audio_for_the_same_video(self):
+    def test_caption_cooldown_does_not_delay_audio_startup(self):
         now = time.time()
         video = 'same-video'
         (self.sync / 'drive_ingest_manifest.jsonl').write_text(
@@ -208,15 +216,12 @@ class SupervisorTests(unittest.TestCase):
             json.dumps({'video_id': video, 'status': 'pending', 'error_class': 'drive_rate_limited',
                         'source_error_class': 'rate_limited',
                         'retry_not_before_epoch': now + 30}) + '\n', encoding='utf-8')
-        first = self.waiting_process(state_name='waiting_for_youtube_cooldown')
-        self.assertEqual(self.calls(), [])
-        self.assertEqual(self.state()['cooldown_provider'], 'youtube')
-        self.assertAlmostEqual(self.state()['source_until_epoch'], now + 30, places=5)
-        (self.sync / 'STOP_DRIVE_INGEST').touch()
-        first.communicate(timeout=6)
-        self.assertEqual(first.returncode, 130)
+        result = self.run_supervisor()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(self.calls()), 1)
+        self.assertEqual(self.state()['source_until_epoch'], 0)
 
-    def test_caption_only_exit3_is_retryable_and_caption_journal_is_cached(self):
+    def test_caption_only_block_does_not_make_an_audio_exit3_retryable(self):
         original = self.launcher.read_text(encoding='utf-8')
         self.launcher.write_text(original[:original.index('exit (')] +
             "$future=[DateTimeOffset]::UtcNow.ToUnixTimeSeconds()+30\n"
@@ -224,18 +229,109 @@ class SupervisorTests(unittest.TestCase):
             "exit 3\n", encoding='utf-8')
         (self.sync / 'drive_ingest_manifest.jsonl').write_text(
             json.dumps({'video_id': 'same-video', 'status': 'deleted'}) + '\n', encoding='utf-8')
-        first = self.waiting_process(state_name='waiting_for_youtube_cooldown')
+        result = self.run_supervisor()
+        self.assertEqual(result.returncode, 3, result.stderr)
         self.assertEqual(len(self.calls()), 1)
-        self.assertEqual(self.state()['exit_code'], 3)
+        self.assertEqual(self.state()['state'], 'stopped_after_nonquota_result')
+
+    def test_legacy_caption_global_wait_migrates_without_erasing_a_real_drive_wait(self):
+        deadline = time.time() + 1000
         (self.sync / 'drive_caption_manifest.jsonl').write_text(json.dumps({
-            'video_id': 'same-video', 'error_class': 'forbidden',
-            'retry_not_before_epoch': 'invalid'}) + '\n', encoding='utf-8')
-        time.sleep(2.5)
-        self.assertIsNone(first.poll())
+            'video_id':'same-video','source_error_class':'rate_limited',
+            'retry_not_before_epoch':deadline})+'\n', encoding='utf-8')
+        prior = {'schema_version':2,'state':'stopped','attempts':0,'until_epoch':deadline,
+                 'source_until_epoch':deadline,'exit_code':130,'cooldown_provider':'youtube'}
+        self.write_state(prior)
+        result = self.run_supervisor()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(self.calls()), 1)
+        self.assertEqual(self.state()['cooldown_scope_version'], 1)
+        self.write_state(prior)
+        (self.root / 'child-calls.txt').unlink()
+        drive_deadline = time.time() + 30
+        (self.sync / 'drive_ingest_cooldown.json').write_text(
+            json.dumps({'until_epoch':drive_deadline}), encoding='utf-8')
+        first = self.waiting_process()
+        self.assertEqual(self.calls(), [])
+        self.assertAlmostEqual(self.state()['until_epoch'], drive_deadline, places=5)
         (self.sync / 'STOP_DRIVE_INGEST').touch()
         first.communicate(timeout=6)
         self.assertEqual(first.returncode, 130)
+
+    def test_successful_audio_schedules_caption_backfill_after_its_deadline(self):
+        deadline = time.time() + 5
+        self.write_caption_summary(deadline)
+        original = self.launcher.read_text(encoding='utf-8')
+        self.launcher.write_text(original[:original.index('exit (')] +
+            "$calls=@(Get-Content -LiteralPath (Join-Path $PrivateRoot 'child-calls.txt')).Count\n"
+            "if ($calls -gt 1) {\n"
+            "  [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds() | Set-Content -LiteralPath (Join-Path $PrivateRoot 'backfill-started-ms.txt')\n"
+            "  $path=Join-Path $PrivateRoot 'sync/drive_caption_backfill_state.json'\n"
+            "  $state=Get-Content -LiteralPath $path -Raw | ConvertFrom-Json\n"
+            "  $state.pending_verified_audio_videos=0; $state.pending_source_videos=0; $state.retry_not_before_epoch=0\n"
+            "  $state | ConvertTo-Json | Set-Content -LiteralPath $path -Encoding UTF8\n"
+            "}\nexit 0\n", encoding='utf-8')
+        first = self.waiting_process(state_name='waiting_for_caption_cooldown')
+        self.assertEqual(len(self.calls()), 1, 'Audio must run before the caption wait')
+        self.assertTrue(self.state()['await_caption_backfill'])
+        first.communicate(timeout=12)
+        self.assertEqual(first.returncode, 0)
+        self.assertEqual(len(self.calls()), 2)
+        started = int((self.root / 'backfill-started-ms.txt').read_text(encoding='utf-8-sig'))
+        self.assertGreaterEqual(started, deadline * 1000)
+        self.assertEqual(self.state()['state'], 'stages_complete')
+
+    def test_caption_backfill_wait_survives_restart_and_stop_without_audio_relaunch(self):
+        deadline = time.time() + 1000
+        self.write_caption_summary(deadline)
+        self.write_state({'schema_version':2,'state':'waiting_for_caption_cooldown','attempts':1,
+                          'until_epoch':deadline,'exit_code':0,'await_caption_backfill':True,
+                          'cooldown_provider':'captions'})
+        first = self.waiting_process(state_name='waiting_for_caption_cooldown')
+        self.assertEqual(self.calls(), [])
+        self.assertTrue(self.state()['await_caption_backfill'])
+        self.assertAlmostEqual(self.state()['caption_until_epoch'], deadline, places=5)
+        (self.sync / 'STOP_DRIVE_INGEST').touch()
+        first.communicate(timeout=6)
+        self.assertEqual(first.returncode, 130)
+        self.assertEqual(self.calls(), [])
+
+    def test_caption_deadline_expiring_during_audio_gets_only_one_immediate_revisit(self):
+        self.write_caption_summary(time.time()+1000)
+        original = self.launcher.read_text(encoding='utf-8')
+        self.launcher.write_text(original[:original.index('exit (')] +
+            "$calls=@(Get-Content -LiteralPath (Join-Path $PrivateRoot 'child-calls.txt')).Count\n"
+            "if ($calls -eq 1) {\n"
+            "  $path=Join-Path $PrivateRoot 'sync/drive_caption_backfill_state.json'\n"
+            "  $state=Get-Content -LiteralPath $path -Raw | ConvertFrom-Json\n"
+            "  $state.retry_not_before_epoch=([DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()/1000.0)+0.2\n"
+            "  $state | ConvertTo-Json | Set-Content -LiteralPath $path -Encoding UTF8\n"
+            "  Start-Sleep -Milliseconds 1000\n"
+            "}\nexit 0\n", encoding='utf-8')
+        result = self.run_supervisor()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(self.calls()), 2, 'Known elapsed cooldown gets one revisit, not a third pass')
+        self.assertEqual(self.state()['attempts'], 2)
+        self.assertEqual(self.state()['state'], 'caption_backfill_pending')
+
+    def test_caption_backfill_is_bounded_and_unknown_delays_do_not_spin(self):
+        self.write_caption_summary(time.time()+1000)
+        result = self.run_supervisor('-MaxAttempts','1')
+        self.assertEqual(result.returncode, 3, result.stderr)
+        self.assertEqual(self.state()['state'], 'caption_backfill_retry_budget_exhausted')
         self.assertEqual(len(self.calls()), 1)
+        again = self.run_supervisor('-MaxAttempts','1')
+        self.assertEqual(again.returncode, 3, again.stderr)
+        self.assertEqual(len(self.calls()), 1)
+        for error_class, deadline in [('rate_limited',0),('network',time.time()+1000)]:
+            with self.subTest(error_class=error_class):
+                (self.sync / 'drive_ingest_resume_state.json').unlink()
+                (self.root / 'child-calls.txt').unlink()
+                self.write_caption_summary(deadline, error_class=error_class)
+                result = self.run_supervisor()
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(self.state()['state'], 'caption_backfill_pending')
+                self.assertEqual(len(self.calls()), 1)
 
     def test_non_hard_block_deadlines_do_not_make_exit3_retryable(self):
         for error_class, delay in (('login_required', 1000), ('live', 1000),

@@ -250,7 +250,11 @@ One ZIP per track reduces Drive object and verification requests. ZIPs share the
 accounting, upload coordinator and checksum-before-delete rules as audio. The separate
 `sync/drive_caption_manifest.jsonl` retains partial progress and verified Drive proofs. Caption
 failures never invalidate verified audio receipts; completed audio and caption bundles can drain
-to Drive while new source requests are paused.
+to Drive independently. Caption fetches use one shared request slot and at least 15 seconds
+between starts. A caption 403 or 429 establishes a separate persisted 24-hour caption cooldown;
+audio acquisition and Drive uploads continue when their own endpoints are available. Previously
+verified audio is not re-extracted for captions during that window. New audio metadata can still
+record pending caption tracks for the later backfill.
 
 Only a complete source inventory with no requested English track counts as `none`. Missing-token
 warnings, missing inventories, empty responses and access errors remain pending. A 64 MiB raw-track
@@ -279,9 +283,14 @@ the versioned supervisor in the checkout named by `-RepositoryRoot`. It does not
 copy of the retry behavior.
 
 Drive quota exit code `75` receives an exponential 10, 20, 40, then 60 minute backoff. Exit `3`
-can retry only when the saved journal confirms a future YouTube hard-block deadline (403, rate limit
-or bot check). The next attempt waits for the latest applicable source, Drive or backoff deadline;
-no source request is sent during its 24-hour rest period. Other extraction, login, permission, storage
+can retry only when the saved audio journal confirms a future YouTube hard-block deadline (403, rate limit
+or bot check). The next audio attempt waits for the latest applicable audio, Drive or backoff deadline.
+Caption cooldowns are separate: after an otherwise successful run, a validated pending-caption
+summary can schedule a backfill after its own deadline. The summary is saved atomically at
+`sync/drive_caption_backfill_state.json`. A recognized caption deadline that expires during the
+successful archive run permits one immediate revisit of earlier tiers. An unchanged older deadline
+or pending backfill without a recognized deadline does not trigger a retry loop. No request is sent to a blocked endpoint during its
+24-hour rest period. Other extraction, login, permission, storage
 and premiere results do not trigger automatic retries. The default budget is three launches
 (maximum four), persisted before each child starts, so restarting the helper does not restore spent attempts. The stop marker is checked at least every two seconds
 while waiting; the running collector observes that same marker.
@@ -310,7 +319,10 @@ sets no arbitrary per-item size or duration cutoff (`--max-item-mb 0`). An item 
 fit the storage budget remains deferred, rather than being counted as completed or dropped from
 the index. Each download worker runs at up to 2 MiB/s using 1 MiB HTTP chunks, and metadata
 request starts are spaced by at least 5 seconds across all workers. Available channels take turns
-so one large channel does not occupy every worker. A 3 GB free-disk floor also protects space for
+so one large channel does not occupy every worker. Upcoming recordings and isolated missing-format
+results stay pending while other channels continue, with one later revisit after useful audio work.
+Three missing-format outcomes without intervening audio progress stop new source work for review,
+so a broken player/runtime cannot churn through the entire queue. A 3 GB free-disk floor also protects space for
 other applications. Run this collector
 alone in its private root; a separate application writing there is outside its storage guarantee.
 One separate upload coordinator overlaps acquisition. The default is two upload transfers, a

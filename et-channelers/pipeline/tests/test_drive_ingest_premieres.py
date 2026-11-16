@@ -52,7 +52,7 @@ class PremiereTests(unittest.TestCase):
             with self.subTest(message=message):
                 self.assertEqual(self.classify(message), expected)
 
-    def premiere_run(self, available_on_revisit):
+    def premiere_run(self, available_on_revisit, failure_kind='live'):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             self.addCleanup(lambda: ingest._ROOT_BUDGETS.pop(root.resolve(), None))
@@ -72,7 +72,9 @@ class PremiereTests(unittest.TestCase):
                 selections.append(command[-1])
                 if command[-1] == self.row['url']:
                     if not available_on_revisit or selections.count(self.row['url']) == 1:
-                        return SimpleNamespace(returncode=1, stdout='', stderr=self.countdown)
+                        error = self.countdown if failure_kind == 'live' else (
+                            'ERROR: [youtube] DmeE1ogs9s8: Requested format is not available')
+                        return SimpleNamespace(returncode=1, stdout='', stderr=error)
                     return SimpleNamespace(returncode=0, stdout=json.dumps(dict(info, id=self.row['video_id'])), stderr='')
                 return SimpleNamespace(returncode=0, stdout=json.dumps(info), stderr='')
 
@@ -101,8 +103,8 @@ class PremiereTests(unittest.TestCase):
                 self.assertTrue(ingest.receipt_complete(pending, self.row, args.remote))
             else:
                 self.assertEqual(result, 3, 'the pending premiere must keep the phase gate closed')
-                self.assertEqual(pending['status'], 'deferred_live')
-                self.assertEqual(pending['error_class'], 'live')
+                self.assertEqual(pending['status'], 'deferred_live' if failure_kind == 'live' else 'deferred_format')
+                self.assertEqual(pending['error_class'], failure_kind)
                 self.assertFalse(ingest.receipt_complete(pending, self.row, args.remote))
             self.assertNotIn('retry_not_before_epoch', pending)
             self.assertFalse(ingest.terminal_unavailable(pending))
@@ -116,6 +118,17 @@ class PremiereTests(unittest.TestCase):
 
     def test_premiere_available_after_other_channel_finishes_is_archived(self):
         self.premiere_run(available_on_revisit=True)
+
+    def test_no_formats_defers_one_item_while_other_channel_archives(self):
+        self.premiere_run(available_on_revisit=False, failure_kind='no_formats')
+
+    def test_format_available_after_other_audio_finishes_is_archived(self):
+        self.premiere_run(available_on_revisit=True, failure_kind='no_formats')
+
+    def test_no_formats_never_overrides_access_blocks(self):
+        for error, expected in [('HTTP Error 403: Forbidden', 'forbidden'),
+                                ('HTTP Error 429: Too Many Requests', 'rate_limited')]:
+            self.assertEqual(self.classify(error + '\nRequested format is not available'), expected)
 
 
 if __name__ == '__main__':
