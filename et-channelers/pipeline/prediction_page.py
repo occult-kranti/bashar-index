@@ -478,7 +478,10 @@ def guard(records, catalogue, page, private_rows, people=None, questioners=(), c
 
 
 # ---------------------------------------------------------------- the page
-HASH_KEYS = ("p", "k", "f", "s", "d", "e", "b", "q", "x", "w", "g", "v", "o", "i")
+HASH_KEYS = ("p", "k", "f", "s", "d", "e", "b", "a", "y", "q", "x", "w", "g", "v", "o", "i", "l", "fs")
+AHEAD_ORDER = ("0", "1", "3", "5", "10", "20", "none")
+AHEAD_LABELS = {"0": "same year or earlier", "1": "1 to 2 years", "3": "3 to 4 years", "5": "5 to 9 years", "10": "10 to 19 years",
+                "20": "20 years and more", "none": "date said not known"}
 BASIS_KEYS = (("published", "catalogue date"), ("title", "from the title"), ("address", "from the page address"),
               ("none", "not known"))
 CERT_LABELS = {"strong": "strong wording", "plain": "plain", "hedged": "hedged", "conditional": "conditional"}
@@ -518,6 +521,15 @@ def basis_key(r):
 def said_decade(r):
     y = year_of(r.get("date_said"))
     return str(y // 10 * 10) if y else "none"
+
+
+def ahead_band(r):
+    """The horizon band: years from the year said to the last target year (the JS mirrors the thresholds)."""
+    y = year_of(r.get("date_said"))
+    if not y:
+        return "none"
+    a = end_year(r) - y
+    return "0" if a <= 0 else "1" if a <= 2 else "3" if a <= 4 else "5" if a <= 9 else "10" if a <= 19 else "20"
 
 
 def decade_rank(k):
@@ -582,7 +594,7 @@ def card_html(i, r):
     meta.append(f'<button type="button" class="loc needs-js" data-i="{i}" aria-label="show on the timeline">on the timeline</button>')
     return (f'<li class="st" id="s{i}" data-i="{i}" data-start="{start_year(r)}" data-end="{end_year(r)}" '
             f'data-person="{esc(r["person_id"])}" data-kind="{r["kind"]}" data-said="{said_decade(r)}" '
-            f'data-cert="{cert_of(r)}" data-basis="{basis_key(r)}">'
+            f'data-cert="{cert_of(r)}" data-basis="{basis_key(r)}" data-ahead="{ahead_band(r)}">'
             f'{mark_svg(r)}<div class="st-body">'
             f'<div class="st-head"><span class="badge num">{esc(window_label(r))}</span>'
             f'<span class="st-person">{esc(r["person_name"])}</span>'
@@ -685,9 +697,18 @@ def filters_html(records):
     said_chips = "".join(_chip("e", k, "date not known" if k == "none" else f"{k}s", said_counts[k]) for k in said_keys)
     basis_counts = collections.Counter(basis_key(r) for r in records)
     basis_chips = "".join(_chip("b", k, label, basis_counts[k]) for k, label in BASIS_KEYS if k in basis_counts)
+    ahead_counts = collections.Counter(ahead_band(r) for r in records)
+    ahead_chips = "".join(_chip("a", k, AHEAD_LABELS[k], ahead_counts[k]) for k in AHEAD_ORDER if k in ahead_counts)
+    starts, ends = sorted(start_year(r) for r in records), sorted(end_year(r) for r in records)
+    full0 = min(1920, (starts[0] if starts else 1920) // 10 * 10)          # as the JS computes FULL
+    full1 = max(AXIS_END, ends[-1] if ends else AXIS_END)
+    probe = (f'<details class="facet" data-facet="y"><summary><span class="fname">Expected for</span><span class="fsel"></span></summary>'
+             f'<div class="fpanel"><label for="probe-year">Statements whose target window covers the year</label>'
+             f'<div class="fbtns"><input type="number" id="probe-year" name="y" min="{full0}" max="{full1}" step="1" inputmode="numeric">'
+             f'<button type="button" id="probe-clear" class="btn">clear</button></div></div></details>')
     facets = (_facet("p", "People", people) + _facet("k", "Kind", kinds, False) + _facet("f", "Certainty", certs, False)
               + _facet("d", "Target decade", decade_chips) + _facet("e", "Decade said", said_chips)
-              + _facet("b", "Date basis", basis_chips))
+              + _facet("b", "Date basis", basis_chips) + _facet("a", "Years ahead", ahead_chips) + probe)
     return f"""
 <form id="toolbar" class="toolbar needs-js" autocomplete="off">
   <div class="trow trow-1">
@@ -701,10 +722,15 @@ def filters_html(records):
       <label><input type="radio" name="view" value="table"><span>Table</span></label>
     </fieldset>
     <button type="button" id="filters-toggle" class="btn" aria-expanded="false" aria-controls="facets">Filters <b id="filters-n"></b></button>
+    <button type="button" id="share" class="btn" title="copy a link to this view">Copy link</button>
+    <span id="share-status" class="sr-only" aria-live="polite"></span>
+    <input id="share-fallback" class="fallback" type="text" readonly hidden aria-label="link to this view">
+    <button type="button" id="fs-toggle" class="btn needs-d3" aria-pressed="false" aria-keyshortcuts="Shift+F" title="the timeline and the list fill the screen (Shift+F)">Full screen</button>
   </div>
-  <div class="trow trow-2" id="facets">{facets}</div>
+  <div class="trow trow-2" id="facets"><div class="sheet-head"><b id="facets-h">Filters</b><button type="button" id="facets-close" class="btn">Close</button></div>{facets}</div>
   <div class="trow trow-3">
     <p id="caveat-mini" title="Labelled candidates, not confirmed predictions: about 56% of windowed candidates are real predictions (95% interval about 47% to 65%).">Labelled candidates, not confirmed predictions: about 56% of windowed candidates are real predictions (95% interval about 47% to 65%). <a href="#caveat">Details</a></p>
+    <div id="caveat-more" class="caveat-more" hidden><p id="caveat-more-1"></p><p id="caveat-more-2"></p></div>
     <ul id="active" class="active" aria-label="active filters"></ul>
   </div>
 </form>"""
@@ -737,14 +763,14 @@ LIGHT_TOKENS = (
     "--surface:#ffffff;--surface-2:#f3f3f0;--accent:#1f5fb0;--focus:#4f46e5;--focus-halo:#fbfbfa;"
     "--series-source:#2b5fb3;--series-made:#b05a1a;--series-source-soft:#a9bfe6;--series-made-soft:#e3b89a;--flag:#8a8984;"
     "--band:#f4f4f1;--past:#ecece8;--grid:#e6e5e0;--grid-strong:#cfcec8;--stack:#e9e9e4;--stack-border:#8f8e89;"
-    "--brush:rgba(31,95,176,.18);--hot:#1f5fb0;--hist:#c9c8c2;--now:#5c5b57;--shadow-1:0 2px 8px rgba(0,0,0,.12);"
+    "--brush:rgba(31,95,176,.18);--hot:#1f5fb0;--hist:#c9c8c2;--now:#5c5b57;--scrim:rgba(0,0,0,.35);--shadow-1:0 2px 8px rgba(0,0,0,.12);"
     "--shadow-2:0 8px 24px rgba(0,0,0,.14);color-scheme:light")
 DARK_TOKENS = (
     "--bg:#17191d;--fg:#eceae4;--fg-muted:#b2b0a8;--fg-faint:#80828a;--border:#3a3d44;--border-strong:#555962;"
     "--surface:#1f2228;--surface-2:#1a1d22;--accent:#7fa8ee;--focus:#a5b4fc;--focus-halo:#17191d;"
     "--series-source:#4f86de;--series-made:#c97c30;--series-source-soft:#2c4a80;--series-made-soft:#7a4a1c;--flag:#8a8d94;"
     "--band:#1c1f24;--past:#23262c;--grid:#2b2e35;--grid-strong:#40444c;--stack:#2a2e35;--stack-border:#8a8e97;"
-    "--brush:rgba(127,168,238,.22);--hot:#7fa8ee;--hist:#3f434b;--now:#b2b0a8;--shadow-1:0 2px 10px rgba(0,0,0,.5);"
+    "--brush:rgba(127,168,238,.22);--hot:#7fa8ee;--hist:#3f434b;--now:#b2b0a8;--scrim:rgba(0,0,0,.6);--shadow-1:0 2px 10px rgba(0,0,0,.5);"
     "--shadow-2:0 8px 24px rgba(0,0,0,.6);color-scheme:dark")
 BASE_TOKENS = (
     "--r-sm:4px;--r-md:8px;--r-lg:12px;--r-pill:999px;--sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:24px;"
@@ -752,7 +778,8 @@ BASE_TOKENS = (
     "--fs-xl:1.35rem;--fs-2xl:clamp(1.75rem,1.2rem + 2vw,2.25rem);"
     "--font-ui:system-ui,-apple-system,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif;"
     "--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;"
-    "--font-quote:Georgia,\"Iowan Old Style\",\"Palatino Linotype\",Palatino,serif;--dur:160ms")
+    "--font-quote:Georgia,\"Iowan Old Style\",\"Palatino Linotype\",Palatino,serif;--dur:160ms;"
+    "--z-stage:50;--z-scrim:55;--z-sheet:60;--panel-w:26rem")
 
 CSS = ":root{" + LIGHT_TOKENS + "}\n:root{" + BASE_TOKENS + "}\n" + \
     '@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){' + DARK_TOKENS + "}}\n" + \
@@ -788,7 +815,7 @@ h3{font-size:var(--fs-lg);margin:0}
 .no-js .gtoggle::before{display:none}
 .btn,.more,.year,.tok,.edge,.wpreset,.zoomctl button,.fall,.fnone,.loc,.gonly,#download,#expand-all,#collapse-all,#empty button{font:inherit;font-size:var(--fs-sm);color:var(--fg);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-pill);padding:.2rem .7rem;cursor:pointer;line-height:1.4}
 .btn:hover,.more:hover,.year:hover,.tok:hover,.wpreset:hover,.zoomctl button:hover,.loc:hover,.gonly:hover{border-color:var(--border-strong);background:var(--surface-2)}
-.wpreset[aria-pressed="true"],.rowlabel[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
+.wpreset[aria-pressed="true"],.rowlabel[aria-pressed="true"],#leads-toggle[aria-pressed="true"],#list-toggle[aria-pressed="true"]{border-color:var(--fg);box-shadow:inset 0 0 0 1px var(--fg)}
 /* toolbar */
 .toolbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--border);margin:0 -16px;padding:.5rem 16px .4rem}
 @supports (backdrop-filter:blur(8px)) or (-webkit-backdrop-filter:blur(8px)){.toolbar{background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}}
@@ -804,7 +831,7 @@ h3{font-size:var(--fs-lg);margin:0}
 .seg input:checked+span{font-weight:600}
 .seg label:has(input:checked){background:var(--border)}
 .seg label:has(input:focus-visible){outline:2px solid var(--focus);outline-offset:-2px}
-.seg label:has(input:disabled){color:var(--fg-faint);cursor:not-allowed}
+.seg label:has(input:disabled){color:var(--fg-muted);cursor:not-allowed}
 #filters-toggle{display:none}
 #filters-n:empty{display:none}
 #filters-n{background:var(--fg);color:var(--bg);border-radius:var(--r-pill);padding:0 .45rem;font-size:var(--fs-2xs);margin-left:.2rem}
@@ -819,6 +846,8 @@ h3{font-size:var(--fs-lg);margin:0}
 .fpanel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:.5rem .6rem;margin-top:.3rem}
 .fbtns{display:flex;gap:.3rem;margin-bottom:.3rem}
 .fall,.fnone{font-size:var(--fs-xs);padding:.05rem .55rem}
+.fpanel>label{display:block;font-size:var(--fs-sm);margin-bottom:.3rem}
+#probe-year{font:inherit;font-size:var(--fs-sm);color:var(--fg);background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:.25rem .4rem;width:7rem}
 .chips{list-style:none;margin:0;padding:0;display:grid;gap:.1rem;max-height:50vh;overflow:auto}
 .chip-check{display:grid;grid-template-columns:1rem 1fr auto;align-items:center;gap:.15rem .45rem;padding:.2rem .35rem;border-radius:var(--r-sm);cursor:pointer;font-size:var(--fs-sm);position:relative}
 .chip-check:hover{background:var(--surface-2)}
@@ -829,7 +858,7 @@ h3{font-size:var(--fs-lg);margin:0}
 .chip-check:has(input:focus-visible){outline:2px solid var(--focus);outline-offset:1px}
 @supports not selector(:has(a)){.chip-check input:checked+.cname{font-weight:600}.chip-check input:checked+.cname::before{content:"✓ "}.chip-check:focus-within{outline:2px solid var(--focus);outline-offset:1px}}
 .ccount{color:var(--fg-muted);font-size:var(--fs-xs)}
-.chip-check[data-zero]{color:var(--fg-faint)}
+.chip-check[data-zero]{color:var(--fg-muted)}
 .pbtn-bar{grid-column:2/-1;height:3px;background:var(--surface-2);border-radius:2px;overflow:hidden}
 .pbar{display:block;height:100%;background:var(--hist)}
 #caveat-mini{margin:0;font-size:var(--fs-xs);color:var(--fg-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1 1 18rem}
@@ -901,6 +930,12 @@ select{font:inherit;font-size:var(--fs-sm);color:var(--fg);background:var(--surf
 .leader{stroke:var(--fg-muted);stroke-dasharray:1 2;stroke-width:1}
 .lead{stroke:var(--fg-muted);stroke-dasharray:3 3;fill:none}
 .lead-dot{fill:var(--surface);stroke:var(--fg-muted)}
+.lead-all{stroke:var(--fg-faint);stroke-width:1}
+.probe-line{stroke:var(--fg);stroke-width:1.5}
+.probe-label{fill:var(--fg);font-size:10px;font-weight:600;text-anchor:middle}
+.probe-pill{fill:var(--surface);stroke:var(--border-strong)}
+.probe-mini{stroke:var(--fg);stroke-width:1}
+.rubber{fill:var(--brush);stroke:var(--accent);stroke-width:1;pointer-events:none}
 .pill{fill:var(--stack);stroke:var(--stack-border);stroke-width:1}
 .pill.one-source{stroke:var(--series-source)}
 .pill.one-made{stroke:var(--series-made)}
@@ -915,7 +950,7 @@ select{font:inherit;font-size:var(--fs-sm);color:var(--fg);background:var(--surf
 #minimap{height:44px}
 .density rect{fill:var(--hist)}
 .density-vis rect{fill:var(--fg-muted)}
-.mini-axis text{fill:var(--fg-faint);font-size:9px;text-anchor:middle}
+.mini-axis text{fill:var(--fg-muted);font-size:9px;text-anchor:middle}
 .now-mini{stroke:var(--now);stroke-dasharray:2 2}
 .brush .selection{fill:var(--brush);stroke:var(--accent);stroke-width:1}
 .brush .overlay{cursor:crosshair}
@@ -925,7 +960,27 @@ select{font:inherit;font-size:var(--fs-sm);color:var(--fg);background:var(--surf
 .tip svg{width:10px;height:10px;overflow:visible;flex:none}
 .tip .tq{font-family:var(--font-quote);margin:.2rem 0}
 .tip .muted{font-size:var(--fs-xs)}
-.tip .hint{font-size:var(--fs-2xs);color:var(--fg-faint);margin-top:.2rem}
+.tip .hint{font-size:var(--fs-2xs);color:var(--fg-muted);margin-top:.2rem}
+.spot{margin:var(--sp-3) 0 0;border:1px solid var(--border);border-left:4px solid var(--flag);border-radius:var(--r-md);background:var(--surface);padding:.6rem .8rem}
+.spot[data-kind="source"]{border-left-color:var(--series-source)}
+.spot[data-kind="made"]{border-left-color:var(--series-made)}
+.spot-head{display:flex;justify-content:space-between;align-items:center;gap:.5rem}
+.spot-head h3{font-size:var(--fs-sm);font-weight:600;color:var(--fg-muted)}
+.spot-tools{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.4rem}
+.spot .st-head{margin-top:.3rem}
+.spot .st-person{display:inline}
+.spot .mk{vertical-align:-2px}
+.help{background:var(--surface);color:var(--fg);border:1px solid var(--border-strong);border-radius:var(--r-lg);padding:var(--sp-4) var(--sp-5);width:min(42rem,100% - 32px);max-height:min(90vh,100% - 32px);max-height:min(90dvh,100% - 32px);overflow:auto;box-shadow:var(--shadow-2)}
+.help::backdrop{background:var(--scrim,rgba(0,0,0,.35))}
+.help.help-fallback{position:fixed;top:5vh;left:50%;transform:translateX(-50%);z-index:var(--z-sheet)}
+.help h2{font-size:var(--fs-lg);margin:0 0 var(--sp-3)}
+.help h3{font-size:var(--fs-md);margin:var(--sp-4) 0 var(--sp-1)}
+.help p{font-size:var(--fs-sm);margin:.4rem 0}
+.keys{font-size:var(--fs-sm)}
+.keys th,.keys td{padding:.2rem .5rem;vertical-align:top;border-bottom:1px solid var(--border)}
+.keys th{position:static;box-shadow:none}
+.keys tbody tr{cursor:auto}
+kbd{font-family:var(--font-mono);font-size:.9em;border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:3px;padding:0 .3em;background:var(--surface-2)}
 #chart-help{font-size:var(--fs-xs);margin:.4rem 0 0}
 #chart-caption{font-size:var(--fs-sm)}
 /* table */
@@ -995,7 +1050,81 @@ blockquote.q{margin:.35rem 0 .35rem .45em;font-family:var(--font-quote);font-siz
 @media (min-width:48rem){.methods{display:grid;grid-template-columns:14rem 1fr;gap:.5rem 1.4rem}.methods dt{margin:0}}
 footer{margin:var(--sp-7) 0 var(--sp-6);color:var(--fg-muted);font-size:var(--fs-sm);border-top:1px solid var(--border);padding-top:var(--sp-4)}
 footer p{margin:.3rem 0}
+/* full screen: the stage (toolbar, timeline, statements) fills the viewport; outside it the stage has no box of its own */
+#stage{display:contents}
+.fs-only{display:none}
+.sheet-head{display:none}
+.caveat-more{flex:1 1 100%;font-size:var(--fs-xs);color:var(--fg-muted)}
+.caveat-more p{margin:.2rem 0}
+.check .short{display:none}
+.ch-main,.ch-more{display:flex;flex-wrap:wrap;gap:.4rem .8rem;align-items:center}
+.btn{min-height:36px}
+@media (pointer:coarse){.btn{min-height:40px}}
+.fallback{font:inherit;font-size:var(--fs-sm);width:100%;margin-top:.3rem;color:var(--fg);background:var(--surface-2);border:1px solid var(--border);border-radius:var(--r-sm);padding:.3rem .5rem}
+html.fs,html.fs body{overflow:hidden;overscroll-behavior:none}
+html.fs-fallback body{position:fixed;inset:0;width:100%}
+#stage.is-fs{display:grid;grid-template-rows:auto minmax(0,1fr);grid-template-columns:minmax(0,1fr);position:fixed;inset:0;z-index:var(--z-stage);background:var(--bg);height:100vh;height:100dvh;width:100%;padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0);overflow:hidden}
+#stage:fullscreen{background:var(--bg)}
+#stage.is-fs .fs-only{display:inline-flex;align-items:center}
+#stage.is-fs > #toolbar{grid-column:1/-1;position:static;margin:0;padding:4px 8px;max-height:none;overflow:visible;border-bottom:1px solid var(--border);background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}
+#stage.is-fs #filters-toggle{display:inline-flex;align-items:center}
+#stage.is-fs .trow-2{display:none}
+#stage.is-fs .trow-2.open{display:flex}
+#stage.is-fs #caveat-mini{white-space:normal;overflow:visible;text-overflow:clip;flex:1 1 100%;display:block}
+#stage.is-fs > #timeline-section{grid-column:1;grid-row:2;display:flex;flex-direction:column;min-height:0;padding:0 8px 4px}
+#stage.is-fs .card-head{display:block;margin:4px 0}
+#stage.is-fs .card-head h2{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#stage.is-fs .chart-head{display:flex;flex-direction:column;gap:.3rem}
+#stage.is-fs #legend{flex:none;margin:0 0 4px}
+#stage.is-fs #chartbox{flex:1 1 auto;min-height:0;margin:0;display:flex;flex-direction:column}
+#stage.is-fs #chart-axis-wrap{flex:none}
+#stage.is-fs #chart-scroll{flex:1 1 auto;max-height:none;min-height:0}
+#stage.is-fs .minifig{flex:none}
+#stage.is-fs #tablewrap{flex:1 1 auto;min-height:0;max-height:none;margin:0}
+#stage.is-fs #spot{flex:none;max-height:11rem;overflow:auto;margin:4px 0 0;padding:.4rem .7rem}
+#stage.is-fs #chart-caption{display:none}
+#stage.is-fs #chart-help{display:none}
+#stage.is-fs #empty{margin:var(--sp-2) 0}
+#stage.is-fs #statements{margin:.2rem 0 .4rem;font-size:var(--fs-lg)}
+#fs-scrim{position:fixed;inset:0;background:var(--scrim);z-index:var(--z-scrim)}
+#fs-scrim[hidden]{display:none}
+@media (min-width:48rem){
+  #stage.is-fs #legend{display:grid;grid-auto-flow:column;grid-template-rows:auto auto;justify-content:start;gap:.15rem 1rem;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+  #stage.is-fs #legend li{white-space:nowrap}
+}
+@media (max-width:47.99rem){
+  #stage.is-fs .check .long{display:none}
+  #stage.is-fs .check .short{display:inline}
+  #stage.is-fs .ch-main,#stage.is-fs .ch-more{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+  #stage.is-fs .ch-main>*,#stage.is-fs .ch-more>*{flex:none}
+  #stage.is-fs .sel-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  #stage.is-fs .trow{gap:.3rem .5rem}
+  #stage.is-fs .trow+.trow{margin-top:.25rem}
+  #stage.is-fs #legend{flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:thin}
+  #stage.is-fs #legend li{flex:none}
+  #stage.is-fs #facets.open{position:fixed;left:0;right:0;bottom:0;max-height:min(85vh,calc(100dvh - 3rem));overflow:auto;background:var(--bg);border-top:1px solid var(--border-strong);border-radius:12px 12px 0 0;box-shadow:var(--shadow-2);padding:.5rem 16px calc(.75rem + env(safe-area-inset-bottom,0));z-index:var(--z-sheet)}
+  #stage.is-fs #facets.open .chips{max-height:none}
+  #stage.is-fs #facets.open .sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
+}
+@media (min-width:64rem){
+  #stage.is-fs.list-on{grid-template-columns:minmax(0,1fr) var(--panel-w)}
+  #stage.is-fs.list-on > #statements-section{grid-column:2;grid-row:2;overflow:auto;min-height:0;border-left:1px solid var(--border);padding:0 12px var(--sp-4)}
+  #stage.is-fs:not(.list-on) > #statements-section{display:none}
+  #stage.is-fs .cards{grid-template-columns:1fr}
+}
+#stage.is-fs.v-table{grid-template-columns:minmax(0,1fr)}
+#stage.is-fs.v-table > #statements-section{display:none}
+#stage.is-fs.v-table #list-toggle{display:none}
+@media (min-width:64rem) and (max-width:79.99rem){
+  #stage.is-fs.list-on .ch-main,#stage.is-fs.list-on .ch-more{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+  #stage.is-fs.list-on .ch-main>*,#stage.is-fs.list-on .ch-more>*{flex:none}
+}
+@media (max-width:63.99rem){
+  #stage.is-fs > #statements-section{position:fixed;left:0;right:0;bottom:0;max-height:70%;overflow:auto;background:var(--surface);border-top:1px solid var(--border-strong);box-shadow:var(--shadow-2);z-index:var(--z-sheet);padding:.5rem 16px calc(.75rem + env(safe-area-inset-bottom,0));transform:translateY(100%);visibility:hidden;transition:transform var(--dur),visibility 0s var(--dur)}
+  #stage.is-fs.list-on > #statements-section{transform:none;visibility:visible;transition:transform var(--dur),visibility 0s}
+}
 @media (forced-colors: active){
+  #fs-scrim{background:Canvas;opacity:.6}
   .m-source,.m-made{fill:CanvasText;stroke:CanvasText}
   .hollow{fill:Canvas}
   .bar-source,.bar-made,.stackbar,.density rect{fill:GrayText}
@@ -1003,9 +1132,13 @@ footer p{margin:.3rem 0}
   .band,.past{fill:Canvas}
   .grid line{stroke:GrayText}
   .brush .selection{fill:Highlight;fill-opacity:.3}
+  .lead-all{stroke:GrayText}
+  .probe-line,.probe-mini{stroke:Highlight}
+  .probe-pill{fill:Canvas;stroke:CanvasText}
+  .rubber{fill:Highlight;fill-opacity:.3}
 }
 @media print{
-  .toolbar,.chart-head,.edge,.minifig,.more,.loc,.gonly,#results-tools,#chart-help,.skip{display:none!important}
+  .toolbar,.chart-head,.edge,.minifig,.more,.loc,.gonly,#results-tools,#chart-help,.skip,#fs-scrim,#help,#share,#fs-toggle,#list-toggle,#spot .spot-tools{display:none!important}
   .tablewrap,#chart-scroll{max-height:none;overflow:visible}
   .group.collapsed .cards{display:grid}
   .st{break-inside:avoid}
@@ -1047,8 +1180,12 @@ JS = r"""
     d.cert = d.strong ? 'strong' : (d.conditional ? 'conditional' : (d.hedged ? 'hedged' : 'plain'));
     d.suspect = d.saidYear ? (d.start < d.saidYear ? 'target before the date said' : '') : (d.start < 1950 ? 'target before 1950' : '');
     d.ahead = d.saidYear ? d.end - d.saidYear : null;
+    d.aheadBand = d.ahead === null ? 'none' : (d.ahead <= 0 ? '0' : d.ahead <= 2 ? '1' : d.ahead <= 4 ? '3' : d.ahead <= 9 ? '5' : d.ahead <= 19 ? '10' : '20');
     d.search = fold(d.person_name + ' ' + (d.quote || '') + ' ' + d.time_expr + ' ' + d.item_id);
   });
+  var AHEAD_LABEL = { '0': 'same year or earlier', '1': '1 to 2 years', '3': '3 to 4 years', '5': '5 to 9 years', '10': '10 to 19 years', '20': '20 years and more', none: 'date said not known' };
+  var AHEAD_KEYS = ['0', '1', '3', '5', '10', '20', 'none'].filter(function (k) { return DATA.some(function (d) { return d.aheadBand === k; }); });
+  function coversYear(d, y) { return d.window_lo === null ? (y <= d.end && (d.saidYear === null || y >= d.saidYear)) : (d.start <= y && y <= d.end); }
   var ORDER = DATA.map(function (d) { return d.i; }).sort(function (a, b) {
     a = DATA[a]; b = DATA[b];
     return (a.start - b.start) || (a.end - b.end) || cmpStr(a.date_said || '9999', b.date_said || '9999') || cmpStr(a.item_id, b.item_id) || ((a.offset_s || 0) - (b.offset_s || 0));
@@ -1072,15 +1209,16 @@ JS = r"""
     if (b - a < 20) { var c = (a + b) / 2; a = Math.max(FULL[0], c - 10); b = Math.min(FULL[1], a + 20); a = Math.max(FULL[0], b - 20); }
     return [a, b];
   })();
-  var META = { people: PEOPLE, decades: DECADES, said: SAID, basis: BASIS, n: DATA.length, FULL: FULL, DEFAULT: DEFAULT };
+  var META = { people: PEOPLE, decades: DECADES, said: SAID, basis: BASIS, ahead: AHEAD_KEYS, n: DATA.length, FULL: FULL, DEFAULT: DEFAULT };
 
   /* @@hash-begin */
-  var HASH_KEYS = ['p', 'k', 'f', 's', 'd', 'e', 'b', 'q', 'x', 'w', 'g', 'v', 'o', 'i'];
+  function cleanQ(s) { return Array.from(String(s)).filter(function (c) { var cp = c.codePointAt(0); return cp < 0xD800 || cp > 0xDFFF; }).slice(0, 100).join(''); }
+  var HASH_KEYS = ['p', 'k', 'f', 's', 'd', 'e', 'b', 'a', 'y', 'q', 'x', 'w', 'g', 'v', 'o', 'i', 'l', 'fs'];
   var F_VALUES = ['all', 'hedged', 'conditional', 'flagged', 'plain', 'suspect'];
-  var G_VALUES = ['person', 'kind', 'said', 'cert', 'target'];
+  var G_VALUES = ['person', 'kind', 'said', 'cert', 'target', 'ahead'];
   var SORT_KEYS = ['row', 'person', 'said', 'start', 'span', 'ahead', 'kind', 'cert', 'quote', 'item', 'link'];
   function defaultState(meta) {
-    return { q: '', p: [], k: 'all', f: 'all', s: false, d: [], e: [], b: [], x: meta.DEFAULT.slice(), w: false, g: 'person', v: 'chart', o: '', i: null };
+    return { q: '', p: [], k: 'all', f: 'all', s: false, d: [], e: [], b: [], a: [], y: null, x: meta.DEFAULT.slice(), w: false, g: 'person', v: 'chart', o: '', i: null, l: false, fs: false };
   }
   function fmtYear(v) { return String(Math.round(v * 100) / 100); }
   function sameWindow(a, b) { return !!a && !!b && Math.abs(a[0] - b[0]) < .01 && Math.abs(a[1] - b[1]) < .01; }
@@ -1113,6 +1251,8 @@ JS = r"""
     if (st.d.length) parts.push('d=' + pick(st.d, meta.decades).join(','));
     if (st.e.length) parts.push('e=' + pick(st.e, meta.said).join(','));
     if (st.b.length) parts.push('b=' + pick(st.b, meta.basis).join(','));
+    if (st.a.length) parts.push('a=' + pick(st.a, meta.ahead).join(','));
+    if (st.y !== null) parts.push('y=' + st.y);
     if (st.q) parts.push('q=' + encodeURIComponent(st.q));
     if (st.x && !sameWindow(st.x, meta.DEFAULT)) parts.push('x=' + fmtYear(st.x[0]) + '-' + fmtYear(st.x[1]));
     if (st.w) parts.push('w=1');
@@ -1120,6 +1260,8 @@ JS = r"""
     if (st.v !== 'chart') parts.push('v=' + st.v);
     if (st.o) parts.push('o=' + st.o);
     if (st.i !== null) parts.push('i=' + st.i);
+    if (st.l) parts.push('l=1');
+    if (st.fs) parts.push('fs=1');
     return parts.length ? '#' + parts.join('&') : '';
   }
   function parseHash(h, meta) {
@@ -1143,13 +1285,17 @@ JS = r"""
           case 'd': st.d = list(meta.decades); break;
           case 'e': st.e = list(meta.said); break;
           case 'b': st.b = list(meta.basis); break;
-          case 'q': st.q = v.slice(0, 100); break;
+          case 'a': st.a = list(meta.ahead); break;
+          case 'y': if (/^\d{4}$/.test(v) && +v >= meta.FULL[0] && +v <= meta.FULL[1]) st.y = +v; break;
+          case 'q': st.q = cleanQ(v); break;
           case 'x': var w = parseWindow(v, meta.FULL); if (w) st.x = w; break;
           case 'w': st.w = v === '1'; break;
           case 'g': if (G_VALUES.indexOf(v) > 0) st.g = v; break;
           case 'v': if (v === 'table') st.v = v; break;
           case 'o': if (/^[a-z]+\.(1|-1)$/.test(v) && SORT_KEYS.indexOf(v.split('.')[0]) >= 0) st.o = v; break;
           case 'i': if (/^\d+$/.test(v) && +v < meta.n) st.i = +v; break;
+          case 'l': st.l = v === '1'; break;
+          case 'fs': st.fs = v === '1'; break;
           default: break;
         }
       });
@@ -1186,7 +1332,8 @@ JS = r"""
     kind: { key: function (d) { return d.kind; }, keys: ['source', 'made'], label: function (k) { return k === 'source' ? 'source text' : 'speech-to-text made here'; } },
     said: { key: function (d) { return d.saidDecade; }, keys: SAID_ASC.concat(HAS_UNDATED ? ['none'] : []), label: function (k) { return k === 'none' ? 'date not known' : k + 's'; } },
     cert: { key: function (d) { return d.cert; }, keys: ['strong', 'plain', 'hedged', 'conditional'], label: function (k) { return CERT[k]; } },
-    target: { key: function (d) { return decadeOf(d.start); }, keys: uniq(DATA.map(function (d) { return decadeOf(d.start); })).sort(function (a, b) { return decadeRank(a) - decadeRank(b); }), label: decadeLabel }
+    target: { key: function (d) { return decadeOf(d.start); }, keys: uniq(DATA.map(function (d) { return decadeOf(d.start); })).sort(function (a, b) { return decadeRank(a) - decadeRank(b); }), label: decadeLabel },
+    ahead: { key: function (d) { return d.aheadBand; }, keys: AHEAD_KEYS, label: function (k) { return AHEAD_LABEL[k]; } }
   };
   function chartGrouping() { return state.g === 'target' ? 'person' : state.g; }
 
@@ -1212,23 +1359,29 @@ JS = r"""
       case 'd': return !state.d.length || d.decades.some(function (k) { return state.d.indexOf(k) >= 0; });
       case 'e': return !state.e.length || state.e.indexOf(d.saidDecade) >= 0;
       case 'b': return !state.b.length || state.b.indexOf(d.basisKey) >= 0;
+      case 'a': return !state.a.length || state.a.indexOf(d.aheadBand) >= 0;
+      case 'y': return state.y === null || coversYear(d, state.y);
       case 'q': return searchMatch(d);
       default: return true;
     }
   }
-  var FACETS = ['p', 'k', 'f', 's', 'd', 'e', 'b', 'q'];
+  var FACETS = ['p', 'k', 'f', 's', 'd', 'e', 'b', 'a', 'y', 'q'];
   function matchesExcept(d, skip) { for (var j = 0; j < FACETS.length; j++) { if (FACETS[j] !== skip && !facetMatch(d, FACETS[j])) return false; } return true; }
   function matches(d) { return matchesExcept(d, null); }
   function inWindow(d) { return d.start <= state.x[1] && d.end >= state.x[0]; }
-  function anyFilter() { return !!(state.p.length || state.k !== 'all' || state.f !== 'all' || state.s || state.d.length || state.e.length || state.b.length || state.q); }
-  function recompute() { TOKS = tokens(state.q); M = DATA.filter(matches); V = state.w ? M.filter(inWindow) : M; }
+  function anyFilter() { return !!(state.p.length || state.k !== 'all' || state.f !== 'all' || state.s || state.d.length || state.e.length || state.b.length || state.a.length || state.y !== null || state.q); }
+  var VIEW_ORDER = [];
+  function recompute() {
+    TOKS = tokens(state.q); M = DATA.filter(matches); V = state.w ? M.filter(inWindow) : M;
+    var vis = {}; V.forEach(function (d) { vis[d.i] = true; }); VIEW_ORDER = ORDER.filter(function (i) { return vis[i]; });
+  }
 
   function update() {
     recompute();
     if (laidOut !== state.g) layoutGroups();
     renderGroups(); renderTable(); renderCount(); renderEmpty(); renderFacets(); renderActive(); renderYears(); writeForm(); renderDownloadLabel();
     if (chart) chart.render();
-    applyPin(); scheduleHash();
+    applyPin(); renderSpot(); scheduleHash();
   }
   function setWindow(win, animate) {
     state.x = clampWindow(win, FULL);
@@ -1247,9 +1400,12 @@ JS = r"""
   }
   function applyState() {
     if (!chart) state.v = 'table';
+    if (!chart) state.fs = false;
     writeForm();
     if (chart) chart.setDomain(state.x, false);
     update();
+    if (state.fs && !stage.classList.contains('is-fs')) enterFs(false);
+    else if (!state.fs && stage.classList.contains('is-fs')) leaveFs('hash');
     if (state.i !== null) showPinned(false);
   }
   window.addEventListener('hashchange', function () {
@@ -1266,13 +1422,17 @@ JS = r"""
     state.d = $$('input[name=d]:checked', form).map(function (b) { return b.value; });
     state.e = $$('input[name=e]:checked', form).map(function (b) { return b.value; });
     state.b = $$('input[name=b]:checked', form).map(function (b) { return b.value; });
-    state.q = $('#q').value.slice(0, 100);
+    state.a = $$('input[name=a]:checked', form).map(function (b) { return b.value; });
+    var py = $('#probe-year').value.trim(); state.y = /^\d{4}$/.test(py) && +py >= FULL[0] && +py <= FULL[1] ? +py : null;
+    state.q = cleanQ($('#q').value);
     var v = $('input[name=view]:checked', form); if (v && !v.disabled) state.v = v.value;
     state.w = $('#follow').checked;
     state.g = $('#group').value;
   }
   function writeForm() {
-    ['p', 'd', 'e', 'b'].forEach(function (n) { $$('input[name=' + n + ']', form).forEach(function (b) { b.checked = state[n].indexOf(b.value) >= 0; }); });
+    ['p', 'd', 'e', 'b', 'a'].forEach(function (n) { $$('input[name=' + n + ']', form).forEach(function (b) { b.checked = state[n].indexOf(b.value) >= 0; }); });
+    var probe = $('#probe-year'); if (doc.activeElement !== probe) probe.value = state.y === null ? '' : String(state.y);
+    $('#leads-toggle').setAttribute('aria-pressed', state.l ? 'true' : 'false');
     $$('input[name=k]', form).forEach(function (b) { b.checked = b.value === state.k; });
     $$('input[name=f]', form).forEach(function (b) { b.checked = b.value === state.f; });
     var s = $('input[name=s]', form); if (s) s.checked = state.s;
@@ -1282,16 +1442,18 @@ JS = r"""
     $('#follow').checked = state.w; $('#group').value = state.g;
     $('#clear-all').hidden = !anyFilter() && state.i === null && !state.w;
     $('#tablewrap').hidden = state.v !== 'table'; groupsEl.hidden = state.v === 'table'; $('#results-tools').hidden = state.v === 'table';
+    $('#stage').classList.toggle('v-table', state.v === 'table');
     $('#chart-caption').hidden = chartGrouping() !== 'person';
     $$('.wpreset').forEach(function (b) { b.setAttribute('aria-pressed', sameWindow(state.x, PRESETS[b.dataset.x]()) ? 'true' : 'false'); });
     var n = 0;
     $$('.facet', form).forEach(function (f) {
-      var k = f.dataset.facet, on = k === 'p' ? state.p.length : k === 'k' ? state.k !== 'all' : k === 'f' ? (state.f !== 'all' || state.s) : state[k].length;
+      var k = f.dataset.facet, on = k === 'p' ? state.p.length : k === 'k' ? state.k !== 'all' : k === 'f' ? (state.f !== 'all' || state.s) : k === 'y' ? state.y !== null : state[k].length;
       f.classList.toggle('active', !!on); if (on) n++;
       var sel = $('.fsel', f), txt = '';
       if (k === 'p') txt = state.p.length ? state.p.length + ' of ' + PEOPLE.length : '';
       else if (k === 'k') txt = state.k === 'all' ? '' : K_LABEL[state.k];
       else if (k === 'f') txt = (state.f === 'all' ? '' : F_LABEL[state.f]) + (state.s ? (state.f === 'all' ? '' : ' · ') + 'strong' : '');
+      else if (k === 'y') txt = state.y === null ? '' : String(state.y);
       else txt = state[k].length ? String(state[k].length) : '';
       sel.textContent = txt;
     });
@@ -1299,11 +1461,19 @@ JS = r"""
   }
   var qTimer = null;
   form.addEventListener('change', function (e) { if (e.target.id === 'q') return; readForm(); update(); });
-  form.addEventListener('input', function (e) { if (e.target.id !== 'q') return; clearTimeout(qTimer); qTimer = setTimeout(function () { readForm(); update(); }, 120); });
-  form.addEventListener('submit', function (e) { e.preventDefault(); });
+  form.addEventListener('input', function (e) { if (e.target.id !== 'q' && e.target.id !== 'probe-year') return; clearTimeout(qTimer); qTimer = setTimeout(function () { readForm(); update(); }, 120); });
+  form.addEventListener('submit', function (e) { e.preventDefault(); clearTimeout(qTimer); readForm(); update(); });
+  $('#probe-clear').addEventListener('click', function () { state.y = null; $('#probe-year').value = ''; update(); $('#probe-year').focus(); });
+  function probeFocus() {
+    var pr = $('#probe-year'), det = pr.closest('details');
+    if (!facetsEl.classList.contains('open') && (state.fs || !wide())) openSheet();
+    det.open = true; pr.focus(); pr.select();
+  }
+  function toggleLeads() { state.l = !state.l; writeForm(); if (chart) chart.render(); scheduleHash(); }
+  $('#leads-toggle').addEventListener('click', toggleLeads);
   $('#q-clear').addEventListener('click', function () { state.q = ''; $('#q').value = ''; update(); $('#q').focus(); });
   $('#clear-all').addEventListener('click', clearAll);
-  function clearAll() { var d = defaultState(META); ['q', 'p', 'k', 'f', 's', 'd', 'e', 'b'].forEach(function (k) { state[k] = d[k]; }); state.w = false; state.i = null; update(); }
+  function clearAll() { var d = defaultState(META); ['q', 'p', 'k', 'f', 's', 'd', 'e', 'b', 'a', 'y'].forEach(function (k) { state[k] = d[k]; }); state.w = false; state.i = null; update(); }
   $('#group').addEventListener('change', function () { readForm(); update(); });
   $('#follow').addEventListener('change', function () { readForm(); update(); });
   form.addEventListener('click', function (e) {
@@ -1312,8 +1482,7 @@ JS = r"""
       $$('input[type=checkbox]', b.closest('.fpanel')).forEach(function (c) { c.checked = b.classList.contains('fall'); });
       readForm(); update();
     } else if (b.id === 'filters-toggle') {
-      var open = !$('#facets').classList.contains('open');
-      $('#facets').classList.toggle('open', open); b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (facetsEl.classList.contains('open')) closeSheet(false); else openSheet();
     }
   });
   // facet popovers: one open at a time on wide screens, Escape closes, a click outside closes
@@ -1348,19 +1517,21 @@ JS = r"""
     state.d.forEach(function (k) { tok('d', k, 'Target: ' + decadeLabel(k)); });
     state.e.forEach(function (k) { tok('e', k, 'Said: ' + (k === 'none' ? 'date not known' : k + 's')); });
     state.b.forEach(function (k) { tok('b', k, 'Date basis: ' + BASIS_LABEL[k]); });
+    state.a.forEach(function (k) { tok('a', k, 'Ahead: ' + AHEAD_LABEL[k]); });
+    if (state.y !== null) tok('y', '', 'Expected for ' + state.y);
     if (state.q) tok('q', '', 'Search: ' + state.q);
   }
   $('#active').addEventListener('click', function (e) {
     var b = e.target.closest('.tok'); if (!b) return;
     var k = b.dataset.facet, v = b.dataset.value;
-    if (k === 'p' || k === 'd' || k === 'e' || k === 'b') state[k] = state[k].filter(function (x) { return x !== v; });
-    else if (k === 'k' || k === 'f') state[k] = 'all'; else if (k === 's') state.s = false; else if (k === 'q') state.q = '';
+    if (k === 'p' || k === 'd' || k === 'e' || k === 'b' || k === 'a') state[k] = state[k].filter(function (x) { return x !== v; });
+    else if (k === 'k' || k === 'f') state[k] = 'all'; else if (k === 's') state.s = false; else if (k === 'q') state.q = ''; else if (k === 'y') state.y = null;
     update();
   });
   // faceted counts: each chip counted over the data filtered by every other facet and the search
   function renderFacets() {
     var pools = {};
-    ['p', 'k', 'f', 's', 'd', 'e', 'b'].forEach(function (f) { pools[f] = DATA.filter(function (d) { return matchesExcept(d, f); }); });
+    ['p', 'k', 'f', 's', 'd', 'e', 'b', 'a'].forEach(function (f) { pools[f] = DATA.filter(function (d) { return matchesExcept(d, f); }); });
     $$('.chip-check', form).forEach(function (lab) {
       var inp = $('input', lab), n = inp.name, v = inp.value, pool = pools[n] || DATA, c;
       if (n === 'p') c = pool.filter(function (d) { return d.person_id === v; }).length;
@@ -1369,6 +1540,7 @@ JS = r"""
       else if (n === 's') c = pool.filter(function (d) { return d.strong; }).length;
       else if (n === 'd') c = pool.filter(function (d) { return d.decades.indexOf(v) >= 0; }).length;
       else if (n === 'e') c = pool.filter(function (d) { return d.saidDecade === v; }).length;
+      else if (n === 'a') c = pool.filter(function (d) { return d.aheadBand === v; }).length;
       else c = pool.filter(function (d) { return d.basisKey === v; }).length;
       $('.ccount', lab).textContent = String(c);
       if (c) lab.removeAttribute('data-zero'); else lab.setAttribute('data-zero', '');
@@ -1378,6 +1550,8 @@ JS = r"""
     var out = $('#count'), people = uniq(V.map(function (d) { return d.person_id; })).length;
     if (state.w && V.length !== M.length) out.textContent = M.length + ' match · ' + V.length + ' in the window ' + fmtY(state.x[0]) + ' to ' + fmtY(state.x[1]);
     else out.textContent = V.length + ' of ' + DATA.length + ' statements · ' + people + (people === 1 ? ' person' : ' people');
+    if (state.y !== null) out.textContent += ' · windows cover ' + state.y;
+    $('#list-n').textContent = String(V.length);
   }
   function renderEmpty() {
     var box = $('#empty'), why = $('#empty-why');
@@ -1390,6 +1564,15 @@ JS = r"""
   $('#empty-clear').addEventListener('click', clearAll);
   $('#empty-q').addEventListener('click', function () { state.q = ''; update(); });
   $('#empty-zoom').addEventListener('click', function () { state.w = false; setWindow(FULL, true); update(); });
+
+  function markSample(d) {
+    var sample = svgEl('svg', { 'class': 'mk', viewBox: '0 0 14 14', width: 14, height: 14, 'aria-hidden': 'true' }), cls = 'm-' + d.kind + ((d.hedged || d.conditional) ? ' hollow' : '') + (d.suspect ? ' m-suspect' : '');
+    if (d.window_lo === null) svgEl('path', { d: 'M12 2L3 7l9 5z', 'class': cls }, sample); else if (d.kind === 'source') svgEl('circle', { cx: 7, cy: 7, r: 4, 'class': cls }, sample); else svgEl('path', { d: 'M7 2l5 5-5 5-5-5z', 'class': cls }, sample);
+    if (d.strong) svgEl('circle', { cx: 7, cy: 7, r: 6.3, 'class': 'ring' }, sample);
+    return sample;
+  }
+  function linkLabel(d) { return (d.public_page_kind === 'page' ? 'public page' : 'episode page') + (d.kind === 'made' && d.offset_s !== null ? ' · at ' + offset(d.offset_s) : ''); }
+  function noLinkLabel(d) { return d.kind === 'made' && d.offset_s !== null ? 'at ' + offset(d.offset_s) + ' of the recording, no public page known' : 'no public page known'; }
 
   // ---- groups of cards: li nodes move between sections (never cloned), hidden when they do not match
   function countLine(group) {
@@ -1463,7 +1646,7 @@ JS = r"""
     else if (b.classList.contains('gtoggle')) { if (collapsed[sec.id]) delete collapsed[sec.id]; else collapsed[sec.id] = true; renderGroups(); }
     else if (b.classList.contains('gonly')) {
       var g = state.g, k = sec.dataset.key;
-      if (g === 'person') state.p = [k]; else if (g === 'kind') state.k = k; else if (g === 'said') state.e = [k]; else if (g === 'target') state.d = [k];
+      if (g === 'person') state.p = [k]; else if (g === 'kind') state.k = k; else if (g === 'said') state.e = [k]; else if (g === 'target') state.d = [k]; else if (g === 'ahead') state.a = [k];
       else if (g === 'cert') { if (k === 'strong') state.s = true; else state.f = k; }
       update();
     } else if (b.classList.contains('loc')) { locate(+b.dataset.i); }
@@ -1508,20 +1691,64 @@ JS = r"""
     var li = LI[i], sec = li.closest('.group');
     if (sec) { delete collapsed[sec.id]; expanded[sec.id] = true; }
     if (state.w && !inWindow(DATA[i]) && chart) chart.panTo(DATA[i].start, false);
+    if (state.fs && state.v !== 'table') setList(true);
     update();
+    if (state.v === 'table') { var tr = $('#table tr[data-i="' + i + '"]'); if (tr) tr.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' }); return; }
     li.scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
   }
   function goTo(i) {
     state.i = i;
-    if (state.v === 'table') { if (chart && (DATA[i].start < state.x[0] || DATA[i].start > state.x[1])) chart.panTo(DATA[i].start, true); update(); return; }
-    showCard(i);
+    if (chart && (DATA[i].start < state.x[0] || DATA[i].start > state.x[1])) chart.panTo(DATA[i].start, true);
+    update();
+    var spot = $('#spot'), r = spot.getBoundingClientRect();
+    if (!state.fs && (r.bottom > window.innerHeight || r.top < 0)) spot.scrollIntoView({ block: 'nearest', behavior: REDUCED ? 'auto' : 'smooth' });
   }
+  function spotStep(dir) {
+    if (!VIEW_ORDER.length) return;
+    if (state.i === null) { goTo(VIEW_ORDER[0]); return; }
+    var k = VIEW_ORDER.indexOf(state.i), n = k < 0 ? 0 : k + dir;
+    if (n >= 0 && n < VIEW_ORDER.length) goTo(VIEW_ORDER[n]);
+  }
+  // the spot: the pinned statement under the chart, rebuilt from its record with text nodes only
+  function renderSpot() {
+    var spot = $('#spot'), body = $('#spot-body');
+    if (state.i === null) { spot.hidden = true; body.textContent = ''; spot.removeAttribute('data-kind'); return; }
+    var d = DATA[state.i], k = VIEW_ORDER.indexOf(d.i);
+    spot.dataset.kind = d.kind; body.textContent = '';
+    var head = el('div', 'st-head'); head.appendChild(el('span', 'badge num', windowLabel(d))); head.appendChild(markSample(d));
+    head.appendChild(el('span', 'st-person', d.person_name)); head.appendChild(el('span', 'chip chip-' + d.kind, kindLabel(d)));
+    var fl = flagsOf(d); if (fl.length) head.appendChild(el('span', 'flags', fl.join(' · ')));
+    body.appendChild(head);
+    if (d.quote) body.appendChild(el('blockquote', 'q', '“' + d.quote + '”'));
+    else { var p = el('p', 'q q-withheld'); p.appendChild(el('em', '', d.time_expr || '(time expression)')); p.appendChild(doc.createTextNode(' ')); p.appendChild(el('span', 'muted', 'quote withheld, item share limit')); body.appendChild(p); }
+    var meta = el('p', 'meta');
+    meta.appendChild(el('span', '', saidLabel(d) + (d.ahead !== null ? ' · ' + aheadText(d) : '')));
+    meta.appendChild(el('code', '', d.item_id));
+    if (d.link) { var a = el('a', '', linkLabel(d)); a.href = d.link; a.rel = 'noopener'; meta.appendChild(a); } else meta.appendChild(el('span', '', noLinkLabel(d)));
+    meta.appendChild(el('span', '', 'labelled candidate'));
+    body.appendChild(meta);
+    $('#spot-h').textContent = k >= 0 ? 'Statement ' + (k + 1) + ' of ' + VIEW_ORDER.length + ' in view' : 'Pinned statement, outside the current filters';
+    $('#spot-prev').disabled = k <= 0; $('#spot-next').disabled = k < 0 || k >= VIEW_ORDER.length - 1;
+    $('#spot-person').hidden = state.p.length === 1 && state.p[0] === d.person_id;
+    spot.hidden = false;
+  }
+  $('#spot-close').addEventListener('click', function () { state.i = null; update(); if (chart) $('#chart-svg').focus({ preventScroll: true }); else $('#table').focus({ preventScroll: true }); });
+  $('#spot-prev').addEventListener('click', function () { spotStep(-1); });
+  $('#spot-next').addEventListener('click', function () { spotStep(1); });
+  $('#spot-card').addEventListener('click', function () { if (state.i !== null) showCard(state.i); });
+  $('#spot-zoom').addEventListener('click', function () { if (state.i !== null && chart) { var d = DATA[state.i]; state.w = false; chart.setDomain([d.start - 2, d.end + 2], true); } });
+  $('#spot-person').addEventListener('click', function () { if (state.i !== null) { state.p = [DATA[state.i].person_id]; update(); $('#spot-status').textContent = 'only ' + DATA[state.i].person_name + ': ' + V.length + ' statements'; } });
+  $('#spot').addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape' || state.i === null) return;
+    e.preventDefault();
+    if (chart && !chart.focusI(state.i)) $('#chart-svg').focus({ preventScroll: true });
+  });
   function showPinned(scroll) {
     var i = state.i, d = DATA[i], sec = LI[i].closest('.group');
     if (sec) { delete collapsed[sec.id]; expanded[sec.id] = true; }
     if (chart && (d.start < state.x[0] || d.start > state.x[1])) chart.panTo(d.start, false);
     update();
-    if (scroll) LI[i].scrollIntoView({ behavior: 'auto', block: 'center' });
+    if (scroll && !(state.fs && !stage.classList.contains('list-on'))) LI[i].scrollIntoView({ behavior: 'auto', block: 'center' });
   }
   groupsEl.addEventListener('click', function (e) { var b = e.target.closest('.badge'); if (b && b.closest('.st') && state.i === +b.closest('.st').dataset.i) { state.i = null; update(); } });
   function locate(i) {
@@ -1611,7 +1838,7 @@ JS = r"""
       cell(tr, d.quote ? '“' + d.quote + '”' : '(withheld) ' + d.time_expr, 'quote');
       cell(tr, d.item_id, 'mono');
       var lk = cell(tr);
-      if (d.link) { var a = el('a', '', (d.public_page_kind === 'page' ? 'public page' : 'episode page') + (d.kind === 'made' && d.offset_s !== null ? ' · at ' + offset(d.offset_s) : '')); a.href = d.link; a.rel = 'noopener'; lk.appendChild(a); }
+      if (d.link) { var a = el('a', '', linkLabel(d)); a.href = d.link; a.rel = 'noopener'; lk.appendChild(a); }
       else lk.textContent = d.kind === 'made' && d.offset_s !== null ? 'at ' + offset(d.offset_s) + ' of the recording' : 'no public page known';
     });
     if (!rows.length) { var er = tfoot.insertRow(); er.className = 'empty'; var td = er.insertCell(); td.colSpan = COLS.length; td.textContent = 'No statements match.'; }
@@ -1656,7 +1883,7 @@ JS = r"""
     var d3 = window.d3;
     var box = $('#chartbox'), scroll = $('#chart-scroll'), svgNode = $('#chart-svg'), tip = $('#tip'), status = $('#chart-status');
     var svg = d3.select(svgNode), axisSvg = d3.select('#chart-axis'), mini = d3.select('#minimap');
-    var W = 800, L = 150, R = 20, plotW = 630, H = 42, rowH = 30, band = 24, narrow = false, miniH = 44;
+    var W = 800, L = 150, R = 20, plotW = 630, H = 42, HV = 0, rowH = 30, band = 24, narrow = false, miniH = 44;
     var xFull = d3.scaleLinear().domain(FULL), x = xFull, t = d3.zoomIdentity, ready = false, pending = false;
     var syncing = false, armed = false, armTimer = null, rows = [], rowKeys = [], allItems = [], visItems = [], rowAll = [], itemByKey = {}, stackOf = {};
     var B = 1, ppy = 10, roving = null, entered = false, tipPinned = null, statusTimer = null, endTimer = null, lastRows = '', relayout = false;
@@ -1667,17 +1894,21 @@ JS = r"""
     var gridG = svg.append('g').attr('class', 'grid'), zoomSurface = svg.append('rect').attr('class', 'zoom-surface');
     var nowLine = svg.append('line').attr('class', 'now');
     var plotG = svg.append('g').attr('class', 'plot').attr('clip-path', 'url(#plot-clip)');
-    var barsG = plotG.append('g').attr('class', 'bars'), leadsG = plotG.append('g').attr('class', 'leads'), marksG = plotG.append('g').attr('class', 'marks');
+    var barsG = plotG.append('g').attr('class', 'bars'), leadsAllG = plotG.append('g').attr('class', 'leads-all'), leadsG = plotG.append('g').attr('class', 'leads'), marksG = plotG.append('g').attr('class', 'marks');
     var labelsG = svg.append('g').attr('class', 'rowlabels');
+    var probeLine = svg.append('line').attr('class', 'probe-line').style('display', 'none');
     var axisG = axisSvg.append('g').attr('class', 'axis').attr('transform', 'translate(0,29)');
     var nowLabel = axisSvg.append('text').attr('class', 'nowlabel').attr('y', 9).text('now');
+    var probePill = axisSvg.append('rect').attr('class', 'probe-pill').attr('rx', 3).attr('y', 1).attr('height', 12).style('display', 'none');
+    var probeLabel = axisSvg.append('text').attr('class', 'probe-label').attr('y', 10.5).style('display', 'none');
     var miniDensity = mini.append('g').attr('class', 'density'), miniVis = mini.append('g').attr('class', 'density-vis'), miniAxis = mini.append('g').attr('class', 'mini-axis');
-    var miniNow = mini.append('line').attr('class', 'now-mini'), miniG = mini.append('g').attr('class', 'brush'), handles = null;
+    var miniNow = mini.append('line').attr('class', 'now-mini'), miniProbe = mini.append('line').attr('class', 'probe-mini').style('display', 'none'), miniG = mini.append('g').attr('class', 'brush'), handles = null;
 
     var zoom = d3.zoom().scaleExtent([1, 40])
       .filter(function (ev) {
         if (ev.type === 'wheel') return ev.ctrlKey || ev.metaKey || armed;
-        if (ev.type.indexOf('touch') === 0) return !!(ev.touches && ev.touches.length >= 2);
+        if (ev.type.indexOf('touch') === 0) return !!(ev.touches && ev.touches.length >= (state.fs ? 1 : 2));
+        if (ev.type === 'mousedown' && ev.shiftKey) return false;
         return !ev.button && !(ev.target.closest && ev.target.closest('.rowlabel,button'));
       })
       .on('start', function (ev) { if (ev.sourceEvent) { hideTip(); svg.classed('dragging', true); } })
@@ -1690,7 +1921,35 @@ JS = r"""
         if (relayout) return;                                         // the rows changed inside update(): no second update
         clearTimeout(endTimer); endTimer = setTimeout(function () { update(); announce(); }, 60);
       });
+    // Shift+wheel and a sideways trackpad swipe pan; registered before the zoom, so d3's own wheel handler never sees them
+    svgNode.addEventListener('wheel', function (e) {
+      var horiz = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      if (e.ctrlKey || e.metaKey || !(e.shiftKey || horiz)) return;
+      e.preventDefault(); e.stopImmediatePropagation();
+      var delta = e.shiftKey && !horiz ? e.deltaY : e.deltaX;
+      if (e.deltaMode === 1) delta *= 16; else if (e.deltaMode === 2) delta *= plotW;
+      pan(delta / plotW * 1.5);
+    }, { passive: false });
     svg.call(zoom).on('dblclick.zoom', null).style('touch-action', 'pan-y');
+    // Shift+drag: a rubber band over the rows, released at 8px or more it becomes the window; Escape cancels
+    var rubber = svg.append('rect').attr('class', 'rubber').style('display', 'none'), rubberA = null, banded = false;
+    function rubberX(e) { return Math.max(L, Math.min(L + plotW, d3.pointer(e, svgNode)[0])); }
+    function endRubber(e, apply) {
+      if (rubberA === null) return;
+      var a = rubberA, b = apply ? rubberX(e) : a; rubberA = null; rubber.style('display', 'none');
+      try { svgNode.releasePointerCapture(e.pointerId); } catch (err) { }
+      if (apply && Math.abs(b - a) >= 8) { banded = true; setTimeout(function () { banded = false; }, 0); setDomain([x.invert(Math.min(a, b)), x.invert(Math.max(a, b))], true); }
+    }
+    svgNode.addEventListener('pointerdown', function (e) {
+      if (!e.shiftKey || e.button !== 0 || e.pointerType === 'touch' || (e.target.closest && e.target.closest('.rowlabel,button'))) return;
+      rubberA = rubberX(e); rubber.attr('x', rubberA).attr('y', 0).attr('width', 0).attr('height', H).style('display', null);
+      try { svgNode.setPointerCapture(e.pointerId); } catch (err) { }
+      hideTip(); e.preventDefault();
+    });
+    svgNode.addEventListener('pointermove', function (e) { if (rubberA === null) return; var px = rubberX(e); rubber.attr('x', Math.min(rubberA, px)).attr('width', Math.abs(px - rubberA)); });
+    svgNode.addEventListener('pointerup', function (e) { endRubber(e, true); });
+    svgNode.addEventListener('pointercancel', function (e) { endRubber(e, false); });
+    doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && rubberA !== null) { endRubber(e, false); e.preventDefault(); } });
     svg.on('dblclick', function (ev) {
       var m = ev.target.closest && ev.target.closest('.mark');
       if (m) { var it = itemByKey[m.getAttribute('data-key')]; var y = it.single ? it.d.start : it.bin + (B - 1) / 2; setDomain([y - 2, y + 2], true); }
@@ -1713,11 +1972,13 @@ JS = r"""
     function domain() { return t.rescaleX(xFull).domain(); }
     function layout() {
       var w = scroll.clientWidth || (box.clientWidth - 8); W = Math.max(320, w || 800); narrow = W < 560;
-      if (narrow) { L = 8; R = 8; } else { L = 150; R = 20; }
+      if (narrow) { L = 8; R = 8; } else { L = W >= 1440 ? 200 : 150; R = 20; }
       plotW = W - L - R;
-      var keys = rowKeys.slice();
-      rowH = narrow ? (keys.length <= 4 ? 52 : 38) : (keys.length <= 4 ? 48 : 30); band = rowH - 6;
-      H = 12 + Math.max(1, keys.length) * rowH;
+      var keys = rowKeys.slice(), n = Math.max(1, keys.length);
+      var base = narrow ? (keys.length <= 4 ? 52 : 38) : (keys.length <= 4 ? 48 : 30);
+      HV = scroll.clientHeight;
+      rowH = state.fs ? Math.max(base, Math.min(72, Math.floor((HV - 12) / n))) : base; band = rowH - 6;
+      H = 12 + n * rowH;
       var cur = ready ? domain() : state.x;
       xFull.range([L, L + plotW]);
       svg.attr('viewBox', '0 0 ' + W + ' ' + H).attr('width', W).attr('height', H);
@@ -1730,6 +1991,7 @@ JS = r"""
       brush.extent([[L, 0], [L + plotW, miniH - 12]]); miniG.call(brush); miniG.selectAll('.handle--custom').raise();
       bandsG.selectAll('rect').data(keys.filter(function (k, j) { return j % 2 === 0; })).join('rect').attr('class', 'band').attr('x', 0).attr('width', W)
         .attr('y', function (k) { return 12 + keys.indexOf(k) * rowH; }).attr('height', rowH);
+      rubber.raise();
       drawMini();
       ready = true;
       relayout = true;
@@ -1751,6 +2013,7 @@ JS = r"""
       var step = narrow ? 40 : 20, labels = years.filter(function (y) { return y % step === 0; });
       miniAxis.selectAll('text').data(labels).join('text').attr('x', function (y) { return xFull(y); }).attr('y', miniH - 2).text(function (y) { return String(y); });
       miniNow.attr('x1', xFull(NOW_F)).attr('x2', xFull(NOW_F)).attr('y1', 0).attr('y2', top);
+      miniProbe.style('display', state.y === null ? 'none' : null); if (state.y !== null) miniProbe.attr('x1', xFull(state.y)).attr('x2', xFull(state.y)).attr('y1', 0).attr('y2', top);
     }
     function moveBrush() { if (!ready) return; var sel = domain().map(xFull); syncing = true; miniG.call(brush.move, sel); syncing = false; drawHandles(sel); }
     function setDomain(win, animate) {
@@ -1790,6 +2053,18 @@ JS = r"""
         .attr('class', 'major').attr('x1', x).attr('x2', x).attr('y1', 0).attr('y2', H);
       var px0 = Math.max(L, x(FULL[0])), px1 = Math.min(L + plotW, x(Math.min(NOW_F, FULL[1])));
       pastRect.attr('x', px0).attr('width', Math.max(0, px1 - px0));
+      // the probe: a solid line at the year asked for, its pill in the axis with the count of windows covering it
+      var py = state.y, pOn = py !== null && py >= dom[0] && py <= dom[1];
+      probeLine.style('display', pOn ? null : 'none'); probePill.style('display', pOn ? null : 'none'); probeLabel.style('display', pOn ? null : 'none');
+      if (pOn) {
+        var pX = x(py), pn = 0; M.forEach(function (d) { if (coversYear(d, py)) pn++; });
+        var ptxt = py + ' · ' + pn, pw = ptxt.length * 6.4 + 10, nearNow = nowIn && Math.abs(pX - x(NOW_F)) < 30 + pw / 2;
+        probeLine.attr('x1', pX).attr('x2', pX).attr('y1', 0).attr('y2', H);
+        probeLabel.text(ptxt);
+        if (!nearNow) { probeLabel.attr('x', pX).attr('text-anchor', 'middle'); probePill.attr('x', pX - pw / 2).attr('width', pw); }
+        else if (pX >= x(NOW_F)) { probeLabel.attr('x', pX + 9).attr('text-anchor', 'start'); probePill.attr('x', pX + 4).attr('width', pw); }
+        else { probeLabel.attr('x', pX - 9).attr('text-anchor', 'end'); probePill.attr('x', pX - 4 - pw).attr('width', pw); }
+      }
       // items: singles dodged inside a bin, a stack when a bin overflows
       allItems = []; rowAll = []; stackOf = {}; var left = 0, right = 0;
       var maxDodge = Math.floor(band / 6), cols = (B === 1 && ppy >= 24) ? Math.max(1, Math.min(6, Math.floor((ppy - 2) / 9))) : 1;
@@ -1825,6 +2100,14 @@ JS = r"""
       bars.enter().append('rect').attr('class', function (it) { return it.single ? 'bar bar-' + it.d.kind : 'stackbar'; }).attr('height', 3).attr('rx', 1.5).merge(bars)
         .attr('x', function (it) { return it.single ? x(it.d.start) : x(it.lo); }).attr('y', function (it) { return it.cy - 1.5; })
         .attr('width', function (it) { return Math.max(1, it.single ? x(it.d.end) - x(it.d.start) : x(it.hi) - x(it.lo)); });
+      // lead lines for every statement in view (l=1): a hairline from the year said to the target, the median year said for a stack
+      var leads = [];
+      if (state.l) visItems.forEach(function (it) {
+        if (it.single) { if (it.d.saidYear !== null && it.d.saidYear !== it.d.start) leads.push({ key: it.key, x1: x(it.d.saidYear), x2: it.cx, y: it.cy }); }
+        else { var ys = it.members.map(function (d) { return d.saidYear; }).filter(function (v) { return v !== null; }).sort(function (a, b) { return a - b; }); if (ys.length) leads.push({ key: it.key, x1: x(ys[Math.floor(ys.length / 2)]), x2: it.cx - it.w / 2, y: it.cy }); }
+      });
+      leadsAllG.selectAll('line').data(leads, function (l) { return l.key; }).join('line').attr('class', 'lead-all')
+        .attr('x1', function (l) { return l.x1; }).attr('x2', function (l) { return l.x2; }).attr('y1', function (l) { return l.y; }).attr('y2', function (l) { return l.y; });
       renderLabels();
       if (roving && !itemByKey[roving]) roving = null;
       marksG.selectAll('g.mark').attr('tabindex', function (it) { return entered && it.key === roving ? 0 : -1; });
@@ -1896,13 +2179,11 @@ JS = r"""
     function showTip(it, node) {
       tip.textContent = '';
       if (it.single) {
-        var d = it.d, b = el('b'), sample = svgEl('svg', { viewBox: '0 0 14 14', 'aria-hidden': 'true' });
-        var cls = 'm-' + d.kind + ((d.hedged || d.conditional) ? ' hollow' : '');
-        if (d.window_lo === null) svgEl('path', { d: 'M12 2L3 7l9 5z', 'class': cls }, sample); else if (d.kind === 'source') svgEl('circle', { cx: 7, cy: 7, r: 4, 'class': cls }, sample); else svgEl('path', { d: 'M7 2l5 5-5 5-5-5z', 'class': cls }, sample);
+        var d = it.d, b = el('b'), sample = markSample(d);
         b.appendChild(doc.createTextNode(windowLabel(d) + ' ')); b.appendChild(sample); b.appendChild(doc.createTextNode(' ' + d.person_name)); tip.appendChild(b);
         tip.appendChild(el('div', 'tq', d.quote ? '“' + d.quote + '”' : 'quote withheld; time expression: ' + d.time_expr));
         tip.appendChild(el('div', 'muted', [saidLabel(d) + (d.ahead !== null ? ' · ' + aheadText(d) : ''), kindLabel(d) + ', ' + certText(d), d.item_id, 'labelled candidate'].join(' · ')));
-        tip.appendChild(el('div', 'hint', COARSE ? 'tap again: open the card' : 'click: open the card · double-click: zoom here'));
+        tip.appendChild(el('div', 'hint', COARSE ? 'tap: pin, details below' : 'click: pin, details below · shift+click: open the card · double-click: zoom here'));
       } else {
         tip.appendChild(el('b', '', it.n + ' statements · ' + (it.lo === it.hi ? String(it.lo) : it.lo + ' to ' + it.hi)));
         tip.appendChild(el('div', 'muted', it.dense ? 'one year; click or press Enter to open the list' : 'zoom in or press Enter to spread them'));
@@ -1942,15 +2223,16 @@ JS = r"""
     });
     svgNode.addEventListener('focusout', function (e) { var m = e.target.closest('.mark'); if (m) { unhot(); m.classList.remove('is-hot'); hideTip(); } });
     svgNode.addEventListener('click', function (e) {
+      if (banded) return;
       var m = e.target.closest('.mark');
       if (!m) { var lbl = e.target.closest('.rowlabel'); if (lbl && chartGrouping() === 'person') togglePerson(lbl.getAttribute('data-key')); return; }
       var it = itemByKey[m.getAttribute('data-key')]; if (!it) return;
+      if (e.shiftKey && it.single) { showCard(it.d.i); return; }
       activate(it, m);
     });
     function activate(it, m) {
       if (it.single) {
-        if (COARSE && tipPinned !== it.key) { tipPinned = it.key; showTip(it, m); return; }
-        tipPinned = null; goTo(it.d.i);
+        tipPinned = null; if (COARSE) hideTip(); goTo(it.d.i);
       } else if (it.dense) {
         state.w = true; state.x = clampWindow([it.bin - 1.5, it.bin + 2.5], FULL); setDomain(state.x, false); showCard(it.members[0].i);
       } else setDomain([it.bin - 1, it.bin + B + 1], true);
@@ -1980,8 +2262,10 @@ JS = r"""
       if (k === 'ArrowLeft') pan(ev.shiftKey ? -.5 : -.1); else if (k === 'ArrowRight') pan(ev.shiftKey ? .5 : .1);
       else if (k === 'ArrowUp') scroll.scrollTop -= rowH; else if (k === 'ArrowDown') scroll.scrollTop += rowH;
       else if (k === '+' || k === '=') zoomBy(1.5); else if (k === '-' || k === '_') zoomBy(1 / 1.5);
-      else if (k === '0') setDomain(DEFAULT, true); else if (k === 'f' || k === 'F') fit(); else if (k === 'n' || k === 'N') panTo(NOW_F, true);
+      else if (k === '0') setDomain(DEFAULT, true); else if (k === 'f' && !ev.shiftKey) fit(); else if (k === 'n' || k === 'N') panTo(NOW_F, true);
       else if (k === 'Home') setDomain([FULL[0], FULL[0] + 10], true); else if (k === 'End') setDomain([FULL[1] - 10, FULL[1]], true);
+      else if (k === 'j') spotStep(1); else if (k === 'k') spotStep(-1);
+      else if (k === 'l') toggleLeads(); else if (k === 'y') probeFocus();
       else if (k === 'Enter') { var first = null; for (var r = 0; r < rowAll.length && !first; r++) first = rowAll[r].filter(function (it) { return !it.off; })[0]; if (first) focusItem(first); }
       else if (k === 'Escape') { if (state.i !== null) { state.i = null; update(); } hideTip(); svgNode.blur(); }
       else return;
@@ -1994,7 +2278,7 @@ JS = r"""
       else if (k === 'ArrowLeft') { if (idx > 0) focusItem(list[idx - 1]); else { var lb = labelAt(it.row); if (lb) lb.focus(); } }
       else if (k === 'ArrowDown') focusItem(nearestOnRow(it.row + 1, it.cx)); else if (k === 'ArrowUp') focusItem(nearestOnRow(it.row - 1, it.cx));
       else if (k === 'Home') focusItem(list[0]); else if (k === 'End') focusItem(list[list.length - 1]);
-      else if (k === 'Enter' || k === ' ') { if (ev.shiftKey && it.single) { showCard(it.d.i); m.focus({ preventScroll: true }); } else activate(it, m); }
+      else if (k === 'Enter' || k === ' ') { if (ev.shiftKey && it.single) { showCard(it.d.i); m.focus({ preventScroll: true }); } else { activate(it, m); if (it.single) m.focus({ preventScroll: true }); } }
       else if (k === 'Escape') { hideTip(); svgNode.focus(); }
       else return;
       ev.preventDefault();
@@ -2041,10 +2325,12 @@ JS = r"""
       if (d.start < dom[0] + pad || d.start > dom[1] - pad) { panTo(d.start, true); setTimeout(after, DUR + 30); } else after();
     }
     var resizeTimer = null;
-    if (window.ResizeObserver) new ResizeObserver(function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(function () { if (Math.abs(scroll.clientWidth - W) > 2) { layout(); renderNow(); } }, 150); }).observe(scroll);
+    if (window.ResizeObserver) new ResizeObserver(function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(function () { if (Math.abs(scroll.clientWidth - W) > 2 || (state.fs && Math.abs(scroll.clientHeight - HV) > 2)) { layout(); renderNow(); } }, 150); }).observe(scroll);
     else window.addEventListener('resize', function () { clearTimeout(resizeTimer); resizeTimer = setTimeout(function () { layout(); renderNow(); }, 150); });
+    window.addEventListener('orientationchange', function () { hideTip(); clearTimeout(resizeTimer); resizeTimer = setTimeout(function () { layout(); renderNow(); moveBrush(); }, 200); });
     return { render: schedule, renderNow: renderNow, setDomain: setDomain, panTo: panTo, zoomBy: zoomBy, fit: fit, hot: chartHot, unhot: chartUnhot, pin: pin,
-      locate: locateMark, unpinTip: function () { if (tipPinned) hideTip(); }, layout: layout, drawMini: drawMini, domain: domain };
+      locate: locateMark, unpinTip: function () { if (tipPinned) hideTip(); }, layout: layout, drawMini: drawMini, domain: domain,
+      tipPinned: function () { return !!tipPinned; }, focusI: function (i) { return focusMark(stackOf[i] || ('i' + i)); } };
   }
 
   // ---- wiring the chart head
@@ -2059,16 +2345,162 @@ JS = r"""
   $('#zoom-now').addEventListener('click', function () { if (chart) chart.panTo(NOW_F, true); });
   $('#zoom-reset').addEventListener('click', function () { setWindow(DEFAULT, true); });
   $$('.wpreset').forEach(function (b) { b.addEventListener('click', function () { state.w = b.dataset.x !== 'all'; setWindow(PRESETS[b.dataset.x](), true); }); });
-  doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && chart) chart.unpinTip(); });
+
+  // ---- full screen: the stage (toolbar, timeline, statements) fills the viewport; the native API on a click or Shift+F,
+  // the expanded mode (a fixed stage, the body locked) from a link, on hashchange and where the API is missing
+  var stage = $('#stage'), fsToggle = $('#fs-toggle'), facetsEl = $('#facets'), fsMode = '', fsPrev = { y: 0, active: null }, shareTimer = null;
+  var columnQuery = window.matchMedia ? window.matchMedia('(min-width:64rem)') : null;
+  function column() { return columnQuery ? columnQuery.matches : window.innerWidth >= 1024; }
+  function fsEl() { return doc.fullscreenElement || doc.webkitFullscreenElement || null; }
+  function say(msg) { var s = $('#chart-status'); s.textContent = ''; setTimeout(function () { s.textContent = msg; }, 30); }
+  function setInert(on) {
+    var mainEl = $('main');
+    Array.prototype.forEach.call(doc.body.children, function (c) { if (c !== mainEl && c.tagName !== 'SCRIPT') c.inert = on; });
+    Array.prototype.forEach.call(mainEl.children, function (c) { if (c !== stage && c.tagName !== 'SCRIPT') c.inert = on; });
+  }
+  function fsFallback() { fsMode = 'fallback'; root.classList.add('fs-fallback'); }
+  function setList(on) { stage.classList.toggle('list-on', on); $('#list-toggle').setAttribute('aria-pressed', on ? 'true' : 'false'); }
+  function listSheetOpen() { return state.fs && !column() && stage.classList.contains('list-on'); }
+  // help: a native dialog (showModal) with an open-attribute fallback; focus returns to whatever opened it
+  var help = $('#help'), helpOpener = null;
+  function helpOpen() { return help.hasAttribute('open'); }
+  function helpBack() { var o = helpOpener; helpOpener = null; if (o && o.isConnected) { try { o.focus({ preventScroll: true }); } catch (e) { } } }
+  function openHelp(opener) {
+    if (helpOpen()) return;
+    helpOpener = opener && opener.focus && opener !== doc.body ? opener : $('#help-btn');
+    if (help.showModal) { try { help.showModal(); } catch (e) { help.setAttribute('open', ''); } }
+    else { help.setAttribute('open', ''); help.setAttribute('role', 'dialog'); help.setAttribute('aria-modal', 'true'); help.classList.add('help-fallback'); }
+    help.scrollTop = 0;
+    try { $('#help-h').focus({ preventScroll: true }); } catch (e) { $('#help-h').focus(); }
+  }
+  function closeHelp() {
+    if (!helpOpen()) return;
+    if (help.close && !help.classList.contains('help-fallback')) help.close();
+    else { help.removeAttribute('open'); help.classList.remove('help-fallback'); helpBack(); }
+  }
+  help.addEventListener('close', helpBack);
+  help.addEventListener('click', function (e) { if (e.target === help) closeHelp(); });
+  $('#help-btn').addEventListener('click', function () { openHelp(this); });
+  $('#help-close').addEventListener('click', closeHelp);
+  function enterFs(native) {
+    if (stage.classList.contains('is-fs')) return;
+    fsPrev = { y: window.pageYOffset || 0, active: doc.activeElement };
+    state.fs = true; closeSheet(false);
+    stage.classList.add('is-fs'); root.classList.add('fs'); setInert(true);
+    setList(column());
+    var cmLink = $('#caveat-mini a'); cmLink.setAttribute('aria-controls', 'caveat-more'); cmLink.setAttribute('aria-expanded', 'false');
+    var req = stage.requestFullscreen || stage.webkitRequestFullscreen;
+    if (native && req) {
+      fsMode = 'native';
+      try { var p = req.call(stage, { navigationUI: 'hide' }); if (p && p.then) p.then(null, fsFallback); } catch (e) { fsFallback(); }
+    } else fsFallback();
+    if (chart) { chart.layout(); chart.renderNow(); }
+    fsToggle.textContent = 'Exit full screen'; fsToggle.setAttribute('aria-pressed', 'true'); fsToggle.focus({ preventScroll: true });
+    say('Full screen on. The Exit button or Escape leaves.');
+    scheduleHash();
+  }
+  function leaveFs(reason) {
+    state.fs = false;
+    if (!stage.classList.contains('is-fs')) return;
+    closeHelp(); closeSheet(false); setList(false);
+    var cm = $('#caveat-more'), cmLink = $('#caveat-mini a'); cm.hidden = true; cmLink.removeAttribute('aria-controls'); cmLink.removeAttribute('aria-expanded');
+    stage.classList.remove('is-fs'); root.classList.remove('fs'); root.classList.remove('fs-fallback'); root.classList.remove('fs-native');
+    setInert(false);
+    if (fsEl() && reason !== 'browser') { try { var p = (doc.exitFullscreen || doc.webkitExitFullscreen).call(doc); if (p && p.then) p.then(null, function () { }); } catch (e) { } }
+    fsMode = '';
+    window.scrollTo(0, fsPrev.y);
+    if (chart) { chart.layout(); chart.renderNow(); }
+    fsToggle.textContent = 'Full screen'; fsToggle.setAttribute('aria-pressed', 'false');
+    update();
+    var back = fsPrev.active && fsPrev.active.isConnected && fsPrev.active !== doc.body ? fsPrev.active : fsToggle;
+    try { back.focus({ preventScroll: true }); } catch (e) { }
+    say('Full screen off.');
+  }
+  function toggleFs() { if (!chart) return; if (state.fs) leaveFs('button'); else enterFs(true); }
+  function onFsChange() {
+    if (fsEl() === stage) root.classList.add('fs-native');
+    else if (state.fs && fsMode === 'native') leaveFs('browser');
+  }
+  doc.addEventListener('fullscreenchange', onFsChange);
+  doc.addEventListener('webkitfullscreenchange', onFsChange);
+  fsToggle.addEventListener('click', toggleFs);
+  if (columnQuery && columnQuery.addEventListener) columnQuery.addEventListener('change', function () { if (state.fs) setList(column()); });
+  $('#list-toggle').addEventListener('click', function () { setList(!stage.classList.contains('list-on')); });
+  // the facets: a row of popovers, or a fixed sheet with a scrim on a narrow screen in full screen
+  function sheetMode() { return state.fs && !wide(); }
+  function sheetInert(on) {
+    var tb = $('#toolbar'), keep = [tb, help, $('#fs-scrim')];
+    Array.prototype.forEach.call(stage.children, function (c) { if (keep.indexOf(c) < 0 && c.tagName !== 'SCRIPT') c.inert = on; });
+    Array.prototype.forEach.call(tb.children, function (c) { if (c !== facetsEl) c.inert = on; });
+  }
+  function ensheet() { setList(false); facetsEl.setAttribute('role', 'dialog'); facetsEl.setAttribute('aria-modal', 'true'); facetsEl.setAttribute('aria-labelledby', 'facets-h'); $('#fs-scrim').hidden = false; sheetInert(true); }
+  function openSheet() {
+    facetsEl.classList.add('open'); $('#filters-toggle').setAttribute('aria-expanded', 'true');
+    if (sheetMode()) { ensheet(); var s = $('.facet>summary', facetsEl); if (s) s.focus(); }
+  }
+  function unsheet() { facetsEl.removeAttribute('role'); facetsEl.removeAttribute('aria-modal'); facetsEl.removeAttribute('aria-labelledby'); $('#fs-scrim').hidden = true; sheetInert(false); }
+  function closeSheet(focusBack) {
+    if (!facetsEl.classList.contains('open')) return;
+    facetsEl.classList.remove('open'); $('#filters-toggle').setAttribute('aria-expanded', 'false'); unsheet();
+    if (focusBack) $('#filters-toggle').focus();
+  }
+  $('#facets-close').addEventListener('click', function () { closeSheet(true); });
+  $('#fs-scrim').addEventListener('click', function () { closeSheet(true); });
+  if (wideQuery && wideQuery.addEventListener) wideQuery.addEventListener('change', function () { if (!sheetMode()) unsheet(); else if (facetsEl.classList.contains('open')) ensheet(); });
+  // the caveat in full screen: its Details link unfolds the two paragraphs of #caveat (filled here, never a second copy)
+  $('#caveat-mini a').addEventListener('click', function (e) {
+    if (!state.fs) return;
+    e.preventDefault();
+    var cm = $('#caveat-more'), open = cm.hidden;
+    if (open) { var ps = $$('#caveat .caveat-p'); $('#caveat-more-1').textContent = ps[0] ? ps[0].textContent : ''; $('#caveat-more-2').textContent = ps[1] ? ps[1].textContent : ''; }
+    cm.hidden = !open; this.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  // copy a link to this view (the address bar is hidden in native full screen); a selected field when the clipboard is not available
+  function copyText(text, ok, fail) {
+    try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(ok, fail); return; } } catch (e) { }
+    fail();
+  }
+  $('#share').addEventListener('click', function () {
+    writeHash();
+    var b = this, url = location.href, fb = $('#share-fallback'), st = $('#share-status');
+    copyText(url, function () {
+      fb.hidden = true; st.textContent = 'link copied'; b.textContent = 'copied';
+      clearTimeout(shareTimer); shareTimer = setTimeout(function () { st.textContent = ''; b.textContent = 'Copy link'; }, 2500);
+    }, function () {
+      fb.hidden = false; fb.value = url; fb.focus(); fb.select(); st.textContent = 'copy is not available here; the address is selected below';
+    });
+  });
+  // keys for the whole page: Shift+F full screen, / the search; Escape closes the top-most layer, then leaves full screen
+  // (the svg handles its own Escape first; in native full screen the browser leaves on Escape by itself and onFsChange follows)
+  doc.addEventListener('keydown', function (e) {
+    if (e.defaultPrevented) return;
+    var tag = (e.target && e.target.tagName) || '', itype = tag === 'INPUT' ? (e.target.type || 'text') : '';
+    var typing = tag === 'TEXTAREA' || tag === 'SELECT' || (tag === 'INPUT' && itype !== 'checkbox' && itype !== 'radio' && itype !== 'button') || !!(e.target && e.target.isContentEditable);
+    if (e.key === 'Escape') {
+      if (typing) return;
+      if (helpOpen()) { e.preventDefault(); closeHelp(); return; }
+      if (facetsEl.classList.contains('open') && sheetMode()) { e.preventDefault(); closeSheet(true); return; }
+      if (listSheetOpen()) { e.preventDefault(); setList(false); $('#list-toggle').focus(); return; }
+      if (chart && chart.tipPinned()) { e.preventDefault(); chart.unpinTip(); return; }
+      if (state.fs) { e.preventDefault(); leaveFs('escape'); }
+      return;
+    }
+    if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+    if ((e.key === 'F' || e.key === 'f') && e.shiftKey) { e.preventDefault(); toggleFs(); }
+    else if (e.key === '/') { e.preventDefault(); $('#q').focus(); $('#q').select(); }
+    else if (e.key === '?') { e.preventDefault(); openHelp(e.target); }
+  });
 
   // ---- boot: the hash is the view
   state = parseHash(location.hash, META);
   if (!chart) state.v = 'table';
+  if (!chart) state.fs = false;
   recompute();
   if (chart) { chart.layout(); chart.renderNow(); chart.setDomain(state.x, false); }
   booting = false;
   writeForm(); update();
   if (chart) { chart.renderNow(); chart.drawMini(); }
+  if (state.fs) enterFs(false);
   if (state.i !== null) showPinned(true);
   if (!wide()) $('#years').open = false;
 })();
@@ -2084,6 +2516,8 @@ LEGEND_HTML = """
  <li><svg viewBox="0 0 16 16" aria-hidden="true"><line x1="0" x2="7" y1="8" y2="8" class="leader"/><path d="M15 3L7 8l8 5z" class="m-source"/></svg> triangle with a dotted leader: upper bound only (“by …”)</li>
  <li><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="0" y="3" width="16" height="10" rx="5" class="pill"/></svg> rounded pill with a number: several statements in one bin, zoom in or press Enter</li>
  <li><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="0" y="0" width="7" height="16" class="past"/><line x1="7" x2="7" y1="0" y2="16" class="now"/><line x1="9" x2="16" y1="8" y2="8" class="lead"/></svg> dashed line: now (build date); shaded: the past; dotted lead on hover from the year said to the target</li>
+ <li><svg viewBox="0 0 16 16" aria-hidden="true"><line x1="0" x2="12" y1="8" y2="8" class="lead-all"/><circle cx="13" cy="8" r="3" class="m-source"/></svg> hairline from the year said to the target: lead lines, when switched on</li>
+ <li><svg viewBox="0 0 16 16" aria-hidden="true"><line x1="8" x2="8" y1="0" y2="16" class="probe-line"/></svg> solid line with a year: the probe, statements whose window covers that year</li>
 </ul>"""
 
 
@@ -2129,13 +2563,15 @@ def render_page(records, counts_text, built):
 </section>
 </header>
 <main class="wrap">
+<div id="stage">
 {filters_html(records)}
 <section id="timeline-section" aria-labelledby="timeline">
 <header class="card-head"><h2 id="timeline">Timeline</h2>
 <div class="chart-head needs-js">
- <label class="sel">Rows and groups <select id="group" name="g">
+ <div class="ch-main">
+ <label class="sel"><span class="sel-t">Rows and groups</span> <select id="group" name="g" aria-label="rows and groups">
   <option value="person">by person</option><option value="kind">by kind of text</option><option value="said">by decade said</option>
-  <option value="cert">by certainty</option><option value="target">cards by target decade</option></select></label>
+  <option value="cert">by certainty</option><option value="ahead">by years ahead</option><option value="target">cards by target decade</option></select></label>
  <div class="zoomctl needs-d3" role="group" aria-label="zoom">
   <button type="button" id="zoom-out" aria-label="zoom out" title="zoom out">−</button>
   <button type="button" id="zoom-in" aria-label="zoom in" title="zoom in">+</button>
@@ -2143,6 +2579,10 @@ def render_page(records, counts_text, built):
   <button type="button" id="zoom-now" title="centre the window on now">now</button>
   <button type="button" id="zoom-reset" title="reset the view">reset view</button>
  </div>
+ <button type="button" id="help-btn" class="btn" aria-haspopup="dialog" aria-controls="help" aria-label="keyboard shortcuts and help" title="keyboard shortcuts and help (?)">?</button>
+ <button type="button" id="list-toggle" class="btn fs-only" aria-pressed="true" title="show or hide the list of statements">List <b id="list-n"></b></button>
+ </div>
+ <div class="ch-more">
  <div class="wpresets" role="group" aria-label="window presets">
   <button type="button" class="wpreset" data-x="all" aria-pressed="false" title="the whole axis; the list shows every match">all years</button>
   <button type="button" class="wpreset" data-x="past" aria-pressed="false" title="the list follows this window">before now</button>
@@ -2151,7 +2591,9 @@ def render_page(records, counts_text, built):
   <button type="button" class="wpreset" data-x="2030s" aria-pressed="false" title="the list follows this window">2030s</button>
   <button type="button" class="wpreset" data-x="later" aria-pressed="false" title="the list follows this window">2040 and later</button>
  </div>
- <label class="check"><input type="checkbox" id="follow" name="w" value="1"> list and table follow the window</label>
+ <label class="check"><input type="checkbox" id="follow" name="w" value="1"> <span class="long">list and table follow the window</span><span class="short">follow the window</span></label>
+ <button type="button" id="leads-toggle" class="btn needs-d3" aria-pressed="false" title="a hairline from the year said to the target, for every statement in view (l)">lead lines</button>
+ </div>
 </div></header>
 {LEGEND_HTML}
 <div id="chartbox" class="chartwrap needs-d3">
@@ -2162,7 +2604,13 @@ def render_page(records, counts_text, built):
  <figure class="minifig"><figcaption class="sr-only">Mini-map of the whole axis; the zoom buttons, the presets and the arrow keys move the window</figcaption><svg id="minimap" viewBox="0 0 800 44" height="44" aria-hidden="true"></svg></figure>
  <div id="tip" class="tip" role="tooltip" hidden></div>
 </div>
-<p id="chart-help" class="muted needs-d3">Drag to pan. Ctrl + scroll, pinch or the + and − buttons zoom. In the chart: arrow keys move between statements, Shift+arrows pan, + and − zoom, 0 resets, Enter opens the card, Escape leaves.</p>
+<aside id="spot" class="spot needs-js" aria-labelledby="spot-h" hidden tabindex="-1">
+ <div class="spot-head"><h3 id="spot-h"></h3><button type="button" id="spot-close" class="btn" aria-label="unpin the statement">Close</button></div>
+ <div id="spot-body"></div>
+ <div class="spot-tools"><button type="button" id="spot-prev" class="btn">previous</button><button type="button" id="spot-next" class="btn">next</button><button type="button" id="spot-card" class="btn">Open in the list</button><button type="button" id="spot-zoom" class="btn needs-d3">Zoom here</button><button type="button" id="spot-person" class="btn">Only this person</button></div>
+ <p id="spot-status" class="sr-only" aria-live="polite"></p>
+</aside>
+<p id="chart-help" class="muted needs-d3">Drag to pan. Ctrl + scroll, pinch or the + and − buttons zoom. In the chart: arrow keys move between statements, Shift+arrows pan, + and − zoom, 0 resets, Enter pins, Shift+Enter opens the card, Escape leaves. Shift+F is full screen; ? lists every shortcut.</p>
 <p id="chart-status" class="sr-only" aria-live="polite"></p>
 <p id="no-d3" class="muted" hidden>The chart library did not load; the table and the lists below are complete.</p>
 <noscript><p class="muted">The chart and the filters need JavaScript. The lists below are complete without it.</p></noscript>
@@ -2174,7 +2622,7 @@ def render_page(records, counts_text, built):
  <div class="ebtns"><button type="button" id="empty-clear">Clear all filters</button><button type="button" id="empty-q" hidden>Clear the search</button><button type="button" id="empty-zoom" hidden>Show all years</button></div>
 </div>
 </section>
-<section aria-labelledby="statements">
+<section id="statements-section" aria-labelledby="statements">
 <h2 id="statements">Statements</h2>
 <div id="results-tools" class="needs-js">
  <button type="button" id="expand-all">Expand all</button>
@@ -2186,6 +2634,41 @@ def render_page(records, counts_text, built):
 {person_sections(records)}
 </div>
 </section>
+<dialog id="help" class="help" aria-labelledby="help-h">
+<div class="help-in">
+<h2 id="help-h" tabindex="-1">Keyboard shortcuts and help</h2>
+<table class="keys"><thead><tr><th scope="col">Keys</th><th scope="col">Where</th><th scope="col">Does</th></tr></thead><tbody>
+<tr><td><kbd>?</kbd></td><td>anywhere</td><td>opens this help</td></tr>
+<tr><td><kbd>/</kbd></td><td>anywhere</td><td>goes to the search</td></tr>
+<tr><td><kbd>Shift</kbd>+<kbd>F</kbd></td><td>anywhere</td><td>full screen on or off</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>anywhere</td><td>closes this help, a sheet or the tip, then leaves full screen</td></tr>
+<tr><td><kbd>←</kbd> <kbd>→</kbd></td><td>in the chart</td><td>pan by a tenth of the window; with <kbd>Shift</kbd>, half a window</td></tr>
+<tr><td><kbd>↑</kbd> <kbd>↓</kbd></td><td>in the chart</td><td>scroll the rows</td></tr>
+<tr><td><kbd>+</kbd> <kbd>−</kbd></td><td>in the chart</td><td>zoom in or out</td></tr>
+<tr><td><kbd>0</kbd></td><td>in the chart</td><td>reset the view</td></tr>
+<tr><td><kbd>f</kbd></td><td>in the chart</td><td>fit the window to the statements shown</td></tr>
+<tr><td><kbd>n</kbd></td><td>in the chart</td><td>centre on now</td></tr>
+<tr><td><kbd>Home</kbd> <kbd>End</kbd></td><td>in the chart</td><td>the first or the last ten years</td></tr>
+<tr><td><kbd>Enter</kbd></td><td>in the chart</td><td>go into the marks</td></tr>
+<tr><td><kbd>l</kbd></td><td>in the chart</td><td>lead lines on or off</td></tr>
+<tr><td><kbd>y</kbd></td><td>in the chart</td><td>the probe year</td></tr>
+<tr><td><kbd>j</kbd> <kbd>k</kbd></td><td>in the chart</td><td>pin the next or the previous statement in view</td></tr>
+<tr><td><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd></td><td>on a mark</td><td>the neighbouring marks and rows</td></tr>
+<tr><td><kbd>Home</kbd> <kbd>End</kbd></td><td>on a mark</td><td>the first or the last mark of the row</td></tr>
+<tr><td><kbd>Enter</kbd></td><td>on a mark</td><td>pin it; its details appear under the chart</td></tr>
+<tr><td><kbd>Shift</kbd>+<kbd>Enter</kbd></td><td>on a mark</td><td>open its card in the list</td></tr>
+<tr><td><kbd>Esc</kbd></td><td>on a mark</td><td>back to the chart</td></tr>
+</tbody></table>
+<h3>Mouse and touch</h3>
+<p>Drag pans. Shift+drag zooms to the range dragged. Ctrl+scroll or a pinch zooms at any time; a plain scroll moves the rows until the chart has been clicked or focused, then it zooms. Shift+scroll or a sideways trackpad swipe pans. Double-click zooms in on a point; double-click a mark to zoom to its year. Click a mark to pin it; Shift+click opens its card. In full screen one finger pans; on the page two fingers do, so the page itself still scrolls.</p>
+<h3>Full screen</h3>
+<p>The Full screen button or Shift+F uses the browser's own full screen, where Escape leaves at once. A link that carries fs=1 opens the expanded mode instead, the same layout within the browser window, because a page cannot go full screen on its own. On a small screen the Filters and List buttons open sheets. Copy link copies the address of the view, since the address bar is hidden.</p>
+<p>The address after # holds the whole view: filters, window, grouping, view, sort, a pinned statement and full screen. Copy link puts it on the clipboard.</p>
+<p><button type="button" id="help-close" class="btn">Close</button></p>
+</div>
+</dialog>
+<div id="fs-scrim" hidden></div>
+</div>
 <details id="years" open>
 <summary><h2 id="years-h">Index by target year</h2></summary>
 <nav aria-labelledby="years-h"><ul id="yearlist">
@@ -2203,9 +2686,9 @@ def render_page(records, counts_text, built):
 <dt>What the blinded sample measured</dt>
 <dd>A fresh sample of 99 windowed candidates, labelled blind by two automated (agent) coders who did not see the rules (agreement kappa 0.96), put real predictions at about 56% (weighted by person; 95% interval about 47% to 65%), from about a fifth to nine in ten by person. The rest are misparsed dates, quoted past years or rhetorical futures. No accuracy is scored on this page.</dd>
 <dt>Reading the timeline</dt>
-<dd>One row per group, one mark per statement at the first year of its target window, a bar to the last year. Marks that would overlap are stacked into a pill with a count; zooming in spreads them. The shaded area is the past and the dashed line is the build date. Hovering or focusing a mark draws a dotted lead from the year the statement was said to its target. The mini-map below the chart shows the density of all target years and the window in view. Every value in the chart is also in the table view.</dd>
+<dd>One row per group, one mark per statement at the first year of its target window, a bar to the last year. Marks that would overlap are stacked into a pill with a count; zooming in spreads them. The shaded area is the past and the dashed line is the build date. Hovering or focusing a mark draws a dotted lead from the year the statement was said to its target. The mini-map below the chart shows the density of all target years and the window in view. A probe year (the Expected for filter, or the y key in the chart) draws a solid line across the rows and counts the windows that cover it; the lead lines switch draws a hairline from the year said to the target for every statement in view. Every value in the chart is also in the table view.</dd>
 <dt>Sharing a view</dt>
-<dd>The view lives in the address after the hash sign: the filters (p, k, f, s, d, e, b, q), the window (x) and whether the list follows it (w), the grouping (g), the view (v), the sort (o) and a pinned statement (i). A link's pinned statement refers to this build's numbering.</dd>
+<dd>The view lives in the address after the hash sign: the filters (p, k, f, s, d, e, b, a for years ahead, y for the probe year, q), the window (x) and whether the list follows it (w), the lead lines (l), the grouping (g), the view (v), the sort (o), a pinned statement (i) and full screen (fs, the expanded mode when opened from a link). A link's pinned statement refers to this build's numbering.</dd>
 <dt>What is withheld and why</dt>
 <dd>No transcript and no audio: a quote of at most 30 words per statement (words are whitespace tokens with a letter or digit in them; the closing ellipsis is not a word), at most 5% of an item's words across the page (for speech-to-text, 5% of the transcript's words) and at most {QUOTE_CAP_PER_PERSON:,} quoted words per person; where the share leaves no room, the time expression stands in. No questioner is named: a sentence that opens as someone else's turn, a bare "Questioner" opener included, or that names a person on a private list kept by the owner, shows no quote. No private location: items are named by id and linked to their public page where one is known; a podcast episode known only by its audio file has no link.</dd>
 <dt>The guard</dt>

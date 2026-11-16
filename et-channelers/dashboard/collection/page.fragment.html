@@ -1,0 +1,1999 @@
+<meta name="dash-one-writer">
+<style>
+  .cc-page { display: flex; flex-direction: column; gap: var(--cds-gap-xl); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+  .cc-hero { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+  .cc-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; text-wrap: balance; }
+  .cc-lede { font-size: var(--cds-font-size-body); max-width: 70ch; margin: 0; line-height: 1.55; }
+  .cc-lede b, .cc-muted b, .cc-notes b { font-weight: var(--cds-font-weight-medium); font-variant-numeric: tabular-nums; color: var(--color-fg); }
+  .cc-muted { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); max-width: 76ch; margin: 0; line-height: 1.55; }
+  .cc-nav { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); }
+  .cc-nav-link { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 999px; padding: 4px 12px; cursor: pointer; text-decoration: none; }
+  .cc-nav-link:hover { border-color: var(--color-fg-muted); }
+  .cc-nav-link:focus-visible { border-color: var(--color-fg-muted); outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .cc-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(160px, 100%), 1fr)); gap: var(--cds-gap-md); }
+  .cc-tile { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+  .cc-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cc-tile-num { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .cc-tile-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+  .cc-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-md); min-width: 0; scroll-margin-top: 12px; }
+  .cc-section { display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; scroll-margin-top: 12px; }
+  .cc-h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; text-wrap: balance; }
+  .cc-h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: var(--cds-gap-sm) 0 0; text-wrap: balance; }
+  .cc-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: var(--cds-gap-xl); }
+  .cc-chart { position: relative; min-height: 150px; min-width: 0; }
+  .cc-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .cc-chart text { font-size: var(--cds-font-size-caption); fill: var(--cds-text-secondary); font-variant-numeric: tabular-nums; }
+  .cc-chart .cc-name { fill: var(--color-fg); }
+  .cc-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cc-key { display: inline-flex; align-items: center; gap: 6px; }
+  .cc-swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .cc-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 8px; font-size: var(--cds-font-size-caption); color: var(--color-fg); max-width: 260px; z-index: 2; }
+  .cc-fail { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+  .cc-filters { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); align-items: center; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+  .cc-scroll { overflow: auto; min-width: 0; max-height: 72vh; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+  .cc-scroll.cc-short { max-height: none; }
+  .cc-table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+  .cc-table th, .cc-table td { padding: 7px 10px; border-bottom: 1px solid var(--color-border-line); text-align: right; white-space: nowrap; vertical-align: top; }
+  .cc-table thead th { position: sticky; top: 0; z-index: 1; background: var(--color-bg); color: var(--color-fg-muted); font-weight: var(--cds-font-weight-medium); vertical-align: bottom; }
+  .cc-table thead tr.cc-grouprow th { position: static; }
+  .cc-table tbody tr:hover td { background: var(--color-panel); }
+  .cc-table .cc-left { text-align: left; }
+  .cc-table .cc-wrap { white-space: normal; min-width: 200px; max-width: 360px; text-align: left; color: var(--color-fg-muted); }
+  .cc-table .cc-title-cell { white-space: normal; min-width: 220px; max-width: 420px; text-align: left; }
+  .cc-table thead th.cc-group { border-bottom: none; text-align: center; color: var(--color-fg); }
+  .cc-zero { color: var(--color-fg-muted); }
+  .cc-table a { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-border-line); text-underline-offset: 2px; }
+  .cc-table a:hover { text-decoration-color: var(--color-fg); }
+  .cc-sub { display: block; color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin-top: 2px; white-space: normal; }
+  .cc-table .cc-links { white-space: normal; min-width: 220px; max-width: 300px; }
+  .cc-links a { margin-right: 8px; white-space: nowrap; }
+  .cc-pill { display: inline-flex; align-items: center; gap: 6px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--color-border-line); color: var(--color-fg); white-space: nowrap; }
+  .cc-pill-got { border-color: var(--color-ok); }
+  .cc-pill-plan { border-color: var(--color-warn); }
+  .cc-pill-none { border-color: var(--color-bad); }
+  .cc-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .cc-notes { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); max-width: 78ch; line-height: 1.55; }
+  .cc-notes summary { cursor: pointer; color: var(--color-fg); }
+  .cc-notes dt { color: var(--color-fg); margin-top: var(--cds-gap-sm); }
+  .cc-notes dd { margin: 0; }
+  .cc-status { background: var(--color-panel); border: 1px solid var(--color-border-line); border-left: 3px solid var(--color-warn); border-radius: var(--cds-radius); padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); max-width: 76ch; min-width: 0; font-size: var(--cds-font-size-caption); line-height: 1.55; color: var(--color-fg-muted); }
+  .cc-status-h { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); color: var(--color-fg); margin: 0; text-wrap: balance; }
+  .cc-status p { margin: 0; }
+  .cc-status code { font-size: inherit; color: var(--color-fg); overflow-wrap: anywhere; }
+  [data-dash-source-state=refreshing] { opacity: .5; }
+  /* colour code: one hue per kind of text and of holding, set once from the dashboard's own series colours */
+  .cc-page { --cc-made: var(--cds-chart-muted); --cc-src: var(--cds-chart-muted); --cc-cap: var(--cds-chart-muted); --cc-wait: var(--cds-chart-muted); --cc-other: var(--cds-chart-muted); --cc-title: var(--cds-chart-muted); }
+  .cc-code { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm) var(--cds-gap-lg); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); padding: var(--cds-pad-md) var(--cds-pad-lg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); background: var(--color-panel); }
+  .cc-code .cc-key { color: var(--color-fg); }
+  .cc-sw-made { background: var(--cc-made); } .cc-sw-src { background: var(--cc-src); } .cc-sw-title { background: var(--cc-title); } .cc-sw-cap { background: var(--cc-cap); } .cc-sw-wait { background: var(--cc-wait); }
+  .cc-glyph { font-size: 10px; line-height: 1; }
+  .cc-pill-got .cc-glyph { color: var(--color-ok); } .cc-pill-plan .cc-glyph { color: var(--color-warn); } .cc-pill-none .cc-glyph { color: var(--color-bad); }
+  .cc-pill-got { background: color-mix(in srgb, var(--color-ok) 10%, transparent); }
+  .cc-pill-plan { background: color-mix(in srgb, var(--color-warn) 12%, transparent); }
+  .cc-pill-none { background: color-mix(in srgb, var(--color-bad) 9%, transparent); }
+  .cc-seg { display: flex; height: 28px; gap: 2px; min-width: 0; }
+  .cc-seg-part { position: relative; display: flex; align-items: center; padding: 0 8px; border-radius: 4px; color: #fff; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; overflow: hidden; min-width: 0; cursor: default; }
+  .cc-seg-part:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 2px; }
+  .cc-seg-part span { white-space: nowrap; }
+  .cc-seg-wrap { position: relative; display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+  .cc-table thead th.cc-sortable { cursor: pointer; user-select: none; }
+  .cc-table thead th.cc-sortable:hover { color: var(--color-fg); }
+  .cc-table thead th[aria-sort=ascending]::after { content: " ↑"; color: var(--color-fg); }
+  .cc-table thead th[aria-sort=descending]::after { content: " ↓"; color: var(--color-fg); }
+  .cc-table tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--color-fg) 3%, transparent); }
+  .cc-table tbody tr:hover td { background: color-mix(in srgb, var(--color-fg) 7%, transparent); }
+  .cc-table thead th.cc-g-audio { box-shadow: inset 0 3px 0 var(--cc-wait); }
+  .cc-table thead th.cc-g-src { box-shadow: inset 0 3px 0 var(--cc-src); }
+  .cc-table thead th.cc-g-made { box-shadow: inset 0 3px 0 var(--cc-made); }
+  .cc-table thead th.cc-g-cap { box-shadow: inset 0 3px 0 var(--cc-cap); }
+  .cc-input { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: 5px 10px; min-width: 12ch; }
+  .cc-input:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+  .cc-status { border-left-color: var(--color-ok); }
+  .cc-rank { color: var(--color-fg-muted); font-variant-numeric: tabular-nums; width: 2.5ch; display: inline-block; text-align: right; margin-right: 6px; }
+  @media (prefers-reduced-motion: no-preference) { .cc-seg-part { transition: flex-basis var(--cds-dur-slow) var(--cds-ease-out); } }
+  /* neon blue: a channel that uploaded in the last 30 days, the same on every table */
+  .cc-page { --cc-neon: #27e3ff; }
+  .cc-table tr.cc-fresh td:first-child { box-shadow: inset 4px 0 0 var(--cc-neon); }
+  .cc-table tr.cc-fresh td { background: color-mix(in srgb, var(--cc-neon) 7%, transparent); }
+  .cc-badge-fresh { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; padding: 0 7px; border-radius: 999px; background: var(--cc-neon); color: #0b0b0b; font-size: 10px; font-weight: var(--cds-font-weight-medium); line-height: 16px; white-space: nowrap; vertical-align: middle; }
+  .cc-badge-fresh .cc-glyph { color: #0b0b0b; }
+</style>
+
+<div class="cc-page">
+  <header class="cc-hero" id="top">
+    <h1 class="cc-title">ET channelers: what is collected, and what it says about the future</h1>
+    <p class="cc-lede">Of <b data-draw="g-people" data-source="target_totals" data-field="people" data-row="0">—</b> tracked people and groups, <b data-draw="g-got" data-source="target_totals" data-field="with_something" data-row="0">—</b> have something in the archive, <b data-draw="g-plan" data-source="target_totals" data-field="planned" data-row="0">—</b> have a channel or another source on record and nothing in the archive yet, and <b data-draw="g-none" data-source="target_totals" data-field="no_source" data-row="0">—</b> have no channel or site on record. Their <b data-draw="g-sources" data-source="source_totals" data-field="sources" data-row="0">—</b> registered sources are listed below with a link, what each yields and how it is collected.</p>
+    <p class="cc-lede"><b data-draw="n-with-text" data-source="totals" data-field="items_with_text" data-row="0">—</b> items have text. <b data-draw="n-from-source" data-source="totals" data-field="items_text_from_source" data-row="0">—</b> have a transcript the publisher wrote, <b data-draw="n-made-here" data-source="totals" data-field="items_text_made_here" data-row="0">—</b> have one made here by speech-to-text from downloaded audio, and <b data-draw="n-both" data-source="totals" data-field="items_text_both" data-row="0">—</b> have both. <b data-draw="n-waiting" data-source="totals" data-field="audio_awaiting_transcript" data-row="0">—</b> downloaded recordings still wait for a transcript.</p>
+    <p class="cc-muted">Counts as of <b data-draw="as-of" data-source="source_totals" data-field="counts_as_of" data-row="0">—</b>, from the catalogue of what the archive holds. The page shows counts and the public addresses of channels, sites and feeds only: no address of a single recording and no text, except the <b data-draw="r-count" data-source="recording_totals" data-field="recordings" data-row="0">—</b> recordings and the podcast list that the Bashar Index site already publishes. No audio or text here came from YouTube. Its robots.txt disallows, for every crawler, the paths that channel listings, captions and audio are requested through, so those lanes are off by rule: they stay off unless the owner decides to turn them on. The video counts come from channel listings made before 14 November, when listing was turned off.</p>
+    <aside class="cc-status" aria-labelledby="status-h">
+      <h2 class="cc-status-h" id="status-h">Where things stand, as of 16 November 2026</h2>
+      <p>Everything collected is in the private GitHub store and on Google Drive, in the folder "ET Channelers Archive": 5,523 files (27.9 GB) in 78 folders, counted 16 November 2026, long recordings cut into playable parts. Every downloaded recording that has a transcript is on Drive. Collection, the store sync and speech-to-text run day and night in the Codespace.</p>
+      <p>YouTube refuses audio and captions to cloud servers, so the newest 10, 20 and 50 videos of every tracked channel are downloaded on the owner's own computer; the queues wait in the private store. The first pass over every text here found the statements about the future and gave each a target window; a third, blinded sample puts real predictions at about 56% of the dated candidates. The handoff notes are in the repository's <code>et-channelers/HANDOFF.md</code>.</p>
+    </aside>
+    <div class="cc-code" id="colour-code" aria-label="Colour code">
+      <span class="cc-key"><span class="cc-swatch cc-sw-src"></span>text from the source</span>
+      <span class="cc-key"><span class="cc-swatch cc-sw-made"></span>text made here (speech-to-text)</span>
+      <span class="cc-key"><span class="cc-swatch cc-sw-cap"></span>YouTube captions (none yet)</span>
+      <span class="cc-key"><span class="cc-swatch cc-sw-wait"></span>listed or downloaded, no text yet</span>
+      <span class="cc-key"><span class="cc-pill cc-pill-got"><span class="cc-glyph">●</span>in the archive</span></span>
+      <span class="cc-key"><span class="cc-pill cc-pill-plan"><span class="cc-glyph">◐</span>planned, waiting</span></span>
+      <span class="cc-key"><span class="cc-pill cc-pill-none"><span class="cc-glyph">○</span>no source, or off by rule</span></span>
+      <span class="cc-key"><span class="cc-badge-fresh"><span class="cc-glyph">●</span>30 days</span>channel uploaded in the last 30 days (neon rows in every table)</span>
+    </div>
+    <nav class="cc-nav" aria-label="Sections">
+      <a class="cc-nav-link" href="#sources" data-go="sources">Sources and links</a>
+      <a class="cc-nav-link" href="#methods" data-go="methods">How it is collected</a>
+      <a class="cc-nav-link" href="#everyone" data-go="everyone">Everyone tracked</a>
+      <a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar</a>
+      <a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a>
+      <a class="cc-nav-link" href="#per-person" data-go="per-person">Text by kind</a>
+      <a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio behind the transcripts</a>
+      <a class="cc-nav-link" href="#predictions" data-go="predictions">Predictions</a>
+      <a class="cc-nav-link" href="#keywords" data-go="keywords">Newest videos: keywords</a>
+      <a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackouts of the grid</a>
+      <a class="cc-nav-link" href="#contacts" data-go="contacts">Websites and contacts</a>
+    </nav>
+  </header>
+
+  <section class="cc-tiles" id="headline">
+    <div class="cc-tile"><span class="cc-tile-label">People and groups tracked</span><span class="cc-tile-num" data-draw="t-people" data-source="target_totals" data-field="people" data-row="0">—</span><span class="cc-tile-sub"><span data-draw="t-channels" data-source="target_totals" data-field="with_channel" data-row="0">—</span> have a YouTube channel on record</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Sources registered</span><span class="cc-tile-num" data-draw="t-sources" data-source="source_totals" data-field="sources" data-row="0">—</span><span class="cc-tile-sub">for <span data-draw="t-source-people" data-source="source_totals" data-field="people" data-row="0">—</span> people, each with its link</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Videos listed on their channels</span><span class="cc-tile-num" data-draw="t-videos" data-source="target_totals" data-field="videos_and_live" data-row="0">—</span><span class="cc-tile-sub"><span data-draw="t-video-hours" data-source="target_totals" data-field="listed_video_hours" data-row="0">—</span> hours, plus <span data-draw="t-shorts" data-source="target_totals" data-field="shorts_listed" data-row="0">—</span> shorts</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Audio downloaded</span><span class="cc-tile-num" data-draw="t-audio" data-source="totals" data-field="audio_ok" data-row="0">—</span><span class="cc-tile-sub"><span data-draw="t-audio-hours" data-source="totals" data-field="audio_hours" data-row="0">—</span> hours, <span data-draw="t-people-audio" data-source="totals" data-field="people_with_audio" data-row="0">—</span> people</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Texts from the source</span><span class="cc-tile-num" data-draw="t-source" data-source="totals" data-field="publisher_texts" data-row="0">—</span><span class="cc-tile-sub"><span data-draw="t-source-words" data-source="totals" data-field="publisher_text_words" data-row="0">—</span> words, written by the publisher</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Transcripts made here</span><span class="cc-tile-num" data-draw="t-made" data-source="totals" data-field="asr_transcripts" data-row="0">—</span><span class="cc-tile-sub"><span data-draw="t-made-words" data-source="totals" data-field="asr_words" data-row="0">—</span> words, speech-to-text from audio</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Audio awaiting a transcript</span><span class="cc-tile-num" data-draw="t-waiting" data-source="totals" data-field="audio_awaiting_transcript" data-row="0">—</span><span class="cc-tile-sub">recordings with no text yet</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Bashar session recordings from archive.org</span><span class="cc-tile-num" data-draw="t-ia-here" data-source="session_totals" data-field="audio_here" data-row="0">—</span><span class="cc-tile-sub">of <span data-draw="t-ia-files" data-source="session_totals" data-field="audio_recordings" data-row="0">—</span> recordings listed there</span></div>
+    <div class="cc-tile"><span class="cc-tile-label">Statements about the future found</span><span class="cc-tile-num" data-draw="t-pred" data-source="prediction_totals" data-field="distinct" data-row="0">—</span><span class="cc-tile-sub"><span data-draw="t-pred-win" data-source="prediction_totals" data-field="distinct_with_window" data-row="0">—</span> with a target date, from <span data-draw="t-pred-people" data-source="prediction_totals" data-field="people" data-row="0">—</span> people</span></div>
+  </section>
+
+  <section class="cc-section" id="people-states">
+    <h2 class="cc-h2">Everyone tracked, by state</h2>
+    <p class="cc-muted">Each tracked person or group once. Point at a part for its count and share; the counts are also in the list of everyone tracked, further down.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-pill cc-pill-got"><span class="cc-glyph">●</span>something in the archive</span></span><span class="cc-key"><span class="cc-pill cc-pill-plan"><span class="cc-glyph">◐</span>a channel or source on record, nothing here yet</span></span><span class="cc-key"><span class="cc-pill cc-pill-none"><span class="cc-glyph">○</span>no channel or site on record</span></span></div>
+    <div class="cc-seg-wrap" data-draw="seg-people" data-source="target_totals"></div>
+  </section>
+
+  <section class="cc-card" id="sources">
+    <h2 class="cc-h2">Every source, with its link and how it is collected</h2>
+    <p class="cc-muted">One row per source of one person: a YouTube channel, an official site, a podcast of their own, an interview show that names them, audio or text pages on their own site, recordings on archive.org, or earlier research. "Listed" counts the items the source holds. "Here" counts those in the archive as what the source yields: audio, or text for text pages. Beside it, audio, texts the source itself published (a page, a feed's transcript) and texts made here by speech-to-text are each counted on their own and never added together, so an episode held as audio and as the feed's transcript counts in both columns. A dash is a count not known, which is not none. A video whose podcast episode or page is here counts on that row, not on its channel's: <b data-draw="n-twins" data-source="totals" data-field="youtube_captured" data-row="0">—</b> listed videos are covered that way, as the column "Videos covered by a twin" further down shows. The link opens the source itself; "reads" is the address the pipeline reads, where that differs. Each type of collection is explained in the next section.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch" data-draw="key-src-here"></span>here as what the source yields</span><span class="cc-key"><span class="cc-swatch" data-draw="key-src-left"></span>listed, not here as what it yields</span></div>
+    <div class="cc-chart" data-draw="chart-source-kinds" data-source="source_kinds"></div>
+    <div class="cc-filters">
+      <select class="dash-select" data-draw="src-person" aria-label="Person" data-source="sources"></select>
+      <select class="dash-select cc-filter" data-cc-param="src_kind" aria-label="Kind of source">
+        <option value="">All kinds of source</option>
+        <option value="youtube channel">YouTube channels</option>
+        <option value="official site">Official sites</option>
+        <option value="own podcast">Their own podcasts</option>
+        <option value="audio on own site">Audio on their own site</option>
+        <option value="texts on own site">Texts on their own site</option>
+        <option value="archive.org">archive.org</option>
+        <option value="interview show">Interview shows</option>
+        <option value="earlier research">Earlier research</option>
+      </select>
+      <input class="cc-input cc-search" type="search" data-cc-param="q_sources" aria-label="Search sources by name or address" placeholder="Search sources">
+      <span><span data-draw="src-shown" data-source="sources_shown" data-field="shown" data-row="0">—</span> of <span data-draw="src-all" data-source="sources_shown" data-field="all" data-row="0">—</span> sources shown · click a column heading to sort</span>
+    </div>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="sources" data-row-key="source_id">
+        <thead>
+          <tr class="cc-grouprow">
+            <th class="cc-left cc-group" colspan="6"></th>
+            <th class="cc-group" colspan="2">What the source yields</th>
+            <th class="cc-group" colspan="3">Held here, each kind on its own</th>
+            <th class="cc-group" colspan="2"></th>
+          </tr>
+          <tr>
+            <th class="cc-left" data-field="person_name">Person</th>
+            <th class="cc-left" data-field="source">Source and link</th>
+            <th class="cc-left" data-field="kind">Kind</th>
+            <th class="cc-left" data-field="method">Type of collection</th>
+            <th class="cc-left" data-source="source_cloud" data-field="cloud">From a cloud server</th>
+            <th class="cc-left" data-field="collects">Yields</th>
+            <th data-field="items_listed">Listed</th>
+            <th data-field="items_here">Here</th>
+            <th data-field="audio_here" class="cc-g-audio">Audio</th>
+            <th data-field="texts_from_source" class="cc-g-src">Text from the source</th>
+            <th data-field="texts_made_here" class="cc-g-made">Text made here</th>
+            <th class="cc-left" data-field="status">Status</th>
+            <th class="cc-left" data-field="verification">Why it counts as theirs</th>
+          </tr>
+        </thead>
+        <tbody data-draw="source-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="methods">
+    <h2 class="cc-h2">How each source is collected</h2>
+    <p class="cc-muted">Every type of collection the pipeline uses, what it yields, the script that does it and the rules it keeps. None uses cookies, logins, proxies, other player clients or mirror sites, and robots.txt is read first wherever a site is read. YouTube's robots.txt disallows, for every crawler, the paths that its channel listing, captions and audio go through, so those three are off by rule: they send nothing unless the owner decides to turn them on. YouTube also refuses audio and caption requests from cloud servers, so those two would need a home connection as well.</p>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="methods" data-row-key="method">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="name">Type of collection</th>
+            <th class="cc-left" data-field="collects">Yields</th>
+            <th class="cc-left" data-field="from_cloud">From a cloud server</th>
+            <th data-source="method_use" data-field="sources">Sources using it</th>
+            <th class="cc-left" data-field="tool">Tool</th>
+            <th class="cc-left" data-field="how">How</th>
+            <th class="cc-left" data-field="rules">Rules it keeps</th>
+          </tr>
+        </thead>
+        <tbody data-draw="method-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-section" id="states">
+    <h2 class="cc-h2">Captured and planned, by where each name came from</h2>
+    <p class="cc-muted">Every tracked name once, by state. The colours say which earlier project named it: the Bashar index in this repository, the ArchiveShelf channel list, both, or added since. The table under the chart gives each count.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch" data-draw="key-o0"></span>Bashar index</span><span class="cc-key"><span class="cc-swatch" data-draw="key-o1"></span>ArchiveShelf</span><span class="cc-key"><span class="cc-swatch" data-draw="key-o2"></span>both</span><span class="cc-key"><span class="cc-swatch" data-draw="key-o3"></span>added since</span></div>
+    <div class="cc-chart" data-draw="chart-states" data-source="state_by_origin"></div>
+    <div class="cc-scroll cc-short">
+      <table class="cc-table" data-source="state_by_origin" data-row-key="state">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="state">State</th>
+            <th data-field="bashar-index">Bashar index</th>
+            <th data-field="archiveshelf">ArchiveShelf</th>
+            <th data-field="both">Both</th>
+            <th data-field="added">Added since</th>
+            <th data-field="total">All</th>
+          </tr>
+        </thead>
+        <tbody data-draw="state-origin-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="everyone">
+    <h2 class="cc-h2">Everyone tracked</h2>
+    <p class="cc-muted">One row per person or group, with their channel and site, what is registered outside YouTube and what is in the archive. The full list of each person's sources is in the table above.</p>
+    <div class="cc-filters">
+      <select class="dash-select cc-filter" data-cc-param="origin" aria-label="Where the name came from">
+        <option value="">All origins</option>
+        <option value="bashar-index">Bashar index</option>
+        <option value="archiveshelf">ArchiveShelf</option>
+        <option value="both">Both</option>
+        <option value="added">Added since</option>
+      </select>
+      <select class="dash-select cc-filter" data-cc-param="state" aria-label="State">
+        <option value="">All states</option>
+        <option value="captured">Captured</option>
+        <option value="partly captured">Partly captured</option>
+        <option value="planned: source found">Planned: source found</option>
+        <option value="planned: YouTube only">Planned: YouTube only</option>
+        <option value="planned: no source yet">Planned: no source yet</option>
+        <option value="unresolved">Unresolved</option>
+      </select>
+      <input class="cc-input cc-search" type="search" data-cc-param="q_people" aria-label="Search people by name" placeholder="Search people">
+      <span><span data-draw="e-shown" data-source="targets_shown" data-field="shown" data-row="0">—</span> of <span data-draw="e-all" data-source="targets_shown" data-field="all" data-row="0">—</span> shown · click a column heading to sort</span>
+    </div>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="targets" data-row-key="person_name">
+        <thead>
+          <tr class="cc-grouprow">
+            <th class="cc-left cc-group" colspan="4"></th>
+            <th class="cc-group" colspan="4">Their YouTube channel lists</th>
+            <th class="cc-group" colspan="5">Registered outside YouTube</th>
+            <th class="cc-group" colspan="6">In the archive</th>
+            <th class="cc-group" colspan="1"></th>
+          </tr>
+          <tr>
+            <th class="cc-left" data-field="person_name">Person or group</th>
+            <th class="cc-left">Links</th>
+            <th class="cc-left" data-field="origin">Named by</th>
+            <th class="cc-left" data-field="state">State</th>
+            <th data-field="videos_listed">Videos</th>
+            <th data-field="live_listed">Live</th>
+            <th data-field="shorts_listed">Shorts</th>
+            <th data-field="listed_video_hours">Hours</th>
+            <th data-field="podcast_feeds">Podcast feeds</th>
+            <th data-field="creator_files">Files on their site</th>
+            <th data-field="publisher_pages">Text pages</th>
+            <th data-field="archive_org_files">archive.org recordings</th>
+            <th data-field="interviews_live_channeling">Interviews with live channeling</th>
+            <th data-field="items_captured">Items here</th>
+            <th data-field="items_listed">of listed</th>
+            <th data-field="captured_audio_files" class="cc-g-audio">Audio files</th>
+            <th data-field="captured_audio_hours" class="cc-g-audio">Audio hours</th>
+            <th data-field="captured_source_texts" class="cc-g-src">Texts from source</th>
+            <th data-field="captured_machine_transcripts" class="cc-g-made">Transcripts made here</th>
+            <th class="cc-left" data-field="next_step">Next step</th>
+          </tr>
+        </thead>
+        <tbody data-draw="target-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="bashar">
+    <h2 class="cc-h2">Bashar: the <span data-draw="r-count" data-source="recording_totals" data-field="recordings" data-row="0">—</span> recordings and the channels that carry them</h2>
+    <p class="cc-muted">The Bashar Index site was built from <b data-draw="b-rec" data-source="bashar_totals" data-field="recordings" data-row="0">—</b> recordings on <b data-draw="b-chan" data-source="bashar_totals" data-field="channels" data-row="0">—</b> channels. <b data-draw="b-up" data-source="bashar_totals" data-field="still_on_youtube" data-row="0">—</b> are still on YouTube. Transcripts of <b data-draw="b-read" data-source="bashar_totals" data-field="read_earlier" data-row="0">—</b> were read in October and not kept. The interview shows also publish podcasts: <b data-draw="b-feeds" data-source="bashar_totals" data-field="shows_with_feed" data-row="0">—</b> of their feeds were found, holding <b data-draw="b-eps" data-source="bashar_totals" data-field="episodes_listed" data-row="0">—</b> episodes that name Darryl Anka or Bashar, of which <b data-draw="b-got" data-source="bashar_totals" data-field="episodes_captured" data-row="0">—</b> are downloaded.</p>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="bashar_channels" data-row-key="channel">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="channel">Channel</th>
+            <th class="cc-left" data-field="kind">Kind</th>
+            <th data-field="bashar_recordings">Recordings in the list</th>
+            <th data-field="still_on_youtube">Still on YouTube</th>
+            <th data-field="transcripts_read_earlier">Read in October</th>
+            <th data-field="podcast_episodes_listed">Podcast episodes found</th>
+            <th data-field="podcast_episodes_captured">Downloaded</th>
+            <th data-field="captured_here">List recordings here</th>
+            <th class="cc-left" data-field="state">State</th>
+            <th class="cc-left" data-field="next_step">Next step</th>
+          </tr>
+        </thead>
+        <tbody data-draw="bashar-rows"></tbody>
+      </table>
+    </div>
+
+    <h3 class="cc-h3" id="bashar-recordings">The <span data-draw="r-count" data-source="recording_totals" data-field="recordings" data-row="0">—</span> recordings, one by one</h3>
+    <p class="cc-muted">From the Bashar Index site, which digested each from its auto-transcript (<b data-draw="r-words" data-source="recording_totals" data-field="words_digested" data-row="0">—</b> words read in all; digests only, no transcript was kept). A channeled session and a clip of one are Bashar speaking. An interview is a conversation with Darryl Anka unless its kind says otherwise; the kind is found from the transcript of the same interview on the show's podcast, never from the title. <b data-draw="r-here" data-source="recording_totals" data-field="here" data-row="0">—</b> of the <b data-draw="r-count" data-source="recording_totals" data-field="recordings" data-row="0">—</b> are in the archive. A year with a ? is only the date in the uploader's title, which the Bashar Index marked as unreliable; a dash means no year is known.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch" data-draw="key-here"></span>in the archive</span><span class="cc-key"><span class="cc-swatch" data-draw="key-nothere"></span>not yet</span></div>
+    <div class="cc-chart" data-draw="chart-kinds" data-source="recording_kinds"></div>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="bashar_recordings" data-row-key="video_id">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="title">Recording</th>
+            <th class="cc-left" data-field="channel">Channel</th>
+            <th class="cc-left" data-field="kind_of_recording">Kind</th>
+            <th data-field="year">Year</th>
+            <th data-field="words_digested">Words digested</th>
+            <th class="cc-left" data-field="top_topic">Main topic</th>
+            <th class="cc-left" data-field="transcript_read_2026_10">Read in October</th>
+            <th class="cc-left" data-field="still_on_youtube">On YouTube now</th>
+            <th class="cc-left" data-field="here">Here</th>
+          </tr>
+        </thead>
+        <tbody data-draw="recording-rows"></tbody>
+      </table>
+    </div>
+
+    <h3 class="cc-h3" id="bashar-sessions">Every catalogued session, by decade</h3>
+    <p class="cc-muted">The Bashar Index also catalogued <b data-draw="s-all" data-source="session_totals" data-field="sessions" data-row="0">—</b> sessions. These are Bashar's own channeled sessions, not interviews. <b data-draw="s-ia" data-source="session_totals" data-field="on_archive_org" data-row="0">—</b> of them point at a recording somebody deposited on archive.org, which answers from a cloud server. For those, archive.org lists <b data-draw="s-listed" data-source="archive_listing" data-field="audio_files_listed" data-row="0">—</b> audio files, of which <b data-draw="s-twice" data-source="archive_listing" data-field="second_encodings" data-row="0">—</b> are a second encoding of the same recording, so there are <b data-draw="s-files" data-source="session_totals" data-field="audio_recordings" data-row="0">—</b> recordings (<b data-draw="s-hours" data-source="session_totals" data-field="audio_hours" data-row="0">—</b> hours). <b data-draw="s-here" data-source="session_totals" data-field="audio_here" data-row="0">—</b> are downloaded (<b data-draw="s-hours-here" data-source="session_totals" data-field="hours_here" data-row="0">—</b> hours by the catalogue's durations). <b data-draw="s-official" data-source="session_totals" data-field="official_only" data-row="0">—</b> sessions are only on the official streaming site, which is paid and is not collected.</p>
+    <p class="cc-muted">All 903 recordings on archive.org were downloaded by 15 November 2026 and are on the owner's Google Drive; speech-to-text works through them.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch" data-draw="key-dec-here"></span>recordings downloaded</span><span class="cc-key"><span class="cc-swatch" data-draw="key-dec-left"></span>on archive.org, not downloaded</span><span class="cc-key"><span class="cc-swatch" data-draw="key-dec-none"></span>catalogued, no recording there</span></div>
+    <div class="cc-chart" data-draw="chart-decades" data-source="bashar_sessions"></div>
+    <div class="cc-scroll cc-short">
+      <table class="cc-table" data-source="bashar_sessions" data-row-key="decade">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="decade">Decade</th>
+            <th data-field="sessions_catalogued">Sessions catalogued</th>
+            <th data-field="on_archive_org">With a recording on archive.org</th>
+            <th data-field="archive_org_audio_files">Audio recordings listed</th>
+            <th data-field="archive_org_audio_hours">Hours</th>
+            <th data-field="archive_org_video_items">Video only</th>
+            <th data-field="official_streaming_only">Official site only</th>
+            <th data-field="audio_here">Downloaded</th>
+            <th data-field="audio_hours_here">Hours downloaded</th>
+            <th data-field="transcripts_here">Transcribed</th>
+          </tr>
+        </thead>
+        <tbody data-draw="session-rows"></tbody>
+      </table>
+    </div>
+
+    <h3 class="cc-h3" id="bashar-podcasts">Podcast appearances the Bashar Index listed</h3>
+    <p class="cc-muted">Its own list of Darryl Anka's podcast appearances, with the type it gave each, beside the kind found here for the same episode. "Not classified" means no transcript is held yet.</p>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="bashar_podcasts" data-row-key="episode_title">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="date">Date</th>
+            <th class="cc-left" data-field="show">Show</th>
+            <th class="cc-left" data-field="episode_title">Episode</th>
+            <th class="cc-left" data-field="type_in_bashar_index">Type in the Bashar Index</th>
+            <th class="cc-left" data-field="kind_found_here">Kind found here</th>
+            <th class="cc-left" data-field="here">Here</th>
+          </tr>
+        </thead>
+        <tbody data-draw="podcast-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="interviews">
+    <h2 class="cc-h2">Podcast interviews, by kind</h2>
+    <p class="cc-muted">Interview shows also carry tracked people. Only interviews with live channeling are queued for audio download, while a transcript the show publishes is fetched for every listed episode. Darryl Anka's interviews downloaded before that rule are kept whatever their kind, and "Here" counts every interview held as audio or text. Of <b data-draw="i-all" data-source="interview_totals" data-field="listed" data-row="0">—</b> interview episodes listed, <b data-draw="i-live" data-source="interview_totals" data-field="live" data-row="0">—</b> contain live channeling, <b data-draw="i-talk" data-source="interview_totals" data-field="conversation" data-row="0">—</b> are conversations, <b data-draw="i-unclear" data-source="interview_totals" data-field="unclear" data-row="0">—</b> are unclear, <b data-draw="i-clip" data-source="interview_totals" data-field="commentary" data-row="0">—</b> are commentary or clips, and <b data-draw="i-open" data-source="interview_totals" data-field="not_classified" data-row="0">—</b> are not classified yet because no transcript is held. Where a transcript is held, a reader (a small model given the whole transcript, checked on a sample) says whether and where the entity speaks; otherwise show notes that say the session is channeled live count. Titles are not used: of Darryl Anka's classified interviews, several titled as channeled messages, <b data-draw="b-i-talk" data-source="bashar_interviews" data-field="conversation" data-row="0">—</b> are conversations with him, <b data-draw="b-i-clip" data-source="bashar_interviews" data-field="commentary" data-row="0">—</b> commentary or clips, <b data-draw="b-i-unclear" data-source="bashar_interviews" data-field="unclear" data-row="0">—</b> unclear and <b data-draw="b-i-live" data-source="bashar_interviews" data-field="live" data-row="0">—</b> live channeling.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch" data-draw="key-i0"></span>live channeling</span><span class="cc-key"><span class="cc-swatch" data-draw="key-i1"></span>conversation</span><span class="cc-key"><span class="cc-swatch" data-draw="key-i2"></span>unclear</span><span class="cc-key"><span class="cc-swatch" data-draw="key-i3"></span>commentary or clip</span><span class="cc-key"><span class="cc-swatch" data-draw="key-i4"></span>not classified yet</span></div>
+    <div class="cc-seg-wrap" data-draw="seg-interviews" data-source="interview_totals"></div>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="coverage" data-row-key="person_id">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="person_name">Person</th>
+            <th data-field="interviews_listed">Interviews listed</th>
+            <th data-field="interviews_live_channeling">Live channeling</th>
+            <th data-field="interviews_unclear">Unclear</th>
+            <th data-field="interviews_conversation">Conversation</th>
+            <th data-field="interviews_commentary">Commentary or clip</th>
+            <th data-field="interviews_not_classified">Not classified</th>
+            <th data-field="interviews_here">Here</th>
+          </tr>
+        </thead>
+        <tbody data-draw="interview-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="cc-two">
+    <section class="cc-section" id="from-source">
+      <h2 class="cc-h2">Transcripts obtained from the source</h2>
+      <p class="cc-muted">Texts the publisher wrote and offers on their own site. No speech-to-text was needed for these. Bars show the number of texts; the label adds the word count.</p>
+      <div class="cc-chart" data-draw="chart-source" data-source="coverage"></div>
+    </section>
+    <section class="cc-section" id="from-audio">
+      <h2 class="cc-h2">Audio downloaded, and how much is transcribed</h2>
+      <p class="cc-muted">Recordings fetched from podcast feeds, the makers' own sites and archive.org. Each file is transcribed here, has only a text from the source, or waits for a transcript. The label gives files and hours.</p>
+      <div class="cc-legend"><span class="cc-key"><span class="cc-swatch" data-draw="key-made"></span>transcribed here</span><span class="cc-key"><span class="cc-swatch" data-draw="key-audio-src"></span>only a text from the source</span><span class="cc-key"><span class="cc-swatch" data-draw="key-wait"></span>waiting for a transcript</span></div>
+      <div class="cc-chart" data-draw="chart-audio" data-source="audio_split"></div>
+    </section>
+  </div>
+
+  <section class="cc-card" id="per-person">
+    <h2 class="cc-h2">Text by kind, per person</h2>
+    <p class="cc-muted">People with something registered outside YouTube or something in the archive. Text from the source and text made here are never added together. The blue wash in the hours and words columns deepens with the value, so the biggest holdings stand out; click a heading to sort.</p>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="coverage" data-row-key="person_id">
+        <thead>
+          <tr class="cc-grouprow">
+            <th class="cc-left cc-group" colspan="2"></th>
+            <th class="cc-group cc-g-audio" colspan="2">Audio downloaded</th>
+            <th class="cc-group cc-g-src" colspan="2">Text from the source</th>
+            <th class="cc-group cc-g-made" colspan="2">Text made here</th>
+            <th class="cc-group" colspan="3"></th>
+          </tr>
+          <tr>
+            <th class="cc-left" data-field="person_name">Person</th>
+            <th data-field="items_outside_youtube">Items outside YouTube</th>
+            <th data-field="audio_ok">Files</th>
+            <th data-field="audio_hours">Hours</th>
+            <th data-field="publisher_texts">Texts</th>
+            <th data-field="publisher_text_words">Words</th>
+            <th data-field="asr_transcripts">Transcripts</th>
+            <th data-field="asr_words">Words</th>
+            <th data-field="audio_awaiting_transcript">Awaiting</th>
+            <th data-field="youtube_captured">Videos covered by a twin</th>
+            <th class="cc-left" data-field="next_step">Next step</th>
+          </tr>
+        </thead>
+        <tbody data-draw="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="audio-behind">
+    <h2 class="cc-h2">The audio behind every transcript</h2>
+    <p class="cc-muted">Every item that has a transcript, by kind of text: is its recording downloaded, in the private store and on Google Drive, and when it is not here, why. <b data-draw="a-items" data-source="ta_any" data-field="items_with_text" data-row="0">—</b> items have text; <b data-draw="a-down" data-source="ta_any" data-field="audio_downloaded" data-row="0">—</b> recordings are downloaded, <b data-draw="a-drive" data-source="ta_any" data-field="on_drive" data-row="0">—</b> of them on Drive. <b data-draw="a-page" data-source="ta_any" data-field="no_audio_page" data-row="0">—</b> are web pages with no recording, <b data-draw="a-yt" data-source="ta_any" data-field="no_audio_youtube" data-row="0">—</b> are YouTube videos that only the owner's computer can fetch, <b data-draw="a-held" data-source="ta_any" data-field="no_audio_interview_held" data-row="0">—</b> are interviews held back because they are conversations rather than live channeling, <b data-draw="a-notyet" data-source="ta_any" data-field="no_audio_not_yet" data-row="0">—</b> wait to be fetched and <b data-draw="a-fail" data-source="ta_any" data-field="download_failed" data-row="0">—</b> failed.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch" data-draw="key-ta0"></span>downloaded, on Drive</span><span class="cc-key"><span class="cc-swatch" data-draw="key-ta1"></span>downloaded, not yet on Drive</span><span class="cc-key"><span class="cc-swatch" data-draw="key-ta2"></span>a web page, no recording</span><span class="cc-key"><span class="cc-swatch" data-draw="key-ta3"></span>a YouTube video (owner's computer)</span><span class="cc-key"><span class="cc-swatch" data-draw="key-ta4"></span>interview held back by rule</span><span class="cc-key"><span class="cc-swatch" data-draw="key-ta5"></span>not fetched yet</span><span class="cc-key"><span class="cc-swatch" data-draw="key-ta6"></span>download failed</span></div>
+    <div class="cc-chart" data-draw="chart-ta" data-source="transcript_audio"></div>
+    <div class="cc-scroll cc-short">
+      <table class="cc-table" data-source="transcript_audio" data-row-key="person_id,kind">
+        <thead>
+          <tr class="cc-grouprow">
+            <th class="cc-left cc-group" colspan="3"></th>
+            <th class="cc-group" colspan="4">Recording downloaded</th>
+            <th class="cc-group" colspan="5">No recording here</th>
+          </tr>
+          <tr>
+            <th class="cc-left" data-field="person_id">Person</th>
+            <th class="cc-left" data-field="kind">Kind of text</th>
+            <th data-field="items_with_text">Items with text</th>
+            <th data-field="audio_downloaded">Downloaded</th>
+            <th data-field="in_store">In the store</th>
+            <th data-field="on_drive">On Drive</th>
+            <th data-field="on_disk">Still on disk</th>
+            <th data-field="no_audio_page">Web page</th>
+            <th data-field="no_audio_youtube">YouTube video</th>
+            <th data-field="no_audio_interview_held">Interview held</th>
+            <th data-field="no_audio_not_yet">Not yet</th>
+            <th data-field="download_failed">Failed</th>
+          </tr>
+        </thead>
+        <tbody data-draw="ta-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="predictions">
+    <h2 class="cc-h2">Statements about the future, per person</h2>
+    <p class="cc-muted">A rules pass read every text here and kept each sentence that speaks of the future with a time expression, a prediction word or a prophecy theme; near-copies count once. These are candidates, not findings: in a third, blinded sample labelled by two independent coders, about 56% of the candidates with a target date were real predictions (weighted by person; 95% interval about 47% to 65%), from about a fifth to nearly nine in ten depending on the person. Texts from the source and speech-to-text made here stay apart. This table holds counts only. The statements with a target date are laid out, attributed and quoted at most 30 words each, on the public page <a href="https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html" target="_blank" rel="noopener">Prediction timelines</a> (a zoomable timeline with a mini-map, rows by person, kind, decade said or certainty, grouping, faceted filters, search, a sortable table and permalinks; redesigned on 16 November 2026, live).</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch cc-sw-src"></span>distinct candidates in texts from the source</span><span class="cc-key"><span class="cc-swatch cc-sw-made"></span>distinct candidates in speech-to-text made here</span></div>
+    <div class="cc-chart" data-draw="chart-predictions" data-source="prediction_by_person"></div>
+    <div class="cc-scroll cc-short">
+      <table class="cc-table" data-source="prediction_counts" data-row-key="person_id,kind">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="person_id">Person</th>
+            <th class="cc-left" data-field="kind">Kind of text</th>
+            <th data-field="items_read">Items read</th>
+            <th data-field="candidates">Candidates</th>
+            <th data-field="distinct">Distinct</th>
+            <th data-field="distinct_with_window">With a target date</th>
+            <th data-field="conditional">Conditional</th>
+            <th data-field="hedged">Hedged</th>
+            <th data-field="earliest_target">Earliest target</th>
+            <th data-field="latest_target">Latest target</th>
+          </tr>
+        </thead>
+        <tbody data-draw="pred-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="keywords">
+    <h2 class="cc-h2">The newest 10 videos of every channel: what their titles say more than before</h2>
+    <p class="cc-muted">For each tracked channel, the titles of its newest 10 videos (the Videos tab, listed on 15 November 2026) are set against all its other listed videos and against the other channels: TF-IDF, log-odds with the channel's own pooled counts as prior, and a Fisher exact test on the titles that name a blackout, the power grid or an outage. <b data-draw="k-channels" data-source="keyword_totals" data-field="channels" data-row="0">—</b> channels, <b data-draw="k-now" data-source="keyword_totals" data-field="titles_now" data-row="0">—</b> titles now against <b data-draw="k-before" data-source="keyword_totals" data-field="titles_before" data-row="0">—</b> before; <b data-draw="k-rising" data-source="keyword_totals" data-field="channels_rising" data-row="0">—</b> channels have at least one title term rising significantly (Benjamini-Hochberg at 5%). Titles naming a blackout, the grid or an outage: <b data-draw="k-strong-now" data-source="keyword_totals" data-field="strong_now" data-row="0">—</b> now against <b data-draw="k-strong-before" data-source="keyword_totals" data-field="strong_before" data-row="0">—</b> before (pooled Fisher p = 0.0009 in the run of 16 November 2026). Across channels the term rising most is "2026" (7.0% of the newest titles against 0.9% before), then "channeled message", "november", "starseeds" and "activation"; "channeling" and "love" fall. The terms and titles themselves stay private; this table holds counts and p-values. Texts: only the channels whose newest videos have a twin text here get a texts row (speech-to-text and texts from the source apart).</p>
+    <div class="cc-scroll cc-short">
+      <table class="cc-table" data-source="keywords_newest10" data-row-key="channel,kind">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="channel">Channel</th>
+            <th class="cc-left" data-field="kind">Kind</th>
+            <th data-field="tier_items">Newest</th>
+            <th data-field="history_items">Before</th>
+            <th data-field="rising_significant">Terms rising</th>
+            <th data-field="falling_significant">Terms falling</th>
+            <th data-field="tier_blackout_strong">Blackout titles, newest</th>
+            <th data-field="history_blackout_strong">Blackout titles, before</th>
+            <th data-field="tier_strong_per100">Per 100, newest</th>
+            <th data-field="history_strong_per100">Per 100, before</th>
+            <th data-field="strong_fisher_p_rise">Fisher p (rise)</th>
+            <th data-field="tier_blackout_weak">Solar-flare titles, newest</th>
+            <th data-field="history_blackout_weak">Solar-flare titles, before</th>
+          </tr>
+        </thead>
+        <tbody data-draw="kw-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="blackouts">
+    <h2 class="cc-h2">Who speaks of blackouts of the power grid and the internet</h2>
+    <p class="cc-muted">A theme search (ANALYSIS_PLAN 12.4.1) over everything stored here and over each channel's newest 10 videos. A hit is a sentence or title that speaks literally of electric power, the grid, a blackout or outage, or of the internet, communications, satellites or electronics failing or being cut; metaphysical grids, media blackouts and the like are left out. The lexicon's measured precision is 0.87 on texts from the source and 0.83 on titles against earlier labels, and 0.93 and 0.97 on a fresh blinded sample of 63 hits coded by two coders (kappa 0.88). Kinds of text stay apart; near-copies count once. Counts only; the hits themselves are private.</p>
+    <p class="cc-muted"><b>Newest 10 videos</b> (listed 15 November 2026): <b data-draw="b-videos" data-source="theme_newest_totals" data-field="videos" data-row="0">—</b> videos in <b data-draw="b-channels" data-source="theme_newest_totals" data-field="channels" data-row="0">—</b> channels; <b data-draw="b-titles" data-source="theme_newest_totals" data-field="titles_matching" data-row="0">—</b> titles match, in <b data-draw="b-tchannels" data-source="theme_newest_totals" data-field="channels_matching" data-row="0">—</b> channels; <b data-draw="b-twins" data-source="theme_newest_totals" data-field="videos_with_text" data-row="0">—</b> of these videos have a text here through a twin (a podcast edition or a page), with <b data-draw="b-texthits" data-source="theme_newest_totals" data-field="text_hits" data-row="0">—</b> hits in those texts. The rest waits for the captions and audio the owner's computer fetches (the four matching videos are first in that queue). <b>Everything stored</b>: <b data-draw="b-src-read" data-source="theme_totals" data-field="source_read" data-row="0">—</b> texts from the source hold <b data-draw="b-src-hits" data-source="theme_totals" data-field="source_distinct" data-row="0">—</b> distinct hits in <b data-draw="b-src-items" data-source="theme_totals" data-field="source_items" data-row="0">—</b> texts, <b data-draw="b-made-read" data-source="theme_totals" data-field="made_read" data-row="0">—</b> speech-to-text transcripts hold <b data-draw="b-made-hits" data-source="theme_totals" data-field="made_distinct" data-row="0">—</b>, and <b data-draw="b-title-read" data-source="theme_totals" data-field="title_read" data-row="0">—</b> video titles hold <b data-draw="b-title-hits" data-source="theme_totals" data-field="title_distinct" data-row="0">—</b>; <b data-draw="b-future" data-source="theme_totals" data-field="future_marked" data-row="0">—</b> hits speak of the future, <b data-draw="b-cand" data-source="theme_totals" data-field="prediction_candidates" data-row="0">—</b> are prediction candidates and <b data-draw="b-window" data-source="theme_totals" data-field="with_window" data-row="0">—</b> name a target year.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-swatch cc-sw-src"></span>distinct hits in texts from the source</span><span class="cc-key"><span class="cc-swatch cc-sw-made"></span>in speech-to-text made here</span><span class="cc-key"><span class="cc-swatch cc-sw-title"></span>in video titles</span></div>
+    <div class="cc-chart" data-draw="chart-blackouts" data-source="theme_by_person"></div>
+    <h3 class="cc-h3">Newest 10 videos, channels with a match or a text</h3>
+    <div class="cc-scroll cc-short">
+      <table class="cc-table" data-source="theme_blackouts_newest10" data-row-key="person_id,kind">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="person_id">Channel</th>
+            <th class="cc-left" data-field="kind">Kind</th>
+            <th data-field="videos_queued">Videos</th>
+            <th data-field="videos_with_twin">With a twin here</th>
+            <th data-field="videos_with_text">With a text here</th>
+            <th data-field="titles_matching">Titles matching</th>
+            <th data-field="distinct">Distinct hits</th>
+            <th data-field="future_marked">About the future</th>
+            <th data-field="prediction_candidates">Prediction candidates</th>
+            <th data-field="with_window">With a target year</th>
+            <th data-field="earliest_target">Target</th>
+          </tr>
+        </thead>
+        <tbody data-draw="bn-rows"></tbody>
+      </table>
+    </div>
+    <h3 class="cc-h3">Everything stored, people with a hit</h3>
+    <div class="cc-scroll cc-short">
+      <table class="cc-table" data-source="theme_blackouts" data-row-key="person_id,kind">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="person_id">Person</th>
+            <th class="cc-left" data-field="kind">Kind</th>
+            <th data-field="items_read">Items read</th>
+            <th data-field="items_with_hit">With a hit</th>
+            <th data-field="distinct">Distinct hits</th>
+            <th data-field="future_marked">About the future</th>
+            <th data-field="warning_marked">Warnings</th>
+            <th data-field="prediction_candidates">Prediction candidates</th>
+            <th data-field="with_window">With a target year</th>
+            <th data-field="earliest_target">Earliest target</th>
+            <th data-field="latest_target">Latest target</th>
+            <th data-field="earliest_said">Said from</th>
+            <th data-field="latest_said">Said to</th>
+            <th data-field="topic_power_grid">Power grid</th>
+            <th data-field="topic_internet_communications">Internet, comms</th>
+            <th data-field="topic_electronics_general">Electronics</th>
+            <th data-field="topic_darkness_event">Darkness event</th>
+            <th data-field="topic_unspecified">Unspecified</th>
+          </tr>
+        </thead>
+        <tbody data-draw="ba-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="cc-card" id="contacts">
+    <h2 class="cc-h2">Every channel, person and organisation: websites and contacts</h2>
+    <p class="cc-muted">One row per tracked person or group: their YouTube channel, official websites, their own podcasts with the feed and the show's site, recordings on archive.org, audio and text pages on their own site, and the interview shows that have had them on. <b data-draw="c-rows" data-source="contact_totals" data-field="people" data-row="0">—</b> people and groups; <b data-draw="c-sites" data-source="contact_totals" data-field="with_website" data-row="0">—</b> have a website on record, <b data-draw="c-pods" data-source="contact_totals" data-field="with_podcast" data-row="0">—</b> a podcast of their own and <b data-draw="c-mail" data-source="contact_totals" data-field="with_email" data-row="0">—</b> a contact address, and <b data-draw="c-about" data-source="contact_totals" data-field="with_about_links" data-row="0">—</b> declare links on their channel's About page. The addresses are only those the makers publish themselves: in their own podcast feeds' contact field, or written in their YouTube channel's public About description (read on 16 November 2026, 64 channels; the button behind YouTube's captcha is never pressed), and the table names the source of each. The About page also gives the links each channel declares itself, shown beside the websites on record. Nothing was taken from a contact page or a profile. This table is attached to the dashboard only and is not in the repository.</p>
+    <p class="cc-muted">Activity is read from the channel listings made on 15 November 2026 (the approximate date of the newest video on the Videos tab) and from the stored podcast feeds (the date of the latest episode): <b data-draw="c-fresh" data-source="contact_totals" data-field="channels_fresh" data-row="0">—</b> channels uploaded in the last 30 days (neon blue on every table), <b data-draw="c-active" data-source="contact_totals" data-field="channels_active" data-row="0">—</b> in the last 90 days, <b data-draw="c-quiet" data-source="contact_totals" data-field="channels_quiet" data-row="0">—</b> within the year before that, and <b data-draw="c-dormant" data-source="contact_totals" data-field="channels_dormant" data-row="0">—</b> have been silent for over a year. Older listing dates are only exact to the year.</p>
+    <div class="cc-legend"><span class="cc-key"><span class="cc-pill cc-pill-got"><span class="cc-glyph">●</span>active: last upload or episode within 90 days</span></span><span class="cc-key"><span class="cc-pill cc-pill-plan"><span class="cc-glyph">◐</span>quiet: within the last year</span></span><span class="cc-key"><span class="cc-pill cc-pill-none"><span class="cc-glyph">○</span>dormant: over a year</span></span></div>
+    <div class="cc-filters">
+      <select class="dash-select cc-filter" data-cc-param="c_activity" aria-label="Channel activity">
+        <option value="">Any channel activity</option>
+        <option value="fresh">Uploaded in the last 30 days</option>
+        <option value="active">Active channels (90 days)</option>
+        <option value="quiet">Quiet channels</option>
+        <option value="dormant">Dormant channels</option>
+        <option value="none">No channel on record</option>
+      </select>
+      <input class="cc-input cc-search" type="search" data-cc-param="q_contacts" aria-label="Search by name or site" placeholder="Search names and sites">
+      <select class="dash-select cc-filter" data-cc-param="c_role" aria-label="Role">
+        <option value="">People and organisations</option>
+        <option value="channeler">Channelers</option>
+        <option value="organisation">Organisations</option>
+        <option value="contactee">Contactees</option>
+        <option value="publisher">Publishers</option>
+        <option value="context">Context (not channelers)</option>
+      </select>
+      <span><span data-draw="c-shown" data-source="contacts_shown" data-field="shown" data-row="0">—</span> of <span data-draw="c-all" data-source="contacts_shown" data-field="all" data-row="0">—</span> shown · click a heading to sort</span>
+    </div>
+    <div class="cc-scroll">
+      <table class="cc-table" data-source="contacts" data-row-key="person_id">
+        <thead>
+          <tr>
+            <th class="cc-left" data-field="name">Person or group</th>
+            <th class="cc-left" data-field="role">Role</th>
+            <th class="cc-left" data-field="state">State</th>
+            <th class="cc-left" data-field="youtube_channel">YouTube channel</th>
+            <th class="cc-left" data-field="channel_last_upload">Channel activity</th>
+            <th class="cc-left" data-field="websites">Websites</th>
+            <th class="cc-left" data-field="about_links">Links on the channel's About page</th>
+            <th class="cc-left" data-field="podcasts">Own podcasts</th>
+            <th class="cc-left" data-field="podcast_last_episode">Podcast activity</th>
+            <th class="cc-left" data-field="contact_emails">Contact address (their feed or About page)</th>
+            <th class="cc-left" data-field="archive_org">archive.org</th>
+            <th class="cc-left" data-field="audio_pages">Audio on their site</th>
+            <th class="cc-left" data-field="text_pages">Texts on their site</th>
+            <th class="cc-left" data-field="interview_shows">Interview shows</th>
+            <th data-field="sources_registered">Sources</th>
+          </tr>
+        </thead>
+        <tbody data-draw="contact-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <details class="cc-notes" id="notes">
+    <summary>What the states, kinds and columns mean</summary>
+    <dl>
+      <dt>Captured</dt><dd>Every listed piece of work is in the archive as audio or text, and the person's channel has been listed, so "every" includes its videos.</dd>
+      <dt>Partly captured</dt><dd>Some of it is.</dd>
+      <dt>Planned: source found</dt><dd>A podcast feed, files, pages or archive.org recordings of their own, or an interview episode with live channeling, are registered outside YouTube, and nothing is fetched yet.</dd>
+      <dt>Planned: YouTube only</dt><dd>A channel is known and nothing outside YouTube is lined up to download. An official site, or interviews with no live channeling or not yet classified, may be on record. It waits for the owner's decision on YouTube's robots.txt, and then for a home connection.</dd>
+      <dt>Planned: no source yet</dt><dd>No channel or site is on record. Interviews with no live channeling, or not yet classified, may be.</dd>
+      <dt>One piece of work</dt><dd>A video and the podcast episode or page that carries the same content count once, and are captured when either side is here. "Videos covered by a twin" counts listed videos whose content is here that way.</dd>
+      <dt>Text from the source, text made here</dt><dd>The first is a transcript the publisher wrote, or YouTube's own captions (none so far: that lane is off by rule). The second is speech-to-text made by this project from downloaded audio.</dd>
+      <dt>Here, on a source</dt><dd>What the source yields that is in the archive: audio for a YouTube channel, a podcast, an interview show, files on the maker's own site and archive.org; text for text pages. Audio, a text the source itself published and a text made here are counted beside it, each on its own.</dd>
+      <dt>Off by rule</dt><dd>YouTube's robots.txt disallows, for every crawler, the paths that channel listings, captions and audio are requested through. The project obeys robots.txt, so those lanes send nothing until the owner decides to turn them on. "From a cloud server" says only whether a lane would work from one: YouTube also refuses audio and caption requests from cloud servers, so those two would need a home connection as well.</dd>
+      <dt>Kinds of interview</dt><dd>Live channeling: a reader of the whole transcript found the entity speaking (or, with no reading, its own signature is in the transcript, or the show notes say the session is channeled live). Conversation: the person speaks as themselves throughout, even when retelling what the entity says. Unclear: marks of an entity's voice and nothing that settles it. Commentary or clip: the person is not a guest. Not classified: no transcript is held yet.</dd>
+      <dt>Why it counts as theirs</dt><dd>The evidence that a source is the person's own: declared on their own channel page, served from or linked by their official site, or the show's own feed. A name alone never counts: several people called Michelle Robinson each have a podcast.</dd>
+      <dt>Candidate, distinct, with a target date</dt><dd>A candidate is a sentence the rules pass kept as a possible statement about the future. Distinct counts near-copies (the same statement posted twice) once. A target date is the window the time expression gives, counted from the date the text was said: "in two years" in 2021 is 2023; "soon" gets no date.</dd>
+      <dt>Audio behind a transcript</dt><dd>For an item with text: downloaded means its recording is here or was and is in the private store; on Drive means every part of it is on Google Drive. A web page has no recording. A YouTube video can only be fetched on the owner's computer. An interview is held back when it is a conversation or a clip rather than live channeling.</dd>
+      <dt>Named by</dt><dd><b data-draw="name-matches" data-source="target_totals" data-field="name_matches" data-row="0">—</b> ArchiveShelf names were tied to a channel by the channel's own name alone, and the owner has not confirmed them. The ArchiveShelf list was a screenshot, which cut some names short.</dd>
+    </dl>
+  </details>
+</div>
+
+<script>
+  const fmt = d3.format(','), fmt1 = d3.format(',.1f');
+  const num = (v) => { const n = +v; return Number.isFinite(n) ? n : 0; };
+  const known = (v) => (v == null || v === '' ? '—' : fmt(v));          // a count nobody knows is a dash, not a 0
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  // a time in UTC as "14 November 2026, 07:16 UTC", read from its text, so no reader's time zone moves the day
+  const when = (v) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(v || '');
+    return m ? `${+m[3]} ${MONTHS[+m[2] - 1]} ${m[1]}, ${m[4]}:${m[5]} UTC` : '—';
+  };
+  const ORIGINS = ['bashar-index', 'archiveshelf', 'both', 'added'];
+  const ORIGIN_NAME = { 'bashar-index': 'Bashar index', archiveshelf: 'ArchiveShelf', both: 'both', added: 'added since' };
+  const KIND_ORDER = ['youtube channel', 'official site', 'own podcast', 'audio on own site', 'texts on own site', 'archive.org', 'interview show', 'earlier research'];
+  // One hue per kind, fixed for the whole page: made here = series 1, from the source = series 2, captions = series 3.
+  const C = { made: dash.colors[0], src: dash.colors[1] || dash.colors[0], cap: dash.colors[2] || dash.colors[0], title: dash.colors[3] || dash.colors[0], wait: 'var(--cds-chart-muted)',
+    faint: 'color-mix(in srgb, var(--cds-chart-muted) 45%, transparent)' };
+  document.querySelectorAll('.cc-page').forEach((root) => {
+    root.style.setProperty('--cc-made', C.made); root.style.setProperty('--cc-src', C.src); root.style.setProperty('--cc-cap', C.cap); root.style.setProperty('--cc-wait', C.wait); root.style.setProperty('--cc-title', C.title);
+  });
+  const KIND_NAME = { made: 'speech-to-text made here', source: 'text from the source', captions: 'YouTube captions', any: 'any kind' };
+  const GLYPH = { got: '●', plan: '◐', none: '○' };
+  // sort state per table body drawing; a click on a heading sets it and reruns the drawing
+  const sortState = {};
+  const sorted = (rows, name, byDefault) => {
+    const st = sortState[name];
+    if (!st) return byDefault ? rows.slice().sort(byDefault) : rows;
+    const dir = st.dir === 'asc' ? 1 : -1;
+    return rows.slice().sort((a, b) => {
+      const x = a[st.field], y = b[st.field], nx = +x, ny = +y;
+      const bothNum = x !== '' && y !== '' && x != null && y != null && Number.isFinite(nx) && Number.isFinite(ny);
+      if (bothNum) return (nx - ny) * dir;
+      return String(x ?? '').localeCompare(String(y ?? ''), undefined, { numeric: true, sensitivity: 'base' }) * dir;
+    });
+  };
+  const matches = (text, q) => !q || String(text || '').toLowerCase().includes(q.toLowerCase());
+
+  dash.calc('totals', {
+    title: 'Totals across all tracked people',
+    description: 'Sums of the per-person coverage table, and counts of people with audio. An item can have a text from the source and one made here at once, so the two kinds are never added up as parts of the items with text: items_text_both is that overlap.',
+    inputs: ['coverage'],
+    fn: (coverage) => {
+      const sum = (field) => coverage.reduce((a, r) => a + (Number.isFinite(+r[field]) ? +r[field] : 0), 0);
+      return [{
+        people_with_audio: coverage.filter((r) => +r.audio_ok > 0).length,
+        audio_ok: sum('audio_ok'),
+        audio_hours: Math.round(sum('audio_hours') * 10) / 10,
+        publisher_texts: sum('publisher_texts'),
+        publisher_text_words: sum('publisher_text_words'),
+        asr_transcripts: sum('asr_transcripts'),
+        asr_words: sum('asr_words'),
+        items_text_from_source: sum('items_text_from_source'),
+        items_text_made_here: sum('items_text_made_here'),
+        items_with_text: sum('items_with_text'),
+        items_text_both: sum('items_text_from_source') + sum('items_text_made_here') - sum('items_with_text'),
+        audio_awaiting_transcript: sum('audio_awaiting_transcript'),
+        youtube_captured: sum('youtube_captured'),
+      }];
+    },
+  });
+
+  dash.calc('target_totals', {
+    title: 'Tracked people by state',
+    description: 'Counts over the target list. Names left out at the owner\'s request are not counted as tracked.',
+    inputs: ['targets'],
+    fn: (targets) => {
+      const tracked = targets.filter((r) => r.state !== 'excluded');
+      const count = (test) => tracked.filter(test).length;
+      const sum = (field) => tracked.reduce((a, r) => a + (Number.isFinite(+r[field]) ? +r[field] : 0), 0);
+      return [{
+        people: tracked.length,
+        with_something: count((r) => r.state === 'captured' || r.state === 'partly captured'),
+        planned: count((r) => r.state === 'planned: source found' || r.state === 'planned: YouTube only'),
+        no_source: count((r) => r.state === 'planned: no source yet' || r.state === 'unresolved'),
+        with_channel: count((r) => (r.youtube_channel_url || '') !== ''),
+        channels_listed: count((r) => (r.videos_listed || '') !== ''),
+        videos_and_live: sum('videos_listed') + sum('live_listed'),
+        shorts_listed: sum('shorts_listed'),
+        listed_video_hours: Math.round(sum('listed_video_hours')),
+        name_matches: count((r) => r.identity === 'name-match' && (r.origin === 'archiveshelf' || r.origin === 'both')),
+      }];
+    },
+  });
+
+  dash.calc('source_totals', {
+    title: 'Registered sources: totals',
+    description: 'How many sources are registered, for how many people, and when the private catalogue their counts come from was built: the latest counts_as_of, which a source whose counts are not known leaves empty.',
+    inputs: ['sources'],
+    fn: (sources) => [{
+      sources: sources.length,
+      people: new Set(sources.map((r) => r.person_id)).size,
+      counts_as_of: sources.reduce((a, r) => ((r.counts_as_of || '') > a ? r.counts_as_of : a), '') || null,
+    }],
+  });
+
+  dash.calc('source_kinds', {
+    title: 'Sources by kind',
+    description: 'For each kind of source: how many are registered, how many items they list, and how many of those are here as what the source yields (audio, or text for text pages). A kind whose sources leave both counts empty is not counted: listed, here and left are then empty, not 0.',
+    inputs: ['sources'],
+    fn: (sources) => ['youtube channel', 'official site', 'own podcast', 'audio on own site', 'texts on own site', 'archive.org', 'interview show', 'earlier research']
+      .map((kind) => {
+        const mine = sources.filter((r) => r.kind === kind);
+        const counted = mine.filter((r) => (r.items_listed ?? '') !== '' || (r.items_here ?? '') !== '');
+        if (!counted.length) return { kind, sources: mine.length, listed: null, here: null, left: null };
+        const listed = counted.reduce((a, r) => a + (Number.isFinite(+r.items_listed) ? +r.items_listed : 0), 0);
+        const here = counted.reduce((a, r) => a + (Number.isFinite(+r.items_here) ? +r.items_here : 0), 0);
+        return { kind, sources: mine.length, listed, here, left: Math.max(0, listed - here) };
+      }).filter((row) => row.sources > 0),
+  });
+
+  dash.calc('source_cloud', {
+    title: 'Sources: what works from a cloud server',
+    description: 'For each source, the steps of its chain of collection that the table of collection types marks as needing a home connection. "yes" when there are none; "home connection only" when the source\'s own type of collection is one of them.',
+    inputs: ['sources', 'methods'],
+    fn: (sources, methods) => {
+      const cloud = new Map(methods.map((m) => [m.method, m.from_cloud]));
+      const name = new Map(methods.map((m) => [m.method, m.name || m.method]));
+      return sources.map((r) => {
+        const home = (r.chain || r.method || '').split(', ').filter((s) => s && cloud.get(s) === 'no').map((s) => name.get(s));
+        const listed = home.length > 1 ? `${home.slice(0, -1).join(', ')} and ${home[home.length - 1]}` : home[0];
+        return {
+          source_id: r.source_id,
+          cloud: !home.length ? 'yes' : cloud.get(r.method) === 'no' ? 'home connection only' : `yes, except ${listed}`,
+        };
+      });
+    },
+  });
+
+  dash.calc('method_use', {
+    title: 'Sources using each type of collection',
+    description: 'How many registered sources name each type of collection in their chain of steps.',
+    inputs: ['sources', 'methods'],
+    fn: (sources, methods) => methods.map((m) => ({
+      method: m.method,
+      sources: sources.filter((r) => (r.chain || '').split(', ').includes(m.method)).length,
+    })),
+  });
+
+  dash.calc('sources_shown', {
+    title: 'Sources shown in the table',
+    description: 'How many sources match the person and kind chosen above the table.',
+    inputs: ['sources'],
+    fn: (sources) => {
+      const p = dash.params();
+      const q = (p.q_sources || '').toLowerCase();
+      const has = (v) => !q || String(v || '').toLowerCase().includes(q);
+      const shown = sources.filter((r) => (!p.src_person || r.person_id === p.src_person) && (!p.src_kind || r.kind === p.src_kind) && (has(r.person_name) || has(r.source) || has(r.link)));
+      return [{ shown: shown.length, all: sources.length }];
+    },
+  });
+
+  dash.calc('state_by_origin', {
+    title: 'Tracked names by state and origin',
+    description: 'How many tracked names of each origin are in each state. Names left out at the owner\'s request are not counted as tracked.',
+    inputs: ['targets'],
+    fn: (targets) => ['captured', 'partly captured', 'planned: source found', 'planned: YouTube only', 'planned: no source yet', 'unresolved']
+      .map((state) => {
+        const row = { state, total: 0 };
+        for (const origin of ['bashar-index', 'archiveshelf', 'both', 'added']) {
+          row[origin] = targets.filter((r) => r.state === state && r.origin === origin).length;
+          row.total += row[origin];
+        }
+        return row;
+      }).filter((row) => row.total > 0),
+  });
+
+  dash.calc('bashar_totals', {
+    title: 'Bashar recordings: totals over the channels',
+    description: 'Sums of the table of channels behind the Bashar recordings of the Bashar Index.',
+    inputs: ['bashar_channels'],
+    fn: (channels) => {
+      const sum = (field) => channels.reduce((a, r) => a + (Number.isFinite(+r[field]) ? +r[field] : 0), 0);
+      return [{
+        channels: channels.length,
+        recordings: sum('bashar_recordings'),
+        still_on_youtube: sum('still_on_youtube'),
+        read_earlier: sum('transcripts_read_earlier'),
+        shows_with_feed: channels.filter((r) => +r.podcast_feeds > 0).length,
+        episodes_listed: sum('podcast_episodes_listed'),
+        episodes_captured: sum('podcast_episodes_captured'),
+      }];
+    },
+  });
+
+  dash.calc('recording_totals', {
+    title: 'The Bashar Index recordings: totals',
+    description: 'Sums over the recordings the Bashar Index digested.',
+    inputs: ['bashar_recordings'],
+    fn: (recordings) => [{
+      recordings: recordings.length,
+      words_digested: recordings.reduce((a, r) => a + (Number.isFinite(+r.words_digested) ? +r.words_digested : 0), 0),
+      here: recordings.filter((r) => r.here === 'yes').length,
+    }],
+  });
+
+  dash.calc('recording_kinds', {
+    title: 'The Bashar Index recordings by kind',
+    description: 'How many recordings of each kind there are, and how many of them are in the archive.',
+    inputs: ['bashar_recordings'],
+    fn: (recordings) => {
+      const kinds = [];
+      for (const r of recordings) {
+        let row = kinds.find((k) => k.kind === r.kind_of_recording);
+        if (!row) { row = { kind: r.kind_of_recording, here: 0, not_here: 0, total: 0 }; kinds.push(row); }
+        row.total += 1;
+        if (r.here === 'yes') row.here += 1; else row.not_here += 1;
+      }
+      return kinds.sort((a, b) => b.total - a.total);
+    },
+  });
+
+  dash.calc('session_totals', {
+    title: 'Catalogued Bashar sessions: totals',
+    description: 'Sums over the decades of the session catalogue. archive.org audio is counted once per recording, a second encoding of the same recording left out; audio_hours are archive.org\'s durations of those recordings, hours_here the catalogue\'s durations of the ones downloaded.',
+    inputs: ['bashar_sessions'],
+    fn: (decades) => {
+      const sum = (field) => decades.reduce((a, r) => a + (Number.isFinite(+r[field]) ? +r[field] : 0), 0);
+      const tenth = (x) => Math.round(x * 10) / 10;
+      return [{
+        sessions: sum('sessions_catalogued'), on_archive_org: sum('on_archive_org'), audio_recordings: sum('archive_org_audio_files'),
+        audio_hours: tenth(sum('archive_org_audio_hours')), official_only: sum('official_streaming_only'), audio_here: sum('audio_here'),
+        hours_here: tenth(sum('audio_hours_here')),
+      }];
+    },
+  });
+
+  dash.calc('archive_listing', {
+    title: 'archive.org audio files behind the catalogued Bashar sessions',
+    description: 'How many audio files archive.org lists in the items the session catalogue cites, and how many of them are a second encoding of a recording counted once. Read from the note of Darryl Anka\'s archive.org row in the sources table, which reads like "937 audio files listed (34 of them a second encoding of a recording, counted once)"; empty when the note does not say.',
+    inputs: ['sources'],
+    fn: (sources) => {
+      const row = sources.find((r) => r.person_id === 'darryl-anka' && r.kind === 'archive.org');
+      const note = (row && row.note) || '';
+      const files = /(\d+) audio files listed/.exec(note);
+      const twice = /(\d+) of them a second encoding/.exec(note);
+      return [{ audio_files_listed: files ? +files[1] : null, second_encodings: files ? (twice ? +twice[1] : 0) : null }];
+    },
+  });
+
+  dash.calc('interview_totals', {
+    title: 'Podcast interviews by kind: totals',
+    description: 'Sums of the interview columns of the per-person coverage table.',
+    inputs: ['coverage'],
+    fn: (coverage) => {
+      const sum = (field) => coverage.reduce((a, r) => a + (Number.isFinite(+r[field]) ? +r[field] : 0), 0);
+      return [{
+        listed: sum('interviews_listed'), live: sum('interviews_live_channeling'), unclear: sum('interviews_unclear'),
+        conversation: sum('interviews_conversation'), commentary: sum('interviews_commentary'),
+        not_classified: sum('interviews_not_classified'), here: sum('interviews_here'),
+      }];
+    },
+  });
+
+  dash.calc('bashar_interviews', {
+    title: 'Darryl Anka\'s interviews by kind',
+    description: 'The interview columns of Darryl Anka\'s row in the per-person coverage table.',
+    inputs: ['coverage'],
+    fn: (coverage) => {
+      const r = coverage.find((x) => x.person_id === 'darryl-anka');
+      const v = (field) => (r && Number.isFinite(+r[field]) ? +r[field] : 0);
+      return r ? [{
+        live: v('interviews_live_channeling'), unclear: v('interviews_unclear'),
+        conversation: v('interviews_conversation'), commentary: v('interviews_commentary'),
+      }] : [];
+    },
+  });
+
+  dash.calc('audio_split', {
+    title: 'Downloaded audio by the text it has',
+    description: 'Per person with downloaded audio: files transcribed here, files whose only text came from the source, and files with no text yet. Each file is in one of the three, so together they are the files downloaded; the texts themselves are not added up.',
+    inputs: ['coverage'],
+    fn: (coverage) => {
+      const v = (r, field) => (Number.isFinite(+r[field]) ? +r[field] : 0);
+      return coverage.filter((r) => v(r, 'audio_ok') > 0)
+        .sort((a, b) => v(b, 'audio_hours') - v(a, 'audio_hours'))
+        .map((r) => ({
+          person_id: r.person_id, person_name: r.person_name || r.person_id,
+          audio_ok: v(r, 'audio_ok'), audio_hours: v(r, 'audio_hours'),
+          made_here: v(r, 'items_text_made_here'),
+          source_only: Math.max(0, v(r, 'audio_ok') - v(r, 'items_text_made_here') - v(r, 'audio_awaiting_transcript')),
+          waiting: v(r, 'audio_awaiting_transcript'),
+        }));
+    },
+  });
+
+  dash.calc('targets_shown', {
+    title: 'Rows shown in the list of everyone tracked',
+    description: 'How many tracked names match the two filters above the table. Names left out at the owner\'s request are not shown or counted.',
+    inputs: ['targets'],
+    fn: (targets) => {
+      const p = dash.params();
+      const tracked = targets.filter((r) => r.state !== 'excluded');
+      const q = (p.q_people || '').toLowerCase();
+      const shown = tracked.filter((r) => (!p.origin || r.origin === p.origin) && (!p.state || r.state === p.state) && (!q || String(r.person_name || '').toLowerCase().includes(q)));
+      return [{ shown: shown.length, all: tracked.length }];
+    },
+  });
+
+  dash.calc('prediction_totals', {
+    title: 'Statements about the future: totals',
+    description: 'Sums of the per-person prediction counts over both kinds of text: distinct candidates, those with a target window, and the people with any.',
+    inputs: ['prediction_counts'],
+    fn: (counts) => {
+      const sum = (field) => counts.reduce((a, r) => a + (Number.isFinite(+r[field]) ? +r[field] : 0), 0);
+      return [{ people: new Set(counts.filter((r) => +r.distinct > 0).map((r) => r.person_id)).size, candidates: sum('candidates'),
+        distinct: sum('distinct'), distinct_with_window: sum('distinct_with_window') }];
+    },
+  });
+  dash.calc('prediction_by_person', {
+    title: 'Statements about the future, per person and kind of text',
+    description: 'One row per person: distinct candidates in texts from the source and in speech-to-text made here (kept apart), their sum, and how many have a target window.',
+    inputs: ['prediction_counts'],
+    fn: (counts) => {
+      const by = new Map();
+      for (const r of counts) {
+        const row = by.get(r.person_id) || { person_id: r.person_id, source_distinct: 0, made_distinct: 0, distinct: 0, with_window: 0, candidates: 0 };
+        const d = Number.isFinite(+r.distinct) ? +r.distinct : 0;
+        if (r.kind === 'source') row.source_distinct += d; else if (r.kind === 'made') row.made_distinct += d;
+        row.distinct += d;
+        row.with_window += Number.isFinite(+r.distinct_with_window) ? +r.distinct_with_window : 0;
+        row.candidates += Number.isFinite(+r.candidates) ? +r.candidates : 0;
+        by.set(r.person_id, row);
+      }
+      return [...by.values()].filter((r) => r.distinct > 0).sort((a, b) => b.distinct - a.distinct);
+    },
+  });
+  dash.calc('keyword_totals', {
+    title: 'Keywords of the newest 10 videos: totals',
+    description: 'Over the title rows of the keywords table: channels, titles in the tier and before, channels with a significantly rising term, and the titles naming a blackout, the grid or an outage in the tier and before.',
+    inputs: ['keywords_newest10'],
+    fn: (rows) => {
+      const t = rows.filter((r) => r.kind === 'titles');
+      const sum = (f) => t.reduce((a, r) => a + (Number.isFinite(+r[f]) ? +r[f] : 0), 0);
+      return [{ channels: t.length, titles_now: sum('tier_items'), titles_before: sum('history_items'),
+        channels_rising: t.filter((r) => +r.rising_significant > 0).length, strong_now: sum('tier_blackout_strong'), strong_before: sum('history_blackout_strong') }];
+    },
+  });
+  dash.calc('theme_totals', {
+    title: 'Blackouts of the grid and the internet: totals over everything stored',
+    description: "From the 'all' rows of the theme table, per kind of text: items read, items with a hit, distinct hits, hits about the future, prediction candidates and hits with a target year.",
+    inputs: ['theme_blackouts'],
+    fn: (rows) => {
+      const all = (k) => rows.find((r) => r.person_id === 'all' && r.kind === k) || {};
+      const sum = (f) => ['source', 'made', 'title', 'captions'].reduce((a, k) => a + (Number.isFinite(+all(k)[f]) ? +all(k)[f] : 0), 0);
+      return [{ source_read: +all('source').items_read || 0, source_items: +all('source').items_with_hit || 0, source_distinct: +all('source').distinct || 0,
+        made_read: +all('made').items_read || 0, made_distinct: +all('made').distinct || 0, title_read: +all('title').items_read || 0, title_distinct: +all('title').distinct || 0,
+        future_marked: sum('future_marked'), prediction_candidates: sum('prediction_candidates'), with_window: sum('with_window') }];
+    },
+  });
+  dash.calc('theme_newest_totals', {
+    title: 'Blackouts of the grid and the internet: the newest 10 videos, totals',
+    description: "From the title rows of the newest-10 theme table: videos, channels, titles matching and the channels they are in, videos with a text here through a twin, and the distinct hits in those texts (the source and speech-to-text rows).",
+    inputs: ['theme_blackouts_newest10'],
+    fn: (rows) => {
+      const t = rows.filter((r) => r.kind === 'title' && r.person_id !== 'all');
+      const sum = (xs, f) => xs.reduce((a, r) => a + (Number.isFinite(+r[f]) ? +r[f] : 0), 0);
+      const texts = rows.filter((r) => r.person_id !== 'all' && (r.kind === 'source' || r.kind === 'made' || r.kind === 'captions'));
+      return [{ videos: sum(t, 'videos_queued'), channels: t.length, titles_matching: sum(t, 'titles_matching'), channels_matching: t.filter((r) => +r.titles_matching > 0).length,
+        videos_with_text: sum(t, 'videos_with_text'), text_hits: sum(texts, 'distinct') }];
+    },
+  });
+  dash.calc('theme_by_person', {
+    title: 'Blackouts of the grid and the internet: distinct hits per person and kind',
+    description: 'One row per person with a hit anywhere: distinct hits in texts from the source, in speech-to-text made here and in video titles, and their sum.',
+    inputs: ['theme_blackouts'],
+    fn: (rows) => {
+      const by = new Map();
+      for (const r of rows) {
+        if (r.person_id === 'all') continue;
+        const d = Number.isFinite(+r.distinct) ? +r.distinct : 0;
+        if (!d) continue;
+        const row = by.get(r.person_id) || { person_id: r.person_id, source: 0, made: 0, title: 0, total: 0 };
+        if (r.kind === 'source') row.source += d; else if (r.kind === 'made') row.made += d; else if (r.kind === 'title') row.title += d;
+        row.total += d;
+        by.set(r.person_id, row);
+      }
+      return [...by.values()].sort((a, b) => b.total - a.total);
+    },
+  });
+  dash.calc('contact_totals', {
+    title: 'Websites and contacts: totals',
+    description: 'How many tracked people and groups the contacts table lists, and how many have a website, a podcast of their own and a published contact address.',
+    inputs: ['contacts'],
+    fn: (contacts) => [{ people: contacts.length, with_website: contacts.filter((r) => (r.websites || '').trim()).length,
+      with_podcast: contacts.filter((r) => (r.podcasts || '').trim()).length, with_email: contacts.filter((r) => (r.contact_emails || '').trim()).length,
+      with_channel: contacts.filter((r) => (r.youtube_channel || '').trim()).length,
+      with_about_links: contacts.filter((r) => (r.about_links || '').trim()).length,
+      channels_active: contacts.filter((r) => r.channel_activity === 'active').length,
+      channels_quiet: contacts.filter((r) => r.channel_activity === 'quiet').length,
+      channels_dormant: contacts.filter((r) => r.channel_activity === 'dormant').length,
+      channels_fresh: contacts.filter((r) => { const d = Date.parse((r.channel_last_upload || '') + 'T00:00:00Z'), asOf = Date.parse((r.as_of || '2026-11-16') + 'T00:00:00Z'); return Number.isFinite(d) && asOf - d <= 30 * 86400000; }).length }],
+  });
+  dash.calc('contacts_shown', {
+    title: 'Contacts shown in the table',
+    description: 'How many rows match the search and the role chosen above the contacts table.',
+    inputs: ['contacts'],
+    fn: (contacts) => {
+      const p = dash.params(); const q = (p.q_contacts || '').toLowerCase();
+      const has = (v) => !q || String(v || '').toLowerCase().includes(q);
+      const freshOne = (r) => { const d = Date.parse((r.channel_last_upload || '') + 'T00:00:00Z'), asOf = Date.parse((r.as_of || '2026-11-16') + 'T00:00:00Z'); return Number.isFinite(d) && asOf - d <= 30 * 86400000; };
+      const shown = contacts.filter((r) => (!p.c_role || r.role === p.c_role) && (p.c_activity === 'fresh' ? freshOne(r) : (!p.c_activity || r.channel_activity === p.c_activity)) && (has(r.name) || has(r.websites) || has(r.about_links) || has(r.podcasts) || has(r.youtube_channel)));
+      return [{ shown: shown.length, all: contacts.length }];
+    },
+  });
+  dash.calc('ta_any', {
+    title: 'Audio behind the transcripts: totals over every kind',
+    description: 'The total row of the transcript-audio table where each item counts once whatever kinds of text it has (person all, kind any).',
+    inputs: ['transcript_audio'],
+    fn: (rows) => rows.filter((r) => r.person_id === 'all' && r.kind === 'any').map((r) => Object.fromEntries(Object.entries(r).map(([k, v]) => [k, k === 'person_id' || k === 'kind' ? v : (Number.isFinite(+v) ? +v : 0)]))),
+  });
+
+  const one = (name, source, field, format) => dash.draw(name, (el) => {
+    const t = dash.data(source);
+    const row = t.status === 'ok' && Array.isArray(t.data) ? t.data[0] : null;
+    el.textContent = row ? (format || fmt)(row[field]) : '—';
+  });
+  one('g-people', 'target_totals', 'people'); one('g-got', 'target_totals', 'with_something');
+  one('g-plan', 'target_totals', 'planned'); one('g-none', 'target_totals', 'no_source'); one('g-sources', 'source_totals', 'sources');
+  one('n-with-text', 'totals', 'items_with_text'); one('n-from-source', 'totals', 'items_text_from_source');
+  one('n-made-here', 'totals', 'items_text_made_here'); one('n-both', 'totals', 'items_text_both');
+  one('n-waiting', 'totals', 'audio_awaiting_transcript'); one('n-twins', 'totals', 'youtube_captured');
+  one('t-people', 'target_totals', 'people'); one('t-channels', 'target_totals', 'with_channel');
+  one('t-sources', 'source_totals', 'sources'); one('t-source-people', 'source_totals', 'people');
+  one('t-videos', 'target_totals', 'videos_and_live'); one('t-video-hours', 'target_totals', 'listed_video_hours');
+  one('t-shorts', 'target_totals', 'shorts_listed');
+  one('t-people-audio', 'totals', 'people_with_audio'); one('t-audio', 'totals', 'audio_ok'); one('t-audio-hours', 'totals', 'audio_hours', fmt1);
+  one('t-source', 'totals', 'publisher_texts'); one('t-source-words', 'totals', 'publisher_text_words');
+  one('t-made', 'totals', 'asr_transcripts'); one('t-made-words', 'totals', 'asr_words'); one('t-waiting', 'totals', 'audio_awaiting_transcript');
+  one('t-ia-here', 'session_totals', 'audio_here'); one('t-ia-files', 'session_totals', 'audio_recordings');
+  one('as-of', 'source_totals', 'counts_as_of', when);
+  one('src-shown', 'sources_shown', 'shown'); one('src-all', 'sources_shown', 'all');
+  one('b-rec', 'bashar_totals', 'recordings'); one('b-chan', 'bashar_totals', 'channels'); one('b-up', 'bashar_totals', 'still_on_youtube');
+  one('b-read', 'bashar_totals', 'read_earlier'); one('b-feeds', 'bashar_totals', 'shows_with_feed');
+  one('b-eps', 'bashar_totals', 'episodes_listed'); one('b-got', 'bashar_totals', 'episodes_captured');
+  one('e-shown', 'targets_shown', 'shown'); one('e-all', 'targets_shown', 'all');
+  one('r-words', 'recording_totals', 'words_digested'); one('r-here', 'recording_totals', 'here'); one('r-count', 'recording_totals', 'recordings');
+  one('s-all', 'session_totals', 'sessions'); one('s-ia', 'session_totals', 'on_archive_org'); one('s-files', 'session_totals', 'audio_recordings');
+  one('s-hours', 'session_totals', 'audio_hours', fmt1); one('s-here', 'session_totals', 'audio_here');
+  one('s-hours-here', 'session_totals', 'hours_here', fmt1); one('s-official', 'session_totals', 'official_only');
+  one('s-listed', 'archive_listing', 'audio_files_listed', known); one('s-twice', 'archive_listing', 'second_encodings', known);
+  one('i-all', 'interview_totals', 'listed'); one('i-live', 'interview_totals', 'live'); one('i-talk', 'interview_totals', 'conversation');
+  one('i-unclear', 'interview_totals', 'unclear'); one('i-clip', 'interview_totals', 'commentary'); one('i-open', 'interview_totals', 'not_classified');
+  one('b-i-talk', 'bashar_interviews', 'conversation'); one('b-i-clip', 'bashar_interviews', 'commentary');
+  one('b-i-unclear', 'bashar_interviews', 'unclear'); one('b-i-live', 'bashar_interviews', 'live');
+  one('name-matches', 'target_totals', 'name_matches');
+  one('t-pred', 'prediction_totals', 'distinct'); one('t-pred-win', 'prediction_totals', 'distinct_with_window'); one('t-pred-people', 'prediction_totals', 'people');
+  one('c-rows', 'contact_totals', 'people'); one('c-sites', 'contact_totals', 'with_website'); one('c-pods', 'contact_totals', 'with_podcast'); one('c-mail', 'contact_totals', 'with_email');
+  one('c-shown', 'contacts_shown', 'shown'); one('c-all', 'contacts_shown', 'all'); one('c-about', 'contact_totals', 'with_about_links');
+  one('b-videos', 'theme_newest_totals', 'videos'); one('b-channels', 'theme_newest_totals', 'channels'); one('b-titles', 'theme_newest_totals', 'titles_matching'); one('b-tchannels', 'theme_newest_totals', 'channels_matching'); one('b-twins', 'theme_newest_totals', 'videos_with_text'); one('b-texthits', 'theme_newest_totals', 'text_hits');
+  one('b-src-read', 'theme_totals', 'source_read'); one('b-src-hits', 'theme_totals', 'source_distinct'); one('b-src-items', 'theme_totals', 'source_items'); one('b-made-read', 'theme_totals', 'made_read'); one('b-made-hits', 'theme_totals', 'made_distinct'); one('b-title-read', 'theme_totals', 'title_read'); one('b-title-hits', 'theme_totals', 'title_distinct'); one('b-future', 'theme_totals', 'future_marked'); one('b-cand', 'theme_totals', 'prediction_candidates'); one('b-window', 'theme_totals', 'with_window');
+  one('k-channels', 'keyword_totals', 'channels'); one('k-now', 'keyword_totals', 'titles_now'); one('k-before', 'keyword_totals', 'titles_before'); one('k-rising', 'keyword_totals', 'channels_rising'); one('k-strong-now', 'keyword_totals', 'strong_now'); one('k-strong-before', 'keyword_totals', 'strong_before');
+  one('c-fresh', 'contact_totals', 'channels_fresh'); one('c-active', 'contact_totals', 'channels_active'); one('c-quiet', 'contact_totals', 'channels_quiet'); one('c-dormant', 'contact_totals', 'channels_dormant');
+  one('a-items', 'ta_any', 'items_with_text'); one('a-down', 'ta_any', 'audio_downloaded'); one('a-drive', 'ta_any', 'on_drive');
+  one('a-page', 'ta_any', 'no_audio_page'); one('a-yt', 'ta_any', 'no_audio_youtube'); one('a-held', 'ta_any', 'no_audio_interview_held');
+  one('a-notyet', 'ta_any', 'no_audio_not_yet'); one('a-fail', 'ta_any', 'download_failed');
+
+  const swatch = (name, color) => dash.draw(name, (el) => { el.style.background = color(); });
+  swatch('key-made', () => dash.colors[0]); swatch('key-audio-src', () => dash.colors[1] || dash.colors[0]);
+  swatch('key-wait', () => 'var(--cds-chart-muted)');
+  swatch('key-here', () => dash.colors[0]); swatch('key-nothere', () => 'var(--cds-chart-muted)');
+  swatch('key-src-here', () => dash.colors[0]); swatch('key-src-left', () => 'var(--cds-chart-muted)');
+  ORIGINS.forEach((origin, i) => swatch('key-o' + i, () => dash.colors[i % dash.colors.length]));
+  swatch('key-dec-here', () => C.made); swatch('key-dec-left', () => C.wait); swatch('key-dec-none', () => C.faint);
+  const INTERVIEW_PARTS = [
+    { field: 'live', name: 'live channeling', color: () => dash.colors[0] },
+    { field: 'conversation', name: 'conversations', color: () => dash.colors[1] || dash.colors[0] },
+    { field: 'unclear', name: 'unclear', color: () => dash.colors[2] || dash.colors[0] },
+    { field: 'commentary', name: 'commentary or clips', color: () => dash.colors[3] || dash.colors[0] },
+    { field: 'not_classified', name: 'not classified yet', color: () => C.wait },
+  ];
+  INTERVIEW_PARTS.forEach((p, i) => swatch('key-i' + i, p.color));
+  const TA_PARTS = [
+    { field: 'on_drive', name: 'downloaded and on Drive', color: () => C.made },
+    { field: 'not_drive', name: 'downloaded, not yet on Drive', color: () => dash.colors[3] || dash.colors[0] },
+    { field: 'no_audio_page', name: 'a web page with no recording', color: () => C.faint },
+    { field: 'no_audio_youtube', name: 'a YouTube video, for the owner\'s computer', color: () => dash.colors[1] || dash.colors[0] },
+    { field: 'no_audio_interview_held', name: 'an interview held back by the live-channeling rule', color: () => dash.colors[2] || dash.colors[0] },
+    { field: 'no_audio_not_yet', name: 'not fetched yet', color: () => C.wait },
+    { field: 'download_failed', name: 'a failed download', color: () => 'var(--cds-chart-status-critical)' },
+  ];
+  TA_PARTS.forEach((p, i) => swatch('key-ta' + i, p.color));
+
+  // A tall segmented bar: one whole split into parts, each part's share printed inside where it fits.
+  function segmented(el, parts, aria) {
+    el.replaceChildren();
+    const total = parts.reduce((a, p) => a + p.value, 0);
+    if (!total) { const note = document.createElement('span'); note.className = 'cc-fail'; note.textContent = '—'; el.append(note); return; }
+    const bar = document.createElement('div');
+    bar.className = 'cc-seg';
+    bar.setAttribute('role', 'img');
+    bar.setAttribute('aria-label', `${aria}. ${parts.filter((p) => p.value > 0).map((p) => `${fmt(p.value)} ${p.name} (${Math.round(100 * p.value / total)}%)`).join('; ')}.`);
+    const tip = document.createElement('div');
+    tip.className = 'cc-tip'; tip.hidden = true;
+    const width = el.clientWidth || 320;
+    for (const p of parts) {
+      if (!(p.value > 0)) continue;
+      const part = document.createElement('div');
+      part.className = 'cc-seg-part';
+      part.style.flex = `${p.value} 1 0`;
+      part.style.background = p.color;
+      part.tabIndex = 0;
+      const share = Math.round(100 * p.value / total);
+      const text = document.createElement('span');
+      text.textContent = `${share}%`;
+      // the label stays only where its block is wide enough for it with room on both sides
+      if ((p.value / total) * width < 44) text.hidden = true;
+      part.append(text);
+      const words = `${fmt(p.value)} ${p.name} · ${share}% of ${fmt(total)}`;
+      const show = (x) => { tip.hidden = false; tip.textContent = words; const box = el.getBoundingClientRect(); const tw = tip.offsetWidth; tip.style.left = Math.max(0, Math.min(box.width - tw, x - box.left - tw / 2)) + 'px'; tip.style.top = '36px'; };
+      part.addEventListener('pointermove', (event) => show(event.clientX));
+      part.addEventListener('focus', () => { const r = part.getBoundingClientRect(); show(r.left + r.width / 2); });
+      part.addEventListener('pointerleave', () => { tip.hidden = true; });
+      part.addEventListener('blur', () => { tip.hidden = true; });
+      bar.append(part);
+    }
+    el.append(bar, tip);
+  }
+  dash.draw('seg-people', (el) => {
+    const g = dash.data('target_totals');
+    const row = g.status === 'ok' && Array.isArray(g.data) ? g.data[0] : null;
+    if (!row) { el.replaceChildren(); const note = document.createElement('span'); note.className = 'cc-fail'; note.textContent = g.status === 'error' ? 'Failed to load' : '—'; el.append(note); return; }
+    segmented(el, [
+      { value: num(row.with_something), name: 'with something in the archive', color: 'var(--color-ok)' },
+      { value: num(row.planned), name: 'with a channel or source on record and nothing here yet', color: 'var(--color-warn)' },
+      { value: num(row.no_source), name: 'with no channel or site on record', color: 'var(--color-bad)' },
+    ], `${fmt(num(row.people))} tracked people and groups by state`);
+  });
+  dash.draw('seg-interviews', (el) => {
+    const g = dash.data('interview_totals');
+    const row = g.status === 'ok' && Array.isArray(g.data) ? g.data[0] : null;
+    if (!row) { el.replaceChildren(); const note = document.createElement('span'); note.className = 'cc-fail'; note.textContent = g.status === 'error' ? 'Failed to load' : '—'; el.append(note); return; }
+    segmented(el, INTERVIEW_PARTS.map((p) => ({ value: num(row[p.field]), name: p.name, color: p.color() })), `${fmt(num(row.listed))} podcast interviews by kind`);
+  });
+
+  // A name wider than the chart is cut short, and keeps its full text as a title.
+  const fitText = (node, room) => {
+    const full = node.textContent;
+    for (let k = full.length - 1; k > 0 && node.getComputedTextLength() > room; k -= 1) node.textContent = `${full.slice(0, k).trimEnd()}…`;
+    d3.select(node).append('title').text(full);
+  };
+  // Horizontal bars. `parts` are stacked left to right; `label` is printed with each bar. Where names, bars
+  // and labels fit side by side, each name is left of its bar and the label follows the bar. On a narrow
+  // chart (a phone) each name has a line of its own above a bar of the full width, and the label ends that
+  // line, or goes under the bar where the name and the label do not fit on one line.
+  function bars(el, source, rows, nameOf, parts, label, aria) {
+    const g = dash.data(source);
+    el.replaceChildren();
+    if (g.status !== 'ok') {
+      const note = document.createElement('span');
+      note.className = 'cc-fail';
+      note.textContent = g.status === 'error' ? 'Failed to load' : '—';
+      el.append(note);
+      return;
+    }
+    if (!rows.length) {
+      const note = document.createElement('span');
+      note.className = 'cc-fail';
+      note.textContent = 'Nothing in this group yet';
+      el.append(note);
+      return;
+    }
+    const width = Math.max(260, el.clientWidth || 320), top = 4;
+    // A screen reader gets no drawn text, so the label carries every row's numbers.
+    const said = (d) => {
+      const split = parts.length > 1 ? parts.filter((p) => num(d[p.field]) > 0).map((p) => `${fmt(num(d[p.field]))} ${p.name}`) : [];
+      return `${nameOf(d)}: ${label(d)}${split.length ? ` (${split.join(', ')})` : ''}`;
+    };
+    const svg = d3.select(el).append('svg').attr('role', 'img').attr('aria-label', `${aria}. ${rows.map(said).join('; ')}.`);
+    const names = svg.append('g').selectAll('text').data(rows).join('text').attr('class', 'cc-name').attr('dy', '0.35em').text(nameOf);
+    const labels = svg.append('g').selectAll('text').data(rows).join('text').attr('dy', '0.35em').text(label);
+    const nameW = [], labelW = [];
+    names.each(function (d, i) { nameW[i] = this.getComputedTextLength(); });
+    labels.each(function (d, i) { labelW[i] = this.getComputedTextLength(); });
+    const widestName = d3.max(nameW) || 0, widestLabel = d3.max(labelW) || 0;
+    const wide = widestName <= width * 0.42 && width - widestName - widestLabel - 20 >= width * 0.25;
+    const left = wide ? widestName + 10 : 0;
+    const room = wide ? width - left - widestLabel - 10 : width - 1;
+    const barH = wide ? 16 : 14;
+    const at = [];          // where each row's name, bar and label sit
+    let y = top;
+    rows.forEach((d, i) => {
+      if (wide) { at.push({ name: y + 13, bar: y + 5, label: y + 13, beside: false }); y += 26; return; }
+      const beside = nameW[i] + 12 + labelW[i] <= width;
+      at.push({ name: y + 8, bar: y + 18, label: beside ? y + 8 : y + 41, beside });
+      y += beside ? 42 : 58;
+    });
+    svg.attr('viewBox', `0 0 ${width} ${y + top}`);
+    const sumOf = (d) => parts.reduce((a, p) => a + num(d[p.field]), 0);
+    const x = d3.scaleLinear().domain([0, d3.max(rows, sumOf) || 1]).range([0, room]);
+    const tip = d3.select(el).append('div').attr('class', 'cc-tip').attr('hidden', '');
+    const ends = [];
+    rows.forEach((d, i) => {
+      let end = left;
+      parts.forEach((p) => {
+        const w = x(num(d[p.field]));
+        if (w > 0) {
+          svg.append('rect').attr('x', end).attr('y', at[i].bar).attr('width', Math.max(1, w)).attr('height', barH)
+            .attr('rx', 2).style('fill', p.color)
+            .on('pointermove', (event) => {
+              const box = el.getBoundingClientRect();
+              tip.attr('hidden', null).text(`${nameOf(d)}: ${fmt(num(d[p.field]))} ${p.name}`);
+              const tw = tip.node().offsetWidth;
+              tip.style('left', Math.max(0, Math.min(box.width - tw, event.clientX - box.left + 10)) + 'px');
+              // below the pointer, or above it where the box would end first
+              const py = event.clientY - box.top, th = tip.node().offsetHeight;
+              tip.style('top', (py + 12 + th > box.height ? Math.max(0, py - th - 8) : py + 12) + 'px');
+            })
+            .on('pointerleave', () => tip.attr('hidden', ''));
+        }
+        end += w;
+      });
+      ends[i] = end;
+    });
+    names.attr('x', 0).attr('y', (d, i) => at[i].name);
+    names.each(function (d, i) { if (nameW[i] > width) fitText(this, width); });
+    labels.attr('y', (d, i) => at[i].label)
+      .attr('text-anchor', (d, i) => (at[i].beside ? 'end' : null))
+      .attr('x', (d, i) => (wide ? Math.max(0, Math.min(ends[i] + 6, width - labelW[i])) : at[i].beside ? width : 0));
+  }
+  const person = (d) => d.person_name || d.person_id;
+
+  dash.draw('chart-source-kinds', (el) => {
+    const g = dash.data('source_kinds');
+    const rows = g.status === 'ok' && Array.isArray(g.data) ? g.data : [];
+    bars(el, 'source_kinds', rows, (d) => d.kind, [
+      { field: 'here', name: 'items here as what the source yields', color: dash.colors[0] },
+      { field: 'left', name: 'items listed, not here as what the source yields', color: 'var(--cds-chart-muted)' },
+    ], (d) => `${fmt(num(d.sources))} ${num(d.sources) === 1 ? 'source' : 'sources'} · `
+      + (d.listed == null ? 'not counted' : `${fmt(num(d.here))} of ${fmt(num(d.listed))} items here`),
+    'Registered sources by kind: items in the archive as what each source yields (audio, or text for text pages), and items listed but not here as that');
+  });
+
+  dash.draw('chart-states', (el) => {
+    const g = dash.data('state_by_origin');
+    const rows = g.status === 'ok' && Array.isArray(g.data) ? g.data : [];
+    bars(el, 'state_by_origin', rows, (d) => d.state,
+      ORIGINS.map((origin, i) => ({ field: origin, name: origin === 'added' ? 'added since' : `named by ${ORIGIN_NAME[origin]}`, color: dash.colors[i % dash.colors.length] })),
+      (d) => fmt(num(d.total)), 'Tracked names by state, split by which project named them');
+  });
+
+  dash.draw('chart-kinds', (el) => {
+    const g = dash.data('recording_kinds');
+    const rows = g.status === 'ok' && Array.isArray(g.data) ? g.data : [];
+    bars(el, 'recording_kinds', rows, (d) => d.kind, [
+      { field: 'here', name: 'in the archive', color: dash.colors[0] },
+      { field: 'not_here', name: 'not yet in the archive', color: 'var(--cds-chart-muted)' },
+    ], (d) => `${fmt(num(d.here))} of ${fmt(num(d.total))}`,
+    `The ${fmt(rows.reduce((a, d) => a + num(d.total), 0))} Bashar recordings by kind, split into those in the archive and those not yet`);
+  });
+
+  dash.draw('chart-source', (el) => {
+    const g = dash.data('coverage');
+    const rows = (g.status === 'ok' ? g.data : []).filter((r) => num(r.publisher_texts) > 0)
+      .sort((a, b) => num(b.publisher_texts) - num(a.publisher_texts));
+    bars(el, 'coverage', rows, person, [{ field: 'publisher_texts', name: 'texts from the source', color: dash.colors[1] || dash.colors[0] }],
+      (d) => `${fmt(num(d.publisher_texts))} · ${fmt(num(d.publisher_text_words))} words`,
+      'Texts obtained from the publisher, by person');
+  });
+
+  dash.draw('chart-audio', (el) => {
+    const g = dash.data('audio_split');
+    const rows = g.status === 'ok' && Array.isArray(g.data) ? g.data : [];
+    bars(el, 'audio_split', rows, person, [
+      { field: 'made_here', name: 'transcribed here', color: dash.colors[0] },
+      { field: 'source_only', name: 'with only a text from the source', color: dash.colors[1] || dash.colors[0] },
+      { field: 'waiting', name: 'waiting for a transcript', color: 'var(--cds-chart-muted)' },
+    ], (d) => `${fmt(num(d.audio_ok))} files · ${fmt1(num(d.audio_hours))} h`,
+    'Audio files downloaded per person, split into those transcribed here, those with only a text from the source, and those waiting for a transcript');
+  });
+
+  dash.draw('chart-decades', (el) => {
+    const g = dash.data('bashar_sessions');
+    const rows = (g.status === 'ok' && Array.isArray(g.data) ? g.data : []).map((r) => ({
+      decade: r.decade, here: num(r.audio_here), left: Math.max(0, num(r.on_archive_org) - num(r.audio_here)),
+      none: Math.max(0, num(r.sessions_catalogued) - num(r.on_archive_org)), sessions: num(r.sessions_catalogued), on_ia: num(r.on_archive_org),
+    }));
+    bars(el, 'bashar_sessions', rows, (d) => d.decade, [
+      { field: 'here', name: 'recordings downloaded', color: C.made },
+      { field: 'left', name: 'on archive.org, not downloaded', color: C.wait },
+      { field: 'none', name: 'catalogued with no recording there', color: C.faint },
+    ], (d) => `${fmt(d.here)} of ${fmt(d.on_ia)} recordings · ${fmt(d.sessions)} sessions`,
+    'Catalogued Bashar sessions by decade: recordings downloaded, on archive.org but not downloaded, and sessions with no recording there');
+  });
+
+  dash.draw('chart-ta', (el) => {
+    const g = dash.data('transcript_audio');
+    const rows = (g.status === 'ok' && Array.isArray(g.data) ? g.data : [])
+      .filter((r) => r.person_id === 'all' && (r.kind === 'made' || r.kind === 'source' || r.kind === 'captions') && num(r.items_with_text) > 0)
+      .map((r) => ({ ...r, kind_name: KIND_NAME[r.kind] || r.kind, not_drive: Math.max(0, num(r.audio_downloaded) - num(r.on_drive)) }));
+    bars(el, 'transcript_audio', rows, (d) => d.kind_name, TA_PARTS.map((p) => ({ field: p.field, name: p.name, color: p.color() })),
+      (d) => `${fmt(num(d.items_with_text))} items with text · ${fmt(num(d.audio_downloaded))} recordings downloaded`,
+      'Items with a transcript, by kind of text: where the recording is, or why it is not here');
+  });
+
+  const personNames = () => {
+    const c = dash.data('coverage');
+    return new Map((c.status === 'ok' ? c.data : []).map((r) => [r.person_id, r.person_name || r.person_id]));
+  };
+  // Channels that uploaded in the last 30 days before the listing date, from the contacts table: a set of person ids.
+  const freshChannels = () => {
+    const c = dash.data('contacts');
+    const out = new Set();
+    if (c.status !== 'ok') return out;
+    for (const r of c.data) {
+      const d = Date.parse((r.channel_last_upload || '') + 'T00:00:00Z'), asOf = Date.parse((r.as_of || '2026-11-16') + 'T00:00:00Z');
+      if (Number.isFinite(d) && Number.isFinite(asOf) && asOf - d <= 30 * 86400000) out.add(r.person_id);
+    }
+    return out;
+  };
+  // Marks a row of a person whose channel is that fresh: a neon edge on the row and a badge beside the name.
+  const markFresh = (tr, nameTd, personId, fresh) => {
+    if (!fresh.has(personId)) return;
+    tr.classList.add('cc-fresh');
+    const b = document.createElement('span'); b.className = 'cc-badge-fresh'; b.title = 'channel uploaded in the last 30 days';
+    const g = document.createElement('span'); g.className = 'cc-glyph'; g.setAttribute('aria-hidden', 'true'); g.textContent = '●';
+    b.append(g, document.createTextNode('30 days'));
+    nameTd.append(b);
+  };
+  dash.draw('chart-predictions', (el) => {
+    const g = dash.data('prediction_by_person');
+    const names = personNames();
+    const rows = (g.status === 'ok' && Array.isArray(g.data) ? g.data : []).map((r) => ({ ...r, person_name: names.get(r.person_id) || r.person_id }));
+    bars(el, 'prediction_by_person', rows, person, [
+      { field: 'source_distinct', name: 'distinct candidates in texts from the source', color: C.src },
+      { field: 'made_distinct', name: 'distinct candidates in speech-to-text made here', color: C.made },
+    ], (d) => `${fmt(num(d.distinct))} distinct · ${fmt(num(d.with_window))} with a target date`,
+    'Distinct statements about the future found per person, split by kind of text, with how many carry a target date');
+  });
+
+  const cell = (tr, text, cls) => { const td = document.createElement('td'); td.textContent = text; if (cls) td.className = cls; tr.append(td); return td; };
+  const n = (v, f) => (num(v) ? (f || fmt)(num(v)) : '0');
+  const dim = (v) => (num(v) ? '' : 'cc-zero');
+  const blank = (v, f) => ((v ?? '') === '' ? '–' : n(v, f));       // not known is not the same as none
+  // A link only for a plain https address: the data is untrusted, so nothing else becomes clickable.
+  const link = (url, label) => {
+    if (!/^https:\/\/[^\s]+$/i.test(url || '')) {
+      const span = document.createElement('span');
+      span.textContent = label;
+      return span;
+    }
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.textContent = label;
+    return a;
+  };
+  const host = (url) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return ''; } };
+  const pill = (tr, state) => {
+    const td = cell(tr, '', 'cc-left');
+    const span = document.createElement('span');
+    // "off by rule" (YouTube's robots.txt) waits on the owner, like a source that is gone; "none here" is still to fetch
+    const kind = /captured|all here/.test(state) ? 'got' : /no source|unresolved|gone|off by rule|wait for a home/.test(state) ? 'none' : /planned|listed|none here/.test(state) ? 'plan' : '';
+    span.className = 'cc-pill' + (kind ? ' cc-pill-' + kind : '');
+    if (kind) { const g = document.createElement('span'); g.className = 'cc-glyph'; g.setAttribute('aria-hidden', 'true'); g.textContent = GLYPH[kind]; span.append(g); }
+    span.append(document.createTextNode(state));
+    td.append(span);
+    return td;
+  };
+  // a soft wash of the series hue that deepens with the value: a sequential scale in one hue, 0 to 35%
+  const wash = (td, value, max) => { const v = num(value); if (v > 0 && max > 0) td.style.background = `color-mix(in srgb, ${C.made} ${Math.round(4 + 31 * Math.sqrt(v / max))}%, transparent)`; };
+  // 'yes', 'no' or a calc's sentence; nothing known yet is a dash
+  const cloudPill = (tr, value) => {
+    if (value == null || value === '') return cell(tr, '—', 'cc-left cc-zero');
+    const td = cell(tr, '', 'cc-left');
+    const span = document.createElement('span');
+    const kind = value === 'yes' ? 'got' : 'plan';
+    span.className = 'cc-pill cc-pill-' + kind;
+    const g = document.createElement('span'); g.className = 'cc-glyph'; g.setAttribute('aria-hidden', 'true'); g.textContent = GLYPH[kind]; span.append(g);
+    span.append(document.createTextNode(value === 'no' ? 'home connection only' : value));
+    td.append(span);
+    return td;
+  };
+
+  // the person filter: its choices come from the data
+  dash.draw('src-person', (sel) => {
+    const g = dash.data('sources');
+    const people = new Map();
+    for (const r of g.status === 'ok' ? g.data : []) people.set(r.person_id, r.person_name || r.person_id);
+    const sorted = [...people.entries()].sort((a, b) => a[1].localeCompare(b[1]));
+    sel.replaceChildren(new Option('All people', ''), ...sorted.map(([id, name]) => new Option(name, id)));
+    sel.value = dash.params().src_person ?? '';
+    sel.onchange = () => dash.setParams({ src_person: sel.value || null });
+  });
+
+  dash.draw('source-rows', (body) => {
+    const g = dash.data('sources');
+    const m = dash.data('methods');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const names = new Map((m.status === 'ok' ? m.data : []).map((r) => [r.method, r.name]));
+    const c = dash.data('source_cloud');
+    const cloud = new Map((c.status === 'ok' && Array.isArray(c.data) ? c.data : []).map((r) => [r.source_id, r.cloud]));
+    const p = dash.params();
+    const rows = sorted(g.data.filter((r) => (!p.src_person || r.person_id === p.src_person) && (!p.src_kind || r.kind === p.src_kind)
+      && (matches(r.person_name, p.q_sources) || matches(r.source, p.q_sources) || matches(r.link, p.q_sources))), 'source-rows');
+    const fresh = freshChannels();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.source_id);
+      markFresh(tr, cell(tr, r.person_name || r.person_id, 'cc-left'), r.person_id, fresh);
+      const src = cell(tr, '', 'cc-title-cell');
+      src.append(link(r.link, r.source));
+      const where = document.createElement('span');
+      where.className = 'cc-sub';
+      const reads = r.data_link && r.data_link !== r.link ? r.data_link : '';
+      where.append(document.createTextNode(host(r.link) + (reads ? ' · reads ' : '')));
+      if (reads) where.append(link(reads, host(reads) || 'feed'));
+      src.append(where);
+      cell(tr, r.kind, 'cc-left');
+      const how = cell(tr, '', 'cc-wrap');
+      const name = document.createElement('span');
+      name.textContent = names.get(r.method) || r.method;
+      how.append(name);
+      const chain = document.createElement('span');
+      chain.className = 'cc-sub';
+      chain.textContent = (r.chain || '').split(', ').map((x) => names.get(x) || x).join(' → ');
+      how.append(chain);
+      cloudPill(tr, cloud.get(r.source_id));
+      cell(tr, r.collects || '', 'cc-left');
+      cell(tr, blank(r.items_listed), dim(r.items_listed));
+      cell(tr, blank(r.items_here), dim(r.items_here));
+      // the three kinds of holding, each on its own and never added together
+      cell(tr, blank(r.audio_here), dim(r.audio_here));
+      cell(tr, blank(r.texts_from_source), dim(r.texts_from_source));
+      cell(tr, blank(r.texts_made_here), dim(r.texts_made_here));
+      pill(tr, r.status || '–');
+      const why = cell(tr, r.verification || '', 'cc-wrap');
+      if (r.note) {
+        const note = document.createElement('span');
+        note.className = 'cc-sub';
+        note.textContent = r.note;
+        why.append(note);
+      }
+      body.append(tr);
+    }
+  });
+
+  dash.draw('method-rows', (body) => {
+    const g = dash.data('methods');
+    const use = dash.data('method_use');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const ok = use.status === 'ok' && Array.isArray(use.data);     // until the calc is in, a dash, not a 0
+    const used = new Map((ok ? use.data : []).map((r) => [r.method, r.sources]));
+    for (const r of g.data) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.method);
+      cell(tr, r.name, 'cc-left');
+      cell(tr, r.collects, 'cc-wrap');
+      cloudPill(tr, r.from_cloud);
+      cell(tr, ok ? n(used.get(r.method) ?? 0) : '—', ok ? dim(used.get(r.method) ?? 0) : 'cc-zero');
+      cell(tr, r.tool, 'cc-wrap');
+      cell(tr, r.how, 'cc-wrap');
+      cell(tr, r.rules, 'cc-wrap');
+      body.append(tr);
+    }
+  });
+
+  dash.draw('bashar-rows', (body) => {
+    const g = dash.data('bashar_channels');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    for (const r of g.data) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.channel);
+      const td = cell(tr, '', 'cc-left');
+      td.append(link(r.youtube_channel_url, r.channel));
+      cell(tr, r.kind, 'cc-left');
+      cell(tr, n(r.bashar_recordings));
+      cell(tr, blank(r.still_on_youtube), dim(r.still_on_youtube));
+      cell(tr, n(r.transcripts_read_earlier), dim(r.transcripts_read_earlier));
+      cell(tr, blank(r.podcast_episodes_listed), dim(r.podcast_episodes_listed));
+      cell(tr, blank(r.podcast_episodes_captured), dim(r.podcast_episodes_captured));
+      cell(tr, blank(r.captured_here), dim(r.captured_here));
+      pill(tr, r.state);
+      cell(tr, r.next_step || '', 'cc-wrap');
+      body.append(tr);
+    }
+  });
+
+  dash.draw('recording-rows', (body) => {
+    const g = dash.data('bashar_recordings');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    for (const r of g.data) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.video_id);
+      const td = cell(tr, '', 'cc-title-cell');
+      td.append(link(/^[A-Za-z0-9_-]{11}$/.test(r.video_id || '') ? `https://www.youtube.com/watch?v=${r.video_id}` : '', r.title));
+      cell(tr, r.channel, 'cc-left');
+      cell(tr, r.kind_of_recording, 'cc-left');
+      cell(tr, r.year ? r.year + (r.year_reliable === 'yes' ? '' : '?') : '–', r.year_reliable === 'yes' ? '' : 'cc-zero');
+      cell(tr, n(r.words_digested));
+      cell(tr, r.top_topic || '', 'cc-left');
+      cell(tr, r.transcript_read_2026_10, 'cc-left' + (r.transcript_read_2026_10 === 'yes' ? '' : ' cc-zero'));
+      cell(tr, r.still_on_youtube || '–', 'cc-left' + (/^yes/.test(r.still_on_youtube) ? '' : ' cc-zero'));
+      cell(tr, r.here === 'yes' ? (r.how_here || 'yes') : (r.here || '–'), 'cc-left' + (r.here === 'yes' ? '' : ' cc-zero'));
+      body.append(tr);
+    }
+  });
+
+  dash.draw('session-rows', (body) => {
+    const g = dash.data('bashar_sessions');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    for (const r of g.data) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.decade);
+      cell(tr, r.decade, 'cc-left');
+      cell(tr, n(r.sessions_catalogued));
+      cell(tr, n(r.on_archive_org), dim(r.on_archive_org));
+      cell(tr, n(r.archive_org_audio_files), dim(r.archive_org_audio_files));
+      cell(tr, n(r.archive_org_audio_hours, fmt1), dim(r.archive_org_audio_hours));
+      cell(tr, n(r.archive_org_video_items), dim(r.archive_org_video_items));
+      cell(tr, n(r.official_streaming_only), dim(r.official_streaming_only));
+      cell(tr, blank(r.audio_here), dim(r.audio_here));
+      cell(tr, blank(r.audio_hours_here, fmt1), dim(r.audio_hours_here));
+      cell(tr, blank(r.transcripts_here), dim(r.transcripts_here));
+      body.append(tr);
+    }
+  });
+
+  dash.draw('podcast-rows', (body) => {
+    const g = dash.data('bashar_podcasts');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    for (const r of g.data) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.episode_title);
+      cell(tr, r.date || '–', 'cc-left');
+      cell(tr, r.show, 'cc-left');
+      cell(tr, r.episode_title, 'cc-title-cell');
+      cell(tr, r.type_in_bashar_index, 'cc-left');
+      cell(tr, r.kind_found_here || '–', 'cc-left' + (/live|conversation|unclear|commentary/.test(r.kind_found_here) ? '' : ' cc-zero'));
+      cell(tr, r.here || '–', 'cc-left' + (r.here === 'yes' ? '' : ' cc-zero'));
+      body.append(tr);
+    }
+  });
+
+  dash.draw('interview-rows', (body) => {
+    const g = dash.data('coverage');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const rows = sorted(g.data.filter((r) => num(r.interviews_listed) > 0), 'interview-rows', (a, b) => num(b.interviews_listed) - num(a.interviews_listed));
+    const fresh = freshChannels();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.person_id);
+      markFresh(tr, cell(tr, r.person_name || r.person_id, 'cc-left'), r.person_id, fresh);
+      cell(tr, n(r.interviews_listed));
+      cell(tr, n(r.interviews_live_channeling), dim(r.interviews_live_channeling));
+      cell(tr, n(r.interviews_unclear), dim(r.interviews_unclear));
+      cell(tr, n(r.interviews_conversation), dim(r.interviews_conversation));
+      cell(tr, n(r.interviews_commentary), dim(r.interviews_commentary));
+      cell(tr, n(r.interviews_not_classified), dim(r.interviews_not_classified));
+      cell(tr, n(r.interviews_here), dim(r.interviews_here));
+      body.append(tr);
+    }
+  });
+
+  dash.draw('target-rows', (body) => {
+    const g = dash.data('targets');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const p = dash.params();
+    // names left out at the owner's request are not tracked, so not listed
+    const rows = sorted(g.data.filter((r) => r.state !== 'excluded' && (!p.origin || r.origin === p.origin) && (!p.state || r.state === p.state) && matches(r.person_name, p.q_people)), 'target-rows');
+    const fresh = freshChannels();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.person_name);
+      markFresh(tr, cell(tr, r.person_name, 'cc-left'), r.person_id, fresh);
+      const links = cell(tr, '', 'cc-left cc-links');
+      if (r.youtube_channel_url) links.append(link(r.youtube_channel_url, 'channel'));
+      for (const site of (r.official_sites || '').split(' ').filter(Boolean)) links.append(link(`https://${site}/`, site.replace(/^www\./, '')));
+      if (!links.childNodes.length) links.textContent = '–';
+      cell(tr, ORIGIN_NAME[r.origin] || r.origin, 'cc-left');
+      pill(tr, r.state);
+      cell(tr, blank(r.videos_listed), dim(r.videos_listed));
+      cell(tr, blank(r.live_listed), dim(r.live_listed));
+      cell(tr, blank(r.shorts_listed), dim(r.shorts_listed));
+      cell(tr, blank(r.listed_video_hours, fmt1), dim(r.listed_video_hours));
+      cell(tr, n(r.podcast_feeds), dim(r.podcast_feeds));
+      cell(tr, n(r.creator_files), dim(r.creator_files));
+      cell(tr, n(r.publisher_pages), dim(r.publisher_pages));
+      cell(tr, n(r.archive_org_files), dim(r.archive_org_files));
+      cell(tr, n(r.interviews_live_channeling), dim(r.interviews_live_channeling));
+      cell(tr, n(r.items_captured), dim(r.items_captured));
+      cell(tr, n(r.items_listed), dim(r.items_listed));
+      cell(tr, n(r.captured_audio_files), dim(r.captured_audio_files));
+      cell(tr, n(r.captured_audio_hours, fmt1), dim(r.captured_audio_hours));
+      cell(tr, n(r.captured_source_texts), dim(r.captured_source_texts));
+      cell(tr, n(r.captured_machine_transcripts), dim(r.captured_machine_transcripts));
+      cell(tr, r.next_step || '', 'cc-wrap');
+      body.append(tr);
+    }
+  });
+
+  dash.draw('rows', (body) => {
+    const g = dash.data('coverage');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const rows = sorted(g.data.filter((r) => num(r.items_outside_youtube) > 0 || num(r.audio_ok) > 0 || num(r.items_with_text) > 0), 'rows',
+      (a, b) => (num(b.items_with_text) + num(b.audio_ok)) - (num(a.items_with_text) + num(a.audio_ok)));
+    const maxOf = (field) => d3.max(rows, (r) => num(r[field])) || 0;
+    const mx = { h: maxOf('audio_hours'), sw: maxOf('publisher_text_words'), mw: maxOf('asr_words') };
+    const fresh = freshChannels();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.person_id);
+      markFresh(tr, cell(tr, r.person_name || r.person_id, 'cc-left'), r.person_id, fresh);
+      cell(tr, n(r.items_outside_youtube), dim(r.items_outside_youtube));
+      cell(tr, n(r.audio_ok), dim(r.audio_ok));
+      wash(cell(tr, n(r.audio_hours, fmt1), dim(r.audio_hours)), r.audio_hours, mx.h);
+      cell(tr, n(r.publisher_texts), dim(r.publisher_texts));
+      wash(cell(tr, n(r.publisher_text_words), dim(r.publisher_text_words)), r.publisher_text_words, mx.sw);
+      cell(tr, n(r.asr_transcripts), dim(r.asr_transcripts));
+      wash(cell(tr, n(r.asr_words), dim(r.asr_words)), r.asr_words, mx.mw);
+      cell(tr, n(r.audio_awaiting_transcript), dim(r.audio_awaiting_transcript));
+      cell(tr, n(r.youtube_captured), dim(r.youtube_captured));
+      cell(tr, r.next_step || '', 'cc-wrap');
+      body.append(tr);
+    }
+  });
+
+  // the counts of the states chart in text, for readers who cannot tell its colours apart or cannot hover
+  dash.draw('state-origin-rows', (body) => {
+    const g = dash.data('state_by_origin');
+    body.replaceChildren();
+    if (g.status !== 'ok' || !Array.isArray(g.data)) return;
+    for (const r of g.data) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.state);
+      cell(tr, r.state, 'cc-left');
+      for (const field of [...ORIGINS, 'total']) cell(tr, n(r[field]), dim(r[field]));
+      body.append(tr);
+    }
+  });
+
+  dash.draw('ta-rows', (body) => {
+    const g = dash.data('transcript_audio');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const names = personNames();
+    const rows = sorted(g.data.filter((r) => num(r.items_with_text) > 0), 'ta-rows', (a, b) => (a.person_id === 'all') - (b.person_id === 'all') || num(b.items_with_text) - num(a.items_with_text));
+    const fresh = freshChannels();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = `${encodeURIComponent(r.person_id)},${encodeURIComponent(r.kind)}`;
+      markFresh(tr, cell(tr, r.person_id === 'all' ? 'All people' : (names.get(r.person_id) || r.person_id), 'cc-left'), r.person_id, fresh);
+      cell(tr, KIND_NAME[r.kind] || r.kind, 'cc-left');
+      cell(tr, n(r.items_with_text));
+      cell(tr, n(r.audio_downloaded), dim(r.audio_downloaded));
+      cell(tr, n(r.in_store), dim(r.in_store));
+      cell(tr, n(r.on_drive), dim(r.on_drive));
+      cell(tr, n(r.on_disk), dim(r.on_disk));
+      cell(tr, n(r.no_audio_page), dim(r.no_audio_page));
+      cell(tr, n(r.no_audio_youtube), dim(r.no_audio_youtube));
+      cell(tr, n(r.no_audio_interview_held), dim(r.no_audio_interview_held));
+      cell(tr, n(r.no_audio_not_yet), dim(r.no_audio_not_yet));
+      cell(tr, n(r.download_failed), dim(r.download_failed));
+      body.append(tr);
+    }
+  });
+
+  dash.draw('pred-rows', (body) => {
+    const g = dash.data('prediction_counts');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const names = personNames();
+    const rows = sorted(g.data.filter((r) => num(r.candidates) > 0), 'pred-rows', (a, b) => num(b.distinct) - num(a.distinct));
+    const fresh = freshChannels();
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = `${encodeURIComponent(r.person_id)},${encodeURIComponent(r.kind)}`;
+      markFresh(tr, cell(tr, names.get(r.person_id) || r.person_id, 'cc-left'), r.person_id, fresh);
+      const kind = cell(tr, '', 'cc-left');
+      const sw = document.createElement('span'); sw.className = 'cc-swatch ' + (r.kind === 'made' ? 'cc-sw-made' : 'cc-sw-src'); sw.style.marginRight = '6px'; sw.setAttribute('aria-hidden', 'true');
+      kind.append(sw, document.createTextNode(KIND_NAME[r.kind] || r.kind));
+      cell(tr, n(r.items_read));
+      cell(tr, n(r.candidates));
+      cell(tr, n(r.distinct));
+      cell(tr, n(r.distinct_with_window), dim(r.distinct_with_window));
+      cell(tr, n(r.conditional), dim(r.conditional));
+      cell(tr, n(r.hedged), dim(r.hedged));
+      cell(tr, r.earliest_target || '–', dim(r.earliest_target));
+      cell(tr, r.latest_target || '–', dim(r.latest_target));
+      body.append(tr);
+    }
+  });
+
+  dash.draw('chart-blackouts', (el) => {
+    const g = dash.data('theme_by_person');
+    const names = personNames();
+    const rows = (g.status === 'ok' && Array.isArray(g.data) ? g.data : []).map((r) => ({ ...r, name: names.get(r.person_id) || r.person_id }));
+    bars(el, 'theme_by_person', rows, (d) => d.name, [
+      { field: 'source', name: 'in texts from the source', color: C.src }, { field: 'made', name: 'in speech-to-text made here', color: C.made }, { field: 'title', name: 'in video titles', color: C.title }],
+      (d) => `${fmt(num(d.total))} distinct hits`, 'Distinct hits on blackouts of the grid and the internet, per person, by kind of text');
+  });
+  const THEME_KIND = { source: 'texts from the source', made: 'speech-to-text made here', captions: 'captions', title: 'video titles' };
+  const kindCell = (tr, kind) => {
+    const td = cell(tr, '', 'cc-left');
+    const cls = kind === 'made' ? 'cc-sw-made' : kind === 'source' ? 'cc-sw-src' : kind === 'title' ? 'cc-sw-title' : kind === 'captions' ? 'cc-sw-cap' : '';
+    if (cls) { const sw = document.createElement('span'); sw.className = 'cc-swatch ' + cls; sw.style.marginRight = '6px'; sw.setAttribute('aria-hidden', 'true'); td.append(sw); }
+    td.append(document.createTextNode(THEME_KIND[kind] || kind));
+    return td;
+  };
+  const yearSpan = (lo, hi) => (lo && hi ? (lo === hi ? String(lo) : `${lo} to ${hi}`) : (lo || hi || '–'));
+  dash.draw('bn-rows', (body) => {
+    const g = dash.data('theme_blackouts_newest10');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const names = personNames(); const fresh = freshChannels();
+    const rows = sorted(g.data.filter((r) => r.person_id !== 'all' && (num(r.titles_matching) > 0 || num(r.videos_with_text) > 0 || num(r.distinct) > 0)), 'bn-rows', (a, b) => (num(b.titles_matching) + num(b.distinct)) - (num(a.titles_matching) + num(a.distinct)) || num(b.videos_with_text) - num(a.videos_with_text) || String(a.person_id).localeCompare(String(b.person_id)));
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = `${encodeURIComponent(r.person_id)},${encodeURIComponent(r.kind)}`;
+      markFresh(tr, cell(tr, names.get(r.person_id) || r.person_id, 'cc-left'), r.person_id, fresh);
+      kindCell(tr, r.kind);
+      cell(tr, n(r.videos_queued), dim(r.videos_queued));
+      cell(tr, n(r.videos_with_twin), dim(r.videos_with_twin));
+      cell(tr, n(r.videos_with_text), dim(r.videos_with_text));
+      wash(cell(tr, n(r.titles_matching), dim(r.titles_matching)), r.titles_matching, 2);
+      wash(cell(tr, n(r.distinct), dim(r.distinct)), r.distinct, 2);
+      cell(tr, n(r.future_marked), dim(r.future_marked));
+      cell(tr, n(r.prediction_candidates), dim(r.prediction_candidates));
+      cell(tr, n(r.with_window), dim(r.with_window));
+      cell(tr, yearSpan(r.earliest_target, r.latest_target), dim(r.earliest_target || r.latest_target));
+      body.append(tr);
+    }
+  });
+  dash.draw('ba-rows', (body) => {
+    const g = dash.data('theme_blackouts');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const names = personNames(); const fresh = freshChannels();
+    const rows = sorted(g.data.filter((r) => r.person_id !== 'all' && num(r.distinct) > 0), 'ba-rows', (a, b) => num(b.distinct) - num(a.distinct) || String(a.person_id).localeCompare(String(b.person_id)));
+    const maxHit = Math.max(1, ...rows.map((r) => num(r.distinct)));
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = `${encodeURIComponent(r.person_id)},${encodeURIComponent(r.kind)}`;
+      markFresh(tr, cell(tr, names.get(r.person_id) || r.person_id, 'cc-left'), r.person_id, fresh);
+      kindCell(tr, r.kind);
+      cell(tr, n(r.items_read));
+      cell(tr, n(r.items_with_hit), dim(r.items_with_hit));
+      wash(cell(tr, n(r.distinct)), r.distinct, maxHit);
+      cell(tr, n(r.future_marked), dim(r.future_marked));
+      cell(tr, n(r.warning_marked), dim(r.warning_marked));
+      cell(tr, n(r.prediction_candidates), dim(r.prediction_candidates));
+      cell(tr, n(r.with_window), dim(r.with_window));
+      cell(tr, r.earliest_target || '–', dim(r.earliest_target));
+      cell(tr, r.latest_target || '–', dim(r.latest_target));
+      cell(tr, r.earliest_said || '–', dim(r.earliest_said));
+      cell(tr, r.latest_said || '–', dim(r.latest_said));
+      for (const f of ['topic_power_grid', 'topic_internet_communications', 'topic_electronics_general', 'topic_darkness_event', 'topic_unspecified']) wash(cell(tr, n(r[f]), dim(r[f])), r[f], maxHit);
+      body.append(tr);
+    }
+  });
+
+  dash.draw('kw-rows', (body) => {
+    const g = dash.data('keywords_newest10');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const names = personNames();
+    const fresh = freshChannels();
+    const KW_KIND = { titles: 'titles', made: 'speech-to-text made here', source: 'texts from the source', captions: 'captions' };
+    const p = (v) => { const x = +v; if (!Number.isFinite(x) || v === '' || v == null) return '–'; return x < 0.001 ? '<0.001' : x.toFixed(3); };
+    const per = (v) => (v === '' || v == null || !Number.isFinite(+v) ? '–' : (+v).toFixed(1));
+    const rows = sorted(g.data.filter((r) => num(r.tier_items) > 0), 'kw-rows', (a, b) => (num(b.tier_blackout_strong) - num(a.tier_blackout_strong)) || (num(b.rising_significant) - num(a.rising_significant)) || String(a.channel).localeCompare(String(b.channel)));
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = `${encodeURIComponent(r.channel)},${encodeURIComponent(r.kind)}`;
+      markFresh(tr, cell(tr, names.get(r.channel) || r.channel, 'cc-left'), r.channel, fresh);
+      const kind = cell(tr, '', 'cc-left');
+      if (r.kind === 'made' || r.kind === 'source') { const sw = document.createElement('span'); sw.className = 'cc-swatch ' + (r.kind === 'made' ? 'cc-sw-made' : 'cc-sw-src'); sw.style.marginRight = '6px'; sw.setAttribute('aria-hidden', 'true'); kind.append(sw); }
+      kind.append(document.createTextNode(KW_KIND[r.kind] || r.kind));
+      cell(tr, n(r.tier_items));
+      cell(tr, n(r.history_items), dim(r.history_items));
+      cell(tr, n(r.rising_significant), dim(r.rising_significant));
+      cell(tr, n(r.falling_significant), dim(r.falling_significant));
+      wash(cell(tr, n(r.tier_blackout_strong), dim(r.tier_blackout_strong)), r.tier_blackout_strong, 2);
+      cell(tr, n(r.history_blackout_strong), dim(r.history_blackout_strong));
+      cell(tr, per(r.tier_strong_per100), dim(r.tier_strong_per100));
+      cell(tr, per(r.history_strong_per100), dim(r.history_strong_per100));
+      const pc = cell(tr, p(r.strong_fisher_p_rise)); if (r.strong_fisher_p_rise !== '' && Number.isFinite(+r.strong_fisher_p_rise) && +r.strong_fisher_p_rise < 0.05) wash(pc, 1, 1);
+      cell(tr, n(r.tier_blackout_weak), dim(r.tier_blackout_weak));
+      cell(tr, n(r.history_blackout_weak), dim(r.history_blackout_weak));
+      body.append(tr);
+    }
+  });
+
+  // several links in one cell, one per address, each only for a plain https address
+  const linkList = (td, text, labelOf) => {
+    const urls = String(text || '').split(/\s+/).filter(Boolean);
+    if (!urls.length) { td.textContent = '–'; td.classList.add('cc-zero'); return; }
+    urls.forEach((u, i) => { if (i) td.append(document.createTextNode(' ')); td.append(link(u, labelOf ? labelOf(u) : (host(u) || u))); });
+  };
+  dash.draw('contact-rows', (body) => {
+    const g = dash.data('contacts');
+    body.replaceChildren();
+    if (g.status !== 'ok') return;
+    const p = dash.params(); const q = (p.q_contacts || '');
+    const fresh = freshChannels();
+    const rows = sorted(g.data.filter((r) => (!p.c_role || r.role === p.c_role) && (p.c_activity === 'fresh' ? fresh.has(r.person_id) : (!p.c_activity || r.channel_activity === p.c_activity)) && (matches(r.name, q) || matches(r.websites, q) || matches(r.about_links, q) || matches(r.podcasts, q) || matches(r.youtube_channel, q))), 'contact-rows');
+    const ACT = { active: ['got', 'active'], quiet: ['plan', 'quiet'], dormant: ['none', 'dormant'], unknown: ['', 'date unknown'], none: ['', '–'] };
+    const activity = (tr, cls, date) => {
+      const td = cell(tr, '', 'cc-left');
+      const [kind, word] = ACT[cls] || ACT.none;
+      if (!kind) { td.textContent = word; td.classList.add('cc-zero'); return; }
+      const span = document.createElement('span'); span.className = 'cc-pill cc-pill-' + kind;
+      const g = document.createElement('span'); g.className = 'cc-glyph'; g.setAttribute('aria-hidden', 'true'); g.textContent = GLYPH[kind]; span.append(g);
+      span.append(document.createTextNode(word));
+      td.append(span);
+      if (date) { const sub = document.createElement('span'); sub.className = 'cc-sub'; sub.textContent = 'last ' + date; td.append(sub); }
+    };
+    for (const r of rows) {
+      const tr = document.createElement('tr');
+      tr.dataset.key = encodeURIComponent(r.person_id);
+      markFresh(tr, cell(tr, r.name, 'cc-left'), r.person_id, fresh);
+      cell(tr, r.role || '–', 'cc-left');
+      pill(tr, r.state || '–');
+      const yt = cell(tr, '', 'cc-left'); if (r.youtube_channel) yt.append(link(r.youtube_channel, (r.youtube_channel.match(/@[^/?]+/) || [host(r.youtube_channel)])[0])); else { yt.textContent = '–'; yt.classList.add('cc-zero'); }
+      activity(tr, r.channel_activity, r.channel_last_upload);
+      linkList(cell(tr, '', 'cc-left cc-links'), r.websites);
+      linkList(cell(tr, '', 'cc-left cc-links'), r.about_links);
+      const pods = cell(tr, '', 'cc-left cc-links');
+      const names = String(r.podcasts || '').split(' | ').filter(Boolean), feeds = String(r.podcast_feeds || '').split(/\s+/).filter(Boolean), psites = String(r.podcast_sites || '').split(/\s+/).filter(Boolean);
+      if (!names.length) { pods.textContent = '–'; pods.classList.add('cc-zero'); }
+      names.forEach((nm, i) => {
+        const line = document.createElement('span'); line.className = 'cc-sub';
+        line.append(document.createTextNode(nm + ' · '));
+        if (feeds[i]) line.append(link(feeds[i], 'feed'));
+        if (psites[i]) { line.append(document.createTextNode(' · ')); line.append(link(psites[i], host(psites[i]) || 'site')); }
+        pods.append(line);
+      });
+      activity(tr, r.podcast_activity, r.podcast_last_episode);
+      const mail = cell(tr, '', 'cc-left cc-links');
+      const addrs = String(r.contact_emails || '').split(/\s+/).filter(Boolean);
+      if (!addrs.length) { mail.textContent = '–'; mail.classList.add('cc-zero'); }
+      addrs.forEach((a, i) => { if (i) mail.append(document.createTextNode(' ')); const span = document.createElement('span'); span.textContent = a; mail.append(span); });
+      if (addrs.length && r.email_source) { const src = document.createElement('span'); src.className = 'cc-sub'; src.textContent = r.email_source; mail.append(src); }
+      linkList(cell(tr, '', 'cc-left cc-links'), r.archive_org, () => 'archive.org');
+      linkList(cell(tr, '', 'cc-left cc-links'), r.audio_pages);
+      linkList(cell(tr, '', 'cc-left cc-links'), r.text_pages);
+      cell(tr, String(r.interview_shows || '').split(' | ').filter(Boolean).join(', ') || '–', 'cc-wrap');
+      cell(tr, n(r.sources_registered), dim(r.sources_registered));
+      body.append(tr);
+    }
+  });
+
+  // Sorting: a click on a column heading sorts its table's rows and reruns the drawing; the heading says the order.
+  document.querySelectorAll('.cc-table').forEach((table) => {
+    const body = table.querySelector('tbody[data-draw]');
+    if (!body) return;
+    const name = body.dataset.draw;
+    table.querySelectorAll('thead th[data-field]').forEach((th) => {
+      th.classList.add('cc-sortable');
+      th.setAttribute('tabindex', '0');
+      const go = () => {
+        const field = th.dataset.field;
+        const st = sortState[name];
+        const dir = st && st.field === field ? (st.dir === 'desc' ? 'asc' : 'desc') : (th.classList.contains('cc-left') ? 'asc' : 'desc');
+        sortState[name] = { field, dir };
+        table.querySelectorAll('thead th[aria-sort]').forEach((h) => h.removeAttribute('aria-sort'));
+        th.setAttribute('aria-sort', dir === 'asc' ? 'ascending' : 'descending');
+        dash.draw(name);
+      };
+      th.addEventListener('click', go);
+      th.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); go(); } });
+    });
+  });
+  // Search boxes: a filter no query uses, so each keystroke redraws at once; nothing is sent anywhere.
+  document.querySelectorAll('.cc-search').forEach((box) => {
+    let timer = 0;
+    box.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => dash.setParams({ [box.dataset.ccParam]: box.value.trim() || null }), 150); });
+  });
+  dash.onData(() => {
+    const p = dash.params();
+    document.querySelectorAll('.cc-search').forEach((box) => { if (document.activeElement !== box) box.value = p[box.dataset.ccParam] || ''; });
+  });
+
+  // Filters with fixed choices: the pick is a filter no query uses, so a change redraws at once.
+  document.querySelectorAll('.cc-filter').forEach((sel) => {
+    sel.addEventListener('change', () => dash.setParams({ [sel.dataset.ccParam]: sel.value || null }));
+  });
+  dash.onData(() => {
+    const p = dash.params();
+    document.querySelectorAll('.cc-filter').forEach((sel) => {
+      if (document.activeElement !== sel) sel.value = p[sel.dataset.ccParam] || '';
+    });
+  });
+  // Section links: scroll within the page and keep the place in a copied link.
+  document.querySelectorAll('.cc-nav-link').forEach((a) => {
+    a.addEventListener('click', (event) => {
+      const target = document.getElementById(a.dataset.go);
+      if (!target) return;
+      event.preventDefault();
+      const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
+      // move the keyboard's place too, to the section's heading, so the next Tab starts there
+      const heading = target.querySelector('h2') || target;
+      if (!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex', '-1');
+      heading.focus({ preventScroll: true });
+      dash.setLink(a.dataset.go);
+    });
+  });
+  dash.onData(() => {
+    const wanted = (location.hash || '').replace(/^#/, '');
+    if (!wanted || window.__ccScrolled) return;
+    const target = document.getElementById(wanted);
+    if (target) { window.__ccScrolled = true; target.scrollIntoView({ block: 'start' }); }
+  });
+</script>

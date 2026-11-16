@@ -1,11 +1,11 @@
 {
- "generated": "2026-11-16T16:41:06Z",
+ "generated": "2026-11-16T20:28:34Z",
  "targets": 108,
  "by_state": {
   "captured": 1,
-  "partly captured": 27,
+  "partly captured": 29,
   "planned: source found": 0,
-  "planned: YouTube only": 44,
+  "planned: YouTube only": 42,
   "planned: no source yet": 35,
   "unresolved": 0,
   "excluded": 1
@@ -20,12 +20,12 @@
   {
    "origin": "added",
    "state": "partly captured",
-   "targets": 2
+   "targets": 4
   },
   {
    "origin": "added",
    "state": "planned: YouTube only",
-   "targets": 5
+   "targets": 3
   },
   {
    "origin": "archiveshelf",
@@ -81,18 +81,18 @@
   "creator_files": 1410,
   "publisher_pages": 9856,
   "archive_org_files": 903,
-  "interviews_listed": 189,
-  "interviews_live_channeling": 30,
-  "interviews_other_kinds": 21,
-  "interviews_not_classified": 138,
-  "items_listed": 68877,
-  "items_captured": 12111,
-  "captured_audio_files": 2992,
-  "captured_source_texts": 10060,
-  "captured_source_words": 15701692,
-  "captured_machine_transcripts": 250,
-  "audio_awaiting_transcript": 2620,
-  "captured_audio_hours": 2231.8,
+  "interviews_listed": 223,
+  "interviews_live_channeling": 36,
+  "interviews_other_kinds": 28,
+  "interviews_not_classified": 159,
+  "items_listed": 68911,
+  "items_captured": 12475,
+  "captured_audio_files": 3342,
+  "captured_source_texts": 10074,
+  "captured_source_words": 15819809,
+  "captured_machine_transcripts": 307,
+  "audio_awaiting_transcript": 2914,
+  "captured_audio_hours": 2463.4,
   "videos_listed": 32570,
   "live_listed": 10014,
   "shorts_listed": 16115,
