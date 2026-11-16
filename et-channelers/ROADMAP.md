@@ -1,5 +1,8 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
+**Dashboard update, 16 November 2026:** the [dashboard directory](../dashboards/index.html) joins the redesigned prediction workbench, collection monitor, standalone channel index, Atlas, original Bashar Index and research report. Current collection stages are newest 20 -> extend to 50 -> index the remainder; published operational counts have their own timestamp and do not replace historical research denominators. Interface changes preserve the published evidence. Rebuild notes are in [`../dashboards/README.md`](../dashboards/README.md).
+
+
 Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos indexed, 75 Bashar recordings partly read" to "every video on every tracked channel as private audio plus a timestamped transcript", and then to analysis and a paper. The tooling is in [`pipeline/`](pipeline/README.md); the channel table is in the [README](README.md#plan-for-the-rest) and in [`plan/channel_inventory.csv`](plan/channel_inventory.csv). Everything here is an AI-written plan and has not been reviewed by a person; figures marked "estimate" are arithmetic on a sample, not measurements.
 
 ## 00. Update 2026-11-14: paused for the move to a 16 GB Codespace

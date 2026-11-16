@@ -458,9 +458,9 @@ class PageContractTests(unittest.TestCase):
         report = pp.guard(self.records, self.cat, self.page, self.private, PEOPLE)
         self.assertEqual(report["records"], 3)
 
-    def test_exactly_one_external_script_and_it_is_d3(self):
+    def test_only_local_navigation_and_the_existing_d3_script(self):
         tags = re.findall(r"<script\s[^>]*src=\"([^\"]+)\"[^>]*>", self.page)
-        self.assertEqual(tags, ["https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"])
+        self.assertEqual(tags, ["../../assets/research-nav.js", "https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"])
         tag = re.search(r"<script\s[^>]*src=\"https://cdnjs[^>]*>", self.page).group(0)
         self.assertIn("onerror=\"document.documentElement.classList.add('no-d3')\"", tag)
         self.assertIn('crossorigin="anonymous"', tag)
@@ -468,7 +468,8 @@ class PageContractTests(unittest.TestCase):
         self.assertNotIn("integrity", tag)
         # the only "http" inside any script tag's attributes is that one address
         self.assertEqual(sum("http" in t for t in re.findall(r"<script\b[^>]*>", self.page)), 1)
-        self.assertNotIn("<link", self.page)                              # no stylesheet or font request
+        self.assertEqual(re.findall(r'<link[^>]+href="([^"]+)"', self.page), ["../../assets/research-nav.css"])
+        self.assertIn('data-page="predictions"', self.page)
         self.assertNotIn("@import", pp.CSS)
 
     def test_js_never_uses_innerhtml_storage_or_history_push(self):
@@ -955,6 +956,59 @@ console.log('ok');
         self.assertIn("focusI: function (i) { return focusMark(stackOf[i] || ('i' + i)); }", pp.JS)
         self.assertIn('#stage.is-fs #spot{flex:none;max-height:11rem;overflow:auto', pp.CSS)
         self.assertIn('.spot[data-kind="source"]{border-left-color:var(--series-source)}', pp.CSS)
+
+class ResearchDeskTests(unittest.TestCase):
+    def setUp(self):
+        self.fixture = Root([cat_row("web-1111111111111111")], [cand("web-1111111111111111", LONG_PAGE)])
+        self.addCleanup(self.fixture.cleanup)
+        self.records, _ = self.fixture.build()
+
+    def test_public_refresh_preserves_records_quotes_and_original_timestamp(self):
+        original = self.fixture.out.read_text(encoding="utf-8")
+        target = self.fixture.out.with_name("refreshed.html")
+        records, report = pp.refresh_public(self.fixture.out, target)
+        rendered = target.read_text(encoding="utf-8")
+        self.assertEqual(records, self.records)
+        self.assertEqual(pp.existing_public_records(rendered), pp.existing_public_records(original))
+        self.assertIn(report["original_build"], original)
+        self.assertIn(report["original_build"], rendered)
+        self.assertEqual(report["share_guard"], "inherited from unchanged published records")
+        pp.refresh_public(target, target)
+        self.assertEqual(target.read_text(encoding="utf-8"), rendered)
+
+    def test_public_refresh_rejects_extra_fields_before_writing(self):
+        page = self.fixture.out.read_text(encoding="utf-8")
+        extra = page.replace('"person_id":"zed-quorn"', '"private_field":"forbidden","person_id":"zed-quorn"', 1)
+        self.fixture.out.write_text(extra, encoding="utf-8")
+        target = self.fixture.out.with_name("refreshed.html")
+        with self.assertRaises(pp.GuardError):
+            pp.refresh_public(self.fixture.out, target)
+        self.assertFalse(target.exists())
+
+    def test_evidence_reader_does_not_repeat_quotes_in_the_html(self):
+        page = self.fixture.out.read_text(encoding="utf-8")
+        self.assertIn('id="evidence-dock"', page)
+        self.assertIn('id="evidence-empty"', page)
+        self.assertIn('<div id="spot-body"></div>', page)
+        self.assertEqual(page.count('<blockquote class="q">'), len(self.records))
+        self.assertLess(page.index('id="timeline-section"'), page.index('id="caveat"'))
+        self.assertIn('aria-label="Public research corpus"', page)
+
+    def test_text_and_chart_colors_meet_contrast_thresholds(self):
+        def luminance(color):
+            values = [int(color[i:i + 2], 16) / 255 for i in (1, 3, 5)]
+            linear = [v / 12.92 if v <= .04045 else ((v + .055) / 1.055) ** 2.4 for v in values]
+            return sum(v * w for v, w in zip(linear, (.2126, .7152, .0722)))
+
+        for mode, source in (("light", pp.LIGHT_TOKENS), ("dark", pp.DARK_TOKENS)):
+            tokens = dict(re.findall(r"(--[\w-]+):(#[0-9a-f]{6})", source))
+            for foreground, background, minimum in (("--fg", "--bg", 4.5), ("--fg-muted", "--bg", 4.5),
+                                                    ("--accent", "--surface", 4.5), ("--focus", "--surface", 3),
+                                                    ("--border-strong", "--surface", 3),
+                                                    ("--series-source", "--surface", 3), ("--series-made", "--surface", 3)):
+                lo, hi = sorted((luminance(tokens[foreground]), luminance(tokens[background])))
+                self.assertGreaterEqual((hi + .05) / (lo + .05), minimum, (mode, foreground, background))
+
 
 if __name__ == "__main__":
     unittest.main()

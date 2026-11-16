@@ -97,20 +97,116 @@
   .cc-table tr.cc-fresh td { background: color-mix(in srgb, var(--cc-neon) 7%, transparent); }
   .cc-badge-fresh { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; padding: 0 7px; border-radius: 999px; background: var(--cc-neon); color: #0b0b0b; font-size: 10px; font-weight: var(--cds-font-weight-medium); line-height: 16px; white-space: nowrap; vertical-align: middle; }
   .cc-badge-fresh .cc-glyph { color: #0b0b0b; }
+
+/* Collection workspace: current acquisition and the historical corpus have separate scopes. */
+.cc-page { gap:0; --cc-neon:#1f554b; }
+.cc-hero { padding:44px 0 38px; gap:12px; border-bottom:1px solid var(--color-border-line); }
+.cc-eyebrow { margin:0; color:var(--color-ok); font-size:11px; font-weight:700; letter-spacing:.13em; line-height:1.5; text-transform:uppercase; }
+.cc-hero-row { display:grid; grid-template-columns:1.2fr 1fr; align-items:end; gap:32px; }
+.cc-title { font-size:clamp(38px,4.4vw,62px); line-height:1.08; letter-spacing:-.035em; }
+.cc-hero .cc-lede { color:var(--color-fg-muted); max-width:44ch; font-size:17px; }
+.cc-hero-note { margin:4px 0 0; color:var(--color-fg-muted); font-size:13px; }
+.cc-workspace { display:grid; grid-template-columns:190px minmax(0,1fr); gap:36px; align-items:start; }
+.cc-rail { position:sticky; top:20px; padding-block:28px; }
+.cc-nav { display:block; }
+.cc-nav-group { margin-bottom:24px; }
+.cc-nav-group p { margin:0 0 8px; color:var(--color-fg-muted); font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; }
+.cc-nav-link { display:block; padding:8px 10px; margin-inline:-10px 0; border:0; border-radius:3px; background:transparent; font-size:13px; line-height:1.35; }
+.cc-nav-link:hover,.cc-nav-link[aria-current="location"] { color:var(--color-ok); background:color-mix(in srgb,var(--color-ok) 9%,transparent); }
+.cc-rail-top { color:var(--color-fg-muted); font-size:12px; }
+.cc-main { min-width:0; padding-top:28px; display:flex; flex-direction:column; gap:28px; }
+.cc-current { padding:28px; border:1px solid var(--color-border-line); border-top:3px solid var(--color-ok); background:var(--color-panel); scroll-margin-top:20px; }
+.cc-current-top { display:flex; justify-content:space-between; align-items:center; gap:20px; }
+.cc-current h2,.cc-archive-intro h2 { margin:6px 0 0; font:400 30px/1.2 var(--font-anthropic-serif); letter-spacing:-.02em; }
+.cc-operation { flex:none; border:1px solid var(--color-border-line); padding:6px 10px; font-size:12px; font-weight:600; border-radius:3px; }
+.cc-operation[data-state="cooldown"] { color:var(--color-warn); background:color-mix(in srgb,var(--color-warn) 8%,var(--color-panel)); border-color:color-mix(in srgb,var(--color-warn) 35%,var(--color-border-line)); }
+.cc-current-explanation { margin:14px 0 24px; color:var(--color-fg-muted); font-size:14px; max-width:76ch; }
+.cc-current-metrics { display:grid; grid-template-columns:1.5fr repeat(3,1fr); padding:4px 0 26px; gap:18px; }
+.cc-current-metrics>div { min-width:0; border-inline-start:1px solid var(--color-border-line); padding-inline-start:18px; }
+.cc-current-metrics>div:first-child { border:0; padding:0; }
+.cc-metric-number { display:block; color:var(--color-fg); font:400 clamp(28px,3vw,40px)/1.15 var(--font-anthropic-serif); font-variant-numeric:tabular-nums; letter-spacing:-.025em; }
+.cc-primary-metric .cc-metric-number { color:var(--color-ok); }
+.cc-metric-label { display:block; font-size:12px; color:var(--color-fg-muted); max-width:22ch; margin-top:8px; }
+.cc-stages { list-style:none; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; padding:0; margin:0; border-block:1px solid var(--color-border-line); }
+.cc-stage { padding:20px 18px; border-inline-start:1px solid var(--color-border-line); min-width:0; }
+.cc-stage:first-child { padding-inline-start:0; border:0; }
+.cc-stage:last-child { padding-inline-end:0; }
+.cc-stage-order { color:var(--color-ok); font-size:11px; letter-spacing:.1em; font-weight:700; }
+.cc-stage h3 { margin:6px 0; font-size:14px; font-weight:650; }
+.cc-stage-total { margin:0; font:400 24px/1.3 var(--font-anthropic-serif); font-variant-numeric:tabular-nums; }
+.cc-stage-caption { font-size:11px; color:var(--color-fg-muted); margin:5px 0 9px; }
+.cc-stage progress { display:block; width:100%; height:5px; border:0; accent-color:var(--color-ok); }
+.cc-stage progress::-webkit-progress-bar { background:var(--color-border-line); border-radius:2px; }
+.cc-stage progress::-webkit-progress-value { background:var(--color-ok); border-radius:2px; }
+.cc-current-foot { display:flex; justify-content:space-between; gap:24px; align-items:center; padding-top:18px; }
+.cc-storage-label { font-size:12px; color:var(--color-fg-muted); display:flex; justify-content:space-between; gap:24px; }
+.cc-storage-label b { color:var(--color-fg); font-weight:500; font-variant-numeric:tabular-nums; }
+.cc-current-foot meter { width:230px; max-width:100%; height:12px; accent-color:var(--color-ok); }
+.cc-current-foot>p { font-size:12px; margin:0; text-align:end; }
+.cc-current-foot>p span,.cc-snapshot-time { color:var(--color-fg-muted); }
+.cc-snapshot-time { font-size:11px; margin:14px 0 0; padding-top:12px; border-top:1px solid var(--color-border-line); }
+.cc-archive-intro { margin-top:16px; padding-top:12px; scroll-margin-top:20px; }
+.cc-section-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.cc-snapshot-label { font-size:11px; color:var(--color-fg-muted); border:1px solid var(--color-border-line); padding:5px 8px; }
+.cc-archive-intro>p { font-size:13px; color:var(--color-fg-muted); max-width:80ch; margin-block:12px; }
+.cc-archive-intro .cc-archive-drive { font-size:12px; }
+.cc-archive-key { color:var(--color-fg-muted); font-size:12px; }
+.cc-archive-key summary { cursor:pointer; color:var(--color-ok); padding-block:6px; }
+.cc-archive-key .cc-code { margin-top:12px; }
+.cc-tiles { grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; border-block:1px solid var(--color-border-line); }
+.cc-tile { border:0; border-bottom:1px solid var(--color-border-line); border-radius:0; background:transparent; padding:20px 20px 20px 0; }
+.cc-tile-label { font-size:12px; min-height:2.8em; }
+.cc-tile-num { font-size:30px; }
+.cc-tile-sub { font-size:11px; line-height:1.45; }
+.cc-card { padding:24px; background:var(--color-panel); border-radius:5px; gap:16px; }
+.cc-section { padding:8px 0; gap:12px; }
+.cc-h2 { font-family:var(--font-anthropic-serif); font-weight:400; font-size:27px; letter-spacing:-.015em; }
+.cc-muted { max-width:85ch; line-height:1.65; }
+.cc-scroll { border-radius:3px; scrollbar-width:thin; }
+.cc-table { font-size:12px; }
+.cc-table th,.cc-table td { padding:10px 12px; }
+.cc-table thead th { background:var(--color-bg); font-size:11px; }
+.cc-input { padding:9px 11px; min-height:40px; background:var(--color-bg); border-color:#7d8a7f; border-radius:3px; }
+.cc-legend .cc-key { min-width:0; max-width:100%; }
+.cc-legend .cc-pill { white-space:normal; max-width:100%; }
+.cc-table thead th.cc-sortable:focus-visible { outline-offset:-3px; }
+.cc-badge-fresh { background:var(--color-ok); color:var(--color-panel); font-weight:600; }
+.cc-badge-fresh .cc-glyph { color:inherit; }
+.cc-code { background:transparent; }
+@media(max-width:1050px) { .cc-workspace { grid-template-columns:160px minmax(0,1fr); gap:22px; } .cc-current { padding:22px; } .cc-current-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; } .cc-current-metrics>div:nth-child(3) { border:0; padding:0; } }
+@media(max-width:760px) { .cc-hero { padding-block:28px; } .cc-hero-row { display:block; } .cc-hero .cc-lede { margin-top:16px; font-size:16px; } .cc-workspace { display:block; } .cc-rail { position:static; padding:12px 0 0; } .cc-nav { display:flex; overflow-x:auto; flex-wrap:nowrap; gap:20px; padding-bottom:10px; } .cc-nav-group { display:flex; gap:4px; margin:0; flex:none; } .cc-nav-group p,.cc-rail-top { display:none; } .cc-nav-link { border:1px solid var(--color-border-line); margin:0; padding:8px 11px; white-space:nowrap; background:var(--color-panel); } .cc-main { padding-top:18px; } .cc-current { padding:20px; } .cc-current-top { align-items:start; flex-direction:column; gap:12px; } .cc-current h2 { font-size:27px; } .cc-stages { grid-template-columns:1fr; } .cc-stage,.cc-stage:first-child,.cc-stage:last-child { display:grid; grid-template-columns:28px 1fr; gap:2px 10px; padding:16px 0; border-inline:0; border-bottom:1px solid var(--color-border-line); } .cc-stage:last-child { border-bottom:0; } .cc-stage h3 { margin:0; } .cc-stage-total,.cc-stage-caption,.cc-stage progress { grid-column:2; } .cc-stage-total { font-size:22px; } .cc-current-foot { flex-direction:column; align-items:stretch; gap:12px; } .cc-current-foot>p { text-align:start; } .cc-current-foot meter { width:100%; } .cc-section-heading { align-items:start; flex-direction:column; gap:12px; } .cc-tiles { grid-template-columns:repeat(2,minmax(0,1fr)); } .cc-card { padding:18px; } .cc-input { font-size:16px; max-width:100%; } .cc-filters>label { max-width:100%; } }
+@media(max-width:360px) { .cc-current { padding:16px; } .cc-current-metrics { gap:18px 12px; } .cc-current-metrics>div { padding-inline-start:12px; } .cc-metric-number { font-size:30px; } .cc-tile-num { font-size:28px; } }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; transition:none!important; } }
+
 </style>
 
 <div class="cc-page">
   <header class="cc-hero" id="top">
-    <h1 class="cc-title">ET channelers: what is collected, and what it says about the future</h1>
-    <p class="cc-lede">Of <b data-draw="g-people" data-source="target_totals" data-field="people" data-row="0">—</b> tracked people and groups, <b data-draw="g-got" data-source="target_totals" data-field="with_something" data-row="0">—</b> have something in the archive, <b data-draw="g-plan" data-source="target_totals" data-field="planned" data-row="0">—</b> have a channel or another source on record and nothing in the archive yet, and <b data-draw="g-none" data-source="target_totals" data-field="no_source" data-row="0">—</b> have no channel or site on record. Their <b data-draw="g-sources" data-source="source_totals" data-field="sources" data-row="0">—</b> registered sources are listed below with a link, what each yields and how it is collected.</p>
-    <p class="cc-lede"><b data-draw="n-with-text" data-source="totals" data-field="items_with_text" data-row="0">—</b> items have text. <b data-draw="n-from-source" data-source="totals" data-field="items_text_from_source" data-row="0">—</b> have a transcript the publisher wrote, <b data-draw="n-made-here" data-source="totals" data-field="items_text_made_here" data-row="0">—</b> have one made here by speech-to-text from downloaded audio, and <b data-draw="n-both" data-source="totals" data-field="items_text_both" data-row="0">—</b> have both. <b data-draw="n-waiting" data-source="totals" data-field="audio_awaiting_transcript" data-row="0">—</b> downloaded recordings still wait for a transcript.</p>
-    <p class="cc-muted">Counts as of <b data-draw="as-of" data-source="source_totals" data-field="counts_as_of" data-row="0">—</b>, from the catalogue of what the archive holds. The page shows counts and the public addresses of channels, sites and feeds only: no address of a single recording and no text, except the <b data-draw="r-count" data-source="recording_totals" data-field="recordings" data-row="0">—</b> recordings and the podcast list that the Bashar Index site already publishes. No audio or text here came from YouTube. Its robots.txt disallows, for every crawler, the paths that channel listings, captions and audio are requested through, so those lanes are off by rule: they stay off unless the owner decides to turn them on. The video counts come from channel listings made before 14 November, when listing was turned off.</p>
-    <aside class="cc-status" aria-labelledby="status-h">
-      <h2 class="cc-status-h" id="status-h">Where things stand, as of 16 November 2026</h2>
-      <p>Everything collected is in the private GitHub store and on Google Drive, in the folder "ET Channelers Archive": 5,523 files (27.9 GB) in 78 folders, counted 16 November 2026, long recordings cut into playable parts. Every downloaded recording that has a transcript is on Drive. Collection, the store sync and speech-to-text run day and night in the Codespace.</p>
-      <p>YouTube refuses audio and captions to cloud servers, so the newest 10, 20 and 50 videos of every tracked channel are downloaded on the owner's own computer; the queues wait in the private store. The first pass over every text here found the statements about the future and gave each a target window; a third, blinded sample puts real predictions at about 56% of the dated candidates. The handoff notes are in the repository's <code>et-channelers/HANDOFF.md</code>.</p>
-    </aside>
-    <div class="cc-code" id="colour-code" aria-label="Colour code">
+    <p class="cc-eyebrow">Channeling research archive / Collection</p>
+    <div class="cc-hero-row"><h1 class="cc-title">Building the archive.</h1><p class="cc-lede">Follow what has reached Drive, what is waiting, and where the research corpus stands.</p></div>
+    <p class="cc-hero-note">Audio and source metadata first. Transcription follows in a later pass.</p>
+  </header>
+  <div class="cc-workspace">
+    <aside class="cc-rail"><nav class="cc-nav" aria-label="Collection sections"><div class="cc-nav-group"><p>Collection</p><a class="cc-nav-link" href="#collection-current" data-go="collection-current">Current collection</a><a class="cc-nav-link" href="#archive-overview" data-go="archive-overview">Historical archive</a></div><div class="cc-nav-group"><p>Archive & sources</p><a class="cc-nav-link" href="#people-states" data-go="people-states">Coverage by state</a><a class="cc-nav-link" href="#sources" data-go="sources">Sources & links</a><a class="cc-nav-link" href="#methods" data-go="methods">Collection methods</a><a class="cc-nav-link" href="#everyone" data-go="everyone">People & groups</a><a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar recordings</a><a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a><a class="cc-nav-link" href="#per-person" data-go="per-person">Texts by person</a><a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio & transcripts</a></div><div class="cc-nav-group"><p>Research</p><a class="cc-nav-link" href="#predictions" data-go="predictions">Prediction candidates</a><a class="cc-nav-link" href="#keywords" data-go="keywords">Title keywords</a><a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackout references</a><a class="cc-nav-link" href="#contacts" data-go="contacts">Websites & contacts</a></div></nav><a class="cc-rail-top" href="#top">Back to top &uarr;</a></aside>
+    <main class="cc-main" id="collection-content">
+      <section class="cc-current" id="collection-current" tabindex="-1" aria-labelledby="cc-current-heading">
+        <div class="cc-current-top"><div><p class="cc-eyebrow">Current collection &middot; YouTube</p><h2 id="cc-current-heading">Newest first. Every channel.</h2></div><span class="cc-operation" id="cc-current-state" role="status">Loading snapshot</span></div>
+        <p class="cc-current-explanation" id="cc-current-explanation">Reading the latest collection counts&hellip;</p>
+        <div class="cc-current-metrics">
+          <div class="cc-primary-metric"><span class="cc-metric-number" id="cc-verified">&mdash;</span><span class="cc-metric-label">Audio + metadata pairs verified on Drive</span></div>
+          <div><span class="cc-metric-number" id="cc-awaiting">&mdash;</span><span class="cc-metric-label">Downloaded, awaiting upload</span></div>
+          <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label">Channels in this pass</span></div>
+          <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label">Items in the full index</span></div>
+        </div>
+        <ol class="cc-stages" id="cc-stages" aria-label="Collection sequence"><li class="cc-stage">Loading the collection sequence&hellip;</li></ol>
+        <div class="cc-current-foot"><div><span class="cc-storage-label">Local storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="19000000000" value="0" aria-label="Local collection storage"></meter></div><p>Up to <b id="cc-workers">4</b> parallel workers<br><span>Final-round downloads stay on hold.</span></p></div>
+        <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>
+      </section>
+      <section class="cc-archive-intro" id="archive-overview" aria-labelledby="cc-archive-heading">
+        <div class="cc-section-heading"><div><p class="cc-eyebrow">Historical snapshot</p><h2 id="cc-archive-heading">The research corpus</h2></div><span class="cc-snapshot-label">16 November 2026</span></div>
+        <p>These archive tables were last rebuilt <b data-draw="as-of" data-source="source_totals" data-field="counts_as_of" data-row="0">&mdash;</b>. Current YouTube collection is reported separately above.</p>
+        <p class="cc-archive-drive">Drive at that snapshot: <strong>5,523 files</strong> &middot; <strong>27.9 GB</strong> &middot; 78 folders. File counts include recordings split into playable parts.</p>
+        <details class="cc-archive-key"><summary>How to read the archive tables</summary><p>Source transcripts, generated transcripts and captions are counted separately. Public tables contain aggregate counts and source links; private recordings and transcript text remain in the archive.</p>    <div class="cc-code" id="colour-code" aria-label="Colour code">
       <span class="cc-key"><span class="cc-swatch cc-sw-src"></span>text from the source</span>
       <span class="cc-key"><span class="cc-swatch cc-sw-made"></span>text made here (speech-to-text)</span>
       <span class="cc-key"><span class="cc-swatch cc-sw-cap"></span>YouTube captions (none yet)</span>
@@ -118,22 +214,9 @@
       <span class="cc-key"><span class="cc-pill cc-pill-got"><span class="cc-glyph">●</span>in the archive</span></span>
       <span class="cc-key"><span class="cc-pill cc-pill-plan"><span class="cc-glyph">◐</span>planned, waiting</span></span>
       <span class="cc-key"><span class="cc-pill cc-pill-none"><span class="cc-glyph">○</span>no source, or off by rule</span></span>
-      <span class="cc-key"><span class="cc-badge-fresh"><span class="cc-glyph">●</span>30 days</span>channel uploaded in the last 30 days (neon rows in every table)</span>
-    </div>
-    <nav class="cc-nav" aria-label="Sections">
-      <a class="cc-nav-link" href="#sources" data-go="sources">Sources and links</a>
-      <a class="cc-nav-link" href="#methods" data-go="methods">How it is collected</a>
-      <a class="cc-nav-link" href="#everyone" data-go="everyone">Everyone tracked</a>
-      <a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar</a>
-      <a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a>
-      <a class="cc-nav-link" href="#per-person" data-go="per-person">Text by kind</a>
-      <a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio behind the transcripts</a>
-      <a class="cc-nav-link" href="#predictions" data-go="predictions">Predictions</a>
-      <a class="cc-nav-link" href="#keywords" data-go="keywords">Newest videos: keywords</a>
-      <a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackouts of the grid</a>
-      <a class="cc-nav-link" href="#contacts" data-go="contacts">Websites and contacts</a>
-    </nav>
-  </header>
+      <span class="cc-key"><span class="cc-badge-fresh"><span class="cc-glyph">●</span>30 days</span>channel uploaded in the last 30 days (highlighted rows in the archive tables)</span>
+    </div></details>
+      </section>
 
   <section class="cc-tiles" id="headline">
     <div class="cc-tile"><span class="cc-tile-label">People and groups tracked</span><span class="cc-tile-num" data-draw="t-people" data-source="target_totals" data-field="people" data-row="0">—</span><span class="cc-tile-sub"><span data-draw="t-channels" data-source="target_totals" data-field="with_channel" data-row="0">—</span> have a YouTube channel on record</span></div>
@@ -615,7 +698,7 @@
   <section class="cc-card" id="contacts">
     <h2 class="cc-h2">Every channel, person and organisation: websites and contacts</h2>
     <p class="cc-muted">One row per tracked person or group: their YouTube channel, official websites, their own podcasts with the feed and the show's site, recordings on archive.org, audio and text pages on their own site, and the interview shows that have had them on. <b data-draw="c-rows" data-source="contact_totals" data-field="people" data-row="0">—</b> people and groups; <b data-draw="c-sites" data-source="contact_totals" data-field="with_website" data-row="0">—</b> have a website on record, <b data-draw="c-pods" data-source="contact_totals" data-field="with_podcast" data-row="0">—</b> a podcast of their own and <b data-draw="c-mail" data-source="contact_totals" data-field="with_email" data-row="0">—</b> a contact address, and <b data-draw="c-about" data-source="contact_totals" data-field="with_about_links" data-row="0">—</b> declare links on their channel's About page. The addresses are only those the makers publish themselves: in their own podcast feeds' contact field, or written in their YouTube channel's public About description (read on 16 November 2026, 64 channels; the button behind YouTube's captcha is never pressed), and the table names the source of each. The About page also gives the links each channel declares itself, shown beside the websites on record. Nothing was taken from a contact page or a profile. This table is attached to the dashboard only and is not in the repository.</p>
-    <p class="cc-muted">Activity is read from the channel listings made on 15 November 2026 (the approximate date of the newest video on the Videos tab) and from the stored podcast feeds (the date of the latest episode): <b data-draw="c-fresh" data-source="contact_totals" data-field="channels_fresh" data-row="0">—</b> channels uploaded in the last 30 days (neon blue on every table), <b data-draw="c-active" data-source="contact_totals" data-field="channels_active" data-row="0">—</b> in the last 90 days, <b data-draw="c-quiet" data-source="contact_totals" data-field="channels_quiet" data-row="0">—</b> within the year before that, and <b data-draw="c-dormant" data-source="contact_totals" data-field="channels_dormant" data-row="0">—</b> have been silent for over a year. Older listing dates are only exact to the year.</p>
+    <p class="cc-muted">Activity is read from the channel listings made on 15 November 2026 (the approximate date of the newest video on the Videos tab) and from the stored podcast feeds (the date of the latest episode): <b data-draw="c-fresh" data-source="contact_totals" data-field="channels_fresh" data-row="0">—</b> channels uploaded in the last 30 days (highlighted in the archive tables), <b data-draw="c-active" data-source="contact_totals" data-field="channels_active" data-row="0">—</b> in the last 90 days, <b data-draw="c-quiet" data-source="contact_totals" data-field="channels_quiet" data-row="0">—</b> within the year before that, and <b data-draw="c-dormant" data-source="contact_totals" data-field="channels_dormant" data-row="0">—</b> have been silent for over a year. Older listing dates are only exact to the year.</p>
     <div class="cc-legend"><span class="cc-key"><span class="cc-pill cc-pill-got"><span class="cc-glyph">●</span>active: last upload or episode within 90 days</span></span><span class="cc-key"><span class="cc-pill cc-pill-plan"><span class="cc-glyph">◐</span>quiet: within the last year</span></span><span class="cc-key"><span class="cc-pill cc-pill-none"><span class="cc-glyph">○</span>dormant: over a year</span></span></div>
     <div class="cc-filters">
       <select class="dash-select cc-filter" data-cc-param="c_activity" aria-label="Channel activity">
@@ -682,6 +765,8 @@
       <dt>Named by</dt><dd><b data-draw="name-matches" data-source="target_totals" data-field="name_matches" data-row="0">—</b> ArchiveShelf names were tied to a channel by the channel's own name alone, and the owner has not confirmed them. The ArchiveShelf list was a screenshot, which cut some names short.</dd>
     </dl>
   </details>
+    </main>
+  </div>
 </div>
 
 <script>

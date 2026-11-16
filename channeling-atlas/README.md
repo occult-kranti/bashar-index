@@ -1,5 +1,8 @@
 # Channeling Atlas
 
+**Interface update, 16 November 2026:** the Atlas and report now join the [shared dashboard directory](https://occult-kranti.github.io/bashar-index/dashboards/) and show explicit edition notices. The scientific data, figures, paper and source dates remain the 23 October release. Old release manifests and review receipts refer to that frozen release, not to this later navigation change.
+
+
 ## Current analytical release — 23 October 2026
 
 The analysis merges the original atlas with the supplied Claude archive: **925 unique uploads**, **881 usable durations**, **178 publishing groups with measured lengths**, and a **30-document English-caption pilot**. These are convenience-sample records, not counts of unique or currently active human mediums. The historical discovery and service-audit layers described below remain available.
