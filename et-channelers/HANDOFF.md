@@ -484,6 +484,16 @@ as "skipped by rule", not as a failure.
   safety classifier refused the fetch step again on 2026-11-16 (no cookies, proxies or alternate clients are
   used, by the project's rule); the newest-20 queue (1,320 videos, 555.5 h) is for the owner's computer, see
   "One command on your own computer" in `pipeline/README.md`.
+* **Podcast backlog round 3 and the disk rule, 2026-11-16 17:36 UTC.** The owner asked to keep downloading audio and
+  pushing it to Drive at the same time. With 4.0 GB free and the download's 3 GB floor, the local copies of 805
+  recordings (6.30 GB) that are verified in the private store (`sync_manifest.jsonl`) and fully on Drive
+  (`drive_manifest.jsonl`) but not yet transcribed were removed; 150 were kept, in audio-manifest order, for
+  speech-to-text. Their ids are in `jobs/local_audio_removed_20261116T173617Z.txt`; `sync_archive.py pull --root
+  <private> --store gh:occult-kranti/et-channelers-archive@archive-v1 --ids <ids>` (with the token in the
+  environment) brings any of them back when speech-to-text reaches them. Round 3 (`jobs/queue_backlog_3.csv`,
+  `select_episodes.py --relation own,host,file,archive --max-hours 250 --seed 20261113`: 3,324 rows, 2,976 already
+  here, 348 new from 5 hosts, 174.2 h) started at 17:36 UTC (`download_enclosures.py --all --workers 3 --per-host 2
+  --min-interval 1.5 --min-free-gb 3`, log `logs/backlog_download.log`); Drive rounds of 100 follow as it lands.
 * **Speech-to-text restarted at 15:13 UTC on 2026-11-16** (`resume_jobs.sh` with the Drive hold and the backlog
   queue) once the backlog download of 389 episodes had finished (387 fetched, 2 failed). Disk: the root volume was
   at 3.2 GB free; 4.4 GB were freed (the Copilot cache, the pip caches, the local copy of the ArchiveShelf release
