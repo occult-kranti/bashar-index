@@ -194,7 +194,7 @@ as "skipped by rule", not as a failure.
        passes it on and lists only that much of each channel, and `run_all.py --queue FILE` runs the lanes over a
        queue file instead (below). Each queue has its own meta file.
     4. Fresh listings: **made on 2026-11-15** from this Codespace, Videos tab only, 50 per channel, one request
-       every 5 seconds: 63 channels, 2,920 videos, no failures, 15 of them new since 2026-11-13. They are in
+       every 5 seconds: 63 channels, 2,920 videos, no failures, 15 of them new since 2026-11-13. **Relisted on 2026-11-16** for 69 channels (3,220 videos, no failures) after the owner named nine channels (section 5). They are in
        `/workspaces/et-yt-newest` (a root of their own, so the full listings of 58,699 videos are untouched).
     5. Upload dates: approximate ones come with the listing ("3 years ago"; `discover.py` now keeps them, which it
        missed before): 2,919 of 2,920. For older videos they are right to the year only; the download on the
@@ -271,7 +271,7 @@ as "skipped by rule", not as a failure.
        bulk model pass (is it the entity's claim; prediction or future-tense teaching; certainty; families
        linked), which waits for an API key and the owner's go-ahead on cost and data terms (12.5, D14); then the
        same over each YouTube tier as it is transcribed.
-  - **The queues** (built on 2026-11-15 from those listings, in the private folder's `jobs/` and on the private
+  - **The queues** (built on 2026-11-15 and rebuilt on 2026-11-16 from those listings, in rank order, in the private folder's `jobs/` and on the private
     store's release `handoff-2026-11-14`), each with its `.meta.json`; the columns add `tab`, `listing_rank` (0 is
     the newest) and `upload_date_approx`:
 
@@ -279,9 +279,9 @@ as "skipped by rule", not as a failure.
     |---|---|---|---|
     | `queue_blackouts_titles_all.csv` | 43 | 17.6 | titles that name blackouts, the power grid or the internet going down |
     | `queue_blackouts_titles_weak_all.csv` | 225 | | titles that name solar flares, storms or CMEs (a weaker sign) |
-    | `queue_newest10.csv` | 612 | 233.4 | the newest 10 of every channel's Videos tab |
-    | `queue_newest20.csv` | 1,200 | 496.2 | the newest 20 (includes the 10) |
-    | `queue_newest50.csv` | 2,920 | 1,216.9 | the newest 50 (includes the 20) |
+    | `queue_newest10.csv` | 672 | 262.6 | the newest 10 of every channel's Videos tab (69 channels since 2026-11-16) |
+    | `queue_newest20.csv` | 1,320 | 555.5 | the newest 20 (includes the 10) |
+    | `queue_newest50.csv` | 3,220 | 1,351.7 | the newest 50 (includes the 20) |
     | `queue_youtube_all.csv` | 58,766 | | every video the channel listings hold; captions only is the realistic use |
 
     The three newest tiers were written channel by channel (their meta says `"order": "as-is"`); `--newest N`
@@ -469,6 +469,21 @@ as "skipped by rule", not as a failure.
   reviewer and a fix pass (three majors fixed: a wheel-scroll trap, a sticky axis misaligned with a classic
   scrollbar, a focusable link inside aria-hidden). No browser on this machine: verified by the tests, node --check
   and the guard on the real data (480 statements, 442 quotes, max item share 5.0%, 925 KB).
+* **Nine YouTube channels named by the owner on 2026-11-16** ("go through all channels for the past 20 videos,
+  download transcripts and audios; add these"): four were already tracked with the same channel ids (Sam the
+  Illusionist, Saraharyana, Lee Carroll's Kryon channel, which the index held without an address and now has
+  one in `sources/extra_channels.csv`, and Rachel & Kevin Pasdon's Disciples of Light); five are new people in
+  `sources/extra_targets.csv` and `extra_channels.csv`, with their official sites from their About pages in
+  `official_sites.csv`: Lee Harris (channels "the Z's"), Lily Nova (an ET contactee: role `contactee`), Kelly
+  Kolodney (the channel is called The Angel Raphael), Debbra Lupien (the Akashic Records, Archangel Metatron)
+  and The Judah Channel (a collective named Judah). Channel ids came from each channel's Videos-tab listing by
+  yt-dlp; the About pages were read (69 channels now); the private contacts table has 107 rows. Every channel's
+  newest 50 videos were relisted into `/workspaces/et-yt-newest` and the three newest queues rebuilt in rank
+  order (table above) and uploaded to the private release `handoff-2026-11-14`. **Captions and audio still
+  cannot be fetched from this Codespace**: YouTube's bot check answers cloud machines, and the environment's
+  safety classifier refused the fetch step again on 2026-11-16 (no cookies, proxies or alternate clients are
+  used, by the project's rule); the newest-20 queue (1,320 videos, 555.5 h) is for the owner's computer, see
+  "One command on your own computer" in `pipeline/README.md`.
 * **Speech-to-text restarted at 15:13 UTC on 2026-11-16** (`resume_jobs.sh` with the Drive hold and the backlog
   queue) once the backlog download of 389 episodes had finished (387 fetched, 2 failed). Disk: the root volume was
   at 3.2 GB free; 4.4 GB were freed (the Copilot cache, the pip caches, the local copy of the ArchiveShelf release
