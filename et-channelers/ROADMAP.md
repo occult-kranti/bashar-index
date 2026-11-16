@@ -22,6 +22,7 @@ the third sample that measures them); the other rows give the state at the pause
 | Kimi snapshot (channels-ET, received 2026-11-14) | read by five agents; it holds no audio or transcript text. Plan in phase 4b below and in `notes/2026-11-14/kimi_integration_plan.md` |
 | Analysis plan | written: [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) (three drafts and a synthesis; families, gates, small-model steps, phases, paper). The deep research on timelines, predictions and question banks is folded in as its own section; the critique is in `notes/2026-11-14/research_critique.md` |
 | Prediction timelines | **rules pass built on 2026-11-15** (`pipeline/prediction_timeline.py`, ANALYSIS_PLAN 12.4 step 1) and run over everything with text here, before the YouTube tiers: see HANDOFF section 5 for the figures. Per person and kind in `plan/prediction_counts.csv` (counts only); the candidates and timelines quote the texts, so they stay in the private folder. Now 5,987 candidates (5,490 distinct), 572 with a target window. Two samples labelled by two agent coders each shaped the rules (42% real predictions among windowed candidates at first); a third, fresh sample of 99 (kappa 0.96) measured them: **about 56% of windowed candidates are real predictions** (weighted by person; 95% interval about 47% to 65%), from 19% (Swaruu) to 88% (Sam). The texts lane now leaves blog comment threads out of what it stores. The bulk pass waits for an API key and the owner's go-ahead (D14) |
+| Theme: blackouts of the grid and the internet | **requested 2026-11-16**, centred on each channel's newest 10 videos (Phase 7c, ANALYSIS_PLAN 12.4.1): a theme search over everything stored, the newest tiers through titles and twins until their captions and audio arrive, two blinded coders and a recall probe; counts in `plan/theme_blackouts*.csv`, text private |
 | Review of dashboard v2 and the store | done: 46 of 47 findings confirmed by skeptics, and all 46 fixed in code, tables and page |
 | Pre-merge review of this work | done: 34 of 37 findings confirmed and fixed, with a test for each code fix that fails without it. The one that mattered most: one refusal from archive.org's own host, or from one of its storage nodes, would have held back every queued Bashar session for a day or more (HANDOFF section 1) |
 | Next | the owner's task of 2026-11-15 (HANDOFF section 5): the newest 10, then 20, then 50 videos of every tracked channel (612, 1,200 and 2,920 videos; 233, 496 and 1,217 hours), then a timeline of the predictions made on each channel. D8 is decided, `select_jobs.py --newest N` is built and the three queues are made from listings refreshed on 2026-11-15; the downloads run on the owner's computer (HANDOFF section 5). Also: choose the speech-to-text engine; fix the disk hold; phase 4b |
@@ -409,6 +410,13 @@ everything below, and replaces the earlier per-channel caps.
   ran the same day (`pipeline/prediction_pilot.py`, HANDOFF section 5: three samples, about 56% of windowed
   candidates real predictions); the bulk model pass is next. Checking predictions against what happened comes later,
   only for specific and checkable ones, and with the scoring rules written down first.
+* **Blackouts of the power grid and the internet** (added 2026-11-16, at the owner's request; ANALYSIS_PLAN
+  12.4.1). Who has predicted or warned that the power grid will fail or be cut, or that the internet,
+  communications or electronics will go down, with the date said, the time given and whether it has passed;
+  **first in each channel's newest 10 videos** (through their titles, and through twins already here until the
+  owner's run brings their captions and audio), then the newest 20 and 50, then everything stored. A reusable
+  theme search (`pipeline/theme_search.py`, the theme as a data file), checked by two blinded coders and a recall
+  probe; the titles that name the theme make a priority queue for the owner's computer. Counts public, text private.
 * **Datasets the small model builds** (Claude Haiku in batches through the Message Batches API; agents run
   only the pilots and the adjudication; larger models re-label a sample blind, and agreement is reported): question-and-answer pairs from audience sessions, question banks grouped by theme,
   per-recording summaries, dated statements, predictions and warnings. Every row carries the item id and the
@@ -473,7 +481,7 @@ built: a schedule that starts the cycle without anyone asking.
 | D5 | Where does audio live, and for how long? | outside Git, synced to Drive, kept until the paper is final |
 | D6 | Use captions where good ones exist, and transcribe only the gaps? | captions as a cross-check only, so every video is transcribed the same way |
 | D7 | Make the repository private, or keep it public with data kept elsewhere? | public code and plan; private data |
-| D8 | YouTube's robots.txt (read 2026-11-14) disallows the listing, feed and caption paths for every crawler. Leave the YouTube lanes off; or the owner opts in with `ET_YOUTUBE_ROBOTS_OVERRIDE=1` on their own connection; or use the YouTube Data API with the owner's key (not built). And what to keep of what came through those paths before (63 listings, 58,699 videos; 15 RSS entries) | **decided 2026-11-15: opt in** (the override is set); the listings already made are kept and labelled by route (HANDOFF 6.6) |
+| D8 | YouTube's robots.txt (read 2026-11-14) disallows the listing, feed and caption paths for every crawler. Leave the YouTube lanes off; or the owner opts in with `ET_YOUTUBE_ROBOTS_OVERRIDE=1` on their own connection; And what to keep of what came through those paths before (63 listings, 58,699 videos; 15 RSS entries) | **decided 2026-11-15: opt in** (the override is set); the listings already made are kept and labelled by route (HANDOFF 6.6) |
 
 ## 5. Risks
 
