@@ -1,0 +1,45 @@
+name: Dashboard and pipeline checks
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/dashboard-checks.yml'
+      - 'assets/**'
+      - 'dashboards/**'
+      - 'index.html'
+      - 'src/**'
+      - 'et-channelers/**'
+      - 'channeling-atlas/dist/**'
+      - 'channeling-atlas/research/analysis/build_report.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dashboard-checks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: et-channelers
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Full standard-library pipeline test suite
+        run: python -m unittest discover -s et-channelers/pipeline/tests -v
+      - name: Public media and credential guard
+        run: python et-channelers/scripts/guard_no_raw_media.py
+      - name: Published count consistency
+        run: python et-channelers/scripts/check_counts.py
+      - name: Dashboard JavaScript syntax
+        run: |
+          node --check assets/research-nav.js
+          node --check dashboards/hub.js
+          node --check channeling-atlas/dist/app.js

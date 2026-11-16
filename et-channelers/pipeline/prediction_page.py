@@ -29,6 +29,7 @@ import argparse
 import collections
 import csv
 import html
+import hashlib
 import json
 import math
 import re
@@ -759,18 +760,18 @@ def now_fraction(built):
         return f"{BUILD_YEAR + 0.5:.2f}"
 
 LIGHT_TOKENS = (
-    "--bg:#fbfbfa;--fg:#1a1a19;--fg-muted:#5c5b57;--fg-faint:#8b8a85;--border:#d9d8d3;--border-strong:#b4b3ad;"
-    "--surface:#ffffff;--surface-2:#f3f3f0;--accent:#1f5fb0;--focus:#4f46e5;--focus-halo:#fbfbfa;"
-    "--series-source:#2b5fb3;--series-made:#b05a1a;--series-source-soft:#a9bfe6;--series-made-soft:#e3b89a;--flag:#8a8984;"
-    "--band:#f4f4f1;--past:#ecece8;--grid:#e6e5e0;--grid-strong:#cfcec8;--stack:#e9e9e4;--stack-border:#8f8e89;"
-    "--brush:rgba(31,95,176,.18);--hot:#1f5fb0;--hist:#c9c8c2;--now:#5c5b57;--scrim:rgba(0,0,0,.35);--shadow-1:0 2px 8px rgba(0,0,0,.12);"
-    "--shadow-2:0 8px 24px rgba(0,0,0,.14);color-scheme:light")
+    "--bg:#f5f3ec;--fg:#17211e;--fg-muted:#58635d;--fg-faint:#7c8780;--border:#d8dcd1;--border-strong:#849185;"
+    "--surface:#fffef9;--surface-2:#eeeee5;--accent:#1f554b;--focus:#965630;--focus-halo:#f5f3ec;"
+    "--series-source:#1f6557;--series-made:#ad5d43;--series-source-soft:#bbd5c8;--series-made-soft:#e4c6ad;--flag:#9b7938;"
+    "--band:#f3f5ed;--past:#e9eee5;--grid:#e6e9df;--grid-strong:#c7cfc2;--stack:#e4eadf;--stack-border:#7e9484;"
+    "--brush:rgba(31,85,75,.16);--hot:#1f554b;--hist:#b3c1ad;--now:#7f6134;--scrim:rgba(23,33,30,.38);--shadow-1:0 2px 8px rgba(23,33,30,.08);"
+    "--shadow-2:0 12px 30px rgba(23,33,30,.13);color-scheme:light")
 DARK_TOKENS = (
-    "--bg:#17191d;--fg:#eceae4;--fg-muted:#b2b0a8;--fg-faint:#80828a;--border:#3a3d44;--border-strong:#555962;"
-    "--surface:#1f2228;--surface-2:#1a1d22;--accent:#7fa8ee;--focus:#a5b4fc;--focus-halo:#17191d;"
-    "--series-source:#4f86de;--series-made:#c97c30;--series-source-soft:#2c4a80;--series-made-soft:#7a4a1c;--flag:#8a8d94;"
-    "--band:#1c1f24;--past:#23262c;--grid:#2b2e35;--grid-strong:#40444c;--stack:#2a2e35;--stack-border:#8a8e97;"
-    "--brush:rgba(127,168,238,.22);--hot:#7fa8ee;--hist:#3f434b;--now:#b2b0a8;--scrim:rgba(0,0,0,.6);--shadow-1:0 2px 10px rgba(0,0,0,.5);"
+    "--bg:#17211e;--fg:#f0eee4;--fg-muted:#b9c4b8;--fg-faint:#829c8a;--border:#35463d;--border-strong:#617868;"
+    "--surface:#1d2c25;--surface-2:#23332b;--accent:#a7d4b9;--focus:#e9be8b;--focus-halo:#17211e;"
+    "--series-source:#8ac8a4;--series-made:#e8a688;--series-source-soft:#395e49;--series-made-soft:#71533d;--flag:#c6a66e;"
+    "--band:#22342a;--past:#28392c;--grid:#304337;--grid-strong:#4e6251;--stack:#344a39;--stack-border:#8fa98f;"
+    "--brush:rgba(167,212,185,.20);--hot:#a7d4b9;--hist:#4f6a50;--now:#dcc08b;--scrim:rgba(0,0,0,.6);--shadow-1:0 2px 10px rgba(0,0,0,.5);"
     "--shadow-2:0 8px 24px rgba(0,0,0,.6);color-scheme:dark")
 BASE_TOKENS = (
     "--r-sm:4px;--r-md:8px;--r-lg:12px;--r-pill:999px;--sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:24px;"
@@ -1107,6 +1108,11 @@ html.fs-fallback body{position:fixed;inset:0;width:100%}
   #stage.is-fs #facets.open .sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
 }
 @media (min-width:64rem){
+  .research-header{display:grid;grid-template-columns:minmax(0,1fr) 20rem;align-items:center;gap:32px;padding-block:25px}
+  .research-header .research-stats{display:grid;grid-template-columns:1fr 1fr;gap:22px 26px;margin:0;padding:0 0 0 27px;border:0;border-inline-start:1px solid var(--border)}
+  .research-header .research-stats>div{border:0;padding:0;min-width:0}
+  .research-header .research-stats dd{font-size:1.8rem}.research-header .research-stats dt{font-size:.63rem}
+  .research-header .research-stats .stat-note{display:block;font-size:.62rem;margin:4px 0 0}
   #stage.is-fs.list-on{grid-template-columns:minmax(0,1fr) var(--panel-w)}
   #stage.is-fs.list-on > #statements-section{grid-column:2;grid-row:2;overflow:auto;min-height:0;border-left:1px solid var(--border);padding:0 12px var(--sp-4)}
   #stage.is-fs:not(.list-on) > #statements-section{display:none}
@@ -1143,6 +1149,159 @@ html.fs-fallback body{position:fixed;inset:0;width:100%}
   .group.collapsed .cards{display:grid}
   .st{break-inside:avoid}
   a[href^="http"]::after{content:" (" attr(href) ")";font-size:.8em}
+}
+"""
+
+CSS += r"""
+/* Research desk: the timeline, its filters and the evidence reader share one work surface. */
+[hidden]{display:none!important}
+.wrap{max-width:100rem;padding-inline:clamp(16px,3vw,48px)}
+.research-header{padding-block:28px 22px}
+.research-header .eyebrow{margin:0 0 8px;font-size:.69rem;font-weight:650;letter-spacing:.14em;color:var(--accent)}
+.research-header h1{font-family:var(--font-quote);font-size:clamp(2.1rem,3.8vw,3.3rem);font-weight:400;letter-spacing:-.045em;margin:0 0 10px}
+.research-header .lead{font-size:.96rem;line-height:1.55;max-width:78ch;margin:0 0 8px}
+.research-header .facts{font-size:.66rem;margin:0;color:var(--fg-muted);max-width:100ch}
+.research-stats{display:flex;flex-wrap:wrap;gap:0;margin:24px 0 0;padding:15px 0 0;border-top:1px solid var(--border)}
+.research-stats>div{padding:0 30px;border-inline-start:1px solid var(--border);min-width:135px}
+.research-stats>div:first-child{padding-inline-start:0;border:0}
+.research-stats dt{font-size:.67rem;text-transform:uppercase;letter-spacing:.08em;color:var(--fg-muted);margin-bottom:5px}
+.research-stats dd{font-family:var(--font-quote);font-size:1.85rem;font-variant-numeric:tabular-nums;line-height:1;margin:0}
+.research-stats .stat-note{font-family:var(--font-ui);font-size:.7rem;color:var(--fg-muted);margin-inline-start:6px}
+.toolbar{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;border:1px solid var(--border);border-radius:6px;padding:12px;margin:0}
+.trow{gap:8px}.trow+.trow{margin-top:10px}
+.qwrap{max-width:none;flex-basis:22rem}
+#q{border-radius:4px;min-height:42px;background:var(--bg);padding-inline:13px 34px;font-size:.875rem}
+#q::placeholder{color:var(--fg-muted)}
+#q,select,#probe-year{border-color:var(--border-strong)}
+.btn,.more,.year,.tok,.edge,.wpreset,.zoomctl button,.fall,.fnone,.loc,.gonly,#download,#expand-all,#collapse-all,#empty button{border-radius:4px}
+.btn{font-size:.77rem;padding:7px 11px;min-height:36px}
+#share,#download{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+#share:hover,#download:hover{filter:brightness(.92)}
+.seg{border-radius:4px;min-height:36px;align-items:center}
+.seg label{padding:7px 12px;font-size:.77rem}
+.seg label:has(input:checked){background:var(--accent);color:var(--surface)}
+.count{font-size:.75rem;font-weight:500}
+.facet>summary{border-radius:4px;font-size:.78rem;min-height:34px}
+.fpanel{border-radius:4px}
+.pbtn-bar{height:3px;background:var(--border);margin-top:2px}
+.pbar{background:var(--accent)}
+#caveat-mini{white-space:normal;font-size:.72rem;line-height:1.5;color:var(--fg-muted)}
+.trow-3{border-top:1px solid var(--border);padding-top:9px}
+.card-head{margin-top:22px;gap:12px}
+.card-head h2,#statements{font-family:var(--font-quote);font-size:1.65rem;font-weight:400;letter-spacing:-.025em}
+.card-head h2::before{content:"01 / ";font-family:var(--font-mono);font-size:.64rem;color:var(--fg-muted);letter-spacing:0;vertical-align:middle}
+#statements::before{content:"02 / ";font-family:var(--font-mono);font-size:.64rem;color:var(--fg-muted);letter-spacing:0;vertical-align:middle}
+.chart-head{gap:8px}.ch-main,.ch-more{gap:8px}
+.sel{font-size:.73rem}.sel-t{color:var(--fg-muted)}
+select{border-radius:4px;min-height:34px;padding-inline:8px;font-size:.76rem}
+.zoomctl button{font-size:.74rem;min-height:34px;min-width:34px}
+.wpreset{padding:5px 8px;font-size:.7rem;min-height:30px}
+.wpreset[aria-pressed="true"]{background:var(--surface-2);border-color:var(--accent);box-shadow:inset 0 -2px 0 var(--accent)}
+.check{font-size:.7rem}.legend{gap:5px 14px;font-size:.66rem;line-height:1.45;margin-block:12px}
+.chartwrap{padding:8px 4px 4px;border-radius:5px;border-color:var(--border-strong);box-shadow:none}
+.minifig{background:var(--bg);padding:10px 8px 3px;margin:4px 0 0}
+#chart-scroll{max-height:58vh;min-height:280px}
+.evidence-dock{min-width:0;margin-top:16px}
+.evidence-empty{background:var(--surface-2);border:1px solid var(--border);border-radius:5px;padding:20px}
+.evidence-kicker{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:650;margin:0 0 14px}
+.evidence-empty h3{font-family:var(--font-quote);font-size:1.6rem;line-height:1.25;font-weight:400;margin:0 0 12px}
+.evidence-empty p:not(.evidence-kicker){font-size:.8rem;line-height:1.65;color:var(--fg-muted);margin:0 0 16px}
+.evidence-key{display:grid;grid-template-columns:16px 1fr;gap:9px 10px;align-items:center;border-top:1px solid var(--border);padding-top:16px;font-size:.72rem;color:var(--fg-muted)}
+.evidence-key .sample-source{width:8px;height:8px;background:var(--series-source);border-radius:50%;margin-inline-start:3px}
+.evidence-key .sample-made{width:8px;height:8px;background:var(--series-made);transform:rotate(45deg);margin-inline-start:3px}
+.evidence-key .sample-ring{width:11px;height:11px;border:1.5px solid var(--fg);border-radius:50%;margin-inline-start:2px}
+.spot{margin:0;border-radius:5px;padding:18px;border-left-width:3px}
+.spot-head{align-items:flex-start;margin-bottom:15px}.spot-head h3{font-size:.67rem;text-transform:uppercase;letter-spacing:.06em;line-height:1.5}
+.spot-head .btn{font-size:.7rem;min-height:28px;padding:3px 7px}
+.spot .st-head{display:flex;align-items:flex-start;gap:8px}
+.spot .st-person{font-family:var(--font-quote);font-size:1.45rem;font-weight:400;line-height:1.2;flex-basis:100%;order:-1}
+.spot blockquote.q{font-size:1.15rem;line-height:1.6;margin-block:18px}
+.spot .meta{display:grid;font-size:.71rem;gap:9px;line-height:1.5;border-top:1px solid var(--border);padding-top:13px}
+.spot-tools{gap:6px;margin-top:17px}.spot-tools .btn{font-size:.7rem;min-height:32px;padding:5px 8px}
+#chart-help,#chart-caption{font-size:.69rem;line-height:1.6;max-width:100ch}
+#statements-section{margin-top:25px;border-top:1px solid var(--border);padding-top:18px;min-width:0}
+#statements{margin:0 0 13px}#results-tools{gap:7px;margin-bottom:18px}
+.group{border-radius:5px;box-shadow:none}.ghead{font-size:1rem}.gname{font-family:var(--font-quote);font-weight:400;font-size:1.3rem}
+.gsub{font-size:.7rem;line-height:1.6}.cards{gap:1px;background:var(--border);border:1px solid var(--border);border-radius:5px;overflow:hidden}
+.st{border:0;border-radius:0;background:var(--surface);padding:18px}.st .badge{border-radius:3px;font-size:.77rem}
+.st .chip{border-radius:2px}.st blockquote.q{font-size:1rem;line-height:1.6}.st .meta{font-size:.69rem;line-height:1.55}
+.loc{min-height:26px;font-size:.66rem}.more{margin-top:9px}
+.caveat{max-width:none;margin-top:38px;padding:24px;background:var(--surface-2);border-radius:5px;border-left-color:var(--flag)}
+.caveat h2{font-family:var(--font-quote);font-size:1.45rem;font-weight:400}.caveat-p{font-size:.82rem;line-height:1.7;max-width:110ch}
+.caveat-figs{display:flex;flex-wrap:wrap;gap:24px}.fig{background:none;padding:0 24px 0 0;border-inline-end:1px solid var(--border)}
+.fig b{font-family:var(--font-quote);font-size:1.5rem;font-weight:400}.fig span{font-size:.7rem}
+#years{padding-block:24px;border-bottom:1px solid var(--border)}#years summary h2,#methods{font-family:var(--font-quote);font-weight:400}
+.methods{font-size:.85rem;line-height:1.75;max-width:115ch}.methods dt{font-size:.75rem;color:var(--accent)}
+.methods dd{margin-bottom:9px}footer{font-size:.73rem}
+html.fs .rs-nav{display:none!important}
+#stage.v-table :is(#chartbox,#legend,#chart-help,#chart-caption){display:none!important}
+#stage.is-empty :is(#chartbox,#tablewrap){display:none!important}
+#table{min-width:94rem}#table td{overflow-wrap:normal;word-break:normal}
+#table td:nth-child(1),#table td:nth-child(3){min-width:8rem}
+#table td:nth-child(4){min-width:9rem}#table td:nth-child(10){min-width:24rem}
+#stage.is-fs #evidence-dock{display:contents}#stage.is-fs .evidence-empty{display:none}
+#stage.is-fs #chart-scroll{min-height:0}#stage.is-fs .spot .st-person{font-family:var(--font-ui);font-size:.9rem;flex-basis:auto;order:0}
+#stage.is-fs .spot .meta{display:flex;border:0;padding:0}#stage.is-fs .spot blockquote.q{font-size:.95rem;margin-block:5px}
+#stage.is-fs .spot-head{margin:0}#stage.is-fs .spot-tools{margin-top:5px}
+#stage.is-fs .chart-head{align-items:stretch;min-width:0;max-width:100%}
+#stage.is-fs .ch-main,#stage.is-fs .ch-more{min-width:0;max-width:100%;width:100%}
+@media (min-width:64rem){
+  #stage:not(.is-fs){display:grid;grid-template-columns:13.25rem minmax(0,1fr);column-gap:26px;row-gap:0;align-items:start}
+  #stage:not(.is-fs)>#toolbar{display:contents}
+  #stage:not(.is-fs) .trow-1{grid-column:1/-1;grid-row:1;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:10px;position:sticky;top:0;z-index:20}
+  #stage:not(.is-fs) .trow-3{grid-column:1/-1;grid-row:2;margin:0;padding:10px 0 16px;border:0}
+  #stage:not(.is-fs) #facets{grid-column:1;grid-row:3/5;display:block;position:sticky;top:76px;margin:0;padding-right:18px;border-right:1px solid var(--border);max-height:calc(100vh - 94px);overflow-y:auto;scrollbar-width:thin}
+  #stage:not(.is-fs) #facets>.sheet-head{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.13em;color:var(--fg-muted);margin:1px 0 17px}
+  #stage:not(.is-fs) #facets-close{display:none}
+  #stage:not(.is-fs) .facet{border-bottom:1px solid var(--border);padding-bottom:9px;margin-bottom:10px}
+  #stage:not(.is-fs) .facet>summary{display:flex;justify-content:space-between;width:100%;border:0;background:transparent;border-radius:0;min-height:31px;padding:2px 0;font-weight:550;font-size:.77rem;gap:6px}
+  #stage:not(.is-fs) .facet.active>summary{box-shadow:none;color:var(--accent)}
+  #stage:not(.is-fs) .fpanel{position:static;min-width:0;max-width:none;border:0;padding:5px 0 0;background:transparent;box-shadow:none}
+  #stage:not(.is-fs) .chips{max-height:26rem;gap:2px}
+  #stage:not(.is-fs) .chip-check{font-size:.74rem;grid-template-columns:12px 1fr auto;gap:5px 7px;padding:6px 1px;border-radius:2px}
+  #stage:not(.is-fs) .chip-check::before{width:12px;height:12px;font-size:10px}
+  #stage:not(.is-fs) .ccount{font-size:.68rem}
+  #stage:not(.is-fs) #timeline-section{grid-column:2;grid-row:3;min-width:0}
+  #stage:not(.is-fs) #timeline-section>.card-head{margin-top:0}
+  #stage:not(.is-fs) #statements-section{grid-column:2;grid-row:4}
+  #stage:not(.is-fs) .chart-head{display:block;width:100%}
+  #stage:not(.is-fs) .ch-main{margin-bottom:8px}
+}
+@media (min-width:80rem){
+  #stage:not(.is-fs) #timeline-section{display:grid;grid-template-columns:minmax(0,1fr) 17rem;gap:0 18px}
+  #stage:not(.is-fs) #timeline-section>.card-head{grid-column:1/-1;grid-row:1}
+  #stage:not(.is-fs) #legend{grid-column:1;grid-row:2;min-height:52px;align-content:start}
+  #stage:not(.is-fs) #chartbox,#stage:not(.is-fs) #tablewrap{grid-column:1;grid-row:3}
+  #stage:not(.is-fs) #evidence-dock{grid-column:2;grid-row:2/6;margin:12px 0 0;align-self:start;position:sticky;top:76px}
+  #stage:not(.is-fs) #chart-help{grid-column:1;grid-row:4}
+  #stage:not(.is-fs) #chart-caption{grid-column:1;grid-row:5}
+  #stage:not(.is-fs) #empty{grid-column:1;grid-row:3}
+  #stage:not(.is-fs) #no-d3{grid-column:1;grid-row:4}
+  #stage:not(.is-fs) #chart-status{grid-column:1}
+  #stage:not(.is-fs).v-table #tablewrap{grid-row:2;margin:12px 0 0;max-height:58vh}
+}
+@media (max-width:63.99rem){
+  .research-header{padding-block:23px 20px}.research-stats>div{padding-inline:18px;min-width:0;flex:1}
+  .research-stats dd{font-size:1.55rem}.research-stats dt{font-size:.6rem}.research-stats .stat-note{display:block;margin:5px 0 0}
+  .evidence-dock{margin-top:13px}.evidence-empty{padding:16px}.evidence-empty h3{font-size:1.2rem}.evidence-key{display:none}
+  .evidence-empty p:not(.evidence-kicker){margin:0}.evidence-kicker{margin-bottom:9px}
+  .cards{grid-template-columns:1fr}
+}
+@media (max-width:47.99rem){
+  .research-header h1{font-size:2.3rem}.research-header .lead{font-size:.88rem}.research-header .facts{font-size:.62rem}
+  .research-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}.research-stats>div{padding-inline:9px}
+  .research-stats>div:first-child{padding-inline-start:0}.research-stats dt{min-height:27px;line-height:1.4;letter-spacing:.035em}.research-stats dd{font-size:1.55rem}.research-stats .stat-note{display:none}
+  .toolbar{position:static;padding:10px;max-height:none}.qwrap{flex-basis:100%}#q,select,#probe-year{font-size:16px}
+  .count{flex:1 1 100%;font-size:.73rem}.trow-1{gap:7px}.btn{min-height:40px}
+  .chart-head .ch-main,.chart-head .ch-more{gap:8px}.check{font-size:.75rem}
+  .card-head{margin-top:22px}.legend{font-size:.67rem;gap:8px 12px}#chart-scroll{max-height:58vh;min-height:240px}
+  .chartwrap{margin-inline:-4px}.spot{padding:17px}.spot-tools .btn{min-height:40px}
+  .caveat{padding:19px}.caveat-figs{gap:17px}.fig{border:0;padding:0}.fig b{font-size:1.25rem}
+  .st{padding:16px}.methods{font-size:.83rem}.methods dt{margin-top:15px}
+}
+@media print{
+  .research-stats{display:flex}#stage:not(.is-fs){display:block}#stage:not(.is-fs) #timeline-section{display:block}
+  #evidence-dock,.rs-nav{display:none}#stage:not(.is-fs) #facets{display:none}
 }
 """
 
@@ -1488,19 +1647,21 @@ JS = r"""
   // facet popovers: one open at a time on wide screens, Escape closes, a click outside closes
   var wideQuery = window.matchMedia ? window.matchMedia('(min-width:48rem)') : null;
   var wide = function () { return wideQuery ? wideQuery.matches : window.innerWidth >= 768; };
+  var rail = function () { return !state.fs && window.matchMedia && window.matchMedia('(min-width:64rem)').matches; };
   $$('.facet', form).forEach(function (f) {
     f.addEventListener('toggle', function () {
       if (!f.open) return;
-      if (wide()) {
+      if (wide() && !rail()) {
         $$('.facet[open]', form).forEach(function (o) { if (o !== f) o.open = false; });
         var r = f.getBoundingClientRect(); f.classList.toggle('flip', r.left > window.innerWidth / 2);
       }
     });
     f.addEventListener('keydown', function (e) { if (e.key === 'Escape' && f.open) { e.preventDefault(); e.stopPropagation(); f.open = false; $('summary', f).focus(); } });
   });
+  if (rail()) { var peopleFacet = $('.facet[data-facet="p"]', form); if (peopleFacet) peopleFacet.open = true; }
   doc.addEventListener('click', function (e) {
     if (e.target.closest('.facet')) return;
-    $$('.facet[open]', form).forEach(function (o) { o.open = false; });
+    if (!rail()) $$('.facet[open]', form).forEach(function (o) { o.open = false; });
     if (!e.target.closest('.mark') && chart) chart.unpinTip();
   });
   // active filter tokens, each removable
@@ -1555,6 +1716,7 @@ JS = r"""
   }
   function renderEmpty() {
     var box = $('#empty'), why = $('#empty-why');
+    $('#stage').classList.toggle('is-empty', !V.length);
     box.hidden = V.length > 0; if (V.length) return;
     $('#empty-q').hidden = !state.q; $('#empty-zoom').hidden = !(state.w && M.length);
     if (M.length) why.textContent = M.length + ' statements match the filters, none between ' + fmtY(state.x[0]) + ' and ' + fmtY(state.x[1]) + '.';
@@ -1712,7 +1874,8 @@ JS = r"""
   // the spot: the pinned statement under the chart, rebuilt from its record with text nodes only
   function renderSpot() {
     var spot = $('#spot'), body = $('#spot-body');
-    if (state.i === null) { spot.hidden = true; body.textContent = ''; spot.removeAttribute('data-kind'); return; }
+    if (state.i === null) { spot.hidden = true; $('#evidence-empty').hidden = false; body.textContent = ''; spot.removeAttribute('data-kind'); return; }
+    $('#evidence-empty').hidden = true;
     var d = DATA[state.i], k = VIEW_ORDER.indexOf(d.i);
     spot.dataset.kind = d.kind; body.textContent = '';
     var head = el('div', 'st-head'); head.appendChild(el('span', 'badge num', windowLabel(d))); head.appendChild(markSample(d));
@@ -1732,7 +1895,14 @@ JS = r"""
     $('#spot-person').hidden = state.p.length === 1 && state.p[0] === d.person_id;
     spot.hidden = false;
   }
-  $('#spot-close').addEventListener('click', function () { state.i = null; update(); if (chart) $('#chart-svg').focus({ preventScroll: true }); else $('#table').focus({ preventScroll: true }); });
+  function focusEvidenceOrigin(i) {
+    if (state.v === 'table' || !chart) {
+      var row = $('#table tr[data-i="' + i + '"]') || $('#table tbody tr');
+      if (row) row.focus({ preventScroll: true });
+      else $('input[name=view]:checked', form).focus({ preventScroll: true });
+    } else if (i === null || !chart.focusI(i)) $('#chart-svg').focus({ preventScroll: true });
+  }
+  $('#spot-close').addEventListener('click', function () { var i = state.i; state.i = null; update(); focusEvidenceOrigin(i); });
   $('#spot-prev').addEventListener('click', function () { spotStep(-1); });
   $('#spot-next').addEventListener('click', function () { spotStep(1); });
   $('#spot-card').addEventListener('click', function () { if (state.i !== null) showCard(state.i); });
@@ -1741,7 +1911,7 @@ JS = r"""
   $('#spot').addEventListener('keydown', function (e) {
     if (e.key !== 'Escape' || state.i === null) return;
     e.preventDefault();
-    if (chart && !chart.focusI(state.i)) $('#chart-svg').focus({ preventScroll: true });
+    focusEvidenceOrigin(state.i);
   });
   function showPinned(scroll) {
     var i = state.i, d = DATA[i], sec = LI[i].closest('.group');
@@ -1752,8 +1922,9 @@ JS = r"""
   }
   groupsEl.addEventListener('click', function (e) { var b = e.target.closest('.badge'); if (b && b.closest('.st') && state.i === +b.closest('.st').dataset.i) { state.i = null; update(); } });
   function locate(i) {
-    if (!chart) { $('#timeline-section').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'start' }); return; }
+    if (!chart) { goTo(i); $('#spot').focus({ preventScroll: true }); return; }
     if (!matches(DATA[i])) return;
+    if (state.v === 'table') { state.v = 'chart'; update(); chart.layout(); }
     $('#chartbox').scrollIntoView({ behavior: REDUCED ? 'auto' : 'smooth', block: 'center' });
     chart.locate(i);
   }
@@ -1826,7 +1997,7 @@ JS = r"""
     lastTableSig = sig;
     tbody.textContent = ''; tfoot.textContent = '';
     rows.forEach(function (d) {
-      var tr = tbody.insertRow(); tr.dataset.i = d.i;
+      var tr = tbody.insertRow(); tr.dataset.i = d.i; tr.tabIndex = 0;
       cell(tr, COLS[0].text(d));
       var lc = cell(tr), lb = el('button', 'loc', 'timeline'); lb.type = 'button'; lb.dataset.i = d.i; lb.setAttribute('aria-label', 'show on the timeline'); lc.appendChild(lb);
       cell(tr, d.person_name);
@@ -1848,6 +2019,11 @@ JS = r"""
     if (e.target.closest('a')) return;
     if (e.target.closest('.loc')) { locate(+tr.dataset.i); return; }
     goTo(+tr.dataset.i);
+  });
+  $('#table').addEventListener('keydown', function (e) {
+    var tr = e.target.closest('tr[data-i]');
+    if (!tr || e.target !== tr || (e.key !== 'Enter' && e.key !== ' ')) return;
+    e.preventDefault(); goTo(+tr.dataset.i); $('#spot').focus({ preventScroll: true });
   });
   $('#table').addEventListener('mouseover', function (e) { var tr = e.target.closest('tr[data-i]'); if (tr) hot(+tr.dataset.i); });
   $('#table').addEventListener('mouseout', function (e) { var tr = e.target.closest('tr[data-i]'); if (tr && !tr.contains(e.relatedTarget)) unhot(); });
@@ -2520,6 +2696,13 @@ LEGEND_HTML = """
  <li><svg viewBox="0 0 16 16" aria-hidden="true"><line x1="8" x2="8" y1="0" y2="16" class="probe-line"/></svg> solid line with a year: the probe, statements whose window covers that year</li>
 </ul>"""
 
+# Preserve the detailed accessible key while keeping the visible chart key compact.
+_LEGEND_SHORT = iter(("Source text", "Speech-to-text", "Hedged / conditional", "Strong wording", "Target span",
+                      "By a year", "Grouped marks", "Build date / past", "Years ahead", "Probe year"))
+LEGEND_HTML = re.sub(r"</svg> ([^<]+)</li>",
+                    lambda match: '</svg><span class="sr-only">' + match.group(1) + '</span><span aria-hidden="true">'
+                    + next(_LEGEND_SHORT) + '</span></li>', LEGEND_HTML)
+
 
 def render_page(records, counts_text, built):
     people = {r["person_id"] for r in records}
@@ -2534,24 +2717,7 @@ def render_page(records, counts_text, built):
     js = (JS.replace("__AXIS_END__", str(AXIS_END)).replace("__BUILD_YEAR__", str(BUILD_YEAR))
           .replace("__CARDS_SHOWN__", str(CARDS_SHOWN)).replace("__NOW__", now_fraction(built))
           .replace("__PUBLIC_KEYS__", json.dumps(PUBLIC_KEYS)))
-    body = f"""<!doctype html>
-<html lang="en" class="no-js">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prediction timelines</title>
-<meta name="description" content="Candidate statements about the future found by rules in the texts of ET channelers, laid out by target year, with the date said and a short quote linking to the public copy.">
-<meta name="color-scheme" content="light dark">
-<style>{CSS}</style>
-</head>
-<body>
-<a class="skip" href="#timeline-section">Skip to the timeline</a>
-<header class="wrap">
-<p class="eyebrow">ET channelers · candidate statements about the future</p>
-<h1>Prediction timelines</h1>
-<p class="lead">{len(records)} statements that name a target year or span, from {len(people)} people and {len(items)} recordings or pages, found by rules in source texts and in speech-to-text made here.</p>
-<p id="facts" class="facts">Generated {esc(built)} from {len(items)} items. {counts_text}</p>
-<section id="caveat" class="caveat" role="note" aria-labelledby="caveat-h">
+    caveat_markup = f"""<section id="caveat" class="caveat" role="note" aria-labelledby="caveat-h">
 <h2 id="caveat-h">These are labelled candidates, not confirmed predictions.</h2>
 <p class="caveat-p">Rules flagged them; a third blinded sample put real predictions at about 56% of windowed candidates (95% interval about 47% to 65%), from about a fifth to nine in ten by person. Every figure on this page is a count or a date. Quotes are at most 30 words and link to the public copy; no hit, miss or accuracy is judged here.</p>
 <div class="caveat-figs">
@@ -2560,7 +2726,36 @@ def render_page(records, counts_text, built):
  <div class="fig"><b>a fifth to nine in ten</b><span>the range by person</span></div>
 </div>
 <p class="caveat-p">Date basis: for {undated} statements no date said is known; for {from_address} the date comes from the address of the page and for {from_title} from its title, both exact only to the day they carry. {len(predate)} windows (earliest {earliest}) begin before the statement's own date, or before 1950 where that date is unknown; a single year there is probably a quoted historical year misread as a target, a span may simply start in the past. They are left in and marked rather than removed. {withheld} statements show their time expression instead of a quote because the item's share or a turn prefix left no room for one.</p>
-</section>
+</section>"""
+    body = f"""<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prediction timelines</title>
+<meta name="description" content="Candidate statements about the future found by rules in the texts of ET channelers, laid out by target year, with the date said and a short quote linking to the public copy.">
+<meta name="color-scheme" content="light dark">
+<meta name="public-records-sha256" content="{hashlib.sha256(data.encode('utf-8')).hexdigest()}">
+<link rel="stylesheet" href="../../assets/research-nav.css">
+<script defer src="../../assets/research-nav.js" data-page="predictions"></script>
+<style>{CSS}</style>
+</head>
+<body>
+<a class="skip" href="#timeline-section">Skip to the timeline</a>
+<header class="wrap research-header">
+<div class="research-intro">
+<p class="eyebrow">ET channelers · Research desk / 02</p>
+<h1>Prediction timelines</h1>
+<p class="lead">{len(records)} statements that name a target year or span, from {len(people)} people and {len(items)} recordings or pages, found by rules in source texts and in speech-to-text made here.</p>
+<p id="facts" class="facts">Generated {esc(built)} from {len(items)} items. {counts_text}</p>
+</div>
+<dl class="research-stats" aria-label="Public research corpus">
+ <div><dt>Windowed candidates</dt><dd>{len(records):,}</dd></div>
+ <div><dt>People represented</dt><dd>{len(people)}</dd></div>
+ <div><dt>Source items</dt><dd>{len(items):,}</dd></div>
+ <div><dt>Dates not known</dt><dd>{undated}<span class="stat-note">of {len(records)} statements</span></dd></div>
+</dl>
+
 </header>
 <main class="wrap">
 <div id="stage">
@@ -2604,12 +2799,20 @@ def render_page(records, counts_text, built):
  <figure class="minifig"><figcaption class="sr-only">Mini-map of the whole axis; the zoom buttons, the presets and the arrow keys move the window</figcaption><svg id="minimap" viewBox="0 0 800 44" height="44" aria-hidden="true"></svg></figure>
  <div id="tip" class="tip" role="tooltip" hidden></div>
 </div>
+<div id="evidence-dock" class="evidence-dock needs-js" aria-label="Evidence reader">
+<div id="evidence-empty" class="evidence-empty">
+ <p class="evidence-kicker">Evidence reader</p>
+ <h3>A statement.<br>Its source. Its dates.</h3>
+ <p>Select a timeline mark or a table row to read its short quotation, publication date and target window together.</p>
+ <div class="evidence-key"><span class="sample-source" aria-hidden="true"></span><span>Circle · published source text</span><span class="sample-made" aria-hidden="true"></span><span>Diamond · speech-to-text</span><span class="sample-ring" aria-hidden="true"></span><span>Ring · strong wording</span></div>
+</div>
 <aside id="spot" class="spot needs-js" aria-labelledby="spot-h" hidden tabindex="-1">
  <div class="spot-head"><h3 id="spot-h"></h3><button type="button" id="spot-close" class="btn" aria-label="unpin the statement">Close</button></div>
  <div id="spot-body"></div>
  <div class="spot-tools"><button type="button" id="spot-prev" class="btn">previous</button><button type="button" id="spot-next" class="btn">next</button><button type="button" id="spot-card" class="btn">Open in the list</button><button type="button" id="spot-zoom" class="btn needs-d3">Zoom here</button><button type="button" id="spot-person" class="btn">Only this person</button></div>
  <p id="spot-status" class="sr-only" aria-live="polite"></p>
 </aside>
+</div>
 <p id="chart-help" class="muted needs-d3">Drag to pan. Ctrl + scroll, pinch or the + and − buttons zoom. In the chart: arrow keys move between statements, Shift+arrows pan, + and − zoom, 0 resets, Enter pins, Shift+Enter opens the card, Escape leaves. Shift+F is full screen; ? lists every shortcut.</p>
 <p id="chart-status" class="sr-only" aria-live="polite"></p>
 <p id="no-d3" class="muted" hidden>The chart library did not load; the table and the lists below are complete.</p>
@@ -2669,6 +2872,7 @@ def render_page(records, counts_text, built):
 </dialog>
 <div id="fs-scrim" hidden></div>
 </div>
+{caveat_markup}
 <details id="years" open>
 <summary><h2 id="years-h">Index by target year</h2></summary>
 <nav aria-labelledby="years-h"><ul id="yearlist">
@@ -2801,6 +3005,59 @@ def build(root, out, targets_path=None, publish_counts=False, cap=QUOTE_CAP_PER_
     return records, report
 
 
+def existing_public_records(page):
+    """Read only a previously published allow-listed payload; never infer private denominators."""
+    payloads = re.findall(r'<script type="application/json" id="data">(.*?)</script>', page, re.S)
+    if len(payloads) != 1:
+        raise GuardError("public refresh requires exactly one existing public data payload")
+    try:
+        records = json.loads(payloads[0].replace("<\\/", "</"))
+    except (TypeError, ValueError) as exc:
+        raise GuardError("existing public payload is not valid JSON") from exc
+    if not isinstance(records, list) or any(not isinstance(row, dict) or set(row) != set(PUBLIC_KEYS) for row in records):
+        raise GuardError("existing public records differ from the public field allow-list")
+    for row in records:
+        if len(words_of(row.get("quote"))) > QUOTE_WORDS or row["quote_words"] != len(words_of(row.get("quote"))):
+            raise GuardError("existing public quote length is invalid or over 30 words")
+        if row.get("link") and not public_address_ok(row["link"]):
+            raise GuardError("existing public record has a non-public link")
+        if any(isinstance(value, str) and (any(mark in value for mark in PRIVATE_MARKS) or PRIVATE_PATH.search(value))
+               for value in row.values()):
+            raise GuardError("existing public record contains a private path")
+    return records
+
+
+def refresh_public(source, out):
+    """Presentation-only rebuild. Exact existing records inherit their original share guard.
+
+    Source-item word counts and private sentences are deliberately not loaded or
+    fabricated. This proves data/quote identity, not a fresh 5% denominator audit.
+    """
+    original = Path(source).read_text(encoding="utf-8")
+    records = existing_public_records(original)
+    facts = re.search(r'<p id="facts" class="facts">Generated ([^ ]+) from \d+ items\. (.*?)</p>', original, re.S)
+    if not facts or "<" in facts.group(2):
+        raise GuardError("existing public build date/count text cannot be read safely")
+    built, counts_text = html.unescape(facts.group(1)), html.unescape(facts.group(2))
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", built):
+        raise GuardError("existing public build date is invalid")
+    page = render_page(records, esc(counts_text), built)
+    if existing_public_records(page) != records:
+        raise GuardError("presentation refresh changed the published records")
+    quote_blocks = lambda value: collections.Counter(re.findall(r'<blockquote class="q">(.*?)</blockquote>', value, re.S))
+    if quote_blocks(page) != quote_blocks(original):
+        raise GuardError("presentation refresh changed the published quotation blocks")
+    if FORBIDDEN_TAGS.search(page) or any(mark in page for mark in PRIVATE_MARKS) or PRIVATE_PATH.search(page):
+        raise GuardError("presentation refresh contains media or a private path")
+    if len(page.encode("utf-8")) > PAGE_LIMIT:
+        raise GuardError("presentation refresh exceeds the public page size limit")
+    atomic_write_text(Path(out), page)
+    payload = json.dumps(records, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    return records, {"public_data_sha256": hashlib.sha256(payload.encode("utf-8")).hexdigest(),
+                     "page_bytes": len(page.encode("utf-8")), "original_build": built,
+                     "share_guard": "inherited from unchanged published records"}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     add_root_arg(ap)
@@ -2808,8 +3065,16 @@ def main():
     ap.add_argument("--targets", type=Path, help="default plan/targets.csv")
     ap.add_argument("--publish-counts", action="store_true", help="also write plan/prediction_timeline_counts.csv (counts only)")
     ap.add_argument("--cap", type=int, default=QUOTE_CAP_PER_PERSON, help="quoted words per person at most")
+    ap.add_argument("--refresh-public", type=Path,
+                    help="rerender only the exact existing public records; no private corpus or new content")
     args = ap.parse_args()
     try:
+        if args.refresh_public:
+            records, report = refresh_public(args.refresh_public, args.out)
+            print(f"{len(records)} unchanged public records -> {args.out}; "
+                  f"sha256 {report['public_data_sha256']}; original build {report['original_build']}; "
+                  "5% share guard inherited from unchanged published records")
+            return
         records, report = build(args.root, args.out, args.targets, args.publish_counts, args.cap)
     except GuardError as e:
         print("guard refused; nothing written:", file=sys.stderr)

@@ -4,6 +4,24 @@ An independent research site that indexes the public channeling sessions of **Ba
 
 **Live site:** served from this repository via GitHub Pages (`index.html` at the root).
 
+## Dashboard directory - 16 November 2026
+
+[Open all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/). The maintained pages share navigation and retain the date and scope of each dataset.
+
+| Dashboard | What it shows |
+|---|---|
+| [Prediction timelines](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html) | 480 published candidates, filters, target windows and source evidence; these are not verified outcomes |
+| [Collection](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/) | Current newest-20 -> newest-50 -> remaining-index snapshot, separately from older archive coverage |
+| [Channeler YouTube index](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/) | Standalone, searchable historical channel/video/playlist records |
+| [Channeling Atlas](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/) | People, entities, sources and analysis from the October research edition |
+| [Bashar Index](https://occult-kranti.github.io/bashar-index/) | The original focused reference and analysis |
+| [Research report](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/analysis/report.html) | Frozen 925-upload analysis and its limitations |
+
+The [separately hosted Atlas](https://channeling-atlas.whatswrong-inc.chatgpt.site) keeps its existing access settings. Earlier Claude artifact links are listed in the directory as historical copies. Published collection counts are a dated snapshot, not a live collector connection. UI updates do not imply a refresh of the scientific data.
+
+Rebuild and verification notes: [`dashboards/README.md`](dashboards/README.md).
+
+
 ## Channeling Atlas handoff and roadmap
 
 The expanded cross-channel research project is in [`channeling-atlas/`](channeling-atlas/README.md). Its [handoff](channeling-atlas/README.md#handoff-resume-here) records the reviewed baseline, exact data/PDF hashes, safe rebuild commands, source boundaries and the separate GitHub/Sites repository layouts.
@@ -106,7 +124,7 @@ The current state and the next steps are in [`et-channelers/HANDOFF.md`](et-chan
 
 | Path | Contents |
 |---|---|
-| `index.html` | The whole site — one self-contained page, no external requests. |
+| `index.html` | The original reference page with shared local navigation assets and web fonts. |
 | `data/` | The research data package: digests, catalogue, topic analysis, diagrams (JSON + SVG), glossary, timeline, manifests. See `data/README.md`. |
 | `src/` | The Python that builds the page (`build.py`, `css.py`, `js.py`, `svglib.py`, `diagrams_a.py`, `diagrams_b.py`), the analysis pipeline (`topics.py`) and the digest schema (`DIGEST_SPEC.md`). |
 | `et-channelers/` | The ET-channelers work from Claude sessions: research notes, a YouTube index of 92 people (16 of their channels crawled, 466 videos), the flat index and dashboard tables, and the transcript pipeline with its manifests and findings. Start with [`et-channelers/README.md`](et-channelers/README.md). Separate from `channeling-atlas/`. Since 2026-11-13 the pipeline also collects podcast episodes, creator-hosted audio and publisher texts (lanes that work where YouTube refuses cloud servers): see [`et-channelers/pipeline/README.md`](et-channelers/pipeline/README.md) and the per-person table in [`et-channelers/plan/coverage.csv`](et-channelers/plan/coverage.csv). |
