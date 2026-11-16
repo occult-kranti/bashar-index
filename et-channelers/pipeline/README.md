@@ -186,16 +186,33 @@ without it they are left out of the plan, and a run of YouTube lanes alone ends 
 ```powershell
 python et-channelers\pipeline\run_all.py --store gh:YOU/PRIVATE-REPO@audio-v1            # show the plan
 python et-channelers\pipeline\run_all.py --store gh:YOU/PRIVATE-REPO@audio-v1 --go      # run it
-python et-channelers\pipeline\run_all.py --store dir:D:\et-archive --lanes youtube,captions --set bashar75 --go   # only with the variable
+python et-channelers\pipeline\run_all.py --store dir:D:\et-archive --lanes "youtube,captions" --set bashar75 --go   # only with the variable
+python et-channelers\pipeline\run_all.py --store dir:D:\et-archive --lanes "youtube,captions" --newest 10 --go      # every channel's newest 10, rank order
+python et-channelers\pipeline\run_all.py --store dir:D:\et-archive --lanes "youtube,captions" --queue D:\queues\queue_blackouts_titles_all.csv --go   # a queue file
 ```
 
 `--store gh:OWNER/REPO@TAG` puts tar bundles on a release of a **private** GitHub repository through the `gh`
 command you are logged in with. The repository's visibility is read before anything is downloaded and the run
 stops (exit code 5) unless it is private; there is no flag to override that. `--store dir:/folder` copies into
-any folder outside a Git checkout (an external disk, or a folder your Drive client syncs). Exit codes: 3 a
-source refused requests, 4 the disk floor was reached, 5 the store was refused, 6 a run of setup faults, 8 another
-cycle was running (`run_cycle.py`), 9 skipped by rule (a YouTube step without `ET_YOUTUBE_ROBOTS_OVERRIDE=1`).
-`sync_archive.py` can also be run by itself (`push`, `status`, `pull`).
+any folder outside a Git checkout (an external disk, or a folder your Drive client syncs).
+
+What a run does, in order: the tools the lanes need (yt-dlp, ffmpeg, ffprobe; `--ytdlp`, `--ffmpeg`, `--ffprobe`
+name other paths) are each run for their version and printed under `TOOLS`; a yt-dlp or ffmpeg that is missing or
+cannot be run stops the run before any request (exit code 6), and a yt-dlp released more than 60 days ago gets a
+warning (YouTube changes often, and an old yt-dlp fails in ways that look like blocks: update it first). Then the
+channel listing and the queue step (`--newest N`: the newest N of every channel's Videos tab, in rank order, so a
+run stopped halfway has the newest of every channel; or `--queue FILE`, repeatable, which runs the lanes over
+queue files instead, merged in order into `<root>/jobs/queue_run.csv` with a repeated video kept once; not with
+`--newest`, `--per-channel` or `--set`, and a missing file or one without a `video_id` column is exit code 2 before
+anything starts; the local catalogue of such a run has no titles, `catalog.py` reads only `jobs/queue.csv`). In
+PowerShell the quotes around `"youtube,captions"` are needed: unquoted, the comma makes a list. Then `ESTIMATE`: the queue's videos and known hours, what each lane still has to do and the least time it
+takes at its pace. Then the lanes side by side, with `--transcribe MODEL` a speech-to-text pass beside them every
+300 s (`--transcribe-every`; 0 = only after) and once more at the end, and the sync watcher meanwhile. Each download
+records the video's exact upload date as `published`. Exit codes: 2 the options or a queue file are wrong, 3 a
+source refused requests, 4 the disk floor was reached, 5 the store was refused, 6 the setup is not ready (a tool
+that cannot be run, or a run of setup faults), 8 another cycle was running (`run_cycle.py`), 9 skipped by rule (a
+YouTube step without `ET_YOUTUBE_ROBOTS_OVERRIDE=1`). `sync_archive.py` can also be run by itself (`push`,
+`status`, `pull`).
 
 ### A browsable copy on Google Drive
 
@@ -354,14 +371,14 @@ python $P\export_public.py                              # 9. publishable numbers
 
 If step 3 prints `STOPPED` (exit code 3), do not push on: wait, lower `--workers`, raise `--min-interval`, or stop. Finished items are skipped when you rerun. To work from audio you already hold, put files named `<11-character-video-id>.opus` (or `.m4a`, `.mp3`, `.wav`, ...) in `<root>/audio/<channel>/` and start at step 6.
 
-For the other channels: `discover.py` lists every video on each tracked channel (public metadata; off by the same rule), `select_jobs.py --set all --per-channel 20 --seed 7 --min-seconds 300` draws a reproducible sample, or `--newest N` takes the first N of each channel's Videos tab in listing order (newest first; `run_all.py --newest N` lists only that much of each channel), and the same download and transcription steps follow. Two machines can split a queue with `--shard 0/2` and `--shard 1/2`.
+For the other channels: `discover.py` lists every video on each tracked channel (public metadata; off by the same rule), `select_jobs.py --set all --per-channel 20 --seed 7 --min-seconds 300` draws a reproducible sample, or `--newest N` takes the first N of each channel's Videos tab, in rank order by default (every channel's newest, then every channel's second newest, and so on; `--order as-is` keeps channel by channel; `run_all.py --newest N` lists only that much of each channel), and the same download and transcription steps follow. A queue written with `--out` can be run later with `run_all.py --queue FILE`, or given to `download_audio.py --queue` and `fetch_captions.py --queue`. Two machines can split a queue with `--shard 0/2` and `--shard 1/2`.
 
 ## The scripts
 
 | Script | Job | Notable options |
 |---|---|---|
 | [`inventory.py`](inventory.py) | channel and video totals and hour/disk estimates from the committed index; rewrites the table in the README | `--update-readme`, `--refresh-bashar75` |
-| [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--newest N`, `--min-seconds`, `--max-seconds`, `--order`, `--shards N`, `--export-ids` |
+| [`select_jobs.py`](select_jobs.py) | builds the queue from the Bashar-75 list, the index, and discovery output; with `--newest N` in rank order (every channel's newest first) unless `--order` says otherwise; each queue gets its own meta file | `--set bashar75\|indexed\|channeling\|all`, `--per-channel K --seed N`, `--newest N`, `--min-seconds`, `--max-seconds`, `--order rank\|as-is\|shortest-first\|...`, `--shards N`, `--limit`, `--out FILE`, `--export-ids` |
 | [`prediction_timeline.py`](prediction_timeline.py) | the rules pass of ANALYSIS_PLAN 12.4: statements about the future in each person's texts, each with a target window counted from the date said, laid out as a timeline per person; texts from the source and speech-to-text kept apart. Output stays in the private folder (it quotes, at most 30 words); counts only can go to `plan/` | `--only`, `--kinds made,source`, `--listing <videos_all.jsonl>` (approximate dates for YouTube rows), `--publish-counts` |
 | [`prediction_pilot.py`](prediction_pilot.py) | a pilot of the model pass: a seeded, blinded sample of the candidates with a target window (no person, title or date shown) for two independent coders, and the score of their labels (agreement, Cohen's kappa, and the share each calls prediction-like, by kind and time rule); private, the score holds counts and ids only | `sample --per-person --seed --exclude`, `score` (weighted by each person's windowed candidates from `strata.json`) |
 | [`discover.py`](discover.py) | every video, live stream and short on a channel via yt-dlp flat listing (off unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1`), one atomic file per channel, coverage against the expected count | `--only id,id`, `--tabs`, `--workers`, `--min-interval`, `--page-pause`, `--retry-failed` |
@@ -372,17 +389,19 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | [`interview_types.py`](interview_types.py) | the kind of each listed interview episode (live channeling, unclear, conversation, commentary or clip), from its transcript or the marks of its show notes that `fetch_feeds.py` keeps; fetches nothing | `--only` |
 | [`list_archive_org.py`](list_archive_org.py) | the audio and video files behind the session catalogue's archive.org entries | `--all`, `--refresh` |
 | [`run_cycle.py`](run_cycle.py) | one collection cycle from a cloud server: list (skipped by rule without `ET_YOUTUBE_ROBOTS_OVERRIDE=1`), feeds, queue, fetch, texts, interview kinds, tables. What the agents run (see Phase 7b of the roadmap) | `--go`, `--skip`, `--max-hours`, `--transcribe`, `--interview-types` |
+| [`run_all.py`](run_all.py) | one command on the owner's computer: checks the tools (exit code 6 when yt-dlp or ffmpeg is missing or cannot run; a warning for a yt-dlp older than 60 days), lists and queues (`--newest N` in rank order, or `--queue FILE` over queue files merged into `jobs/queue_run.csv`), prints the estimate, runs the lanes side by side with speech-to-text beside them, uploads to the private store as items finish, then the catalogue; without `--go` only the plan | `--store gh:OWNER/REPO@TAG\|dir:/folder`, `--lanes`, `--set`, `--newest N`, `--per-channel K`, `--queue FILE` (repeatable), `--workers`, `--min-interval`, `--transcribe MODEL`, `--transcribe-every S`, `--devices`, `--ytdlp`, `--ffmpeg`, `--ffprobe`, `--delete`, `--go` |
 | [`download_audio.py`](download_audio.py) | (off unless `ET_YOUTUBE_ROBOTS_OVERRIDE=1`) yt-dlp downloads a small audio stream to a scratch folder, ffmpeg re-encodes it to mono 16 kHz Opus, scratch is deleted | `--limit N` (pilot), `--all`, `--workers`, `--per-channel`, `--min-interval`, `--shard i/n`, `--bitrate`, `--limit-rate`, `--retry-failed` |
 | [`transcribe.py`](transcribe.py) | faster-whisper with batching and VAD; one process per GPU; longest files first so processes finish together, or every person in turn with `--order round-robin`; leaves out speech in a language the run was not asked for | `--model`, `--model-revision`, `--devices 0,1`, `--workers`, `--cpu-threads`, `--batch-size`, `--language`, `--order`, `--only`, `--compute-type`, `--shard i/n` |
 | [`verify.py`](verify.py) | file sizes, optional re-hash, audio-versus-listing length, transcript sanity, audio without transcript; builds the QA sheet | `--hash`, `--qa-sample N` |
 | [`export_public.py`](export_public.py) | the publishable table: durations, sizes, hashes, language, word counts, model and revision, speed | `--out` |
 | [`sync_archive.py`](sync_archive.py) | puts audio, transcripts and texts in the private store as checked tar bundles, reads them back into a fresh folder, and frees the disk once a copy is checked | `push`, `pull`, `status`, `--store`, `--kinds`, `--only`, `--delete`, `--hold-untranscribed-for` |
 | [`drive_stage.py`](drive_stage.py) | the Google Drive copy by person and source: names, folders, playable parts of at most 7.3 MB, text volumes, and the ledger of Drive ids | `plan`, `batches`, `round`, `done`, `record`, `status`, `--only`, `--kinds`, `--link-dir`, `--size` |
+| [`transcript_audio.py`](transcript_audio.py) | where the recording behind every transcript is, kinds apart (made here, from the source, captions): downloaded, on disk, in the private store, on Drive with all parts or partly (a page takes the audio state of its twin once that recording is downloaded); when not downloaded, why: a page with no recording, a YouTube video only the owner's computer can fetch, an interview-show episode that is not live channeling (held by policy, never queued), a fetchable recording not downloaded yet, or a failed download with its error class. The classes partition the items with text and the tool checks every row's sums. The per-item table and the summary stay private; `--publish-counts` writes counts only to [`../plan/transcript_audio.csv`](../plan/transcript_audio.csv); `--gaps` writes the queue of what can be fetched here and the ids to pull back from the store for Drive | `--only`, `--publish-counts`, `--gaps` |
 | [`drive_hold.py`](drive_hold.py) | writes into each live Drive hold note (`sync/holds/drive-<pid>.json`) the downloaded audio on disk that is not yet on Drive with all its parts, so the sync keeps it until its round is recorded; run it after each round | `--root` |
 | [`resume_jobs.sh`](resume_jobs.sh) | after a restart, starts each standing job that is not running: the sync (new files held until transcribed), the collection cycles, speech-to-text in a loop, a Drive hold (`ET_DRIVE_HOLD=1`) and a backlog download (`ET_BACKLOG_QUEUE`) | environment: `ET_PRIVATE_DIR`, `ET_ASR_WORKERS`, `ET_ASR_THREADS`, `ET_HOLD_UNTRANSCRIBED` |
 | [`doctor.py`](doctor.py) | checks the machine | `--root`, `--need-gb` |
 | [`common.py`](common.py) | shared helpers: manifests, shards, rate limiter, circuit breaker, Git guard | – |
-| [`tests/test_pipeline.py`](tests/test_pipeline.py), [`tests/test_lanes.py`](tests/test_lanes.py), [`tests/test_drive_stage.py`](tests/test_drive_stage.py) | the automated tests | – |
+| [`tests/test_pipeline.py`](tests/test_pipeline.py), [`tests/test_lanes.py`](tests/test_lanes.py), [`tests/test_drive_stage.py`](tests/test_drive_stage.py), [`tests/test_newest_lanes.py`](tests/test_newest_lanes.py), [`tests/test_transcript_audio.py`](tests/test_transcript_audio.py) | the automated tests (`test_newest_lanes.py`: the newest-N runs, upload dates, rank order, speech-to-text beside the downloads, the tool check, the estimate, `--queue`, and that the gate and the pacing stay as set) | – |
 
 ## How it works
 
@@ -402,6 +421,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 ```
 <root>/
   jobs/queue.csv, queue.meta.json            what was selected, with seed and input hashes
+  jobs/queue_run.csv, queue_run.meta.json    the merged --queue files of a run_all.py --queue run
   discover/channels/<person>.jsonl           every video on a channel
   discover/videos_all.jsonl, discover_manifest.jsonl
   audio/<channel>/<video_id>.opus            re-encoded audio
@@ -424,7 +444,7 @@ For the other channels: `discover.py` lists every video on each tracked channel 
 | Real YouTube, from a cloud server (2026-11-11) | 3 of 3 pilot videos refused: two "confirm you're not a bot" responses and one HTTP 403. The breaker stopped the run. No workaround was tried. |
 | Windows, a GPU, large models, long batches | **not tested** |
 
-Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (118 tests, about 2 minutes alone), `tests/test_lanes.py` (252, about 8 minutes alone) and `tests/test_drive_stage.py` (14) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
+Run the tests with `python3 -I et-channelers/pipeline/tests/test_pipeline.py` (127 tests, about 2 minutes alone), `tests/test_lanes.py` (271, about 8 minutes alone), `tests/test_drive_stage.py` (14), `tests/test_newest_lanes.py` (46, about a minute alone) and `tests/test_transcript_audio.py` (24) (standard library only; the encoder and decoder tests are skipped if ffmpeg or numpy is missing).
 
 ## Known limits
 

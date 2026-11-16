@@ -169,6 +169,7 @@ def main():
     for ident, rec in caps.items():
         e = entry(ident, rec.get("channel_dir", ""))
         e["relation"] = e["relation"] or "youtube"
+        e["published"] = e["published"] or rec.get("published", "")     # the video's own date, from the same call
     for row in page_rows:
         page = (row.get("page_url") or "").strip()
         if page and page_ids[page] not in paired_pages and page_ids[page] not in items:

@@ -10,7 +10,10 @@ source is already Opus, which would silently ignore the bitrate and channel sett
 
 Reads the queue from select_jobs.py. For every video it writes
     <root>/audio/<channel_dir>/<video_id>.opus
-and appends one line to <root>/audio/audio_manifest.jsonl (status, bytes, duration, sha256, error class).
+and appends one line to <root>/audio/audio_manifest.jsonl (status, bytes, duration, sha256, error class,
+and "published": the video's own date, YYYY-MM-DD). The channel listings only say "3 years ago", so the
+same yt-dlp call also writes the video's dates (--print-to-file, no extra request) and the record keeps
+the first of release_date (a premiere or a live stream), upload_date and timestamp that it gives.
 
 Off unless the owner sets ET_YOUTUBE_ROBOTS_OVERRIDE=1: yt-dlp asks for the player through
 youtube.com's /youtubei/, which its robots.txt disallows. Without the variable it sends nothing,
@@ -35,7 +38,9 @@ from __future__ import annotations
 import argparse
 import collections
 import concurrent.futures as cf
+import datetime as dt
 import os
+import re
 import shutil
 import sys
 import time
@@ -49,13 +54,63 @@ from common import (HARD_BLOCKS, Breaker, Progress, RateLimiter, add_root_arg, a
 SKIP_LATER = {"unavailable", "login_required"}
 SYSTEMIC = {"other", "no_formats", "transcode"}  # failures that say something is wrong with the setup
 SCRATCH_SUFFIXES = (".part", ".ytdl", ".temp", ".tmp")
+# The video's own dates, as yt-dlp knows them from the page it reads anyway. Written with --print-to-file into
+# the item's work folder: --print would also switch yt-dlp to quiet mode, --print-to-file changes nothing else.
+DATE_FIELDS = ("upload_date", "release_date", "timestamp")
+DATE_TEMPLATE = "\t".join(f"%({field})s" for field in DATE_FIELDS)
+DATE_FILE = "dates.tsv"            # not "<id>.*": find_raw() and the caption track glob never mistake it for media
+_DAY_RE = re.compile(r"^(\d{4})-?(\d{2})-?(\d{2})$")
+
+
+def _day(text):
+    """'20240105' or '2024-01-05' -> '2024-01-05'; '' for NA, garbage or a date YouTube cannot have."""
+    match = _DAY_RE.match((text or "").strip())
+    if not match:
+        return ""
+    try:
+        day = dt.date(*map(int, match.groups()))
+    except ValueError:
+        return ""
+    return day.isoformat() if 2005 <= day.year <= dt.date.today().year + 1 else ""
+
+
+def read_published(path):
+    """(published, field): the video's date as YYYY-MM-DD and the yt-dlp field it came from, read from the
+    DATE_TEMPLATE line yt-dlp wrote. release_date comes first (a premiere or a live stream went public then,
+    which can be days after the upload), then upload_date, then the timestamp's UTC day. ('', '') when the
+    file is missing or unreadable or holds only NA: a date never fails an item."""
+    try:
+        lines = [line for line in Path(path).read_text(encoding="utf-8", errors="replace").splitlines() if line.strip()]
+    except (OSError, ValueError):
+        return "", ""
+    if not lines:
+        return "", ""
+    line = lines[-1]
+    values = dict(zip(DATE_FIELDS, line.split("\t") if "\t" in line else line.split()))
+    for field in ("release_date", "upload_date"):
+        day = _day(values.get(field))
+        if day:
+            return day, field
+    try:
+        day = dt.datetime.fromtimestamp(float(values.get("timestamp", "").strip()), dt.timezone.utc).date().isoformat()
+    except (ValueError, OverflowError, OSError):
+        return "", ""
+    day = _day(day)
+    return (day, "timestamp") if day else ("", "")
+
+
+def date_args(stage, work):
+    """yt-dlp options that write the video's dates into the work folder at `stage` (video, after_move ...)."""
+    return ["--print-to-file", f"{stage}:{DATE_TEMPLATE}", str(work / DATE_FILE)]
 
 
 def ytdlp_cmd(args, row, work):
     cmd = [args.ytdlp, "--ignore-config", "--no-playlist", "--no-warnings", "--no-progress",
            "-f", args.format, "--retries", "2", "--fragment-retries", "2", "--socket-timeout", "30",
            "--sleep-requests", str(getattr(args, "sleep_requests", 0.75)),
-           "-o", str(work / "%(id)s.%(ext)s")]
+           "-o", str(work / "%(id)s.%(ext)s"),
+           # once the file is in place: a download that failed writes nothing
+           *date_args("after_move", work)]
     if args.limit_rate:
         cmd += ["--limit-rate", args.limit_rate]
     return cmd + [row["url"]]
@@ -104,6 +159,9 @@ def fetch_one(args, row, audio_root, limiter, breaker, versions):
             raw = find_raw(work, video_id) if code == 0 else None
             rec.update(attempts=attempt, elapsed_s=round(time.time() - t0, 1))
             if raw is not None:
+                rec["published"], field = read_published(work / DATE_FILE)   # '' when yt-dlp did not say
+                if field:
+                    rec["published_from"] = field
                 target.mkdir(parents=True, exist_ok=True)
                 part = target / f"{video_id}.opus.part"
                 code2, _, err2 = run_cmd(ffmpeg_cmd(args, raw, part), args.timeout)
