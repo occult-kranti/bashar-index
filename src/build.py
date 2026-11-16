@@ -485,11 +485,11 @@ nav_html = ''.join(f'<a class="chip" href="{h}">{t}</a>' for h, t in NAV)
 SIG = '<svg class="sig" viewBox="0 0 24 24" aria-hidden="true"><polygon points="12,3 21,20 3,20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="14" r="2.4" fill="currentColor"/></svg>'
 DEFS = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="dg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-marker"/></marker><marker id="dg-arrow-2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-marker-2"/></marker></defs></svg>'
 
-page = f'''<title>The Bashar Index</title>
+page = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The Bashar Index</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
-<style>{CSS}</style>
-{DEFS}
+<style>{CSS}</style><link rel="stylesheet" href="assets/research-nav.css"><script src="assets/research-nav.js" data-page="bashar" defer></script>
+</head><body>{DEFS}
 <header class="mast"><div class="wrap"><div class="row"><a class="brand" href="#home">{SIG}The Bashar Index</a><form class="search" role="search" onsubmit="return false"><input id="q" type="search" placeholder="Search terms, sessions, diagrams…" aria-label="Search the index" autocomplete="off"></form><button class="theme-btn" id="themeBtn" aria-label="Toggle light/dark theme" title="Toggle theme"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2a6 6 0 0 1 0 12z" fill="currentColor"/></svg></button></div><nav class="chips" aria-label="Sections">{nav_html}</nav></div></header>
 <main>
 {HOME}{WHO}{TIMELINE}{TEACH}{DIAG}{ANAL}{LIB}{GLOSS}{SKEP}{SRC}
@@ -506,5 +506,5 @@ page = f'''<title>The Bashar Index</title>
 {json_block('d-clusters', cl_slim)}
 <script>{JS}</script>
 '''
-open(f'{S}/index.html', 'w').write(page)
+open(f'{S}/index.html', 'w', encoding='utf-8').write(page + '\n</body></html>\n')
 print('written', len(page)/1024, 'KB', '| index entries', len(index), '| catalog rows', len(cat_rows), '| digests', N)

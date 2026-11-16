@@ -1,5 +1,14 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Dashboard interface update - 16 November 2026
+
+The maintained dashboard directory is [`../dashboards/index.html`](../dashboards/index.html) ([published URL](https://occult-kranti.github.io/bashar-index/dashboards/)). Six repository pages now share navigation. The prediction workbench preserves the exact 480 public records and their 2026-11-16T19:36:03Z build date; it adds no new evidence or verdicts. Its public-only refresh mode re-renders already-published records, while a fresh evidence build still requires the original private catalogue and quote-share guard.
+
+The channel index now runs standalone and has a reproducible template/generator. Its historical sample (92 channel entries, 466 video rows, 457 nonempty video IDs, nine rows without an ID) is distinct from the current collection queue. The collection page reads a sanitized counts-only `plan/ingestion_status.json` beside the dated archive tables. It shows newest 20, extension to 50, then indexing the remainder; rows marked indexed are not presented as downloaded. No private media, titles, paths, contacts or raw errors are exported by that status file. An expired cooldown alone does not establish that a worker is running.
+
+See [`../dashboards/README.md`](../dashboards/README.md) for rebuild and verification commands. This interface change was developed in an isolated worktree; it does not restart collection jobs or merge the separate Windows ingestion branch. Older handoff sections below retain their original observation dates.
+
+
 Written for whoever picks this up next: the owner, or the Claude session in the new Codespace. The work so
 far ran on a 2-core, 8 GB Codespace. Collection was paused on 2026-11-14 around 03:30 UTC so it can carry
 on in a Codespace with 16 GB of memory (GitHub's 4-core machine: check with `nproc`). Nothing is lost by the
