@@ -11,8 +11,8 @@ The local rclone remote `etdrive` points at the existing ET Channelers Archive. 
 OAuth client is now authenticated and its Drive API is enabled. The owner chose to retain Testing
 mode; expect Google reauthorization around November 23, 2026 if collection is still running.
 The working folder is outside Git. [`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md) gives the commands,
-recovery rules and Drive client setup. The launcher separates source workers (default four, configurable up to eight) from two upload transfers, batches up to eight pairs, and caps the working folder at 19 GB
-(the owner's total local ceiling is 20 GB), and applies no project storage cap on Drive. Native audio uses
+recovery rules and Drive client setup. The launcher separates source workers (default four, configurable up to eight) from up to four upload transfers, batches up to 16 pairs, and caps the working folder at 17 GB
+(the owner's total local ceiling is 20 GB, with 2 GB reserved and up to 1 GB for tools/repositories), and applies no project storage cap on Drive. Native audio uses
 no transcoding or GPU inference. A pilot audio upload was read back by size and MD5 before local deletion;
 ordinary 1 MiB HTTP range requests substantially improved a second pilot's download speed.
 
@@ -38,6 +38,10 @@ cooldown prevents new upload/preflight requests until its wait expires; this is 
 refusal rest period. Resume the new phase launcher after Drive access recovers, draining retained pairs first. A later bounded prefetch added eight new pairs: 12 await upload, two are verified on Drive, and local usage was about 0.45 GB. These are dated observations, not a live job claim. After the dedicated Desktop OAuth client was authorized and its Drive API enabled, a 12-pair upload pilot passed every size/hash/Drive-ID check and removed both artifacts locally: 14 pairs are now verified, with about 54 MB remaining in the private root. This observation supersedes the earlier quota-blocked status. The new bounded supervisor preserves cooldown deadlines and a persisted retry budget. The private catalog uses a compressed full baseline plus changed-item deltas and hash-verified manifests; see `pipeline/ARCHIVE_CATALOG.md`.
 
 At 22:44 UTC the reviewed supervisor was restarted in `RunAll` with six download workers, two upload transfers, eight pairs per batch and at most 32 ready/in-flight pairs. The private catalog checkpoint was uploaded and verified (63,929 indexed items, 14 verified pairs at that checkpoint); a subsequent live collection pair brought media receipts to 15. Upcoming premieres are deferred without halting other channels and receive one late revisit after useful stage work. This is a dated observation; consult the private supervisor state and receipts for current progress. The owner kept the OAuth app in Testing mode.
+
+At 23:16 UTC the owner-selected configuration was running with eight download workers, four Drive upload transfers, 12-pair batches and a 64-item ready/in-flight bound. The private root is capped at 17 GB: measured tools/repositories used 0.66 GB, preserving about 2.34 GB below the 20 GB total allowance. The user narrowed text collection to English published captions and original English automatic captions; translations and other languages are excluded. Existing audio is backfilled with metadata-only requests. Caption ZIPs and receipts are independent of audio pairs.
+
+The previous YouTube media 403 was repaired using the official yt-dlp nightly 2026.11.15.232800 (upstream fix #18051). At the owner's explicit request to override/fix and continue, one bounded normal-client recheck returned the exact HTTP 206 range; an append-only repair acknowledgement superseded only that item's old cooldown. A full audio/upload/verification run then passed, and English-caption backfill on the same item passed without redownloading audio. At 23:16 UTC there were 35 verified audio/metadata pairs, one verified English caption ZIP and 34 earlier audio items awaiting captions. Future source refusals still establish their own persisted rest windows; both audio and caption journals feed the bounded supervisor. See `pipeline/YOUTUBE_CAPTIONS_RESEARCH.md` for the investigated alternatives and limitations.
 
 ## Dashboard interface update - 16 November 2026
 

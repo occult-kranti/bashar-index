@@ -9,6 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import archive_catalog as catalog
+from drive_ingest import CAPTION_POLICY
 
 
 def queued(video_id="ABCDEFGHIJK", **extra):
@@ -25,6 +26,18 @@ def receipt(row, remote="etdrive:04 Audio", legacy=False, owner=None):
                  metadata=dict(remote=f"{parent}/{row['video_id']}.info.json", drive_id="metadata-object",
                                bytes=45, md5="c" * 32, sha256="d" * 64))
     return audio
+
+
+def caption_receipt(row, *, status="deleted", tracks=None, unresolved=None):
+    return dict(video_id=row["video_id"], channel_dir=row["channel_dir"], policy=CAPTION_POLICY,
+                status=status, captured_at="2026-11-16T00:00:00Z", tracks=tracks or [], unresolved=unresolved or [])
+
+
+def caption_track(row, identity="english-published", *, language="en", kind="published", legacy=False):
+    parent = receipt(row, legacy=legacy)["remote"].rpartition("/")[0]
+    return dict(track_id=identity, language=language, kind=kind, ext="json3", status="deleted",
+                bundle=dict(remote=f"{parent}/{row['video_id']}.captions.{identity}.zip", drive_id="caption-object",
+                            bytes=100, md5="e" * 32, sha256="f" * 64))
 
 
 class FakeDrive:
@@ -57,6 +70,12 @@ class CatalogTests(unittest.TestCase):
     def state(self, rows):
         self.journal.parent.mkdir(parents=True, exist_ok=True)
         self.journal.write_bytes(b"".join(catalog.encoded_json(row) for row in rows))
+
+    def caption_state(self, rows):
+        path = self.root / "sync/drive_caption_manifest.jsonl"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(b"".join(catalog.encoded_json(row) for row in rows))
+        return path
 
     def prepare(self):
         return catalog.prepare_catalog(self.root, self.queue, "etdrive:04 Audio", min_free_bytes=0)
@@ -192,6 +211,110 @@ class CatalogTests(unittest.TestCase):
             catalog.upload_catalog(plan, drive)
         self.assertEqual(caught.exception.kind, "stopped")
         self.assertEqual(drive.uploads, [])
+
+    def test_caption_absence_is_unknown_until_explicit_complete_discovery(self):
+        row = queued()
+        self.queue_rows([row])
+        first = self.prepare()
+        self.assertEqual(catalog.rebuild(first["manifest_path"])[0]["caption_state"], "unknown")
+        for record in (caption_receipt(row, status="pending"),
+                       caption_receipt(row, status="none", unresolved=[{"reason": "token_required"}]),
+                       dict(caption_receipt(row, status="none"), captured_at=""),
+                       dict(caption_receipt(row, status="none"), policy="other-policy")):
+            with self.subTest(record=record):
+                self.caption_state([record])
+                self.assertEqual(self.prepare()["counts"]["caption_none_videos"], 0)
+        self.caption_state([caption_receipt(row, status="none")])
+        final = self.prepare()
+        self.assertEqual(final["counts"]["caption_none_videos"], 1)
+        self.assertEqual(catalog.rebuild(final["manifest_path"])[0]["caption_state"], "none")
+
+    def test_partial_caption_proofs_survive_errors_without_changing_audio_completion(self):
+        row = queued()
+        self.queue_rows([row])
+        self.state([receipt(row)])
+        first = self.prepare()
+        published = caption_track(row)
+        automatic = dict(caption_track(row, "english-asr", language="en-GB", kind="automatic_original"),
+                         status="pending", bundle={})
+        record = caption_receipt(row, status="pending", tracks=[published, automatic], unresolved=[{"reason": "token_required"}])
+        record.update(error_class="token_required", inventory_status="incomplete", excluded_languages=3)
+        self.caption_state([record])
+        changed = self.prepare()
+        self.assertEqual(changed["changed_items"], 1)
+        self.assertEqual(changed["counts"]["verified_pairs"], 1)
+        self.assertEqual(changed["counts"]["caption_verified_tracks"], 1)
+        self.assertEqual(changed["counts"]["caption_complete_videos"], 0)
+        self.assertEqual(changed["counts"]["caption_verified_languages"], {"en": 1})
+        rebuilt = catalog.rebuild(changed["manifest_path"])[0]
+        self.assertEqual(rebuilt["archive_state"], "verified_pair")
+        self.assertEqual(rebuilt["caption_state"], "partially_verified")
+        self.assertEqual(rebuilt["caption_inventory_status"], "incomplete")
+        self.assertEqual(rebuilt["caption_excluded_languages"], "3")
+        self.assertEqual(json.loads(rebuilt["caption_languages"]), {"en": 1, "en-GB": 1})
+        self.assertEqual(len(json.loads(rebuilt["caption_bundles"])), 1)
+        manifest = catalog.load_manifest(Path(changed["manifest_path"]))
+        self.assertIn("caption_receipt_snapshot_sha256", manifest["inputs"])
+        self.assertEqual(len(manifest["deltas"]), 1)
+        self.assertNotEqual(first["manifest_path"], changed["manifest_path"])
+
+    def test_caption_catalog_only_exposes_verified_artifact_allowlist(self):
+        row = queued()
+        good = caption_track(row, legacy=True)
+        good.update(text="PRIVATE CAPTION TEXT", name="PRIVATE TRACK NAME", url="SIGNED REQUEST URL")
+        good["bundle"]["path"] = "PRIVATE LOCAL PATH"
+        bad = caption_track(row, "bad-proof", language="en-US")
+        bad["bundle"]["remote"] = "other:unrelated"
+        record = caption_receipt(row, status="pending", tracks=[good, bad])
+        fields = catalog.caption_fields(record, row, "etdrive:04 Audio")
+        proof = json.loads(fields["caption_bundles"])
+        self.assertEqual(len(proof), 1)
+        self.assertEqual(proof[0]["remote"], good["bundle"]["remote"])
+        self.assertNotIn("PRIVATE", json.dumps(fields))
+        self.assertNotIn("SIGNED", json.dumps(fields))
+        self.assertNotIn("other:unrelated", json.dumps(fields))
+        for field in ("drive_id", "md5", "sha256"):
+            broken = json.loads(json.dumps(good))
+            broken["bundle"][field] = ""
+            result = catalog.caption_fields(caption_receipt(row, tracks=[broken]), row, "etdrive:04 Audio")
+            self.assertEqual(result["caption_verified_tracks"], 0)
+
+    def test_caption_counts_include_verified_retained_tracks_but_not_policy_completion(self):
+        row = queued()
+        self.queue_rows([row])
+        track = caption_track(row, language="en-US")
+        track["status"] = "verified"
+        self.caption_state([caption_receipt(row, status="verified", tracks=[track])])
+        plan = self.prepare()
+        self.assertEqual(plan["counts"]["caption_videos_with_verified_tracks"], 1)
+        self.assertEqual(plan["counts"]["caption_complete_videos"], 0)
+        self.assertEqual(catalog.rebuild(plan["manifest_path"])[0]["caption_state"], "verified_retained")
+        self.caption_state([caption_receipt(row, tracks=[track])])
+        plan = self.prepare()
+        self.assertEqual(plan["counts"]["caption_complete_videos"], 1)
+        manifest = catalog.load_manifest(Path(plan["manifest_path"]))
+        channel_bytes = catalog.checked_bytes(self.root / catalog.CATALOG_DIR, manifest["channels"])
+        channel = next(csv.DictReader(channel_bytes.decode().splitlines()))
+        self.assertEqual(json.loads(channel["caption_verified_languages"]), {"en-US": 1})
+
+    def test_caption_malformed_journal_is_provenance_not_absence(self):
+        self.queue_rows([queued()])
+        path = self.caption_state([])
+        path.write_bytes(b'{"video_id":')
+        first = self.prepare()
+        self.assertEqual(first["counts"]["caption_none_videos"], 0)
+        self.assertEqual(first["caption_receipt_parse_warnings"], {"malformed_lines": 0, "unfinished_tail": 1})
+        path.write_bytes(path.read_bytes() + b"\n")
+        final = self.prepare()
+        self.assertEqual(final["changed_items"], 0)
+        self.assertNotEqual(final["manifest_path"], first["manifest_path"])
+        self.assertEqual(final["caption_receipt_parse_warnings"]["malformed_lines"], 1)
+
+    def test_duplicate_caption_identity_cannot_inflate_verified_counts(self):
+        row = queued()
+        track = caption_track(row)
+        with self.assertRaisesRegex(ValueError, "duplicate track"):
+            catalog.caption_fields(caption_receipt(row, tracks=[track, track]), row, "etdrive:04 Audio")
 
 
 if __name__ == "__main__":

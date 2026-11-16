@@ -6,6 +6,8 @@
     .then(response => { if (!response.ok) throw new Error('Snapshot unavailable'); return response.json(); })
     .then(data => {
       const names = {cooldown: 'Waiting for Drive', paused: 'Collection paused', ready: 'Ready to collect', running: 'Collection in progress', unknown: 'Status not confirmed'};
+      if (data.operation?.cooldown_provider === 'youtube') names.cooldown = 'Waiting for YouTube';
+      if (data.operation?.cooldown_provider === 'both') names.cooldown = 'Waiting for YouTube and Drive';
       text('run-state', names[data.operation?.state] || 'Status not confirmed');
       const stamp = new Date(data.generated_at);
       text('run-date', Number.isNaN(stamp.valueOf()) ? 'Snapshot date unavailable.' : 'Published snapshot · ' + stamp.toLocaleString('en-US', {dateStyle:'medium',timeStyle:'short',timeZone:'UTC'}) + ' UTC');

@@ -134,10 +134,19 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const labels = {cooldown:'Waiting for Drive', paused:'Collection paused', ready:'Ready to resume', running:'Collecting audio', unknown:'Status not yet recorded'};
       const explanations = {cooldown:'Drive has temporarily limited requests. Downloaded files are retained for the next upload attempt.', paused:'Collection is paused. Completed audio and metadata remain available for a safe resume.', ready:'The last Drive retry window has passed. This snapshot does not confirm that a worker is running.', running:'Audio and metadata are being saved together. Local copies are released after Drive verification.', unknown:'Queue totals are available; a current worker state has not been recorded.'};
       const state = labels[data.operation.state] ? data.operation.state : 'unknown';
+      if (data.operation.cooldown_provider === 'youtube') {
+        labels.cooldown = 'Waiting for YouTube';
+        explanations.cooldown = 'New YouTube downloads are paused after a source refusal. Completed audio and metadata can still be saved to Drive.';
+      } else if (data.operation.cooldown_provider === 'both') {
+        labels.cooldown = 'Waiting for YouTube and Drive';
+        explanations.cooldown = 'Source downloads and Drive uploads are paused until their recorded retry windows pass. Local files are retained.';
+      }
+      if (state === 'cooldown' && data.operation.retry_after) explanations.cooldown += ' Next attempt after ' + date(data.operation.retry_after) + '.';
       put('cc-current-state', labels[state]); put('cc-current-explanation', explanations[state]);
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
+      if (Number.isFinite(data.counts.caption_verified_videos)) put('cc-captions-summary', number(data.counts.caption_verified_videos) + ' videos have English caption text verified on Drive (' + number(data.counts.caption_verified_tracks) + ' tracks). ' + number(data.counts.caption_pending_videos) + ' await caption completion; ' + number(data.counts.caption_none_english) + ' have no English track in the saved source inventory.');
       put('cc-final-policy', data.operation.full_archive_requested ? 'Full archive follows the newest-50 tier.' : 'Final-round downloads are not enabled in this snapshot.');
       put('cc-local-storage', (data.storage.local_bytes / 1e9).toFixed(2) + ' / ' + number(data.storage.ceiling_bytes / 1e9) + ' GB');
       const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;
@@ -345,7 +354,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
   <header class="cc-hero" id="top">
     <p class="cc-eyebrow">Channeling research archive / Collection</p>
     <div class="cc-hero-row"><h1 class="cc-title">Building the archive.</h1><p class="cc-lede">Follow what has reached Drive, what is waiting, and where the research corpus stands.</p></div>
-    <p class="cc-hero-note">Audio and source metadata first. Transcription follows in a later pass.</p>
+    <p class="cc-hero-note">Native audio, source metadata and available English captions. Transcription follows only where usable text is missing.</p>
   </header>
   <div class="cc-workspace">
     <aside class="cc-rail"><nav class="cc-nav" aria-label="Collection sections"><div class="cc-nav-group"><p>Collection</p><a class="cc-nav-link" href="#collection-current" data-go="collection-current">Current collection</a><a class="cc-nav-link" href="#archive-overview" data-go="archive-overview">Historical archive</a></div><div class="cc-nav-group"><p>Archive & sources</p><a class="cc-nav-link" href="#people-states" data-go="people-states">Coverage by state</a><a class="cc-nav-link" href="#sources" data-go="sources">Sources & links</a><a class="cc-nav-link" href="#methods" data-go="methods">Collection methods</a><a class="cc-nav-link" href="#everyone" data-go="everyone">People & groups</a><a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar recordings</a><a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a><a class="cc-nav-link" href="#per-person" data-go="per-person">Texts by person</a><a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio & transcripts</a></div><div class="cc-nav-group"><p>Research</p><a class="cc-nav-link" href="#predictions" data-go="predictions">Prediction candidates</a><a class="cc-nav-link" href="#keywords" data-go="keywords">Title keywords</a><a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackout references</a><a class="cc-nav-link" href="#contacts" data-go="contacts">Websites & contacts</a></div></nav><a class="cc-rail-top" href="#top">Back to top &uarr;</a></aside>
@@ -359,8 +368,9 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
           <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label">Channels in this pass</span></div>
           <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label">Items in the full index</span></div>
         </div>
+        <p class="cc-current-explanation" id="cc-captions-summary">English published and automatic captions are collected when available.</p>
         <ol class="cc-stages" id="cc-stages" aria-label="Collection sequence"><li class="cc-stage">Loading the collection sequence&hellip;</li></ol>
-        <div class="cc-current-foot"><div><span class="cc-storage-label">Local storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="19000000000" value="0" aria-label="Local collection storage"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
+        <div class="cc-current-foot"><div><span class="cc-storage-label">Local storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="17000000000" value="0" aria-label="Local collection storage"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
         <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>
       </section>
       <section class="cc-archive-intro" id="archive-overview" aria-labelledby="cc-archive-heading">

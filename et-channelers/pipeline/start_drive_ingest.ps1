@@ -25,8 +25,10 @@ param(
     [Alias('Workers')]
     [ValidateRange(1, 8)]
     [int]$DlWorkers = 4,
-    [ValidateRange(1, 2)]
+    [ValidateRange(1, 4)]
     [int]$UploadTransfers = 2,
+    [ValidateRange(1, 17)]
+    [double]$MaxLocalGb = 17,
     [ValidateRange(1, 16)]
     [int]$UploadBatchItems = 8,
     [ValidateRange(0, 300)]
@@ -123,7 +125,7 @@ $EtArguments = @(
     '--upload-batch-items', [string]$UploadBatchItems,
     '--upload-batch-seconds', $UploadBatchSeconds.ToString([Globalization.CultureInfo]::InvariantCulture),
     '--ready-items', [string]$ReadyItems,
-    '--max-local-gb', '19',
+    '--max-local-gb', $MaxLocalGb.ToString([Globalization.CultureInfo]::InvariantCulture),
     '--max-item-mb', '0',
     '--min-free-gb', '3',
     '--rate-mib', $RateMiB.ToString([Globalization.CultureInfo]::InvariantCulture),

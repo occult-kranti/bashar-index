@@ -23,7 +23,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import ID_RE, ensure_outside_git, utc_now
 from drive_ingest import (MAX_LOCAL_BYTES, SOURCE_FOLDERS, IngestError, Rclone, exclusive_lock,
-                          journal, receipt_complete, tree_bytes, valid_recorded_remote, verify_remote)
+                          caption_receipt_complete, caption_track_verified, journal, receipt_complete,
+                          tree_bytes, valid_recorded_remote, verify_remote)
 from prepare_all_queue import snapshot
 
 SCHEMA = 1
@@ -33,13 +34,19 @@ QUEUE_FIELDS = ["video_id", "url", "channel_dir", "source_channel_name", "primar
                 "primary_person_name", "primary_person_role", "primary_person_basis", "tab", "listing_rank",
                 "title", "duration_s", "upload_date_approx", "channeling", "entity", "entity_label_basis",
                 "sources", "queue_provenance"]
+CAPTION_FIELDS = ["caption_state", "caption_receipt_status", "caption_error_class", "caption_captured_at",
+                  "caption_policy", "caption_inventory_status", "caption_tracks", "caption_verified_tracks", "caption_published_tracks",
+                  "caption_automatic_original_tracks", "caption_languages", "caption_verified_languages",
+                  "caption_excluded_translated", "caption_excluded_languages", "caption_excluded_noncaption", "caption_unresolved", "caption_bundles"]
 FIELDS = QUEUE_FIELDS + ["source_folder", "archive_channel_dir", "archive_state", "receipt_status",
                          "error_class", "published", "downloaded_at", "verified_at", "deleted_at"] + [
     f"{kind}_{field}" for kind in ("audio", "metadata")
-    for field in ("remote", "drive_id", "bytes", "md5", "sha256")]
+    for field in ("remote", "drive_id", "bytes", "md5", "sha256")] + CAPTION_FIELDS
 CHANNEL_FIELDS = ["channel_dir", "source_channel_name", "primary_people", "person_attribution_bases",
                   "tab", "source_folder", "items", "verified_pairs", "downloaded_unverified",
-                  "known_duration_hours", "unknown_duration_items", "entity_labels_unverified"]
+                  "known_duration_hours", "unknown_duration_items", "entity_labels_unverified",
+                  "caption_complete_videos", "caption_videos_with_verified_tracks", "caption_verified_tracks",
+                  "caption_none_videos", "caption_verified_languages"]
 
 
 def encoded_json(value):
@@ -83,7 +90,62 @@ def read_receipts(path):
     return latest, hashlib.sha256(data).hexdigest(), warnings
 
 
-def item_rows(queue, receipts, remote):
+def compact_json(value):
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+
+
+def caption_fields(record, source, remote):
+    """Expose provenance/proof only; never read bundles or copy text/request fields."""
+    result = dict.fromkeys(CAPTION_FIELDS, "")
+    result["caption_state"] = "unknown"
+    if not record:
+        return result
+    owner = record.get("channel_dir") or source["channel_dir"]
+    if not valid_channel(owner):
+        raise ValueError("Caption receipt has an unsafe archive channel directory")
+    tracks, unresolved = record.get("tracks"), record.get("unresolved")
+    if not isinstance(tracks, list) or any(not isinstance(track, dict) for track in tracks):
+        raise ValueError("Caption receipt tracks must be objects in a list")
+    if not isinstance(unresolved, list):
+        raise ValueError("Caption receipt unresolved tracks must be a list")
+    if any(not isinstance(track.get("track_id"), str) or not isinstance(track.get("language", ""), str)
+           for track in tracks):
+        raise ValueError("Caption track identities and languages must be strings")
+    if len({track.get("track_id") for track in tracks}) != len(tracks):
+        raise ValueError("Caption receipt contains duplicate track identities")
+    row = dict(source, channel_dir=owner)
+    proven = [track for track in tracks if caption_track_verified(track, row, remote)]
+    complete = caption_receipt_complete(record, row, remote)
+    state = "none" if complete and record.get("status") == "none" else "verified" if complete else (
+        "verified_retained" if tracks and len(proven) == len(tracks) and not unresolved else
+        "partially_verified" if proven else "downloaded_unverified" if record.get("status") == "ready" else "pending")
+    def languages(selected):
+        return dict(sorted(collections.Counter(
+            track.get("language") or "unknown" for track in selected).items()))
+    bundles = []
+    for track in proven:
+        bundle = track["bundle"]
+        bundles.append({**{key: track.get(key, "") for key in ("track_id", "language", "kind", "ext")},
+                        **{key: bundle.get(key, "") for key in ("remote", "drive_id", "bytes", "md5", "sha256")}})
+    result.update(caption_state=state, caption_receipt_status=record.get("status", ""),
+                  caption_error_class=record.get("error_class", ""), caption_captured_at=record.get("captured_at", ""),
+                  caption_policy=record.get("policy", ""), caption_inventory_status=record.get("inventory_status", ""),
+                  caption_tracks=len(tracks), caption_verified_tracks=len(proven),
+                  caption_published_tracks=sum(t.get("kind") == "published" for t in tracks),
+                  caption_automatic_original_tracks=sum(t.get("kind") == "automatic_original" for t in tracks),
+                  caption_languages=compact_json(languages(tracks)), caption_verified_languages=compact_json(languages(proven)),
+                  caption_unresolved=len(unresolved), caption_bundles=compact_json(sorted(bundles, key=lambda b: b["track_id"])))
+    for field in ("excluded_translated", "excluded_languages", "excluded_noncaption"):
+        value = record.get(field, 0)
+        if isinstance(value, list):
+            value = len(value)
+        if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+            raise ValueError("Caption excluded counts must be nonnegative integers or lists")
+        result[f"caption_{field}"] = value
+    return result
+
+
+def item_rows(queue, receipts, remote, caption_receipts=None):
     """Queue identity and attribution stay separate from the actual storage owner."""
     items = {}
     for source in queue:
@@ -122,8 +184,21 @@ def item_rows(queue, receipts, remote):
         for kind, artifact in (("audio", record), ("metadata", metadata)):
             for field in ("remote", "drive_id", "bytes", "md5", "sha256"):
                 row[f"{kind}_{field}"] = artifact.get(field, "")
+        row.update(caption_fields((caption_receipts or {}).get(video_id, {}), source, remote))
         items[video_id] = {key: "" if row.get(key) is None else str(row.get(key, "")) for key in FIELDS}
     return items
+
+
+def caption_counts(rows):
+    rows = list(rows)
+    language_counts = collections.Counter()
+    for row in rows:
+        language_counts.update(json.loads(row.get("caption_verified_languages") or "{}"))
+    return {"caption_complete_videos": sum(r.get("caption_state") == "verified" for r in rows),
+            "caption_videos_with_verified_tracks": sum(int(r.get("caption_verified_tracks") or 0) > 0 for r in rows),
+            "caption_verified_tracks": sum(int(r.get("caption_verified_tracks") or 0) for r in rows),
+            "caption_none_videos": sum(r.get("caption_state") == "none" for r in rows),
+            "caption_verified_languages": dict(sorted(language_counts.items()))}
 
 
 def channels(rows):
@@ -140,6 +215,8 @@ def channels(rows):
                     durations.append(duration)
             except (TypeError, ValueError):
                 pass
+        caption_summary = caption_counts(members)
+        caption_summary["caption_verified_languages"] = compact_json(caption_summary["caption_verified_languages"])
         result.append({"channel_dir": channel, "source_channel_name": members[0]["source_channel_name"],
                        "primary_people": " | ".join(sorted({r["primary_person_name"] for r in members} - {""})),
                        "person_attribution_bases": "+".join(sorted({r["primary_person_basis"] for r in members})),
@@ -148,7 +225,7 @@ def channels(rows):
                        "downloaded_unverified": sum(r["archive_state"] == "downloaded_unverified" for r in members),
                        "known_duration_hours": round(sum(durations) / 3600, 3),
                        "unknown_duration_items": len(members) - len(durations),
-                       "entity_labels_unverified": sum(bool(r["entity"]) for r in members)})
+                       "entity_labels_unverified": sum(bool(r["entity"]) for r in members), **caption_summary})
     return result
 
 
@@ -228,10 +305,11 @@ def upload_plan(root, manifest_path, remote):
     files = [dict(item, path=str(catalog_path(folder, item["file"])),
                   remote=join_remote(remote, f"{REMOTE_DIR}/{item['file']}")) for item in descriptors]
     return {"root": str(root), "manifest_path": str(manifest_path), "manifest_remote": files[-1]["remote"],
-            "files": files, "counts": manifest["counts"], "receipt_parse_warnings": manifest["inputs"].get("receipt_parse_warnings", {})}
+            "files": files, "counts": manifest["counts"], "receipt_parse_warnings": manifest["inputs"].get("receipt_parse_warnings", {}),
+            "caption_receipt_parse_warnings": manifest["inputs"].get("caption_receipt_parse_warnings", {})}
 
 
-def prepare_catalog(root, queue, remote, max_local_bytes=19_000_000_000, min_free_bytes=3_000_000_000):
+def prepare_catalog(root, queue, remote, max_local_bytes=17_000_000_000, min_free_bytes=3_000_000_000):
     """Create a baseline, or a delta of changed rows; a no-op reuses the same manifest."""
     root = ensure_outside_git(root)
     if not remote or not 0 < max_local_bytes <= MAX_LOCAL_BYTES:
@@ -243,7 +321,8 @@ def prepare_catalog(root, queue, remote, max_local_bytes=19_000_000_000, min_fre
         if not sources:
             raise ValueError("Catalog queue is empty")
         receipts, receipt_sha, warnings = read_receipts(root / "sync/drive_ingest_manifest.jsonl")
-        current = item_rows(sources, receipts, remote)
+        caption_receipts, caption_sha, caption_warnings = read_receipts(root / "sync/drive_caption_manifest.jsonl")
+        current = item_rows(sources, receipts, remote, caption_receipts)
         previous, old_rows = None, {}
         if pointer.exists():
             prior = json.loads(pointer.read_text(encoding="utf-8"))
@@ -254,7 +333,8 @@ def prepare_catalog(root, queue, remote, max_local_bytes=19_000_000_000, min_fre
             if previous["inputs"]["queue_sha256"] == queue_input["sha256"]:
                 old_rows = {r["video_id"]: r for r in rebuild(old_path)}
         changed = [current[key] for key in sorted(current) if current[key] != old_rows.get(key)]
-        if old_rows and not changed and previous["inputs"].get("receipt_parse_warnings") == warnings:
+        if (old_rows and not changed and previous["inputs"].get("receipt_parse_warnings") == warnings
+                and previous["inputs"].get("caption_receipt_parse_warnings") == caption_warnings):
             return dict(upload_plan(root, old_path, remote), changed_items=0, new_snapshot=False)
 
         def store(data, suffix, kind, count):
@@ -272,12 +352,15 @@ def prepare_catalog(root, queue, remote, max_local_bytes=19_000_000_000, min_fre
                     "merge_rule": "video_id_last_wins", "full_metadata": "Per-video .info.json beside native audio; this catalog does not replace it.",
                     "attribution": "Missing person/entity stays unknown; existing entity labels remain source metadata, not verified attribution.",
                     "duration_filter": None, "inputs": {"queue_sha256": queue_input["sha256"], "receipt_snapshot_sha256": receipt_sha,
-                                                          "receipt_parse_warnings": warnings},
+                                                          "receipt_parse_warnings": warnings,
+                                                          "caption_receipt_snapshot_sha256": caption_sha,
+                                                          "caption_receipt_parse_warnings": caption_warnings},
                     "baseline": previous["baseline"] if delta else item_object,
                     "deltas": [*previous["deltas"], *([item_object] if item_object else [])] if delta else [], "channels": channel_object,
                     "counts": {"items": len(current), "source_directories": len({r["channel_dir"] for r in current.values()}),
                                "verified_pairs": sum(r["archive_state"] == "verified_pair" for r in current.values()),
-                               "tabs": dict(collections.Counter(r["tab"] or "unknown" for r in current.values()))}}
+                               "tabs": dict(collections.Counter(r["tab"] or "unknown" for r in current.values())),
+                               **caption_counts(current.values())}}
         data = encoded_json(manifest)
         manifest_path = folder / "manifests" / f"{hashlib.sha256(data).hexdigest()}.json"
         atomic_bytes(manifest_path, data, root, max_local_bytes, min_free_bytes)
@@ -356,7 +439,7 @@ def main(argv=None):
                 ap.error("prepare requires --queue")
             result = prepare_catalog(args.root, args.queue, args.remote)
             print(json.dumps({key: result[key] for key in ("manifest_path", "manifest_remote", "counts", "changed_items", "new_snapshot",
-                                                         "receipt_parse_warnings")}, indent=2))
+                                                         "receipt_parse_warnings", "caption_receipt_parse_warnings")}, indent=2))
         else:
             path = args.manifest
             if path is None:

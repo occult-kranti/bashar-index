@@ -41,6 +41,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zipfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -138,6 +139,8 @@ class IngestResult:
     trusted: dict = field(default_factory=dict)
     remote_proofs: dict = field(default_factory=dict)
     allow_missing: bool = False
+    captions: dict | None = None
+    caption_only: bool = False
 
 
 def terminal_unavailable(record):
@@ -413,11 +416,17 @@ def run_tool(command, timeout=300):
     return result
 
 
-def extract_audio(args, row):
-    result = run_tool([args.ytdlp, "--ignore-config", "--proxy", "", "--no-playlist", "--no-warnings", "--no-progress",
+def extract_audio(args, row, metadata_only=False):
+    command = [args.ytdlp, "--ignore-config", "--proxy", "", "--no-playlist", "--no-progress",
                        "--skip-download", "--dump-single-json", "--retries", "0", "--extractor-retries", "0",
-                       "--socket-timeout", "30", "--sleep-requests", "0.75", "-f",
-                       "bestaudio[protocol=https][vcodec=none]", row["url"]], args.timeout)
+                       "--socket-timeout", "30", "--sleep-requests", "0.75"]
+    command += ["--ignore-no-formats-error"] if metadata_only else ["-f", "bestaudio[protocol=https][vcodec=none]"]
+    if metadata_only or getattr(args, "collect_captions", False):
+        # Declare caption intent so yt-dlp reports access-policy warnings, while
+        # simulation returns before its subtitle transport or filesystem writes.
+        command += ["--simulate", "--write-subs", "--write-auto-subs", "--sub-langs", "en.*",
+                    "--sub-format", "json3/vtt"]
+    result = run_tool(command + [row["url"]], args.timeout)
     if result.returncode:
         kind = classify_error(result.stderr)
         # yt-dlp can report a scheduled premiere before it returns JSON metadata.
@@ -433,7 +442,19 @@ def extract_audio(args, row):
         info = json.loads(result.stdout)
     except ValueError as exc:
         raise IngestError("metadata", "yt-dlp did not return valid metadata") from exc
-    if info.get("id") != row["video_id"] or info.get("vcodec") != "none":
+    # Keep a constant access signal, never raw warning text, URLs or credentials.
+    if any(re.search(r"(?i)\b(?:subtitles?|subs)\b", line) and
+           re.search(r"(?i)\bPO[ -]?token\b", line) and
+           re.search(r"(?i)\b(?:requires?|required|missing|not provided)\b", line)
+           for line in (result.stderr or "").splitlines() if line.lstrip().startswith("WARNING:")):
+        info["_caption_access_warning"] = "subtitle_access_requirement"
+    if info.get("id") != row["video_id"]:
+        raise IngestError("metadata", "Metadata is not for the requested source item")
+    if info.get("is_live") or info.get("live_status") in {"is_live", "is_upcoming"}:
+        raise IngestError("live", "Live/upcoming source is not a completed recording")
+    if metadata_only:
+        return info
+    if info.get("vcodec") != "none":
         raise IngestError("metadata", "Selected media is not the requested audio-only item")
     if info.get("protocol") != "https" or info.get("ext") not in NATIVE_EXTENSIONS:
         raise IngestError("unsupported_format", "No supported native HTTPS audio stream was selected")
@@ -636,8 +657,9 @@ def batch_manifest(root, paths):
 
 
 class Rclone:
+    UPLOAD_CHUNK = "32M"  # four upload transfers reserve at most 128 MiB of Drive chunk buffers
     RETRY_FLAGS = ["--retries", "2", "--low-level-retries", "2", "--retries-sleep", "5s",
-                   "--contimeout", "15s", "--timeout", "60s", "--tpslimit", "1", "--tpslimit-burst", "1"]
+                   "--contimeout", "15s", "--timeout", "60s", "--tpslimit", "2", "--tpslimit-burst", "1"]
 
     def __init__(self, executable, config=None, cooldown_path=None):
         self.command = [executable] + (["--config", str(config)] if config else [])
@@ -675,7 +697,7 @@ class Rclone:
     def copy(self, path, remote):
         self.execute(["copyto", str(path), remote, "--checksum", "--immutable",
                           "--transfers", "1", "--checkers", "1", "--buffer-size", "1M",
-                          "--drive-chunk-size", "8M", *self.RETRY_FLAGS], 3600, "single-file upload")
+                          "--drive-chunk-size", self.UPLOAD_CHUNK, *self.RETRY_FLAGS], 3600, "single-file upload")
 
     def copy_pair(self, audio, metadata, audio_remote, metadata_remote):
         """One batch, exactly two files, no staging copies or broad folder sync."""
@@ -689,13 +711,15 @@ class Rclone:
         self.execute(["copy", str(audio_parent), remote_parent, "--max-depth", "1",
                           "--include", f"/{audio.name}", "--include", f"/{metadata.name}",
                           "--checksum", "--immutable", "--transfers", "2", "--checkers", "2",
-                          "--buffer-size", "1M", "--drive-chunk-size", "8M", *self.RETRY_FLAGS], 3600,
+                          "--buffer-size", "1M", "--drive-chunk-size", self.UPLOAD_CHUNK, *self.RETRY_FLAGS], 3600,
                      "audio/metadata batch upload")
 
     def copy_batch(self, local_root, remote, manifest, transfers=2):
+        if not isinstance(transfers, int) or not 1 <= transfers <= 4:
+            raise ValueError("upload transfers must be an integer from 1 to 4")
         self.execute(["copy", str(local_root), remote, "--files-from-raw", str(manifest),
                       "--no-traverse", "--checksum", "--immutable", "--transfers", str(transfers),
-                      "--checkers", "2", "--buffer-size", "1M", "--drive-chunk-size", "8M",
+                      "--checkers", "2", "--buffer-size", "1M", "--drive-chunk-size", self.UPLOAD_CHUNK,
                       *self.RETRY_FLAGS], 3600, "bounded audio/metadata upload")
 
     def stat_batch(self, remote, paths, manifest):
@@ -872,6 +896,244 @@ def load_state(path):
     return latest
 
 
+CAPTION_POLICY = "english-published-and-original-automatic-v1"
+
+
+def caption_track_verified(track, row, remote):
+    bundle = track.get("bundle") or {}
+    identity = track.get("track_id", "")
+    if not isinstance(identity, str) or not isinstance(bundle, dict) or not isinstance(bundle.get("bytes"), int):
+        return False
+    return bool(re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}", identity) and
+                track.get("status") in {"verified", "deleted"} and bundle.get("drive_id") and
+                bundle.get("bytes", 0) > 0 and re.fullmatch(r"[a-f0-9]{32}", str(bundle.get("md5", ""))) and
+                re.fullmatch(r"[a-f0-9]{64}", str(bundle.get("sha256", ""))) and
+                valid_recorded_remote(remote, row, f"captions.{identity}.zip", bundle.get("remote")))
+
+
+def caption_receipt_complete(record, row, remote):
+    if record.get("policy") != CAPTION_POLICY or record.get("unresolved"):
+        return False
+    tracks = record.get("tracks", [])
+    if record.get("status") == "none":
+        return not tracks and bool(record.get("captured_at"))
+    return bool(record.get("status") == "deleted" and tracks and
+                len({track.get("track_id") for track in tracks}) == len(tracks) and
+                all(caption_track_verified(track, row, remote) for track in tracks))
+
+
+class _BudgetZipWriter:
+    """Unseekable ZIP output makes every header/data write append-only and admitted."""
+    def __init__(self, output, budget):
+        self.output, self.budget = output, budget
+
+    def write(self, data):
+        self.budget.write(self.output, data)
+        return len(data)
+
+    def tell(self):
+        return self.output.tell()
+
+    def flush(self):
+        self.output.flush()
+
+
+def caption_bundle(args, row, audio, spec, budget, limiter, stop, state, state_path):
+    from youtube_captions import fetch_track, normalize_caption, provenance
+    track = next(track for track in state["tracks"] if track["track_id"] == spec["track_id"])
+    identity = spec["track_id"]
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,159}", identity) or spec["ext"] not in {"json3", "vtt"}:
+        raise IngestError("caption_metadata", "Caption identity/format is unsafe")
+    extension = f"captions.{identity}.zip"
+    destination = item_remote_path(args.remote, row, extension, audio) if args.remote else ""
+    relative = ("audio/" + remote_relative(args.remote, destination)) if destination else (
+        f"audio/{row['channel_dir']}/{SOURCE_FOLDERS.get(row.get('tab', ''), 'Unclassified')}/{row['video_id']}.{extension}")
+    path = local_path(args.root, relative)
+    part, raw = path.with_suffix(".zip.part"), path.with_suffix(".raw.part")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.exists():
+        raise IngestError("local_changed", "Caption bundle exists without matching completion evidence")
+    for old in (part, raw):
+        if old.exists():
+            remove_local(old)
+    key = f"caption:{row['video_id']}:{identity}"
+    budget.reserve_item(key, raw, CHUNK)
+    try:
+        with open(raw, "wb") as output:
+            measured = fetch_track(spec, output, budget=budget, limiter=limiter, stop=stop)
+            output.flush()
+            os.fsync(output.fileno())
+        normalized = normalize_caption(raw.read_bytes(), spec["ext"])
+        detail = dict(provenance(spec), captured_at=state["captured_at"], policy=CAPTION_POLICY,
+                      raw={key: measured[key] for key in ("bytes", "md5", "sha256")},
+                      normalization_version=normalized.get("normalization_version", 1))
+        with open(part, "wb") as output:
+            with zipfile.ZipFile(_BudgetZipWriter(output, budget), "w", compression=zipfile.ZIP_DEFLATED,
+                                 compresslevel=1) as bundle:
+                with bundle.open(f"raw.{spec['ext']}", "w") as member, open(raw, "rb") as source:
+                    for block in iter(lambda: source.read(CHUNK), b""):
+                        member.write(block)
+                bundle.writestr("segments.json", json.dumps(normalized, ensure_ascii=False).encode("utf-8"))
+                bundle.writestr("transcript.txt", normalized["text"].encode("utf-8"))
+                bundle.writestr("provenance.json", json.dumps(detail, ensure_ascii=False, indent=2).encode("utf-8"))
+            output.flush()
+            os.fsync(output.fileno())
+        track.update(status="ready", bundle=dict(hash_file(part), path=relative, remote=destination))
+        journal(state_path, state)  # ZIP hashes precede promotion and later deletion
+        os.replace(part, path)
+        remove_local(raw)
+        return track
+    finally:
+        budget.release(key)
+
+
+def prepare_captions(args, row, audio, budget, limiter, stop, info=None):
+    """Independent, resumable caption evidence; failures never invalidate audio receipts."""
+    from youtube_captions import CaptionError, select_tracks, provenance
+    state_path = args.root / "sync" / "drive_caption_manifest.jsonl"
+    previous = getattr(args, "caption_state", {}).get(row["video_id"], {})
+    state = json.loads(json.dumps(previous)) if previous else {
+        "video_id": row["video_id"], "channel_dir": row["channel_dir"], "policy": CAPTION_POLICY,
+        "tracks": [], "unresolved": [], "status": "pending"}
+    if not hasattr(args, "caption_state"):
+        args.caption_state = {}
+    args.caption_state[row["video_id"]] = state
+    if caption_receipt_complete(state, row, args.remote or ""):
+        return state
+    try:
+        for track in state["tracks"]:
+            bundle = track.get("bundle")
+            if not bundle:
+                continue
+            if args.remote and not valid_recorded_remote(args.remote, row,
+                    f"captions.{track['track_id']}.zip", bundle.get("remote")):
+                raise IngestError("drive_destination", "Caption receipt belongs to another destination")
+            if track.get("status") == "deleted":
+                if not caption_track_verified(track, row, args.remote or ""):
+                    raise IngestError("drive_verify", "Caption deletion receipt lacks complete proof")
+                continue
+            path = local_path(args.root, bundle["path"])
+            part = path.with_suffix(".zip.part")
+            if not path.exists() and part.exists():
+                validate_local(part, bundle)
+                os.replace(part, path)
+            if path.exists():
+                validate_local(path, bundle)
+            elif track.get("status") != "verified":
+                raise IngestError("local_missing", "Caption bundle is missing without verified storage")
+        if state.get("policy") == CAPTION_POLICY and state.get("captured_at") and not state.get("unresolved") and all(track.get("bundle") for track in state["tracks"]):
+            state["status"] = "ready" if state["tracks"] else "none"
+            journal(state_path, state)
+            return state
+        if info is None:
+            if stop.is_set() or getattr(args, "youtube_blocked", False):
+                raise IngestError("youtube_cooldown", "Caption discovery waits for the source rest period")
+            limiter.wait()
+            if stop.is_set():
+                raise IngestError("stopped", "Caption discovery stopped before a request")
+            info = extract_audio(args, row, metadata_only=True)
+        selected = select_tracks(info)
+        old = {track["track_id"]: track for track in state["tracks"]}
+        state.update(captured_at=utc_now(), status="discovered", policy=CAPTION_POLICY,
+                     excluded_translated=selected.get("excluded_translated", 0),
+                     excluded_languages=selected.get("excluded_languages", 0),
+                     excluded_noncaption=selected.get("excluded_noncaption", 0),
+                     inventory_status=selected.get("inventory_status", "incomplete"),
+                     unresolved=selected.get("unresolved", []))
+        for spec in selected["tracks"]:
+            old.setdefault(spec["track_id"], dict(provenance(spec), status="pending"))
+        state["tracks"] = list(old.values())
+        journal(state_path, state)
+        for spec in selected["tracks"]:
+            if old[spec["track_id"]].get("bundle"):
+                continue
+            if stop.is_set() or getattr(args, "youtube_blocked", False):
+                raise IngestError("stopped", "Caption fetch stopped before another request")
+            caption_bundle(args, row, audio, spec, budget, limiter, stop, state, state_path)
+        state["status"] = "pending" if state["unresolved"] or any(not t.get("bundle") for t in state["tracks"]) else (
+            "ready" if state["tracks"] else "none")
+        state.pop("error_class", None)
+        state.pop("error", None)
+    except (IngestError, CaptionError) as exc:
+        state.update(status="pending", error_class=exc.kind, error=str(exc), updated_at=utc_now())
+        if exc.kind in HARD_BLOCKS:
+            state["source_error_class"] = exc.kind
+            state["retry_not_before_epoch"] = time.time() + 86400
+            stop.set()
+        print(f"{row['video_id']}: captions: {exc.kind}", file=sys.stderr, flush=True)
+    journal(state_path, state)
+    return state
+
+
+def upload_captions(args, items, drive, stop):
+    """Exact caption batches use the shared uploader, after completed audio is saved."""
+    state_path = args.root / "sync" / "drive_caption_manifest.jsonl"
+    owners, paths = [], []
+    try:
+        for item in items:
+            for track in (item.captions or {}).get("tracks", []):
+                bundle = track.get("bundle")
+                if not bundle or caption_track_verified(track, item.row, args.remote) and track.get("status") == "deleted":
+                    continue
+                if not valid_recorded_remote(args.remote, item.row, f"captions.{track['track_id']}.zip", bundle["remote"]):
+                    raise IngestError("drive_destination", "Caption destination differs from its inventory")
+                path = local_path(args.root, bundle["path"])
+                relative = remote_relative(args.remote, bundle["remote"])
+                if path.relative_to(args.root / "audio").as_posix() != relative:
+                    raise IngestError("drive_destination", "Caption local path does not match its exact archive path")
+                known = validate_local(path, bundle) if path.exists() else None
+                if known is None and track.get("status") != "verified":
+                    raise IngestError("local_missing", "Unverified caption bundle is missing")
+                owners.append((item, track, path, relative, known))
+                paths.append(relative)
+        if len(paths) != len(set(paths)):
+            raise IngestError("drive_destination", "Caption batch has duplicate object paths")
+        proofs = {}
+        for offset in range(0, len(owners), 128):
+            group = owners[offset:offset + 128]
+            upload_paths = [relative for _, _, path, relative, _ in group if path.exists()]
+            if upload_paths:
+                with batch_manifest(args.root, upload_paths) as manifest:
+                    drive.copy_batch(args.root / "audio", args.remote, manifest, getattr(args, "upload_transfers", 2))
+            check_paths = [entry[3] for entry in group]
+            with batch_manifest(args.root, check_paths) as manifest:
+                proofs.update(drive.stat_batch(args.remote, check_paths, manifest))
+        for item, track, _, relative, _ in owners:
+            proof = proofs.get(relative, {})
+            verify_remote(proof, track["bundle"])
+            if not proof.get("ID"):
+                raise IngestError("drive_verify", "Caption Drive identity is missing; local ZIP retained")
+        for item, track, path, relative, known in owners:
+            track["bundle"]["drive_id"] = proofs[relative]["ID"]
+            track.update(status="verified", verified_at=utc_now())
+            journal(state_path, item.captions)
+            if path.exists():
+                validate_local(path, track["bundle"], known)
+                remove_local(path)
+            track.update(status="deleted", deleted_at=utc_now())
+            journal(state_path, item.captions)
+        for item in items:
+            if not item.captions:
+                continue
+            state = item.captions
+            if state.get("error_class", "").startswith("drive_"):
+                state.pop("error_class", None)
+                state.pop("error", None)
+            if state.get("tracks") and not state.get("unresolved") and all(
+                    caption_track_verified(track, item.row, args.remote) for track in state["tracks"]):
+                state["status"] = "deleted"
+            journal(state_path, state)
+        return True
+    except IngestError as exc:
+        stop.set()
+        for item in items:
+            if item.captions:
+                item.captions.update(status="pending", error_class=exc.kind, error=str(exc), updated_at=utc_now())
+                journal(state_path, item.captions)
+        print(f"Caption upload: {exc.kind}; local bundles retained", file=sys.stderr, flush=True)
+        return False
+
+
 def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, *, stage_only=False):
     rec = dict(prior or {}, video_id=row["video_id"], channel_dir=row["channel_dir"],
                entity=row.get("entity", ""), channeling=row.get("channeling", ""), updated_at=utc_now())
@@ -882,7 +1144,15 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
     reserved, info, captured_at = False, None, None
     trusted, remote_proofs = {}, {}
     collect_metadata = getattr(args, "collect_metadata", True)
+    captions = None
     try:
+        if (getattr(args, "collect_captions", False) and prior and prior.get("status") == "deleted"
+                and prior.get("metadata", {}).get("drive_id")):
+            captions = prepare_captions(args, row, rec, budget, limiter, stop)
+            has_local = any(track.get("bundle") and track.get("status") != "deleted"
+                            for track in captions.get("tracks", []))
+            return IngestResult(row, rec, status="ready" if has_local and not args.download_only else "deleted",
+                                captions=captions, caption_only=True)
         if prior and prior.get("status") in {"verified", "deleted"} and prior.get("metadata") and drive:
             if stage_only:
                 return IngestResult(row, rec, allow_missing=True)
@@ -964,6 +1234,8 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
                                             state_path, info, captured_at, trusted, remote_proofs)
             if args.remote:
                 rec["metadata"]["remote"] = item_remote_path(args.remote, row, "info.json", rec)
+        if getattr(args, "collect_captions", False):
+            captions = prepare_captions(args, row, rec, budget, limiter, stop, info)
         if args.download_only:
             return "downloaded"
         rec["remote"] = item_remote_path(args.remote, row, path.suffix.lstrip("."), rec)
@@ -971,7 +1243,8 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
             rec.update(status="queued_upload", queued_upload_at=utc_now())
             journal(state_path, rec)
             return IngestResult(row, rec, trusted=trusted, remote_proofs=remote_proofs,
-                                allow_missing=remote_only_audio or (collect_metadata and metadata_path is None))
+                                allow_missing=remote_only_audio or (collect_metadata and metadata_path is None),
+                                captions=captions)
         # copyto --immutable --checksum is idempotent after an interrupted upload.
         if path.exists() and metadata_path:
             drive.copy_pair(path, metadata_path, rec["remote"], rec["metadata"]["remote"])
@@ -982,6 +1255,8 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
         verify_and_delete(args.root, rec, drive, state_path, require_metadata=collect_metadata,
                           allow_missing=remote_only_audio or (collect_metadata and metadata_path is None),
                           trusted=trusted, remote_proofs=remote_proofs)
+        if captions:
+            upload_captions(args, [IngestResult(row, rec, captions=captions)], drive, stop)
         return "deleted"
     except IngestError as exc:
         # Preserve completion evidence alongside an upload failure for restart.
@@ -990,6 +1265,7 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
             outcome = "unavailable"
         rec.update(status=outcome, error_class=exc.kind, error=str(exc), updated_at=utc_now())
         if exc.kind in HARD_BLOCKS:
+            rec["source_error_class"] = exc.kind
             rec["retry_not_before_epoch"] = time.time() + 86400
         journal(state_path, rec)
         if exc.kind not in {"unavailable", "login_required", "deferred_storage", "live", "unsupported_format"}:
@@ -1009,6 +1285,8 @@ def upload_batch(args, items, drive, state_path, stop):
         artifacts = []
         for item in items:
             rec = item.record
+            if item.caption_only:
+                continue
             if getattr(args, "collect_metadata", True) and not rec.get("metadata"):
                 raise IngestError("metadata_missing", "An upload pair has no research metadata")
             for kind, expected in [("audio", rec)] + ([("metadata", rec["metadata"])] if rec.get("metadata") else []):
@@ -1042,8 +1320,10 @@ def upload_batch(args, items, drive, state_path, stop):
             else:
                 for path, destination in group:
                     drive.copy(path, destination)
-        with batch_manifest(args.root, paths) as manifest:
-            proofs = drive.stat_batch(args.remote, paths, manifest)
+        proofs = {}
+        if paths:
+            with batch_manifest(args.root, paths) as manifest:
+                proofs = drive.stat_batch(args.remote, paths, manifest)
         # Check all proof records before deleting even the first local pair.
         for _, _, expected, relative in artifacts:
             if relative not in proofs:
@@ -1052,11 +1332,17 @@ def upload_batch(args, items, drive, state_path, stop):
             if not proofs[relative].get("ID"):
                 raise IngestError("drive_verify", "Drive object identity is missing; local pairs retained")
         for item in items:
+            if item.caption_only:
+                results.append(IngestResult(item.row, item.record, status="deleted", captions=item.captions,
+                                            caption_only=True))
+                continue
             item_proofs = {kind: proofs[relative] for current, kind, _, relative in artifacts if current is item}
             done = verify_and_delete(args.root, item.record, drive, state_path,
                                      require_metadata=getattr(args, "collect_metadata", True),
                                      allow_missing=item.allow_missing, trusted=item.trusted, remote_proofs=item_proofs)
-            results.append(IngestResult(item.row, done, status="deleted"))
+            results.append(IngestResult(item.row, done, status="deleted", captions=item.captions))
+        if any(item.captions for item in items):
+            upload_captions(args, items, drive, stop)
         return results
     except IngestError as exc:
         stop.set()
@@ -1064,6 +1350,12 @@ def upload_batch(args, items, drive, state_path, stop):
             # A batch can fail after an earlier pair was already durably retired.
             latest = item.record
             if any(result.row["video_id"] == item.row["video_id"] for result in results):
+                continue
+            if item.caption_only:
+                if item.captions:
+                    item.captions.update(status="pending", error_class=exc.kind, error=str(exc))
+                    journal(args.root / "sync" / "drive_caption_manifest.jsonl", item.captions)
+                results.append(IngestResult(item.row, latest, status="error", captions=item.captions, caption_only=True))
                 continue
             latest = dict(latest, status="error", error_class=exc.kind, error=str(exc), updated_at=utc_now())
             journal(state_path, latest)
@@ -1094,7 +1386,9 @@ def run(args, rows):
         _ROOT_BUDGETS[root.resolve()] = budget
         state_path = root / "sync" / "drive_ingest_manifest.jsonl"
         state = load_state(state_path)
-        youtube_blocked = any(float(rec.get("retry_not_before_epoch", 0)) > time.time() for rec in state.values())
+        args.caption_state = load_state(root / "sync" / "drive_caption_manifest.jsonl")
+        youtube_blocked = any(float(rec.get("retry_not_before_epoch", 0)) > time.time()
+                              for rec in [*state.values(), *args.caption_state.values()])
         args.youtube_blocked = youtube_blocked
         drive = None if args.download_only else Rclone(args.rclone, args.rclone_config, cooldown_path=cooldown_path)
         if drive:
@@ -1104,12 +1398,14 @@ def run(args, rows):
             rec = state.get(row["video_id"], {})
             if terminal_unavailable(rec):
                 continue
-            if args.download_only and rec.get("status") == "deleted" and rec.get("metadata", {}).get("drive_id"):
+            captions_done = not getattr(args, "collect_captions", False) or caption_receipt_complete(
+                args.caption_state.get(row["video_id"], {}), row, args.remote or "")
+            if args.download_only and rec.get("status") == "deleted" and rec.get("metadata", {}).get("drive_id") and captions_done:
                 continue
             if rec.get("status") in {"deleted", "verified"} and not args.download_only and not valid_recorded_remote(
                     args.remote, row, Path(rec["path"]).suffix.lstrip("."), rec.get("remote")):
                 raise IngestError("drive_destination", "Receipt belongs to a different remote; use the original destination")
-            if receipt_complete(rec, row, args.remote or ""):
+            if receipt_complete(rec, row, args.remote or "") and captions_done:
                 continue
             if not getattr(args, "collect_metadata", True) and rec.get("status") == "verified" and not local_path(root, rec["path"]).exists():
                 if drive:
@@ -1131,7 +1427,14 @@ def run(args, rows):
             return complete_audio_local(row) and (not getattr(args, "collect_metadata", True) or bool(rec.get("metadata")))
 
         todo.sort(key=lambda row: not complete_local(row))
-        cooldown_waiting = youtube_blocked and any(not complete_local(row) for row in todo)
+        def captions_need_source(row):
+            if not getattr(args, "collect_captions", False):
+                return False
+            cap = args.caption_state.get(row["video_id"], {})
+            return not cap.get("captured_at") or bool(cap.get("unresolved")) or any(
+                not track.get("bundle") for track in cap.get("tracks", []))
+
+        cooldown_waiting = youtube_blocked and any(not complete_local(row) or captions_need_source(row) for row in todo)
         if youtube_blocked:
             todo = [row for row in todo if complete_local(row)]
             if cooldown_waiting:
@@ -1153,6 +1456,8 @@ def run(args, rows):
             outcome = result.status if isinstance(result, IngestResult) else result
             if isinstance(result, IngestResult):
                 state[row["video_id"]] = result.record
+                if result.captions:
+                    args.caption_state[row["video_id"]] = result.captions
             if outcome == "ready":
                 ready.append((time.monotonic(), result))
             else:
@@ -1217,7 +1522,9 @@ def run(args, rows):
                             stop.set()
                             results = [IngestResult(item.row, item.record, status="error") for item in uploading]
                             print("Upload batch: unexpected failure; local pairs retained", file=sys.stderr)
-                        drive_failed = any(result.status == "error" for result in results)
+                        drive_failed = any(result.status == "error" or
+                                           (result.captions or {}).get("error_class", "").startswith("drive_")
+                                           for result in results)
                         uploading, upload_future = [], None
                         for result in results:
                             observe(result.row, result)
@@ -1232,15 +1539,19 @@ def run(args, rows):
                         print(f"{row['video_id']}: unexpected failure; local files retained", file=sys.stderr)
                     observe(row, result)
         unfinished = len(source) + len(ready)
+        source_cooldown = any(float(rec.get("retry_not_before_epoch", 0)) > time.time()
+                              for rec in [*state.values(), *args.caption_state.values()])
+        caption_counts = collections.Counter(args.caption_state.get(row["video_id"], {}).get("status", "unknown")
+                                             for row in rows) if getattr(args, "collect_captions", False) else {}
         print(json.dumps({"outcomes": counts, "local_bytes": tree_bytes(root),
-                          "stopped": stop.is_set(), "youtube_cooldown": cooldown_waiting,
+                          "stopped": stop.is_set(), "youtube_cooldown": source_cooldown,
                           "deferred_items": len(deferred_ids), "pending_items": unfinished,
-                          "storage_backpressure": pressure_paused}), flush=True)
+                          "storage_backpressure": pressure_paused, "captions": caption_counts}), flush=True)
         if stop.requested:
             return 130
         if not args.download_only and read_drive_cooldown(cooldown_path):
             return 75
-        return 3 if counts["error"] or counts["paused"] or cooldown_waiting or deferred_ids or unfinished else 0
+        return 3 if counts["error"] or counts["paused"] or cooldown_waiting or deferred_ids or unfinished or drive_failed or source_cooldown else 0
 
 
 def parser():
@@ -1252,7 +1563,7 @@ def parser():
     ap.add_argument("--newest", type=int, default=20)
     ap.add_argument("--entire-queue", action="store_true", help="explicit second phase: every queue row, including Shorts/past streams and legacy rows")
     ap.add_argument("--workers", type=int, choices=range(1, 9), default=4, help="bounded source download workers")
-    ap.add_argument("--upload-transfers", type=int, choices=(1, 2), default=2)
+    ap.add_argument("--upload-transfers", type=int, choices=range(1, 5), default=2)
     ap.add_argument("--upload-batch-items", type=int, choices=range(1, 17), default=8)
     ap.add_argument("--upload-batch-seconds", type=float, default=10.0)
     ap.add_argument("--ready-items", type=int, choices=range(1, 65), default=16,
@@ -1260,7 +1571,9 @@ def parser():
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--download-only", action="store_true", help="bounded local pilot; requires --limit")
-    ap.add_argument("--max-local-gb", type=float, default=19.0)
+    ap.add_argument("--captions", action=argparse.BooleanOptionalAction, dest="collect_captions", default=True,
+                    help="collect English published and original automatic captions; excludes translations")
+    ap.add_argument("--max-local-gb", type=float, default=17.0)
     ap.add_argument("--max-item-mb", type=float, default=0.0,
                     help="optional explicit item cap; default 0 uses only the overall local-buffer limit")
     ap.add_argument("--min-free-gb", type=float, default=3.0)

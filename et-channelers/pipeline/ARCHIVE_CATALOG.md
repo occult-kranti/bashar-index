@@ -7,6 +7,14 @@ receipt state, exact Drive paths, object IDs and checksums. Descriptions, tags,
 chapters and other provider metadata remain in the per-video `.info.json`; the
 catalog does not replace those files or reread them during checkpoints.
 
+Optional caption evidence comes from the separate
+`sync/drive_caption_manifest.jsonl`. The current policy collects English published
+captions and original English automatic captions, including regional variants, and
+excludes machine-translated tracks. Per-track ZIP bundles hold the original timed
+caption, derived text/segments and provenance. The catalog reads receipts only; it
+never opens these bundles, copies transcript text into CSV, or overwrites the audio
+metadata. See [caption research and selection policy](YOUTUBE_CAPTIONS_RESEARCH.md).
+
 New media uses `<channel>/Videos`, `Shorts`, `Recorded streams` or `Unclassified`,
 selected from the recorded source tab. There is no duration exclusion. Existing
 verified paths, including `YouTube native` and the original storage channel, are
@@ -46,9 +54,11 @@ capture time; it is not a continuous audit against later manual Drive edits.
 
 Checkpoint preparation and upload take the collector's private-root lock. Run them
 at startup or between completed collection phases, when no ingestion process owns
-the root. Local preparation respects the 19 GB root ceiling and the 3 GB free-disk
-floor; the remaining space under the user's 20 GB project limit is reserved for
-tools and other overhead. Catalog data is retained locally and is not audio spool
+the root. Local preparation respects a 17 GB private-root ceiling and a separate
+3 GB free-disk floor. The 20 GB project budget allocates up to 1 GB for tools and
+repositories and preserves a 2 GB buffer. Those folders used about 0.66 GB when
+measured on November 16, 2026, leaving about 0.34 GB for their growth; lower the
+private-root cap if that overhead exceeds 1 GB. Catalog data is retained locally and is not audio spool
 data to delete. Malformed ingestion journal fragments remain untouched, are counted
 in manifest parse warnings, and never count as verified receipts.
 
@@ -104,6 +114,31 @@ with Python's `csv.DictReader` or an analysis tool, then use each row's exact
 transcription. Only `archive_state=verified_pair` means both artifacts have completed
 the ingestion verification/deletion workflow. `downloaded_unverified` retains work
 that still needs successful upload or verification.
+
+Caption state is independent of audio state. `caption_state=unknown` means no caption
+receipt is available. `none` means a completed discovery found no tracks under the
+recorded policy, not that the video has no captions in any language. `pending` includes
+source-access failures; `downloaded_unverified` retains work awaiting Drive proof.
+`partially_verified` preserves proven tracks while others remain unresolved.
+`verified_retained` means every selected track has Drive proof but the complete
+receipt/deletion workflow has not finished; `verified` means that workflow completed
+under the current policy.
+
+`caption_bundles` is a compact JSON array of verified track identities, languages,
+types, source formats, exact Drive paths, object IDs, byte counts and hashes. It
+excludes local paths, request URLs, track names and transcript bodies. The JSON
+`caption_languages` field counts selected tracks; `caption_verified_languages` counts
+only tracks with valid artifact proof. `caption_inventory_status` preserves the
+provider's discovery outcome; separate exclusion counts distinguish non-English
+tracks, generated translations and non-caption items. Source-channel/tab summaries and manifest
+counts distinguish videos with any verified track from fully completed caption
+policies. Caption journal hashes and malformed-line counts are recorded separately
+from audio journal provenance. Partial successes survive pending/error receipts,
+and malformed fragments never establish absence or verification.
+
+These additive caption columns preserve existing catalog checkpoints. The first
+checkpoint after adding them may contain a delta for every item; earlier baseline
+rows remain readable and are replaced by stable video ID in the normal merge order.
 
 The module API is `prepare_catalog(root, queue, remote)` followed by
 `upload_catalog(plan, drive)`, where `drive` is the existing `drive_ingest.Rclone`

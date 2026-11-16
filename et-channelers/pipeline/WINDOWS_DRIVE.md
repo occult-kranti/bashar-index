@@ -29,8 +29,8 @@ After excluding the 3,220 newest-50 IDs, **60,709 items** remain in the final ro
 32,687 Videos-tab items, 17,422 Shorts, 10,533 recorded streams, and 67 unknown-tab legacy items.
 The final round starts only after the newest-20 and newest-50 completion gates pass in `RunAll`.
 `Run` still processes only newest 20, and `Index` only rebuilds the local queue files.
-The 63,929-item catalog was already verified on Drive. The new newest-50 and final-round index
-artifacts are prepared locally; their Drive backup is pending while the current quota refusal is active.
+The 63,929-item catalog is saved on Drive. Its immutable checkpoints preserve all indexed rows plus
+updated upload receipts; newest-50 and final-round queues are reproducible from the retained inputs.
 
 ## Connection checked on November 16, 2026
 
@@ -206,19 +206,60 @@ Drive at two simultaneous transfers; increasing one does not increase the other.
 | Launcher option | Default | Allowed |
 | --- | ---: | --- |
 | `-DlWorkers` (`-Workers` alias) | 4 | 1–8 |
-| `-UploadTransfers` | 2 | 1–2 |
+| `-UploadTransfers` | 2 | 1–4 |
+| `-MaxLocalGb` | 17 decimal GB | 1–17 |
 | `-UploadBatchItems` | 8 pairs | 1–16, no greater than `ReadyItems` |
 | `-UploadBatchSeconds` | 10 | 0–300; zero flushes immediately |
 | `-ReadyItems` | 16 pairs | 1–64 |
 | `-RateMiB` | 2 per download worker | Positive; launcher maximum 100 |
 | `-MinInterval` | 5 seconds | 0–3600 between metadata request starts |
 
-For example, after confirming Drive is accepting requests, six download workers can feed the same
-two-transfer upload lane:
+The owner-selected configuration runs eight downloads alongside four Drive transfers, with
+12-pair batches and at most 64 queued/in-flight pairs under the shared storage budget:
 
 ```powershell
-& .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode RunAll -DlWorkers 6 -UploadTransfers 2
+& .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode RunAll -DlWorkers 8 -UploadTransfers 4 -UploadBatchItems 12 -ReadyItems 64 -MaxLocalGb 17
 ```
+
+The installed yt-dlp version is pinned to official nightly `2026.11.15.232800` after a November
+upstream client-policy fix. The previously failing item passed a normal-client bounded recheck,
+then a full download/upload/verification cycle. Its isolated repair acknowledgement is retained
+in the private journal; this does not disable cooldowns for later source refusals. The private
+`jobs/ytdlp_nightly_2026-11-16_upgrade.json` records the version, provenance and rollback command.
+
+## English captions and transcripts
+
+Collection also saves published English captions and original English automatic captions, including
+regional variants such as `en-US` and `en-GB`. Other languages and every machine-translated track
+are excluded. Track identity, language and published/automatic provenance remain separate; an
+automatic track is not described as a publisher-written transcript.
+
+New audio items reuse their metadata extraction. Previously verified audio items receive a
+metadata-only caption backfill, without downloading their audio again or overwriting the existing
+immutable `.info.json`. Metadata extraction explicitly simulates subtitle output so it can report
+caption access requirements without downloading duplicate tracks.
+
+Each track is stored beside its audio as `<video_id>.captions.<track_id>.zip`, containing:
+
+- `raw.json3` (preferred) or `raw.vtt`: the original timed source response.
+- `segments.json`: parsed timing and text, with normalization provenance.
+- `transcript.txt`: readable text derived from that track.
+- `provenance.json`: language, track kind, acquisition time and hashes, excluding transport URLs.
+
+One ZIP per track reduces Drive object and verification requests. ZIPs share the same storage
+accounting, upload coordinator and checksum-before-delete rules as audio. The separate
+`sync/drive_caption_manifest.jsonl` retains partial progress and verified Drive proofs. Caption
+failures never invalidate verified audio receipts; completed audio and caption bundles can drain
+to Drive while new source requests are paused.
+
+Only a complete source inventory with no requested English track counts as `none`. Missing-token
+warnings, missing inventories, empty responses and access errors remain pending. A 64 MiB raw-track
+processing bound defers oversized caption responses rather than truncating them or claiming absence;
+there is no audio-duration filter. No speech-to-text model is started.
+
+The private catalog includes caption state, language, track kind and verified bundle locations.
+The collection dashboard publishes only aggregate caption counts. Research, version details and
+alternatives are documented in [YOUTUBE_CAPTIONS_RESEARCH.md](YOUTUBE_CAPTIONS_RESEARCH.md).
 
 ## Bounded local supervisor
 
@@ -230,24 +271,25 @@ a second supervisor cannot share the same private root. The collector keeps its 
 
 ```powershell
 & .\et-channelers\pipeline\supervise_drive_ingest.ps1 `
-    -Mode RunAll -DlWorkers 4 -UploadTransfers 2 -MaxAttempts 3
+    -Mode RunAll -DlWorkers 8 -UploadTransfers 4 -UploadBatchItems 12 -ReadyItems 64 -MaxLocalGb 17 -MaxAttempts 3
 ```
 
 The existing private `jobs/resume_staged_ingest.ps1` is only a compatibility wrapper: it forwards to
 the versioned supervisor in the checkout named by `-RepositoryRoot`. It does not keep a separate
 copy of the retry behavior.
 
-Only Drive quota exit code `75` is eligible for automatic retry. The next attempt waits until the
-later of the recorded Drive deadline and an exponential 10, 20, 40, then 60 minute backoff. The
-default budget is three launches (maximum four), persisted before each child starts, so restarting
-the helper does not restore spent attempts. Authentication, permission, source blocking and other
-errors stop without an automatic retry. The stop marker is checked at least every two seconds
+Drive quota exit code `75` receives an exponential 10, 20, 40, then 60 minute backoff. Exit `3`
+can retry only when the saved journal confirms a future YouTube hard-block deadline (403, rate limit
+or bot check). The next attempt waits for the latest applicable source, Drive or backoff deadline;
+no source request is sent during its 24-hour rest period. Other extraction, login, permission, storage
+and premiere results do not trigger automatic retries. The default budget is three launches
+(maximum four), persisted before each child starts, so restarting the helper does not restore spent attempts. The stop marker is checked at least every two seconds
 while waiting; the running collector observes that same marker.
 
 The private `sync/drive_ingest_resume_state.json` records the attempt count, next permitted attempt,
 PID and outcome. After reviewing an exhausted retry budget, an operator may explicitly add
-`-ResetRetryBudget`; that resets only the attempt count and still honors the stored wait and Drive
-cooldown. Neither helper clears `sync/STOP_DRIVE_INGEST`. No process is started by merely updating
+`-ResetRetryBudget`; that resets only the attempt count and still honors the stored wait and both source and Drive
+cooldowns. Neither helper clears `sync/STOP_DRIVE_INGEST`. No process is started by merely updating
 these scripts.
 
 Offline Windows regression tests replace the child launcher with a temporary stub, so they never
@@ -260,8 +302,9 @@ python -m unittest discover -s et-channelers/pipeline/tests -p test_supervise_dr
 ## Storage, verification, and recovery
 
 The wrapper requests four download workers, with at most one active item per channel, and a maximum
-private-root budget of **19 decimal GB**, leaving
-1 GB of the user's 20 GB local allowance for tools and supporting files outside that root. Existing
+private-root budget of **17 decimal GB**. Up to 1 GB is reserved for tools and repositories,
+and 2 GB remains as the owner's buffer within the 20 GB total allowance. The measured tools and
+repositories occupied about 0.66 GB, leaving about 2.34 GB total headroom at the private-root cap. Existing
 files, partial downloads, and reserved space for active downloads must fit the budget. The wrapper
 sets no arbitrary per-item size or duration cutoff (`--max-item-mb 0`). An item that cannot currently
 fit the storage budget remains deferred, rather than being counted as completed or dropped from
@@ -270,8 +313,10 @@ request starts are spaced by at least 5 seconds across all workers. Available ch
 so one large channel does not occupy every worker. A 3 GB free-disk floor also protects space for
 other applications. Run this collector
 alone in its private root; a separate application writing there is outside its storage guarantee.
-One separate upload coordinator overlaps acquisition, with two upload transfers. Its ready queue
-is bounded to 16 pairs; batches contain up to eight pairs and flush after ten seconds. Each local file remains
+One separate upload coordinator overlaps acquisition. The default is two upload transfers, a
+16-pair queue and eight-pair batches; the owner-selected configuration uses four transfers, 64 queued
+or in-flight pairs and 12-pair batches, flushing after ten seconds. Rclone uses 2 API requests per
+second and 32 MiB chunks, at most 128 MiB of chunk buffers across four transfers. Each local file remains
 until Drive returns the expected size and MD5. This is a bounded local spool, not a Drive desktop
 sync folder and not a pipe that discards bytes before they can be verified.
 This is a rolling local limit across collection tiers; it does not limit the size of the Drive archive.

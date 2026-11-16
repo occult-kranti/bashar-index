@@ -165,10 +165,19 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const labels = {cooldown:'Waiting for Drive', paused:'Collection paused', ready:'Ready to resume', running:'Collecting audio', unknown:'Status not yet recorded'};
       const explanations = {cooldown:'Drive has temporarily limited requests. Downloaded files are retained for the next upload attempt.', paused:'Collection is paused. Completed audio and metadata remain available for a safe resume.', ready:'The last Drive retry window has passed. This snapshot does not confirm that a worker is running.', running:'Audio and metadata are being saved together. Local copies are released after Drive verification.', unknown:'Queue totals are available; a current worker state has not been recorded.'};
       const state = labels[data.operation.state] ? data.operation.state : 'unknown';
+      if (data.operation.cooldown_provider === 'youtube') {
+        labels.cooldown = 'Waiting for YouTube';
+        explanations.cooldown = 'New YouTube downloads are paused after a source refusal. Completed audio and metadata can still be saved to Drive.';
+      } else if (data.operation.cooldown_provider === 'both') {
+        labels.cooldown = 'Waiting for YouTube and Drive';
+        explanations.cooldown = 'Source downloads and Drive uploads are paused until their recorded retry windows pass. Local files are retained.';
+      }
+      if (state === 'cooldown' && data.operation.retry_after) explanations.cooldown += ' Next attempt after ' + date(data.operation.retry_after) + '.';
       put('cc-current-state', labels[state]); put('cc-current-explanation', explanations[state]);
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
+      if (Number.isFinite(data.counts.caption_verified_videos)) put('cc-captions-summary', number(data.counts.caption_verified_videos) + ' videos have English caption text verified on Drive (' + number(data.counts.caption_verified_tracks) + ' tracks). ' + number(data.counts.caption_pending_videos) + ' await caption completion; ' + number(data.counts.caption_none_english) + ' have no English track in the saved source inventory.');
       put('cc-final-policy', data.operation.full_archive_requested ? 'Full archive follows the newest-50 tier.' : 'Final-round downloads are not enabled in this snapshot.');
       put('cc-local-storage', (data.storage.local_bytes / 1e9).toFixed(2) + ' / ' + number(data.storage.ceiling_bytes / 1e9) + ' GB');
       const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;

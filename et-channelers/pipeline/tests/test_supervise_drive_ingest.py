@@ -60,7 +60,7 @@ class SupervisorTests(unittest.TestCase):
     def write_state(self, value):
         (self.sync / "drive_ingest_resume_state.json").write_text(json.dumps(value), encoding="utf-8")
 
-    def waiting_process(self, *extra):
+    def waiting_process(self, *extra, state_name="waiting_for_drive_cooldown"):
         process = subprocess.Popen(self.command(*extra), stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                    text=True)
         self.addCleanup(self.close_process, process)
@@ -71,7 +71,7 @@ class SupervisorTests(unittest.TestCase):
                 self.fail(f"Supervisor exited before waiting: {stdout} {stderr}")
             if (self.sync / "drive_ingest_resume_state.json").exists():
                 try:
-                    if self.state().get("state") == "waiting_for_drive_cooldown":
+                    if self.state().get("state") == state_name:
                         return process
                 except (OSError, ValueError):
                     pass  # Windows can briefly deny a read during atomic replacement.
@@ -90,6 +90,7 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(len(self.calls()), 1)
         self.assertEqual(self.state()["state"], "stages_complete")
         self.assertEqual(self.state()["attempts"], 1)
+        self.assertEqual(self.state()["private_root_ceiling_bytes"], 17_000_000_000)
         self.assertFalse((self.sync / "drive_ingest_resume_state.json.tmp").exists())
 
     def test_quota_budget_survives_restart_and_preserves_backoff(self):
@@ -156,6 +157,147 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(result.returncode, 75, result.stderr)
         self.assertEqual(self.state()["attempts"], 1)
         self.assertEqual(self.calls(), [])
+
+    def test_startup_waits_for_source_deadline_before_launching(self):
+        deadline = time.time() + 5
+        (self.sync / 'drive_ingest_manifest.jsonl').write_text(json.dumps({
+            'video_id': 'invented-id', 'status': 'error', 'error_class': 'forbidden',
+            'retry_not_before_epoch': deadline}) + '\n', encoding='utf-8')
+        original = self.launcher.read_text(encoding='utf-8')
+        self.launcher.write_text(original.replace('Add-Content',
+            "[DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds() | Set-Content -LiteralPath (Join-Path $PrivateRoot 'started-ms.txt')\nAdd-Content", 1), encoding='utf-8')
+        first = self.waiting_process(state_name='waiting_for_youtube_cooldown')
+        self.assertEqual(self.calls(), [])
+        self.assertEqual(self.state()['cooldown_provider'], 'youtube')
+        first.communicate(timeout=12)
+        self.assertEqual(first.returncode, 0)
+        started = int((self.root / 'started-ms.txt').read_text(encoding='utf-8-sig'))
+        self.assertGreaterEqual(started, deadline * 1000)
+
+    def test_exit3_with_confirmed_source_block_waits_and_caches_journal(self):
+        original = self.launcher.read_text(encoding='utf-8')
+        self.launcher.write_text(original[:original.index('exit (')] +
+            "$future=[DateTimeOffset]::UtcNow.ToUnixTimeSeconds()+30\n"
+            "@{video_id='invented-id';status='error';error_class='bot_check';retry_not_before_epoch=$future} | ConvertTo-Json -Compress | Set-Content -LiteralPath (Join-Path $PrivateRoot 'sync/drive_ingest_manifest.jsonl') -Encoding UTF8\n"
+            "exit 3\n", encoding='utf-8')
+        first = self.waiting_process(state_name='waiting_for_youtube_cooldown')
+        state = self.state()
+        self.assertEqual(len(self.calls()), 1)
+        self.assertEqual(state['exit_code'], 3)
+        self.assertEqual(state['attempts'], 1)
+        self.assertGreaterEqual(state['until_epoch'], time.time() + 580)
+        # A reread inside the wait loop would fail on this invalid replacement.
+        (self.sync / 'drive_ingest_manifest.jsonl').write_text(json.dumps({
+            'video_id': 'invented-id', 'error_class': 'forbidden',
+            'retry_not_before_epoch': 'invalid'}) + '\n', encoding='utf-8')
+        time.sleep(2.5)
+        self.assertIsNone(first.poll(), 'The waiting loop must use its cached source deadline')
+        (self.sync / 'STOP_DRIVE_INGEST').touch()
+        first.communicate(timeout=6)
+        self.assertEqual(first.returncode, 130)
+        self.assertEqual(len(self.calls()), 1)
+
+    def test_caption_cooldown_survives_resolved_audio_for_the_same_video(self):
+        now = time.time()
+        video = 'same-video'
+        (self.sync / 'drive_ingest_manifest.jsonl').write_text(
+            json.dumps({'video_id': video, 'error_class': 'forbidden', 'retry_not_before_epoch': now + 1000}) + '\n' +
+            json.dumps({'video_id': video, 'status': 'deleted'}) + '\n', encoding='utf-8')
+        (self.sync / 'drive_caption_manifest.jsonl').write_text(
+            json.dumps({'video_id': video, 'error_class': 'forbidden', 'retry_not_before_epoch': now + 2000}) + '\n' +
+            json.dumps({'video_id': video, 'status': 'pending', 'error_class': 'drive_rate_limited',
+                        'source_error_class': 'rate_limited',
+                        'retry_not_before_epoch': now + 30}) + '\n', encoding='utf-8')
+        first = self.waiting_process(state_name='waiting_for_youtube_cooldown')
+        self.assertEqual(self.calls(), [])
+        self.assertEqual(self.state()['cooldown_provider'], 'youtube')
+        self.assertAlmostEqual(self.state()['source_until_epoch'], now + 30, places=5)
+        (self.sync / 'STOP_DRIVE_INGEST').touch()
+        first.communicate(timeout=6)
+        self.assertEqual(first.returncode, 130)
+
+    def test_caption_only_exit3_is_retryable_and_caption_journal_is_cached(self):
+        original = self.launcher.read_text(encoding='utf-8')
+        self.launcher.write_text(original[:original.index('exit (')] +
+            "$future=[DateTimeOffset]::UtcNow.ToUnixTimeSeconds()+30\n"
+            "@{video_id='same-video';status='pending';error_class='forbidden';retry_not_before_epoch=$future} | ConvertTo-Json -Compress | Set-Content -LiteralPath (Join-Path $PrivateRoot 'sync/drive_caption_manifest.jsonl') -Encoding UTF8\n"
+            "exit 3\n", encoding='utf-8')
+        (self.sync / 'drive_ingest_manifest.jsonl').write_text(
+            json.dumps({'video_id': 'same-video', 'status': 'deleted'}) + '\n', encoding='utf-8')
+        first = self.waiting_process(state_name='waiting_for_youtube_cooldown')
+        self.assertEqual(len(self.calls()), 1)
+        self.assertEqual(self.state()['exit_code'], 3)
+        (self.sync / 'drive_caption_manifest.jsonl').write_text(json.dumps({
+            'video_id': 'same-video', 'error_class': 'forbidden',
+            'retry_not_before_epoch': 'invalid'}) + '\n', encoding='utf-8')
+        time.sleep(2.5)
+        self.assertIsNone(first.poll())
+        (self.sync / 'STOP_DRIVE_INGEST').touch()
+        first.communicate(timeout=6)
+        self.assertEqual(first.returncode, 130)
+        self.assertEqual(len(self.calls()), 1)
+
+    def test_non_hard_block_deadlines_do_not_make_exit3_retryable(self):
+        for error_class, delay in (('login_required', 1000), ('live', 1000),
+                                   ('network', 1000), ('deferred_storage', 1000), ('forbidden', -30)):
+            with self.subTest(error_class=error_class):
+                (self.sync / 'drive_ingest_resume_state.json').unlink(missing_ok=True)
+                (self.root / 'child-calls.txt').unlink(missing_ok=True)
+                (self.root / 'child-exit.txt').write_text('3', encoding='utf-8')
+                (self.sync / 'drive_ingest_manifest.jsonl').write_text(json.dumps({
+                    'video_id': 'invented-id', 'error_class': error_class,
+                    'retry_not_before_epoch': time.time() + delay}) + '\n', encoding='utf-8')
+                result = self.run_supervisor()
+                self.assertEqual(result.returncode, 3, result.stderr)
+                self.assertEqual(len(self.calls()), 1)
+                self.assertEqual(self.state()['state'], 'stopped_after_nonquota_result')
+
+    def test_source_retry_also_consumes_the_persisted_attempt_budget(self):
+        original = self.launcher.read_text(encoding='utf-8')
+        self.launcher.write_text(original[:original.index('exit (')] +
+            "$future=[DateTimeOffset]::UtcNow.ToUnixTimeSeconds()+30\n"
+            "@{video_id='invented-id';error_class='forbidden';retry_not_before_epoch=$future} | ConvertTo-Json -Compress | Set-Content -LiteralPath (Join-Path $PrivateRoot 'sync/drive_ingest_manifest.jsonl') -Encoding UTF8\nexit 3\n", encoding='utf-8')
+        result = self.run_supervisor('-MaxAttempts', '1')
+        self.assertEqual(result.returncode, 3, result.stderr)
+        self.assertEqual(self.state()['state'], 'retry_budget_exhausted')
+        self.assertEqual(self.state()['cooldown_provider'], 'youtube')
+        self.assertGreaterEqual(self.state()['until_epoch'], time.time() + 580)
+        again = self.run_supervisor('-MaxAttempts', '1')
+        self.assertEqual(again.returncode, 3, again.stderr)
+        self.assertEqual(len(self.calls()), 1)
+
+    def test_latest_source_record_and_later_drive_deadline_are_respected(self):
+        now = time.time()
+        rows = [
+            {'video_id': 'old', 'error_class': 'forbidden', 'retry_not_before_epoch': now + 10000},
+            {'video_id': 'old', 'status': 'deleted'},
+            {'video_id': 'current', 'error_class': 'rate_limited', 'retry_not_before_epoch': now + 30},
+        ]
+        (self.sync / 'drive_ingest_manifest.jsonl').write_text(
+            ''.join(json.dumps(row) + '\n' for row in rows), encoding='utf-8')
+        (self.sync / 'drive_ingest_cooldown.json').write_text(
+            json.dumps({'until_epoch': now + 60}), encoding='utf-8')
+        first = self.waiting_process(state_name='waiting_for_youtube_cooldown')
+        self.assertEqual(self.state()['cooldown_provider'], 'both')
+        self.assertAlmostEqual(self.state()['source_until_epoch'], now + 30, places=5)
+        self.assertAlmostEqual(self.state()['until_epoch'], now + 60, places=5)
+        (self.sync / 'STOP_DRIVE_INGEST').touch()
+        first.communicate(timeout=6)
+        self.assertEqual(first.returncode, 130)
+        self.assertEqual(self.calls(), [])
+
+    def test_budget_and_four_upload_transfers_are_forwarded_and_bounded(self):
+        self.launcher.write_text(
+            "param([string]$PrivateRoot,[double]$MaxLocalGb,[int]$UploadTransfers,[Parameter(ValueFromRemainingArguments=$true)]$Rest)\n"
+            "@{cap=$MaxLocalGb;uploads=$UploadTransfers} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $PrivateRoot 'settings.json')\nexit 0\n", encoding='utf-8')
+        result = self.run_supervisor('-MaxLocalGb', '16', '-UploadTransfers', '4')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        settings = json.loads((self.root / 'settings.json').read_text(encoding='utf-8-sig'))
+        self.assertEqual(settings, {'cap': 16, 'uploads': 4})
+        self.assertEqual(self.state()['private_root_ceiling_bytes'], 16_000_000_000)
+        rejected = self.run_supervisor('-MaxLocalGb', '18')
+        self.assertNotEqual(rejected.returncode, 0)
+        self.assertEqual(self.state()['private_root_ceiling_bytes'], 16_000_000_000)
 
     def test_defaults_use_profile_root_and_adjacent_launcher(self):
         # Copy only the supervisor and fake child; default resolution cannot reach real jobs.
