@@ -4,8 +4,9 @@
 
 PR #26 is merged on `main` at `afc77a4`; its branch is retained. The new ingestion work is on
 `feat/windows-drive-ingest`. The owner's current priority supersedes the older restart instructions below:
-collect native YouTube audio plus available metadata, newest 20 per tracked channel first, then the older
-catalogue. Do not start transcription or the legacy collection loops for this task.
+collect native YouTube audio plus available metadata, newest 20 per tracked channel first, then newest 50,
+then index the remaining catalogue for a separate final download round. `RunAll` must not start the full
+archive automatically. Do not start transcription or the legacy collection loops for this task.
 
 The local rclone remote `etdrive` is authenticated and points at the existing ET Channelers Archive.
 The working folder is outside Git. [`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md) gives the commands,
@@ -14,16 +15,26 @@ recovery rules and Drive client setup. The launcher allows four workers, caps th
 no transcoding or GPU inference. A pilot audio upload was read back by size and MD5 before local deletion;
 ordinary 1 MiB HTTP range requests substantially improved a second pilot's download speed.
 
-The restored newest-20 snapshot has 1,320 items across 69 channels. The older all-items snapshot has 58,766
+The restored newest-20 snapshot has 1,320 items across 69 channels. Newest 50 contains 3,220 items, including
+the 1,320 in the first phase. There is no duration filter or default per-item size cutoff; storage admission
+uses the selected stream's byte length within the total local budget. Insufficient space defers an item,
+never silently excludes it. New Drive files use source-tab folders (Videos, Shorts, Recorded streams,
+Unclassified); old verified receipts retain their original paths. The older all-items snapshot has 58,766
 unique IDs and lacks six channels' full histories; those six have now been listed successfully across
 Videos, Shorts and recorded Streams (5,130 listing rows). `prepare_all_queue.py` merges these snapshots,
 preserves provenance, and records known source-person mappings without inventing entity labels. The merged
-queue contains 63,929 unique items and has full listing snapshots for all 69 tracked channels. Its output
+queue contains 63,929 unique items and has full listing snapshots for all 69 tracked channels. The remaining
+60,709 items are indexed for the final round after the newest-50 tier. Its output
 and per-item metadata remain private. Saved snapshots are not a claim that future uploads are already listed.
 
 The new `drive_ingest_manifest.jsonl` records this lane's Drive objects and checksums. It is independent of
 the older `sync_manifest.jsonl` and `drive_manifest.jsonl`; use the new runner's status and Drive restore
 instructions for these files. Never overwrite the shared historical Drive ledger with this lane's receipts.
+
+The initial four-worker run stopped on a confirmed Drive HTTP 403 `rateLimitExceeded` response. Two pilot
+pairs were verified and cleaned up; four complete local audio/metadata pairs were retained. The Drive
+cooldown prevents new upload/preflight requests until its wait expires; this is separate from YouTube's
+refusal rest period. Resume the new phase launcher after Drive access recovers, draining retained pairs first.
 
 Written for whoever picks this up next: the owner, or the Claude session in the new Codespace. The work so
 far ran on a 2-core, 8 GB Codespace. Collection was paused on 2026-11-14 around 03:30 UTC so it can carry

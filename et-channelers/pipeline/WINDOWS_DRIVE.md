@@ -1,4 +1,4 @@
-# Windows: newest 20 first, then the YouTube audio archive to Drive
+# Windows: newest 20, then 50, then index the final round
 
 This collection lane saves the native audio stream for each queued video, uploads it to Google Drive,
 checks the remote byte count and MD5 for the audio and its metadata sidecar, and then removes the
@@ -12,13 +12,22 @@ hours. It selects each channel's Videos tab, excluding Shorts and live-stream ta
 refresh it when a newer collection is wanted. Its rank order gives every channel's newest item a turn
 before moving to second-newest items. Five channels currently contribute fewer than 20 items.
 
-The full phase now uses `queue_youtube_all_merged.csv`: **63,929 unique saved items**, including
+The newest-50 tier contains **3,220 videos across the same 69 channels**, including every newest-20
+item, about 1,351.7 hours. Both tiers keep the established Videos-tab selection and original ranks.
+There is no duration filter. The automated run ends after these two tiers and an index of the rest.
+
+The full catalog is `queue_youtube_all_merged.csv`: **63,929 unique saved items**, including
 35,907 Videos-tab items, 17,422 Shorts, 10,533 recorded streams, and 67 legacy items whose tab was
 not recorded. There are 107 source-directory labels, including linked host-show items; this is not
 a full crawl of 107 channels. Saved history listings now cover all 69 tracked channels, after a
 successful six-channel refresh added 5,130 listed items before deduplication. The merge also keeps
 newest-20 items missing from the older full snapshot. Current broadcasts and upcoming streams are
 not downloaded. Snapshot coverage does not establish that every historical upload is still available.
+After excluding the 3,220 newest-50 IDs, **60,709 items** remain indexed for a later final round:
+32,687 Videos-tab items, 17,422 Shorts, 10,533 recorded streams, and 67 unknown-tab legacy items.
+None of those final-round downloads starts automatically.
+The 63,929-item catalog was already verified on Drive. The new newest-50 and final-round index
+artifacts are prepared locally; their Drive backup is pending while the current quota refusal is active.
 
 ## Connection checked on November 16, 2026
 
@@ -74,7 +83,10 @@ The destination for this collection is:
 etdrive:04 Audio
 ```
 
-Inside it the collector uses `<channel_dir>/YouTube native/<video_id>.<ext>`. The stable video ID
+Inside it the collector uses `<channel_dir>/<source-tab-folder>/<video_id>.<ext>`. The folders are
+`Videos`, `Shorts`, `Recorded streams`, and `Unclassified`, selected from the recorded source tab.
+Duration never determines a video's category. Existing receipts in `YouTube native` remain usable;
+the collector does not move those files. The stable video ID
 ties each recording to its title and source URL in the private queue and manifests.
 Alongside each recording it saves `<video_id>.info.json` containing the metadata supplied for that
 video: for example its full description, tags, chapters, upload/release dates, duration, channel
@@ -100,7 +112,7 @@ After the Drive connection works, try one item, inspect its receipt, then contin
 & .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Run
 ```
 
-To complete the newest 20 first and automatically continue with the full saved archive:
+To complete the newest 20, continue to the newest 50, and index the remaining final round:
 
 ```powershell
 & .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode RunAll
@@ -108,10 +120,28 @@ To complete the newest 20 first and automatically continue with the full saved a
 
 `RunAll` finishes the newest-20 queue, then checks that every required ID has verified-upload and
 local-cleanup receipts for **both audio and metadata** at the same Drive destination.
-Only then does it start `queue_youtube_all_merged.csv`
-with the explicit `--entire-queue` option. Already completed IDs are skipped. If an item is unavailable,
-blocked, or unverified, the second phase stays pending. Repeating `RunAll` resumes this same order.
-Use `-FullQueue <path>` when a refreshed full-history snapshot is ready.
+Only then does it process `queue_newest50_enriched.csv` with `--newest 50`, skipping completed IDs.
+After the same check for all newest-50 items, it refreshes the remaining index and exits.
+If an item is unavailable, blocked, or unverified, the later stage stays pending. Repeating `RunAll`
+resumes this same order; it has no automatic retry loop and never invokes the final-round downloader.
+
+The prepared stage files are in the private `jobs` folder:
+
+- `queue_newest50_enriched.csv`: the original 3,220 IDs and ranks with person/source metadata.
+- `queue_final_round.csv`: full catalog minus the newest-50 IDs, retaining every source tab and duration.
+- `final_round_by_channel_tab.csv`: remaining counts and known hours grouped by source and tab.
+- `collection_stages.meta.json`: input hashes, output hashes, counts, and `indexed_only_not_started` status.
+
+Rebuild these indexes without downloading media using `-Mode Index`. The original newest-50 release
+asset must be present as `jobs/queue_newest50.csv` (or pass `-FiftyQueue <path>`):
+
+```powershell
+& .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Index
+```
+
+**For a later, separately requested final round only**, `-Mode RunFinal` checks newest-50 completion
+and then processes `queue_final_round.csv`. This explicit mode is never called by `RunAll`.
+Use `-FullQueue <path>` when refreshing the catalog used for indexing.
 
 `prepare_all_queue.py` builds that merged queue from the newest-20 snapshot, the saved full queue,
 and optionally a fresh discovery root. It also writes `.meta.json` with input hashes and coverage,
@@ -158,8 +188,10 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\et-channelers\pipeline
 The wrapper requests four workers, with at most one active item per channel, and a maximum
 private-root budget of **19 decimal GB**, leaving
 1 GB of the user's 20 GB local allowance for tools and supporting files outside that root. Existing
-files, partial downloads, and reserved space for active downloads must fit the budget. Each item
-has a 1,024 MB limit, each worker downloads at up to 2 MiB/s using 1 MiB HTTP chunks, and metadata
+files, partial downloads, and reserved space for active downloads must fit the budget. The wrapper
+sets no arbitrary per-item size or duration cutoff (`--max-item-mb 0`). An item that cannot currently
+fit the storage budget remains deferred, rather than being counted as completed or dropped from
+the index. Each worker downloads at up to 2 MiB/s using 1 MiB HTTP chunks, and metadata
 request starts are spaced by at least 5 seconds across all workers. Available channels take turns
 so one large channel does not occupy every worker. A 3 GB free-disk floor also protects space for
 other applications. Run this collector
@@ -167,7 +199,7 @@ alone in its private root; a separate application writing there is outside its s
 Uploads overlap acquisition; each local file remains
 until Drive returns the expected size and MD5. This is a bounded local spool, not a Drive desktop
 sync folder and not a pipe that discards bytes before they can be verified.
-This is a rolling local limit across both phases; it does not limit the size of the Drive archive.
+This is a rolling local limit across collection tiers; it does not limit the size of the Drive archive.
 The underlying Python command also rejects a configured ceiling above 20 GB.
 
 Remote metadata is read using [rclone lsjson](https://rclone.org/commands/rclone_lsjson/), whose
@@ -182,6 +214,13 @@ and collection accounting later. A `deleted` receipt means its upload was verifi
 cleanup of both audio and metadata; `downloaded` means it still needs uploading. An `error` may retain
 a complete or partial file. Older receipts for audio alone require metadata backfill before they
 count as complete under the current collector.
+
+Drive returned HTTP 403 `rateLimitExceeded` during the initial collection. This is a temporary quota
+refusal, separate from the successful OAuth connection. The collector retains the affected local
+files, records a cooldown, and stops starting new downloads; it does not repeatedly retry the quota.
+Resume the same command after the recorded retry time. A persistent
+`<private-root>/sync/STOP_DRIVE_INGEST` marker also prevents work when a stop has been requested;
+the wrapper never clears that marker automatically.
 
 Transfers and checksums need modest CPU work. This lane starts no GPU computation, audio encoding,
 or transcription. A 70% GPU utilization target belongs to the later transcription setup; no GPU

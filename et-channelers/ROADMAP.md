@@ -5,7 +5,9 @@ Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos 
 ## 00. Update 2026-11-14: paused for the move to a 16 GB Codespace
 
 **Local priority, 2026-11-16:** the owner now requests native audio and available metadata for every tracked
-YouTube channel, with the newest 20 per channel completed first. The bounded Windows-to-Drive workflow is in
+YouTube channel: newest 20 per channel, then newest 50, then index the rest for a separate final round.
+No duration filter is applied, and source Videos, Shorts, and recorded streams stay distinguishable.
+The bounded Windows-to-Drive workflow is in
 [`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md). It uses four workers, a 19 GB working-folder cap within
 the 20 GB total local allowance, verified uploads before deletion, and no project size cap on Drive.
 Transcription is deferred. This continuation does not restart the older Codespace jobs.

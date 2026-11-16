@@ -44,7 +44,7 @@ class BudgetTests(Fixture):
         budget = ingest.Budget(self.root, 100, 30, 0, reserve=5)
         budget.reserve_item("one", self.root / "one.part")
         budget.reserve_item("two", self.root / "two.part")
-        with self.assertRaisesRegex(ingest.IngestError, "cannot reserve"):
+        with self.assertRaisesRegex(ingest.IngestError, "buffer is currently unavailable"):
             budget.reserve_item("three", self.root / "three.part")
 
     def test_write_refuses_before_exceeding_per_item_limit(self):
@@ -104,6 +104,13 @@ class QueueTests(Fixture):
         rows = ingest.select_queue(self.queue(self.rows()))
         self.assertEqual(len(rows), 20)
         self.assertEqual(rows[0]["url"], "https://www.youtube.com/watch?v=00000000000")
+
+    def test_newest_fifty_retains_first_fifty_without_duration_filter(self):
+        rows = ingest.select_queue(self.queue(self.rows(51)), newest=50)
+        self.assertEqual(len(rows), 50)
+        self.assertEqual(rows[-1]["listing_rank"], 49)
+        with self.assertRaises(ValueError):
+            ingest.select_queue(self.queue(self.rows(1)), newest=51)
 
     def test_bad_paths_ranks_tabs_rejected(self):
         for change in ({"channel_dir": "../outside"}, {"channel_dir": "C:/outside"},
@@ -411,6 +418,55 @@ class PairedMetadataTests(Fixture):
         stream.assert_not_called()
         self.assertEqual(drive.copy.call_count, 1)
         self.assertTrue(str(drive.copy.call_args.args[0]).endswith(".info.json"))
+
+
+class RunControlTests(Fixture):
+    def args(self):
+        return SimpleNamespace(root=self.root, max_local_bytes=100_000_000,
+                               max_item_bytes=0, min_free_bytes=0, rclone="unused",
+                               rclone_config=None, download_only=False, collect_metadata=True,
+                               remote="etdrive:", limit=0, min_interval=0, workers=2)
+
+    def test_persistent_stop_marker_prevents_all_requests_and_is_not_removed(self):
+        marker = self.root / "sync" / "STOP_DRIVE_INGEST"
+        marker.parent.mkdir()
+        marker.touch()
+        with patch.object(ingest, "Rclone") as drive, patch.object(ingest, "extract_audio") as extract:
+            result = ingest.run(self.args(), [])
+        self.assertEqual(result, 130)
+        self.assertTrue(marker.exists())
+        drive.assert_not_called()
+        extract.assert_not_called()
+
+    def test_stop_control_wait_detects_persistent_marker(self):
+        marker = self.root / "STOP"
+        control = ingest.StopControl(marker)
+        self.assertFalse(control.is_set())
+        marker.touch()
+        self.assertTrue(control.wait(60))
+
+    def test_storage_deferred_item_retries_once_after_other_items_finish(self):
+        rows = [{"video_id": "00000000001", "channel_dir": "first"},
+                {"video_id": "00000000002", "channel_dir": "second"}]
+        calls = {row["video_id"]: 0 for row in rows}
+
+        def attempt(args, row, *unused):
+            key = row["video_id"]
+            calls[key] += 1
+            return "deferred_storage" if key == "00000000001" and calls[key] == 1 else "deleted"
+
+        with patch.object(ingest, "Rclone", return_value=Mock()), patch.object(ingest, "ingest_one", side_effect=attempt):
+            result = ingest.run(self.args(), rows)
+        self.assertEqual(result, 0)
+        self.assertEqual(calls, {"00000000001": 2, "00000000002": 1})
+
+    def test_storage_deferral_without_available_buffer_stays_incomplete(self):
+        rows = [{"video_id": "00000000001", "channel_dir": "first"}]
+        with patch.object(ingest, "Rclone", return_value=Mock()), \
+                patch.object(ingest, "ingest_one", return_value="deferred_storage") as attempt:
+            result = ingest.run(self.args(), rows)
+        self.assertEqual(result, 3)
+        attempt.assert_called_once()
 
 
 if __name__ == "__main__":

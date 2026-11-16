@@ -7,7 +7,8 @@ covers journals; existing files, incomplete downloads and active reservations
 count too. Other applications writing into the root are outside this guarantee.
 
 The rclone remote should point at the existing archive's ``04 Audio`` folder.
-Native .webm/.m4a files go under <channel_dir>/YouTube native/<video_id>.<ext>.
+New objects go under <channel_dir>/Videos, Shorts, Recorded streams, or
+Unclassified according to the source tab. Existing receipt paths stay intact.
 The private audio manifest records those native formats, not 24 kbps Opus.
 Successful Drive uploads are checked by remote size AND MD5, journaled with
 fsync, and only then removed locally. Upload or verification failures retain
@@ -15,6 +16,12 @@ the local file. Restarting reconciles completed downloads before fetching more.
 
 Plan/status never use the network. Run requires --limit N or --all. A bounded
 --download-only --limit N pilot is available while Drive OAuth is being set up.
+There is no duration filter or default per-item cap: admission uses the exact
+selected audio size and metadata headroom within the whole-root budget. Items
+that cannot fit remain explicitly deferred in the queue. Creating
+<root>/sync/STOP_DRIVE_INGEST requests a persistent graceful stop (exit 130).
+Drive rate limits create a ten-minute local cooldown; active cooldown exits 75
+before any new network request. Neither marker is silently removed.
 """
 from __future__ import annotations
 
@@ -43,10 +50,12 @@ from common import (HARD_BLOCKS, ID_RE, RateLimiter, add_root_arg, classify_erro
 
 MAX_LOCAL_BYTES = 20_000_000_000  # decimal GB, matching the user's ceiling
 JOURNAL_RESERVE = 64 * 1024 * 1024
+METADATA_HEADROOM = 4 * 1024 * 1024
 CHUNK = 1024 * 1024
 NATIVE_EXTENSIONS = {"webm", "m4a", "opus", "ogg"}
 _JOURNAL_LOCK = threading.Lock()
 _ROOT_BUDGETS = {}  # writes to registered run roots also admit journal bytes
+_DRIVE_CALLS = threading.BoundedSemaphore(2)
 
 
 class IngestError(RuntimeError):
@@ -55,6 +64,63 @@ class IngestError(RuntimeError):
     def __init__(self, kind, message):
         super().__init__(message)
         self.kind = kind
+
+
+class StopControl:
+    """A persistent operator marker plus the in-process failure stop signal."""
+    def __init__(self, marker):
+        self.marker, self.event = Path(marker), threading.Event()
+
+    @property
+    def requested(self):
+        return self.marker.exists()
+
+    def is_set(self):
+        return self.event.is_set() or self.requested
+
+    def set(self):
+        self.event.set()
+
+    def wait(self, seconds):
+        until = time.monotonic() + seconds
+        while not self.is_set():
+            left = until - time.monotonic()
+            if left <= 0:
+                return False
+            self.event.wait(min(0.25, left))
+        return True
+
+
+def read_drive_cooldown(path):
+    if not path or not Path(path).exists():
+        return None
+    try:
+        value = json.loads(Path(path).read_text(encoding="utf-8"))
+        until = float(value["until_epoch"])
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        raise IngestError("drive_cooldown", "Drive cooldown record is unreadable; no Drive requests sent") from exc
+    return value if until > time.time() else None
+
+
+def write_drive_cooldown(path, reason="drive_rate_limited"):
+    if not path:
+        return
+    path = Path(path)
+    record = {"reason": reason, "observed_at": utc_now(), "until_epoch": time.time() + 600,
+              "retry_after_s": 600}
+    encoded = (json.dumps(record) + "\n").encode("utf-8")
+    with _JOURNAL_LOCK:
+        budget = next((value for root, value in _ROOT_BUDGETS.items() if path.resolve().is_relative_to(root)), None)
+        with budget.lock if budget else contextlib.nullcontext():
+            if budget and tree_bytes(budget.root) + len(encoded) > budget.cap:
+                raise IngestError("storage_limit", "No local space for the durable Drive cooldown record")
+            path.parent.mkdir(parents=True, exist_ok=True)
+            temporary = path.with_suffix(path.suffix + ".tmp")
+            with open(temporary, "wb") as out:
+                out.write(encoded)
+                out.flush()
+                os.fsync(out.fileno())
+            os.replace(temporary, path)
 
 
 def journal(path, record):
@@ -151,23 +217,48 @@ def exclusive_lock(root):
 
 class Budget:
     def __init__(self, root, cap, file_cap, min_free, reserve=JOURNAL_RESERVE):
-        if not 0 < cap <= MAX_LOCAL_BYTES or file_cap <= 0 or reserve >= cap:
+        if not 0 < cap <= MAX_LOCAL_BYTES or file_cap < 0 or reserve >= cap:
             raise ValueError("invalid storage budget")
-        self.root, self.cap, self.file_cap = root, cap, file_cap
+        self.root, self.cap = root, cap
+        self.explicit_file_cap = file_cap
+        self.file_cap = file_cap or cap - reserve
         self.min_free, self.reserve = min_free, reserve
         self.lock = threading.RLock()
         self.active = {}
 
-    def reserve_item(self, key, part):
+    def _outstanding(self, omit=None):
+        return sum(max(0, item["bytes"] - (item["path"].stat().st_size if item["path"].exists() else 0))
+                   for key, item in self.active.items() if key != omit)
+
+    def reserve_item(self, key, part, expected_bytes=None, metadata_headroom=0):
         with self.lock:
             used = tree_bytes(self.root)
-            outstanding = sum(max(0, self.file_cap - (p.stat().st_size if p.exists() else 0))
-                              for p in self.active.values())
-            if used + outstanding + self.file_cap > self.cap - self.reserve:
-                raise IngestError("storage_limit", "Local storage budget cannot reserve another item")
-            if shutil.disk_usage(self.root).free - outstanding - self.file_cap < self.min_free:
-                raise IngestError("disk_floor", "Free disk space is below the reserved safety floor")
-            self.active[key] = part
+            audio_bytes = expected_bytes if expected_bytes is not None else self.explicit_file_cap or min(8 * CHUNK, self.file_cap)
+            if audio_bytes <= 0 or audio_bytes > self.file_cap:
+                raise IngestError("deferred_storage", f"Item needs {audio_bytes} audio bytes; retained in queue until a buffer can hold it")
+            amount = audio_bytes + metadata_headroom
+            outstanding = self._outstanding(omit=key)
+            already = part.stat().st_size if part.exists() else 0
+            additional = max(0, amount - already)
+            if used + outstanding + additional > self.cap - self.reserve:
+                raise IngestError("deferred_storage", f"Item needs a {amount}-byte reservation; local buffer is currently unavailable")
+            if shutil.disk_usage(self.root).free - outstanding - additional < self.min_free:
+                raise IngestError("deferred_storage", f"Item needs {amount} bytes while preserving the free-disk floor")
+            self.active[key] = {"path": part, "bytes": amount, "metadata_headroom": metadata_headroom}
+
+    def admit_size(self, path, total):
+        """Expand an unknown/estimated reservation from the server's exact length before writing."""
+        with self.lock:
+            found = next(((key, item) for key, item in self.active.items() if item["path"] == path), None)
+            if found:
+                self.reserve_item(found[0], path, total, found[1]["metadata_headroom"])
+            elif total > self.file_cap:
+                raise IngestError("deferred_storage", f"Item needs {total} bytes; retained for a larger available buffer")
+
+    def completed_path(self, key, path):
+        with self.lock:
+            if key in self.active:
+                self.active[key]["path"] = path
 
     def release(self, key):
         with self.lock:
@@ -177,7 +268,7 @@ class Budget:
         # The check and write share one lock: two workers cannot spend the same bytes.
         with self.lock:
             if out.tell() + len(data) > self.file_cap:
-                raise IngestError("item_too_large", "Native audio exceeded the per-item byte limit")
+                raise IngestError("deferred_storage", "Item exceeds the configured buffer capacity; retained in queue")
             if tree_bytes(self.root) + len(data) > self.cap - self.reserve:
                 raise IngestError("storage_limit", "Local storage ceiling reached")
             if shutil.disk_usage(self.root).free - len(data) < self.min_free:
@@ -187,8 +278,8 @@ class Budget:
 
 
 def select_queue(path, newest=20, entire_queue=False):
-    if not entire_queue and not 1 <= newest <= 20:
-        raise ValueError("newest must be between 1 and 20")
+    if not entire_queue and not 1 <= newest <= 50:
+        raise ValueError("newest must be between 1 and 50")
     rows, seen, ranks = [], set(), set()
     for row in read_csv(path):
         video_id, channel = row.get("video_id", ""), row.get("channel_dir", "")
@@ -259,8 +350,6 @@ def extract_audio(args, row):
         raise IngestError("unsupported_format", "No supported native HTTPS audio stream was selected")
     if info.get("is_live") or info.get("live_status") in {"is_live", "is_upcoming"}:
         raise IngestError("live", "Live/upcoming streams are outside the Videos-only queue")
-    if info.get("filesize") and int(info["filesize"]) > args.max_item_bytes:
-        raise IngestError("item_too_large", "Native audio exceeds the configured per-item byte limit")
     checked_cdn_url(info.get("url", ""))
     return info
 
@@ -293,7 +382,7 @@ def stream_audio(info, part, budget, rate_bytes, stop, http_chunk_bytes=0):
     reported = started
     total = int(info["filesize"]) if info.get("filesize") else None
     if total is not None and (total <= 0 or total > budget.file_cap):
-        raise IngestError("item_too_large", "Selected audio length is outside the per-item byte limit")
+        raise IngestError("deferred_storage", "Selected audio length exceeds the available buffer; retained in queue")
     md5, sha256 = hashlib.md5(), hashlib.sha256()
     validator = None
     try:
@@ -335,8 +424,7 @@ def stream_audio(info, part, budget, rate_bytes, stop, http_chunk_bytes=0):
                         total = expected  # initial Range ignored: validate the full body instead
                     else:
                         raise IngestError("truncated", "Server did not return the requested complete audio range")
-                    if total > budget.file_cap:
-                        raise IngestError("item_too_large", "Server audio length exceeds the per-item byte limit")
+                    budget.admit_size(part, total)
                     current_validator = response.headers.get("ETag") or response.headers.get("Last-Modified")
                     if validator and current_validator and current_validator != validator:
                         raise IngestError("changed_source", "Audio resource changed between range responses")
@@ -405,22 +493,50 @@ def validate_local(path, expected, trusted=None):
     return before
 
 
-def remote_path(remote, row, extension):
+SOURCE_FOLDERS = {"videos": "Videos", "shorts": "Shorts", "streams": "Recorded streams", "": "Unclassified"}
+
+
+def remote_path(remote, row, extension, legacy=False):
+    folder = "YouTube native" if legacy else SOURCE_FOLDERS.get(row.get("tab", ""), "Unclassified")
     return remote.rstrip("/") + ("" if remote.endswith(":") else "/") + \
-        f"{row['channel_dir']}/YouTube native/{row['video_id']}.{extension}"
+        f"{row['channel_dir']}/{folder}/{row['video_id']}.{extension}"
+
+
+def valid_recorded_remote(remote, row, extension, recorded):
+    """Accept known archive layouts within this exact root/channel/item, never move legacy objects."""
+    candidates = {remote_path(remote, dict(row, tab=tab), extension) for tab in SOURCE_FOLDERS}
+    candidates.add(remote_path(remote, row, extension, legacy=True))
+    return recorded in candidates
+
+
+def item_remote_path(remote, row, extension, record=None):
+    if record and record.get("remote"):
+        audio_extension = Path(record.get("path", "")).suffix.lstrip(".")
+        if not valid_recorded_remote(remote, row, audio_extension, record["remote"]):
+            raise IngestError("drive_destination", "Receipt belongs to a different archive destination")
+        return record["remote"].rpartition("/")[0] + f"/{row['video_id']}.{extension}"
+    return remote_path(remote, row, extension)
 
 
 class Rclone:
     RETRY_FLAGS = ["--retries", "2", "--low-level-retries", "2", "--retries-sleep", "5s",
-                   "--contimeout", "15s", "--timeout", "60s"]
+                   "--contimeout", "15s", "--timeout", "60s", "--tpslimit", "1", "--tpslimit-burst", "1"]
 
-    def __init__(self, executable, config=None):
+    def __init__(self, executable, config=None, cooldown_path=None):
         self.command = [executable] + (["--config", str(config)] if config else [])
+        self.cooldown_path = cooldown_path
+
+    def execute(self, arguments, timeout, operation):
+        with _DRIVE_CALLS:
+            if read_drive_cooldown(self.cooldown_path):
+                raise IngestError("drive_cooldown", "Drive rate-limit rest period is active; local artifacts retained")
+            result = run_tool(self.command + arguments, timeout)
+            if result.returncode:
+                self.failure(result, operation)
+            return result
 
     def stat(self, remote):
-        result = run_tool(self.command + ["lsjson", remote, "--stat", "--hash", *self.RETRY_FLAGS], 300)
-        if result.returncode:
-            self.failure(result, "metadata read")
+        result = self.execute(["lsjson", remote, "--stat", "--hash", *self.RETRY_FLAGS], 300, "metadata read")
         try:
             value = json.loads(result.stdout)
             if not isinstance(value, dict):
@@ -434,11 +550,9 @@ class Rclone:
             raise IngestError("drive_destination", "Drive destination is not a readable folder")
 
     def copy(self, path, remote):
-        result = run_tool(self.command + ["copyto", str(path), remote, "--checksum", "--immutable",
+        self.execute(["copyto", str(path), remote, "--checksum", "--immutable",
                           "--transfers", "1", "--checkers", "1", "--buffer-size", "1M",
-                          "--drive-chunk-size", "8M", *self.RETRY_FLAGS], 3600)
-        if result.returncode:
-            self.failure(result, "single-file upload")
+                          "--drive-chunk-size", "8M", *self.RETRY_FLAGS], 3600, "single-file upload")
 
     def copy_pair(self, audio, metadata, audio_remote, metadata_remote):
         """One batch, exactly two files, no staging copies or broad folder sync."""
@@ -449,15 +563,13 @@ class Rclone:
             raise IngestError("drive_destination", "Audio and metadata must share one upload destination folder")
         if audio.name != audio_name or metadata.name != metadata_name:
             raise IngestError("drive_destination", "Batch destination names differ from the verified local names")
-        result = run_tool(self.command + ["copy", str(audio_parent), remote_parent, "--max-depth", "1",
+        self.execute(["copy", str(audio_parent), remote_parent, "--max-depth", "1",
                           "--include", f"/{audio.name}", "--include", f"/{metadata.name}",
                           "--checksum", "--immutable", "--transfers", "2", "--checkers", "2",
-                          "--buffer-size", "1M", "--drive-chunk-size", "8M", *self.RETRY_FLAGS], 3600)
-        if result.returncode:
-            self.failure(result, "audio/metadata batch upload")
+                          "--buffer-size", "1M", "--drive-chunk-size", "8M", *self.RETRY_FLAGS], 3600,
+                     "audio/metadata batch upload")
 
-    @staticmethod
-    def failure(result, operation):
+    def failure(self, result, operation):
         """Report useful categories/exit codes without exposing raw URLs or auth errors."""
         error = (getattr(result, "stderr", "") or "").lower()
         classes = [("drive_rate_limited", ("ratelimit", "rate limit", "quota", "429")),
@@ -468,7 +580,13 @@ class Rclone:
                    ("drive_network", ("timeout", "timed out", "connection reset", "connection refused", "i/o timeout")),
                    ("drive_server", ("backenderror", "internal error", "503", "502", "500"))]
         kind = next((name for name, terms in classes if any(term in error for term in terms)), "drive_upload")
-        raise IngestError(kind, f"Drive {operation} failed (rclone exit {result.returncode}, {kind}); local artifacts retained")
+        known_reasons = ("userRateLimitExceeded", "rateLimitExceeded", "dailyLimitExceeded", "quotaExceeded",
+                         "storageQuotaExceeded", "insufficientPermissions", "authError", "notFound")
+        reason = next((value for value in known_reasons if value.lower() in error), "")
+        if kind == "drive_rate_limited":
+            write_drive_cooldown(self.cooldown_path, reason or kind)
+        detail = f", Google reason {reason}" if reason else ""
+        raise IngestError(kind, f"Drive {operation} failed (rclone exit {result.returncode}, {kind}{detail}); local artifacts retained")
 
 
 def verify_remote(metadata, expected):
@@ -522,8 +640,8 @@ def receipt_complete(record, row, remote):
     return bool(record.get("status") == "deleted" and record.get("drive_id") and
                 record.get("md5") and record.get("sha256") and metadata.get("drive_id") and
                 metadata.get("md5") and metadata.get("sha256") and
-                record.get("remote") == remote_path(remote, row, Path(record.get("path", "")).suffix.lstrip(".")) and
-                metadata.get("remote") == remote_path(remote, row, "info.json"))
+                valid_recorded_remote(remote, row, Path(record.get("path", "")).suffix.lstrip("."), record.get("remote")) and
+                metadata.get("remote") == record.get("remote", "").rpartition("/")[0] + f"/{row['video_id']}.info.json")
 
 
 def ensure_metadata(args, row, rec, budget, limiter, stop, drive, state_path, info=None, captured_at=None,
@@ -560,7 +678,7 @@ def ensure_metadata(args, row, rec, budget, limiter, stop, drive, state_path, in
         captured_at = utc_now()
     from media_metadata import build_metadata
     data = build_metadata(info, row, captured_at or utc_now())
-    audio_destination = remote_path(args.remote, row, Path(rec["path"]).suffix.lstrip(".")) if args.remote else None
+    audio_destination = item_remote_path(args.remote, row, Path(rec["path"]).suffix.lstrip("."), rec) if args.remote else None
     data["archive_audio"] = {key: rec.get(key) for key in ("video_id", "bytes", "md5", "sha256", "drive_id")}
     data["archive_audio"].update(file_name=Path(rec["path"]).name, remote=audio_destination,
                                  encoding="native audio; no re-encode")
@@ -578,7 +696,7 @@ def ensure_metadata(args, row, rec, budget, limiter, stop, drive, state_path, in
         os.fsync(out.fileno())
     rec["metadata"] = dict(bytes=len(encoded), md5=hashlib.md5(encoded).hexdigest(),
                            sha256=hashlib.sha256(encoded).hexdigest(), path=relative,
-                           remote=remote_path(args.remote, row, "info.json") if args.remote else "")
+                           remote=item_remote_path(args.remote, row, "info.json", rec) if args.remote else "")
     rec["status"] = "metadata_complete"
     journal(state_path, rec)  # hashes survive a crash before the sidecar rename
     os.replace(part, path)
@@ -624,7 +742,7 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
             if not drive:
                 raise IngestError("drive_read", "Audio-only legacy receipt needs Drive metadata backfill")
             path = local_path(args.root, rec["path"])
-            if rec.get("remote") != remote_path(args.remote, row, path.suffix.lstrip(".")):
+            if not valid_recorded_remote(args.remote, row, path.suffix.lstrip("."), rec.get("remote")):
                 raise IngestError("drive_destination", "Existing audio belongs to a different Drive destination")
             remote_proofs["audio"] = drive.stat(rec["remote"])
             verify_remote(remote_proofs["audio"], rec)
@@ -657,7 +775,10 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
             # this exact item is intentionally retried; reclaim it before reserve.
             if part.exists():
                 part.unlink()
-            budget.reserve_item(row["video_id"], part)
+            expected_bytes = int(info["filesize"]) if info.get("filesize") else None
+            rec["expected_audio_bytes"] = expected_bytes
+            budget.reserve_item(row["video_id"], part, expected_bytes,
+                                METADATA_HEADROOM if collect_metadata else 0)
             reserved = True
             published = str(info.get("release_date") or info.get("upload_date") or "")
             if re.fullmatch(r"\d{8}", published):
@@ -670,22 +791,23 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
             rec.update(measured, status="download_complete", downloaded_at=utc_now())
             journal(state_path, rec)  # durable hashes before promoting the partial
             os.replace(part, path)
+            budget.completed_path(row["video_id"], path)
             trusted["audio"] = fingerprint(path)
             rec.update(status="downloaded")
             journal(state_path, rec)
             journal(args.root / "audio" / "audio_manifest.jsonl",
                     dict(rec, status="ok", path=str(path.relative_to(args.root / "audio")).replace("\\", "/")))
         if args.remote:
-            rec["remote"] = remote_path(args.remote, row, path.suffix.lstrip("."))
+            rec["remote"] = item_remote_path(args.remote, row, path.suffix.lstrip("."), rec)
         metadata_path = None
         if collect_metadata:
             metadata_path = ensure_metadata(args, row, rec, budget, limiter, stop, drive,
                                             state_path, info, captured_at, trusted, remote_proofs)
             if args.remote:
-                rec["metadata"]["remote"] = remote_path(args.remote, row, "info.json")
+                rec["metadata"]["remote"] = item_remote_path(args.remote, row, "info.json", rec)
         if args.download_only:
             return "downloaded"
-        rec["remote"] = remote_path(args.remote, row, path.suffix.lstrip("."))
+        rec["remote"] = item_remote_path(args.remote, row, path.suffix.lstrip("."), rec)
         # copyto --immutable --checksum is idempotent after an interrupted upload.
         if path.exists() and metadata_path:
             drive.copy_pair(path, metadata_path, rec["remote"], rec["metadata"]["remote"])
@@ -699,14 +821,15 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
         return "deleted"
     except IngestError as exc:
         # Preserve completion evidence alongside an upload failure for restart.
-        rec.update(status="error", error_class=exc.kind, error=str(exc), updated_at=utc_now())
+        outcome = "deferred_storage" if exc.kind == "deferred_storage" else "deferred_live" if exc.kind == "live" else "paused" if exc.kind == "stopped" else "error"
+        rec.update(status=outcome, error_class=exc.kind, error=str(exc), updated_at=utc_now())
         if exc.kind in HARD_BLOCKS:
             rec["retry_not_before_epoch"] = time.time() + 86400
         journal(state_path, rec)
-        if exc.kind not in {"unavailable", "login_required", "item_too_large", "live", "unsupported_format"}:
+        if exc.kind not in {"unavailable", "login_required", "deferred_storage", "live", "unsupported_format"}:
             stop.set()  # One block or Drive fault stops new work immediately.
         print(f"{row['video_id']}: {exc.kind}: {exc}", file=sys.stderr, flush=True)
-        return "error"
+        return outcome
     finally:
         if reserved:
             budget.release(row["video_id"])
@@ -714,6 +837,18 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
 
 def run(args, rows):
     root = args.root
+    stop_file = getattr(args, "stop_file", None) or root / "sync" / "STOP_DRIVE_INGEST"
+    stop = StopControl(stop_file)
+    if stop.requested:
+        print(json.dumps({"status": "stopped", "stop_file": str(stop_file),
+                          "message": "Remove the stop marker explicitly before resuming"}))
+        return 130
+    cooldown_path = root / "sync" / "drive_ingest_cooldown.json"
+    cooldown = read_drive_cooldown(cooldown_path) if not args.download_only else None
+    if cooldown:
+        print(json.dumps({"status": "deferred_drive", "until_epoch": cooldown["until_epoch"],
+                          "reason": cooldown.get("reason", "drive_rate_limited")}))
+        return 75
     root.mkdir(parents=True, exist_ok=True)
     with exclusive_lock(root):
         if tree_bytes(root) > args.max_local_bytes - JOURNAL_RESERVE:
@@ -724,7 +859,7 @@ def run(args, rows):
         state = load_state(state_path)
         youtube_blocked = any(float(rec.get("retry_not_before_epoch", 0)) > time.time() for rec in state.values())
         args.youtube_blocked = youtube_blocked
-        drive = None if args.download_only else Rclone(args.rclone, args.rclone_config)
+        drive = None if args.download_only else Rclone(args.rclone, args.rclone_config, cooldown_path=cooldown_path)
         if drive:
             drive.preflight(args.remote)  # prove connection before any media download
         todo = []
@@ -732,8 +867,8 @@ def run(args, rows):
             rec = state.get(row["video_id"], {})
             if args.download_only and rec.get("status") == "deleted" and rec.get("metadata", {}).get("drive_id"):
                 continue
-            if rec.get("status") in {"deleted", "verified"} and not args.download_only and rec.get("remote") != remote_path(
-                    args.remote, row, Path(rec["path"]).suffix.lstrip(".")):
+            if rec.get("status") in {"deleted", "verified"} and not args.download_only and not valid_recorded_remote(
+                    args.remote, row, Path(rec["path"]).suffix.lstrip("."), rec.get("remote")):
                 raise IngestError("drive_destination", "Receipt belongs to a different remote; use the original destination")
             if receipt_complete(rec, row, args.remote or ""):
                 continue
@@ -761,10 +896,11 @@ def run(args, rows):
                 print("YouTube is in its 24-hour rest period; saving completed local audio only", file=sys.stderr)
         if args.limit:
             todo = todo[:args.limit]
-        limiter, stop = RateLimiter(args.min_interval), threading.Event()
+        limiter = RateLimiter(args.min_interval)
         counts, pending = collections.Counter(), {}
         source = collections.deque(todo)
         active_channels = set()
+        deferred_rows, deferred_ids, retried_storage = [], set(), False
         with cf.ThreadPoolExecutor(max_workers=args.workers) as pool:
             while True:
                 while not stop.is_set() and len(pending) < args.workers:
@@ -778,6 +914,11 @@ def run(args, rows):
                                       state_path, state.get(row["video_id"]))
                     pending[fut] = row
                 if not pending:
+                    if not stop.is_set() and deferred_rows and not retried_storage and (counts["deleted"] or counts["downloaded"]):
+                        source.extend(deferred_rows)
+                        deferred_rows.clear()
+                        retried_storage = True
+                        continue
                     break
                 done, _ = cf.wait(pending, return_when=cf.FIRST_COMPLETED)
                 for fut in done:
@@ -790,11 +931,22 @@ def run(args, rows):
                         outcome = "error"
                         print(f"{row['video_id']}: unexpected failure; local files retained", file=sys.stderr)
                     counts[outcome] += 1
+                    if outcome.startswith("deferred_"):
+                        deferred_ids.add(row["video_id"])
+                        if outcome == "deferred_storage" and not retried_storage:
+                            deferred_rows.append(row)
+                    elif outcome in {"deleted", "downloaded"}:
+                        deferred_ids.discard(row["video_id"])
                     print(json.dumps({"video_id": row["video_id"], "status": outcome,
                                       "completed_this_run": sum(counts.values())}), flush=True)
         print(json.dumps({"outcomes": counts, "local_bytes": tree_bytes(root),
-                          "stopped": stop.is_set(), "youtube_cooldown": cooldown_waiting}), flush=True)
-        return 3 if counts["error"] or cooldown_waiting else 0
+                          "stopped": stop.is_set(), "youtube_cooldown": cooldown_waiting,
+                          "deferred_items": len(deferred_ids)}), flush=True)
+        if stop.requested:
+            return 130
+        if not args.download_only and read_drive_cooldown(cooldown_path):
+            return 75
+        return 3 if counts["error"] or cooldown_waiting or deferred_ids else 0
 
 
 def parser():
@@ -810,7 +962,8 @@ def parser():
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--download-only", action="store_true", help="bounded local pilot; requires --limit")
     ap.add_argument("--max-local-gb", type=float, default=19.0)
-    ap.add_argument("--max-item-mb", type=float, default=1024.0)
+    ap.add_argument("--max-item-mb", type=float, default=0.0,
+                    help="optional explicit item cap; default 0 uses only the overall local-buffer limit")
     ap.add_argument("--min-free-gb", type=float, default=3.0)
     ap.add_argument("--rate-mib", type=float, default=2.0, help="per-worker download rate; default 2 MiB/s")
     ap.add_argument("--http-chunk-mib", type=float, default=1.0,
@@ -820,6 +973,7 @@ def parser():
     ap.add_argument("--ytdlp", default="yt-dlp")
     ap.add_argument("--rclone", default="rclone")
     ap.add_argument("--rclone-config", type=Path)
+    ap.add_argument("--stop-file", type=Path, help="persistent graceful stop marker (default <root>/sync/STOP_DRIVE_INGEST)")
     ap.set_defaults(collect_metadata=True)
     return ap
 
@@ -828,8 +982,8 @@ def main(argv=None):
     ap = parser()
     args = ap.parse_args(argv)
     args.root = ensure_outside_git(args.root)
-    if not 0 < args.max_local_gb <= 20 or args.max_item_mb <= 0 or args.min_free_gb < 0:
-        ap.error("storage limits must be positive, local cap <= 20 GB, free floor >= 0")
+    if not 0 < args.max_local_gb <= 20 or args.max_item_mb < 0 or args.min_free_gb < 0:
+        ap.error("local cap must be positive and <= 20 GB; optional item cap/free floor cannot be negative")
     if args.rate_mib <= 0 or args.min_interval < 0 or args.limit < 0 or args.http_chunk_mib < 0:
         ap.error("rate must be positive; interval and limit cannot be negative")
     args.max_local_bytes, args.max_item_bytes = int(args.max_local_gb * 1e9), int(args.max_item_mb * 1e6)
@@ -864,7 +1018,7 @@ def main(argv=None):
         return run(args, rows)
     except (IngestError, ValueError, OSError) as exc:
         print(str(exc), file=sys.stderr)
-        return 3
+        return 75 if isinstance(exc, IngestError) and exc.kind in {"drive_rate_limited", "drive_cooldown"} else 3
 
 
 if __name__ == "__main__":

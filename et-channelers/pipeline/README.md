@@ -4,9 +4,11 @@ Code to take a list of YouTube videos to private audio files and timestamped tra
 
 **Windows audio collection, 2026-11-16.** The owner's current workflow is documented in
 [`WINDOWS_DRIVE.md`](WINDOWS_DRIVE.md): native audio and available video metadata go directly to Google Drive,
-with the newest 20 per channel first and older uploads afterward. The PowerShell launcher uses four workers
+with the newest 20 per channel first, then the newest 50. Remaining items are indexed for a separate final
+download round; `RunAll` stops after the 50-item phase and that indexing step. The PowerShell launcher uses four workers
 and a 19 GB private working-folder ceiling, leaving room for tools within the owner's 20 GB local limit;
-there is no project size cap on Drive. Transcription and audio conversion are deferred. A real Windows pilot
+there is no project size cap on Drive or duration filter. New files are organized by their source tab under
+Videos, Shorts, Recorded streams, or Unclassified. Transcription and audio conversion are deferred. A real Windows pilot
 uploaded audio, verified its remote size and MD5, and deleted the local copy. This lane uses its own Drive
 receipts; it is separate from the older GitHub archive and Drive staging ledgers described below.
 
