@@ -2,7 +2,17 @@
 
 Code to take a list of YouTube videos to private audio files and timestamped transcripts, in parallel, with every step resumable. It was built on 2026-11-11 for the plan in [`../ROADMAP.md`](../ROADMAP.md). Everything is standard-library Python except the two external tools it drives (yt-dlp and faster-whisper) and ffmpeg.
 
-**Status in one paragraph.** The code is written and covered by automated tests that use stand-in downloader and encoder tools. The parts that can run offline were also run for real: ffmpeg encoded mono Opus, faster-whisper `tiny.en` transcribed a public speech clip, and yt-dlp accepted every flag the scripts use. A real YouTube pilot was tried once from a cloud server and was refused on all 3 videos (two bot checks and one HTTP 403), so the scripts stopped, as designed. No audio has been downloaded. The download has to be run from the owner's own computer. Nothing was run on Windows or on a GPU.
+**Windows audio collection, 2026-11-16.** The owner's current workflow is documented in
+[`WINDOWS_DRIVE.md`](WINDOWS_DRIVE.md): native audio and available video metadata go directly to Google Drive,
+with the newest 20 per channel first and older uploads afterward. The PowerShell launcher uses four workers
+and a 19 GB private working-folder ceiling, leaving room for tools within the owner's 20 GB local limit;
+there is no project size cap on Drive. Transcription and audio conversion are deferred. A real Windows pilot
+uploaded audio, verified its remote size and MD5, and deleted the local copy. This lane uses its own Drive
+receipts; it is separate from the older GitHub archive and Drive staging ledgers described below.
+
+**Original pipeline validation.** The older lanes have offline tests with stand-in downloader and encoder
+tools. Their cloud YouTube pilots were refused by bot checks or HTTP 403. That historical cloud limitation
+does not describe the successful local Windows pilot above.
 
 ## Lanes (added 2026-11-13)
 

@@ -1,5 +1,30 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Local Windows continuation, 2026-11-16
+
+PR #26 is merged on `main` at `afc77a4`; its branch is retained. The new ingestion work is on
+`feat/windows-drive-ingest`. The owner's current priority supersedes the older restart instructions below:
+collect native YouTube audio plus available metadata, newest 20 per tracked channel first, then the older
+catalogue. Do not start transcription or the legacy collection loops for this task.
+
+The local rclone remote `etdrive` is authenticated and points at the existing ET Channelers Archive.
+The working folder is outside Git. [`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md) gives the commands,
+recovery rules and Drive client setup. The launcher allows four workers, caps the working folder at 19 GB
+(the owner's total local ceiling is 20 GB), and applies no project storage cap on Drive. Native audio uses
+no transcoding or GPU inference. A pilot audio upload was read back by size and MD5 before local deletion;
+ordinary 1 MiB HTTP range requests substantially improved a second pilot's download speed.
+
+The restored newest-20 snapshot has 1,320 items across 69 channels. The older all-items snapshot has 58,766
+unique IDs and lacks six channels' full histories; those six have now been listed successfully across
+Videos, Shorts and recorded Streams (5,130 listing rows). `prepare_all_queue.py` merges these snapshots,
+preserves provenance, and records known source-person mappings without inventing entity labels. The merged
+queue contains 63,929 unique items and has full listing snapshots for all 69 tracked channels. Its output
+and per-item metadata remain private. Saved snapshots are not a claim that future uploads are already listed.
+
+The new `drive_ingest_manifest.jsonl` records this lane's Drive objects and checksums. It is independent of
+the older `sync_manifest.jsonl` and `drive_manifest.jsonl`; use the new runner's status and Drive restore
+instructions for these files. Never overwrite the shared historical Drive ledger with this lane's receipts.
+
 Written for whoever picks this up next: the owner, or the Claude session in the new Codespace. The work so
 far ran on a 2-core, 8 GB Codespace. Collection was paused on 2026-11-14 around 03:30 UTC so it can carry
 on in a Codespace with 16 GB of memory (GitHub's 4-core machine: check with `nproc`). Nothing is lost by the

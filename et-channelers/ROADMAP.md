@@ -4,6 +4,12 @@ Written 2026-11-11. The plan for taking the ET-channelers work from "466 videos 
 
 ## 00. Update 2026-11-14: paused for the move to a 16 GB Codespace
 
+**Local priority, 2026-11-16:** the owner now requests native audio and available metadata for every tracked
+YouTube channel, with the newest 20 per channel completed first. The bounded Windows-to-Drive workflow is in
+[`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md). It uses four workers, a 19 GB working-folder cap within
+the 20 GB total local allowance, verified uploads before deletion, and no project size cap on Drive.
+Transcription is deferred. This continuation does not restart the older Codespace jobs.
+
 Everything was stopped cleanly so the work can go on in a larger Codespace. [`HANDOFF.md`](HANDOFF.md) has the
 setup, the restore commands, the order of work and a prompt for the next session. This table was last
 brought up to date on 2026-11-15, when all 903 of Bashar's archive.org sessions were downloaded and on Google
