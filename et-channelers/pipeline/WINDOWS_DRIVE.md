@@ -1,4 +1,4 @@
-# Windows: newest 20, then 50, then index the final round
+# Windows: newest 20, then 50, then the full audio archive
 
 This collection lane saves the native audio stream for each queued video, uploads it to Google Drive,
 checks the remote byte count and MD5 for the audio and its metadata sidecar, and then removes the
@@ -14,7 +14,8 @@ before moving to second-newest items. Five channels currently contribute fewer t
 
 The newest-50 tier contains **3,220 videos across the same 69 channels**, including every newest-20
 item, about 1,351.7 hours. Both tiers keep the established Videos-tab selection and original ranks.
-There is no duration filter. The automated run ends after these two tiers and an index of the rest.
+There is no duration filter. `RunAll` now continues through these two tiers and then downloads the
+remaining archive; the earlier instruction to hold the final round has been superseded.
 
 The full catalog is `queue_youtube_all_merged.csv`: **63,929 unique saved items**, including
 35,907 Videos-tab items, 17,422 Shorts, 10,533 recorded streams, and 67 legacy items whose tab was
@@ -23,9 +24,10 @@ a full crawl of 107 channels. Saved history listings now cover all 69 tracked ch
 successful six-channel refresh added 5,130 listed items before deduplication. The merge also keeps
 newest-20 items missing from the older full snapshot. Current broadcasts and upcoming streams are
 not downloaded. Snapshot coverage does not establish that every historical upload is still available.
-After excluding the 3,220 newest-50 IDs, **60,709 items** remain indexed for a later final round:
+After excluding the 3,220 newest-50 IDs, **60,709 items** remain in the final round:
 32,687 Videos-tab items, 17,422 Shorts, 10,533 recorded streams, and 67 unknown-tab legacy items.
-None of those final-round downloads starts automatically.
+The final round starts only after the newest-20 and newest-50 completion gates pass in `RunAll`.
+`Run` still processes only newest 20, and `Index` only rebuilds the local queue files.
 The 63,929-item catalog was already verified on Drive. The new newest-50 and final-round index
 artifacts are prepared locally; their Drive backup is pending while the current quota refusal is active.
 
@@ -36,10 +38,11 @@ The user completed rclone's Google login. The `etdrive` remote now starts inside
 the account reported about 5.47 TB available. The tools and newest-20 queue are installed, so proceed
 to **Run from PowerShell** below.
 
-The current remote uses rclone's shared OAuth client, which worked during verification but emits
-a retirement warning. For continuity, create your own client using the
-[official Desktop app setup](https://rclone.org/drive/#making-your-own-client-id), then edit `etdrive`
-through `rclone config` and reauthenticate. Keep the same archive root folder.
+The original shared OAuth client hit repeated quota errors. A dedicated Desktop app client has
+now been applied to `etdrive`, preserving the archive root; Google reauthorization is still pending.
+Retained media must stay local until the new login and remote verification succeed. For another
+machine, follow the [official Desktop app setup](https://rclone.org/drive/#making-your-own-client-id),
+then edit `etdrive` through `rclone config` and reauthenticate. Keep the same archive root folder.
 
 ## First-time setup on another machine
 
@@ -112,18 +115,29 @@ After the Drive connection works, try one item, inspect its receipt, then contin
 & .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Run
 ```
 
-To complete the newest 20, continue to the newest 50, and index the remaining final round:
+To complete the newest 20, continue to the newest 50, and then collect the remaining archive:
 
 ```powershell
 & .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode RunAll
 ```
 
-`RunAll` finishes the newest-20 queue, then checks that every required ID has verified-upload and
-local-cleanup receipts for **both audio and metadata** at the same Drive destination.
+`RunAll` finishes the newest-20 queue, then checks that every available required ID has verified-upload
+and local-cleanup receipts for **both audio and metadata** at the same Drive destination.
+An explicit terminal `unavailable` receipt may pass the gate, but is counted separately from verified
+pairs. Authentication requests, bot checks, 403/429 refusals, quota failures and generic errors never
+qualify as unavailable or as a successful collection.
 Only then does it process `queue_newest50_enriched.csv` with `--newest 50`, skipping completed IDs.
-After the same check for all newest-50 items, it refreshes the remaining index and exits.
-If an item is unavailable, blocked, or unverified, the later stage stays pending. Repeating `RunAll`
-resumes this same order; it has no automatic retry loop and never invokes the final-round downloader.
+After the same check for all newest-50 items, it processes `queue_final_round.csv` with
+`--entire-queue` and checks the final receipts. Local stage inputs are validated and rebuilt before
+network work starts. Blocked or unverified items keep the later stage pending. Repeating `RunAll`
+resumes this same order; the launcher itself has no automatic retry loop.
+
+When `archive_catalog.py` is available, each passed stage also prepares and uploads a compact
+catalog checkpoint before advancing. Repeated unchanged checkpoints upload nothing; receipt
+changes produce immutable deltas and a small manifest, preserving the previous baseline. These
+calls share the collector's Drive cooldown and single-run lock. A checkpoint error stops progression
+and returns its exit code. `-SkipCatalogCheckpoint` explicitly skips this optional backup while
+retaining every media verification gate. See [ARCHIVE_CATALOG.md](ARCHIVE_CATALOG.md).
 
 The prepared stage files are in the private `jobs` folder:
 
@@ -139,8 +153,8 @@ asset must be present as `jobs/queue_newest50.csv` (or pass `-FiftyQueue <path>`
 & .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Index
 ```
 
-**For a later, separately requested final round only**, `-Mode RunFinal` checks newest-50 completion
-and then processes `queue_final_round.csv`. This explicit mode is never called by `RunAll`.
+To resume just the final round, `-Mode RunFinal` checks newest-50 completion and then processes
+`queue_final_round.csv`. `RunAll` reaches that same work after both priority tiers.
 Use `-FullQueue <path>` when refreshing the catalog used for indexing.
 
 `prepare_all_queue.py` builds that merged queue from the newest-20 snapshot, the saved full queue,
@@ -183,20 +197,78 @@ PowerShell process:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Plan
 ```
 
+Download and upload concurrency are separate. The defaults keep acquisition at four workers and
+Drive at two simultaneous transfers; increasing one does not increase the other.
+
+| Launcher option | Default | Allowed |
+| --- | ---: | --- |
+| `-DlWorkers` (`-Workers` alias) | 4 | 1–8 |
+| `-UploadTransfers` | 2 | 1–2 |
+| `-UploadBatchItems` | 8 pairs | 1–16, no greater than `ReadyItems` |
+| `-UploadBatchSeconds` | 10 | 0–300; zero flushes immediately |
+| `-ReadyItems` | 16 pairs | 1–64 |
+| `-RateMiB` | 2 per download worker | Positive; launcher maximum 100 |
+| `-MinInterval` | 5 seconds | 0–3600 between metadata request starts |
+
+For example, after confirming Drive is accepting requests, six download workers can feed the same
+two-transfer upload lane:
+
+```powershell
+& .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode RunAll -DlWorkers 6 -UploadTransfers 2
+```
+
+## Bounded local supervisor
+
+The versioned supervisor is [`supervise_drive_ingest.ps1`](supervise_drive_ingest.ps1). Its default
+private root is `$env:USERPROFILE\et-channelers-private`, and its default launcher is the adjacent
+`start_drive_ingest.ps1`. `-PrivateRoot` and `-LauncherPath` allow explicit overrides. It runs in the
+foreground; it is not installed as a service or scheduled task. It owns an exclusive OS file lock so
+a second supervisor cannot share the same private root. The collector keeps its separate single-run lock.
+
+```powershell
+& .\et-channelers\pipeline\supervise_drive_ingest.ps1 `
+    -Mode RunAll -DlWorkers 4 -UploadTransfers 2 -MaxAttempts 3
+```
+
+The existing private `jobs/resume_staged_ingest.ps1` is only a compatibility wrapper: it forwards to
+the versioned supervisor in the checkout named by `-RepositoryRoot`. It does not keep a separate
+copy of the retry behavior.
+
+Only Drive quota exit code `75` is eligible for automatic retry. The next attempt waits until the
+later of the recorded Drive deadline and an exponential 10, 20, 40, then 60 minute backoff. The
+default budget is three launches (maximum four), persisted before each child starts, so restarting
+the helper does not restore spent attempts. Authentication, permission, source blocking and other
+errors stop without an automatic retry. The stop marker is checked at least every two seconds
+while waiting; the running collector observes that same marker.
+
+The private `sync/drive_ingest_resume_state.json` records the attempt count, next permitted attempt,
+PID and outcome. After reviewing an exhausted retry budget, an operator may explicitly add
+`-ResetRetryBudget`; that resets only the attempt count and still honors the stored wait and Drive
+cooldown. Neither helper clears `sync/STOP_DRIVE_INGEST`. No process is started by merely updating
+these scripts.
+
+Offline Windows regression tests replace the child launcher with a temporary stub, so they never
+start the collector or contact YouTube or Drive:
+
+```powershell
+python -m unittest discover -s et-channelers/pipeline/tests -p test_supervise_drive_ingest.py -v
+```
+
 ## Storage, verification, and recovery
 
-The wrapper requests four workers, with at most one active item per channel, and a maximum
+The wrapper requests four download workers, with at most one active item per channel, and a maximum
 private-root budget of **19 decimal GB**, leaving
 1 GB of the user's 20 GB local allowance for tools and supporting files outside that root. Existing
 files, partial downloads, and reserved space for active downloads must fit the budget. The wrapper
 sets no arbitrary per-item size or duration cutoff (`--max-item-mb 0`). An item that cannot currently
 fit the storage budget remains deferred, rather than being counted as completed or dropped from
-the index. Each worker downloads at up to 2 MiB/s using 1 MiB HTTP chunks, and metadata
+the index. Each download worker runs at up to 2 MiB/s using 1 MiB HTTP chunks, and metadata
 request starts are spaced by at least 5 seconds across all workers. Available channels take turns
 so one large channel does not occupy every worker. A 3 GB free-disk floor also protects space for
 other applications. Run this collector
 alone in its private root; a separate application writing there is outside its storage guarantee.
-Uploads overlap acquisition; each local file remains
+One separate upload coordinator overlaps acquisition, with two upload transfers. Its ready queue
+is bounded to 16 pairs; batches contain up to eight pairs and flush after ten seconds. Each local file remains
 until Drive returns the expected size and MD5. This is a bounded local spool, not a Drive desktop
 sync folder and not a pipe that discards bytes before they can be verified.
 This is a rolling local limit across collection tiers; it does not limit the size of the Drive archive.

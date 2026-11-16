@@ -350,6 +350,30 @@ class PairedMetadataTests(Fixture):
         self.assertTrue(audio.exists())
         self.assertTrue(metadata.exists())
 
+    def missing_identity_retains_pair(self, extension):
+        audio, metadata, rec, drive = self.pair()
+        good_stat = drive.stat.side_effect
+
+        def proof(remote):
+            value = good_stat(remote)
+            if remote.endswith(extension):
+                value.pop("ID")
+            return value
+
+        drive.stat.side_effect = proof
+        state = self.root / "receipt.jsonl"
+        with self.assertRaisesRegex(ingest.IngestError, "identity is missing"):
+            ingest.verify_and_delete(self.root, rec, drive, state, require_metadata=True)
+        self.assertTrue(audio.exists())
+        self.assertTrue(metadata.exists())
+        self.assertFalse(state.exists())
+
+    def test_missing_audio_id_preserves_both_local_files(self):
+        self.missing_identity_retains_pair(".webm")
+
+    def test_missing_metadata_id_preserves_both_local_files(self):
+        self.missing_identity_retains_pair(".info.json")
+
     def test_audio_only_receipt_cannot_pass_completion_gate(self):
         _, rec = self.recording()
         rec.update(status="deleted", drive_id="audio-id")
@@ -450,7 +474,7 @@ class RunControlTests(Fixture):
                 {"video_id": "00000000002", "channel_dir": "second"}]
         calls = {row["video_id"]: 0 for row in rows}
 
-        def attempt(args, row, *unused):
+        def attempt(args, row, *unused, **options):
             key = row["video_id"]
             calls[key] += 1
             return "deferred_storage" if key == "00000000001" and calls[key] == 1 else "deleted"

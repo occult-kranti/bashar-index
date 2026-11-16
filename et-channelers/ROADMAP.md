@@ -1,5 +1,8 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
+**Current archive instruction, 16 November 2026 after the dashboard release:** finish newest 20, extend to newest 50, then collect the entire remaining saved catalogue as native audio plus full sanitized metadata. Use bounded download/upload stages and the private incremental catalog; preserve the 19 GB working ceiling and checksum-before-delete rule. No transcription in this pass.
+
+
 **Dashboard update, 16 November 2026:** the [dashboard directory](../dashboards/index.html) joins the redesigned prediction workbench, collection monitor, standalone channel index, Atlas, original Bashar Index and research report. Current collection stages are newest 20 -> extend to 50 -> index the remainder; published operational counts have their own timestamp and do not replace historical research denominators. Interface changes preserve the published evidence. Rebuild notes are in [`../dashboards/README.md`](../dashboards/README.md).
 
 

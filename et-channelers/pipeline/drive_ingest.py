@@ -41,6 +41,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from dataclasses import dataclass, field
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -56,6 +57,43 @@ NATIVE_EXTENSIONS = {"webm", "m4a", "opus", "ogg"}
 _JOURNAL_LOCK = threading.Lock()
 _ROOT_BUDGETS = {}  # writes to registered run roots also admit journal bytes
 _DRIVE_CALLS = threading.BoundedSemaphore(2)
+
+
+def registered_budget(path):
+    return next((value for root, value in _ROOT_BUDGETS.items()
+                 if Path(path).resolve().is_relative_to(root)), None)
+
+
+def remove_local(path, missing_ok=False):
+    budget = registered_budget(path)
+    if budget:
+        budget.remove(path, missing_ok=missing_ok)
+    else:
+        path.unlink(missing_ok=missing_ok)
+
+
+def control_file(path, encoded, atomic=False):
+    """Admit bounded control writes and account for replacement/truncation."""
+    budget = registered_budget(path)
+    with budget.lock if budget else contextlib.nullcontext():
+        target = path.with_suffix(path.suffix + ".tmp") if atomic else path
+        if budget and budget.usage() + len(encoded) > budget.cap:
+            raise IngestError("storage_limit", "No local space for a durable control record")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        before = target.stat().st_size if target.exists() else 0
+        try:
+            with open(target, "wb") as out:
+                out.write(encoded)
+                out.flush()
+                os.fsync(out.fileno())
+        finally:
+            if budget:
+                budget.changed((target.stat().st_size if target.exists() else 0) - before)
+        if atomic:
+            previous = path.stat().st_size if path.exists() else 0
+            os.replace(target, path)
+            if budget:
+                budget.changed(-previous)
 
 
 class IngestError(RuntimeError):
@@ -91,6 +129,23 @@ class StopControl:
         return True
 
 
+@dataclass
+class IngestResult:
+    """A durable local pair handed from a source worker to the upload stage."""
+    row: dict
+    record: dict
+    status: str = "ready"
+    trusted: dict = field(default_factory=dict)
+    remote_proofs: dict = field(default_factory=dict)
+    allow_missing: bool = False
+
+
+def terminal_unavailable(record):
+    """Explicit source removal/private/unavailable response, never an access block."""
+    return (record.get("status") == "unavailable" and record.get("error_class") == "unavailable"
+            and not record.get("sha256") and not record.get("metadata"))
+
+
 def read_drive_cooldown(path):
     if not path or not Path(path).exists():
         return None
@@ -110,17 +165,7 @@ def write_drive_cooldown(path, reason="drive_rate_limited"):
               "retry_after_s": 600}
     encoded = (json.dumps(record) + "\n").encode("utf-8")
     with _JOURNAL_LOCK:
-        budget = next((value for root, value in _ROOT_BUDGETS.items() if path.resolve().is_relative_to(root)), None)
-        with budget.lock if budget else contextlib.nullcontext():
-            if budget and tree_bytes(budget.root) + len(encoded) > budget.cap:
-                raise IngestError("storage_limit", "No local space for the durable Drive cooldown record")
-            path.parent.mkdir(parents=True, exist_ok=True)
-            temporary = path.with_suffix(path.suffix + ".tmp")
-            with open(temporary, "wb") as out:
-                out.write(encoded)
-                out.flush()
-                os.fsync(out.fileno())
-            os.replace(temporary, path)
+        control_file(path, encoded, atomic=True)
 
 
 def journal(path, record):
@@ -128,13 +173,17 @@ def journal(path, record):
     path.parent.mkdir(parents=True, exist_ok=True)
     encoded = (json.dumps(record, ensure_ascii=False, separators=(",", ":")) + "\n").encode("utf-8")
     with _JOURNAL_LOCK:
-        budget = next((value for root, value in _ROOT_BUDGETS.items()
-                       if path.resolve().is_relative_to(root)), None)
+        budget = registered_budget(path)
         guard = budget.lock if budget else contextlib.nullcontext()
         with guard:
-            if budget and tree_bytes(budget.root) + len(encoded) + 1 > budget.cap:
+            if budget and budget.usage() + len(encoded) + 1 > budget.cap:
                 raise IngestError("storage_limit", "Local storage ceiling leaves no room for a durable receipt")
-            _append_durable(path, encoded)
+            before = path.stat().st_size if path.exists() else 0
+            try:
+                _append_durable(path, encoded)
+            finally:
+                if budget:
+                    budget.changed((path.stat().st_size if path.exists() else 0) - before)
 
 
 def _append_durable(path, encoded):
@@ -216,7 +265,7 @@ def exclusive_lock(root):
 
 
 class Budget:
-    def __init__(self, root, cap, file_cap, min_free, reserve=JOURNAL_RESERVE):
+    def __init__(self, root, cap, file_cap, min_free, reserve=JOURNAL_RESERVE, cached=False):
         if not 0 < cap <= MAX_LOCAL_BYTES or file_cap < 0 or reserve >= cap:
             raise ValueError("invalid storage budget")
         self.root, self.cap = root, cap
@@ -225,6 +274,30 @@ class Budget:
         self.min_free, self.reserve = min_free, reserve
         self.lock = threading.RLock()
         self.active = {}
+        self.cached = cached
+        self._used = tree_bytes(root) if cached else 0
+        self._reconciled_at = time.monotonic()
+
+    def usage(self, reconcile=False):
+        """Cached only for the exclusively owned run; all its writes share this lock."""
+        with self.lock:
+            if not self.cached:
+                return tree_bytes(self.root)
+            if reconcile or time.monotonic() - self._reconciled_at >= 12:
+                self._used = tree_bytes(self.root)
+                self._reconciled_at = time.monotonic()
+            return self._used
+
+    def changed(self, delta):
+        if self.cached:
+            self._used += delta
+
+    def remove(self, path, missing_ok=False):
+        with self.lock:
+            self.usage()
+            size = path.stat().st_size if path.exists() else 0
+            path.unlink(missing_ok=missing_ok)
+            self.changed(-size)
 
     def _outstanding(self, omit=None):
         return sum(max(0, item["bytes"] - (item["path"].stat().st_size if item["path"].exists() else 0))
@@ -232,7 +305,7 @@ class Budget:
 
     def reserve_item(self, key, part, expected_bytes=None, metadata_headroom=0):
         with self.lock:
-            used = tree_bytes(self.root)
+            used = self.usage()
             audio_bytes = expected_bytes if expected_bytes is not None else self.explicit_file_cap or min(8 * CHUNK, self.file_cap)
             if audio_bytes <= 0 or audio_bytes > self.file_cap:
                 raise IngestError("deferred_storage", f"Item needs {audio_bytes} audio bytes; retained in queue until a buffer can hold it")
@@ -264,17 +337,25 @@ class Budget:
         with self.lock:
             self.active.pop(key, None)
 
+    def pressure(self):
+        with self.lock:
+            return (self.usage() + self._outstanding()) / (self.cap - self.reserve)
+
     def write(self, out, data):
         # The check and write share one lock: two workers cannot spend the same bytes.
         with self.lock:
             if out.tell() + len(data) > self.file_cap:
                 raise IngestError("deferred_storage", "Item exceeds the configured buffer capacity; retained in queue")
-            if tree_bytes(self.root) + len(data) > self.cap - self.reserve:
+            if self.usage() + len(data) > self.cap - self.reserve:
                 raise IngestError("storage_limit", "Local storage ceiling reached")
             if shutil.disk_usage(self.root).free - len(data) < self.min_free:
                 raise IngestError("disk_floor", "Free disk space reached the safety floor")
-            out.write(data)
-            out.flush()  # subsequent workers' file-size checks see these bytes
+            before = out.tell()
+            try:
+                out.write(data)
+                out.flush()  # subsequent workers' file-size checks see these bytes
+            finally:
+                self.changed(max(0, out.tell() - before))
 
 
 def select_queue(path, newest=20, entire_queue=False):
@@ -518,6 +599,34 @@ def item_remote_path(remote, row, extension, record=None):
     return remote_path(remote, row, extension)
 
 
+def remote_relative(remote, target):
+    prefix = remote.rstrip("/") + ("" if remote.endswith(":") else "/")
+    if not target.startswith(prefix):
+        raise IngestError("drive_destination", "An upload path is outside the configured archive")
+    path = target[len(prefix):]
+    if not path or any(part in {"", ".", ".."} for part in path.split("/")) or any(
+            char in path for char in ("\\", "\n", "\r", "\0", ":")):
+        raise IngestError("drive_destination", "An upload path is not a safe relative filename")
+    return path
+
+
+@contextlib.contextmanager
+def batch_manifest(root, paths):
+    """A bounded exact-file manifest, never a broad archive listing or sync."""
+    paths = list(paths)
+    if len(paths) != len(set(paths)) or not paths or len(paths) > 128:
+        raise IngestError("drive_destination", "Invalid or duplicate batch filenames")
+    for path in paths:
+        remote_relative("batch:", "batch:" + path)
+    manifest = local_path(root, "sync/drive_ingest_batch_files.txt")
+    encoded = ("\n".join(paths) + "\n").encode("utf-8")
+    control_file(manifest, encoded)
+    try:
+        yield manifest
+    finally:
+        remove_local(manifest, missing_ok=True)
+
+
 class Rclone:
     RETRY_FLAGS = ["--retries", "2", "--low-level-retries", "2", "--retries-sleep", "5s",
                    "--contimeout", "15s", "--timeout", "60s", "--tpslimit", "1", "--tpslimit-burst", "1"]
@@ -546,8 +655,14 @@ class Rclone:
             raise IngestError("drive_read", "Drive metadata was invalid; local audio retained") from exc
 
     def preflight(self, remote):
-        if not self.stat(remote).get("IsDir"):
-            raise IngestError("drive_destination", "Drive destination is not a readable folder")
+        # A root --stat may be synthetic on Drive. Force one shallow backend read.
+        result = self.execute(["lsjson", remote, "--max-depth", "1", "--dirs-only", "--disable", "ListR",
+                               "--no-modtime", "--no-mimetype", *self.RETRY_FLAGS], 300, "archive connection check")
+        try:
+            if not isinstance(json.loads(result.stdout), list):
+                raise ValueError
+        except ValueError as exc:
+            raise IngestError("drive_destination", "Drive destination is not a readable folder") from exc
 
     def copy(self, path, remote):
         self.execute(["copyto", str(path), remote, "--checksum", "--immutable",
@@ -568,6 +683,36 @@ class Rclone:
                           "--checksum", "--immutable", "--transfers", "2", "--checkers", "2",
                           "--buffer-size", "1M", "--drive-chunk-size", "8M", *self.RETRY_FLAGS], 3600,
                      "audio/metadata batch upload")
+
+    def copy_batch(self, local_root, remote, manifest, transfers=2):
+        self.execute(["copy", str(local_root), remote, "--files-from-raw", str(manifest),
+                      "--no-traverse", "--checksum", "--immutable", "--transfers", str(transfers),
+                      "--checkers", "2", "--buffer-size", "1M", "--drive-chunk-size", "8M",
+                      *self.RETRY_FLAGS], 3600, "bounded audio/metadata upload")
+
+    def stat_batch(self, remote, paths, manifest):
+        """One process, direct lookups of named objects; never recurse over Drive."""
+        result = self.execute(["lsjson", remote, "--recursive", "--files-only", "--hash-type", "MD5",
+                               "--no-modtime", "--no-mimetype", "--files-from-raw", str(manifest),
+                               "--no-traverse", "--checkers", "2", *self.RETRY_FLAGS], 600,
+                              "bounded batch metadata read")
+        try:
+            entries = json.loads(result.stdout)
+            if not isinstance(entries, list):
+                raise ValueError
+            found, ids = {}, set()
+            for entry in entries:
+                path, identity = entry.get("Path"), entry.get("ID")
+                if path not in paths or path in found or (identity and identity in ids):
+                    raise ValueError
+                found[path] = entry
+                if identity:
+                    ids.add(identity)
+            if set(found) != set(paths):
+                raise ValueError
+            return found
+        except (ValueError, AttributeError, TypeError) as exc:
+            raise IngestError("drive_verify", "Batch metadata is missing, ambiguous, or invalid; local pairs retained") from exc
 
     def failure(self, result, operation):
         """Report useful categories/exit codes without exposing raw URLs or auth errors."""
@@ -620,6 +765,8 @@ def verify_and_delete(root, record, drive, state_path, require_metadata=False, a
             raise IngestError("local_missing", "An artifact is missing before verified storage")
         remote = (remote_proofs or {}).get(kind) or drive.stat(expected["remote"])
         verify_remote(remote, expected)
+        if require_metadata and not remote.get("ID"):
+            raise IngestError("drive_verify", "Drive object identity is missing; local pairs retained")
         if kind == "audio":
             verified["drive_id"] = remote.get("ID", "")
         else:
@@ -628,7 +775,7 @@ def verify_and_delete(root, record, drive, state_path, require_metadata=False, a
     for path, expected, known in checked:
         validate_local(path, expected, known)
     for path, _, _ in checked:
-        path.unlink()
+        remove_local(path)
     done = dict(verified, status="deleted", deleted_at=utc_now())
     journal(state_path, done)
     return done
@@ -683,12 +830,14 @@ def ensure_metadata(args, row, rec, budget, limiter, stop, drive, state_path, in
     data["archive_audio"].update(file_name=Path(rec["path"]).name, remote=audio_destination,
                                  encoding="native audio; no re-encode")
     encoded = (json.dumps(data, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
-    relative = f"audio/{row['channel_dir']}/{row['video_id']}.info.json"
+    relative = str(Path(rec["path"]).with_name(f"{row['video_id']}.info.json")).replace("\\", "/")
     path = local_path(args.root, relative)
     path.parent.mkdir(parents=True, exist_ok=True)
     if path.exists():
         raise IngestError("local_changed", "Metadata file exists without its receipt; retained")
     part = path.with_suffix(path.suffix + ".part")
+    if part.exists():
+        remove_local(part)
     with open(part, "wb") as out:
         for offset in range(0, len(encoded), CHUNK):
             budget.write(out, encoded[offset:offset + CHUNK])
@@ -715,7 +864,7 @@ def load_state(path):
     return latest
 
 
-def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
+def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, *, stage_only=False):
     rec = dict(prior or {}, video_id=row["video_id"], channel_dir=row["channel_dir"],
                entity=row.get("entity", ""), channeling=row.get("channeling", ""), updated_at=utc_now())
     rec.update({key: row.get(key, "") for key in ("title", "url", "tab", "listing_rank", "sources")})
@@ -727,6 +876,8 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
     collect_metadata = getattr(args, "collect_metadata", True)
     try:
         if prior and prior.get("status") in {"verified", "deleted"} and prior.get("metadata") and drive:
+            if stage_only:
+                return IngestResult(row, rec, allow_missing=True)
             verify_and_delete(args.root, rec, drive, state_path, require_metadata=True, allow_missing=True)
             return "deleted"
         if prior and prior.get("status") == "download_complete":
@@ -765,7 +916,7 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
                 return "stopped"
             info = extract_audio(args, row)
             captured_at = utc_now()
-            relative = f"audio/{row['channel_dir']}/{row['video_id']}.{info['ext']}"
+            relative = f"audio/{row['channel_dir']}/{SOURCE_FOLDERS.get(row.get('tab', ''), 'Unclassified')}/{row['video_id']}.{info['ext']}"
             path = local_path(args.root, relative)
             path.parent.mkdir(parents=True, exist_ok=True)
             if path.exists():
@@ -774,7 +925,7 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
             # An incomplete file has no verified copy and is left intact until
             # this exact item is intentionally retried; reclaim it before reserve.
             if part.exists():
-                part.unlink()
+                remove_local(part)
             expected_bytes = int(info["filesize"]) if info.get("filesize") else None
             rec["expected_audio_bytes"] = expected_bytes
             budget.reserve_item(row["video_id"], part, expected_bytes,
@@ -808,6 +959,11 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
         if args.download_only:
             return "downloaded"
         rec["remote"] = item_remote_path(args.remote, row, path.suffix.lstrip("."), rec)
+        if stage_only:
+            rec.update(status="queued_upload", queued_upload_at=utc_now())
+            journal(state_path, rec)
+            return IngestResult(row, rec, trusted=trusted, remote_proofs=remote_proofs,
+                                allow_missing=remote_only_audio or (collect_metadata and metadata_path is None))
         # copyto --immutable --checksum is idempotent after an interrupted upload.
         if path.exists() and metadata_path:
             drive.copy_pair(path, metadata_path, rec["remote"], rec["metadata"]["remote"])
@@ -821,7 +977,9 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
         return "deleted"
     except IngestError as exc:
         # Preserve completion evidence alongside an upload failure for restart.
-        outcome = "deferred_storage" if exc.kind == "deferred_storage" else "deferred_live" if exc.kind == "live" else "paused" if exc.kind == "stopped" else "error"
+        outcome = {"deferred_storage": "deferred_storage", "live": "deferred_live", "stopped": "paused"}.get(exc.kind, "error")
+        if exc.kind == "unavailable" and not rec.get("sha256") and not rec.get("metadata"):
+            outcome = "unavailable"
         rec.update(status=outcome, error_class=exc.kind, error=str(exc), updated_at=utc_now())
         if exc.kind in HARD_BLOCKS:
             rec["retry_not_before_epoch"] = time.time() + 86400
@@ -829,10 +987,81 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None):
         if exc.kind not in {"unavailable", "login_required", "deferred_storage", "live", "unsupported_format"}:
             stop.set()  # One block or Drive fault stops new work immediately.
         print(f"{row['video_id']}: {exc.kind}: {exc}", file=sys.stderr, flush=True)
-        return outcome
+        return IngestResult(row, rec, status=outcome) if stage_only else outcome
     finally:
         if reserved:
             budget.release(row["video_id"])
+
+
+def upload_batch(args, items, drive, state_path, stop):
+    """Upload a bounded batch, read each remote object once, then retire safe pairs."""
+    results = []
+    try:
+        uploads, paths = [], []
+        artifacts = []
+        for item in items:
+            rec = item.record
+            if getattr(args, "collect_metadata", True) and not rec.get("metadata"):
+                raise IngestError("metadata_missing", "An upload pair has no research metadata")
+            for kind, expected in [("audio", rec)] + ([("metadata", rec["metadata"])] if rec.get("metadata") else []):
+                relative = remote_relative(args.remote, expected["remote"])
+                if not valid_recorded_remote(args.remote, item.row,
+                        Path(rec["path"]).suffix.lstrip("."), rec["remote"]) or (kind == "metadata" and
+                        expected["remote"] != rec["remote"].rpartition("/")[0] + f"/{item.row['video_id']}.info.json"):
+                    raise IngestError("drive_destination", "An upload receipt belongs to a different destination")
+                path = local_path(args.root, expected["path"])
+                if path.exists():
+                    item.trusted[kind] = validate_local(path, expected, item.trusted.get(kind))
+                    uploads.append((path, expected["remote"], relative))
+                elif not item.allow_missing:
+                    raise IngestError("local_missing", "An upload artifact is missing; pair retained")
+                paths.append(relative)
+                artifacts.append((item, kind, expected, relative))
+        if len(paths) != len(set(paths)):
+            raise IngestError("drive_destination", "An upload batch contains duplicate object paths")
+        mapped, legacy = [], collections.defaultdict(list)
+        for path, destination, relative in uploads:
+            if path.relative_to(args.root / "audio").as_posix() == relative:
+                mapped.append(relative)
+            else:
+                legacy[(path.parent, destination.rpartition("/")[0])].append((path, destination))
+        if mapped:
+            with batch_manifest(args.root, mapped) as manifest:
+                drive.copy_batch(args.root / "audio", args.remote, manifest, getattr(args, "upload_transfers", 2))
+        for group in legacy.values():
+            if len(group) == 2:
+                drive.copy_pair(group[0][0], group[1][0], group[0][1], group[1][1])
+            else:
+                for path, destination in group:
+                    drive.copy(path, destination)
+        with batch_manifest(args.root, paths) as manifest:
+            proofs = drive.stat_batch(args.remote, paths, manifest)
+        # Check all proof records before deleting even the first local pair.
+        for _, _, expected, relative in artifacts:
+            if relative not in proofs:
+                raise IngestError("drive_verify", "Batch proof omitted an object; local pairs retained")
+            verify_remote(proofs[relative], expected)
+            if not proofs[relative].get("ID"):
+                raise IngestError("drive_verify", "Drive object identity is missing; local pairs retained")
+        for item in items:
+            item_proofs = {kind: proofs[relative] for current, kind, _, relative in artifacts if current is item}
+            done = verify_and_delete(args.root, item.record, drive, state_path,
+                                     require_metadata=getattr(args, "collect_metadata", True),
+                                     allow_missing=item.allow_missing, trusted=item.trusted, remote_proofs=item_proofs)
+            results.append(IngestResult(item.row, done, status="deleted"))
+        return results
+    except IngestError as exc:
+        stop.set()
+        for item in items:
+            # A batch can fail after an earlier pair was already durably retired.
+            latest = item.record
+            if any(result.row["video_id"] == item.row["video_id"] for result in results):
+                continue
+            latest = dict(latest, status="error", error_class=exc.kind, error=str(exc), updated_at=utc_now())
+            journal(state_path, latest)
+            results.append(IngestResult(item.row, latest, status="error"))
+        print(f"Upload batch: {exc.kind}: {exc}", file=sys.stderr, flush=True)
+        return results
 
 
 def run(args, rows):
@@ -853,7 +1082,7 @@ def run(args, rows):
     with exclusive_lock(root):
         if tree_bytes(root) > args.max_local_bytes - JOURNAL_RESERVE:
             raise IngestError("storage_limit", "Existing private files leave no storage budget")
-        budget = Budget(root, args.max_local_bytes, args.max_item_bytes, args.min_free_bytes)
+        budget = Budget(root, args.max_local_bytes, args.max_item_bytes, args.min_free_bytes, cached=True)
         _ROOT_BUDGETS[root.resolve()] = budget
         state_path = root / "sync" / "drive_ingest_manifest.jsonl"
         state = load_state(state_path)
@@ -865,6 +1094,8 @@ def run(args, rows):
         todo = []
         for row in rows:
             rec = state.get(row["video_id"], {})
+            if terminal_unavailable(rec):
+                continue
             if args.download_only and rec.get("status") == "deleted" and rec.get("metadata", {}).get("drive_id"):
                 continue
             if rec.get("status") in {"deleted", "verified"} and not args.download_only and not valid_recorded_remote(
@@ -879,14 +1110,17 @@ def run(args, rows):
                 continue
             todo.append(row)
         # Drain complete local files first; a Drive outage must never grow a backlog.
-        def complete_local(row):
+        def complete_audio_local(row):
             rec = state.get(row["video_id"], {})
             if not rec.get("path"):
                 return False
             path = local_path(root, rec["path"])
-            audio_ready = path.exists() or rec.get("audio_on_drive") or rec.get("status") in {"verified", "deleted"} or (
+            return path.exists() or rec.get("audio_on_drive") or rec.get("status") in {"verified", "deleted"} or (
                 rec.get("status") == "download_complete" and path.with_suffix(path.suffix + ".part").exists())
-            return audio_ready and (not getattr(args, "collect_metadata", True) or bool(rec.get("metadata")))
+
+        def complete_local(row):
+            rec = state.get(row["video_id"], {})
+            return complete_audio_local(row) and (not getattr(args, "collect_metadata", True) or bool(rec.get("metadata")))
 
         todo.sort(key=lambda row: not complete_local(row))
         cooldown_waiting = youtube_blocked and any(not complete_local(row) for row in todo)
@@ -897,56 +1131,98 @@ def run(args, rows):
         if args.limit:
             todo = todo[:args.limit]
         limiter = RateLimiter(args.min_interval)
-        counts, pending = collections.Counter(), {}
+        counts, pending, ready = collections.Counter(), {}, collections.deque()
         source = collections.deque(todo)
         active_channels = set()
         deferred_rows, deferred_ids, retried_storage = [], set(), False
-        with cf.ThreadPoolExecutor(max_workers=args.workers) as pool:
+        batch_items = getattr(args, "upload_batch_items", 8)
+        batch_seconds = getattr(args, "upload_batch_seconds", 10)
+        ready_limit = getattr(args, "ready_items", 16)
+        upload_future, uploading, drive_failed, pressure_paused = None, [], False, False
+
+        def observe(row, result):
+            outcome = result.status if isinstance(result, IngestResult) else result
+            if isinstance(result, IngestResult):
+                state[row["video_id"]] = result.record
+            if outcome == "ready":
+                ready.append((time.monotonic(), result))
+            else:
+                counts[outcome] += 1
+                if outcome.startswith("deferred_"):
+                    deferred_ids.add(row["video_id"])
+                    if outcome == "deferred_storage" and not retried_storage:
+                        deferred_rows.append(row)
+                elif outcome in {"deleted", "downloaded", "unavailable"}:
+                    deferred_ids.discard(row["video_id"])
+            print(json.dumps({"video_id": row["video_id"], "status": outcome,
+                              "completed_this_run": sum(counts.values()), "ready_pairs": len(ready),
+                              "uploading_pairs": len(uploading)}), flush=True)
+
+        with cf.ThreadPoolExecutor(max_workers=args.workers) as pool, \
+                cf.ThreadPoolExecutor(max_workers=1) as uploader:
             while True:
-                while not stop.is_set() and len(pending) < args.workers:
-                    index = next((i for i, row in enumerate(source) if row["channel_dir"] not in active_channels), None)
+                pressure = budget.pressure()
+                pressure_paused = pressure >= 0.8 if not pressure_paused else pressure > 0.6
+                if ready and upload_future is None and not drive_failed and not stop.requested and (
+                        len(ready) >= batch_items or time.monotonic() - ready[0][0] >= batch_seconds or
+                        not pending or pressure_paused or stop.is_set()):
+                    uploading = [ready.popleft()[1] for _ in range(min(batch_items, len(ready)))]
+                    upload_future = uploader.submit(upload_batch, args, uploading, drive, state_path, stop)
+                while not stop.is_set() and len(pending) < args.workers and (
+                        args.download_only or len(pending) + len(ready) + len(uploading) < ready_limit):
+                    index = next((i for i, row in enumerate(source) if row["channel_dir"] not in active_channels and
+                                  (not pressure_paused or complete_audio_local(row))), None)
                     if index is None:
                         break
                     row = source[index]
                     del source[index]
                     active_channels.add(row["channel_dir"])
                     fut = pool.submit(ingest_one, args, row, budget, limiter, stop, drive,
-                                      state_path, state.get(row["video_id"]))
+                                      state_path, state.get(row["video_id"]), stage_only=not args.download_only)
                     pending[fut] = row
-                if not pending:
+                waiting = list(pending) + ([upload_future] if upload_future else [])
+                if not waiting:
+                    if ready and not drive_failed and not stop.requested:
+                        continue
                     if not stop.is_set() and deferred_rows and not retried_storage and (counts["deleted"] or counts["downloaded"]):
                         source.extend(deferred_rows)
                         deferred_rows.clear()
                         retried_storage = True
                         continue
                     break
-                done, _ = cf.wait(pending, return_when=cf.FIRST_COMPLETED)
+                done, _ = cf.wait(waiting, timeout=0.25, return_when=cf.FIRST_COMPLETED)
                 for fut in done:
+                    if fut is upload_future:
+                        try:
+                            results = fut.result()
+                        except Exception:
+                            stop.set()
+                            results = [IngestResult(item.row, item.record, status="error") for item in uploading]
+                            print("Upload batch: unexpected failure; local pairs retained", file=sys.stderr)
+                        drive_failed = any(result.status == "error" for result in results)
+                        uploading, upload_future = [], None
+                        for result in results:
+                            observe(result.row, result)
+                        continue
                     row = pending.pop(fut)
                     active_channels.discard(row["channel_dir"])
                     try:
-                        outcome = fut.result()
+                        result = fut.result()
                     except Exception:
                         stop.set()
-                        outcome = "error"
+                        result = "error"
                         print(f"{row['video_id']}: unexpected failure; local files retained", file=sys.stderr)
-                    counts[outcome] += 1
-                    if outcome.startswith("deferred_"):
-                        deferred_ids.add(row["video_id"])
-                        if outcome == "deferred_storage" and not retried_storage:
-                            deferred_rows.append(row)
-                    elif outcome in {"deleted", "downloaded"}:
-                        deferred_ids.discard(row["video_id"])
-                    print(json.dumps({"video_id": row["video_id"], "status": outcome,
-                                      "completed_this_run": sum(counts.values())}), flush=True)
+                    observe(row, result)
+        unfinished = len(source) + len(ready)
         print(json.dumps({"outcomes": counts, "local_bytes": tree_bytes(root),
                           "stopped": stop.is_set(), "youtube_cooldown": cooldown_waiting,
-                          "deferred_items": len(deferred_ids)}), flush=True)
+                          "deferred_items": len(deferred_ids), "pending_items": unfinished,
+                          "storage_backpressure": pressure_paused}), flush=True)
         if stop.requested:
             return 130
         if not args.download_only and read_drive_cooldown(cooldown_path):
             return 75
-        return 3 if counts["error"] or cooldown_waiting or deferred_ids else 0
+        return 3 if counts["error"] or counts["paused"] or cooldown_waiting or deferred_ids or unfinished else 0
 
 
 def parser():
@@ -957,7 +1233,12 @@ def parser():
     ap.add_argument("--remote", help="rclone remote pointing to existing 04 Audio folder, e.g. etdrive:")
     ap.add_argument("--newest", type=int, default=20)
     ap.add_argument("--entire-queue", action="store_true", help="explicit second phase: every queue row, including Shorts/past streams and legacy rows")
-    ap.add_argument("--workers", type=int, choices=(1, 2, 3, 4), default=4)
+    ap.add_argument("--workers", type=int, choices=range(1, 9), default=4, help="bounded source download workers")
+    ap.add_argument("--upload-transfers", type=int, choices=(1, 2), default=2)
+    ap.add_argument("--upload-batch-items", type=int, choices=range(1, 17), default=8)
+    ap.add_argument("--upload-batch-seconds", type=float, default=10.0)
+    ap.add_argument("--ready-items", type=int, choices=range(1, 65), default=16,
+                    help="maximum combined downloading, ready, and uploading pairs")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--download-only", action="store_true", help="bounded local pilot; requires --limit")
@@ -986,6 +1267,8 @@ def main(argv=None):
         ap.error("local cap must be positive and <= 20 GB; optional item cap/free floor cannot be negative")
     if args.rate_mib <= 0 or args.min_interval < 0 or args.limit < 0 or args.http_chunk_mib < 0:
         ap.error("rate must be positive; interval and limit cannot be negative")
+    if not 0 <= args.upload_batch_seconds <= 300 or args.upload_batch_items > args.ready_items:
+        ap.error("batch wait must be 0..300 seconds and batch items cannot exceed ready-items")
     args.max_local_bytes, args.max_item_bytes = int(args.max_local_gb * 1e9), int(args.max_item_mb * 1e6)
     args.min_free_bytes, args.rate_bytes = int(args.min_free_gb * 1e9), args.rate_mib * 1024 * 1024
     args.http_chunk_bytes = int(args.http_chunk_mib * 1024 * 1024)

@@ -169,6 +169,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
+      put('cc-final-policy', data.operation.full_archive_requested ? 'Full archive follows the newest-50 tier.' : 'Final-round downloads are not enabled in this snapshot.');
       put('cc-local-storage', (data.storage.local_bytes / 1e9).toFixed(2) + ' / ' + number(data.storage.ceiling_bytes / 1e9) + ' GB');
       const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;
       const fill = document.getElementById('cc-storage-meter');
@@ -179,7 +180,8 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         const ordinal = document.createElement('span'); ordinal.className = 'cc-stage-order'; ordinal.textContent = String(i + 1).padStart(2, '0');
         const title = document.createElement('h3'); title.textContent = stage.label;
         const total = document.createElement('p'); total.className = 'cc-stage-total'; total.textContent = number(stage.total) + ' items';
-        const caption = document.createElement('p'); caption.className = 'cc-stage-caption'; caption.textContent = stage.key === 'final_index' ? 'Indexed · final round stays on hold' : number(stage.verified) + ' verified pairs' + (stage.state === 'waiting' ? ' · follows newest 20' : '');
+        const caption = document.createElement('p'); caption.className = 'cc-stage-caption'; caption.textContent = stage.key === 'final_index' ? 'Indexed · final round stays on hold' : number(stage.verified) + ' verified pairs' + (stage.state === 'waiting' ? (stage.key === 'final_archive' ? ' · follows newest 50' : ' · follows newest 20') : '');
+        if (stage.unavailable) caption.textContent += ' \u00b7 ' + number(stage.unavailable) + ' unavailable';
         item.append(ordinal, title, total, caption);
         if (stage.key !== 'final_index') { const progress = document.createElement('progress'); progress.max = Math.max(1, stage.total); progress.value = stage.verified; progress.setAttribute('aria-label', stage.label + ' verified pairs'); item.append(progress); }
         holder.append(item);

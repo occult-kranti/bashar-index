@@ -2,15 +2,16 @@
 
 ## Local Windows continuation, 2026-11-16
 
-PR #26 is merged on `main` at `afc77a4`; its branch is retained. The new ingestion work is on
+PR #28 is merged on `main` at `22d89f2`; the published dashboards are current. PR #26 and its branch are retained. The new ingestion work is on
 `feat/windows-drive-ingest`. The owner's current priority supersedes the older restart instructions below:
 collect native YouTube audio plus available metadata, newest 20 per tracked channel first, then newest 50,
-then index the remaining catalogue for a separate final download round. `RunAll` must not start the full
-archive automatically. Do not start transcription or the legacy collection loops for this task.
+then the entire remaining catalogue. The owner explicitly authorized the full archive after the dashboard release; `RunAll` now advances through all three receipt-gated phases. Do not start transcription or the legacy collection loops for this task.
 
-The local rclone remote `etdrive` is authenticated and points at the existing ET Channelers Archive.
+The local rclone remote `etdrive` points at the existing ET Channelers Archive. A dedicated Desktop
+OAuth client has been applied; Google reauthorization is pending after a browser error. Do not start
+new Drive transfers until that login succeeds.
 The working folder is outside Git. [`pipeline/WINDOWS_DRIVE.md`](pipeline/WINDOWS_DRIVE.md) gives the commands,
-recovery rules and Drive client setup. The launcher allows four workers, caps the working folder at 19 GB
+recovery rules and Drive client setup. The launcher separates source workers (default four, configurable up to eight) from two upload transfers, batches up to eight pairs, and caps the working folder at 19 GB
 (the owner's total local ceiling is 20 GB), and applies no project storage cap on Drive. Native audio uses
 no transcoding or GPU inference. A pilot audio upload was read back by size and MD5 before local deletion;
 ordinary 1 MiB HTTP range requests substantially improved a second pilot's download speed.
@@ -34,7 +35,7 @@ instructions for these files. Never overwrite the shared historical Drive ledger
 The initial four-worker run stopped on a confirmed Drive HTTP 403 `rateLimitExceeded` response. Two pilot
 pairs were verified and cleaned up; four complete local audio/metadata pairs were retained. The Drive
 cooldown prevents new upload/preflight requests until its wait expires; this is separate from YouTube's
-refusal rest period. Resume the new phase launcher after Drive access recovers, draining retained pairs first.
+refusal rest period. Resume the new phase launcher after Drive access recovers, draining retained pairs first. A later bounded prefetch added eight new pairs: 12 await upload, two are verified on Drive, and local usage was about 0.45 GB. These are dated observations, not a live job claim. The shared rclone OAuth client still hit rate limits; the owner is setting up a dedicated Desktop OAuth client. The new bounded supervisor preserves cooldown deadlines and a persisted retry budget. The private catalog uses a compressed full baseline plus changed-item deltas and hash-verified manifests; see `pipeline/ARCHIVE_CATALOG.md`.
 
 ## Dashboard interface update - 16 November 2026
 

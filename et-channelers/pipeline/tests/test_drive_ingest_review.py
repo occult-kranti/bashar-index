@@ -207,6 +207,9 @@ class ReviewCase(unittest.TestCase):
         drive = Mock()
         drive.stat.side_effect = lambda remote: self.metadata(
             record["metadata"] if remote.endswith(".info.json") else record)
+        drive.stat_batch.side_effect = lambda remote, paths, manifest: {
+            path: dict(self.metadata(record["metadata"] if path.endswith(".info.json") else record), ID=path)
+            for path in paths}
         with patch.object(ingest, "Rclone", return_value=drive), \
                 patch.object(ingest, "extract_audio") as download:
             result = ingest.run(args, [row, waiting])

@@ -41,6 +41,22 @@ class BuildTests(unittest.TestCase):
 
 
 class StatusExportTests(unittest.TestCase):
+    def test_supervisor_backoff_and_full_archive_plan_are_public_aggregates(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'sync').mkdir()
+            (root / 'sync/drive_ingest_resume_state.json').write_text(json.dumps({
+                'schema_version': 2, 'mode': 'RunAll', 'download_workers': 6,
+                'state': 'waiting_for_drive_cooldown', 'until_epoch': 1800001200,
+                'private_log': 'SECRET FILE', 'supervisor_pid': 1234}))
+            result = ingestion_status.snapshot(root, now=1800000000)
+        self.assertEqual(result['operation']['state'], 'cooldown')
+        self.assertEqual(result['operation']['workers'], 6)
+        self.assertTrue(result['operation']['full_archive_requested'])
+        self.assertEqual(result['stages'][-1]['key'], 'final_archive')
+        self.assertNotIn('SECRET FILE', json.dumps(result))
+        self.assertNotIn('supervisor_pid', json.dumps(result))
+
     def test_private_fields_never_enter_public_counts_and_audio_alone_is_not_a_pair(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

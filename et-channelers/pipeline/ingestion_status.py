@@ -9,6 +9,11 @@ import json
 import os
 from pathlib import Path
 
+try:
+    from .drive_ingest import terminal_unavailable
+except ImportError:  # direct command-line execution
+    from drive_ingest import terminal_unavailable
+
 
 def stamp(value=None):
     return dt.datetime.fromtimestamp(value, dt.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z") \
@@ -54,6 +59,7 @@ def snapshot(root, now=None):
                 if isinstance(record, dict) and record.get("video_id"):
                     latest[record["video_id"]] = record
     verified = {key for key, rec in latest.items() if pairs_recorded(rec)}
+    unavailable = {key for key, rec in latest.items() if terminal_unavailable(rec)}
     audio = {key for key, rec in latest.items() if rec.get("bytes", 0) and rec.get("sha256")}
     twenty, channels = queue_ids(root, ("queue_newest20_enriched.csv", "queue_newest20.csv"))
     fifty, _ = queue_ids(root, ("queue_newest50_enriched.csv", "queue_newest50.csv"))
@@ -65,8 +71,18 @@ def snapshot(root, now=None):
         cooldown = read_object(root / "sync" / "drive_cooldown.json")
     until = cooldown.get("until_epoch")
     until = float(until) if isinstance(until, (int, float)) and 0 < until < 253402300799 else None
+    supervisor = read_object(root / "sync" / "drive_ingest_resume_state.json")
+    configured = supervisor.get("schema_version") == 2
+    archive_all = configured and supervisor.get("mode") in {"RunAll", "RunFinal"}
+    workers = supervisor.get("download_workers") if configured else 4
+    workers = workers if type(workers) is int and 1 <= workers <= 8 else 4
+    retry = supervisor.get("until_epoch") if configured else None
+    if type(retry) in (int, float) and 0 < retry < 253402300799:
+        until = max(until or 0, retry)
+    halted = configured and supervisor.get("state") in {
+        "stopped", "retry_budget_exhausted", "stopped_after_nonquota_result"}
     state = "paused" if (root / "sync" / "STOP_DRIVE_INGEST").exists() else \
-        "cooldown" if until and until > now else "ready" if latest else "unknown"
+        "paused" if halted else "cooldown" if until and until > now else "ready" if latest else "unknown"
     local_bytes = 0
     for base, dirs, files in os.walk(root, followlinks=False):
         dirs[:] = [name for name in dirs if not (Path(base) / name).is_symlink()]
@@ -77,19 +93,27 @@ def snapshot(root, now=None):
                     local_bytes += path.stat().st_size
             except OSError:
                 pass
-    complete20, complete50 = bool(twenty) and twenty <= verified, bool(fifty) and fifty <= verified
+    resolved = verified | unavailable
+    complete20, complete50 = bool(twenty) and twenty <= resolved, bool(fifty) and fifty <= resolved
     return {"schema_version": 1, "generated_at": stamp(now), "scope": "local_youtube_collection",
-            "operation": {"state": state, "retry_after": stamp(until) if until else None, "workers": 4},
+            "operation": {"state": state, "retry_after": stamp(until) if until else None,
+                          "workers": workers, "full_archive_requested": archive_all},
             "counts": {"verified_pairs": len(verified), "audio_downloaded": len(audio),
+                       "unavailable": len(unavailable),
                        "awaiting_upload": len(audio - verified), "channels": channels,
                        "indexed_total": len(full | twenty | fifty), "final_round_indexed": len(remaining)},
             "storage": {"local_bytes": local_bytes, "ceiling_bytes": 19_000_000_000},
             "stages": [{"key": "newest20", "label": "Newest 20", "total": len(twenty),
-                        "verified": len(twenty & verified), "state": "complete" if complete20 else "in_progress"},
+                        "verified": len(twenty & verified), "unavailable": len(twenty & unavailable),
+                        "state": "complete" if complete20 else "in_progress"},
                        {"key": "newest50", "label": "Extend to 50", "total": len(fifty),
-                        "verified": len(fifty & verified), "state": "complete" if complete50 else "in_progress" if complete20 else "waiting"},
-                       {"key": "final_index", "label": "Index the remainder", "total": len(remaining),
-                        "verified": len(remaining & verified), "state": "indexed" if remaining else "waiting"}]}
+                        "verified": len(fifty & verified), "unavailable": len(fifty & unavailable),
+                        "state": "complete" if complete50 else "in_progress" if complete20 else "waiting"},
+                       {"key": "final_archive" if archive_all else "final_index",
+                        "label": "Archive the remainder" if archive_all else "Index the remainder", "total": len(remaining),
+                        "verified": len(remaining & verified), "unavailable": len(remaining & unavailable),
+                        "state": ("complete" if remaining and remaining <= resolved else "in_progress" if complete50 else "waiting")
+                                 if archive_all else "indexed" if remaining else "waiting"}]}
 
 
 def main(argv=None):
