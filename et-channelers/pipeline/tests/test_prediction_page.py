@@ -4,7 +4,9 @@ quote, a 6% item share, a private path, a questioner pattern, an audio link, an 
 once, the sort order, the public-address rules, the share budget, the counts table without text, the page
 parsing as HTML with every quote present once, and the contract of the interactive page (one external script, no
 innerHTML or storage, dark-token parity, the hash grammar round-tripped in node when node is present, the CSV
-columns, the legend, the table, the no-d3 fallback and the narrow-screen CSS).
+columns, the legend, the table, the no-d3 fallback and the narrow-screen CSS). Round two adds the full-screen stage, the
+spot, the years-ahead and probe facets, the lead lines, the help dialog and the pointer extras, each pinned by its markup,
+CSS and script contract and by the hash round trip.
 
     python3 -I -m unittest discover -s et-channelers/pipeline/tests -p test_prediction_page.py -v
 """
@@ -492,7 +494,7 @@ class PageContractTests(unittest.TestCase):
         self.assertIn("@media (forced-colors: active)", pp.CSS)
 
     def test_hash_keys_are_quoted_in_the_js(self):
-        self.assertEqual(pp.HASH_KEYS, ("p", "k", "f", "s", "d", "e", "b", "q", "x", "w", "g", "v", "o", "i"))
+        self.assertEqual(pp.HASH_KEYS, ("p", "k", "f", "s", "d", "e", "b", "a", "y", "q", "x", "w", "g", "v", "o", "i", "l", "fs"))
         for k in pp.HASH_KEYS:
             self.assertIn(f"'{k}'", pp.JS, k)
         self.assertIn("var HASH_KEYS = ['" + "', '".join(pp.HASH_KEYS) + "'];", pp.JS)
@@ -512,7 +514,7 @@ class PageContractTests(unittest.TestCase):
     def test_hash_grammar_round_trips_in_node(self):
         script = self._hash_block() + r"""
 var meta = {people: ['darryl-anka', 'zed-quorn'], decades: ['pre', '2020', '2030'], said: ['none', '1980', '2020'],
-            basis: ['published', 'title', 'address', 'none'], n: 480, FULL: [1920, 2080], DEFAULT: [1985, 2055]};
+            basis: ['published', 'title', 'address', 'none'], ahead: ['0', '1', '5', 'none'], n: 480, FULL: [1920, 2080], DEFAULT: [1985, 2055]};
 function rt(h) { return serializeHash(parseHash(h, meta), meta); }
 function eq(a, b) { if (a !== b) { throw new Error(JSON.stringify(a) + ' !== ' + JSON.stringify(b)); } }
 eq(rt('#p=darryl-anka&x=2020-2040&w=1&g=said'), '#p=darryl-anka&x=2020-2040&w=1&g=said');
@@ -537,7 +539,23 @@ eq(rt(''), '');
 eq(parseHash('#i=479', meta).i, 479);
 eq(parseHash('#i=480', meta).i, null);
 eq(parseHash('#q=' + encodeURIComponent('x'.repeat(300)), meta).q.length, 100);
+eq(rt('#q=' + encodeURIComponent('a'.repeat(99) + '\uD83D\uDE00' + 'b')), '#q=' + encodeURIComponent('a'.repeat(99) + '\uD83D\uDE00'));   // cut by code points, never inside a pair
+eq(cleanQ('x\uD83Dy'), 'xy');                              // a lone surrogate is dropped, so the writer never throws
+eq(cleanQ('\uD83D\uDE00').length, 2);
+eq(serializeHash(parseHash('#q=' + encodeURIComponent('\uD83D\uDE00'), meta), meta), '#q=' + encodeURIComponent('\uD83D\uDE00'));
 eq(JSON.stringify(parseHash('#s=1&w=1', meta).x), JSON.stringify([1985, 2055]));
+eq(rt('#fs=1'), '#fs=1');                                 // full screen (the expanded mode from a link)
+eq(rt('#fs=0'), '');
+eq(rt('#i=3&fs=1&v=table'), '#v=table&i=3&fs=1');         // fs is written last
+eq(rt('#a=5,0&y=2030&l=1&fs=1'), '#a=0,5&y=2030&l=1&fs=1'); // years ahead in band order, the probe year, lead lines
+eq(rt('#y=1800'), '');                                    // a probe year outside the axis is ignored
+eq(rt('#y=2500'), '');
+eq(rt('#y=203'), '');
+eq(rt('#g=ahead'), '#g=ahead');
+eq(rt('#l=0&fs=0'), '');
+eq(rt('#a=7'), '');
+eq(parseHash('#y=2030', meta).y, 2030);
+eq(parseHash('#x=2020-2040', meta).y, null);
 console.log('ok');
 """
         with tempfile.TemporaryDirectory() as d:
@@ -568,18 +586,23 @@ console.log('ok');
 
     def test_legend_table_and_chart_markup(self):
         legend = re.search(r'<ul id="legend"[^>]*>(.*?)</ul>', self.page, re.S).group(1)
-        self.assertEqual(legend.count("<li>"), 8)
-        for s in ("filled circle", "filled diamond", "hollow mark", "thin ring", "bar: target span", "triangle", "rounded pill", "dashed line"):
+        self.assertEqual(legend.count("<li>"), 10)
+        for s in ("filled circle", "filled diamond", "hollow mark", "thin ring", "bar: target span", "triangle", "rounded pill", "dashed line",
+                  "hairline", "solid line"):
             self.assertIn(s, legend)
         for i in ("minimap", "caveat-mini", "no-d3", "chart-help", "chart-status", "chart-svg", "chart-axis", "chartbox", "chart-scroll",
                   "table", "tablewrap", "empty", "toolbar", "q", "count", "group", "follow", "legend", "timeline-section", "groups",
-                  "years", "caveat", "facts", "active", "clear-all", "group-nav", "zoom-in", "zoom-out", "zoom-fit", "zoom-now", "zoom-reset"):
+                  "years", "caveat", "facts", "active", "clear-all", "group-nav", "zoom-in", "zoom-out", "zoom-fit", "zoom-now", "zoom-reset",
+                  "stage", "statements-section", "fs-toggle", "fs-scrim", "facets-h", "facets-close", "caveat-more", "caveat-more-1",
+                  "caveat-more-2", "list-toggle", "list-n", "share", "share-status", "share-fallback",
+                  "spot", "spot-h", "spot-body", "spot-close", "spot-prev", "spot-next", "spot-card", "spot-zoom", "spot-person", "spot-status",
+                  "leads-toggle", "probe-year", "probe-clear", "help", "help-h", "help-btn", "help-close"):
             self.assertEqual(self.page.count(f'id="{i}"'), 1, i)
         self.assertIn('<svg id="chart-svg"', self.page)
         self.assertIn('tabindex="0" role="group" aria-roledescription="zoomable timeline"', self.page)
         self.assertIn('<table id="table"><caption class="sr-only">', self.page)
         self.assertIn("<thead></thead><tbody></tbody><tfoot></tfoot>", self.page)   # never server-rendered: quotes stay once
-        self.assertEqual(len(re.findall(r'<details class="facet" data-facet="([pkfdeb])"', self.page)), 6)
+        self.assertEqual(len(re.findall(r'<details class="facet" data-facet="([pkfdebay])"', self.page)), 8)
         self.assertNotIn("people-select", self.page)
         self.assertIn('<a class="skip" href="#timeline-section">', self.page)
         self.assertIn("about 56% of windowed candidates (95% interval about 47% to 65%)", self.page)
@@ -589,7 +612,7 @@ console.log('ok');
         self.assertEqual(self.page.count(">on the timeline</button>"), len(self.records))
         cards = re.findall(r'<li class="st" id="s(\d+)" data-i="(\d+)" data-start="(\d+)" data-end="(\d+)" data-person="([\w-]+)" '
                            r'data-kind="(source|made)" data-said="(none|\d{4})" data-cert="(strong|conditional|hedged|plain)" '
-                           r'data-basis="(published|title|address|none)">', self.page)
+                           r'data-basis="(published|title|address|none)" data-ahead="(0|1|3|5|10|20|none)">', self.page)
         self.assertEqual(len(cards), len(self.records))
         self.assertEqual([c[0] for c in cards], [str(i) for i in range(len(self.records))])
         by_item = {r["item_id"]: r for r in self.records}
@@ -609,7 +632,7 @@ console.log('ok');
         self.assertIn("2 statements · 1 hedged · 1 conditional · earliest target 2025 · latest 2035 · 1 from source texts, 1 from speech-to-text", self.page)
         self.assertIn('<svg class="mini" viewBox="0 0 72 14" width="72" height="14" role="img" aria-label="2 statements, targets 2025 to 2035">', self.page)
         self.assertIn('<div id="groups" data-group="person">', self.page)
-        self.assertIn('<select id="group" name="g">', self.page)
+        self.assertIn('<span class="sel-t">Rows and groups</span> <select id="group" name="g" aria-label="rows and groups">', self.page)
 
     def test_facet_chips_count_and_label_without_text(self):
         facets = re.search(r'<div class="trow trow-2" id="facets">(.*?)</div>\s*<div class="trow trow-3">', self.page, re.S).group(1)
@@ -619,6 +642,18 @@ console.log('ok');
         self.assertIn('name="s" value="1"><span class="cname">strong wording only</span><span class="ccount num">1</span>', facets)
         self.assertNotIn("lanterns", facets)
         self.assertNotIn("harbour", facets)
+        # years ahead: counted chips in band order, bands present only; the probe facet has no chips, a bounded number input
+        self.assertIn('name="a" value="5"><span class="cname">5 to 9 years</span><span class="ccount num">1</span>', facets)     # 2031 said 2024
+        self.assertIn('name="a" value="10"><span class="cname">10 to 19 years</span><span class="ccount num">1</span>', facets)  # by 2030 said 2014
+        self.assertIn('name="a" value="none"><span class="cname">date said not known</span><span class="ccount num">1</span>', facets)
+        self.assertNotIn('name="a" value="0"', facets)
+        self.assertLess(facets.index('name="a" value="5"'), facets.index('name="a" value="10"'))
+        self.assertLess(facets.index('name="a" value="10"'), facets.index('name="a" value="none"'))
+        probe = re.search(r'<details class="facet" data-facet="y">(.*?)</details>', facets, re.S).group(1)
+        self.assertNotIn("chip-check", probe)
+        self.assertIn('<input type="number" id="probe-year" name="y" min="1920" max="2080" step="1" inputmode="numeric">', probe)
+        self.assertIn('<button type="button" id="probe-clear" class="btn">clear</button>', probe)
+        self.assertIn('<option value="ahead">by years ahead</option>', self.page)
 
     def test_no_d3_fallback_markup_and_no_js_fallback(self):
         self.assertIn('<p id="no-d3" class="muted" hidden>The chart library did not load; the table and the lists below are complete.</p>', self.page)
@@ -696,7 +731,7 @@ console.log('ok');
         self.assertIn("var w = scroll.clientWidth || (box.clientWidth - 8); W = Math.max(320, w || 800);", pp.JS)
         self.assertIn(".attr('width', W).attr('height', 30).style('width', W + 'px');", pp.JS)
         self.assertIn(".attr('height', miniH).style('width', W + 'px');", pp.JS)
-        self.assertIn("if (Math.abs(scroll.clientWidth - W) > 2) { layout(); renderNow(); } }, 150); }).observe(scroll);", pp.JS)
+        self.assertIn("if (Math.abs(scroll.clientWidth - W) > 2 || (state.fs && Math.abs(scroll.clientHeight - HV) > 2)) { layout(); renderNow(); } }, 150); }).observe(scroll);", pp.JS)
 
     def test_row_labels_are_cached_ordered_and_found_by_key(self):
         self.assertIn("var labelCache = {};", pp.JS)
@@ -713,6 +748,91 @@ console.log('ok');
         self.assertIn("if (relayout) return;", pp.JS)
         self.assertIn("requestAnimationFrame(function () { if (pending) render(); });", pp.JS)
         self.assertIn("if (sig === lastTableSig && tbody.rows.length === rows.length) return;", pp.JS)
+
+    def test_ahead_band(self):
+        r = dict(self.records[0])
+        for said, lo, hi, band in (("", 2031, 2031, "none"), ("2031", 2031, 2031, "0"), ("2031", 2020, 2020, "0"), ("2029", 2031, 2031, "1"),
+                                   ("2027", 2031, 2031, "3"), ("2022", 2031, 2031, "5"), ("2012", 2031, 2031, "10"), ("2000", 2031, 2031, "20"),
+                                   ("2024-03", None, 2030, "5"), ("2024", 2025, 2035, "10")):
+            r["date_said"], r["window_lo"], r["window_hi"] = said, lo, hi
+            self.assertEqual(pp.ahead_band(r), band, (said, lo, hi))
+        # the JS mirrors the thresholds
+        self.assertIn("d.aheadBand = d.ahead === null ? 'none' : (d.ahead <= 0 ? '0' : d.ahead <= 2 ? '1' : d.ahead <= 4 ? '3' : d.ahead <= 9 ? '5' : d.ahead <= 19 ? '10' : '20');", pp.JS)
+        self.assertEqual(pp.AHEAD_ORDER, ("0", "1", "3", "5", "10", "20", "none"))
+        for k, label in pp.AHEAD_LABELS.items():
+            self.assertIn("'" + label + "'", pp.JS, label)
+
+    def test_probe_and_lead_lines_contract(self):
+        self.assertIn("function coversYear(d, y) { return d.window_lo === null ? (y <= d.end && (d.saidYear === null || y >= d.saidYear)) : (d.start <= y && y <= d.end); }", pp.JS)
+        for s in ("case 'y': return state.y === null || coversYear(d, state.y);", "case 'a': return !state.a.length || state.a.indexOf(d.aheadBand) >= 0;",
+                  "var FACETS = ['p', 'k', 'f', 's', 'd', 'e', 'b', 'a', 'y', 'q'];", "ahead: { key: function (d) { return d.aheadBand; }, keys: AHEAD_KEYS",
+                  "else if (g === 'ahead') state.a = [k];", "tok('y', '', 'Expected for ' + state.y)", "'Ahead: ' + AHEAD_LABEL[k]",
+                  "' · windows cover ' + state.y", "var probeLine = svg.append('line').attr('class', 'probe-line')", "probeLabel.text(ptxt);",
+                  "var ptxt = py + ' · ' + pn", "miniProbe", "leadsAllG = plotG.append('g').attr('class', 'leads-all')",
+                  "if (state.l) visItems.forEach(", "else if (k === 'l') toggleLeads(); else if (k === 'y') probeFocus();",
+                  "$('#leads-toggle').addEventListener('click', toggleLeads);", "if (st.l) parts.push('l=1');", "if (st.y !== null) parts.push('y=' + st.y);",
+                  "case 'a': st.a = list(meta.ahead); break;"):
+            self.assertIn(s, pp.JS, s)
+        # the lead-line layer paints under the hover lead, the probe line over the row labels
+        chart = pp.JS.split("function initChart()")[1]
+        self.assertLess(chart.index("attr('class', 'leads-all')"), chart.index("attr('class', 'leads')"))
+        self.assertLess(chart.index("attr('class', 'rowlabels')"), chart.index("attr('class', 'probe-line')"))
+        for s in (".lead-all{stroke:var(--fg-faint);stroke-width:1}", ".probe-line{stroke:var(--fg);stroke-width:1.5}", ".probe-mini{stroke:var(--fg);stroke-width:1}",
+                  ".probe-line,.probe-mini{stroke:Highlight}", ".lead-all{stroke:GrayText}"):
+            self.assertIn(s, pp.CSS, s)
+        self.assertIn("a for years ahead, y for the probe year", self.page)
+
+    def test_help_dialog_keys_and_contrast(self):
+        self.assertEqual(self.page.count("<dialog"), 1)
+        dialog = re.search(r'<dialog id="help" class="help" aria-labelledby="help-h">(.*?)</dialog>', self.page, re.S).group(1)
+        self.assertRegex(dialog, r'<h2 id="help-h"[^>]*>Keyboard shortcuts and help</h2>')
+        self.assertEqual(dialog.count('<th scope="col">'), 3)
+        self.assertGreaterEqual(dialog.count("<kbd>"), 25)
+        for s in ("<kbd>Shift</kbd>+<kbd>F</kbd>", "<kbd>?</kbd>", "<kbd>j</kbd> <kbd>k</kbd>", "<kbd>l</kbd>", "<kbd>y</kbd>", "Shift+drag zooms",
+                  "Shift+scroll or a sideways trackpad swipe pans", "fs=1 opens the expanded mode", "Escape leaves at once", "The address after # holds the whole view",
+                  '<button type="button" id="help-close" class="btn">Close</button>'):
+            self.assertIn(s, dialog, s)
+        self.assertNotIn("<script", dialog)
+        stage = re.search(r'<div id="stage">(.*?)<div id="fs-scrim" hidden></div>\n</div>', self.page, re.S).group(1)
+        self.assertIn('<dialog id="help"', stage)                         # inside the stage, so never inert in full screen
+        self.assertIn('<button type="button" id="help-btn" class="btn" aria-haspopup="dialog" aria-controls="help"', self.page)
+        self.assertIn("Shift+F is full screen; ? lists every shortcut.", self.page)
+        for s in ("function openHelp(opener)", "help.showModal()", "help.setAttribute('open', '')", "help.addEventListener('close', helpBack);",
+                  "else if (e.key === '?') { e.preventDefault(); openHelp(e.target); }", "function helpOpen() { return help.hasAttribute('open'); }"):
+            self.assertIn(s, pp.JS, s)
+        code = pp.JS.split("var help = $('#help')")[1].split("$('#help-close')")[0]
+        for bad in ("innerHTML", "insertAdjacentHTML", "cloneNode", ".html("):
+            self.assertNotIn(bad, code)
+        self.assertIn("#stage.is-fs #chart-help{display:none}", pp.CSS)
+        self.assertIn(".help::backdrop{background:var(--scrim", pp.CSS)
+        self.assertIn("kbd{font-family:var(--font-mono)", pp.CSS)
+        # text never set in --fg-faint (below 4.5:1); the token stays for graphics
+        for rule in (".tip .hint{", ".mini-axis text{", ".chip-check[data-zero]{", ".seg label:has(input:disabled){"):
+            block = pp.CSS.split(rule)[1].split("}")[0]
+            self.assertNotIn("--fg-faint", block, rule)
+            self.assertIn("--fg-muted", block, rule)
+        self.assertIn(".stackbar{fill:var(--fg-faint)", pp.CSS)
+
+    def test_pointer_extras_inside_the_chart(self):
+        chart = pp.JS.split("function initChart()")[1].split("return { render: schedule")[0]
+        # Shift+wheel and a sideways swipe pan: a non-passive listener registered before the zoom, so d3's filter never sees them
+        self.assertIn("svgNode.addEventListener('wheel', function (e) {", chart)
+        self.assertLess(chart.index("svgNode.addEventListener('wheel'"), chart.index("svg.call(zoom)"))
+        self.assertIn("}, { passive: false });", chart)
+        self.assertIn("e.preventDefault(); e.stopImmediatePropagation();", chart)
+        self.assertIn("if (e.ctrlKey || e.metaKey || !(e.shiftKey || horiz)) return;", chart)   # plain wheel scrolls, Ctrl+wheel zooms when armed
+        self.assertIn("pan(delta / plotW * 1.5);", chart)
+        # Shift+drag rubber band: the zoom filter rejects it, 8px or more sets the window, Escape cancels
+        self.assertIn("if (ev.type === 'mousedown' && ev.shiftKey) return false;", chart)
+        self.assertIn("var rubber = svg.append('rect').attr('class', 'rubber')", chart)
+        self.assertIn("if (apply && Math.abs(b - a) >= 8) {", chart)
+        self.assertIn("setDomain([x.invert(Math.min(a, b)), x.invert(Math.max(a, b))], true);", chart)
+        self.assertIn("if (e.key === 'Escape' && rubberA !== null) { endRubber(e, false); e.preventDefault(); }", chart)
+        self.assertIn("e.pointerType === 'touch'", chart)                 # touch keeps the one- or two-finger rule
+        self.assertIn(".rubber{fill:var(--brush);stroke:var(--accent);stroke-width:1", pp.CSS)
+        self.assertIn(".rubber{fill:Highlight;fill-opacity:.3}", pp.CSS)
+        # no new hash keys and no new tokens for these
+        self.assertEqual(len(pp.HASH_KEYS), 18)
 
     def test_said_label_is_escaped_in_the_card(self):
         r = dict(self.records[0]); r["date_said"] = "2024<&>"; r["date_basis"] = "title"
@@ -736,6 +856,105 @@ console.log('ok');
 
     def test_page_size_within_limit_with_generous_margin(self):
         self.assertLess(len(self.page.encode("utf-8")), pp.PAGE_LIMIT // 4)
+
+    # ---- round two: full screen
+    def test_stage_wraps_the_toolbar_the_timeline_and_the_statements(self):
+        stage = re.search(r'<div id="stage">(.*?)<div id="fs-scrim" hidden></div>\n</div>', self.page, re.S).group(1)
+        for s in ('<form id="toolbar"', '<section id="timeline-section"', '<section id="statements-section" aria-labelledby="statements">'):
+            self.assertIn(s, stage, s)
+        self.assertNotIn('<details id="years"', stage)                   # the year index, the methods and the footer stay outside
+        self.assertNotIn("<h2 id=\"methods\">", stage)
+        self.assertIn("#stage{display:contents}", pp.CSS)                # no box of its own outside full screen: the toolbar stays sticky
+        self.assertIn('<button type="button" id="fs-toggle" class="btn needs-d3" aria-pressed="false" aria-keyshortcuts="Shift+F"', self.page)
+        self.assertIn('<button type="button" id="list-toggle" class="btn fs-only" aria-pressed="true"', self.page)
+        self.assertIn('<div class="sheet-head"><b id="facets-h">Filters</b><button type="button" id="facets-close" class="btn">Close</button></div>', self.page)
+        self.assertIn('<div id="caveat-more" class="caveat-more" hidden><p id="caveat-more-1"></p><p id="caveat-more-2"></p></div>', self.page)   # filled at runtime: the prose exists once
+        self.assertEqual(self.page.count("about 56% of windowed candidates are real predictions"), 2)   # #caveat-mini and its title only, plus the figure
+        self.assertIn('<div class="ch-main">', self.page)
+        self.assertIn('<div class="ch-more">', self.page)
+        self.assertIn('<span class="long">list and table follow the window</span><span class="short">follow the window</span>', self.page)
+
+    def test_full_screen_css_contract(self):
+        self.assertIn("#stage.is-fs{display:grid", pp.CSS)
+        self.assertIn("height:100vh;height:100dvh", pp.CSS)
+        self.assertIn("html.fs,html.fs body{overflow:hidden", pp.CSS)
+        self.assertIn("html.fs-fallback body{position:fixed;inset:0;width:100%}", pp.CSS)
+        caveats = re.findall(r"#stage\.is-fs #caveat-mini\{[^}]*\}", pp.CSS)
+        self.assertEqual(len(caveats), 1)
+        self.assertIn("white-space:normal;overflow:visible", caveats[0])  # the caveat wraps in full in full screen: no clamp, no ellipsis
+        for bad in ("display:none", "line-clamp", "nowrap", "ellipsis", "overflow:hidden"):
+            self.assertNotIn(bad, caveats[0], bad)
+        self.assertNotIn("#stage.is-fs #fs-toggle{order:-1}", pp.CSS)      # the focus order is the visual order
+        self.assertIn("#stage.is-fs #legend{display:grid;grid-auto-flow:column;grid-template-rows:auto auto", pp.CSS)   # two rows at 48rem+, scrolling
+        self.assertIn("#stage.is-fs.v-table > #statements-section{display:none}", pp.CSS)   # table view: no empty list column or sheet
+        self.assertIn("#stage.is-fs.v-table #list-toggle{display:none}", pp.CSS)
+        self.assertIn("@media (min-width:64rem) and (max-width:79.99rem){", pp.CSS)
+        self.assertNotIn("#legend{display:none", pp.CSS)                  # the legend is a scrolling row on phones, never hidden
+        self.assertIn("backdrop-filter:none", pp.CSS)                     # a filtered toolbar would become the containing block of the fixed sheet
+        self.assertIn("#stage.is-fs > #toolbar{", pp.CSS)
+        self.assertIn("#stage.is-fs.list-on{grid-template-columns:minmax(0,1fr) var(--panel-w)}", pp.CSS)
+        self.assertIn("#stage.is-fs > #statements-section{position:fixed;left:0;right:0;bottom:0", pp.CSS)
+        self.assertIn("#fs-scrim{position:fixed;inset:0;background:var(--scrim);z-index:var(--z-scrim)}", pp.CSS)
+        self.assertIn("@media (min-width:64rem)", pp.CSS)
+        self.assertIn("window.matchMedia('(min-width:64rem)')", pp.JS)
+        for tok in ("--scrim:", "--z-stage:", "--z-scrim:", "--z-sheet:", "--panel-w:"):
+            self.assertIn(tok, pp.CSS, tok)
+        light = re.search(r":root\{(.*?)\}", pp.CSS, re.S).group(1)
+        self.assertIn("--scrim:", light)                                 # the dark blocks are covered by the parity test
+        self.assertIn(":root[data-theme=\"dark\"]{", pp.CSS)             # the theme attribute still switches the tokens
+        self.assertIn('@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){', pp.CSS)
+        # the pinned rules of round one are byte-identical
+        self.assertIn("@media (pointer:coarse){.zoomctl button{min-width:40px;min-height:40px}}", pp.CSS)
+        self.assertIn(".wrap{max-width:76rem;margin:0 auto;padding:0 16px}", pp.CSS)
+        self.assertEqual(re.search(r"#chart-scroll\{[^}]*\}", pp.CSS).group(0), "#chart-scroll{max-height:72vh;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;position:relative}")
+
+    def test_full_screen_js_contract(self):
+        for s in ("function enterFs(native)", "function leaveFs(reason)", "'fullscreenchange'", "requestFullscreen", "exitFullscreen",
+                  ".inert = on", "root.classList.add('fs-fallback')", "stage.classList.add('is-fs')", "if (state.fs) enterFs(false);",
+                  "leaveFs('escape')", "leaveFs('browser')", "leaveFs('hash')", "if ((e.key === 'F' || e.key === 'f') && e.shiftKey)", "navigator.clipboard.writeText",
+                  "function toggleFs() { if (!chart) return;", "if (state.fs && state.v !== 'table') setList(true);", "classList.toggle('v-table', state.v === 'table')",
+                  "itype !== 'checkbox' && itype !== 'radio'", "function sheetInert(on)", "function ensheet() { setList(false);", "help.scrollTop = 0;",
+                  "k === 'f' && !ev.shiftKey",
+                  "copy is not available here; the address is selected below", "fb.select()", "setList(column())",
+                  "ev.touches.length >= (state.fs ? 1 : 2)", "rowH = state.fs ? Math.max(base, Math.min(72, Math.floor((HV - 12) / n))) : base;",
+                  "L = W >= 1440 ? 200 : 150", "'orientationchange'", "case 'fs': st.fs = v === '1'; break;", "if (st.fs) parts.push('fs=1');"):
+            self.assertIn(s, pp.JS, s)
+        self.assertIn("if (!chart) state.fs = false;", pp.JS)             # no chart, no full screen (the toggle needs d3)
+        self.assertIn('<h2 id="help-h" tabindex="-1">', self.page)        # the help opens at its top
+        self.assertNotIn('aria-keyshortcuts="l"', self.page)              # l works with the chart focused only
+        self.assertNotIn("k === 'f' || k === 'F'", pp.JS)                 # fit is f alone, so Shift+F reaches the page
+        # the caveat text is copied from #caveat at runtime, never written twice into the source
+        self.assertIn("$('#caveat-more-1').textContent = ps[0] ? ps[0].textContent : ''", pp.JS)
+        # the Escape ladder is one document handler that skips what the svg already handled
+        ladder = pp.JS.split("doc.addEventListener('keydown', function (e) {")[-1]   # the last document keydown handler
+        self.assertIn("if (e.defaultPrevented) return;", ladder)
+        self.assertLess(ladder.index("helpOpen()"), ladder.index("leaveFs('escape')"))
+
+    # ---- round two: the spot, a pinned statement under the chart
+    def test_spot_markup_is_empty_in_the_source_and_filled_from_the_record(self):
+        self.assertIn('<aside id="spot" class="spot needs-js" aria-labelledby="spot-h" hidden tabindex="-1">', self.page)
+        self.assertIn('<div id="spot-body"></div>', self.page)                           # built at runtime: the quotes stay once in the source
+        self.assertIn('<h3 id="spot-h"></h3>', self.page)
+        self.assertIn('<p id="spot-status" class="sr-only" aria-live="polite"></p>', self.page)
+        self.assertIn("function renderSpot() {", pp.JS)
+        self.assertIn("applyPin(); renderSpot(); scheduleHash();", pp.JS)              # state.i is the single source of truth
+        body = pp.JS.split("function renderSpot() {")[1].split("$('#spot-close')")[0]
+        for s in ("windowLabel(d)", "markSample(d)", "d.person_name", "kindLabel(d)", "flagsOf(d)", "d.quote", "d.time_expr", "saidLabel(d)",
+                  "aheadText(d)", "d.item_id", "linkLabel(d)", "noLinkLabel(d)", "'labelled candidate'", "' of ' + VIEW_ORDER.length + ' in view'"):
+            self.assertIn(s, body, s)
+        for bad in ("innerHTML", "insertAdjacentHTML", "cloneNode"):
+            self.assertNotIn(bad, body)
+        self.assertIn("VIEW_ORDER = ORDER.filter(", pp.JS)
+        # a click on a mark pins without scrolling the page; the card path stays on Shift+click and the spot's button
+        self.assertIn("if (e.shiftKey && it.single) { showCard(it.d.i); return; }", pp.JS)
+        self.assertIn("$('#spot-card').addEventListener('click', function () { if (state.i !== null) showCard(state.i); });", pp.JS)
+        self.assertIn("tipPinned = null; if (COARSE) hideTip(); goTo(it.d.i);", pp.JS)   # one tap pins; no second tap
+        self.assertNotIn("tap again: open the card", pp.JS)
+        self.assertIn("'tap: pin, details below'", pp.JS)
+        self.assertIn("else if (k === 'j') spotStep(1); else if (k === 'k') spotStep(-1);", pp.JS)
+        self.assertIn("focusI: function (i) { return focusMark(stackOf[i] || ('i' + i)); }", pp.JS)
+        self.assertIn('#stage.is-fs #spot{flex:none;max-height:11rem;overflow:auto', pp.CSS)
+        self.assertIn('.spot[data-kind="source"]{border-left-color:var(--series-source)}', pp.CSS)
 
 if __name__ == "__main__":
     unittest.main()

@@ -494,6 +494,26 @@ as "skipped by rule", not as a failure.
   `select_episodes.py --relation own,host,file,archive --max-hours 250 --seed 20261113`: 3,324 rows, 2,976 already
   here, 348 new from 5 hosts, 174.2 h) started at 17:36 UTC (`download_enclosures.py --all --workers 3 --per-host 2
   --min-interval 1.5 --min-free-gb 3`, log `logs/backlog_download.log`); Drive rounds of 100 follow as it lands.
+* **Evening of 2026-11-16 (18:00 to 20:15 UTC): round 2 of the public page, the scout squad, three Codespace restarts,
+  and the move to the owner's own VS Code.** The public predictions page got its second round (`prediction_page.py`,
+  same guard; a workflow of three designers, a judge and an implementer, then checks by hand because the Codespace
+  kept restarting): browser full screen and an expanded mode (`fs=1` in the address), Filters and List sheets on
+  phones, a keyboard model with a help dialog (`?`), a probe year, lead lines, pinned statements with details under
+  the chart, `j`/`k` through the statements in view, Copy link, CSV download; 62 tests; the page is 973 KB and
+  renders with no script error at 1280 and 400 px (Playwright). A squad of 79 `et-source-scout` agents (one per
+  tracked person without a source outside YouTube) found 136 proposals for 60 people (47 certain, 35 likely, 54
+  candidates); the skeptic stage was cut short by the restarts, so nothing is registered: the proposals are in the
+  private `analysis/coverage/scout_proposals_2026-11-16.jsonl` and on the release `handoff-2026-11-14`, each with
+  its evidence and the file and row it belongs in. Drive: rounds `7f0dde3b` (31 of its 100 landed before the first
+  restart; the 31 recorded, the rest renumbered) and `8dfaaeb9` (100) went up, 5,523 files (27.9 GB) in 78 folders
+  at 18:40 UTC, the ledger on the release; round `65a4647c` (100 of 147 waiting files) is staged under
+  `~/et-drive/stage-all` and not uploaded. The Codespace VM restarted at about 18:11, 19:05 and 19:44 UTC (the
+  `/tmp` volume came back empty each time; no OOM kill was recorded), ending every job and workflow; the jobs were
+  restarted at 19:46 UTC and the owner then asked for no more restarts and for a handoff to their own VS Code
+  (section 9). Lessons: keep the "i id" lines of a Drive round in `~/et-drive/stage-all/ids_<round>.txt` as they
+  arrive, so a break loses nothing; a resumed workflow replays its cached stages but a long review agent that is
+  killed three times never finishes, so do its checks by hand. The collection dashboard now has a local copy,
+  `dashboard/collection/index.html`, that reads the same tables from `plan/*.csv`.
 * **Speech-to-text restarted at 15:13 UTC on 2026-11-16** (`resume_jobs.sh` with the Drive hold and the backlog
   queue) once the backlog download of 389 episodes had finished (387 fetched, 2 failed). Disk: the root volume was
   at 3.2 GB free; 4.4 GB were freed (the Copilot cache, the pip caches, the local copy of the ArchiveShelf release
@@ -610,18 +630,29 @@ as "skipped by rule", not as a failure.
 
 ## 8. Order of work for the next session
 
-1. Set up and check (section 3), with the newer Drive ledger.
-2. YouTube (section 6.6) was decided on 2026-11-15: (b). Decide the commit email (6.7).
-3. Start the sync, the collection cycles, speech-to-text, the Drive hold and the podcast backlog (section 4:
-   `resume_jobs.sh` starts whatever is not running), sized to the machine. Copy the backlog to Drive in rounds.
-4. Bashar's sessions on Drive: done on 2026-11-15. Next, the owner's task (section 5): `--newest N` and the
-   three queues are done; the owner runs the newest 10, 20 and 50 on their computer, each tier is then stored
-   and put on Drive; then a timeline of predictions per channel. The rules pass is built and has run over
-   everything with text here; next is its model pass.
-5. Choose the speech-to-text engine (6.1). Start `keep_transcribing.sh` sized to the machine. Fix the disk
-   hold (section 7).
-6. Fold in the Kimi snapshot (ROADMAP phase 4b).
-7. After collection: the analyses of phases 7, 7a and 7c (`ANALYSIS_PLAN.md`).
+1. Set up and check (section 3): the token in `~/.config/et-channelers/github_token`, the private folder, the
+   state and the newer Drive ledger from the release `handoff-2026-11-14`, `sync_archive.py status`.
+2. Start what the machine can carry (section 4, `resume_jobs.sh`): the sync, the collection cycles,
+   speech-to-text sized to the cores, the Drive hold, and the podcast backlog round 3 (`jobs/queue_backlog_3.csv`,
+   136 episodes left at 19:50 UTC on 2026-11-16). The Codespace jobs were left running at 19:46 UTC and die with
+   the next restart; do not count on them.
+3. Drive: the staged round `65a4647c` and whatever round 3 adds. The Claude Drive connector is not available
+   outside Claude; use rclone with a one-time Google login (decision 6.5) or leave the Drive rounds to a Claude
+   session; `drive_stage.py` does everything but the upload.
+4. YouTube from the owner's own connection (section 5, "One command on your own computer" in
+   `pipeline/README.md`): the blackout-titled queue first, then the newest 10, 20 and 50 of every channel; store,
+   copy to Drive, rebuild the tables.
+5. The scouted sources: read `analysis/coverage/scout_proposals_2026-11-16.jsonl` (private; on the release),
+   check each "certain" and "likely" proposal against the person's own site, register feeds with
+   `find_feeds.py --only <ids> --all --check-links --merge`, sites as `sources/official_sites.csv` rows, text
+   pages with `list_site_pages.py --merge`, then fetch, queue and download (`select_episodes.py`,
+   `download_enclosures.py`).
+6. As text arrives: `prediction_timeline.py`, `prediction_page.py --publish-counts`, `theme_search.py --scope
+   newest10`, `keywords.py`; refresh the tables (`targets.py`, `sources_table.py`, `catalog.py --publish`,
+   `transcript_audio.py --publish-counts`) and the dashboard datasets.
+7. Choose the speech-to-text engine for the backlog (6.1, a GPU); the model pass over the prediction candidates
+   needs an API key and the owner's go-ahead (D14).
+8. Fold in the Kimi snapshot (ROADMAP phase 4b); after collection, the analyses of phases 7, 7a and 7c.
 
 The rules do not change:
 * audio and transcript text stay private, and quotes are at most 30 words;
@@ -630,39 +661,70 @@ The rules do not change:
 * nothing private goes into this repository or into an outbound request;
 * every change comes on a branch, with the three test suites and both guards passing before the merge.
 
-## 9. Prompt for the next session
+## 9. Prompt for the next session (the owner's own VS Code, 2026-11-16 evening)
 
-Paste this into Claude Code in the new Codespace, at `/workspaces/bashar-index`:
+Paste this into the coding agent (Codex or another) in VS Code, with the repository open at its root:
 
-> You are taking over the ET-channelers collection from an earlier Claude session, in a new 16 GB Codespace.
-> Act as team lead and owner of the repository and the Codespace; parallelise with agents where it helps.
-> Read `et-channelers/HANDOFF.md` first, then section 00 of `et-channelers/ROADMAP.md` and
-> `et-channelers/pipeline/README.md`.
+> You are taking over the ET-channelers collection and analysis (folder `et-channelers/` of this repository)
+> from a Claude Code session that ran in a GitHub Codespace until 2026-11-16, about 20:15 UTC. You now run on the
+> owner's own computer, which is the one machine that may fetch YouTube captions and audio. Act as the owner's
+> engineer and team lead: read before acting, keep the rules below, parallelise with agents where it helps, and
+> report counts and dates, never a sentence of the private texts.
 >
-> 1. Set up as in HANDOFF section 3. Ask me for the GitHub token and keep it in
->    `~/.config/et-channelers/github_token`; never print it or put it on a command line. Restore the state and
->    the memory files from the release `handoff-2026-11-14`, copy its newer `drive_manifest.jsonl` over the
->    restored one, pull the transcripts, the texts and Bashar's audio, and show me `sync_archive.py status`:
->    every kind should show `on_disk_not_stored` 0. Rebuild the tables and check that `drive_stage.py status`
->    shows 3,420 files on Drive.
-> 2. Run the three test suites in `et-channelers/pipeline/tests/` and both guards in `et-channelers/scripts/`.
-> 3. Size the jobs to the machine (`nproc`, `free -g`, `df -h`), then start the sync loop (with
->    `ET_HOLD_UNTRANSCRIBED=1`), the collection cycles (podcast feeds and episodes, creators' files, texts, tables)
->    and speech-to-text (HANDOFF section 4). Copy what arrives to my Drive in rounds while it is held on disk.
-> 4. All 903 Bashar sessions are already on my Drive. The next task is mine (HANDOFF section 5): the newest 10,
->    then 20, then 50 videos of every tracked channel, then a timeline of the predictions made on each channel.
->    `--newest N` and the three queues are done (HANDOFF section 5); the downloads run on my own computer. Pull
->    each tier I have stored, put it on my Drive with `drive_stage.py` (`plan`, `batches --link-dir <your
->    scratchpad>/drive_up`, `round --size 200`, the uploads, `done --round <the id round printed>`), and upload
->    the ledger to the handoff release after each round. Then transcribe each tier and build the timelines
->    (ANALYSIS_PLAN 5.6 and 12.4); they stay private.
-> 5. I chose HANDOFF 6.6 (b) on 2026-11-15: run YouTube steps with `ET_YOUTUBE_ROBOTS_OVERRIDE=1`. From the
->    Codespace only channel listings work; audio and captions get YouTube's bot check, and you never try to get
->    past it. Bring me decisions 6.1 to 6.5 and 6.7 when you reach them, with your recommendation.
-> 6. Keep `ROADMAP.md`, `HANDOFF.md` and the dashboard up to date; work on a branch, run the three test suites and
->    both guards before each merge, and push and merge as you go.
+> Read first, in this order: `et-channelers/HANDOFF.md` (sections 1, 2, 3, 5, 7 and 8), `et-channelers/ROADMAP.md`
+> (section 00 and the table of rows), `et-channelers/pipeline/README.md` (set-up, "One command on your own
+> computer", "A browsable copy on Google Drive"), and `et-channelers/ANALYSIS_PLAN.md` section 12 when you reach the
+> analyses.
 >
-> Rules: audio, captions and transcript text never go into the public repository; quotes are at most 30 words;
-> obey robots.txt; use no way around a block (no cookies, proxies, other clients or mirror sites); put nothing
-> private in an outbound request; keep texts from the source apart from speech-to-text in every table; report
-> counts as they are, failures included.
+> What exists. Public repository `occult-kranti/bashar-index` (GitHub Pages serves it; the public predictions page
+> is `et-channelers/dashboard/predictions.html`). Private store `occult-kranti/et-channelers-archive`: release
+> `archive-v1` (checked bundles of audio, transcripts and texts; `pipeline/sync_archive.py push/pull/status`),
+> `archiveshelf-podcast-audio-v1`, and `handoff-2026-11-14` (the state without media: the audio, sync and Drive
+> manifests, the queues `queue_newest10/20/50.csv`, `queue_blackouts_titles_all.csv`, `queue_youtube_all.csv`,
+> `scout_proposals_2026-11-16.jsonl`, the memory files). The private data folder is expected at
+> `~/et-channelers-private` (set `ET_PRIVATE_DIR` otherwise): `audio/`, `transcripts/`, `texts/`, `sync/`
+> (manifests and holds), `jobs/`, `logs/`, `analysis/`. The owner's Google Drive folder "ET Channelers Archive"
+> holds a browsable copy (5,523 files, 27.9 GB, 78 folders at 18:40 UTC on 2026-11-16; 147 files of podcast
+> backlog round 3 still waiting, 100 of them staged as round `65a4647c`). The collection dashboard is a claude.ai
+> page (address in HANDOFF section 2) with a local copy `et-channelers/dashboard/collection/index.html` that reads
+> `et-channelers/plan/*.csv`.
+>
+> Where it stood at the handoff. Collected and in the store: the 903 Bashar archive.org sessions, three podcast
+> backlog rounds (351, 389 and 348 episodes; round 3 had 136 episodes left), creators' files 111 of 1,410, 29 of
+> 30 interviews, 10,267 items with text (texts from the source 10,042; 250 transcripts made here by faster-whisper;
+> the two kinds are never mixed in one table or file). Prediction candidates: 6,041 (5,517 distinct), 499 with a
+> target window, about 56% of windowed candidates real predictions (fresh samples, kappa 0.91 to 0.96); the public
+> page shows 480 windowed statements with quotes of at most 30 words. Blackout theme search built and run
+> (`theme_search.py`); keywords of the newest tiers built (`keywords.py`). Contacts: a private table (107 rows, 69
+> About pages, 12 addresses) that never enters the repository. Sources scouted on 2026-11-16 for the 79 people
+> without a source outside YouTube: 136 proposals for 60 people, unverified, in the proposals file. YouTube: 69
+> channels listed (3,220 newest videos in `/workspaces/et-yt-newest` of the Codespace and the queues on the
+> release); captions and audio were never fetched from the cloud (bot checks; the project uses no cookies,
+> proxies or alternate clients), so the queues wait for this computer.
+>
+> Do, in order (HANDOFF section 8 has the detail):
+> 1. Set up as in HANDOFF section 3: ask me for the GitHub token and keep it in
+>    `~/.config/et-channelers/github_token` (never print it, never put it on a command line; `export
+>    GH_TOKEN="$(tr -d '[:space:]' < ~/.config/et-channelers/github_token)"` when a tool needs it); a Python
+>    virtual environment with the pipeline's requirements; restore the state and the memory files from the release
+>    `handoff-2026-11-14`, copy its `drive_manifest.jsonl` over the restored one, pull the transcripts and texts
+>    (`sync_archive.py pull`), and show me `sync_archive.py status`.
+> 2. Start the jobs sized to this machine (`pipeline/resume_jobs.sh` with `ET_DRIVE_HOLD=1` and
+>    `ET_BACKLOG_QUEUE=<private>/jobs/queue_backlog_3.csv`); finish backlog round 3.
+> 3. Run the YouTube tiers from this connection: `run_all.py` as "One command on your own computer" says, the
+>    blackout-titled queue first, then the newest 10, 20 and 50 of every channel; store each tier, rebuild the
+>    tables, copy to Drive (rclone, decision 6.5, since the Claude Drive connector is not here).
+> 4. Check and register the scouted sources (step 5 of section 8), fetch and queue what they add.
+> 5. As text lands: the prediction pass and page, the blackout search over captions and speech-to-text, the
+>    keywords; refresh the tables and the dashboard copy.
+> 6. Bring HANDOFF, ROADMAP and the README to the day's state in the same pull request as each piece of work;
+>    work on a branch, run the three test suites (`pipeline/tests/`) and both guards, push, open the PR and
+>    merge it.
+>
+> Rules that do not change: audio, captions and transcript text stay in the private folder and the private store,
+> never in this repository, in a chat reply or in an outbound request; quotes are at most 30 words and 5% of an
+> item; the contacts table (addresses) lives in the private folder only; robots.txt is obeyed and no way around a
+> block is used (no cookies, logins, proxies, mirror sites or alternate players); every lexicon example and test
+> fixture is invented; kill a job by its pid, never by pattern; no `rm` with a shell variable in the path; nothing
+> about the owner or the project goes into a search query. Commit messages end with the agent's co-author line and
+> pull requests with its footer, as the repository's history shows.

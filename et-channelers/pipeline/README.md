@@ -214,6 +214,22 @@ that cannot be run, or a run of setup faults), 8 another cycle was running (`run
 YouTube step without `ET_YOUTUBE_ROBOTS_OVERRIDE=1`). `sync_archive.py` can also be run by itself (`push`,
 `status`, `pull`).
 
+### A local copy of the collection dashboard
+
+The dashboard on claude.ai is a "Data" artifact whose page expects a host object with the datasets. `dashboard_local.py`
+wraps the saved page (`dashboard/collection/page.fragment.html`, the artifact's `files/index.html` text) with a small
+host of its own that reads each dataset from a CSV file, so the same dashboard works without claude.ai:
+
+    python3 pipeline/dashboard_local.py --fragment dashboard/collection/page.fragment.html \
+        --out dashboard/collection/index.html --base ../../plan/
+
+`dashboard/collection/index.html` reads `plan/*.csv` of the repository (GitHub Pages serves it; any static server
+works, for example `python3 -m http.server` in the repository root; a `file://` address does not, because browsers
+block fetches from it). The artifact's `bashar_channels` dataset is `plan/bashar_host_channels.csv`. The contacts
+table is private and not in the repository, so that section shows a dash in the public copy; a private copy is built
+with `--base ./data/` next to a `data/` folder that holds the plan CSVs and `contacts.csv` (the private folder's
+`dashboard/`). When the page on claude.ai changes, save its `files/index.html` text over the fragment and rebuild.
+
 ### A browsable copy on Google Drive
 
 `drive_stage.py` lays out what the store holds as files for the owner's Google Drive, under one top folder:
