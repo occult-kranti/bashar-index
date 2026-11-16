@@ -165,6 +165,32 @@ class TestStates(RootCase):
         # every item but the page that looks through to its twin is its own recording
         self.assertEqual({k for k, r in rows.items() if r["audio_item"] != k}, {WEB_VIA})
 
+    def test_a_recording_in_the_store_or_on_drive_is_downloaded_whatever_the_manifest_says(self):
+        # WEB_FILE's download run stopped between writing the file and its finished line: audio_status stays
+        # empty, but the sync pushed the file. POD_FAIL's copy went to Drive in every part. WEB_TWIN's twin is on
+        # Drive. A line that was never verified (the fixture's WEB_FILE line) is no copy.
+        sm = self.root / "sync" / "sync_manifest.jsonl"
+        common.append_jsonl(sm, {"video_id": WEB_FILE, "kind": "audio", "store": STORE, "verified": True})
+        dm = self.root / "sync" / "drive_manifest.jsonl"
+        for part in (1, 2):
+            common.append_jsonl(dm, {"item_id": POD_FAIL, "mime": "audio/ogg", "part": part, "parts": 2, "drive_id": f"p{part}"})
+        common.append_jsonl(dm, {"item_id": YT_TWIN, "mime": "audio/ogg", "part": 1, "parts": 1, "drive_id": "t1"})
+        common.append_jsonl(dm, {"item_id": POD_WAIT, "mime": "audio/ogg", "part": 1, "parts": 2, "drive_id": "w1"})  # partly
+        rows = self.rows()
+        self.assertEqual(rows[WEB_FILE]["state"], "downloaded")
+        self.assertIn("in the store", rows[WEB_FILE]["why"])
+        self.assertTrue(rows[WEB_FILE]["in_store"])
+        self.assertFalse(rows[WEB_FILE]["fetchable_here"])
+        self.assertEqual(rows[POD_FAIL]["state"], "downloaded")
+        self.assertIn("on Drive", rows[POD_FAIL]["why"])
+        self.assertEqual(rows[POD_FAIL]["error_class"], "")
+        self.assertEqual((rows[WEB_TWIN]["state"], rows[WEB_TWIN]["audio_item"]), ("downloaded", YT_TWIN))
+        self.assertIn(f"twin {YT_TWIN}", rows[WEB_TWIN]["why"])
+        # a part on Drive is not every part; a page without a twin has no copy to look at
+        self.assertEqual(rows[POD_WAIT]["state"], "no_audio_not_yet")
+        self.assertEqual(rows[WEB_PAGE]["state"], "no_audio_page")
+        self.assertEqual(self.run_tool("--publish-counts").returncode, 0, "the partition still holds")
+
     def test_a_page_takes_the_audio_state_of_its_downloaded_twin(self):
         rows = self.rows()
         via = rows[WEB_VIA]
