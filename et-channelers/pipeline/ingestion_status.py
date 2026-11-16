@@ -7,11 +7,13 @@ import csv
 import datetime as dt
 import json
 import os
+import sys
 from pathlib import Path
 
-try:
+if __package__:
     from .drive_ingest import terminal_unavailable
-except ImportError:  # direct command-line execution
+else:  # -I deliberately removes the script directory from the default import path.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
     from drive_ingest import terminal_unavailable
 
 

@@ -420,6 +420,14 @@ def extract_audio(args, row):
                        "bestaudio[protocol=https][vcodec=none]", row["url"]], args.timeout)
     if result.returncode:
         kind = classify_error(result.stderr)
+        # yt-dlp can report a scheduled premiere before it returns JSON metadata.
+        # Match only its explicit error for this item; access/cooldown errors win.
+        upcoming = re.search(
+            r"(?im)^\s*ERROR:\s+\[youtube\]\s+" + re.escape(row["video_id"]) +
+            r":\s*(?:Premieres in\s+[^\r\n]+|This live event will begin\b[^\r\n]*)$",
+            result.stderr or "")
+        if kind == "other" and upcoming:
+            raise IngestError("live", "Upcoming premiere/live event has not started; item remains pending")
         raise IngestError(kind, "YouTube metadata/audio selection failed; no alternate client or credentials tried")
     try:
         info = json.loads(result.stdout)
@@ -1135,6 +1143,7 @@ def run(args, rows):
         source = collections.deque(todo)
         active_channels = set()
         deferred_rows, deferred_ids, retried_storage = [], set(), False
+        deferred_live_rows, retried_live = [], False
         batch_items = getattr(args, "upload_batch_items", 8)
         batch_seconds = getattr(args, "upload_batch_seconds", 10)
         ready_limit = getattr(args, "ready_items", 16)
@@ -1152,6 +1161,8 @@ def run(args, rows):
                     deferred_ids.add(row["video_id"])
                     if outcome == "deferred_storage" and not retried_storage:
                         deferred_rows.append(row)
+                    elif outcome == "deferred_live" and not retried_live:
+                        deferred_live_rows.append(row)
                 elif outcome in {"deleted", "downloaded", "unavailable"}:
                     deferred_ids.discard(row["video_id"])
             print(json.dumps({"video_id": row["video_id"], "status": outcome,
@@ -1188,6 +1199,13 @@ def run(args, rows):
                         source.extend(deferred_rows)
                         deferred_rows.clear()
                         retried_storage = True
+                        continue
+                    if not stop.is_set() and not source and not ready and deferred_live_rows and not retried_live and (
+                            counts["deleted"] or counts["downloaded"]) and not counts["error"] and not counts["paused"]:
+                        # One late revisit after useful stage work, never an immediate polling loop.
+                        source.extend(deferred_live_rows)
+                        deferred_live_rows.clear()
+                        retried_live = True
                         continue
                     break
                 done, _ = cf.wait(waiting, timeout=0.25, return_when=cf.FIRST_COMPLETED)

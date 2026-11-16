@@ -1,24 +1,24 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-16T22:17:32Z",
+  "generated_at": "2026-11-16T22:44:04Z",
   "scope": "local_youtube_collection",
   "operation": {
-    "state": "cooldown",
+    "state": "ready",
     "retry_after": "2026-11-16T22:25:57Z",
-    "workers": 4,
-    "full_archive_requested": false
+    "workers": 6,
+    "full_archive_requested": true
   },
   "counts": {
-    "verified_pairs": 2,
-    "audio_downloaded": 14,
+    "verified_pairs": 15,
+    "audio_downloaded": 15,
     "unavailable": 0,
-    "awaiting_upload": 12,
+    "awaiting_upload": 0,
     "channels": 69,
     "indexed_total": 63929,
     "final_round_indexed": 60709
   },
   "storage": {
-    "local_bytes": 452681834,
+    "local_bytes": 65395587,
     "ceiling_bytes": 19000000000
   },
   "stages": [
@@ -26,7 +26,7 @@
       "key": "newest20",
       "label": "Newest 20",
       "total": 1320,
-      "verified": 2,
+      "verified": 15,
       "unavailable": 0,
       "state": "in_progress"
     },
@@ -34,17 +34,17 @@
       "key": "newest50",
       "label": "Extend to 50",
       "total": 3220,
-      "verified": 2,
+      "verified": 15,
       "unavailable": 0,
       "state": "waiting"
     },
     {
-      "key": "final_index",
-      "label": "Index the remainder",
+      "key": "final_archive",
+      "label": "Archive the remainder",
       "total": 60709,
       "verified": 0,
       "unavailable": 0,
-      "state": "indexed"
+      "state": "waiting"
     }
   ]
 }

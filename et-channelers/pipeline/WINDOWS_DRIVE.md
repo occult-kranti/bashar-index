@@ -23,7 +23,8 @@ not recorded. There are 107 source-directory labels, including linked host-show 
 a full crawl of 107 channels. Saved history listings now cover all 69 tracked channels, after a
 successful six-channel refresh added 5,130 listed items before deduplication. The merge also keeps
 newest-20 items missing from the older full snapshot. Current broadcasts and upcoming streams are
-not downloaded. Snapshot coverage does not establish that every historical upload is still available.
+not downloaded. Explicit premiere countdowns remain pending without stopping other channels; after
+useful stage work finishes they receive one final revisit, then remain pending if still unavailable. Snapshot coverage does not establish that every historical upload is still available.
 After excluding the 3,220 newest-50 IDs, **60,709 items** remain in the final round:
 32,687 Videos-tab items, 17,422 Shorts, 10,533 recorded streams, and 67 unknown-tab legacy items.
 The final round starts only after the newest-20 and newest-50 completion gates pass in `RunAll`.
@@ -39,8 +40,10 @@ the account reported about 5.47 TB available. The tools and newest-20 queue are 
 to **Run from PowerShell** below.
 
 The original shared OAuth client hit repeated quota errors. A dedicated Desktop app client has
-now been applied to `etdrive`, preserving the archive root; Google reauthorization is still pending.
-Retained media must stay local until the new login and remote verification succeed. For another
+now been applied to `etdrive`, preserving the archive root. Google authorization and Drive API
+enablement succeeded; a 12-pair upload pilot verified both artifacts before local cleanup, bringing
+this lane to 14 verified pairs. The owner chose to keep the OAuth app in Testing mode, so expect
+reauthorization around November 23, 2026 if collection continues. For another
 machine, follow the [official Desktop app setup](https://rclone.org/drive/#making-your-own-client-id),
 then edit `etdrive` through `rclone config` and reauthenticate. Keep the same archive root folder.
 

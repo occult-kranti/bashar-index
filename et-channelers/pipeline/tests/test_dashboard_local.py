@@ -1,6 +1,8 @@
 """Tests for dashboard_local.py (invented fragment, no network)."""
 import json
 import csv
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -41,6 +43,32 @@ class BuildTests(unittest.TestCase):
 
 
 class StatusExportTests(unittest.TestCase):
+    def test_isolated_cli_exports_only_aggregates_from_an_unrelated_working_directory(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder) / 'private'
+            (root / 'sync').mkdir(parents=True)
+            (root / 'jobs').mkdir()
+            (root / 'jobs/queue_newest20.csv').write_text(
+                'video_id,channel_dir,title\n12345678901,PRIVATE-PERSON,SECRET TITLE\n', encoding='utf-8')
+            (root / 'sync/drive_ingest_manifest.jsonl').write_text(json.dumps({
+                'video_id': '12345678901', 'status': 'unavailable', 'error_class': 'unavailable',
+                'title': 'SECRET TITLE', 'path': str(root), 'url': 'https://private.invalid/SECRET',
+            }) + '\n', encoding='utf-8')
+            output = Path(folder) / 'public/status.json'
+            result = subprocess.run(
+                [sys.executable, '-I', str(Path(ingestion_status.__file__).resolve()),
+                 '--root', str(root), '--out', str(output)],
+                cwd=folder, capture_output=True, text=True, timeout=20)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            public = json.loads(output.read_text(encoding='utf-8'))
+            self.assertEqual(json.loads(result.stdout), public)
+            self.assertEqual(public['counts']['unavailable'], 1)
+            self.assertEqual(public['counts']['verified_pairs'], 0)
+            self.assertEqual(public['counts']['channels'], 1)
+            self.assertFalse(output.with_suffix('.json.tmp').exists())
+            for private in ('SECRET', 'PRIVATE-PERSON', '12345678901', str(root), 'https://'):
+                self.assertNotIn(private, json.dumps(public))
+
     def test_supervisor_backoff_and_full_archive_plan_are_public_aggregates(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
