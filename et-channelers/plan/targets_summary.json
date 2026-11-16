@@ -1,17 +1,17 @@
 {
- "generated": "2026-11-16T16:00:31Z",
- "targets": 103,
+ "generated": "2026-11-16T16:41:06Z",
+ "targets": 108,
  "by_state": {
   "captured": 1,
   "partly captured": 27,
   "planned: source found": 0,
-  "planned: YouTube only": 39,
+  "planned: YouTube only": 44,
   "planned: no source yet": 35,
   "unresolved": 0,
   "excluded": 1
  },
  "by_origin": {
-  "added": 2,
+  "added": 7,
   "archiveshelf": 9,
   "bashar-index": 87,
   "both": 5
@@ -21,6 +21,11 @@
    "origin": "added",
    "state": "partly captured",
    "targets": 2
+  },
+  {
+   "origin": "added",
+   "state": "planned: YouTube only",
+   "targets": 5
   },
   {
    "origin": "archiveshelf",
@@ -68,9 +73,9 @@
    "targets": 1
   }
  ],
- "with_channel": 64,
+ "with_channel": 69,
  "with_channel_listing": 63,
- "with_official_site": 52,
+ "with_official_site": 57,
  "totals": {
   "podcast_feeds": 14,
   "creator_files": 1410,
