@@ -1,0 +1,3423 @@
+{
+  "labels": [
+    {
+      "aliases": [
+        "Adam"
+      ],
+      "categories": [
+        "interdimensional_being"
+      ],
+      "comparisonFamilies": [
+        "adam-telstar"
+      ],
+      "id": "adam-telstar",
+      "name": "Adam"
+    },
+    {
+      "aliases": [
+        "Ain Soph"
+      ],
+      "categories": [
+        "claimed_source_unspecified"
+      ],
+      "comparisonFamilies": [
+        "ain-soph-alexis-cartwright"
+      ],
+      "id": "ain-soph-alexis-cartwright",
+      "name": "Ain Soph"
+    },
+    {
+      "aliases": [
+        "Andromeda cosmic race"
+      ],
+      "categories": [
+        "et_civilization"
+      ],
+      "comparisonFamilies": [
+        "andromedan"
+      ],
+      "id": "andromeda-alessa",
+      "name": "Andromeda cosmic race"
+    },
+    {
+      "aliases": [
+        "Archangel Gabriel"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-gabriel"
+      ],
+      "id": "archangel-gabriel",
+      "name": "Archangel Gabriel"
+    },
+    {
+      "aliases": [
+        "Archangel Metatron",
+        "Metatron"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-metatron"
+      ],
+      "id": "archangel-metatron",
+      "name": "Archangel Metatron"
+    },
+    {
+      "aliases": [
+        "Archangel Michael"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-michael"
+      ],
+      "id": "archangel-michael",
+      "name": "Archangel Michael"
+    },
+    {
+      "aliases": [
+        "Archangel Raphael"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-raphael"
+      ],
+      "id": "archangel-raphael",
+      "name": "Archangel Raphael"
+    },
+    {
+      "aliases": [
+        "Archangel Uriel"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-uriel"
+      ],
+      "id": "archangel-uriel",
+      "name": "Archangel Uriel"
+    },
+    {
+      "aliases": [
+        "Archangel Zadkiel"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-zadkiel"
+      ],
+      "id": "archangel-zadkiel",
+      "name": "Archangel Zadkiel"
+    },
+    {
+      "aliases": [
+        "Arcturian codes"
+      ],
+      "categories": [
+        "light_language"
+      ],
+      "comparisonFamilies": [
+        "arcturian"
+      ],
+      "id": "arcturian-codes-riya",
+      "name": "Arcturian codes"
+    },
+    {
+      "aliases": [
+        "Arcturian star collective"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "arcturian"
+      ],
+      "id": "arcturian-councils-solara",
+      "name": "Arcturian star collective"
+    },
+    {
+      "aliases": [
+        "Aridif"
+      ],
+      "categories": [
+        "et_being"
+      ],
+      "comparisonFamilies": [
+        "aridif-rob-gauthier"
+      ],
+      "id": "aridif-rob-gauthier",
+      "name": "Aridif"
+    },
+    {
+      "aliases": [
+        "Ascended Master Osho"
+      ],
+      "categories": [
+        "deceased_spiritual_teacher"
+      ],
+      "comparisonFamilies": [
+        "osho"
+      ],
+      "id": "osho",
+      "name": "Ascended Master Osho"
+    },
+    {
+      "aliases": [
+        "Cosmic Christ"
+      ],
+      "categories": [
+        "divinity"
+      ],
+      "comparisonFamilies": [
+        "cosmic-christ-alexis-cartwright"
+      ],
+      "id": "cosmic-christ-alexis-cartwright",
+      "name": "Cosmic Christ"
+    },
+    {
+      "aliases": [
+        "Council of Light"
+      ],
+      "categories": [
+        "et_council"
+      ],
+      "comparisonFamilies": [
+        "council-of-light"
+      ],
+      "id": "council-of-light-lori",
+      "name": "Council of Light"
+    },
+    {
+      "aliases": [
+        "Council of Light"
+      ],
+      "categories": [
+        "collective"
+      ],
+      "comparisonFamilies": [
+        "council-of-light"
+      ],
+      "id": "council-of-light-melanie-beckler",
+      "name": "Council of Light"
+    },
+    {
+      "aliases": [
+        "Council of Nine"
+      ],
+      "categories": [
+        "et_council"
+      ],
+      "comparisonFamilies": [
+        "council-of-nine"
+      ],
+      "id": "council-of-nine-lori",
+      "name": "Council of Nine"
+    },
+    {
+      "aliases": [
+        "Divine Mother Sophia"
+      ],
+      "categories": [
+        "divine_mother"
+      ],
+      "comparisonFamilies": [
+        "sophia"
+      ],
+      "id": "divine-mother-sophia-amma-ventela",
+      "name": "Divine Mother Sophia"
+    },
+    {
+      "aliases": [
+        "Dr. Antonis"
+      ],
+      "categories": [
+        "cosmic_healer"
+      ],
+      "comparisonFamilies": [
+        "antonis-pia-orleane"
+      ],
+      "id": "antonis-pia-orleane",
+      "name": "Dr. Antonis"
+    },
+    {
+      "aliases": [
+        "Elohim Lady Master Leah"
+      ],
+      "categories": [
+        "ascended_master"
+      ],
+      "comparisonFamilies": [
+        "leah-merriam-joan-handy"
+      ],
+      "id": "leah-merriam-joan-handy",
+      "name": "Elohim Lady Master Leah"
+    },
+    {
+      "aliases": [
+        "Enoch"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "enoch"
+      ],
+      "id": "enoch",
+      "name": "Enoch"
+    },
+    {
+      "aliases": [
+        "Germane"
+      ],
+      "categories": [
+        "claimed_source_unspecified"
+      ],
+      "comparisonFamilies": [
+        "germane-lyssa-royal-holt"
+      ],
+      "id": "germane-lyssa-royal-holt",
+      "name": "Germane"
+    },
+    {
+      "aliases": [
+        "God Source"
+      ],
+      "categories": [
+        "divinity"
+      ],
+      "comparisonFamilies": [
+        "god-source-judi-weaver"
+      ],
+      "id": "god-source-judi-weaver",
+      "name": "God Source"
+    },
+    {
+      "aliases": [
+        "Isadora"
+      ],
+      "categories": [
+        "interdimensional_being"
+      ],
+      "comparisonFamilies": [
+        "isadora-telstar"
+      ],
+      "id": "isadora-telstar",
+      "name": "Isadora"
+    },
+    {
+      "aliases": [
+        "Isis",
+        "Lady Master Isis"
+      ],
+      "categories": [
+        "goddess"
+      ],
+      "comparisonFamilies": [
+        "isis"
+      ],
+      "id": "isis",
+      "name": "Isis"
+    },
+    {
+      "aliases": [
+        "Jesus",
+        "Yeshua",
+        "Yeshua (Jesus)"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "jesus-yeshua"
+      ],
+      "id": "jesus-yeshua",
+      "name": "Jesus"
+    },
+    {
+      "aliases": [
+        "John"
+      ],
+      "categories": [
+        "interdimensional_being"
+      ],
+      "comparisonFamilies": [
+        "john-telstar"
+      ],
+      "id": "john-telstar",
+      "name": "John"
+    },
+    {
+      "aliases": [
+        "Judah"
+      ],
+      "categories": [
+        "angelic_collective"
+      ],
+      "comparisonFamilies": [
+        "judah-anjie-hipple"
+      ],
+      "id": "judah-anjie-hipple",
+      "name": "Judah"
+    },
+    {
+      "aliases": [
+        "King Solomon"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "king-solomon"
+      ],
+      "id": "king-solomon",
+      "name": "King Solomon"
+    },
+    {
+      "aliases": [
+        "Laarkmaa"
+      ],
+      "categories": [
+        "pleiadian_collective"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "laarkmaa-pia-cullen",
+      "name": "Laarkmaa"
+    },
+    {
+      "aliases": [
+        "Lady Master Mary Magdalene",
+        "Mary Magdalene"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "mary-magdalene"
+      ],
+      "id": "mary-magdalene",
+      "name": "Lady Master Mary Magdalene"
+    },
+    {
+      "aliases": [
+        "Lady Master Mother Mary",
+        "Mother Mary"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "mother-mary"
+      ],
+      "id": "mother-mary",
+      "name": "Lady Master Mother Mary"
+    },
+    {
+      "aliases": [
+        "Lady Master Pallas Athena"
+      ],
+      "categories": [
+        "goddess"
+      ],
+      "comparisonFamilies": [
+        "pallas-athena"
+      ],
+      "id": "pallas-athena",
+      "name": "Lady Master Pallas Athena"
+    },
+    {
+      "aliases": [
+        "Lady Master Quan Yin",
+        "Quan Yin"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "quan-yin"
+      ],
+      "id": "quan-yin",
+      "name": "Lady Master Quan Yin"
+    },
+    {
+      "aliases": [
+        "Lady Master Rasha"
+      ],
+      "categories": [
+        "ascended_master"
+      ],
+      "comparisonFamilies": [
+        "rasha-merriam-joan-handy"
+      ],
+      "id": "rasha-merriam-joan-handy",
+      "name": "Lady Master Rasha"
+    },
+    {
+      "aliases": [
+        "Lady Nada"
+      ],
+      "categories": [
+        "claimed_source_unspecified"
+      ],
+      "comparisonFamilies": [
+        "lady-nada-alexis-cartwright"
+      ],
+      "id": "lady-nada-alexis-cartwright",
+      "name": "Lady Nada"
+    },
+    {
+      "aliases": [
+        "Lord Melchizedek"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "melchizedek"
+      ],
+      "id": "melchizedek",
+      "name": "Lord Melchizedek"
+    },
+    {
+      "aliases": [
+        "Lyra cosmic race"
+      ],
+      "categories": [
+        "et_civilization"
+      ],
+      "comparisonFamilies": [
+        "lyran"
+      ],
+      "id": "lyra-alessa",
+      "name": "Lyra cosmic race"
+    },
+    {
+      "aliases": [
+        "Lyran codes"
+      ],
+      "categories": [
+        "light_language"
+      ],
+      "comparisonFamilies": [
+        "lyran"
+      ],
+      "id": "lyran-codes-riya",
+      "name": "Lyran codes"
+    },
+    {
+      "aliases": [
+        "Lyran star collective"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "lyran"
+      ],
+      "id": "lyran-councils-solara",
+      "name": "Lyran star collective"
+    },
+    {
+      "aliases": [
+        "Master Kuthumi"
+      ],
+      "categories": [
+        "ascended_master"
+      ],
+      "comparisonFamilies": [
+        "kuthumi"
+      ],
+      "id": "kuthumi",
+      "name": "Master Kuthumi"
+    },
+    {
+      "aliases": [
+        "Master Tsen Tsing"
+      ],
+      "categories": [
+        "ascended_master"
+      ],
+      "comparisonFamilies": [
+        "tsen-tsing-dawn"
+      ],
+      "id": "tsen-tsing-dawn",
+      "name": "Master Tsen Tsing"
+    },
+    {
+      "aliases": [
+        "Medusa"
+      ],
+      "categories": [
+        "mythological_figure"
+      ],
+      "comparisonFamilies": [
+        "medusa"
+      ],
+      "id": "medusa",
+      "name": "Medusa"
+    },
+    {
+      "aliases": [
+        "Merlin"
+      ],
+      "categories": [
+        "legendary_teacher"
+      ],
+      "comparisonFamilies": [
+        "merlin"
+      ],
+      "id": "merlin",
+      "name": "Merlin"
+    },
+    {
+      "aliases": [
+        "Miribi"
+      ],
+      "categories": [
+        "interdimensional_being"
+      ],
+      "comparisonFamilies": [
+        "miribi-telstar"
+      ],
+      "id": "miribi-telstar",
+      "name": "Miribi"
+    },
+    {
+      "aliases": [
+        "Moiyra"
+      ],
+      "categories": [
+        "claimed_source_unspecified"
+      ],
+      "comparisonFamilies": [
+        "moiyra-pia-orleane"
+      ],
+      "id": "moiyra-pia-orleane",
+      "name": "Moiyra"
+    },
+    {
+      "aliases": [
+        "Morgan le Fay"
+      ],
+      "categories": [
+        "legendary_figure"
+      ],
+      "comparisonFamilies": [
+        "morgan-le-fay"
+      ],
+      "id": "morgan-le-fay",
+      "name": "Morgan le Fay"
+    },
+    {
+      "aliases": [
+        "Moses"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "moses"
+      ],
+      "id": "moses",
+      "name": "Moses"
+    },
+    {
+      "aliases": [
+        "Ophelia the Faerie"
+      ],
+      "categories": [
+        "faerie"
+      ],
+      "comparisonFamilies": [
+        "ophelia-faerie-daniel-scranton"
+      ],
+      "id": "ophelia-faerie-daniel-scranton",
+      "name": "Ophelia the Faerie"
+    },
+    {
+      "aliases": [
+        "Orion cosmic race"
+      ],
+      "categories": [
+        "et_civilization"
+      ],
+      "comparisonFamilies": [
+        "orion"
+      ],
+      "id": "orion-alessa",
+      "name": "Orion cosmic race"
+    },
+    {
+      "aliases": [
+        "Ormos"
+      ],
+      "categories": [
+        "et_being"
+      ],
+      "comparisonFamilies": [
+        "ormos-pia-orleane"
+      ],
+      "id": "ormos-pia-orleane",
+      "name": "Ormos"
+    },
+    {
+      "aliases": [
+        "Pleiades cosmic race"
+      ],
+      "categories": [
+        "et_civilization"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "pleiades-alessa",
+      "name": "Pleiades cosmic race"
+    },
+    {
+      "aliases": [
+        "Pleiadian codes"
+      ],
+      "categories": [
+        "light_language"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "pleiadian-codes-riya",
+      "name": "Pleiadian codes"
+    },
+    {
+      "aliases": [
+        "Pleiadian star collective"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "pleiadian-councils-solara",
+      "name": "Pleiadian star collective"
+    },
+    {
+      "aliases": [
+        "Quantamo, Arcturian Fleet Admiral"
+      ],
+      "categories": [
+        "et_being"
+      ],
+      "comparisonFamilies": [
+        "arcturian"
+      ],
+      "id": "quantamo-pia-orleane",
+      "name": "Quantamo, Arcturian Fleet Admiral"
+    },
+    {
+      "aliases": [
+        "Queen Nefertiti"
+      ],
+      "categories": [
+        "historical_figure"
+      ],
+      "comparisonFamilies": [
+        "queen-nefertiti"
+      ],
+      "id": "queen-nefertiti",
+      "name": "Queen Nefertiti"
+    },
+    {
+      "aliases": [
+        "Queen of Sheba"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "queen-of-sheba"
+      ],
+      "id": "queen-of-sheba",
+      "name": "Queen of Sheba"
+    },
+    {
+      "aliases": [
+        "Saint Germain",
+        "St. Germain"
+      ],
+      "categories": [
+        "ascended_master"
+      ],
+      "comparisonFamilies": [
+        "saint-germain"
+      ],
+      "id": "saint-germain",
+      "name": "Saint Germain"
+    },
+    {
+      "aliases": [
+        "Sangia"
+      ],
+      "categories": [
+        "interdimensional_being"
+      ],
+      "comparisonFamilies": [
+        "sangia-telstar"
+      ],
+      "id": "sangia-telstar",
+      "name": "Sangia"
+    },
+    {
+      "aliases": [
+        "Sarah"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "sarah-pia-orleane"
+      ],
+      "id": "sarah-pia-orleane",
+      "name": "Sarah"
+    },
+    {
+      "aliases": [
+        "Sasha"
+      ],
+      "categories": [
+        "pleiadian_being"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "sasha-lyssa-royal-holt",
+      "name": "Sasha"
+    },
+    {
+      "aliases": [
+        "Sirian codes"
+      ],
+      "categories": [
+        "light_language"
+      ],
+      "comparisonFamilies": [
+        "sirian"
+      ],
+      "id": "sirian-codes-riya",
+      "name": "Sirian codes"
+    },
+    {
+      "aliases": [
+        "Sirian star collective"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "sirian"
+      ],
+      "id": "sirian-councils-solara",
+      "name": "Sirian star collective"
+    },
+    {
+      "aliases": [
+        "Sirius cosmic race"
+      ],
+      "categories": [
+        "et_civilization"
+      ],
+      "comparisonFamilies": [
+        "sirian"
+      ],
+      "id": "sirius-alessa",
+      "name": "Sirius cosmic race"
+    },
+    {
+      "aliases": [
+        "St. Joan of Arc"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "joan-of-arc"
+      ],
+      "id": "joan-of-arc",
+      "name": "St. Joan of Arc"
+    },
+    {
+      "aliases": [
+        "St. John the Baptist"
+      ],
+      "categories": [
+        "sacred_figure"
+      ],
+      "comparisonFamilies": [
+        "john-the-baptist"
+      ],
+      "id": "john-the-baptist",
+      "name": "St. John the Baptist"
+    },
+    {
+      "aliases": [
+        "Star Councils of Light"
+      ],
+      "categories": [
+        "et_council"
+      ],
+      "comparisonFamilies": [
+        "star-councils-light-solara"
+      ],
+      "id": "star-councils-light-solara",
+      "name": "Star Councils of Light"
+    },
+    {
+      "aliases": [
+        "Telstar"
+      ],
+      "categories": [
+        "interdimensional_collective"
+      ],
+      "comparisonFamilies": [
+        "telstar-saratoga-ocean"
+      ],
+      "id": "telstar-saratoga-ocean",
+      "name": "Telstar"
+    },
+    {
+      "aliases": [
+        "The 9D Arcturian Council"
+      ],
+      "categories": [
+        "et_council"
+      ],
+      "comparisonFamilies": [
+        "arcturian"
+      ],
+      "id": "9d-arcturian-council-daniel-scranton",
+      "name": "The 9D Arcturian Council"
+    },
+    {
+      "aliases": [
+        "The Arcturians"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "arcturian"
+      ],
+      "id": "arcturians-lori",
+      "name": "The Arcturians"
+    },
+    {
+      "aliases": [
+        "The Buddha"
+      ],
+      "categories": [
+        "spiritual_teacher"
+      ],
+      "comparisonFamilies": [
+        "buddha"
+      ],
+      "id": "buddha",
+      "name": "The Buddha"
+    },
+    {
+      "aliases": [
+        "The Connection"
+      ],
+      "categories": [
+        "multidimensional_collective"
+      ],
+      "comparisonFamilies": [
+        "connection-bonnie-vent"
+      ],
+      "id": "connection-bonnie-vent",
+      "name": "The Connection"
+    },
+    {
+      "aliases": [
+        "The Creators"
+      ],
+      "categories": [
+        "collective"
+      ],
+      "comparisonFamilies": [
+        "creators-daniel-scranton"
+      ],
+      "id": "creators-daniel-scranton",
+      "name": "The Creators"
+    },
+    {
+      "aliases": [
+        "The Founders"
+      ],
+      "categories": [
+        "collective"
+      ],
+      "comparisonFamilies": [
+        "founders-daniel-scranton"
+      ],
+      "id": "founders-daniel-scranton",
+      "name": "The Founders"
+    },
+    {
+      "aliases": [
+        "The Great Divine Director"
+      ],
+      "categories": [
+        "ascended_master"
+      ],
+      "comparisonFamilies": [
+        "great-divine-director-dawn"
+      ],
+      "id": "great-divine-director-dawn",
+      "name": "The Great Divine Director"
+    },
+    {
+      "aliases": [
+        "The Hathors"
+      ],
+      "categories": [
+        "collective"
+      ],
+      "comparisonFamilies": [
+        "hathor"
+      ],
+      "id": "hathors-daniel-scranton",
+      "name": "The Hathors"
+    },
+    {
+      "aliases": [
+        "The Heart Squad"
+      ],
+      "categories": [
+        "deceased_person_collective"
+      ],
+      "comparisonFamilies": [
+        "heart-squad-amanda-ellis"
+      ],
+      "id": "heart-squad-amanda-ellis",
+      "name": "The Heart Squad"
+    },
+    {
+      "aliases": [
+        "The Pleiadian High Council of 7"
+      ],
+      "categories": [
+        "et_council"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "pleiadian-high-council-7-daniel-scranton",
+      "name": "The Pleiadian High Council of 7"
+    },
+    {
+      "aliases": [
+        "The Pleiadians"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "pleiadians-barbara-marciniak",
+      "name": "The Pleiadians"
+    },
+    {
+      "aliases": [
+        "The Pleiadians"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "pleiadians-lori",
+      "name": "The Pleiadians"
+    },
+    {
+      "aliases": [
+        "The Zetas"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "zeta"
+      ],
+      "id": "zetas-daniel-scranton",
+      "name": "The Zetas"
+    },
+    {
+      "aliases": [
+        "Thoth"
+      ],
+      "categories": [
+        "god"
+      ],
+      "comparisonFamilies": [
+        "thoth"
+      ],
+      "id": "thoth",
+      "name": "Thoth"
+    },
+    {
+      "aliases": [
+        "Thymus"
+      ],
+      "categories": [
+        "claimed_source_unspecified"
+      ],
+      "comparisonFamilies": [
+        "thymus-daniel-scranton"
+      ],
+      "id": "thymus-daniel-scranton",
+      "name": "Thymus"
+    },
+    {
+      "aliases": [
+        "Treb Bor Yit-Ne"
+      ],
+      "categories": [
+        "et_being"
+      ],
+      "comparisonFamilies": [
+        "treb-bor-yit-ne"
+      ],
+      "id": "treb-bor-yit-ne",
+      "name": "Treb Bor Yit-Ne"
+    },
+    {
+      "aliases": [
+        "Vollanda / The Voice"
+      ],
+      "categories": [
+        "interdimensional_being"
+      ],
+      "comparisonFamilies": [
+        "vollanda-pia-orleane"
+      ],
+      "id": "vollanda-pia-orleane",
+      "name": "Vollanda / The Voice"
+    },
+    {
+      "aliases": [
+        "Xanadu"
+      ],
+      "categories": [
+        "et_spokesbeing"
+      ],
+      "comparisonFamilies": [
+        "xanadu-lori"
+      ],
+      "id": "xanadu-lori",
+      "name": "Xanadu"
+    }
+  ],
+  "meta": {
+    "editionDate": "2026-11-17",
+    "labelCount": 86,
+    "peopleCount": 28,
+    "relationshipCount": 115,
+    "scope": "Dated primary-source relationship extension; historical Atlas and analysis denominators are unchanged.",
+    "source": "discovery-relationships.csv",
+    "sourceCanonicalization": "utf8-lf-v1",
+    "sourceSha256": "642d2104185db80a9f048ac928c750eddb2962e7f1a1c246b759cd772cd77e4e",
+    "unit": "One human–claimed source–predicate–supporting page relationship. Labels compare claims, not verified external identities."
+  },
+  "people": [
+    {
+      "channels": [
+        {
+          "basis": "first_party_site_channel_link",
+          "evidenceUrl": "https://alessaestelar.com/en/pages/alessa",
+          "url": "https://www.youtube.com/channel/UC0wUibB7NB3W8xNJ-qpUjgQ"
+        }
+      ],
+      "collectionIds": [],
+      "id": "alessa-aeisis",
+      "name": "Alessa / AEISIS"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "alexis-cartwright",
+      "name": "Alexis Cartwright"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Channel self-introduction identifies Althea and links althealucrezia.com; official bio names her full name.",
+          "evidenceUrl": "https://www.youtube.com/channel/UCKjxsD8Yj3hT3bKwswTPi6A",
+          "url": "https://www.youtube.com/channel/UCKjxsD8Yj3hT3bKwswTPi6A"
+        }
+      ],
+      "collectionIds": [],
+      "id": "althea-lucrezia-avanzo",
+      "name": "Althea Lucrezia Avanzo"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Her main site links this official shop; shop links the named YouTube handle.",
+          "evidenceUrl": "https://www.angeliccelestialcolours.co.uk/",
+          "url": "https://www.youtube.com/@AmandaEllis"
+        }
+      ],
+      "collectionIds": [],
+      "id": "amanda-ellis",
+      "name": "Amanda Ellis"
+    },
+    {
+      "channels": [
+        {
+          "basis": "explicit_self_named_handle_and_link",
+          "evidenceUrl": "https://thyra-me.mykajabi.com/amman-kotisivu-mina-enkuksi",
+          "url": "https://www.youtube.com/@ammaventela"
+        }
+      ],
+      "collectionIds": [],
+      "id": "amma-ventela",
+      "name": "Amma Ventelä"
+    },
+    {
+      "channels": [
+        {
+          "basis": "first_party_site_channel_link",
+          "evidenceUrl": "https://www.andrealuizari.com/post/light-codes-your-dna",
+          "url": "https://www.youtube.com/channel/UCtgPv-Yylk3ynNzb5oBKVRA"
+        }
+      ],
+      "collectionIds": [],
+      "id": "andrea-luizari",
+      "name": "Andréa Luizari"
+    },
+    {
+      "channels": [
+        {
+          "basis": "exact_canonical_and_handle_links",
+          "evidenceUrl": "https://www.thejudahchannel.com/",
+          "url": "https://www.youtube.com/channel/UCIEhmD3vyaZXWHfx3opQ-IA"
+        }
+      ],
+      "collectionIds": [
+        "the-judah-channel"
+      ],
+      "id": "anjie-hipple",
+      "name": "Anjie Hipple"
+    },
+    {
+      "channels": [
+        {
+          "basis": "first_party_site_channel_link",
+          "evidenceUrl": "https://www.pleiadians.com/",
+          "url": "https://www.youtube.com/channel/UCSffF5wKtHDCezvV5tUm68w"
+        }
+      ],
+      "collectionIds": [
+        "barbara-marciniak"
+      ],
+      "id": "barbara-marciniak",
+      "name": "Barbara Marciniak"
+    },
+    {
+      "channels": [
+        {
+          "basis": "first_party_named_channel_link",
+          "evidenceUrl": "https://www.bonnievent.com/",
+          "url": "https://www.youtube.com/@connectionchannelingBonnieVent"
+        }
+      ],
+      "collectionIds": [],
+      "id": "bonnie-vent",
+      "name": "Bonnie Vent"
+    },
+    {
+      "channels": [
+        {
+          "basis": "site_handle_matches_existing_canonical",
+          "evidenceUrl": "https://www.laarkmaa.com/",
+          "url": "https://www.youtube.com/channel/UCwB7FHwwaHYML6uFqulHMtg"
+        }
+      ],
+      "collectionIds": [
+        "laarkmaa"
+      ],
+      "id": "cullen-baird-smith",
+      "name": "Cullen Baird Smith"
+    },
+    {
+      "atlasProfileId": "lk-daniel",
+      "channels": [
+        {
+          "basis": "existing_canonical_plus_site_link",
+          "evidenceUrl": "https://danielscranton.com/daniel/",
+          "url": "https://www.youtube.com/channel/UCb6-5YT9N1EWA4c_yXBQE1w"
+        }
+      ],
+      "collectionIds": [
+        "daniel-scranton"
+      ],
+      "id": "daniel-scranton",
+      "name": "Daniel Scranton"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Official Dawn site links Open Channel Resources; its page explicitly labels the destination as Dawn's channel.",
+          "evidenceUrl": "https://www.openchannelresources.com/dawn-and-the-masters-youtube-videos",
+          "url": "https://www.youtube.com/channel/UCzJx47nSplU0y6QM1k0TdGw"
+        }
+      ],
+      "collectionIds": [],
+      "id": "dawn-katar",
+      "name": "Dawn Katar"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "ellen-mahloy",
+      "name": "Ellen Mahloy"
+    },
+    {
+      "channels": [
+        {
+          "basis": "explicit_named_channel_link",
+          "evidenceUrl": "https://www.radicalhappiness.com/",
+          "url": "https://www.youtube.com/c/GinaLakeChannelingJesus"
+        }
+      ],
+      "collectionIds": [],
+      "id": "gina-lake",
+      "name": "Gina Lake"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "joan-walker",
+      "name": "Joan Walker"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Own-channel link label identifies Judi; the separate Portal to Ascension link is excluded.",
+          "evidenceUrl": "https://judiweaver.com/about-2/",
+          "url": "https://www.youtube.com/channel/UCzL4OaUQD9pEmNUUu8vvUWQ"
+        }
+      ],
+      "collectionIds": [],
+      "id": "judi-weaver",
+      "name": "Judi Weaver"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Official site links the exact canonical ID already in targets.",
+          "evidenceUrl": "https://theangelraphael.com/",
+          "url": "https://www.youtube.com/channel/UCEH8R46KVsdNtxH3OS_vGUA"
+        }
+      ],
+      "collectionIds": [
+        "kelly-kolodney"
+      ],
+      "id": "kelly-kolodney",
+      "name": "Kelly Kolodney"
+    },
+    {
+      "channels": [
+        {
+          "basis": "explicit_self_named_channel_and_link",
+          "evidenceUrl": "https://leachapin.com/sacred-journeys/",
+          "url": "https://www.youtube.com/channel/UCZKJpkyjqvT5Y9ACDh-LBYg"
+        }
+      ],
+      "collectionIds": [],
+      "id": "lea-chapin",
+      "name": "Lea Chapin"
+    },
+    {
+      "channels": [
+        {
+          "basis": "explicit_our_channel_link",
+          "evidenceUrl": "https://helloxanadu.com/",
+          "url": "https://www.youtube.com/channel/UCiR-ufoxZgD78Z4iLO2rEuw"
+        }
+      ],
+      "collectionIds": [],
+      "id": "lori-xanadu",
+      "name": "Lori (My Wife Talks to Aliens)"
+    },
+    {
+      "atlasProfileId": "lk-lyssa",
+      "channels": [
+        {
+          "basis": "explicit_lyssa_channel_separate_from_ron",
+          "evidenceUrl": "https://www.lyssaroyal.net/free-video.html",
+          "url": "https://www.youtube.com/channel/UCeuLbnOjJBUfqqm2KEqkpLA"
+        }
+      ],
+      "collectionIds": [
+        "lyssa-royal-holt"
+      ],
+      "id": "lyssa-royal-holt",
+      "name": "Lyssa Royal Holt"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Own biography links AskAngels channel; canonical ID not resolved.",
+          "evidenceUrl": "https://www.ask-angels.com/about-melanie/",
+          "url": "https://www.youtube.com/c/askangels"
+        }
+      ],
+      "collectionIds": [],
+      "id": "melanie-beckler",
+      "name": "Melanie Beckler"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "mercedes-kirkel",
+      "name": "Mercedes Kirkel"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "merriam-joan-handy",
+      "name": "Merriam Joan Handy"
+    },
+    {
+      "channels": [
+        {
+          "basis": "site_handle_matches_existing_canonical",
+          "evidenceUrl": "https://www.laarkmaa.com/",
+          "url": "https://www.youtube.com/channel/UCwB7FHwwaHYML6uFqulHMtg"
+        }
+      ],
+      "collectionIds": [
+        "laarkmaa"
+      ],
+      "id": "pia-orleane",
+      "name": "Pia Orleane"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "riya-loveguard",
+      "name": "Riya Loveguard"
+    },
+    {
+      "atlasProfileId": "lk-rob",
+      "channels": [
+        {
+          "basis": "existing_canonical_plus_site_link",
+          "evidenceUrl": "https://www.etwhisperer.com/",
+          "url": "https://www.youtube.com/channel/UC8JooeMCjTYIKhO7UXLbMtg"
+        }
+      ],
+      "collectionIds": [
+        "rob-gauthier"
+      ],
+      "id": "rob-gauthier",
+      "name": "Rob Gauthier"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "saratoga-ocean",
+      "name": "Saratoga Ocean"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Explicit own-channel anchor identifies Solara; other canonical channel belongs to testimonial author Mindy Mekemson.",
+          "evidenceUrl": "https://www.solara.org.uk/",
+          "url": "https://www.youtube.com/channel/UC3wjMuxPWEXqeg1-uAgXuFg"
+        }
+      ],
+      "collectionIds": [],
+      "id": "solara-an-ra",
+      "name": "Solara An-Ra"
+    }
+  ],
+  "predicates": {
+    "claims_channeling": "Claims channeling",
+    "claims_channeling_codes": "Attributes channeled codes to",
+    "claims_channeling_light_language": "Attributes light language to",
+    "claims_series_channeling": "Claims channeling in an event series",
+    "reports_contact_with": "Reports contact with",
+    "reports_guidance_from": "Reports guidance from",
+    "reports_guide_association": "Names as a guide"
+  },
+  "relationships": [
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-raphael",
+      "entityLabel": "Archangel Raphael",
+      "evidence": {
+        "qualification": "Contact/guidance comparison only, not an established spoken channeling corpus. No owned YouTube channel verified.",
+        "section": "About Reiki with Angels / opening paragraphs",
+        "summary": "Ellen attributes guidance used in her Reiki practice to Raphael.",
+        "url": "https://www.reikiwithangels.com/about-reiki-with-angels"
+      },
+      "id": "claim-0324042644d3446e",
+      "personId": "ellen-mahloy",
+      "predicate": "Reports guidance from",
+      "relationshipType": "reports_guidance_from",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "contactee"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "queen-of-sheba",
+      "entityLabel": "Queen of Sheba",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-0490d28faab1ce6c",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "jesus-yeshua",
+      "entityLabel": "Yeshua (Jesus)",
+      "evidence": {
+        "qualification": "Source explicitly equates Yeshua and Jesus. Embedded Mariam Agency interview is not evidence that Mercedes owns that channel.",
+        "section": "Welcome / author self-introduction",
+        "summary": "Mercedes explicitly identifies herself as a channel for both named figures.",
+        "url": "https://mercedeskirkel.com/"
+      },
+      "id": "claim-05c78d421be6acac",
+      "personId": "mercedes-kirkel",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "connection-bonnie-vent",
+      "entityLabel": "The Connection",
+      "evidence": {
+        "qualification": "",
+        "section": "Messages from The Connection",
+        "summary": "Bonnie's own site attributes her channeled messages to this named group.",
+        "url": "https://www.bonnievent.com/"
+      },
+      "id": "claim-097aa7ddba3b58ef",
+      "personId": "bonnie-vent",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "arcturians-lori",
+      "entityLabel": "The Arcturians",
+      "evidence": {
+        "qualification": "Spokesperson-mediated attribution. No surname supplied; generic collective names are scoped to Lori, not merged with other channelers' entities.",
+        "section": "Who is Xanadu?",
+        "summary": "Lori channels Xanadu, described as spokesperson for the four explicitly listed collectives.",
+        "url": "https://helloxanadu.com/"
+      },
+      "id": "claim-0a99629eb6402711",
+      "personId": "lori-xanadu",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "king-solomon",
+      "entityLabel": "King Solomon",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-109178b8d60df395",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "mother-mary",
+      "entityLabel": "Mother Mary",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-134f1270c7f40133",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "quan-yin",
+      "entityLabel": "Quan Yin",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-1572d764b94aebc0",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-michael",
+      "entityLabel": "Archangel Michael",
+      "evidence": {
+        "qualification": "John Walker is described as her teaching partner; this page does not assign him Joan's channeling relationships.",
+        "section": "Joan Walker / emergence into public teaching in 2005",
+        "summary": "Her biography names these sources for her channeling and teaching work.",
+        "url": "https://ascendingmasters.net/about/"
+      },
+      "id": "claim-191472c46e9d633e",
+      "personId": "joan-walker",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "laarkmaa-pia-cullen",
+      "entityLabel": "Laarkmaa",
+      "evidence": {
+        "qualification": "Separate human person_ids share existing collection_id laarkmaa. Joint relationship does not transfer Pia's other entities to Cullen.",
+        "section": "Transcendent wisdom / joint sessions",
+        "summary": "Pia's biography explicitly attributes Laarkmaa's communication to Pia and Cullen together.",
+        "url": "https://www.piaorleane.com/"
+      },
+      "id": "claim-1a818a9122709969",
+      "personId": "cullen-baird-smith",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Archangel Metatron",
+      "evidence": {
+        "qualification": "John Walker is described as her teaching partner; this page does not assign him Joan's channeling relationships.",
+        "section": "Joan Walker / emergence into public teaching in 2005",
+        "summary": "Her biography names these sources for her channeling and teaching work.",
+        "url": "https://ascendingmasters.net/about/"
+      },
+      "id": "claim-1b85cd7474efb6bd",
+      "personId": "joan-walker",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "mother-mary",
+      "entityLabel": "Lady Master Mother Mary",
+      "evidence": {
+        "qualification": "First-party page and embedded introduction agree; named channel Wise Woman On Tour found, exact owned channel URL unresolved.",
+        "section": "Key participating Lady Masters / event through Merriam",
+        "summary": "Her own event page names this participant in her trance-channeling event.",
+        "url": "https://wisewomanontour.com/"
+      },
+      "id": "claim-1fd278ecf1d98a84",
+      "personId": "merriam-joan-handy",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "jesus-yeshua",
+      "entityLabel": "Yeshua",
+      "evidence": {
+        "qualification": "Page also equates Yeshua with Jesus in its book descriptions; this supports the local comparison alias.",
+        "section": "Meeting the Holy Family",
+        "summary": "Lea's biography explicitly names these three figures as sources she began channeling.",
+        "url": "https://leachapin.com/about-lea/"
+      },
+      "id": "claim-1fdaf928d72d3b77",
+      "personId": "lea-chapin",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Archangel Metatron",
+      "evidence": {
+        "qualification": "",
+        "section": "Welcome / main guide",
+        "summary": "Amanda identifies Metatron as her principal guide and describes channeling her guides.",
+        "url": "https://www.amandaellis.co.uk/"
+      },
+      "id": "claim-21f14d700428a90e",
+      "personId": "amanda-ellis",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Archangel Metatron",
+      "evidence": {
+        "qualification": "Attribution only; no validation of DNA or healing claims.",
+        "section": "Light Codes / source of light language",
+        "summary": "Andréa explicitly attributes her transmitted light language to Metatron.",
+        "url": "https://www.andrealuizari.com/post/light-codes-your-dna"
+      },
+      "id": "claim-22f125611a8ecbf5",
+      "personId": "andrea-luizari",
+      "predicate": "Attributes light language to",
+      "relationshipType": "claims_channeling_light_language",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "quan-yin",
+      "entityLabel": "Lady Master Quan Yin",
+      "evidence": {
+        "qualification": "First-party page and embedded introduction agree; named channel Wise Woman On Tour found, exact owned channel URL unresolved.",
+        "section": "Key participating Lady Masters / event through Merriam",
+        "summary": "Her own event page names this participant in her trance-channeling event.",
+        "url": "https://wisewomanontour.com/"
+      },
+      "id": "claim-25e8c95af50d74ab",
+      "personId": "merriam-joan-handy",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "ophelia-faerie-daniel-scranton",
+      "entityLabel": "Ophelia the Faerie",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-2764fe3c5b152fe2",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "quan-yin",
+      "entityLabel": "Lady Master Quan Yin",
+      "evidence": {
+        "qualification": "Recorded-session attribution supported by page context and channeling descriptions; not inferred from a YouTube title.",
+        "section": "Source-named channeling recording descriptions",
+        "summary": "Dawn's recording catalog describes channeling sessions featuring this named source.",
+        "url": "https://www.dawnkatar.com/ascended-master-recordings.html"
+      },
+      "id": "claim-30708276fb7f99bb",
+      "personId": "dawn-katar",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "cosmic-christ-alexis-cartwright",
+      "entityLabel": "Cosmic Christ",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-32021915b4cfd5f3",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "hathors-daniel-scranton",
+      "entityLabel": "The Hathors",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-325f17f3b1753bb6",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "sangia-telstar",
+      "entityLabel": "Sangia",
+      "evidence": {
+        "qualification": "Member relationship, not proof of a separate solo session. Common names Adam and John remain scoped to Telstar.",
+        "section": "About Telstar / six named members",
+        "summary": "This named being is explicitly included in Saratoga's channeled Telstar group.",
+        "url": "https://saratogaocean.com/telstar/"
+      },
+      "id": "claim-3890176b3c7ed2db",
+      "personId": "saratoga-ocean",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "adam-telstar",
+      "entityLabel": "Adam",
+      "evidence": {
+        "qualification": "Member relationship, not proof of a separate solo session. Common names Adam and John remain scoped to Telstar.",
+        "section": "About Telstar / six named members",
+        "summary": "This named being is explicitly included in Saratoga's channeled Telstar group.",
+        "url": "https://saratogaocean.com/telstar/"
+      },
+      "id": "claim-394b335cfb2f1dbd",
+      "personId": "saratoga-ocean",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "thoth",
+      "entityLabel": "Thoth",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-3bc58c111fe50c6b",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "arcturian-councils-solara",
+      "entityLabel": "Arcturian star collective",
+      "evidence": {
+        "qualification": "The groups are described as members of Star Councils of Light; source-specific IDs prevent merging all similarly labeled councils.",
+        "section": "Rainbow Bridge to New Earth / source collectives",
+        "summary": "Her book description explicitly attributes channeled material to these named source groups.",
+        "url": "https://www.solara.org.uk/"
+      },
+      "id": "claim-3c738d3caa5d77ea",
+      "personId": "solara-an-ra",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "vollanda-pia-orleane",
+      "entityLabel": "Vollanda / The Voice",
+      "evidence": {
+        "qualification": "Exact Quantamo spelling is primary-source supported; distinct from Quan Yin, Q'uo and generic quantum language. Do not transfer Pia-only sources to Cullen. Sarah's claimed parentage is a source assertion, not a historical conclusion.",
+        "section": "Voices from the Light / five-session source list",
+        "summary": "Pia's own event explicitly lists this source among beings communicating through her.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-3d2b2227518dff6d",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-raphael",
+      "entityLabel": "Archangel Raphael",
+      "evidence": {
+        "qualification": "",
+        "section": "About Kelly Kolodney",
+        "summary": "Her official site explicitly identifies Raphael as Kelly's channeled source.",
+        "url": "https://theangelraphael.com/"
+      },
+      "id": "claim-415d9f9b8a8f1ae6",
+      "personId": "kelly-kolodney",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "saint-germain",
+      "entityLabel": "St. Germain",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-432b984f84de4f2f",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "tsen-tsing-dawn",
+      "entityLabel": "Master Tsen Tsing",
+      "evidence": {
+        "qualification": "Recorded-session attribution supported by page context and channeling descriptions; not inferred from a YouTube title.",
+        "section": "Source-named channeling recording descriptions",
+        "summary": "Dawn's recording catalog describes channeling sessions featuring this named source.",
+        "url": "https://www.dawnkatar.com/ascended-master-recordings.html"
+      },
+      "id": "claim-458c2793a14a24cc",
+      "personId": "dawn-katar",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "sasha-lyssa-royal-holt",
+      "entityLabel": "Sasha",
+      "evidence": {
+        "qualification": "Ronald Holt's separately linked channel remains a different owner.",
+        "section": "Channeling Videos / source-specific descriptions",
+        "summary": "Her own video library explicitly attributes this source's channeling to Lyssa.",
+        "url": "https://www.lyssaroyal.net/free-video.html"
+      },
+      "id": "claim-4647a4d8c7ad3011",
+      "personId": "lyssa-royal-holt",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "9d-arcturian-council-daniel-scranton",
+      "entityLabel": "The 9D Arcturian Council",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-46a795cda246c860",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "zetas-daniel-scranton",
+      "entityLabel": "The Zetas",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-46f745a84da2ab76",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "lyran-councils-solara",
+      "entityLabel": "Lyran star collective",
+      "evidence": {
+        "qualification": "The groups are described as members of Star Councils of Light; source-specific IDs prevent merging all similarly labeled councils.",
+        "section": "Rainbow Bridge to New Earth / source collectives",
+        "summary": "Her book description explicitly attributes channeled material to these named source groups.",
+        "url": "https://www.solara.org.uk/"
+      },
+      "id": "claim-47f94cbeb26f1361",
+      "personId": "solara-an-ra",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "treb-bor-yit-ne",
+      "entityLabel": "Treb Bor Yit-Ne",
+      "evidence": {
+        "qualification": "",
+        "section": "ROB GAUTHIER / three principal guides",
+        "summary": "His official channeling biography names this source among his three principal guides.",
+        "url": "https://www.etwhisperer.com/"
+      },
+      "id": "claim-494cab7b972cd17b",
+      "personId": "rob-gauthier",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "council-of-light-melanie-beckler",
+      "entityLabel": "Council of Light",
+      "evidence": {
+        "qualification": "Not automatically the same Council of Light as Lori's.",
+        "section": "Channeling Light and Love",
+        "summary": "Melanie explicitly names this council as a source of channeled messages.",
+        "url": "https://www.ask-angels.com/about-melanie/"
+      },
+      "id": "claim-4ec9cdc5bcdd235f",
+      "personId": "melanie-beckler",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "heart-squad-amanda-ellis",
+      "entityLabel": "The Heart Squad",
+      "evidence": {
+        "qualification": "Other listed spiritual figures are described as working closely with her; those associations are not promoted to channeling edges.",
+        "section": "Paragraph after portrait / Heart Squad",
+        "summary": "Amanda explicitly presents this named collective as a group she channels.",
+        "url": "https://www.amandaellis.co.uk/"
+      },
+      "id": "claim-5222955a72ecdb5a",
+      "personId": "amanda-ellis",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "archangel-michael",
+      "entityLabel": "Archangel Michael",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-594530675d1ca471",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "melchizedek",
+      "entityLabel": "Lord Melchizedek",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-5bd6f456f385e71d",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "ormos-pia-orleane",
+      "entityLabel": "Ormos",
+      "evidence": {
+        "qualification": "Exact Quantamo spelling is primary-source supported; distinct from Quan Yin, Q'uo and generic quantum language. Do not transfer Pia-only sources to Cullen. Sarah's claimed parentage is a source assertion, not a historical conclusion.",
+        "section": "Voices from the Light / five-session source list",
+        "summary": "Pia's own event explicitly lists this source among beings communicating through her.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-5d537c7aef90863e",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "kuthumi",
+      "entityLabel": "Master Kuthumi",
+      "evidence": {
+        "qualification": "John Walker is described as her teaching partner; this page does not assign him Joan's channeling relationships.",
+        "section": "Joan Walker / emergence into public teaching in 2005",
+        "summary": "Her biography names these sources for her channeling and teaching work.",
+        "url": "https://ascendingmasters.net/about/"
+      },
+      "id": "claim-5f5459600d7fdb9e",
+      "personId": "joan-walker",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "buddha",
+      "entityLabel": "The Buddha",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-5fea504ea082d172",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-michael",
+      "entityLabel": "Archangel Michael",
+      "evidence": {
+        "qualification": "Recorded-session attribution supported by page context and channeling descriptions; not inferred from a YouTube title.",
+        "section": "Source-named channeling recording descriptions",
+        "summary": "Dawn's recording catalog describes channeling sessions featuring this named source.",
+        "url": "https://www.dawnkatar.com/ascended-master-recordings.html"
+      },
+      "id": "claim-651478584f27d1a0",
+      "personId": "dawn-katar",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "mary-magdalene",
+      "entityLabel": "Mary Magdalene",
+      "evidence": {
+        "qualification": "Page also equates Yeshua with Jesus in its book descriptions; this supports the local comparison alias.",
+        "section": "Meeting the Holy Family",
+        "summary": "Lea's biography explicitly names these three figures as sources she began channeling.",
+        "url": "https://leachapin.com/about-lea/"
+      },
+      "id": "claim-658277b81b4a1735",
+      "personId": "lea-chapin",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "sirian-codes-riya",
+      "entityLabel": "Sirian codes",
+      "evidence": {
+        "qualification": "Codes are not a named conversational entity or a speech transcript. Linked Aeron Lazar channel cannot be assigned to Riya without shared-ownership evidence.",
+        "section": "Self-description / channeled codes",
+        "summary": "Riya attributes her channeled codes to these named civilizational labels.",
+        "url": "https://riyaloveguard.com/"
+      },
+      "id": "claim-6cdc853159e84112",
+      "personId": "riya-loveguard",
+      "predicate": "Attributes channeled codes to",
+      "relationshipType": "claims_channeling_codes",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "queen-nefertiti",
+      "entityLabel": "Queen Nefertiti",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-6cf873c004492cb3",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "ain-soph-alexis-cartwright",
+      "entityLabel": "Ain Soph",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-6df0b1883be3b64e",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "mary-magdalene",
+      "entityLabel": "Mary Magdalene",
+      "evidence": {
+        "qualification": "Exact Quantamo spelling is primary-source supported; distinct from Quan Yin, Q'uo and generic quantum language. Do not transfer Pia-only sources to Cullen. Sarah's claimed parentage is a source assertion, not a historical conclusion.",
+        "section": "Voices from the Light / five-session source list",
+        "summary": "Pia's own event explicitly lists this source among beings communicating through her.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-6e0c05dd107e7216",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "council-of-nine-lori",
+      "entityLabel": "Council of Nine",
+      "evidence": {
+        "qualification": "Spokesperson-mediated attribution. No surname supplied; generic collective names are scoped to Lori, not merged with other channelers' entities.",
+        "section": "Who is Xanadu?",
+        "summary": "Lori channels Xanadu, described as spokesperson for the four explicitly listed collectives.",
+        "url": "https://helloxanadu.com/"
+      },
+      "id": "claim-7377ce8af6cfd803",
+      "personId": "lori-xanadu",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "sarah-pia-orleane",
+      "entityLabel": "Sarah",
+      "evidence": {
+        "qualification": "Exact Quantamo spelling is primary-source supported; distinct from Quan Yin, Q'uo and generic quantum language. Do not transfer Pia-only sources to Cullen. Sarah's claimed parentage is a source assertion, not a historical conclusion.",
+        "section": "Voices from the Light / five-session source list",
+        "summary": "Pia's own event explicitly lists this source among beings communicating through her.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-74a672dea1505171",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "isadora-telstar",
+      "entityLabel": "Isadora",
+      "evidence": {
+        "qualification": "Member relationship, not proof of a separate solo session. Common names Adam and John remain scoped to Telstar.",
+        "section": "About Telstar / six named members",
+        "summary": "This named being is explicitly included in Saratoga's channeled Telstar group.",
+        "url": "https://saratogaocean.com/telstar/"
+      },
+      "id": "claim-7511575b17f59429",
+      "personId": "saratoga-ocean",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Metatron",
+      "evidence": {
+        "qualification": "Guide association only. The cited personal-channeling session description names Aridif and Treb separately. This record is not direct spoken-channeling evidence.",
+        "section": "ROB GAUTHIER / three principal guides",
+        "summary": "His official biography names Metatron as a principal guide; it does not explicitly attribute a Metatron-channeling performance to Rob.",
+        "url": "https://www.etwhisperer.com/"
+      },
+      "id": "claim-753d18f77e0045a0",
+      "personId": "rob-gauthier",
+      "predicate": "Names as a guide",
+      "relationshipType": "reports_guide_association",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "contactee"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "antonis-pia-orleane",
+      "entityLabel": "Dr. Antonis",
+      "evidence": {
+        "qualification": "Exact Quantamo spelling is primary-source supported; distinct from Quan Yin, Q'uo and generic quantum language. Do not transfer Pia-only sources to Cullen. Sarah's claimed parentage is a source assertion, not a historical conclusion.",
+        "section": "Voices from the Light / five-session source list",
+        "summary": "Pia's own event explicitly lists this source among beings communicating through her.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-7cb615008baa64d8",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "council-of-light-lori",
+      "entityLabel": "Council of Light",
+      "evidence": {
+        "qualification": "Spokesperson-mediated attribution. No surname supplied; generic collective names are scoped to Lori, not merged with other channelers' entities.",
+        "section": "Who is Xanadu?",
+        "summary": "Lori channels Xanadu, described as spokesperson for the four explicitly listed collectives.",
+        "url": "https://helloxanadu.com/"
+      },
+      "id": "claim-7d0082cc56e0e60d",
+      "personId": "lori-xanadu",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "god-source-judi-weaver",
+      "entityLabel": "God Source",
+      "evidence": {
+        "qualification": "Broad divinity label; unnamed angels and masters are not converted into named Michael or Raphael relationships.",
+        "section": "Who I am today",
+        "summary": "Judi directly describes serving as a trance-medium conduit for God Source.",
+        "url": "https://judiweaver.com/about-2/"
+      },
+      "id": "claim-82b8d8c29ef4e409",
+      "personId": "judi-weaver",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "star-councils-light-solara",
+      "entityLabel": "Star Councils of Light",
+      "evidence": {
+        "qualification": "The groups are described as members of Star Councils of Light; source-specific IDs prevent merging all similarly labeled councils.",
+        "section": "Rainbow Bridge to New Earth / source collectives",
+        "summary": "Her book description explicitly attributes channeled material to these named source groups.",
+        "url": "https://www.solara.org.uk/"
+      },
+      "id": "claim-8b18f0dd09dcdbee",
+      "personId": "solara-an-ra",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "lyra-alessa",
+      "entityLabel": "Lyra cosmic race",
+      "evidence": {
+        "qualification": "Past-life associations with Egyptian deities are not converted into channeling edges.",
+        "section": "Alessa biography / cosmic sources",
+        "summary": "Her biography explicitly describes channeling wisdom from these named cosmic races.",
+        "url": "https://alessaestelar.com/en/pages/alessa"
+      },
+      "id": "claim-91389b75e7f334fe",
+      "personId": "alessa-aeisis",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "merlin",
+      "entityLabel": "Merlin",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-92278e8947829f37",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-michael",
+      "entityLabel": "Archangel Michael",
+      "evidence": {
+        "qualification": "This paragraph supports reported contact. It is not upgraded to a reviewed Michael channeling session.",
+        "section": "Why Do I Do What I Do?",
+        "summary": "Melanie reports contact with Michael while describing how she learned to receive guidance.",
+        "url": "https://www.ask-angels.com/about-melanie/"
+      },
+      "id": "claim-9253dad1e64392e3",
+      "personId": "melanie-beckler",
+      "predicate": "Reports contact with",
+      "relationshipType": "reports_contact_with",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "contactee"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "telstar-saratoga-ocean",
+      "entityLabel": "Telstar",
+      "evidence": {
+        "qualification": "",
+        "section": "About Telstar / six beings",
+        "summary": "Saratoga's site defines Telstar as a group of six beings she channels.",
+        "url": "https://saratogaocean.com/telstar/"
+      },
+      "id": "claim-941f926b4ce83589",
+      "personId": "saratoga-ocean",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "pleiadians-lori",
+      "entityLabel": "The Pleiadians",
+      "evidence": {
+        "qualification": "Spokesperson-mediated attribution. No surname supplied; generic collective names are scoped to Lori, not merged with other channelers' entities.",
+        "section": "Who is Xanadu?",
+        "summary": "Lori channels Xanadu, described as spokesperson for the four explicitly listed collectives.",
+        "url": "https://helloxanadu.com/"
+      },
+      "id": "claim-95c71e1fb3ba8ff9",
+      "personId": "lori-xanadu",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "miribi-telstar",
+      "entityLabel": "Miribi",
+      "evidence": {
+        "qualification": "Member relationship, not proof of a separate solo session. Common names Adam and John remain scoped to Telstar.",
+        "section": "About Telstar / six named members",
+        "summary": "This named being is explicitly included in Saratoga's channeled Telstar group.",
+        "url": "https://saratogaocean.com/telstar/"
+      },
+      "id": "claim-9749d33da01a19e6",
+      "personId": "saratoga-ocean",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "thymus-daniel-scranton",
+      "entityLabel": "Thymus",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-9a7668f7c0d9e90f",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Metatron",
+      "evidence": {
+        "qualification": "",
+        "section": "About me / channeling guidance",
+        "summary": "Amma directly names this being as a source of her channeled guidance.",
+        "url": "https://thyra-me.mykajabi.com/amman-kotisivu-mina-enkuksi"
+      },
+      "id": "claim-9bab20794dbe5fa4",
+      "personId": "amma-ventela",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "quantamo-pia-orleane",
+      "entityLabel": "Quantamo, Arcturian Fleet Admiral",
+      "evidence": {
+        "qualification": "Exact Quantamo spelling is primary-source supported; distinct from Quan Yin, Q'uo and generic quantum language. Do not transfer Pia-only sources to Cullen. Sarah's claimed parentage is a source assertion, not a historical conclusion.",
+        "section": "Voices from the Light / five-session source list",
+        "summary": "Pia's own event explicitly lists this source among beings communicating through her.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-9c3ab3db470214ee",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "germane-lyssa-royal-holt",
+      "entityLabel": "Germane",
+      "evidence": {
+        "qualification": "Ronald Holt's separately linked channel remains a different owner.",
+        "section": "Channeling Videos / source-specific descriptions",
+        "summary": "Her own video library explicitly attributes this source's channeling to Lyssa.",
+        "url": "https://www.lyssaroyal.net/free-video.html"
+      },
+      "id": "claim-9c8cb0f3dd47b4f2",
+      "personId": "lyssa-royal-holt",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "osho",
+      "entityLabel": "Ascended Master Osho",
+      "evidence": {
+        "qualification": "Historic recorded releases; current availability and rights require separate checking.",
+        "section": "Source-specific release descriptions",
+        "summary": "Her official release page directly attributes these channelings to Dawn.",
+        "url": "https://www.dawnkatar.com/new-channeled-releases.html"
+      },
+      "id": "claim-9cb3194f425106ab",
+      "personId": "dawn-katar",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "orion-alessa",
+      "entityLabel": "Orion cosmic race",
+      "evidence": {
+        "qualification": "Past-life associations with Egyptian deities are not converted into channeling edges.",
+        "section": "Alessa biography / cosmic sources",
+        "summary": "Her biography explicitly describes channeling wisdom from these named cosmic races.",
+        "url": "https://alessaestelar.com/en/pages/alessa"
+      },
+      "id": "claim-9de1a33abc1d6709",
+      "personId": "alessa-aeisis",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "mother-mary",
+      "entityLabel": "Mother Mary",
+      "evidence": {
+        "qualification": "Page also equates Yeshua with Jesus in its book descriptions; this supports the local comparison alias.",
+        "section": "Meeting the Holy Family",
+        "summary": "Lea's biography explicitly names these three figures as sources she began channeling.",
+        "url": "https://leachapin.com/about-lea/"
+      },
+      "id": "claim-a25b7fe9fe31e830",
+      "personId": "lea-chapin",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "moiyra-pia-orleane",
+      "entityLabel": "Moiyra",
+      "evidence": {
+        "qualification": "Event-source attribution only. The source links the name to Mermadian sound healing; identity, source nature and modality remain unresolved. Do not infer a mermaid identity or transfer this relationship to Cullen.",
+        "section": "Voices from the Light / listed sound-healing contribution",
+        "summary": "Pia's event lists Moiyra in connection with sound healing; it does not establish a spoken performance.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-a6e6e4e8e893ea3d",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "pallas-athena",
+      "entityLabel": "Lady Master Pallas Athena",
+      "evidence": {
+        "qualification": "First-party page and embedded introduction agree; named channel Wise Woman On Tour found, exact owned channel URL unresolved.",
+        "section": "Key participating Lady Masters / event through Merriam",
+        "summary": "Her own event page names this participant in her trance-channeling event.",
+        "url": "https://wisewomanontour.com/"
+      },
+      "id": "claim-a9e43d8bb4854e74",
+      "personId": "merriam-joan-handy",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "joan-of-arc",
+      "entityLabel": "St. Joan of Arc",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-aa05fa57f55bee61",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "archangel-michael",
+      "entityLabel": "Archangel Michael",
+      "evidence": {
+        "qualification": "Parent independently read this attribution. Human person_id remains separate from collection_id the-judah-channel; no item-level speech sample reviewed.",
+        "section": "Archangel Michael attribution / channeled by Anjie Hipple",
+        "summary": "The official homepage explicitly attributes a Michael message to channeling by Anjie.",
+        "url": "https://www.thejudahchannel.com/"
+      },
+      "id": "claim-ab6d31b04f6bf53b",
+      "personId": "anjie-hipple",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "pleiades-alessa",
+      "entityLabel": "Pleiades cosmic race",
+      "evidence": {
+        "qualification": "Past-life associations with Egyptian deities are not converted into channeling edges.",
+        "section": "Alessa biography / cosmic sources",
+        "summary": "Her biography explicitly describes channeling wisdom from these named cosmic races.",
+        "url": "https://alessaestelar.com/en/pages/alessa"
+      },
+      "id": "claim-ac0932967b3eb949",
+      "personId": "alessa-aeisis",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "creators-daniel-scranton",
+      "entityLabel": "The Creators",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-ac9057c4e95e130e",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "lady-nada-alexis-cartwright",
+      "entityLabel": "Lady Nada",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-b008abb6d8c73c88",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "founders-daniel-scranton",
+      "entityLabel": "The Founders",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-b041033411b89079",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "archangel-gabriel",
+      "entityLabel": "Archangel Gabriel",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-b1f35b80fa83ed4c",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "mary-magdalene",
+      "entityLabel": "Mary Magdalene",
+      "evidence": {
+        "qualification": "Source explicitly equates Yeshua and Jesus. Embedded Mariam Agency interview is not evidence that Mercedes owns that channel.",
+        "section": "Welcome / author self-introduction",
+        "summary": "Mercedes explicitly identifies herself as a channel for both named figures.",
+        "url": "https://mercedeskirkel.com/"
+      },
+      "id": "claim-b39bd27886e37c8e",
+      "personId": "mercedes-kirkel",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "saint-germain",
+      "entityLabel": "Saint Germain",
+      "evidence": {
+        "qualification": "Historic recorded releases; current availability and rights require separate checking.",
+        "section": "Source-specific release descriptions",
+        "summary": "Her official release page directly attributes these channelings to Dawn.",
+        "url": "https://www.dawnkatar.com/new-channeled-releases.html"
+      },
+      "id": "claim-b5ed4336b2913df1",
+      "personId": "dawn-katar",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "rasha-merriam-joan-handy",
+      "entityLabel": "Lady Master Rasha",
+      "evidence": {
+        "qualification": "First-party page and embedded introduction agree; named channel Wise Woman On Tour found, exact owned channel URL unresolved.",
+        "section": "Key participating Lady Masters / event through Merriam",
+        "summary": "Her own event page names this participant in her trance-channeling event.",
+        "url": "https://wisewomanontour.com/"
+      },
+      "id": "claim-b7a226d254c150fe",
+      "personId": "merriam-joan-handy",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "divine-mother-sophia-amma-ventela",
+      "entityLabel": "Divine Mother Sophia",
+      "evidence": {
+        "qualification": "",
+        "section": "About me / channeling guidance",
+        "summary": "Amma directly names this being as a source of her channeled guidance.",
+        "url": "https://thyra-me.mykajabi.com/amman-kotisivu-mina-enkuksi"
+      },
+      "id": "claim-b7c897edaa8f11b7",
+      "personId": "amma-ventela",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "sirius-alessa",
+      "entityLabel": "Sirius cosmic race",
+      "evidence": {
+        "qualification": "Past-life associations with Egyptian deities are not converted into channeling edges.",
+        "section": "Alessa biography / cosmic sources",
+        "summary": "Her biography explicitly describes channeling wisdom from these named cosmic races.",
+        "url": "https://alessaestelar.com/en/pages/alessa"
+      },
+      "id": "claim-b87aa2bcb853eb8b",
+      "personId": "alessa-aeisis",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "john-telstar",
+      "entityLabel": "John",
+      "evidence": {
+        "qualification": "Member relationship, not proof of a separate solo session. Common names Adam and John remain scoped to Telstar.",
+        "section": "About Telstar / six named members",
+        "summary": "This named being is explicitly included in Saratoga's channeled Telstar group.",
+        "url": "https://saratogaocean.com/telstar/"
+      },
+      "id": "claim-bd5825127302b91f",
+      "personId": "saratoga-ocean",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "jesus-yeshua",
+      "entityLabel": "Jesus",
+      "evidence": {
+        "qualification": "",
+        "section": "Gina Lake / messages from Jesus",
+        "summary": "Her official author site identifies Jesus as the source of channeled messages.",
+        "url": "https://www.radicalhappiness.com/"
+      },
+      "id": "claim-bdb0df9ba679f60c",
+      "personId": "gina-lake",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "medusa",
+      "entityLabel": "Medusa",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-beb0f123092a2c85",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "leah-merriam-joan-handy",
+      "entityLabel": "Elohim Lady Master Leah",
+      "evidence": {
+        "qualification": "First-party page and embedded introduction agree; named channel Wise Woman On Tour found, exact owned channel URL unresolved.",
+        "section": "Key participating Lady Masters / event through Merriam",
+        "summary": "Her own event page names this participant in her trance-channeling event.",
+        "url": "https://wisewomanontour.com/"
+      },
+      "id": "claim-bedfcc19cd4c2bb1",
+      "personId": "merriam-joan-handy",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "enoch",
+      "entityLabel": "Enoch",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-bf359f1b9e53a04d",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "pleiadians-barbara-marciniak",
+      "entityLabel": "The Pleiadians",
+      "evidence": {
+        "qualification": "",
+        "section": "Introduction / speaking through Barbara",
+        "summary": "Her official site explicitly presents these beings as speaking through Barbara.",
+        "url": "https://www.pleiadians.com/"
+      },
+      "id": "claim-c6b414793dc2a10d",
+      "personId": "barbara-marciniak",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "aridif-rob-gauthier",
+      "entityLabel": "Aridif",
+      "evidence": {
+        "qualification": "",
+        "section": "ROB GAUTHIER / three principal guides",
+        "summary": "His official channeling biography names this source among his three principal guides.",
+        "url": "https://www.etwhisperer.com/"
+      },
+      "id": "claim-c6ca4d19eb82fe74",
+      "personId": "rob-gauthier",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "moses",
+      "entityLabel": "Moses",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-c7434792646160ff",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "lyran-codes-riya",
+      "entityLabel": "Lyran codes",
+      "evidence": {
+        "qualification": "Codes are not a named conversational entity or a speech transcript. Linked Aeron Lazar channel cannot be assigned to Riya without shared-ownership evidence.",
+        "section": "Self-description / channeled codes",
+        "summary": "Riya attributes her channeled codes to these named civilizational labels.",
+        "url": "https://riyaloveguard.com/"
+      },
+      "id": "claim-c99545f63de4b46c",
+      "personId": "riya-loveguard",
+      "predicate": "Attributes channeled codes to",
+      "relationshipType": "claims_channeling_codes",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "sirian-councils-solara",
+      "entityLabel": "Sirian star collective",
+      "evidence": {
+        "qualification": "The groups are described as members of Star Councils of Light; source-specific IDs prevent merging all similarly labeled councils.",
+        "section": "Rainbow Bridge to New Earth / source collectives",
+        "summary": "Her book description explicitly attributes channeled material to these named source groups.",
+        "url": "https://www.solara.org.uk/"
+      },
+      "id": "claim-ca20f18f10411c4d",
+      "personId": "solara-an-ra",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "mother-mary",
+      "entityLabel": "Mother Mary",
+      "evidence": {
+        "qualification": "Exact Quantamo spelling is primary-source supported; distinct from Quan Yin, Q'uo and generic quantum language. Do not transfer Pia-only sources to Cullen. Sarah's claimed parentage is a source assertion, not a historical conclusion.",
+        "section": "Voices from the Light / five-session source list",
+        "summary": "Pia's own event explicitly lists this source among beings communicating through her.",
+        "url": "https://www.piaorleane.com/spring-2025-cosmic-guidance"
+      },
+      "id": "claim-cb42c6060c79c025",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "jesus-yeshua",
+      "entityLabel": "Yeshua",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-cd49feed5f374ae2",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Archangel Metatron",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-d078ff77d1a7ddd8",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "xanadu-lori",
+      "entityLabel": "Xanadu",
+      "evidence": {
+        "qualification": "Spokesperson-mediated attribution. No surname supplied; generic collective names are scoped to Lori, not merged with other channelers' entities.",
+        "section": "Who is Xanadu?",
+        "summary": "Lori channels Xanadu, described as spokesperson for the four explicitly listed collectives.",
+        "url": "https://helloxanadu.com/"
+      },
+      "id": "claim-d834e24b1d8408fe",
+      "personId": "lori-xanadu",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-michael",
+      "entityLabel": "Archangel Michael",
+      "evidence": {
+        "qualification": "Member relationship, not proof of a separate solo session. Common names Adam and John remain scoped to Telstar.",
+        "section": "About Telstar / six named members",
+        "summary": "This named being is explicitly included in Saratoga's channeled Telstar group.",
+        "url": "https://saratogaocean.com/telstar/"
+      },
+      "id": "claim-db72fcf59865bd37",
+      "personId": "saratoga-ocean",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "quan-yin",
+      "entityLabel": "Quan Yin",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-dcd990dc828ed3ca",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "mary-magdalene",
+      "entityLabel": "Lady Master Mary Magdalene",
+      "evidence": {
+        "qualification": "First-party page and embedded introduction agree; named channel Wise Woman On Tour found, exact owned channel URL unresolved.",
+        "section": "Key participating Lady Masters / event through Merriam",
+        "summary": "Her own event page names this participant in her trance-channeling event.",
+        "url": "https://wisewomanontour.com/"
+      },
+      "id": "claim-e028f32cf6af7abb",
+      "personId": "merriam-joan-handy",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "isis",
+      "entityLabel": "Isis",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-e1ab28584507fe9a",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "great-divine-director-dawn",
+      "entityLabel": "The Great Divine Director",
+      "evidence": {
+        "qualification": "Recorded-session attribution supported by page context and channeling descriptions; not inferred from a YouTube title.",
+        "section": "Source-named channeling recording descriptions",
+        "summary": "Dawn's recording catalog describes channeling sessions featuring this named source.",
+        "url": "https://www.dawnkatar.com/ascended-master-recordings.html"
+      },
+      "id": "claim-e2830b967c95f1e0",
+      "personId": "dawn-katar",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "judah-anjie-hipple",
+      "entityLabel": "Judah",
+      "evidence": {
+        "qualification": "Human person_id differs from existing collection_id the-judah-channel.",
+        "section": "Judah transmissions",
+        "summary": "Her official project attributes channeled teaching to the named angelic collective.",
+        "url": "https://www.thejudahchannel.com/"
+      },
+      "id": "claim-e2ba42813ca530f5",
+      "personId": "anjie-hipple",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "pleiadian-high-council-7-daniel-scranton",
+      "entityLabel": "The Pleiadian High Council of 7",
+      "evidence": {
+        "qualification": "Comparison concepts organize claimed names; they do not prove shared external identity across speakers.",
+        "section": "How Daniel Scranton Woke Up & Started Channeling / named entities",
+        "summary": "His channeling biography identifies this being or collective among his sources.",
+        "url": "https://danielscranton.com/daniel/"
+      },
+      "id": "claim-e4c5753de67f3d0f",
+      "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "pleiadian-codes-riya",
+      "entityLabel": "Pleiadian codes",
+      "evidence": {
+        "qualification": "Codes are not a named conversational entity or a speech transcript. Linked Aeron Lazar channel cannot be assigned to Riya without shared-ownership evidence.",
+        "section": "Self-description / channeled codes",
+        "summary": "Riya attributes her channeled codes to these named civilizational labels.",
+        "url": "https://riyaloveguard.com/"
+      },
+      "id": "claim-e5dcb9d24c6912c9",
+      "personId": "riya-loveguard",
+      "predicate": "Attributes channeled codes to",
+      "relationshipType": "claims_channeling_codes",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "kuthumi",
+      "entityLabel": "Master Kuthumi",
+      "evidence": {
+        "qualification": "",
+        "section": "Event attribution above body text",
+        "summary": "This official event explicitly identifies Dawn as the channel for Kuthumi.",
+        "url": "https://www.dawnkatar.com/june-5-2018-kuthumi-restoring-the-role-of-divine-masculine.html"
+      },
+      "id": "claim-e6ebd36cc824f3b6",
+      "personId": "dawn-katar",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "isis",
+      "entityLabel": "Lady Master Isis",
+      "evidence": {
+        "qualification": "First-party page and embedded introduction agree; named channel Wise Woman On Tour found, exact owned channel URL unresolved.",
+        "section": "Key participating Lady Masters / event through Merriam",
+        "summary": "Her own event page names this participant in her trance-channeling event.",
+        "url": "https://wisewomanontour.com/"
+      },
+      "id": "claim-e7b8dede10e3952b",
+      "personId": "merriam-joan-handy",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "laarkmaa-pia-cullen",
+      "entityLabel": "Laarkmaa",
+      "evidence": {
+        "qualification": "Separate human person_ids share existing collection_id laarkmaa. Joint relationship does not transfer Pia's other entities to Cullen.",
+        "section": "Transcendent wisdom / joint sessions",
+        "summary": "Pia's biography explicitly attributes Laarkmaa's communication to Pia and Cullen together.",
+        "url": "https://www.piaorleane.com/"
+      },
+      "id": "claim-eb0337264689393a",
+      "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "andromeda-alessa",
+      "entityLabel": "Andromeda cosmic race",
+      "evidence": {
+        "qualification": "Past-life associations with Egyptian deities are not converted into channeling edges.",
+        "section": "Alessa biography / cosmic sources",
+        "summary": "Her biography explicitly describes channeling wisdom from these named cosmic races.",
+        "url": "https://alessaestelar.com/en/pages/alessa"
+      },
+      "id": "claim-eba898f2d465e15f",
+      "personId": "alessa-aeisis",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "arcturian-codes-riya",
+      "entityLabel": "Arcturian codes",
+      "evidence": {
+        "qualification": "Codes are not a named conversational entity or a speech transcript. Linked Aeron Lazar channel cannot be assigned to Riya without shared-ownership evidence.",
+        "section": "Self-description / channeled codes",
+        "summary": "Riya attributes her channeled codes to these named civilizational labels.",
+        "url": "https://riyaloveguard.com/"
+      },
+      "id": "claim-eceaf9b929683805",
+      "personId": "riya-loveguard",
+      "predicate": "Attributes channeled codes to",
+      "relationshipType": "claims_channeling_codes",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "morgan-le-fay",
+      "entityLabel": "Morgan le Fay",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-f0e8061e1b28b5db",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-uriel",
+      "entityLabel": "Archangel Uriel",
+      "evidence": {
+        "qualification": "John Walker is described as her teaching partner; this page does not assign him Joan's channeling relationships.",
+        "section": "Joan Walker / emergence into public teaching in 2005",
+        "summary": "Her biography names these sources for her channeling and teaching work.",
+        "url": "https://ascendingmasters.net/about/"
+      },
+      "id": "claim-f1d22a3b61845990",
+      "personId": "joan-walker",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "archangel-zadkiel",
+      "entityLabel": "Archangel Zadkiel",
+      "evidence": {
+        "qualification": "John Walker is described as her teaching partner; this page does not assign him Joan's channeling relationships.",
+        "section": "Joan Walker / emergence into public teaching in 2005",
+        "summary": "Her biography names these sources for her channeling and teaching work.",
+        "url": "https://ascendingmasters.net/about/"
+      },
+      "id": "claim-f1f6f3e222374659",
+      "personId": "joan-walker",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:22:51Z",
+      "entityId": "john-the-baptist",
+      "entityLabel": "St. John the Baptist",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Identity categories describe the named figure as presented, not proof of an external source. No additional aliases or historical relationships inferred. Paid listing is evidence only, not acquisition authorization.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-f552b289b6e64b49",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-16T23:59:04Z",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Archangel Metatron",
+      "evidence": {
+        "qualification": "",
+        "section": "Attributed Metatron passage after biography",
+        "summary": "Her own page attributes its light-language explanation to Metatron.",
+        "url": "https://www.althealucrezia.com/"
+      },
+      "id": "claim-f7c892f33dc2d3db",
+      "personId": "althea-lucrezia-avanzo",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "pleiadian-councils-solara",
+      "entityLabel": "Pleiadian star collective",
+      "evidence": {
+        "qualification": "The groups are described as members of Star Councils of Light; source-specific IDs prevent merging all similarly labeled councils.",
+        "section": "Rainbow Bridge to New Earth / source collectives",
+        "summary": "Her book description explicitly attributes channeled material to these named source groups.",
+        "url": "https://www.solara.org.uk/"
+      },
+      "id": "claim-fbb9908d6e1e7a36",
+      "personId": "solara-an-ra",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17T00:06:42Z",
+      "entityId": "mary-magdalene",
+      "entityLabel": "Mary Magdalene",
+      "evidence": {
+        "qualification": "Series-level attribution; no individual session reviewed. Paid listing is evidence only, not acquisition authorization. Cosmic Christ is not automatically merged with Jesus.",
+        "section": "Nine-part series description and mass-healing schedule",
+        "summary": "Alexis's official series links her own channelings to this named scheduled source.",
+        "url": "https://landingi.transferencehealing.com/godsandgoddesses"
+      },
+      "id": "claim-fe5940c162c02de6",
+      "personId": "alexis-cartwright",
+      "predicate": "Claims channeling in an event series",
+      "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    }
+  ],
+  "schemaVersion": 1
+}
