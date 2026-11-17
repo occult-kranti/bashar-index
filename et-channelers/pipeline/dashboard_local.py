@@ -179,7 +179,11 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
       if (Number.isFinite(data.counts.caption_verified_videos)) {
-        let captionSummary = number(data.counts.caption_verified_videos) + ' videos have English caption text verified on Drive (' + number(data.counts.caption_verified_tracks) + ' tracks). ' + number(data.counts.caption_pending_videos) + ' await caption completion; ' + number(data.counts.caption_none_english) + ' have no English track in the saved source inventory.';
+        const captionAvailable = data.counts.caption_text_available_videos;
+        let captionSummary = Number.isFinite(captionAvailable) ? number(captionAvailable) + ' audio items have English caption text verified on Drive. ' : '';
+        captionSummary += number(data.counts.caption_verified_videos) + ' caption inventories are complete (' + number(data.counts.caption_verified_tracks) + ' verified tracks overall). ';
+        if (Number.isFinite(data.counts.caption_inventory_review_videos)) captionSummary += number(data.counts.caption_inventory_review_videos) + ' items with saved captions still need inventory review. ';
+        captionSummary += number(data.counts.caption_pending_videos) + ' await caption completion; ' + number(data.counts.caption_none_english) + ' have no English track in the saved source inventory.';
         if (data.operation.caption_state === 'cooldown') captionSummary += ' Caption requests are waiting for YouTube' + (data.operation.caption_retry_after ? ' until ' + date(data.operation.caption_retry_after) : '') + '. Audio collection can continue independently.';
         else if (data.operation.caption_state === 'paused') captionSummary += ' Caption backfill is paused.';
         put('cc-captions-summary', captionSummary);
@@ -188,7 +192,10 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (Number.isFinite(data.counts.asr_verified_videos)) {
         const asrStates = {running:'GPU transcription was reported running.', complete:'The latest GPU batch reported completion.', stopped_error:'The GPU batch stopped for review.'};
         const reported = asrStates[data.operation.asr_last_reported_state];
-        put('cc-asr-summary', number(data.counts.asr_verified_videos) + ' videos have generated ASR bundles verified on Drive. ' + number(data.counts.text_artifact_videos) + ' audio items have saved text; ' + number(data.counts.text_pending_videos) + ' still need complete text. Generated ASR accuracy is unreviewed. ' + number(data.counts.verified_pairs) + ' native audio pairs; ' + number(data.counts.browser_recorded_videos ?? 0) + ' re-encoded browser recordings.' + (reported ? ' ' + reported + ' Reported ' + date(data.operation.asr_reported_at) + '.' : ''));
+        const textSummary = Number.isFinite(data.counts.text_available_videos)
+          ? number(data.counts.text_available_videos) + ' audio items have saved text; ' + number(data.counts.text_missing_videos) + ' have no saved text. ' + number(data.counts.text_inventory_complete_videos) + ' meet text-inventory completion checks. '
+          : number(data.counts.text_artifact_videos) + ' audio items meet text-inventory completion checks; ' + number(data.counts.text_pending_videos) + ' remain under review. Separate text availability was not recorded in this snapshot. ';
+        put('cc-asr-summary', number(data.counts.asr_verified_videos) + ' videos have generated ASR bundles verified on Drive. ' + textSummary + 'Generated ASR accuracy is unreviewed. Saved text does not establish coverage of every spoken word. ' + number(data.counts.verified_pairs) + ' native audio pairs; ' + number(data.counts.browser_recorded_videos ?? 0) + ' re-encoded browser recordings.' + (reported ? ' ' + reported + ' Reported ' + date(data.operation.asr_reported_at) + '.' : ''));
       }
       const used = data.storage.managed_bytes ?? data.storage.local_bytes;
       const cap = data.storage.managed_ceiling_bytes ?? data.storage.ceiling_bytes;
