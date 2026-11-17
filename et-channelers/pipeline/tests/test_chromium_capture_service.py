@@ -107,6 +107,16 @@ class CaptureFixture:
 
 
 class CaptureStoreTests(CaptureFixture, unittest.TestCase):
+    def test_abort_retains_only_a_bounded_constant_diagnostic(self):
+        job = self.lease()
+        self.store.abort(dict(capture_id=job['capture_id'], reason='source_monitor_stale'))
+        self.assertEqual(self.store.jobs[job['capture_id']]['abort_reason'], 'source_monitor_stale')
+        another = self.lease()
+        self.store.abort(dict(capture_id=another['capture_id'], reason='https://private.example/token=SECRET'))
+        state = self.store.jobs[another['capture_id']]
+        self.assertEqual(state['abort_reason'], 'unclassified_browser_stop')
+        self.assertNotIn('SECRET', json.dumps(state))
+
     def test_missing_resource_authorization_and_unaccounted_roots_fail_closed(self):
         self.resource_plan["browser_capture_dispatch_allowed"] = False
         plan = self.root / "sync/analysis_resource_plan.json"

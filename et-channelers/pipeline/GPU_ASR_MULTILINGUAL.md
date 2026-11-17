@@ -6,9 +6,10 @@ configuration and five-member verifier unchanged. Importing it starts no jobs,
 imports no GPU packages, and changes no environment. No model is downloaded by
 the adapter, and it never deletes source copies.
 
-The adapter is covered by offline tests. A real multilingual CUDA acceptance
-run remains a separate resource-coordinator gate; successful English runs do
-not establish multilingual accuracy or translation quality.
+The adapter has 23 focused offline tests and completed a bounded real CUDA
+acceptance run on 2026-11-17 UTC. Two paired results passed local verification,
+Drive hash/identity readback, and owned-input cleanup. This establishes the
+artifact lifecycle; accuracy and translation quality remain unreviewed.
 
 ## Model, resources and admission
 
@@ -69,9 +70,11 @@ review signals, not automatic interval classifications. The original audio
 remains available; no natural-language English meaning is invented.
 
 Held decisions are recorded in `sync/asr_language_manifest.jsonl` and the named
-frame's `holds/` directory. Their source leases remain active in
-`held_language_review`, retaining the owned input copies for an explicit later
-decision. They do not count as completed ASR.
+frame's `holds/` directory. If an input was fetched, its source lease remains
+active in `held_language_review`, retaining the owned copy for an explicit later
+decision. The coordinator may hold explicit metadata review flags before
+fetching audio, without allocating an input lease. Neither kind of hold counts
+as completed ASR.
 
 ## Paired artifacts and verification
 
@@ -127,3 +130,31 @@ Both failing within ten seconds stops inference. Sampling gaps and backend
 changes are recorded; missing observations are never treated as zero load.
 Pacing targets a soft 70% rolling utilization average, not an instantaneous
 kernel limit.
+
+## Observed acceptance run
+
+The frozen five-source frame finished at 2026-11-17 04:22:10 UTC. It produced
+two seven-member paired ZIPs totaling 170,565 bytes. Each original and English
+view has separate hashes, timestamps, task identity and text kind. Successful
+source input copies were removed only after exact Drive ID, size and MD5 proof;
+the archived source objects were unchanged.
+
+| Original language | Decoded audio | Original segments | English translation segments | Detection, decoding, inference and pacing |
+|---|---:|---:|---:|---:|
+| Spanish | 205.590 s | 38 | 30 | 44.734 s |
+| Japanese | 936.786 s | 244 | 167 | 210.875 s |
+
+These are observations from two recordings, not a comparative benchmark or an
+accuracy result. The maximum observed 30-second rolling utilization was 62%,
+instantaneous utilization reached 100%, peak VRAM was 2,779,475,968 bytes, and
+maximum temperature was 77°C. Sampling gaps were at most 1.016 seconds; no
+telemetry errors or fallback samples occurred. Both tasks used CUDA
+`int8_float16`, one model worker and batch size one. No CPU ASR fallback ran.
+
+Three sources remained held: one explicit metadata nonlexical review flag
+(audio not fetched), one with no VAD-retained speech in the three sampled
+windows, and one with insufficient language confidence. These observations do
+not establish silence or meaning throughout a recording. No semantic text was
+generated for the held sources. Their two fetched audio copies total 3,326,242
+bytes and remain retained for review. The full ASR archive then contained 27
+Drive-verified sources, including the preceding 25 English results.

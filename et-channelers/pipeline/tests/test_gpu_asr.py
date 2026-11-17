@@ -273,6 +273,16 @@ class WorkerTests(unittest.TestCase):
             asr.publish_result(misplaced, "test:other", drive)
         drive.copy.assert_not_called()
 
+    def test_missing_private_root_is_rejected_without_inferring_parent_depth(self):
+        receipt = self.run_fake()
+        receipt.pop('private_root')
+        misplaced = self.root / 'shallow.json'
+        write(misplaced, receipt)
+        drive = Mock()
+        with self.assertRaisesRegex(asr.AsrError, 'result_receipt_location'):
+            asr.publish_result(misplaced, 'test:other', drive)
+        drive.copy.assert_not_called()
+
     def test_incomplete_managed_inventory_fails_closed(self):
         with self.assertRaisesRegex(asr.AsrError, "incomplete_storage_inventory"):
             asr.inventory(self.settings)

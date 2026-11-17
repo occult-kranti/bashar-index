@@ -1,8 +1,24 @@
-# Research audio capture for the browser that already plays
+# Research native audio inspection
+
+## Current mode: inspect native formats, without recording
+
+Version 0.2.0 changes the default toolbar action to **inspection only**. Reload the unpacked extension once if an earlier version is already loaded. On a normal `www.youtube.com/watch` tab that already plays, the toolbar reads the live player/URL/response identity and opens Options with safe audio format descriptors. It does not seek, record, acquire a tab stream, download media, contact the local archive service, or export transport URLs, tokens, cookies or player responses. No new permissions are required; the extension ID is unchanged.
+
+Options shows up to four recent inspections: audio MIME/codec, declared size and duration, direct-URL versus cipher-only availability, and presence flags for SABR, streaming configuration and client information. The **Copy safe inspection** button copies only these descriptors. A published-token presence flag is not a token-acquisition mechanism; absent fields stay absent. Ads, protected media, a stale response or mismatched live video fail closed. This inspection is evidence for selecting a supported native batch transport, **not proof of a successful full download**.
+
+`native-inspector.js` also contains an unexposed 64KiB direct-format probe for a later, explicit integration. It accepts only an existing HTTPS Googlevideo audio URL in page memory, performs no deciphering/client changes, requires exact HTTP206 range/length/known total and an audio container header, and returns only a prefix hash/proof. It refuses a second attempt for that video/format in the same page lifetime. HTTP403/429 or CORS errors stop it. The toolbar does not call this mode. No full native artifact has been proved by these fixtures.
+
+The preserved recording code is not exposed by the current UI. Its last16 bounded outcomes remain in Chrome session storage after cleanup; explicit user stop/tab closure is distinguished from an actual failure. Source URL/token/error-body material is excluded. A later authorized recording activation refreshes local pairing first, without retrying uncertain chunk/finish requests.
+
+Official browser constraints: [MAIN-world scripting](https://developer.chrome.com/docs/extensions/reference/api/scripting) runs within the accepted page context; [ordinary cross-origin restrictions](https://developer.chrome.com/docs/extensions/develop/concepts/network-requests) still apply. This version does not add host permissions to work around a refused request.
+
+## Preserved experimental recording fallback
+
+**Parked, November 17:** the owner requests scalable native batch downloading rather than real-time recording. The local capture service and its dispatch reservation are stopped. Do not follow the activation steps below as the current acquisition plan; they document the preserved experimental fallback. Short accepted-browser recordings were held, and no complete browser artifact was archived.
 
 This Chrome Manifest V3 extension records audio from explicitly activated YouTube tabs and streams it to the local archive service. It uses supported `chrome.tabCapture`; it does not retrieve signed media URLs or read/export cookies, credentials, or profiles. Output is **browser_recorded_audio**, re-encoded WebM/Opus at96kbps, with no native-source or accuracy claim.
 
-## Load and use
+## Historical recording setup (parked)
 
 1. Start the project's local capture service on `127.0.0.1:8768`. Its health endpoint is `http://127.0.0.1:8768/capture/v1/health`.
 2. In the Chrome window where ordinary playback works, open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select this `et-channelers/browser_capture_extension` directory. Pin **Channel Research Audio Capture** if convenient.

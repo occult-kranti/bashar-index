@@ -507,7 +507,9 @@ def publish_result(receipt_path, remote, drive):
     """Publish one verified ZIP. Source inputs are never released here."""
     receipt_path = Path(receipt_path)
     receipt = read_json(receipt_path)
-    root = Path(receipt.get("private_root", receipt_path.resolve().parents[4])).resolve()
+    require(isinstance(receipt.get("private_root"), str) and bool(receipt["private_root"]),
+            "result_receipt_location")
+    root = Path(receipt["private_root"]).resolve()
     require(receipt_path.resolve().is_relative_to(root / "asr/results"), "result_receipt_location")
     require(re.fullmatch(r"asr-[a-f0-9]{24}", receipt.get("run_id", "")) is not None, "result_run_id")
     bundle_path = Path(receipt["bundle"]["path"]).resolve()

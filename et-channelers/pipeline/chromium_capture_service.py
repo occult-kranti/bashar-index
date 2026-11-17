@@ -425,7 +425,10 @@ class Store:
 
     def abort(self, value):
         job = self.get_job(value, {"leased", "recording"})
-        job.update(state="held", reserved_bytes=0, error="browser_aborted_incomplete", stopped_at=utc_now())
+        reason = value.get("reason")
+        reason = reason if isinstance(reason, str) and re.fullmatch(r"[a-z0-9_]{1,80}", reason) else "unclassified_browser_stop"
+        job.update(state="held", reserved_bytes=0, error="browser_aborted_incomplete", abort_reason=reason,
+                   stopped_at=utc_now())
         self.save(job)
         return {"accepted": True}
 
