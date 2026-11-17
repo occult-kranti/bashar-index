@@ -197,6 +197,14 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
           : number(data.counts.text_artifact_videos) + ' audio items meet text-inventory completion checks; ' + number(data.counts.text_pending_videos) + ' remain under review. Separate text availability was not recorded in this snapshot. ';
         put('cc-asr-summary', number(data.counts.asr_verified_videos) + ' videos have generated ASR bundles verified on Drive. ' + textSummary + 'Generated ASR accuracy is unreviewed. Saved text does not establish coverage of every spoken word. ' + number(data.counts.verified_pairs) + ' native audio pairs; ' + number(data.counts.browser_recorded_videos ?? 0) + ' re-encoded browser recordings.' + (reported ? ' ' + reported + ' Reported ' + date(data.operation.asr_reported_at) + '.' : ''));
       }
+      if (Number.isFinite(data.counts.publisher_text_target_videos) && Number.isFinite(data.counts.publisher_audio_variant_target_videos)) {
+        let publisherSummary = number(data.counts.publisher_text_target_videos) + ' latest-20 videos have publisher-written companions; ';
+        if (Number.isFinite(data.counts.publisher_transcript_target_videos)) publisherSummary += number(data.counts.publisher_transcript_target_videos) + ' have publisher transcripts; ';
+        publisherSummary += number(data.counts.publisher_audio_variant_target_videos) + ' have publisher podcast audio variants. ';
+        if (data.counts.publisher_audio_qualified_variant_target_videos > 0) publisherSummary += number(data.counts.publisher_audio_qualified_variant_target_videos) + ' source associations remain qualified. ';
+        if (Number.isFinite(data.counts.publisher_variant_asr_target_videos)) publisherSummary += number(data.counts.publisher_variant_asr_target_videos) + ' publisher editions have ASR verified on Drive. ';
+        put('cc-publisher-summary', publisherSummary + 'Publisher transcripts can be untimed and editions can differ from YouTube; native-audio progress is shown above.');
+      }
       const used = data.storage.managed_bytes ?? data.storage.local_bytes;
       const cap = data.storage.managed_ceiling_bytes ?? data.storage.ceiling_bytes;
       put('cc-local-storage', (used / 1e9).toFixed(2) + ' / ' + number(cap / 1e9) + ' GB' + (Number.isFinite(data.storage.managed_bytes) ? ' including tools and models' : ''));

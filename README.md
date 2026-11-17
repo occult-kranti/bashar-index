@@ -4,7 +4,7 @@ This repository contains **three related research projects with separate dataset
 
 **Start here:** [all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [branch inventory and history](BRANCHES.md) · [collection handoff](et-channelers/HANDOFF.md) · [future transcription/analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md).
 
-Repository guide checkpoint: **17 November 2026, 08:57 UTC**. Integration baseline is [`42ee4cb`](https://github.com/occult-kranti/bashar-index/commit/42ee4cb04c88ab47ea80360538e0c6d4c9250202), including merged [PR #33](https://github.com/occult-kranti/bashar-index/pull/33). CI ran 1,080 Python tests with 40 skips and all 86 Node tests passed; Pages deployed successfully. Both native-transport branches are retained. Current work on `feat/caption-gap-audit` distinguishes available text from caption-inventory completion and adds the byte-exact CUDA gap-review worker. Native browser recovery remains unproved; [BRANCHES.md](BRANCHES.md) preserves integration history. **Contained CUDA transcription has produced 27 Drive-verified full-recording bundles:** 25 English recordings plus Spanish and Japanese originals with separate English translations. A separate gap-review result is verified on Drive and changes no completion count. Accuracy remains unreviewed. Both models are pinned in one isolated environment; embeddings and scientific corpus analysis remain deferred. The latest resource/source state is at the top of [HANDOFF](et-channelers/HANDOFF.md).
+Repository guide checkpoint: **17 November 2026, 11:17 UTC**. Integration baseline is [`aa9a367`](https://github.com/occult-kranti/bashar-index/commit/aa9a367ecc9201110bcfb7a5342119d858be408b), including merged [PR #34](https://github.com/occult-kranti/bashar-index/pull/34). CI ran 1,098 Python tests with 42 skips and all 86 Node tests passed; Pages deployed successfully. Earlier work branches are retained. Current work on `feat/held-audio-language-review` examines unresolved archived audio and adds a bounded interval-language review, separately from full transcription. Native browser recovery remains unproved; [BRANCHES.md](BRANCHES.md) preserves integration history. **Contained CUDA transcription has produced 28 Drive-verified full-recording bundles:** 26 English recordings plus Spanish and Japanese originals with separate English translations. Separate gap/audio reviews do not increase that count. Accuracy remains unreviewed. Both models are pinned in one isolated environment; embeddings and scientific corpus analysis remain deferred. The latest resource/source state is at the top of [HANDOFF](et-channelers/HANDOFF.md).
 
 ## The three research lanes
 
@@ -50,9 +50,13 @@ The [dated collection snapshot](et-channelers/plan/ingestion_status.json) report
 | Audio/metadata pairs verified on Drive | 47 |
 | Verified English caption bundles | 20 |
 | Videos with complete verified caption inventories | 15 |
-| Archived audio items with verified text available | 44; 27 ASR plus 17 with English captions, no overlap |
-| Text-inventory completion / saved-caption review / no saved text | 42 / 2 / 3 |
-| ASR videos verified on Drive | 27; 9.97 audio hours, accuracy unreviewed |
+| Archived audio items with verified text available | 45; 28 ASR plus 17 with English captions, no overlap |
+| Text-inventory completion / saved-caption review / no saved text | 43 / 2 / 2 |
+| ASR videos verified on Drive | 28; about 10.4 audio hours, accuracy unreviewed |
+| Additional latest-20 publisher-written companions | 16; author-written source material, not verified spoken transcripts |
+| Additional exact-ID publisher transcripts | 1; untimed, spoken coverage unverified |
+| Additional publisher podcast audio editions | 2; source/edition association retained separately from native audio |
+| Publisher-edition ASR verified on Drive | 2; about 2.6 audio hours, accuracy and YouTube edit equivalence unreviewed |
 | Scientific corpus-analysis jobs | 0 |
 
 These are the new local YouTube lane's counts, not totals for older podcasts, archive.org sessions, publisher texts or the Atlas. Its snapshot records a source cooldown; a one-file recovery does not establish universal access or ongoing successful downloading. Audio, caption and Drive endpoint deadlines remain separate. Use the [Windows/rclone operating guide](et-channelers/pipeline/WINDOWS_DRIVE.md), [caption methods](et-channelers/pipeline/YOUTUBE_CAPTIONS_RESEARCH.md) and [archive catalog guide](et-channelers/pipeline/ARCHIVE_CATALOG.md) for controls and recovery. Their older dated examples retain their original queue counts.
@@ -64,6 +68,8 @@ The [leased CUDA worker](et-channelers/pipeline/GPU_ASR_SETUP.md) uses exact aud
 The [Chrome helper](et-channelers/browser_capture_extension/README.md) has an experimental native SABR downloader. Earlier automated trials transferred 1,133,713 bytes / 69.892 seconds, then stalled with protection pending. The repaired acceptance gate requires SPS1 from a complete matching ordinary-player response. Its actual isolated-browser trial received SPS3 and stopped before native BEGIN; no new audio or completed source attempt was created. Both earlier partials remain retained. **Real-time capture remains parked.** Native batch dispatch still requires one complete locally validated and Drive-verified file; the source window ends November 18 at 07:31:07 UTC. See [the transport investigation](et-channelers/research/native-audio-investigation-2026-11-17.md).
 
 The [caption-gap review](et-channelers/research/caption-gap-review-2026-11-17.md) reuses verified Drive audio and existing English captions. It decoded once per reviewed run while retaining only gap windows, then used 32.459 seconds of CUDA ASR input for a 75-minute source. Three of five candidate words already match adjacent captions; two remain unresolved. No missing words, full coverage or new completed transcript are claimed. The [reproducible worker and execution contract](et-channelers/pipeline/CAPTION_GAP_REVIEW.md) preserve original caption alternatives and separate unreviewed evidence.
+
+The [held-audio review](et-channelers/research/held-audio-language-review-2026-11-17.md) fills the earlier sampled-VAD gaps, checks original channels, and examines the recording previously held on metadata alone. A light-language label is a review signal, not proof about every interval. [Language-ID review](et-channelers/pipeline/LANGUAGE_ID_REVIEW.md) keeps bounded model scores separate from lexical meaning, whole-recording language and full-ASR completion.
 
 ## Public repository, private working data and archives
 
