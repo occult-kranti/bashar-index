@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "namespace": "ChannelingNativeSabrV1",
+  "created_at": "2026-11-17T06:23:35.978Z",
+  "network_behavior": "Loading the bundle starts no requests; accepted-context producer must be explicitly invoked.",
+  "logger_policy": "Bundled Logger.prototype.log is disabled; signed transport diagnostics cannot be enabled through the exposed logger.",
+  "dependencies": [
+    {
+      "name": "googlevideo",
+      "version": "5.0.1",
+      "registry_tarball": "https://registry.npmjs.org/googlevideo/-/googlevideo-5.0.1.tgz",
+      "registry_integrity": "sha512-jbQtretPuwNXUJzjUUaIap6z8cFGMu1tnUi02bhCgcENPoAUQvi4KRRVKFvseZSiDVJ0ocU7gCY2cAfWrwDS9g==",
+      "license": "MIT"
+    },
+    {
+      "name": "@bufbuild/protobuf",
+      "version": "2.17.0",
+      "registry_tarball": "https://registry.npmjs.org/@bufbuild/protobuf/-/protobuf-2.17.0.tgz",
+      "registry_integrity": "sha512-hcPkSz6D7MiTU/5VBBhK+kxaYDoOdQ6yJRFJ3kS8Nydp+VZXfg1vrpABKPNod8bXMufsVCmiUJVIKFzCzta4uw==",
+      "license": "(Apache-2.0 AND BSD-3-Clause)"
+    }
+  ],
+  "bundler": {
+    "name": "esbuild",
+    "version": "0.25.12",
+    "registry_integrity": "sha512-bbPBYYrtZbkt6Os6FiTLCTFxvq4tt3JKall1vRwshA3fdVztsLAatFaZobhkBC8/BrPetoa0oksYoKXoG4ryJg=="
+  },
+  "build_options": {
+    "format": "iife",
+    "platform": "browser",
+    "target": "chrome120",
+    "sourcemap": false,
+    "minifyWhitespace": true,
+    "minifySyntax": true,
+    "minifyIdentifiers": false,
+    "legalComments": "external"
+  },
+  "adapter_sha256": "1ca616545d8aa9d1aaca06da258bb21ba141b0c6192b4cfd87a5386c605504e8",
+  "source_files": [
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/create.js",
+      "bytes": 11617,
+      "sha256": "40bd3240cb5a947f964ff37bea753c6706249e63ec41ee5bb7f5728e4c2e4159"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/descriptors.js",
+      "bytes": 2381,
+      "sha256": "92884553e5d2d46ea273441deb32dc07187dc8ded3524356fa68536d1f2fc435"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/from-binary.js",
+      "bytes": 16061,
+      "sha256": "ddac05a382bfb283459091a56a11e18f32d501a48ab5fe6a8e27ae3e2ee03f47"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/is-message.js",
+      "bytes": 1077,
+      "sha256": "eda289d9ef0e979fe77a578ffbbf8012cadcfec4629b66cd98c27d6229a9f020"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/proto-int64.js",
+      "bytes": 4377,
+      "sha256": "cdb1f7869edc7171b689fd532fcaa4fa039680e1af44b32cce227cf61ca3fe05"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/reflect/error.js",
+      "bytes": 1106,
+      "sha256": "6ec9654705968f0c75cb0b184d4bb6629a932c05e3d27d603eb42a3cb9447f6f"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/reflect/guard.js",
+      "bytes": 2919,
+      "sha256": "f3b9324922e08cffcc4c7ae3c6e08454f62e187a37404df31a00160cddf34d77"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/reflect/message.js",
+      "bytes": 5009,
+      "sha256": "f3039eda68ff17bdf9fd0bb8333602247325d0fadd49b591c89314922874027f"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/reflect/scalar.js",
+      "bytes": 4895,
+      "sha256": "cb095614d5f901cd00d46b930a23c64ebd909a77831aa666768fca47f3e7745f"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/reflect/unsafe.js",
+      "bytes": 5209,
+      "sha256": "7481dc6cb1f88f66f225894c0087daef1d563809f5e44433eaa0de2e4df33c1f"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/to-binary.js",
+      "bytes": 16471,
+      "sha256": "63241fb54445dbb81561236f074d1a031735ad8cc0abc93269b014e8a9661886"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wire/base64-encoding.js",
+      "bytes": 6470,
+      "sha256": "d65944009ab55b40661572a8bdcaf0374de8566e2bc4a0dc11d7790e79cf9eeb"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wire/binary-encoding.js",
+      "bytes": 24179,
+      "sha256": "8b3a0826a2a46e8f0c4f9aa4bf3c2bf160086ed127c9736db31b3189cd41e3af"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wire/index.js",
+      "bytes": 829,
+      "sha256": "4cc137a3eb782f0ab9e8d02f6c5975e55f721f2d63ce2186f0fd6014af9b9bd5"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wire/size-delimited.js",
+      "bytes": 8373,
+      "sha256": "1c364712aa61711ce0e654ed81e26fe821e8f7b6dac9c31fe6d49fc184dbacd2"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wire/text-encoding.js",
+      "bytes": 4238,
+      "sha256": "1923f299bddc202c5a595020bdc1b91a55aeac6d5ca8471d81671230eb6801e6"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wire/text-format.js",
+      "bytes": 7075,
+      "sha256": "92aa7e4df3bf7dfc02235174f297dcbff6bd02f7eb6325876cbb24ada6d51414"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wire/varint.js",
+      "bytes": 11814,
+      "sha256": "5a78ffe702716989b7c1d5f5deb73f7283655af5a7ecb3d885ae0b19f59eeaeb"
+    },
+    {
+      "source": "dependencies/@bufbuild/protobuf/dist/esm/wkt/wrappers.js",
+      "bytes": 2231,
+      "sha256": "5f084c743c64707a1861d4e6ce05fcc5aede31838e03f13f2882b02dab7e945a"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/misc/common.js",
+      "bytes": 25152,
+      "sha256": "205861ad4ae102d530ea51184c3b65e4f4902624545e0bd9afa1ff1913bed095"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/allowed_cached_formats.js",
+      "bytes": 2079,
+      "sha256": "a69dbd3de5bf813dedfa440719985dfb1242bed2305fa071d2d859d9373bd291"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/buffered_range.js",
+      "bytes": 11623,
+      "sha256": "ec902764fff53f29a1e4a528d9fcace3b97773c99e0a3b66f943e9ef7f776258"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/client_abr_state.js",
+      "bytes": 23343,
+      "sha256": "f00dfb8ba8d6c7baec4f63dfaf062849b801e7304769a413d7c6fe922495052b"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/crypto_params.js",
+      "bytes": 2702,
+      "sha256": "17f84063c4b705bf23574550a33048b251ade5b52fefffc146120ad3f75b29a2"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/cuepoint_info.js",
+      "bytes": 5576,
+      "sha256": "08507d676c01aa6961f3c2b48d389b96fb73d52abb12fac0e8ac0beb860c8f60"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/cuepoint_list.js",
+      "bytes": 2047,
+      "sha256": "13c7016178d42fdbf8fd7fa86ee238c5b3f73001a201be046a3f715440c0ce45"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/cuepoint.js",
+      "bytes": 5853,
+      "sha256": "db56ffa1276d3d676504e51d45f51a867842e49e4d818cf069bc7825017c22c4"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/format_initialization_metadata.js",
+      "bytes": 6700,
+      "sha256": "83ae73c0a094a30be9509b037517931b27e7ff6e364ed79471607e02abbc193c"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/format_selection_config.js",
+      "bytes": 3083,
+      "sha256": "2edf2ea7f24b1c7031d376fe879288823628163b653d30ea7c3a7949dd84cf4c"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/innertube_request.js",
+      "bytes": 8445,
+      "sha256": "03f7171d35eadc2022ed96042bc63dc491bb8e0a9d7f29ed87ab9849e38c9bf3"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/media_capabilities.js",
+      "bytes": 12455,
+      "sha256": "29f19929c82f8bb840475ca606f699f560263e193d462b6457c63a467bf6ba97"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/media_header.js",
+      "bytes": 9150,
+      "sha256": "6cb69fd51d099cf34276c2e9a9c53c3afe03161109d2d8a5d4dd017f926323c3"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/next_request_policy.js",
+      "bytes": 5024,
+      "sha256": "55f7bc03c3264f170d907f8ad812d8d3f8cd7f4bda1501a06e3a1383771147f5"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/onesie_header_type.js",
+      "bytes": 1098,
+      "sha256": "b224fc1a2da1bf86d6e87e341e8d79bda48b2458744ed826ad30e20c780e768c"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/onesie_header.js",
+      "bytes": 9362,
+      "sha256": "256394895e98de02ae62f8175ae415ded45c0a0be31a7f5c32c86aa9a303485a"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/onesie_innertube_request.js",
+      "bytes": 3742,
+      "sha256": "17c5652f9cf47346c412d0f7426f015a4a43ee4cabb03cfb00a28406e9526b2a"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/onesie_innertube_response.js",
+      "bytes": 3269,
+      "sha256": "540df4dfd6c1fbf8cb847ab5dcffa685e2335e85f19ea68c63324737cecd1a1c"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/onesie_proxy_status.js",
+      "bytes": 1184,
+      "sha256": "f266f2466832ef73cd4d8c601c3e44455000ad717775de8dc673b6fa127e323e"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/onesie_request.js",
+      "bytes": 6331,
+      "sha256": "dad5177136cf023569b6da8bb0211ae9057dff1c4d251a255b0a0728fed5a06d"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/playback_cookie.js",
+      "bytes": 3252,
+      "sha256": "0fe440ca7a897584b7fe851b6e58051c9ba830642e83196ea59b403aa526ea33"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/playback_start_policy.js",
+      "bytes": 6017,
+      "sha256": "48531e2e82beae0e9b3485049aca72e176d557d9493b6f8dc0b9377ea53f5569"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/prewarm_connection.js",
+      "bytes": 1966,
+      "sha256": "8d9769af577062c823f658d65dd9d32ea5364badbd25ce2a132ba32d9ee3d72f"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/reload_player_response.js",
+      "bytes": 3662,
+      "sha256": "9e7c173dcd57d01e7e454f91fd4172be73ff99ea7a760a88409a952cf2cf6310"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/request_cancellation_policy.js",
+      "bytes": 5481,
+      "sha256": "608e0e87834970225350e5d12c4e37dc1bb627a37175a2f9ffec284cf7a4a57b"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/request_identifier.js",
+      "bytes": 1974,
+      "sha256": "3dad2c2b9563c4b1f86139f336038ea0fb02ab7cf1f3928d2d102731f0100e23"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/sabr_context_sending_policy.js",
+      "bytes": 3784,
+      "sha256": "052c0867b45bed545f32cb63298f3eaf3a99d345f4ddcb152de9a02086848c44"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/sabr_context_update.js",
+      "bytes": 10752,
+      "sha256": "30fee6a1deac99e27d2b071b515648c3d72623e663535c9fbca7b75f15836a46"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/sabr_error.js",
+      "bytes": 2286,
+      "sha256": "bbc676cb8b867c923e9bb8eb642ec2cb42d444327e9a5e73deaa8438a5a51635"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/sabr_live_metadata.js",
+      "bytes": 6209,
+      "sha256": "6754164a4193298a361c1bf79a7336cce043de3180fe4b8f27efb3cb01e91600"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/sabr_redirect.js",
+      "bytes": 1936,
+      "sha256": "07c02e3669435abc2d5dc9c9cfb2b2e47e22cd24f2131b322dbfe205012f38f8"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/sabr_seek.js",
+      "bytes": 2767,
+      "sha256": "46a8fefb8dffbf165e90ca9ed968d22240be070a63d91c5ab38e6dbefa96b014"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/selectable_formats.js",
+      "bytes": 6652,
+      "sha256": "672673919b33cf67de299672f646c876139bc3a4b03be1216160ca49a1f93240"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/snackbar_message.js",
+      "bytes": 1946,
+      "sha256": "5e3c8d89fc94222ad2b30c5fda5cfe727120312b33274806d25c750ee74eb449"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/ssap_playback_info.js",
+      "bytes": 6928,
+      "sha256": "dd38c3c2b5483bc834025588d9c639018b2ef382ad24f52023ecc724fb89d9e5"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/stream_protection_status.js",
+      "bytes": 2395,
+      "sha256": "c6b291dbbf717f642703eba0054b57f8ce39c068ef40d9fd9330897371268999"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/streamer_context.js",
+      "bytes": 15264,
+      "sha256": "40a3b65abac617f07420893644bca840ec239eb8c36f34e32ec76be0f2c0fe59"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/time_range.js",
+      "bytes": 2748,
+      "sha256": "e824ff913968589377e91c879571bbc7d6c45c6a047d22bfc06d67b0f73d93d9"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/ump_part_id.js",
+      "bytes": 3050,
+      "sha256": "2675c134b46ef63bd179b15f514075da1784e65126ef21c90466916081b3b0c1"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/protos/generated/video_streaming/video_playback_abr_request.js",
+      "bytes": 14759,
+      "sha256": "f1d2d335c569835283f10d71ed132b074c740502f24ae2a93c478f17b414c8f3"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/core/CompositeBuffer.js",
+      "bytes": 4809,
+      "sha256": "3b3543b54fdfadb2565649f64df8d51f7c48db0eac2f9442ee8f4c7134e72696"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/core/SabrStream.js",
+      "bytes": 41665,
+      "sha256": "906cbcfd13f6b7d902f6e0d16d93d8cf6a0e550f78d5e15c1c8833227304c729"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/core/UmpReader.js",
+      "bytes": 6859,
+      "sha256": "b516c4fea70203130a6f42e5392958d57898be6ebe59293c252d4bfd2b82cd42"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/exports/protos.js",
+      "bytes": 135,
+      "sha256": "f8880a67c53b6781474064b516ce2026e58bcc1e37ed5119c7b37f999b2e8105"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/exports/sabr-stream.js",
+      "bytes": 189,
+      "sha256": "1ca81f41da88c1d7c87c244d21cd555730a2d6680354dcfa26d7f676d1788035"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/exports/utils.js",
+      "bytes": 130,
+      "sha256": "d35faabf96f89f4a20a63067d6f2faac901635ed19073178c1e0c8ab8b87dab4"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/BandwidthEstimator.js",
+      "bytes": 1914,
+      "sha256": "505ea11083f7d8a77400a2873c635dd4b02633dc3b8cf51e2a25d16f0fb09da4"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/CacheManager.js",
+      "bytes": 4395,
+      "sha256": "d3b81df1b63e93b2a49fca5cfbcdee682e914f52230fee94e957c030a9853e78"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/EmsgSegmentMetadata.js",
+      "bytes": 5057,
+      "sha256": "89d50d0a864ee96dd539aeefcf9a5efcd7fdd2f99117ff53f0ba46fd0626a52b"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/EventEmitterLike.js",
+      "bytes": 2205,
+      "sha256": "034473d009356f640d1debf43e5d7006ccbd35bab7814dca7539efa650665b37"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/formatUtils.js",
+      "bytes": 9908,
+      "sha256": "f39c20b959a8bf1c266aab899d1b77c7b1ca56fc184dfdaa315f84648b06a57e"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/index.js",
+      "bytes": 511,
+      "sha256": "f7162668e68176b54c642269d11a07e0722240212ff7d42f747af40c77aa16e1"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/Logger.js",
+      "bytes": 2729,
+      "sha256": "a6d16860fc5171850ef30272419b970973d345c56cce40f2a58012fb3e3bdfee"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/mediaCapabilityUtils.js",
+      "bytes": 6694,
+      "sha256": "034dfe3b8e7f731a21d7763ada73651c21e890c8121450126a8fb2aaf38a5bad"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/mediaSegmentUtils.js",
+      "bytes": 3255,
+      "sha256": "69eebd5d47942dd894c4dac3857d16d1e0fcfa1ec4e5a0d8fc5169d3c1c57bb1"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/mediaTimeUtils.js",
+      "bytes": 1106,
+      "sha256": "b3c93ff3b39fe378b4009575cfb5cc4a4ba3798f3d3a3eb2ff6485246db33e44"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/misc.js",
+      "bytes": 491,
+      "sha256": "cd6ecede084828e9725d53028fe46eccb8abe5bce4d7bb90f605360dfe01aaf6"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/Protos.js",
+      "bytes": 4652,
+      "sha256": "7f817f799e45ca76f86469d312c616461235e624236ecdd2b7d188316f8cce8c"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/RequestMetadataManager.js",
+      "bytes": 1733,
+      "sha256": "401394f09c1aa03d3a7fdb51b7462e5423eb9f1de905d87860a30179dd8823fe"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/SabrSegmentBuffer.js",
+      "bytes": 4172,
+      "sha256": "6a75cd0119a48d0e3ed32c28b186c1578f9086d1f628613c901fe3c86416ab87"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/Track.js",
+      "bytes": 4968,
+      "sha256": "0c652785ff7ffc236292f90cf5cb1c673582fcf1c310c86ec061c31679252aff"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/TrackCollection.js",
+      "bytes": 3539,
+      "sha256": "624c9a9c108ffbce61ab706374933b6dd672a06d5f4e9ce4a28952d2ff0a6653"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/uint8arrayUtils.js",
+      "bytes": 1104,
+      "sha256": "7fc29db4255c99899739c5d69142a42ed47b03f454546a2f47d826f8fa44b1ec"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/utils/urlUtils.js",
+      "bytes": 1513,
+      "sha256": "f7c8c67af51385165149b37f7375f3dd451dee6acd2889b223c60a1f59bda1ba"
+    },
+    {
+      "source": "packaging/native-sabr-diagnostics.js",
+      "bytes": 7675,
+      "sha256": "1f326e2b8ed1ea938da8ba4437664945524f9759c76a81f36eb38c0670f618d3"
+    },
+    {
+      "source": "packaging/native-sdk-entry.mjs",
+      "bytes": 1135,
+      "sha256": "a87640515f57e96d9464ca3a732f1d0aaee14ed297501d9c16ad7474b7d08881"
+    },
+    {
+      "source": "project/pipeline/browser_sabr_adapter.mjs",
+      "bytes": 19214,
+      "sha256": "1ca616545d8aa9d1aaca06da258bb21ba141b0c6192b4cfd87a5386c605504e8"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "channeling-native-sabr-v1.iife.js",
+      "bytes": 180425,
+      "sha256": "62f3519ba617880aeaf1e7e915966ba73f0a0bc8fa08ea3eda4eb2f0cea594af"
+    },
+    {
+      "name": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 15383,
+      "sha256": "bfc3b00d4dc35b25872f7464267059302891970bbbd8b883c87596cd8a854d6d"
+    },
+    {
+      "name": "LICENSE.googlevideo.MIT.txt",
+      "bytes": 1063,
+      "sha256": "69bb14fee2d102583d6cccdf1e0e2ced4d2bbfd3c42b172e0a9f4e32a9c48c88"
+    },
+    {
+      "name": "LICENSE.protobuf.Apache-2.0.txt",
+      "bytes": 11358,
+      "sha256": "2d65c18a9bc89b6ad5d9fda233932ca6ff4f53c2b8373529ba83e1fe80b9b39d"
+    },
+    {
+      "name": "LICENSE.protobuf.BSD-3-Clause.txt",
+      "bytes": 1721,
+      "sha256": "ae6489c7c37fa78361c43bd2c4f79bc21d711210708cf843bc74445151044e15"
+    },
+    {
+      "name": "LICENSE.esbuild.MIT.txt",
+      "bytes": 1069,
+      "sha256": "b40ec5baec7bb34fa5b1c09521fa3cd52d5fad7adafed74932a2010d3612a681"
+    }
+  ]
+}

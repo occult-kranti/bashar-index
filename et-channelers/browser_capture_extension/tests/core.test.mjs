@@ -12,7 +12,7 @@ test('public key produces pinned service Origin, permissions contain no account 
   const manifest=JSON.parse(await readFile(new URL('../manifest.json',import.meta.url)));
   const id=createHash('sha256').update(Buffer.from(manifest.key,'base64')).digest('hex').slice(0,32).replace(/[0-9a-f]/g,x=>String.fromCharCode(97+parseInt(x,16)));
   assert.equal(id,'egndajoiodmfaakhopchlaikhpdjdcnb');
-  assert.deepEqual(manifest.host_permissions,['http://127.0.0.1:8768/*']);
+  assert.deepEqual(manifest.host_permissions,['http://127.0.0.1:8768/*','http://127.0.0.1:8781/*','https://www.youtube.com/*']);
   assert(!manifest.permissions.some(x=>/cookies|webRequest|debugger|tabs/.test(x)));
 });
 test('navigation is bound to exact public video and origin',()=>{

@@ -28,8 +28,8 @@ test('new explicit activation refreshes stale token before leasing and never ret
   assert.deepEqual(h.requests.map(x=>x.path),['health','pair','next']);
   assert.equal(h.requests.at(-1).options.headers.Authorization,'Bearer new-service-token-value-12345');
 });
-test('default toolbar activation inspects MAIN world only, without local service, capture stream or media request',async()=>{
-  const h=await harness('native-inspection',[],undefined);delete h.stored.researchMode;
+test('inspection-only toolbar mode inspects MAIN world without local service, capture stream or media request',async()=>{
+  const h=await harness('native-inspection',[],'inspect_only');
   chrome.scripting={executeScript:async request=>{assert.equal(request.world,'MAIN');assert.deepEqual(request.args,['inspect','abcdefghijk']);return [{result:{schema_version:1,video_id:'abcdefghijk',formats:[],has_sabr:true}}];}};
   chrome.tabCapture.getMediaStreamId=async()=>{throw Error('recording_must_not_start');};
   h.click();await settle(()=>h.optionsOpened()===1);

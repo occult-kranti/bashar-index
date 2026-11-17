@@ -14,15 +14,18 @@ Work on the extraterrestrial-channeler thread of the Bashar Index: research note
 |---|---|
 | Repository | <https://github.com/occult-kranti/bashar-index>. This work is the folder `et-channelers/`, on `main` since 2026-11-13. |
 | **Handoff (start here when resuming)** | [`HANDOFF.md`](HANDOFF.md): where everything is, how to set up a new Codespace, what was paused and how to start it again. |
-| Collection dashboard | <https://claude.ai/artifact/898o4zpkocZ8qXjvR1xDfb>. A claude.ai "Data" page: who is tracked, what is collected, sources with their links and methods, the Bashar tables. Its datasets are the CSV files in [`plan/`](plan/). |
-| Channeler YouTube index (dashboard) | <https://claude.ai/artifact/XFQHVyn2WSk7Xnn4yXpAa8>. A claude.ai page, private to its owner until shared. Page source: [`dashboard/index.html`](dashboard/index.html). |
+| Dashboard hub | <https://occult-kranti.github.io/bashar-index/dashboards/>: all current public interfaces. |
+| Collection dashboard | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/>: current acquisition snapshot and dated historical archive, backed by [`plan/`](plan/). The earlier claude.ai artifact is historical. |
+| Prediction timelines | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html>: filterable candidate statements; candidates are not verified predictions. |
+| Channeler YouTube index | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/>. Page source: [`dashboard/index.html`](dashboard/index.html). |
+| Channeler/entity directory | <https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/#/entities>: reviewed relationships and source links, with uncertain attribution kept explicit. |
 | The Bashar Index, live site | <https://occult-kranti.github.io/bashar-index/> (GitHub Pages, served from `main`). |
 | Channeling Atlas, live site | <https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/index.html> |
 | Channeling Atlas, analysis report | <https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/analysis/report.html> |
 | The Bashar Index, claude.ai page (September 2026 version) | <https://claude.ai/artifact/MF1hY9MYG95BaSqm9KXTFM> |
 | The Frequency of a Place (experiment page) | <https://claude.ai/artifact/EXrUcxSotuWRW8NCaBHieY>. Its code is on the repository branch `experiment-frequency-of-place`. |
 
-The three GitHub Pages addresses were reached on 2026-11-11. The Pages site is built from `main`, so nothing in `et-channelers/` appears there until the branch is merged.
+The current public interfaces were reached after the PR #31 Pages deployment on 17 November 2026. Pages serves merged `main`; unmerged native-transport changes remain on `feat/native-audio-batch`. [The investigation record](research/native-audio-investigation-2026-11-17.md) describes the automated partial trial without claiming a complete download.
 
 ## At a glance
 

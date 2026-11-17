@@ -7,6 +7,8 @@ async function refresh(){
       const status=document.createElement('span');status.className='state';status.textContent=(worker.state||'waiting').replaceAll('_',' ');row.append(source,status);list.append(row);}
     if(!state.workers?.length){const empty=document.createElement('p');empty.textContent='No recording workers active.';list.append(empty);}
     stop.disabled=!state.workers?.length;
+    const native=(await chrome.storage.session.get('researchNativeStatus')).researchNativeStatus;
+    document.querySelector('#native-progress').textContent=native?`${native.video_id||'Native pilot'} · ${native.phase.replaceAll('_',' ')}${native.error?` · ${native.error}`:''}${native.bytes?` · ${(native.bytes/1048576).toFixed(2)} MiB`:''}`:'No native pilot started in this Chrome session.';
     latest=state.inspections||[];inspections.replaceChildren();copy.disabled=!latest.length;
     for(const item of [...latest].reverse()){
       const heading=document.createElement('h3');heading.textContent=item.video_id||'Tab inspection';inspections.append(heading);
@@ -15,7 +17,7 @@ async function refresh(){
       inspections.append(summary);
       for(const format of item.formats||[]){const row=document.createElement('p');row.className='note';row.textContent=`Format ${format.itag}: ${format.mime_type}; ${format.bytes?`${(format.bytes/1048576).toFixed(2)} MiB`:'size unknown'}; ${format.direct_url_available?'direct URL present':format.cipher_only?'ciphered URL only':'SABR/other transport required'}`;inspections.append(row);}
     }
-    if(!latest.length){const empty=document.createElement('p');empty.textContent='No tab inspected yet. Use the extension button on a playing YouTube watch page.';inspections.append(empty);}
+    if(!latest.length){const empty=document.createElement('p');empty.textContent='Earlier inspection results appear here when available. No new inspection report is needed for the pilot.';inspections.append(empty);}
     history.replaceChildren();
     for(const entry of [...(state.diagnostics||[])].reverse()){
       const row=document.createElement('div');row.className='worker';
@@ -29,5 +31,5 @@ async function refresh(){
 }
 stop.addEventListener('click',async()=>{stop.disabled=true;await chrome.runtime.sendMessage({target:'background',type:'stop_all'});await refresh();});
 copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(JSON.stringify(latest,null,2));copy.textContent='Copied';}catch{copy.textContent='Copy unavailable';}});
-health.textContent='Inspection only. No playback recording, media download, or local archive service connection.';
+health.textContent='Native pilot gateway: 127.0.0.1:8781. The resource owner must arm the one-video lease before activation.';
 refresh();setInterval(refresh,2000);

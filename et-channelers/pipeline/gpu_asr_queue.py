@@ -33,6 +33,7 @@ PROOF_KEYS = ('remote', 'drive_id', 'bytes', 'md5', 'sha256')
 SOURCE_KEYS = ('channel_dir', 'source_channel_name', 'primary_person_id', 'primary_person_name',
                'primary_person_role', 'primary_person_basis', 'tab', 'listing_rank', 'duration_s',
                'channeling', 'entity', 'entity_label_basis', 'queue_provenance')
+ELIGIBLE_DECISIONS = {'eligible_original_english', 'eligible_declared_english', 'eligible_native_original_english'}
 
 
 def encoded(value):
@@ -66,6 +67,36 @@ def valid_proof(record):
 
 def english(language):
     return isinstance(language, str) and bool(re.fullmatch(r'en(?:-[A-Za-z0-9]+)*', language))
+
+
+def native_original_english(record):
+    """Candidate evidence only; admission must recheck the archived sidecar."""
+    selected = record.get('native_format_binding')
+    fields = {'videoId','itag','lastModified','xtags','mimeType','codec','contentLength','durationMs',
+              'language','originalBasis','trackId','noDRM','audioOnly','transportKind'}
+    if not isinstance(selected, dict) or set(selected) != fields:
+        return None
+    transport = record.get('native_transport_kind')
+    if transport not in {'direct_http','sabr_reassembled'} or selected['transportKind'] != transport or \
+            selected['videoId'] != record.get('video_id') or selected['originalBasis'] != 'published_original' or \
+            selected['noDRM'] is not True or selected['audioOnly'] is not True or not english(selected['language']):
+        return None
+    if type(selected['itag']) is not int or not 0 < selected['itag'] < 10000 or \
+            not isinstance(selected['lastModified'], str) or not re.fullmatch(r'[0-9]{1,30}', selected['lastModified']) or \
+            not isinstance(selected['xtags'], str) or not 0 < len(selected['xtags']) <= 16384 or \
+            selected['codec'] not in {'opus','vorbis','aac','mp4a.40.2'} or \
+            not isinstance(selected['mimeType'], str) or not re.fullmatch(r'audio/(?:webm|mp4|ogg)(?:;\s*codecs="[A-Za-z0-9., -]+")?', selected['mimeType']) or \
+            type(selected['durationMs']) is not int or not 0 < selected['durationMs'] < 2**53 or \
+            not (selected['trackId'] is None or isinstance(selected['trackId'], str) and len(selected['trackId']) <= 200):
+        return None
+    size = selected['contentLength']
+    if not (type(size) is int and 0 < size < 2**53 or transport == 'sabr_reassembled' and size is None):
+        return None
+    identity = {key:value for key,value in selected.items() if key != 'transportKind'}
+    digest = sha(json.dumps(identity, sort_keys=True, ensure_ascii=False, separators=(',', ':')).encode('utf-8'))
+    if record.get('native_format_binding_sha256') != digest:
+        return None
+    return selected['language']
 
 
 def result_matches(result, job, lease_id=None):
@@ -153,12 +184,14 @@ def build_plan(root, queue_path, remote, model_repository, model_revision, *, la
         origin_en = any(track.get('kind') == 'automatic_original' and english(track.get('language')) and
                         track.get('machine_translated') is False for track in tracks)
         declared_en = metadata_language_evidence(root, evidence[video_id], rec) if video_id in evidence else None
+        native_en = native_original_english(rec)
         if evidence_only and not declared_en:
             counts['outside_language_evidence_frame'] += 1
             continue
         decision = ('exclude_complete_english_captions' if proven and complete else
                     'defer_caption_coverage_review' if proven else
                     'eligible_declared_english' if declared_en else
+                    'eligible_native_original_english' if native_en else
                     'eligible_original_english' if origin_en else 'hold_language_unconfirmed')
         state = ('complete_receipt' if proven and complete else 'verified_tracks_incomplete_inventory' if proven else
                  'no_english_tracks_reported' if complete and cap.get('status') == 'none' else
@@ -176,8 +209,9 @@ def build_plan(root, queue_path, remote, model_repository, model_revision, *, la
             'tracks':[{**{key:t.get(key) for key in ('track_id','language','kind','raw_format','machine_translated','status')},
                       **({'verified_bundle':proof(t['bundle'])} if t in proven else {})} for t in tracks],
             'speech_coverage':{'status':'not_measured','ratio':None},'alternatives_remain_distinct':True},
-          'language':{'code':declared_en or ('en' if origin_en else None),
+          'language':{'code':declared_en or native_en or ('en' if origin_en else None),
                       'basis':'verified_archived_audio_metadata' if declared_en else
+                              'verified_native_original_format_candidate' if native_en else
                               'provider_original_automatic_inventory' if origin_en else 'unconfirmed'},
           'desired_model':{'repository':model_repository,'revision':model_revision,'device':'cuda'},
           'requested_output':{'task':'transcribe','translate':False,'preserve_caption_alternatives':True},
@@ -288,7 +322,7 @@ def prepare_inputs(root, queue_path, remote, drive, *, model_repository, model_r
                 raise IngestError('storage_limit', 'Queue snapshot exceeds the ASR reservation')
             atomic(snapshot, plan)
         existing = {item['video_id']:item for item in leases(root)}
-        candidates = [job for job in plan['jobs'] if job['decision'] in {'eligible_original_english','eligible_declared_english'} and
+        candidates = [job for job in plan['jobs'] if job['decision'] in ELIGIBLE_DECISIONS and
                       job['video_id'] not in existing]
         candidates.sort(key=lambda job:(job['audio']['bytes'],job['video_id']))
         for job in candidates:
@@ -320,11 +354,17 @@ def prepare_inputs(root, queue_path, remote, drive, *, model_repository, model_r
             try:
                 metadata = pull_verified(drive,job['metadata'],metadata_path,max_input_bytes-tree_bytes(root/'asr')-RESERVE)
                 info = json.loads(metadata_path.read_text(encoding='utf-8'))
-                language = info.get('languages',{}).get('audio') or info.get('metadata',{}).get('language')
+                primary = info.get('languages',{}).get('audio')
+                fallback = info.get('metadata',{}).get('language')
+                language = primary or fallback
                 if info.get('source',{}).get('video_id') != video_id:
                     raise IngestError('metadata_identity','Metadata source identity differs')
-                if not english(language):
-                    lease.update(status='language_hold',phase='metadata_not_declared_english',declared_audio_language=language)
+                conflict = bool(primary and fallback and primary != fallback)
+                if job['decision'] == 'eligible_native_original_english':
+                    conflict = conflict or not primary or primary != job['language']['code']
+                if not english(language) or conflict:
+                    lease.update(status='language_hold',phase='metadata_language_conflict' if conflict else 'metadata_not_declared_english',
+                                 declared_audio_language=language)
                     atomic(lease_path,lease)
                     continue
                 lease.update(phase='retrieving_audio',declared_audio_language=language)
@@ -344,7 +384,7 @@ def prepare_inputs(root, queue_path, remote, drive, *, model_repository, model_r
                 atomic(lease_path,lease)
                 refresh_ready(root, frame_id=frame_id)
                 raise
-        remaining = sum(job['decision'] in {'eligible_original_english','eligible_declared_english'} and job['video_id'] not in existing for job in plan['jobs'])
+        remaining = sum(job['decision'] in ELIGIBLE_DECISIONS and job['video_id'] not in existing for job in plan['jobs'])
         ready = refresh_ready(root, remaining, frame_id)
         ready.update(queue_snapshot=str(snapshot),counts=plan['counts'],asr_bytes=tree_bytes(root/'asr'))
         atomic(folder/'ready.json',ready)

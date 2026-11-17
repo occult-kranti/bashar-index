@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "bundler": {
+    "name": "esbuild",
+    "version": "0.25.12"
+  },
+  "inputs": [
+    {
+      "path": "native-sabr-diagnostics.js",
+      "bytes": 7675,
+      "sha256": "1f326e2b8ed1ea938da8ba4437664945524f9759c76a81f36eb38c0670f618d3"
+    },
+    {
+      "path": "native-rpc.js",
+      "bytes": 6655,
+      "sha256": "4b5282869ddef02e472b106ea9baf095f4a4cf1d57eeac0c55f188e074bb504c"
+    },
+    {
+      "path": "native-isolated-bridge.js",
+      "bytes": 1436,
+      "sha256": "4a3807b92724fa22823338ab0c6f056a6177af8e52e5bbe49deff2cf4dbb1f4c"
+    }
+  ],
+  "output": {
+    "path": "native-isolated-bridge.iife.js",
+    "bytes": 11628,
+    "sha256": "508657348d3f897dcbc84169ff1cc34de5f3665c378e58aa0712288db0bd0a90"
+  },
+  "network_at_import": false
+}

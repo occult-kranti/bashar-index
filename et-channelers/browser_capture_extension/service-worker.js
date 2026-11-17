@@ -2,6 +2,8 @@ import {service,validateJob,videoFromUrl,LIMITS} from './core.js';
 import {cleanupWorker} from './lifecycle.js';
 import {outcome,diagnostic,retainDiagnostic} from './diagnostics.js';
 import {nativeBrowserProbe} from './native-inspector.js';
+import {startNativeInTab,installNativeBackground} from './native-background.js';
+installNativeBackground();
 
 const workers=new Map();let offscreenCreation,diagnostics=[],inspections=[];
 const boot=chrome.storage.session.get(['researchWorkers','researchDiagnostics','researchInspections']).then(value=>{
@@ -95,6 +97,7 @@ chrome.action.onClicked.addListener(tab=>{(async()=>{
   // Native inspection is the current product mode. Legacy recording is parked;
   // this explicit fixture-only switch is not exposed by any user interface.
   const setting=await chrome.storage.session.get('researchMode');
+  if(!['capture_legacy','inspect_only'].includes(setting.researchMode)){await startNativeInTab(tab);return;}
   if(setting.researchMode!=='capture_legacy'){
     await badge(tab.id,'LOOK','Inspecting this accepted tab; no audio is recorded or downloaded.');
     const output=await chrome.scripting.executeScript({target:{tabId:tab.id},world:'MAIN',func:nativeBrowserProbe,args:['inspect',videoFromUrl(tab.url)]});

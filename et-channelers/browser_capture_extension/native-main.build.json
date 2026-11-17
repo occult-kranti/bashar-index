@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "bundler": {
+    "name": "esbuild",
+    "version": "0.25.12"
+  },
+  "inputs": [
+    {
+      "path": "native-observer.js",
+      "bytes": 12411,
+      "sha256": "ec2a4f3f99be3c51d2317b1c8c4d77e9ebeaa9278cb14ab8dc2a95377487908b"
+    },
+    {
+      "path": "native-finish.js",
+      "bytes": 875,
+      "sha256": "adc23d1a49bfa629a157abd7935ab969a047c86e8df750237fb57eb0c4674b5f"
+    },
+    {
+      "path": "native-main.js",
+      "bytes": 6014,
+      "sha256": "de64e1cab85be8db11641c0d04885f905111e06da3845f0a1fcb919278b65fce"
+    }
+  ],
+  "output": {
+    "path": "native-main.iife.js",
+    "bytes": 22713,
+    "sha256": "b8b165b4ec80922fe38afbb25794692207c861f10d8ca7d4560829ee59e99012"
+  },
+  "network_at_import": false
+}

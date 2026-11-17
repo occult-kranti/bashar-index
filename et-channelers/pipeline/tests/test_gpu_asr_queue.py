@@ -106,6 +106,65 @@ class QueueTests(unittest.TestCase):
         queue.atomic(evidence,{'schema_version':1,'records':[item]})
         return evidence,path
 
+    def native(self,record,**changes):
+        binding={'videoId':record['video_id'],'itag':251,'lastModified':'123456789',
+            'xtags':'explicit-original-fixture-tags','mimeType':'audio/webm; codecs="opus"','codec':'opus',
+            'contentLength':record['bytes'],'durationMs':63000,'language':'en','originalBasis':'published_original',
+            'trackId':'en.4','noDRM':True,'audioOnly':True,'transportKind':'sabr_reassembled'}
+        binding.update(changes)
+        identity={k:v for k,v in binding.items() if k!='transportKind'}
+        record=dict(record,native_transport_kind='sabr_reassembled',native_format_binding=binding,
+            native_format_binding_sha256=queue.sha(json.dumps(identity,sort_keys=True,ensure_ascii=False,separators=(',',':')).encode()))
+        journal(self.root/'sync/drive_ingest_manifest.jsonl',record)
+        return record
+
+    def test_native_original_english_candidate_rechecks_sidecar_before_audio(self):
+        self.native(self.add(origin=False,language='en-US'),language='en-US')
+        job=self.plan()['jobs'][0]
+        self.assertEqual(job['decision'],'eligible_native_original_english')
+        self.assertEqual(job['language']['basis'],'verified_native_original_format_candidate')
+        ready=self.prepare();self.assertEqual(len(ready['admissions']),1)
+        self.assertEqual(len(self.drive.downloads),2)
+        self.assertTrue(self.drive.downloads[0].endswith('.info.json'))
+        self.assertTrue(self.drive.downloads[1].endswith('.webm'))
+
+    def test_native_default_dub_foreign_or_wrong_identity_does_not_admit(self):
+        record=self.add(origin=False)
+        for changes in ({'originalBasis':'original_default_confirmed'},{'originalBasis':'dubbed'},
+                        {'language':'ja'},{'audioOnly':False},{'videoId':'OTHERID0001'},
+                        {'durationMs':True},{'xtags':''}):
+            with self.subTest(changes=changes):
+                self.native(record,**changes)
+                self.assertEqual(self.plan()['jobs'][0]['decision'],'hold_language_unconfirmed')
+        self.assertEqual(self.drive.downloads,[])
+
+    def test_native_missing_full_metadata_proof_and_changed_binding_hash_are_not_evidence(self):
+        record=self.native(self.add(origin=False))
+        changed=dict(record,native_format_binding_sha256='0'*64)
+        journal(self.root/'sync/drive_ingest_manifest.jsonl',changed)
+        self.assertEqual(self.plan()['jobs'][0]['decision'],'hold_language_unconfirmed')
+        journal(self.root/'sync/drive_ingest_manifest.jsonl',dict(record,metadata={}))
+        self.assertEqual(self.plan()['counts'],{'audio_not_verified':1})
+
+    def test_native_claimed_english_with_foreign_metadata_holds_without_audio(self):
+        self.native(self.add(origin=False,language='es-US'))
+        self.assertEqual(self.plan()['jobs'][0]['decision'],'eligible_native_original_english')
+        self.assertEqual(self.prepare()['admissions'],[])
+        self.assertEqual(len(self.drive.downloads),1)
+        self.assertTrue(self.drive.downloads[0].endswith('.info.json'))
+        lease=json.loads(next((self.root/'asr/leases').glob('*.json')).read_text())
+        self.assertEqual(lease['status'],'language_hold')
+
+    def test_native_conflicting_english_metadata_declarations_hold_before_audio(self):
+        record=self.add(origin=False)
+        body=queue.encoded({'source':{'video_id':record['video_id']},'languages':{'audio':'en'},'metadata':{'language':'es'}})
+        record['metadata']=self.drive.add(record['metadata']['remote'],body)
+        self.native(record)
+        self.assertEqual(self.prepare()['admissions'],[])
+        self.assertEqual(len(self.drive.downloads),1)
+        lease=json.loads(next((self.root/'asr/leases').glob('*.json')).read_text())
+        self.assertEqual(lease['phase'],'metadata_language_conflict')
+
     def test_caption_alternatives_and_unknown_language_are_not_automatic_asr(self):
         self.add(0,caption='deleted');self.add(1,caption='partial');self.add(2,origin=False,caption='none');self.add(3)
         counts=self.plan()['counts']
