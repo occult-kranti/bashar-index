@@ -1,6 +1,7 @@
 import {SabrStream} from 'googlevideo/sabr-stream';
+import {UmpReader} from 'googlevideo/ump';
 import {EnabledTrackTypes,Logger,buildSabrFormat} from 'googlevideo/utils';
-import {VideoPlaybackAbrRequest,FormatXTags} from 'googlevideo/protos';
+import {VideoPlaybackAbrRequest,FormatXTags,StreamProtectionStatus} from 'googlevideo/protos';
 import {openNativeSabr,NativeSabrError} from 'native-sabr-project-adapter';
 
 // Permanently silence this private bundled SDK instance. Upstream diagnostics
@@ -10,7 +11,7 @@ Logger.prototype.log=()=>{};
 Logger.prototype.setLogLevels=function(){this.currentLogLevels=new Set();};
 const sdk=Object.freeze({SabrStream,EnabledTrackTypes,Logger,FormatXTags,VideoPlaybackAbrRequest,version:'5.0.1'});
 const api=Object.freeze({schemaVersion:1,sdkVersion:'5.0.1',sdk,SabrStream,
-  EnabledTrackTypes,Logger,buildSabrFormat,VideoPlaybackAbrRequest,FormatXTags,
+  EnabledTrackTypes,Logger,buildSabrFormat,VideoPlaybackAbrRequest,FormatXTags,UmpReader,StreamProtectionStatus,
   openNativeSabr,NativeSabrError});
 if(Object.prototype.hasOwnProperty.call(globalThis,'ChannelingNativeSabrV1')){
   throw new Error('native_sdk_namespace_already_installed');

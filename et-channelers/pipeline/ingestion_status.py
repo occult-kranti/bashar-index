@@ -168,7 +168,11 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     until = cooldown.get("until_epoch")
     until = float(until) if isinstance(until, (int, float)) and 0 < until < 253402300799 else None
     drive_until = until or 0
-    source_until = source_deadline(latest.values())
+    native_cooldown = read_object(root / 'sync/native_batch_source_cooldown.json')
+    native_until = source_deadline([native_cooldown]) if (
+        native_cooldown.get('schema_version') == 1 and native_cooldown.get('endpoint') == 'youtube_native_audio') else 0
+    # A passive browser refusal can precede BEGIN and therefore has no audio receipt.
+    source_until = max(source_deadline(latest.values()), native_until)
     caption_until = source_deadline(captions.values())
     until = max(until or 0, source_until) or None
     supervisor = read_object(root / "sync" / "drive_ingest_resume_state.json")

@@ -164,6 +164,32 @@ this extension's exact status page can invoke these controls. The validated
 protocol report is available for scoped UI automation without CDP, exported
 profiles or cookies. The controls do not auto-start source work.
 
+### Repaired acceptance gate: v4
+
+`accepted_browser_sps1_repair_v4` is one separately recorded observation session
+and at most one native source attempt. The owner chooses an exact existing
+browser-context enum. Its observation receipt must match that context; only one
+leaf trial, v3 or v4, is admitted. V4 preserves both earlier spent ancestors and
+the unspent v3 admission snapshot, requires changed SDK/observer hashes with
+the same adapter, and rejects later replay. All retained storage still counts.
+
+Before browser launch the owner records one observation session in
+`sync/native_context_sps1_observation_v4.json`, hash-bound by the policy. Before
+BEGIN, `metadata.native_source_acceptance` must contain exactly the reviewed ten
+safe fields: basis, HTTP/SPS status, complete-response flag, video identity,
+same-video/configuration/catalog flags, UTC timestamp and independent UUID.
+SPS1 must be fresh and tied to this session. Missing/pending/rejected acceptance
+spends no native attempt. A successful BEGIN binds the proof in
+`sync/native_context_sps1_repair_v4.json`; it cannot change during the job or
+at finish, and is preserved in `native_acquisition.source_acceptance`.
+
+The passive observer adds no source request, preserves original player bodies,
+and skips media while parsing the matching ordinary response. A pre-BEGIN
+refusal still stops source work and must be durably recorded by the resource
+owner; it is not a failed file download. No time, format or Drive validation is
+waived by SPS1. The latest isolated trial received SPS3 before BEGIN and created
+no native output or source attempt; full-file access remains unproved.
+
 ## Transport identity and completion
 
 The adapter identity has exactly `videoId`, `itag`, `lastModified`, `xtags`,

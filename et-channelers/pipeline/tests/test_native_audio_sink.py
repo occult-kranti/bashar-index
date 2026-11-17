@@ -139,6 +139,100 @@ class Fixtures(unittest.TestCase):
         n.atomic(self.root/'sync/native_batch_lease.json',self.lease);n.atomic(self.root/'sync/analysis_resource_plan.json',self.plan)
         return x,first,second
 
+    def repair_followup(self,context='automated_dedicated_chromium'):
+        x,first,second=self.normal_followup();frozen=self.root/'unspent-normal';frozen.mkdir();pins={}
+        oldpins=n.read(self.root/'frozen-v2/code.json')['files']
+        paths={'worker':Path(n.__file__),'gateway':Path(oldpins['gateway']['path']),**{k:Path(v['path']) for k,v in self.lease['pilotPolicy']['codePins'].items()}}
+        for name,path in paths.items():
+            target=frozen/(name+'.source');shutil.copyfile(path,target);pins[name]={'path':str(target),'sha256':n.digest(target)['sha256']}
+        n.atomic(frozen/'lease.json',self.lease);n.atomic(frozen/'code.json',{'schema_version':1,'files':pins})
+        self.lease['lease_id']='native-sps1-repair';self.plan['reservations'][0]['lease_id']=self.lease['lease_id']
+        policy=self.lease['pilotPolicy'];policy.pop('maxContextFollowups');policy.pop('normalPlaybackEvidence')
+        policy.update(kind=n.PILOT_V4,acceptedContext=context,maxSps1Repairs=1,
+            unspentNormalAdmission={'leaseSnapshot':{'path':str(frozen/'lease.json'),'sha256':n.digest(frozen/'lease.json')['sha256']},
+                'codeSnapshot':{'path':str(frozen/'code.json'),'sha256':n.digest(frozen/'code.json')['sha256']}})
+        for name in ('sdk','observer'):
+            path=Path(policy['codePins'][name]['path']);path.write_text('// passive SPS1 fixture '+name);policy['codePins'][name]['sha256']=n.digest(path)['sha256']
+        path=self.root/'sync/native_context_sps1_observation_v4.json'
+        n.atomic(path,{'schema_version':1,'lease_id':self.lease['lease_id'],'owner':'fixture','video_id':x['videoId'],
+            'context_kind':context,'max_sessions':1,'observation_sessions_spent':1,'created_at_epoch':time.time()})
+        policy['observationSessionReceiptSha256']=n.digest(path)['sha256']
+        n.atomic(self.root/'sync/native_batch_lease.json',self.lease);n.atomic(self.root/'sync/analysis_resource_plan.json',self.plan)
+        proof={'basis':'matching_normal_player_sps1','http_status':200,'sps_status':1,'complete_response':True,'video_id':x['videoId'],
+            'same_video':True,'same_configuration':True,'request_format_matches_catalog':True,'observed_at_epoch':int(time.time()),
+            'observer_session_id':'11111111-2222-4333-8444-555555555555'}
+        return x,first,second,proof
+
+    def test_sps1_bound_before_spend_persists_past_age_limit_and_into_metadata(self):
+        x,first,second,proof=self.repair_followup()
+        paths=[self.root/'sync/native_context_pilot_attempt.json',self.root/'sync/native_context_pilot_followup_v2.json',
+            self.root/'sync/native_context_sps1_observation_v4.json',*first.iterdir(),*second.iterdir()]
+        before={p:p.read_bytes() for p in paths}
+        with self.coordinator() as c:
+            sink=c.begin(x,{'id':x['videoId'],'native_source_acceptance':proof},output_budget_bytes=8)
+            state=sink.state();self.assertEqual(state['source_acceptance'],proof)
+            spent=n.read(self.root/'sync/native_context_sps1_repair_v4.json');self.assertEqual(spent['schema_version'],4)
+            self.assertEqual(spent['observer_session_id'],proof['observer_session_id']);self.assertEqual(spent['source_acceptance'],proof)
+            with patch.object(n.time,'time',return_value=time.time()+120):
+                sink.authorize_request({'sourceBindingSha256':state['binding_sha256'],'requestSequence':1})
+            changed=copy.deepcopy(state);changed['source_acceptance']['observer_session_id']='aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee';n.atomic(sink.folder/'state.json',changed)
+            with self.assertRaisesRegex(n.SinkError,'pilot_sps1_acceptance_changed'):
+                sink.authorize_request({'sourceBindingSha256':state['binding_sha256'],'requestSequence':2})
+            state['source_requests']=1;n.atomic(sink.folder/'state.json',state);self.fill(sink)
+            ledger='0'*64
+            for number,data in enumerate((b'1234',b'5678')):
+                ledger=sink.segment({'number':number,'initialization':number==0,'startTimeMs':0,'endTimeMs':0 if number==0 else 1570961,
+                    'declaredBytes':4,'byteOffset':number*4,'emittedBytes':4,'sha256':hashlib.sha256(data).hexdigest(),'initDiscardedBytes':0})['ledgerSha256']
+            c.probe=lambda *_:{**probe(None,None,None),'duration_seconds':1570.961}
+            record=self.finish(sink,container_reassembled=True,encoded_audio_not_reencoded=True,isLive=False,stripDuplicateInit=False,
+                segmentCount=2,segmentLedgerSha256=ledger,endSegmentNum=1,endTimeMs=1570961)
+            self.assertEqual(n.read(self.root/record['metadata']['path'])['native_acquisition']['source_acceptance'],proof)
+        self.assertEqual(before,{p:p.read_bytes() for p in paths})
+
+    def test_sps1_missing_stale_or_unaccepted_proof_spends_no_source_attempt(self):
+        x,first,second,proof=self.repair_followup()
+        for changed,error in ((None,'pilot_sps1_acceptance_required'),({**proof,'observed_at_epoch':int(time.time())-91},'pilot_sps1_acceptance_stale'),
+            ({**proof,'sps_status':2},'pilot_sps1_acceptance_required'),({**proof,'complete_response':False},'pilot_sps1_acceptance_required'),
+            ({**proof,'url':'invented forbidden extra field'},'pilot_sps1_acceptance_required')):
+            with self.subTest(error=error),self.coordinator() as c:
+                with self.assertRaisesRegex(n.SinkError,error):c.begin(x,{'id':x['videoId'],'native_source_acceptance':changed},output_budget_bytes=8)
+                self.assertFalse((self.root/'sync/native_context_sps1_repair_v4.json').exists())
+        policy=self.lease['pilotPolicy'];old=n.read(Path(policy['parent']['codeSnapshot']['path']))['files']['observer']
+        policy['codePins']['observer']=old;n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
+        with self.coordinator() as c:
+            with self.assertRaisesRegex(n.SinkError,'pilot_sps1_code_pins'):c.begin(x,{'id':x['videoId'],'native_source_acceptance':proof},output_budget_bytes=8)
+
+    def test_sps1_leaf_reciprocal_denial_and_unchanged_unspent_admission(self):
+        x,first,second,proof=self.repair_followup();repair=copy.deepcopy(self.lease);plan=copy.deepcopy(self.plan)
+        normal=n.read(Path(repair['pilotPolicy']['unspentNormalAdmission']['leaseSnapshot']['path']))
+        self.lease=normal;self.plan['reservations'][0]['lease_id']=normal['lease_id']
+        n.atomic(self.root/'sync/native_batch_lease.json',normal);n.atomic(self.root/'sync/analysis_resource_plan.json',self.plan)
+        with self.coordinator() as c:
+            with self.assertRaisesRegex(n.SinkError,'pilot_leaf_already_spent'):c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
+        self.lease=repair;self.plan=plan;n.atomic(self.root/'sync/native_batch_lease.json',repair);n.atomic(self.root/'sync/analysis_resource_plan.json',plan)
+        denied=self.root/'sync/native_context_normal_chrome_attempt_v3.json';n.atomic(denied,{'attempts_spent':1})
+        with self.coordinator() as c:
+            with self.assertRaisesRegex(n.SinkError,'pilot_leaf_already_spent'):c.begin(x,{'id':x['videoId'],'native_source_acceptance':proof},output_budget_bytes=8)
+        denied.unlink()
+        with self.coordinator() as c:
+            c.begin(x,{'id':x['videoId'],'native_source_acceptance':proof},output_budget_bytes=8)
+            with self.assertRaisesRegex(n.SinkError,'pilot_attempt_spent'):c.begin(x,{'id':x['videoId'],'native_source_acceptance':proof},output_budget_bytes=8)
+
+    def test_sps1_normal_context_requires_matching_activation_not_user_report(self):
+        x,first,second,proof=self.repair_followup(context='normal_user_chrome')
+        # V4 uses observed SPS1. The unspent V3 lease is historical evidence;
+        # its user-report attachment is not V4's source acceptance criterion.
+        (self.root/'normal-playback.json').unlink();(self.root/'user-statement.txt').unlink()
+        policy=self.lease['pilotPolicy'];policy['acceptedContext']='automated_dedicated_chromium'
+        n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
+        with self.coordinator() as c:
+            with self.assertRaisesRegex(n.SinkError,'pilot_observation_session'):c.begin(x,{'id':x['videoId'],'native_source_acceptance':proof},output_budget_bytes=8)
+        policy['acceptedContext']='normal_user_chrome';n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
+        with self.coordinator() as c:
+            sink=c.begin(x,{'id':x['videoId'],'native_source_acceptance':proof},output_budget_bytes=8)
+            self.assertEqual(sink.state()['acquisition_provenance']['context_kind'],'normal_user_chrome')
+            self.assertNotIn('normal_playback_basis',sink.state()['acquisition_provenance'])
+
     def test_normal_context_preserves_two_ancestors_and_labels_user_report(self):
         x,first,second=self.normal_followup()
         paths=[self.root/'sync/native_context_pilot_attempt.json',self.root/'sync/native_context_pilot_followup_v2.json',*first.iterdir(),*second.iterdir()]
