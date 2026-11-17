@@ -1,10 +1,14 @@
+import {readNormalProtection} from './native-sps.js';
 // Observe only the player's own request. Secrets never leave this MAIN-world closure.
-export function createAcceptedSabrObserver({scope=window,sdk,videoId,timeoutMs=45000}){
+export function createAcceptedSabrObserver({scope=window,sdk,videoId,timeoutMs=45000,observerSessionId=crypto.randomUUID()}){
   const need=(ok,code)=>{if(!ok)throw Error(code);};
   need(/^[A-Za-z0-9_-]{11}$/.test(videoId),'invalid_video_id');
-  need(sdk?.VideoPlaybackAbrRequest?.decode&&sdk?.FormatXTags?.decode&&sdk?.buildSabrFormat,'observer_sdk_missing');
+  need(Number.isFinite(timeoutMs)&&timeoutMs>0&&timeoutMs<=45000&&/^[a-f0-9-]{36}$/.test(observerSessionId),'observer_limits');
+  const deadline=Date.now()+timeoutMs;
+  need(sdk?.VideoPlaybackAbrRequest?.decode&&sdk?.FormatXTags?.decode&&sdk?.buildSabrFormat&&sdk?.UmpReader&&sdk?.StreamProtectionStatus?.decode,'observer_sdk_missing');
   const originalFetch=scope.fetch,proto=scope.XMLHttpRequest?.prototype,originalOpen=proto?.open,originalSend=proto?.send;
-  const xhrs=new WeakMap();let finished=false,secret=null,timer,watcher,resolveReady,rejectReady,inspecting=false,observations=0,lastReason=null,activeReader=null;
+  const xhrs=new WeakMap(),readers=new Set(),copies=new Set(),tokens=new Set(),xhrListeners=new Set();let finished=false,secret=null,timer,watcher,resolveReady,rejectReady,inspecting=0,observations=0,lastReason=null,responseBytes=0,cancelPending;
+  const cancelled=new Promise((_,reject)=>{cancelPending=reject;});cancelled.catch(()=>{});
   const ready=new Promise((resolve,reject)=>{resolveReady=resolve;rejectReady=reject;});ready.catch(()=>{});
   const bytes=value=>{
     if(value instanceof Uint8Array)return value;
@@ -33,32 +37,39 @@ export function createAcceptedSabrObserver({scope=window,sdk,videoId,timeoutMs=4
   }
   function stop(code='observer_stopped'){
     restore();if(!finished){finished=true;rejectReady(Error(code));}
-    if(activeReader){void activeReader.cancel().catch(()=>{});activeReader=null;}
+    cancelPending(Error('observer_stopped'));for(const token of tokens)token.fill(0);tokens.clear();
+    for(const remove of xhrListeners)remove();xhrListeners.clear();
+    for(const reader of readers)void reader.cancel().catch(()=>{});readers.clear();
+    for(const body of copies)if(!body.locked)void body.cancel().catch(()=>{});copies.clear();
     if(secret){secret.token.fill(0);secret=null;}
   }
-  async function bodyBytes(body){
+  async function bodyBytes(body,owned){
     const value=bytes(body);if(value){need(value.byteLength<=65536,'observer_body_too_large');return value.slice();}
     if(body instanceof Blob){need(body.size<=65536,'observer_body_too_large');return new Uint8Array(await body.arrayBuffer());}
-    if(body?.getReader){const reader=body.getReader(),parts=[];activeReader=reader;let total=0;
+    if(body?.getReader){need(owned,'observer_body_unsupported');const reader=body.getReader(),parts=[];readers.add(reader);let total=0;
       try{for(;;){const result=await reader.read();if(result.done)break;total+=result.value.byteLength;need(total<=65536,'observer_body_too_large');parts.push(result.value);}const out=new Uint8Array(total);let offset=0;for(const part of parts){out.set(part,offset);offset+=part.length;}return out;}
-      finally{if(activeReader===reader)activeReader=null;void reader.cancel().catch(()=>{});}}
+      finally{readers.delete(reader);void reader.cancel().catch(()=>{});try{reader.releaseLock();}catch{}}}
     throw Error('observer_body_unsupported');
   }
-  async function observe(rawUrl,method,body,credentials,acceptedResponse){
-    if(finished||inspecting||method!=='POST')return;
+  async function observe(rawUrl,method,body,credentials,acceptedResponse,owned=false){
+    if(finished||method!=='POST'){if(owned){copies.delete(body);if(!body.locked)void body.cancel().catch(()=>{});}return;}
     let url;try{url=new URL(rawUrl);}catch{return;}
     if(url.protocol!=='https:'||url.username||url.password||url.port||url.hash||!/(^|\.)googlevideo\.com$/.test(url.hostname)||url.pathname!=='/videoplayback')return;
-    inspecting=true;
+    inspecting++;
+    let candidateToken=null;
     try{
+      need(Date.now()<=deadline,'normal_request_deadline');
       need(++observations<=16,'normal_request_observation_limit');
+      need(inspecting<=4,'normal_observer_concurrency');
       const before=context(),published=new URL(before.response.streamingData?.serverAbrStreamingUrl);
       // The real player has already deciphered this URL; never reconstruct it.
       need(url.origin===published.origin&&url.pathname===published.pathname&&!!published.searchParams.get('id')&&url.searchParams.get('id')===published.searchParams.get('id'),'observer_server_mismatch');
-      const request=sdk.VideoPlaybackAbrRequest.decode(await bodyBytes(body));if(finished)return;
+      const request=sdk.VideoPlaybackAbrRequest.decode(await Promise.race([bodyBytes(body,owned),cancelled]));if(finished)return;
       const current=context(),config=current.response.playerConfig?.mediaCommonConfig?.mediaUstreamerRequestConfig?.videoPlaybackUstreamerConfig;
       need(typeof config==='string'&&equal(base64(config),request.videoPlaybackUstreamerConfig||new Uint8Array()),'observer_config_mismatch');
       const token=request.streamerContext?.poToken,client=request.streamerContext?.clientInfo;
       need(token instanceof Uint8Array&&token.length>0&&token.length<16384,'observer_token_missing');
+      candidateToken=token.slice();tokens.add(candidateToken);
       need(client&&Number.isInteger(client.clientName)&&typeof client.clientVersion==='string','observer_client_missing');
       const selected=request.selectedAudioFormatIds||[],formats=current.response.streamingData?.adaptiveFormats||[];
       const matches=new Map();let observedFormatMatched=false;
@@ -80,44 +91,72 @@ export function createAcceptedSabrObserver({scope=window,sdk,videoId,timeoutMs=4
       const durationMs=Number(audioFormat.approxDurationMs)||Math.round(current.video.duration*1000);
       need(Number.isSafeInteger(durationMs)&&durationMs>0&&Math.abs(durationMs-current.video.duration*1000)<=2000,'observer_duration_mismatch');
       need(['omit','same-origin','include'].includes(credentials),'observer_credentials_mode');
-      const accepted=await acceptedResponse;if(finished)return;context();
-      need(accepted.status===200&&accepted.contentType==='application/vnd.yt-ump','normal_request_not_accepted');
-      secret={token:token.slice(),source:{videoId,isLive:false,isPostLive:false,noDRM:true,durationMs,audioFormat,
+      const accepted=await Promise.race([acceptedResponse,cancelled]);if(finished)return;context();
+      await readNormalProtection({sdk,response:accepted,
+        admit:n=>{responseBytes+=n;need(responseBytes<=8*1024*1024,'normal_response_read_limit');},
+        registerReader:(reader,add)=>add?readers.add(reader):readers.delete(reader),
+        checkActive:()=>{need(!finished,'observer_stopped');need(Date.now()<=deadline,'normal_request_deadline');context();}});
+      if(finished)return;
+      const after=context(),afterConfig=after.response.playerConfig?.mediaCommonConfig?.mediaUstreamerRequestConfig?.videoPlaybackUstreamerConfig;
+      need(afterConfig===config&&Math.abs(after.video.duration*1000-durationMs)<=2000,'observer_config_mismatch');
+      const acceptance={basis:'matching_normal_player_sps1',http_status:200,sps_status:1,complete_response:true,
+        video_id:videoId,same_video:true,same_configuration:true,request_format_matches_catalog:true,
+        observed_at_epoch:Math.floor(Date.now()/1000),observer_session_id:observerSessionId};
+      let metadata;try{metadata={...publicMetadata(after.response,audioFormat),native_source_acceptance:acceptance};}
+      catch{throw Error('observer_metadata_unavailable');}
+      secret={token:candidateToken.slice(),source:{videoId,isLive:false,isPostLive:false,noDRM:true,durationMs,audioFormat,
         serverAbrStreamingUrl:url.href,videoPlaybackUstreamerConfig:config,clientInfo:client},credentials};
-      finished=true;restore();
+      finished=true;restore();cancelPending(Error('observer_stopped'));
+      for(const token of tokens)token.fill(0);tokens.clear();for(const remove of xhrListeners)remove();xhrListeners.clear();
+      for(const reader of readers)void reader.cancel().catch(()=>{});readers.clear();
+      for(const body of copies)if(!body.locked)void body.cancel().catch(()=>{});copies.clear();
       resolveReady(Object.freeze({source:secret.source,credentialsMode:credentials,
         getCurrentVideoPoToken:async id=>{context();need(secret&&id===videoId,'source_changed');return secret.token.slice();},
         assertAcceptedContext:async()=>{context();need(secret,'observer_closed');return {accepted:true,videoId};},
         fetchInAcceptedContext:(input,init)=>{context();need(secret,'observer_closed');const target=new URL(String(input));need(target.origin===url.origin&&target.pathname==='/videoplayback','source_server_changed');return originalFetch.call(scope,input,{...init,credentials:secret.credentials,redirect:'error'});},
-        metadata:publicMetadata(current.response,audioFormat),close:()=>stop('observer_closed')}));
+        metadata,close:()=>stop('observer_closed')}));
     }catch(error){
       // Ignore unrelated/initial incomplete player control requests. A matching
       // accepted request is required before any downloader can be constructed.
       lastReason=/^[a-z0-9_]{1,80}$/.test(error.message||'')?error.message:'normal_request_unusable';
-      if(['source_changed','response_identity_changed','source_not_eligible','normal_request_observation_limit','source_forbidden','source_rate_limited'].includes(lastReason))stop(lastReason);
-    }finally{inspecting=false;}
+      if(['source_changed','response_identity_changed','source_not_eligible','observer_metadata_unavailable','normal_request_deadline','normal_request_observation_limit','normal_observer_concurrency','normal_response_read_limit','normal_control_too_large','stream_protection_rejected','source_forbidden','source_rate_limited'].includes(lastReason))stop(lastReason);
+    }finally{
+      if(candidateToken){candidateToken.fill(0);tokens.delete(candidateToken);}inspecting--;
+      if(owned){copies.delete(body);if(!body.locked)void body.cancel().catch(()=>{});}
+      // Metadata may be rejected before the ordinary response arrives. Dispose
+      // its clone when it does arrive, without waiting or touching the original.
+      void Promise.resolve(acceptedResponse).then(response=>{if(response.body){copies.delete(response.body);if(!response.body.locked)void response.body.cancel().catch(()=>{});}}).catch(()=>{});
+    }
   }
   function wrappedFetch(input,init){
     const request=typeof Request!=='undefined'&&input instanceof Request?input:null;
     const method=String(init?.method||request?.method||'GET').toUpperCase();
-    const rawUrl=request?.url||String(input),candidate=isCandidate(rawUrl,method);let body=init?.body;
-    if(candidate&&body===undefined&&request){try{body=request.clone().body;}catch{}}
-    const result=originalFetch.apply(this,arguments);
+    const rawUrl=request?.url||String(input),candidate=isCandidate(rawUrl,method);let body=init?.body,owned=false;
+    if(candidate&&body===undefined&&request){try{body=request.clone().body;owned=!!body;if(owned)copies.add(body);}catch{}}
+    let result;try{result=originalFetch.apply(this,arguments);}catch(error){if(owned){copies.delete(body);void body.cancel().catch(()=>{});}throw error;}
     if(!candidate)return result;
-    // Return the original promise and body untouched. Only status/type are inspected.
+    // Return the original promise/body immediately. Consume only a cancellable
+    // response clone, with a shared byte cap; never replay the player's request.
     const accepted=Promise.resolve(result).then(response=>{
       if(response.status===403||response.status===429){stop(response.status===403?'source_forbidden':'source_rate_limited');throw Error('normal_request_not_accepted');}
-      return {status:response.status,contentType:(response.headers.get('content-type')||'').split(';')[0]};
+      const contentType=(response.headers.get('content-type')||'').split(';')[0];
+      const body=!finished&&response.status===200&&contentType==='application/vnd.yt-ump'?response.clone().body:null;
+      if(body)copies.add(body);return {status:response.status,contentType,body};
     });accepted.catch(()=>{});
-    void observe(rawUrl,method,body,init?.credentials||request?.credentials||'same-origin',accepted);
+    void observe(rawUrl,method,body,init?.credentials||request?.credentials||'same-origin',accepted,owned);
     return result;
   }
   function wrappedOpen(method,url){xhrs.set(this,{method:String(method).toUpperCase(),url:String(url)});return originalOpen.apply(this,arguments);}
   function isCandidate(rawUrl,method){try{const url=new URL(rawUrl),published=new URL(context().response.streamingData?.serverAbrStreamingUrl);
-    return !finished&&method==='POST'&&url.protocol==='https:'&&/(^|\.)googlevideo\.com$/.test(url.hostname)&&url.pathname==='/videoplayback'&&url.origin===published.origin&&!!published.searchParams.get('id')&&url.searchParams.get('id')===published.searchParams.get('id');}catch{return false;}}
-  function wrappedSend(body){const request=xhrs.get(this);if(request&&isCandidate(request.url,request.method)){const accepted=new Promise(resolve=>this.addEventListener('loadend',()=>{
+    return !finished&&method==='POST'&&url.protocol==='https:'&&!url.username&&!url.password&&!url.port&&!url.hash&&/(^|\.)googlevideo\.com$/.test(url.hostname)&&url.pathname==='/videoplayback'&&url.origin===published.origin&&!!published.searchParams.get('id')&&url.searchParams.get('id')===published.searchParams.get('id');}catch{return false;}}
+  function wrappedSend(body){const request=xhrs.get(this);if(request&&isCandidate(request.url,request.method)){const accepted=new Promise(resolve=>{
+    const remove=()=>{this.removeEventListener('loadend',handler);xhrListeners.delete(remove);};
+    const handler=()=>{remove();try{
       if(this.status===403||this.status===429)stop(this.status===403?'source_forbidden':'source_rate_limited');
-      resolve({status:this.status,contentType:(this.getResponseHeader('content-type')||'').split(';')[0]});},{once:true}));
+      const value=this.responseType==='arraybuffer'&&this.response instanceof ArrayBuffer?new Uint8Array(this.response):null;
+      resolve({status:this.status,contentType:(this.getResponseHeader('content-type')||'').split(';')[0],bytes:value});
+    }catch{resolve({status:0,contentType:'',bytes:null});}};
+    xhrListeners.add(remove);this.addEventListener('loadend',handler,{once:true});});
     void observe(request.url,request.method,body,this.withCredentials?'include':'omit',accepted);}return originalSend.apply(this,arguments);}
   function publicMetadata(response,format){
     const d=response.videoDetails,m=response.microformat?.playerMicroformatRenderer||{};

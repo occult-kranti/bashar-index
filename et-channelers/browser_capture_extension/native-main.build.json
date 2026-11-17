@@ -6,9 +6,14 @@
   },
   "inputs": [
     {
+      "path": "native-sps.js",
+      "bytes": 2847,
+      "sha256": "0f49410384e64d0cfb7a1a1f49a23e35ec4b12235138e931eedad1857a646a3c"
+    },
+    {
       "path": "native-observer.js",
-      "bytes": 12411,
-      "sha256": "ec2a4f3f99be3c51d2317b1c8c4d77e9ebeaa9278cb14ab8dc2a95377487908b"
+      "bytes": 16431,
+      "sha256": "f4b3eebcb9ef8c7fea76d9398e2d205fadf7a25ba2b14d59a5688d4a1b801ebc"
     },
     {
       "path": "native-finish.js",
@@ -23,8 +28,8 @@
   ],
   "output": {
     "path": "native-main.iife.js",
-    "bytes": 22713,
-    "sha256": "b8b165b4ec80922fe38afbb25794692207c861f10d8ca7d4560829ee59e99012"
+    "bytes": 30969,
+    "sha256": "343cf15c98736cce3e6312f17aa301a37288cbac49a73f4f83b3d5f4be0137d7"
   },
   "network_at_import": false
 }

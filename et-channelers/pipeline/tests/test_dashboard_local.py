@@ -125,6 +125,33 @@ class StatusExportTests(unittest.TestCase):
             self.assertEqual(result['storage']['ceiling_bytes'], 17_000_000_000)
             self.assertNotIn('PRIVATE VALUE', json.dumps(result))
 
+    def test_pre_begin_native_refusal_updates_source_deadline_without_counting_audio(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder); (root / 'sync').mkdir()
+            (root / 'sync/drive_ingest_manifest.jsonl').write_text(json.dumps({
+                'video_id': 'PRIVATE-ID', 'error_class': 'forbidden', 'retry_not_before_epoch': 1800001200}) + '\n')
+            (root / 'sync/drive_caption_manifest.jsonl').write_text(json.dumps({
+                'video_id': 'PRIVATE-ID', 'error_class': 'rate_limited', 'retry_not_before_epoch': 1800005000}) + '\n')
+            (root / 'sync/STOP_DRIVE_INGEST').touch()
+            target = root / 'sync/native_batch_source_cooldown.json'
+            valid = {'schema_version': 1, 'endpoint': 'youtube_native_audio', 'source_error_class': 'bot_check',
+                     'retry_not_before_epoch': 1800002400, 'private_evidence': 'PRIVATE TOKEN PATH'}
+            target.write_text(json.dumps(valid))
+            result = ingestion_status.snapshot(root, now=1800000000)
+            self.assertEqual(result['operation']['state'], 'paused')
+            self.assertEqual(result['operation']['cooldown_provider'], 'youtube')
+            self.assertEqual(result['operation']['retry_after'], ingestion_status.stamp(1800002400))
+            self.assertEqual(result['operation']['caption_retry_after'], ingestion_status.stamp(1800005000))
+            self.assertEqual(result['counts']['verified_pairs'], 0)
+            self.assertEqual(result['counts']['unavailable'], 0)
+            self.assertNotIn('PRIVATE', json.dumps(result))
+            for invalid in ({**valid, 'endpoint': 'other'}, {**valid, 'source_error_class': 'network'},
+                            {**valid, 'retry_not_before_epoch': '1800009000'}, {**valid, 'retry_not_before_epoch': float('nan')}):
+                with self.subTest(invalid=invalid):
+                    target.write_text(json.dumps(invalid))
+                    unchanged = ingestion_status.snapshot(root, now=1800000000)
+                    self.assertEqual(unchanged['operation']['retry_after'], ingestion_status.stamp(1800001200))
+
     def test_private_fields_never_enter_public_counts_and_audio_alone_is_not_a_pair(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

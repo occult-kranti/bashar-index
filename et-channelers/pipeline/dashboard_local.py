@@ -173,6 +173,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         explanations.cooldown = 'Source downloads and Drive uploads are paused until their recorded retry windows pass. Local files are retained.';
       }
       if (state === 'cooldown' && data.operation.retry_after) explanations.cooldown += ' Next attempt after ' + date(data.operation.retry_after) + '.';
+      if (state === 'paused' && data.operation.cooldown_provider === 'youtube' && data.operation.retry_after) explanations.paused += ' The recorded source retry window ends ' + date(data.operation.retry_after) + '; this does not resume collection automatically.';
       put('cc-current-state', labels[state]); put('cc-current-explanation', explanations[state]);
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.audio_archived_videos ?? data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));

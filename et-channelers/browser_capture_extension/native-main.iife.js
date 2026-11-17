@@ -1,14 +1,109 @@
 (() => {
+  // native-sps.js
+  async function readNormalProtection({ sdk, response, admit, registerReader, checkActive }) {
+    const need2 = (ok, code) => {
+      if (!ok) throw Error(code);
+    };
+    need2(sdk?.UmpReader && sdk?.StreamProtectionStatus?.decode, "observer_sdk_missing");
+    need2(response.status === 200 && response.contentType === "application/vnd.yt-ump", "normal_request_not_accepted");
+    let status = null, partial = null, reader = null;
+    const decode = (data) => {
+      const result = sdk.StreamProtectionStatus.decode(data);
+      need2(Number.isSafeInteger(result.status) && [1, 2, 3].includes(result.status), "normal_protection_invalid");
+      status = result.status;
+      need2(status !== 3, "stream_protection_rejected");
+    };
+    const copy = (data, target, offset = 0) => {
+      for (const chunk of data.chunks) {
+        target.set(chunk, offset);
+        offset += chunk.length;
+      }
+      return offset;
+    };
+    const parser = new sdk.UmpReader({
+      onPart(type, data) {
+        if (type !== 58) return;
+        need2(data.totalLength <= 65536, "normal_control_too_large");
+        decode(copyBytes(data));
+      },
+      onPartialPart(type, data, offset, total) {
+        if (type !== 58) return true;
+        need2(Number.isSafeInteger(total) && total > 0 && total <= 65536, "normal_control_too_large");
+        if (offset === 0) partial = { bytes: new Uint8Array(total), offset: 0 };
+        need2(partial && partial.offset === offset && offset + data.totalLength <= total, "normal_control_fragment");
+        partial.offset = copy(data, partial.bytes, offset);
+        if (partial.offset === total) {
+          decode(partial.bytes);
+          partial = null;
+        }
+        return true;
+      }
+    });
+    function copyBytes(data) {
+      const result = new Uint8Array(data.totalLength);
+      copy(data, result);
+      return result;
+    }
+    async function feed(raw) {
+      checkActive();
+      need2(raw instanceof Uint8Array, "normal_response_bytes");
+      admit(raw.byteLength);
+      for (let offset = 0; offset < raw.length; offset += 16384) {
+        checkActive();
+        await parser.feed(raw.subarray(offset, offset + 16384));
+      }
+    }
+    try {
+      if (response.body) {
+        reader = response.body.getReader();
+        registerReader(reader, true);
+        for (; ; ) {
+          checkActive();
+          const part = await reader.read();
+          checkActive();
+          if (part.done) break;
+          await feed(part.value);
+        }
+      } else {
+        need2(response.bytes instanceof Uint8Array, "normal_response_unreadable");
+        await feed(response.bytes);
+      }
+      checkActive();
+      need2(parser.pendingType === void 0 && parser.compositeBuffer.totalLength === 0 && !partial, "normal_response_incomplete");
+      need2(status === 1, status === 2 ? "normal_protection_pending" : "normal_protection_missing");
+      return { status: 1 };
+    } finally {
+      if (partial) partial.bytes.fill(0);
+      parser.dispose();
+      if (reader) {
+        registerReader(reader, false);
+        void reader.cancel().catch(() => {
+        });
+        try {
+          reader.releaseLock();
+        } catch {
+        }
+      }
+    }
+  }
+
   // native-observer.js
-  function createAcceptedSabrObserver({ scope = window, sdk, videoId, timeoutMs = 45e3 }) {
+  function createAcceptedSabrObserver({ scope = window, sdk, videoId, timeoutMs = 45e3, observerSessionId = crypto.randomUUID() }) {
     const need2 = (ok, code) => {
       if (!ok) throw Error(code);
     };
     need2(/^[A-Za-z0-9_-]{11}$/.test(videoId), "invalid_video_id");
-    need2(sdk?.VideoPlaybackAbrRequest?.decode && sdk?.FormatXTags?.decode && sdk?.buildSabrFormat, "observer_sdk_missing");
+    need2(Number.isFinite(timeoutMs) && timeoutMs > 0 && timeoutMs <= 45e3 && /^[a-f0-9-]{36}$/.test(observerSessionId), "observer_limits");
+    const deadline = Date.now() + timeoutMs;
+    need2(sdk?.VideoPlaybackAbrRequest?.decode && sdk?.FormatXTags?.decode && sdk?.buildSabrFormat && sdk?.UmpReader && sdk?.StreamProtectionStatus?.decode, "observer_sdk_missing");
     const originalFetch = scope.fetch, proto = scope.XMLHttpRequest?.prototype, originalOpen = proto?.open, originalSend = proto?.send;
-    const xhrs = /* @__PURE__ */ new WeakMap();
-    let finished = false, secret = null, timer, watcher, resolveReady, rejectReady, inspecting = false, observations = 0, lastReason = null, activeReader = null;
+    const xhrs = /* @__PURE__ */ new WeakMap(), readers = /* @__PURE__ */ new Set(), copies = /* @__PURE__ */ new Set(), tokens = /* @__PURE__ */ new Set(), xhrListeners = /* @__PURE__ */ new Set();
+    let finished = false, secret = null, timer, watcher, resolveReady, rejectReady, inspecting = 0, observations = 0, lastReason = null, responseBytes = 0, cancelPending;
+    const cancelled = new Promise((_, reject) => {
+      cancelPending = reject;
+    });
+    cancelled.catch(() => {
+    });
     const ready = new Promise((resolve, reject) => {
       resolveReady = resolve;
       rejectReady = reject;
@@ -47,17 +142,23 @@
         finished = true;
         rejectReady(Error(code));
       }
-      if (activeReader) {
-        void activeReader.cancel().catch(() => {
-        });
-        activeReader = null;
-      }
+      cancelPending(Error("observer_stopped"));
+      for (const token of tokens) token.fill(0);
+      tokens.clear();
+      for (const remove of xhrListeners) remove();
+      xhrListeners.clear();
+      for (const reader of readers) void reader.cancel().catch(() => {
+      });
+      readers.clear();
+      for (const body of copies) if (!body.locked) void body.cancel().catch(() => {
+      });
+      copies.clear();
       if (secret) {
         secret.token.fill(0);
         secret = null;
       }
     }
-    async function bodyBytes(body) {
+    async function bodyBytes(body, owned) {
       const value = bytes(body);
       if (value) {
         need2(value.byteLength <= 65536, "observer_body_too_large");
@@ -68,8 +169,9 @@
         return new Uint8Array(await body.arrayBuffer());
       }
       if (body?.getReader) {
+        need2(owned, "observer_body_unsupported");
         const reader = body.getReader(), parts = [];
-        activeReader = reader;
+        readers.add(reader);
         let total = 0;
         try {
           for (; ; ) {
@@ -87,15 +189,26 @@
           }
           return out;
         } finally {
-          if (activeReader === reader) activeReader = null;
+          readers.delete(reader);
           void reader.cancel().catch(() => {
           });
+          try {
+            reader.releaseLock();
+          } catch {
+          }
         }
       }
       throw Error("observer_body_unsupported");
     }
-    async function observe(rawUrl, method, body, credentials, acceptedResponse) {
-      if (finished || inspecting || method !== "POST") return;
+    async function observe(rawUrl, method, body, credentials, acceptedResponse, owned = false) {
+      if (finished || method !== "POST") {
+        if (owned) {
+          copies.delete(body);
+          if (!body.locked) void body.cancel().catch(() => {
+          });
+        }
+        return;
+      }
       let url;
       try {
         url = new URL(rawUrl);
@@ -103,17 +216,22 @@
         return;
       }
       if (url.protocol !== "https:" || url.username || url.password || url.port || url.hash || !/(^|\.)googlevideo\.com$/.test(url.hostname) || url.pathname !== "/videoplayback") return;
-      inspecting = true;
+      inspecting++;
+      let candidateToken = null;
       try {
+        need2(Date.now() <= deadline, "normal_request_deadline");
         need2(++observations <= 16, "normal_request_observation_limit");
+        need2(inspecting <= 4, "normal_observer_concurrency");
         const before = context(), published = new URL(before.response.streamingData?.serverAbrStreamingUrl);
         need2(url.origin === published.origin && url.pathname === published.pathname && !!published.searchParams.get("id") && url.searchParams.get("id") === published.searchParams.get("id"), "observer_server_mismatch");
-        const request = sdk.VideoPlaybackAbrRequest.decode(await bodyBytes(body));
+        const request = sdk.VideoPlaybackAbrRequest.decode(await Promise.race([bodyBytes(body, owned), cancelled]));
         if (finished) return;
         const current = context(), config = current.response.playerConfig?.mediaCommonConfig?.mediaUstreamerRequestConfig?.videoPlaybackUstreamerConfig;
         need2(typeof config === "string" && equal(base64(config), request.videoPlaybackUstreamerConfig || new Uint8Array()), "observer_config_mismatch");
         const token = request.streamerContext?.poToken, client = request.streamerContext?.clientInfo;
         need2(token instanceof Uint8Array && token.length > 0 && token.length < 16384, "observer_token_missing");
+        candidateToken = token.slice();
+        tokens.add(candidateToken);
         need2(client && Number.isInteger(client.clientName) && typeof client.clientVersion === "string", "observer_client_missing");
         const selected = request.selectedAudioFormatIds || [], formats = current.response.streamingData?.adaptiveFormats || [];
         const matches = /* @__PURE__ */ new Map();
@@ -145,11 +263,45 @@
         const durationMs = Number(audioFormat.approxDurationMs) || Math.round(current.video.duration * 1e3);
         need2(Number.isSafeInteger(durationMs) && durationMs > 0 && Math.abs(durationMs - current.video.duration * 1e3) <= 2e3, "observer_duration_mismatch");
         need2(["omit", "same-origin", "include"].includes(credentials), "observer_credentials_mode");
-        const accepted = await acceptedResponse;
+        const accepted = await Promise.race([acceptedResponse, cancelled]);
         if (finished) return;
         context();
-        need2(accepted.status === 200 && accepted.contentType === "application/vnd.yt-ump", "normal_request_not_accepted");
-        secret = { token: token.slice(), source: {
+        await readNormalProtection({
+          sdk,
+          response: accepted,
+          admit: (n) => {
+            responseBytes += n;
+            need2(responseBytes <= 8 * 1024 * 1024, "normal_response_read_limit");
+          },
+          registerReader: (reader, add) => add ? readers.add(reader) : readers.delete(reader),
+          checkActive: () => {
+            need2(!finished, "observer_stopped");
+            need2(Date.now() <= deadline, "normal_request_deadline");
+            context();
+          }
+        });
+        if (finished) return;
+        const after = context(), afterConfig = after.response.playerConfig?.mediaCommonConfig?.mediaUstreamerRequestConfig?.videoPlaybackUstreamerConfig;
+        need2(afterConfig === config && Math.abs(after.video.duration * 1e3 - durationMs) <= 2e3, "observer_config_mismatch");
+        const acceptance = {
+          basis: "matching_normal_player_sps1",
+          http_status: 200,
+          sps_status: 1,
+          complete_response: true,
+          video_id: videoId,
+          same_video: true,
+          same_configuration: true,
+          request_format_matches_catalog: true,
+          observed_at_epoch: Math.floor(Date.now() / 1e3),
+          observer_session_id: observerSessionId
+        };
+        let metadata;
+        try {
+          metadata = { ...publicMetadata(after.response, audioFormat), native_source_acceptance: acceptance };
+        } catch {
+          throw Error("observer_metadata_unavailable");
+        }
+        secret = { token: candidateToken.slice(), source: {
           videoId,
           isLive: false,
           isPostLive: false,
@@ -162,6 +314,17 @@
         }, credentials };
         finished = true;
         restore();
+        cancelPending(Error("observer_stopped"));
+        for (const token2 of tokens) token2.fill(0);
+        tokens.clear();
+        for (const remove of xhrListeners) remove();
+        xhrListeners.clear();
+        for (const reader of readers) void reader.cancel().catch(() => {
+        });
+        readers.clear();
+        for (const body2 of copies) if (!body2.locked) void body2.cancel().catch(() => {
+        });
+        copies.clear();
         resolveReady(Object.freeze({
           source: secret.source,
           credentialsMode: credentials,
@@ -182,39 +345,71 @@
             need2(target.origin === url.origin && target.pathname === "/videoplayback", "source_server_changed");
             return originalFetch.call(scope, input, { ...init, credentials: secret.credentials, redirect: "error" });
           },
-          metadata: publicMetadata(current.response, audioFormat),
+          metadata,
           close: () => stop("observer_closed")
         }));
       } catch (error) {
         lastReason = /^[a-z0-9_]{1,80}$/.test(error.message || "") ? error.message : "normal_request_unusable";
-        if (["source_changed", "response_identity_changed", "source_not_eligible", "normal_request_observation_limit", "source_forbidden", "source_rate_limited"].includes(lastReason)) stop(lastReason);
+        if (["source_changed", "response_identity_changed", "source_not_eligible", "observer_metadata_unavailable", "normal_request_deadline", "normal_request_observation_limit", "normal_observer_concurrency", "normal_response_read_limit", "normal_control_too_large", "stream_protection_rejected", "source_forbidden", "source_rate_limited"].includes(lastReason)) stop(lastReason);
       } finally {
-        inspecting = false;
+        if (candidateToken) {
+          candidateToken.fill(0);
+          tokens.delete(candidateToken);
+        }
+        inspecting--;
+        if (owned) {
+          copies.delete(body);
+          if (!body.locked) void body.cancel().catch(() => {
+          });
+        }
+        void Promise.resolve(acceptedResponse).then((response) => {
+          if (response.body) {
+            copies.delete(response.body);
+            if (!response.body.locked) void response.body.cancel().catch(() => {
+            });
+          }
+        }).catch(() => {
+        });
       }
     }
     function wrappedFetch(input, init) {
       const request = typeof Request !== "undefined" && input instanceof Request ? input : null;
       const method = String(init?.method || request?.method || "GET").toUpperCase();
       const rawUrl = request?.url || String(input), candidate = isCandidate(rawUrl, method);
-      let body = init?.body;
+      let body = init?.body, owned = false;
       if (candidate && body === void 0 && request) {
         try {
           body = request.clone().body;
+          owned = !!body;
+          if (owned) copies.add(body);
         } catch {
         }
       }
-      const result = originalFetch.apply(this, arguments);
+      let result;
+      try {
+        result = originalFetch.apply(this, arguments);
+      } catch (error) {
+        if (owned) {
+          copies.delete(body);
+          void body.cancel().catch(() => {
+          });
+        }
+        throw error;
+      }
       if (!candidate) return result;
       const accepted = Promise.resolve(result).then((response) => {
         if (response.status === 403 || response.status === 429) {
           stop(response.status === 403 ? "source_forbidden" : "source_rate_limited");
           throw Error("normal_request_not_accepted");
         }
-        return { status: response.status, contentType: (response.headers.get("content-type") || "").split(";")[0] };
+        const contentType = (response.headers.get("content-type") || "").split(";")[0];
+        const body2 = !finished && response.status === 200 && contentType === "application/vnd.yt-ump" ? response.clone().body : null;
+        if (body2) copies.add(body2);
+        return { status: response.status, contentType, body: body2 };
       });
       accepted.catch(() => {
       });
-      void observe(rawUrl, method, body, init?.credentials || request?.credentials || "same-origin", accepted);
+      void observe(rawUrl, method, body, init?.credentials || request?.credentials || "same-origin", accepted, owned);
       return result;
     }
     function wrappedOpen(method, url) {
@@ -224,7 +419,7 @@
     function isCandidate(rawUrl, method) {
       try {
         const url = new URL(rawUrl), published = new URL(context().response.streamingData?.serverAbrStreamingUrl);
-        return !finished && method === "POST" && url.protocol === "https:" && /(^|\.)googlevideo\.com$/.test(url.hostname) && url.pathname === "/videoplayback" && url.origin === published.origin && !!published.searchParams.get("id") && url.searchParams.get("id") === published.searchParams.get("id");
+        return !finished && method === "POST" && url.protocol === "https:" && !url.username && !url.password && !url.port && !url.hash && /(^|\.)googlevideo\.com$/.test(url.hostname) && url.pathname === "/videoplayback" && url.origin === published.origin && !!published.searchParams.get("id") && url.searchParams.get("id") === published.searchParams.get("id");
       } catch {
         return false;
       }
@@ -232,10 +427,24 @@
     function wrappedSend(body) {
       const request = xhrs.get(this);
       if (request && isCandidate(request.url, request.method)) {
-        const accepted = new Promise((resolve) => this.addEventListener("loadend", () => {
-          if (this.status === 403 || this.status === 429) stop(this.status === 403 ? "source_forbidden" : "source_rate_limited");
-          resolve({ status: this.status, contentType: (this.getResponseHeader("content-type") || "").split(";")[0] });
-        }, { once: true }));
+        const accepted = new Promise((resolve) => {
+          const remove = () => {
+            this.removeEventListener("loadend", handler);
+            xhrListeners.delete(remove);
+          };
+          const handler = () => {
+            remove();
+            try {
+              if (this.status === 403 || this.status === 429) stop(this.status === 403 ? "source_forbidden" : "source_rate_limited");
+              const value = this.responseType === "arraybuffer" && this.response instanceof ArrayBuffer ? new Uint8Array(this.response) : null;
+              resolve({ status: this.status, contentType: (this.getResponseHeader("content-type") || "").split(";")[0], bytes: value });
+            } catch {
+              resolve({ status: 0, contentType: "", bytes: null });
+            }
+          };
+          xhrListeners.add(remove);
+          this.addEventListener("loadend", handler, { once: true });
+        });
         void observe(request.url, request.method, body, this.withCredentials ? "include" : "omit", accepted);
       }
       return originalSend.apply(this, arguments);

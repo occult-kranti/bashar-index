@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "namespace": "ChannelingNativeSabrV1",
-  "created_at": "2026-11-17T06:23:35.978Z",
+  "created_at": "2026-11-17T06:58:07.372Z",
   "network_behavior": "Loading the bundle starts no requests; accepted-context producer must be explicitly invoked.",
   "logger_policy": "Bundled Logger.prototype.log is disabled; signed transport diagnostics cannot be enabled through the exposed logger.",
   "dependencies": [
@@ -348,6 +348,11 @@
       "sha256": "b516c4fea70203130a6f42e5392958d57898be6ebe59293c252d4bfd2b82cd42"
     },
     {
+      "source": "dependencies/googlevideo/dist/src/core/UmpWriter.js",
+      "bytes": 1550,
+      "sha256": "08641ccf3982080cbaa4c4e314ab3b1789a256d235cfe25802007574c1044bb6"
+    },
+    {
       "source": "dependencies/googlevideo/dist/src/exports/protos.js",
       "bytes": 135,
       "sha256": "f8880a67c53b6781474064b516ce2026e58bcc1e37ed5119c7b37f999b2e8105"
@@ -356,6 +361,11 @@
       "source": "dependencies/googlevideo/dist/src/exports/sabr-stream.js",
       "bytes": 189,
       "sha256": "1ca81f41da88c1d7c87c244d21cd555730a2d6680354dcfa26d7f676d1788035"
+    },
+    {
+      "source": "dependencies/googlevideo/dist/src/exports/ump.js",
+      "bytes": 238,
+      "sha256": "66aff7eb18be2f329cebaa7ca46f0f48e3c50fefbe9b733a7e8d9c9ea37a9704"
     },
     {
       "source": "dependencies/googlevideo/dist/src/exports/utils.js",
@@ -459,8 +469,8 @@
     },
     {
       "source": "packaging/native-sdk-entry.mjs",
-      "bytes": 1135,
-      "sha256": "a87640515f57e96d9464ca3a732f1d0aaee14ed297501d9c16ad7474b7d08881"
+      "bytes": 1234,
+      "sha256": "8255a416f4677bb0b5afab379d475b1e41ebff494b3ea287384772132519edf2"
     },
     {
       "source": "project/pipeline/browser_sabr_adapter.mjs",
@@ -471,8 +481,8 @@
   "outputs": [
     {
       "name": "channeling-native-sabr-v1.iife.js",
-      "bytes": 180425,
-      "sha256": "62f3519ba617880aeaf1e7e915966ba73f0a0bc8fa08ea3eda4eb2f0cea594af"
+      "bytes": 180458,
+      "sha256": "6eb0aa7ba8e6a8045c7539d661a436cadf8370b80f965d8e2597fa9c5199c381"
     },
     {
       "name": "THIRD_PARTY_NOTICES.txt",

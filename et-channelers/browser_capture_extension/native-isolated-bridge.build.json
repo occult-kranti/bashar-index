@@ -12,8 +12,8 @@
     },
     {
       "path": "native-rpc.js",
-      "bytes": 6655,
-      "sha256": "4b5282869ddef02e472b106ea9baf095f4a4cf1d57eeac0c55f188e074bb504c"
+      "bytes": 7345,
+      "sha256": "dc5bf5f9364200e53d0ca1dc1102b989b522686f6fe1860c38b9ab56757bb258"
     },
     {
       "path": "native-isolated-bridge.js",
@@ -23,8 +23,8 @@
   ],
   "output": {
     "path": "native-isolated-bridge.iife.js",
-    "bytes": 11628,
-    "sha256": "508657348d3f897dcbc84169ff1cc34de5f3665c378e58aa0712288db0bd0a90"
+    "bytes": 12379,
+    "sha256": "5bdc9445141d6f96ed92fde0b0083b067932c91aa25fa98f003ac7478d64afeb"
   },
   "network_at_import": false
 }

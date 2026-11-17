@@ -2,7 +2,7 @@
 
 This supplement uses the **74-channel snapshot computed at 03:57:11 UTC on 17 November 2026**, published in [collection_eta.json](../plan/collection_eta.json). It supersedes the numerical scope of the [71-channel estimate](collection-eta-2026-11-16.md), while preserving that earlier report as a dated record.
 
-**There is no reliable completion date.** The automated native Chromium trial reached 69.892 seconds before failing, with no full-file success or observed sustained batch rate. Its partial does not calibrate this model. Ordinary native collection is parked, and its recorded source cooldown ends **18 November 2026 at 01:40:49 UTC**. Expiry permits a later attempt; it does not establish source availability or automatically resume the collector. Real-time browser recording is parked at the owner's request. The estimates below are conditional capacity scenarios, not deadlines or confidence intervals.
+**There is no reliable completion date.** Earlier native Chromium trials reached 69.892 seconds before failing. The repaired observer then detected SPS3 and stopped before downloading, without a new native attempt or output. There is no full-file success or sustained batch-rate measurement for this route, so these trials do not calibrate the model. Source work is parked; the new pre-BEGIN refusal's recorded window ends **18 November 2026 at 07:31:07 UTC**, superseding the earlier 01:40:49 window. Expiry permits a later attempt; it does not establish availability or resume collection automatically. Real-time browser recording remains parked. The estimates below are conditional capacity scenarios, not deadlines or confidence intervals.
 
 ## Current inventory and native collection scenarios
 

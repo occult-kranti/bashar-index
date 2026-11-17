@@ -12,6 +12,15 @@ test('public binding/metadata pass while added URL/session fields are rejected b
   assert.throws(()=>validateNativeRpc('begin',{...begin,metadata:{...begin.metadata,description:'https://rr1.googlevideo.com/videoplayback?token=x'}}),/native_rpc_schema/);
   assert.throws(()=>validateNativeRpc('chunk',{offset:0,base64:'a'.repeat(1048577)}),/native_rpc_schema/);
 });
+test('ordinary-response acceptance proof has an exact nonsecret schema and requires SPS1',()=>{
+  const proof={basis:'matching_normal_player_sps1',http_status:200,sps_status:1,complete_response:true,
+    video_id:identity.videoId,same_video:true,same_configuration:true,request_format_matches_catalog:true,
+    observed_at_epoch:1794890000,observer_session_id:'12345678-1234-1234-1234-123456789abc'};
+  const begin={identity,transportKind:'sabr_reassembled',outputBudgetBytes:64000000,metadata:{id:identity.videoId,native_source_acceptance:proof}};
+  assert.equal(validateNativeRpc('begin',begin),begin);
+  for(const change of [{sps_status:2},{complete_response:false},{poToken:'SECRET'},{observer_session_id:'https://private'},
+    {video_id:'other_video'}])assert.throws(()=>validateNativeRpc('begin',{...begin,metadata:{...begin.metadata,native_source_acceptance:{...proof,...change}}}),/native_rpc_schema/);
+});
 test('isolated bridge rejects arbitrary page values and wrong nonce before extension runtime',async()=>{
   let configure,receive;const forwarded=[],replies=[],window={addEventListener:(type,fn)=>{receive=fn;},postMessage:value=>replies.push(value)};
   const context={URL,window,location:{origin:'https://www.youtube.com'},chrome:{runtime:{id:'fixture',onMessage:{addListener:fn=>{configure=fn;}},sendMessage:async value=>{forwarded.push(value);return {value:{accepted:true}};}}}};

@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-17T06:36:18Z",
+  "generated_at": "2026-11-17T07:35:25Z",
   "scope": "local_youtube_collection",
   "operation": {
     "state": "paused",
-    "retry_after": "2026-11-18T01:40:49Z",
+    "retry_after": "2026-11-18T07:31:07Z",
     "asr_last_reported_state": "unconfirmed",
     "asr_reported_at": null,
     "workers": 4,
@@ -32,9 +32,9 @@
     "final_round_indexed": 64145
   },
   "storage": {
-    "local_bytes": 5120808321,
+    "local_bytes": 5121589811,
     "ceiling_bytes": 17000000000,
-    "managed_bytes": 7108875339,
+    "managed_bytes": 7110018375,
     "managed_ceiling_bytes": 16000000000
   },
   "stages": [

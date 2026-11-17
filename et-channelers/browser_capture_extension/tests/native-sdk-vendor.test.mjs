@@ -35,7 +35,7 @@ test('real packaged SDK loads offline and cannot enable transport diagnostics',a
     api.Logger.getInstance().setLogLevels(99);api.Logger.getInstance().debug('fixture','must-not-log');
     const value=api.FormatXTags.decode(api.FormatXTags.encode({xtags:[{key:'acont',value:'original'}]}).finish());
     return {tag:value.xtags[0].value,version:api.sdk.version,audioOnly:api.EnabledTrackTypes.AUDIO_ONLY,
-      exports:['SabrStream','buildSabrFormat','VideoPlaybackAbrRequest','openNativeSabr'].every(k=>typeof api[k]==='function'||typeof api[k]==='object')};})()`,context);
+      exports:['SabrStream','buildSabrFormat','VideoPlaybackAbrRequest','openNativeSabr','UmpReader','StreamProtectionStatus'].every(k=>typeof api[k]==='function'||typeof api[k]==='object')};})()`,context);
   assert.equal(result.version,'5.0.1');assert.equal(result.tag,'original');assert.equal(result.audioOnly,1);assert.equal(result.exports,true);
   assert.equal(logs.length,0);assert.equal(requests.length,0);
   const codec=await vm.runInContext(`(async()=>{

@@ -85,11 +85,16 @@
     need((x.trackId === null || /^[A-Za-z0-9_.=,; -]{1,200}$/.test(x.trackId)) && x.originalBasis === "published_original" && x.noDRM === true && x.audioOnly === true);
   }
   function metadata(x, videoId) {
-    keys(x, ["id"], ["webpage_url", "title", "description", "channel_id", "channel", "duration", "language", "upload_date", "release_date", "tags", "thumbnails", "acquisition_context", "native_source_language_basis"]);
+    keys(x, ["id"], ["webpage_url", "title", "description", "channel_id", "channel", "duration", "language", "upload_date", "release_date", "tags", "thumbnails", "acquisition_context", "native_source_language_basis", "native_source_acceptance"]);
     need(x.id === videoId && (!x.webpage_url || x.webpage_url === `https://www.youtube.com/watch?v=${videoId}`));
     for (const [key, max] of [["title", 1e3], ["description", 32e3], ["channel_id", 128], ["channel", 500], ["language", 32], ["upload_date", 32], ["release_date", 32], ["acquisition_context", 80], ["native_source_language_basis", 80]]) if (x[key] !== void 0) need(text(x[key], max));
     if (x.duration !== void 0) need(typeof x.duration === "number" && Number.isFinite(x.duration) && x.duration > 0 && x.duration <= 1e7);
     if (x.tags !== void 0) need(Array.isArray(x.tags) && x.tags.length <= 100 && x.tags.every((s) => text(s, 200)));
+    if (x.native_source_acceptance !== void 0) {
+      const a = x.native_source_acceptance;
+      keys(a, ["basis", "http_status", "sps_status", "complete_response", "video_id", "same_video", "same_configuration", "request_format_matches_catalog", "observed_at_epoch", "observer_session_id"]);
+      need(a.basis === "matching_normal_player_sps1" && a.http_status === 200 && a.sps_status === 1 && a.video_id === videoId && a.complete_response === true && a.same_video === true && a.same_configuration === true && a.request_format_matches_catalog === true && integer(a.observed_at_epoch, 1e11) && a.observed_at_epoch > 0 && typeof a.observer_session_id === "string" && /^[a-f0-9-]{36}$/.test(a.observer_session_id));
+    }
     if (x.thumbnails !== void 0) {
       need(Array.isArray(x.thumbnails) && x.thumbnails.length <= 10);
       for (const thumb of x.thumbnails) {
