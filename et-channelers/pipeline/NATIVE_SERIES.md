@@ -7,7 +7,16 @@ are saved privately. The working downloader uses isolated owned Chromium, the
 stock WPC provider and upstream yt-dlp HTTPS transfer. It does not wait through
 playback or use screen recording.
 
-## Current admitted execution
+## First completed execution, 22:27 UTC
+
+The initial three-frame series closed with 30 new canonical pairs (10/11/9),
+11.19 measured source hours and 27m22.68s source wall time. Its local English
+consumer verified 18 ASR bundles covering 7.85 source hours. All matching source,
+staging and GPU allocations are released. Thirty item holds remain separate;
+three source attempts have uncertain evidence and cannot be silently retried.
+The following admission describes that completed execution, not a running job.
+
+## Initial admitted execution
 
 The November 17 series started once at 21:52:52 UTC for exactly 60 untouched
 latest-20 entries. Its common expiry is November 18 at 01:49:57 UTC. This is a

@@ -351,6 +351,7 @@ class NativeBatch:
         while True:
             with self.lock:
                 self.guard(source=True, video_id=ident)
+                need(not self.dispatch_paused.is_set(), 'dispatch_paused')
                 need(not folder.exists(), 'attempt_already_exists')
                 maximum = item.get('max_audio_bytes', self.s['max_asset_bytes'])
                 need(type(maximum) is int and 0 < maximum <= self.s['max_asset_bytes'], 'asset_deferred')
@@ -381,6 +382,7 @@ class NativeBatch:
             job.attach(process); attached = True
             with self.lock:
                 self.guard(source=True, video_id=ident)
+                need(not self.dispatch_paused.is_set(), 'dispatch_paused')
                 (folder / 'GO').write_bytes(b'owned_job_bound\n')
             while process.poll() is None:
                 self.guard(source=True, video_id=ident)
@@ -623,12 +625,42 @@ class NativeBatch:
                     else: counts['held'] += 1
                 else: pending.append(item)
             with ThreadPoolExecutor(max_workers=self.s['workers']) as pool:
-                active = {}
-                while active or pending:
+                active = {}; ready = []  # at most two dequeued completions; one writer
+                while active or pending or ready:
                     while pending and len(active) < self.s['workers'] and not self.source_stop.is_set() and not self.dispatch_paused.is_set():
-                        try: self.guard(source=True, video_id=pending[0]['video_id'])
-                        except Exception: counts['pending'] += len(pending); pending.clear(); break
-                        item = pending.pop(0); active[pool.submit(self.execute_child, item)] = item
+                        try:
+                            with self.lock:
+                                limit = self.guard(source=True, video_id=pending[0]['video_id'])
+                                if storage.read_drive_cooldown(self.root / 'sync/drive_ingest_cooldown.json'):
+                                    self.dispatch_paused.set(); break
+                                maximum = pending[0].get('max_audio_bytes', self.s['max_asset_bytes'])
+                                need(type(maximum) is int and 0 < maximum <= self.s['max_asset_bytes'], 'asset_deferred')
+                                # Completed files remain inactive bytes. Do not queue a child
+                                # against space the single publisher has yet to release.
+                                # A submitted future may still be waiting for this lock.
+                                # Charge its whole slot until execute_child makes the real
+                                # reservation visible; never submit twice against one slot.
+                                virtual = sum(candidate.get('max_audio_bytes', self.s['max_asset_bytes']) + HEADROOM
+                                    for future, candidate in active.items()
+                                    if not future.done() and candidate['video_id'] not in self.live_reservations)
+                                committed = self.budget._outstanding() + virtual + maximum + HEADROOM
+                                if (self.capacity['inactive_spool_bytes'] + committed > self.s['spool_cap_bytes'] or
+                                        self.budget.usage() + committed > limit - storage.JOURNAL_RESERVE):
+                                    break
+                                item = pending.pop(0); active[pool.submit(self.execute_child, item)] = item
+                        except Exception:
+                            counts['pending'] += len(pending); pending.clear(); break
+                    if ready:
+                        # Refill first; execute_child still owns final reservation and GO.
+                        for item, result in ready:
+                            try: self.publish(item, result); counts['verified'] += 1
+                            except Exception as exc:
+                                counts['held'] += 1
+                                kind = getattr(exc, 'kind', getattr(exc, 'code', 'native_batch_failed'))
+                                storage.journal(self.batch_journal, {'schema_version': 1, 'profile': worker.PROFILE, 'video_id': item['video_id'],
+                                    'status': 'held', 'error_class': kind, 'plan_sha256': self.plan_sha})
+                                if kind.startswith('drive_'): self.source_stop.set()
+                        ready.clear(); continue
                     if not active:
                         counts['pending'] += len(pending); break
                     complete, _ = wait(active, return_when=FIRST_COMPLETED)
@@ -636,7 +668,7 @@ class NativeBatch:
                         item = active.pop(future)
                         try:
                             result = future.result()
-                            if result.get('status') == 'local_complete': self.publish(item, result); counts['verified'] += 1
+                            if result.get('status') == 'local_complete': ready.append((item, result))
                             else: counts['held'] += 1
                         except Exception as exc:
                             counts['held'] += 1

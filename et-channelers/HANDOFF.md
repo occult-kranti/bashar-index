@@ -1,5 +1,19 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Completed automated series, November 17 22:27 UTC
+
+The exact 60-item series and English consumer are closed. Frames archived 10/11/9 native pairs: **30 new pairs**, 651,969,521 audio bytes plus 22,998,772 metadata bytes, covering 40,283.602719 measured seconds (11.19h). Source wall was 1,642.680453 seconds (27m22.68s), including frame gates/backpressure. Holds were 24 format failures, 3 downloader failures, 2 exact bound-media 403 quarantines and 1 unavailable response; 57 attempts are proven and 3 remain uncertain. Those three cannot be silently retried. All original attempts and refusal history remain.
+
+The parallel English consumer archived **18 new ASR bundles**, 1,665,664 bytes, 28,275.7283125 source seconds (7.85h). All owned processes are gone, no staged input links remain, and the matching 5.5 GB source, 500 MB handoff and GPU allocations are released. Twelve new source-language review items remain separate from completed transcripts. The single post-closure six-root point measured 8,057,856,156 bytes plus 300 MB other active growth, within 16 GB; disk free was 36.36 GB. No additional Drive/media verification requests were used to derive these closure totals.
+
+Current aggregate: **100 native pairs, 63 native-source ASR, 128 unique audio entries and 108 audio entries with saved text**. Native text is available for 80 items: 63 ASR + 17 caption sources; 78 have complete artifact inventories, 2 caption inventories need review and 20 have no saved text. Three independent publisher timed-text sources still do not increase native caption/audio/ASR totals. Scientific analysis remains deferred.
+
+[PR #37](https://github.com/occult-kranti/bashar-index/pull/37) merged as `191d89c` after 1,340 Python tests/47 skips and 86 Node tests passed; Pages 44188394544 deployed successfully. The tested branch is retained. The primary checkout is now `feat/native-upload-overlap`, created from updated main only after source and English processes closed. Reviewed successor code refills a free source slot before synchronous publication, using virtual reservations and one canonical writer; added raw-label diagnostics preserve admission behavior and omit URL/query values. Its new full CI is still required. At this checkpoint, the next 60 untouched IDs and five-source multilingual cohort were disabled proposals requiring separate admission.
+
+**Metadata-only follow-up, 22:35:59 UTC:** one separately admitted observation completed in 15.797 seconds, before format selection, with zero audio writes or finished downloads and no upload or ASR. All six DRC rows exposed `xtags`; the saved aggregate did not resolve its contents because it combined top-level and URL projections. Acceptance was not relaxed. The successor diagnostics classify those origins independently, with bounded counts and equality flags but no values. The owned process and profile were cleaned up and its 400 MB reservation released; no second observation of the held target was requested. [The panel record](research/native-transport-panel-2026-11-17/README.md) retains the evidence and limits.
+
+The earlier active-admission sections below are dated history, not current running-state claims.
+
 ## Active automated series, November 17 21:59 UTC
 
 **Keep newest 20 active.** The frozen cohort is 74 channels / 1,420 entries. The aggregate snapshot now verifies **77 canonical native audio/metadata pairs, 46 native-source ASR bundles, 105 unique audio entries and 91 audio entries with saved text**. Publisher mirrors remain 28; the three independent publisher timed-text sources remain separate. Native text is available for 63 items: 46 ASR plus 17 caption sources, with two incomplete caption inventories. The aggregate exporter proves the separate executor's actual PID/creation identity and active matching lease; the legacy collector's STOP remains present.
