@@ -12,7 +12,7 @@
       is_live:live(p,details,micro),ad:!!p&&(p.classList.contains('ad-showing')||p.classList.contains('ad-interrupting')),
       active_media_count:[...document.querySelectorAll('video,audio')].filter(x=>x===v||(!x.paused&&!x.ended&&x.readyState>0)).length};}
   function emit(){if(nonce)window.postMessage({type:'research-audio-state',nonce,state:state()},location.origin);}
-  function stop(){clearInterval(timer);timer=null;for(const [event,handler] of listeners)video?.removeEventListener(event,handler);listeners=[];nonce=null;}
+  function stop(config){if(config?.nonce&&config.nonce!==nonce)return {skipped:true};clearInterval(timer);timer=null;for(const [event,handler] of listeners)video?.removeEventListener(event,handler);listeners=[];nonce=null;return {stopped:true};}
   function metadata(){const {p}=current(),data=p?.getVideoData?.()||{},raw=globalThis.ytInitialPlayerResponse;
     const details=raw?.videoDetails?.videoId===expected?raw.videoDetails:{};
     const micro=raw?.videoDetails?.videoId===expected?raw?.microformat?.playerMicroformatRenderer||{}:{};

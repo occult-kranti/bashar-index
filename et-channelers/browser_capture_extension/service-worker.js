@@ -1,11 +1,13 @@
 import {service,validateJob,videoFromUrl,LIMITS} from './core.js';
+import {cleanupWorker} from './lifecycle.js';
 
 const workers=new Map();let offscreenCreation;
 const boot=chrome.storage.session.get(['researchWorkers']).then(value=>{
   for(const worker of value.researchWorkers||[])workers.set(worker.tab_id,worker);
 });
 const safe=error=>/^[a-z0-9_]{1,80}$/.test(error?.message||'')?error.message:'operation_failed';
-const persist=()=>chrome.storage.session.set({researchWorkers:[...workers.values()]});
+let persistence=Promise.resolve();
+const persist=()=>{const snapshot=structuredClone([...workers.values()]);persistence=persistence.catch(()=>{}).then(()=>chrome.storage.session.set({researchWorkers:snapshot}));return persistence;};
 const message=value=>chrome.runtime.sendMessage({target:'offscreen',...value});
 async function badge(tabId,text,title){try{await chrome.action.setBadgeText({tabId,text});await chrome.action.setBadgeBackgroundColor({tabId,color:text==='ERR'?'#9e3d35':'#1f554b'});await chrome.action.setTitle({tabId,title});}catch{}}
 async function ensureOffscreen(){
@@ -27,14 +29,13 @@ async function inPage(tabId,command,args){
   if(!output?.[0]?.result?.ok)throw Error(output?.[0]?.result?.error||'page_unavailable');return output[0].result.value;
 }
 async function release(worker,{error,done=false}={}){
-  worker.stopping=true;
-  try{await message({type:'release',worker_id:worker.worker_id});}catch{}
-  try{await inPage(worker.tab_id,'stop');}catch{}
-  workers.delete(worker.tab_id);await persist();
-  await badge(worker.tab_id,error?'ERR':done?'DONE':'',error?`Capture held: ${error}. Open extension options for help.`:done?'Queue complete for this worker':'Capture stopped; click to start again');
+  await cleanupWorker(worker,workers,{
+    releaseStream:()=>message({type:'release',worker_id:worker.worker_id}),
+    stopPage:nonce=>inPage(worker.tab_id,'stop',{nonce}),persist,
+    badge:()=>badge(worker.tab_id,error?'ERR':done?'DONE':'',error?`Capture held: ${error}. Open extension options for help.`:done?'Queue complete for this worker':'Capture stopped; click to start again')});
 }
 async function fail(worker,error){
-  worker.state='held';worker.error=safe(error);await persist();
+  worker.state='held';worker.error=safe(error);if(workers.get(worker.tab_id)===worker)await persist();
   try{await message({type:'stop',worker_id:worker.worker_id,reason:worker.error});}catch{}
   if(worker.job){try{await service('/abort',{token:await token(),body:{capture_id:worker.job.capture_id,video_id:worker.job.video_id,reason:worker.error}});}catch{}}
   await release(worker,{error:worker.error});
@@ -89,7 +90,7 @@ chrome.action.onClicked.addListener(tab=>{(async()=>{
   }catch(error){await fail(worker,error);}
 })().catch(error=>badge(tab.id,'ERR',`Capture unavailable: ${safe(error)}. Open extension options for help.`));});
 
-chrome.tabs.onRemoved.addListener(tabId=>{(async()=>{await boot;const worker=workers.get(tabId);if(worker){try{await message({type:'stop',worker_id:worker.worker_id,reason:'tab_closed'});}catch{}workers.delete(tabId);await persist();}})();});
+chrome.tabs.onRemoved.addListener(tabId=>{(async()=>{await boot;const worker=workers.get(tabId);if(worker){worker.stopping=true;try{await message({type:'stop',worker_id:worker.worker_id,reason:'tab_closed'});}catch{}await release(worker);}})();});
 chrome.runtime.onMessage.addListener((value,sender,reply)=>{
   if(sender.id!==chrome.runtime.id||value.target!=='background')return;
   (async()=>{

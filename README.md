@@ -35,7 +35,7 @@ Predictions are **candidates, not verified outcomes**. The collection monitor re
 
 The [separately hosted Atlas](https://channeling-atlas.whatswrong-inc.chatgpt.site) retains its existing access settings and separate source/deployment history. Its source root corresponds to this repository's `channeling-atlas/`, not the whole repository. Earlier [Bashar](https://claude.ai/artifact/MF1hY9MYG95BaSqm9KXTFM), [YouTube index](https://claude.ai/artifact/XFQHVyn2WSk7Xnn4yXpAa8), [collection](https://claude.ai/artifact/898o4zpkocZ8qXjvR1xDfb) and [experiment](https://claude.ai/artifact/EXrUcxSotuWRW8NCaBHieY) Claude artifacts are historical copies whose access depends on sharing. They are not evidence that those copies have been refreshed.
 
-## Current collection and deferred compute
+## Current collection and transcription
 
 The supported local YouTube lane saves **native audio plus sanitized metadata**, verifies the exact Drive objects and writes durable receipts before deleting local copies. It also saves available **English published captions and original English automatic captions**, including regional English variants; other languages and machine translations are excluded. Caption bundles retain raw response, timed segments, readable text and provenance. No picture download, audio re-encoding or ASR is part of this lane.
 

@@ -32,3 +32,15 @@ test('stale initial player response cannot attribute another video metadata to t
   assert.equal(result.source_metadata.title,'Current title');assert.equal(result.source_metadata.description,'');
   assert.equal(result.source_metadata.language,'');assert.equal(result.source_metadata.thumbnail_urls.length,0);
 });
+test('stale cleanup nonce cannot stop the replacement page monitor',async()=>{
+  const cleared=[];const video={addEventListener(){},removeEventListener(){},currentTime:0,duration:60,readyState:4};
+  const player={getVideoData:()=>({video_id:ID}),classList:{contains:()=>false}};
+  const context=vm.createContext({document:{querySelector:selector=>selector.includes('video')?video:player,querySelectorAll:()=>[video]},
+    location:{href:`https://www.youtube.com/watch?v=${ID}`,origin:'https://www.youtube.com'},URL,postMessage(){},
+    setInterval:()=>7,clearInterval:id=>cleared.push(id)});
+  context.window=context;
+  vm.runInContext(await readFile(new URL('../page-monitor.js',import.meta.url),'utf8'),context);
+  context.__researchAudioPage.monitor({nonce:'new',video_id:ID});const before=cleared.length;
+  assert.equal(context.__researchAudioPage.stop({nonce:'old'}).skipped,true);assert.equal(cleared.length,before);
+  assert.equal(context.__researchAudioPage.stop({nonce:'new'}).stopped,true);assert.equal(cleared.at(-1),7);
+});
