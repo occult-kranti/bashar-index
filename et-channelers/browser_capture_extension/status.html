@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research audio capture</title><link rel="stylesheet" href="status.css"><script type="module" src="status.js"></script></head>
+<body><main><p class="eyebrow">CHANNEL RESEARCH · LOCAL CAPTURE</p><h1>Record the tab that already plays.</h1>
+<p class="intro">Open a YouTube video in your usual Chrome window and click the extension button. The recording starts from the beginning at normal speed. Audio continues through your speakers.</p>
+<p id="health" role="status">Checking the local archive service…</p>
+<section aria-labelledby="workers-title"><div class="section-heading"><h2 id="workers-title">Activated tabs</h2><button id="stop-all" type="button">Stop all captures</button></div><div id="workers" aria-live="polite"></div></section>
+<section><h2>What the badges mean</h2><dl><dt>REC</dt><dd>Recording this source at 1×.</dd><dt>BUF</dt><dd>Recording paused while the source buffers or is paused.</dd><dt>CHECK</dt><dd>Local media and coverage validation is running.</dd><dt>DONE</dt><dd>No eligible job remains for this worker.</dd><dt>ERR</dt><dd>Capture held. Hover the extension button for its reason.</dd></dl></section>
+<p class="note">You activate each tab yourself, up to four. The extension can continue through eligible YouTube jobs in those tabs. Ads, source changes, missing coverage, or an interrupted connection hold the result for review. This is re-encoded browser audio; it is separate from native source downloads.</p>
+<p class="note">The extension does not read or export cookies, credentials, personal profiles, or signed media URLs. Closing a tab or Chrome stops its recording. Click the extension button again to stop one tab.</p>
+</main></body></html>

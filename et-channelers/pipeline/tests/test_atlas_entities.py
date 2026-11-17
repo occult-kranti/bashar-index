@@ -1,5 +1,6 @@
 """Public relationship projection: attribution, reproducibility and publication boundary."""
 import csv
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -75,6 +76,17 @@ class AtlasEntitiesTests(unittest.TestCase):
                                        atlas_profiles=[{"id": "lk-daniel"}])
         self.assertEqual(known["people"][0]["atlasProfileId"], "lk-daniel")
 
+    def test_roxanne_reuses_separate_existing_profile_and_discovery_person(self):
+        source = encoded([row(person_id="roxanne-swainhart", person_name="Roxanne Swainhart")])
+        result = atlas.build_projection(source, atlas_profiles=[{"id": "em-roxanne"}],
+                                        atlas_people=[{"id": "person-05fde1a08a4e"}])
+        person = result["people"][0]
+        self.assertEqual(person["atlasProfileId"], "em-roxanne")
+        self.assertEqual(person["discoveryPersonId"], "person-05fde1a08a4e")
+        absent = atlas.build_projection(source)["people"][0]
+        self.assertNotIn("atlasProfileId", absent)
+        self.assertNotIn("discoveryPersonId", absent)
+
     def test_unreviewed_duplicate_and_inconsistent_roles_fail_publication(self):
         for rows in ([row(source_review_state="agent_primary_source_reviewed_parent_pending")], [row(), row()],
                      [row(role="interview_host")], [row(relationship_type="same_external_entity")]):
@@ -92,11 +104,37 @@ class AtlasEntitiesTests(unittest.TestCase):
 
     def test_repository_projection_matches_reviewed_snapshot_without_mutating_baseline(self):
         original = (atlas.REPO / "channeling-atlas/dist/data.json").read_bytes()
-        result = atlas.build_projection(atlas.DEFAULT_SOURCE.read_bytes(), atlas_profiles=json.loads(original)["profiles"])
+        baseline = json.loads(original)
+        result = atlas.build_projection(atlas.DEFAULT_SOURCE.read_bytes(), atlas_profiles=baseline["profiles"],
+                                        atlas_people=baseline.get("discovery", {}).get("people", []))
         self.assertEqual(result, json.loads(atlas.DEFAULT_OUTPUT.read_text(encoding="utf-8")))
         self.assertEqual(original, (atlas.REPO / "channeling-atlas/dist/data.json").read_bytes())
         self.assertEqual(len(result["relationships"]), len({r["id"] for r in result["relationships"]}))
         self.assertNotIn("multidimensional-soul", {r["personId"] for r in result["relationships"]})
+
+    def test_intake_preserves_prior_rows_and_does_not_promote_pending_video_or_ownership(self):
+        research = atlas.REPO / "et-channelers/research"
+        audit = json.loads((research / "intake-three-channels-source-review.json").read_text(encoding="utf-8"))
+        text = atlas.DEFAULT_SOURCE.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
+        # The accepted snapshot contains no multiline CSV fields; preserve its
+        # header and all 115 existing records, rather than reserializing them.
+        prior = "".join(text.splitlines(keepends=True)[:116]).encode("utf-8")
+        self.assertEqual(hashlib.sha256(prior).hexdigest(), audit["prior_source_sha256_utf8_lf"])
+        rows = list(csv.DictReader(io.StringIO(text)))
+        self.assertEqual(len(rows), 119)
+        self.assertEqual({r["claim_instance_id"] for r in rows[115:]},
+                         {r["claim_instance_id"] for r in audit["accepted_records"]})
+        self.assertFalse(any(r["person_id"] == "roxanne-swainhart" and r["claimed_entity"] == "Bashar" for r in rows))
+        projection = atlas.build_projection(atlas.DEFAULT_SOURCE.read_bytes())
+        ayako = next(p for p in projection["people"] if p["id"] == "ayako-sekino")
+        self.assertEqual(ayako["channels"], [])
+        claim = next(r for r in projection["relationships"] if r["personId"] == "ayako-sekino")
+        self.assertIn("Historical self-report", claim["evidence"]["qualification"])
+        proposed = list(csv.DictReader(io.StringIO(
+            (research / "intake-three-channels-relationships-proposed.csv").read_text(encoding="utf-8"))))
+        pending = [r for r in proposed if r["video_id"] == "Rcemlb-WPPY"]
+        self.assertEqual(len(pending), 1)
+        self.assertEqual(pending[0]["source_review_state"], "pending_performer_evidence")
 
 
 if __name__ == "__main__":

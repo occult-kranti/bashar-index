@@ -13,11 +13,13 @@ from pathlib import Path
 
 if __package__:
     from .drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
-                               caption_track_verified, receipt_complete, terminal_unavailable)
+                               caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
+    from .chromium_capture_service import browser_receipt_complete
 else:  # -I deliberately removes the script directory from the default import path.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
-                              caption_track_verified, receipt_complete, terminal_unavailable)
+                              caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
+    from chromium_capture_service import browser_receipt_complete
 
 DEFAULT_REMOTE = "etdrive:04 Audio"
 
@@ -84,12 +86,61 @@ def source_deadline(records):
                 and 0 < rec['retry_not_before_epoch'] < 253402300799), default=0)
 
 
-def snapshot(root, now=None, remote=DEFAULT_REMOTE):
+def asr_receipt_complete(record, audio, remote):
+    """A generated transcript counts only with bundle and exact source proofs."""
+    run_id = record.get('run_id', '')
+    row = record_row(audio)
+    if (not row or not proof(receipt_complete, audio, row, remote) or
+            not isinstance(run_id, str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,120}', run_id)):
+        return False
+    expected = audio['remote'].rpartition('/')[0] + '/' + row['video_id'] + '/ASR/' + run_id + '/' + run_id + '.zip'
+    return (record.get('status') == 'verified' and record.get('artifact_kind') == 'asr_bundle' and
+            record.get('video_id') == row['video_id'] and record.get('channel_dir') == row['channel_dir'] and
+            record.get('remote') == expected and bool(record.get('drive_id')) and
+            type(record.get('bytes')) is int and record['bytes'] > 0 and
+            isinstance(record.get('md5'), str) and bool(re.fullmatch(r'[0-9a-f]{32}', record['md5'])) and
+            isinstance(record.get('sha256'), str) and bool(re.fullmatch(r'[0-9a-f]{64}', record['sha256'])) and
+            record.get('source_audio_drive_id') == audio.get('drive_id') and
+            record.get('source_audio_sha256') == audio.get('sha256'))
+
+
+def asr_records(path, identity_key='run_id'):
+    records = {}
+    if path.is_file():
+        for line in path.read_text(encoding='utf-8-sig').splitlines():
+            try:
+                record = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(record, dict) and isinstance(record.get('video_id'), str) and isinstance(record.get(identity_key), str):
+                records[(record['video_id'], record[identity_key])] = record
+    return records.values()
+
+
+def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     """Allowlisted public values only; no private strings are copied to the result."""
     now = dt.datetime.now(dt.timezone.utc).timestamp() if now is None else now
     latest = latest_records(root / "sync" / "drive_ingest_manifest.jsonl")
     captions = latest_records(root / "sync" / "drive_caption_manifest.jsonl")
     verified = {key for key, rec in latest.items() if proof(receipt_complete, rec, record_row(rec), remote)}
+    browser_verified = set()
+    for rec in asr_records(root / 'sync/browser_capture_manifest.jsonl', 'capture_id'):
+        row = record_row(rec)
+        if row and rec.get('tab') in {'videos', 'shorts', 'streams', ''} and proof(
+                browser_receipt_complete, rec, dict(row, tab=rec['tab']), remote):
+            browser_verified.add(rec['video_id'])
+    archived = verified | browser_verified
+    asr_verified = {rec['video_id'] for rec in asr_records(root / 'sync/asr_manifest.jsonl')
+                    if asr_receipt_complete(rec, latest.get(rec['video_id'], {}), remote)}
+    runtime = read_object(root / 'asr/jobs/batch_runtime_state.json')
+    asr_state, asr_reported_at = 'unconfirmed', None
+    try:
+        reported = dt.datetime.fromisoformat(runtime.get('updated_at', '').replace('Z', '+00:00'))
+        if reported.tzinfo and 0 <= now - reported.timestamp() <= 600 and runtime.get('state') in {
+                'running', 'complete', 'stopped_error'}:
+            asr_state, asr_reported_at = runtime['state'], stamp(reported.timestamp())
+    except (ValueError, TypeError, AttributeError):
+        pass
     caption_verified, caption_none, verified_tracks = set(), set(), set()
     for key, rec in captions.items():
         row = record_row(rec)
@@ -161,29 +212,46 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE):
                     local_bytes += path.stat().st_size
             except OSError:
                 pass
-    resolved = verified | unavailable
+    storage = {"local_bytes": local_bytes, "ceiling_bytes": ceiling}
+    if managed_roots:
+        all_roots = sorted({root.resolve(), *(Path(p).resolve() for p in managed_roots)}, key=lambda p:len(p.parts))
+        included = []
+        for candidate in all_roots:
+            if not any(candidate.is_relative_to(parent) for parent in included):
+                included.append(candidate)
+        storage['managed_bytes'] = sum(tree_bytes(path) for path in included)
+        plan = read_object(root / 'sync/analysis_resource_plan.json')
+        managed_cap = plan.get('accounting_cap_bytes')
+        if type(managed_cap) is int and 1_000_000_000 <= managed_cap <= 18_000_000_000:
+            storage['managed_ceiling_bytes'] = managed_cap
+    resolved = archived | unavailable
     complete20, complete50 = bool(twenty) and twenty <= resolved, bool(fifty) and fifty <= resolved
     return {"schema_version": 1, "generated_at": stamp(now), "scope": "local_youtube_collection",
             "operation": {"state": state, "retry_after": stamp(until) if until else None,
+                          "asr_last_reported_state": asr_state, "asr_reported_at": asr_reported_at,
                           "workers": workers, "full_archive_requested": archive_all,
                           "cooldown_provider": provider, "caption_state": caption_state,
                           "caption_retry_after": stamp(caption_until) if caption_until else None},
             "counts": {"verified_pairs": len(verified), "audio_downloaded": len(audio),
+                       "browser_recorded_videos": len(browser_verified), "audio_archived_videos": len(archived),
+                       "asr_verified_videos": len(asr_verified),
+                       "text_artifact_videos": len((asr_verified | caption_verified) & archived),
+                       "text_pending_videos": len(archived - asr_verified - caption_verified),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),
                        "unavailable": len(unavailable),
                        "awaiting_upload": len(audio - verified), "channels": channels,
                        "indexed_total": len(full | twenty | fifty), "final_round_indexed": len(remaining)},
-            "storage": {"local_bytes": local_bytes, "ceiling_bytes": ceiling},
+            "storage": storage,
             "stages": [{"key": "newest20", "label": "Newest 20", "total": len(twenty),
-                        "verified": len(twenty & verified), "unavailable": len(twenty & unavailable),
+                        "verified": len(twenty & archived), "unavailable": len(twenty & unavailable),
                         "state": "complete" if complete20 else "in_progress"},
                        {"key": "newest50", "label": "Extend to 50", "total": len(fifty),
-                        "verified": len(fifty & verified), "unavailable": len(fifty & unavailable),
+                        "verified": len(fifty & archived), "unavailable": len(fifty & unavailable),
                         "state": "complete" if complete50 else "in_progress" if complete20 else "waiting"},
                        {"key": "final_archive" if archive_all else "final_index",
                         "label": "Archive the remainder" if archive_all else "Index the remainder", "total": len(remaining),
-                        "verified": len(remaining & verified), "unavailable": len(remaining & unavailable),
+                        "verified": len(remaining & archived), "unavailable": len(remaining & unavailable),
                         "state": ("complete" if remaining and remaining <= resolved else "in_progress" if complete50 else "waiting")
                                  if archive_all else "indexed" if remaining else "waiting"}]}
 
@@ -193,8 +261,10 @@ def main(argv=None):
     ap.add_argument("--root", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--remote", default=DEFAULT_REMOTE, help="Exact archive destination used by receipt proofs")
+    ap.add_argument("--managed-root", type=Path, action="append", default=[],
+                    help="Additional project tool/repository roots to include in aggregate storage accounting")
     args = ap.parse_args(argv)
-    public = snapshot(args.root, remote=args.remote)
+    public = snapshot(args.root, remote=args.remote, managed_roots=args.managed_root)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.out.with_suffix(args.out.suffix + ".tmp")
     temporary.write_text(json.dumps(public, indent=2) + "\n", encoding="utf-8")

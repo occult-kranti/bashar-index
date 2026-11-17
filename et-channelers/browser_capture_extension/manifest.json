@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Channel Research Audio Capture",
+  "version": "0.1.0",
+  "minimum_chrome_version": "116",
+  "description": "Record a user-activated YouTube tab to the local research archive with source and coverage checks.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuTq+CW7G91dKzOC0PXtfzEearKsfK0sKdH+3s+6mL6aoCHT+/+m02tJ8mRTCmoR9xYcA/0R1Pp1+oZ2u/01hOBdIKC2/RvhQw9+tIU1R4FgITwFK50MlEGxE/SzZtBjAwZYIEkurpcfaOnNC9boVxSMzNvzlkCXbdZVO8amPMj4cAcZjjb3ZAJOvs/lEXdlq46Aag7s7xZlc2xM0OpGb07ehkWDY9y/zLTt6yVNP7N6o66BlGqYX/89jewom2dLUe2Np0lrLYmF+jeYkT3MBIHBD1xuG4Eh7flpoV0+TrvTQ3lxOH2jG9JqXzJIJk5ewU8sqCfhwdW4+9d1MYePcqwIDAQAB",
+  "permissions": ["activeTab", "tabCapture", "offscreen", "scripting", "storage"],
+  "host_permissions": ["http://127.0.0.1:8768/*"],
+  "background": {"service_worker": "service-worker.js", "type": "module"},
+  "action": {"default_title": "Start research capture in this tab; click again to stop"},
+  "options_page": "status.html",
+  "content_security_policy": {"extension_pages": "script-src 'self'; object-src 'self'; connect-src http://127.0.0.1:8768"}
+}

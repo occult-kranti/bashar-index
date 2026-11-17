@@ -2,6 +2,8 @@
 
 Code to take a list of YouTube videos to private audio files and timestamped transcripts, in parallel, with every step resumable. It was built on 2026-11-11 for the plan in [`../ROADMAP.md`](../ROADMAP.md). Everything is standard-library Python except the two external tools it drives (yt-dlp and faster-whisper) and ffmpeg.
 
+**Current resource phase, November 17.** The older acquisition commands below are parked while the isolated [leased CUDA worker](GPU_ASR_SETUP.md) processes verified source copies. Twenty-five English ASR bundles are verified on Drive, with accuracy unreviewed. The [Chrome tab-capture extension](../browser_capture_extension/README.md) and `chromium_capture_service.py` implement a separately labelled re-encoded fallback awaiting the owner's required activation/full-file trial. `start_chromium_capture.ps1` launches its loopback uploader; it requires the explicit private resource reservation and parked collector marker. The active managed limit is 16 GB including models/tools/checkouts, with a 5 GB capture spool, within the 20 GB total/2 GB reserve policy. See the top of [HANDOFF](../HANDOFF.md) before using historical launch commands or limits below.
+
 **Windows audio collection, 2026-11-16.** The owner's current workflow is documented in
 [`WINDOWS_DRIVE.md`](WINDOWS_DRIVE.md): native audio and available video metadata go directly to Google Drive,
 with the newest 20 per channel first, then the newest 50. Remaining items are indexed for a separate final

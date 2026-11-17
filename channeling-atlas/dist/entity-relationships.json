@@ -172,6 +172,19 @@
     },
     {
       "aliases": [
+        "Bashar"
+      ],
+      "categories": [
+        "named_higher_dimensional_being"
+      ],
+      "comparisonFamilies": [
+        "bashar"
+      ],
+      "id": "bashar",
+      "name": "Bashar"
+    },
+    {
+      "aliases": [
         "Cosmic Christ"
       ],
       "categories": [
@@ -633,6 +646,19 @@
     },
     {
       "aliases": [
+        "Ocyphius"
+      ],
+      "categories": [
+        "named_entity_type_unspecified"
+      ],
+      "comparisonFamilies": [
+        "ocyphius-roxanne-swainhart"
+      ],
+      "id": "ocyphius-roxanne-swainhart",
+      "name": "Ocyphius"
+    },
+    {
+      "aliases": [
         "Ophelia the Faerie"
       ],
       "categories": [
@@ -695,6 +721,19 @@
       ],
       "id": "pleiadian-codes-riya",
       "name": "Pleiadian codes"
+    },
+    {
+      "aliases": [
+        "Pleiadian SEVEN"
+      ],
+      "categories": [
+        "named_pleiadian_collective"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "seven-charlie-wilde",
+      "name": "Pleiadian SEVEN"
     },
     {
       "aliases": [
@@ -878,6 +917,19 @@
       ],
       "id": "star-councils-light-solara",
       "name": "Star Councils of Light"
+    },
+    {
+      "aliases": [
+        "Sylvester"
+      ],
+      "categories": [
+        "named_entity_type_unspecified"
+      ],
+      "comparisonFamilies": [
+        "sylvester-roxanne-swainhart"
+      ],
+      "id": "sylvester-roxanne-swainhart",
+      "name": "Sylvester"
     },
     {
       "aliases": [
@@ -1129,13 +1181,13 @@
   ],
   "meta": {
     "editionDate": "2026-11-17",
-    "labelCount": 86,
-    "peopleCount": 28,
-    "relationshipCount": 115,
+    "labelCount": 90,
+    "peopleCount": 31,
+    "relationshipCount": 119,
     "scope": "Dated primary-source relationship extension; historical Atlas and analysis denominators are unchanged.",
     "source": "discovery-relationships.csv",
     "sourceCanonicalization": "utf8-lf-v1",
-    "sourceSha256": "642d2104185db80a9f048ac928c750eddb2962e7f1a1c246b759cd772cd77e4e",
+    "sourceSha256": "319297345c3fd650302f572acf67e4ed07a02aded293da513feef47bd6e04d59",
     "unit": "One human–claimed source–predicate–supporting page relationship. Labels compare claims, not verified external identities."
   },
   "people": [
@@ -1220,6 +1272,14 @@
       "name": "Anjie Hipple"
     },
     {
+      "channels": [],
+      "collectionIds": [
+        "infini-global"
+      ],
+      "id": "ayako-sekino",
+      "name": "Ayako Sekino"
+    },
+    {
       "channels": [
         {
           "basis": "first_party_site_channel_link",
@@ -1244,6 +1304,20 @@
       "collectionIds": [],
       "id": "bonnie-vent",
       "name": "Bonnie Vent"
+    },
+    {
+      "channels": [
+        {
+          "basis": "First-party site links the channel; canonical identity confirmed by one flat metadata extraction.",
+          "evidenceUrl": "https://ascensionseven.org/",
+          "url": "https://www.youtube.com/channel/UCcaCZEavb84-wVo_D6JipTg"
+        }
+      ],
+      "collectionIds": [
+        "charlie-wilde"
+      ],
+      "id": "charlie-wilde",
+      "name": "Charlie Wilde"
     },
     {
       "channels": [
@@ -1435,6 +1509,22 @@
       "name": "Rob Gauthier"
     },
     {
+      "atlasProfileId": "em-roxanne",
+      "channels": [
+        {
+          "basis": "First-party site links the channel; canonical identity confirmed by one flat metadata extraction.",
+          "evidenceUrl": "https://www.odysseyofascension.com/about.html",
+          "url": "https://www.youtube.com/channel/UCoxINFqPqOU6W8OOTi1nqeQ"
+        }
+      ],
+      "collectionIds": [
+        "roxanne-swainhart"
+      ],
+      "discoveryPersonId": "person-05fde1a08a4e",
+      "id": "roxanne-swainhart",
+      "name": "Roxanne Swainhart"
+    },
+    {
       "channels": [],
       "collectionIds": [],
       "id": "saratoga-ocean",
@@ -1562,6 +1652,23 @@
       "personId": "alexis-cartwright",
       "predicate": "Claims channeling in an event series",
       "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17",
+      "entityId": "sylvester-roxanne-swainhart",
+      "entityLabel": "Sylvester",
+      "evidence": {
+        "qualification": "Reuses canonical Atlas discovery person person-05fde1a08a4e and historical profile em-roxanne. The channel About description corroborates the source attribution. Channel-level claims do not establish the entity or speaker of each video.",
+        "section": "Official home page; conscious channeling and named sources",
+        "summary": "The official Odyssey of Ascension site identifies Roxanne Swainhart as a conscious channel and names Ocyphius and Sylvester among the sources associated with her practice.",
+        "url": "https://www.odysseyofascension.com/"
+      },
+      "id": "claim-1272e6f11620e46e",
+      "personId": "roxanne-swainhart",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",
       "role": "channeler"
     },
@@ -1753,6 +1860,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-17",
+      "entityId": "bashar",
+      "entityLabel": "Bashar",
+      "evidence": {
+        "qualification": "Official Japanese/English profile says two years; interviewwithed.org/ayako-sekino says five and describes a subsequent change in practice. Chronology is unresolved. InfiniGlobal remains a publisher collection, not verified account ownership. Historical self-report; no assertion of present channeling frequency or the delivery mode of any upload.",
+        "section": "Profile; two-year channeling passage following reported 1987 contact",
+        "summary": "Her Japanese profile describes contact with Bashar followed by a period of channeling and the later development of Infini. This is a historical channeling self-report, not a deduction that she interpreted Darryl Anka.",
+        "url": "https://www.sekinoayako.art/profilenew"
+      },
+      "id": "claim-2bfd50498d218533",
+      "personId": "ayako-sekino",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:06:42Z",
       "entityId": "quan-yin",
       "entityLabel": "Lady Master Quan Yin",
@@ -1900,6 +2024,23 @@
       },
       "id": "claim-415d9f9b8a8f1ae6",
       "personId": "kelly-kolodney",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17",
+      "entityId": "ocyphius-roxanne-swainhart",
+      "entityLabel": "Ocyphius",
+      "evidence": {
+        "qualification": "Reuses canonical Atlas discovery person person-05fde1a08a4e and historical profile em-roxanne. The channel About description corroborates the source attribution. Channel-level claims do not establish the entity or speaker of each video.",
+        "section": "Official home page; conscious channeling and named sources",
+        "summary": "The official Odyssey of Ascension site identifies Roxanne Swainhart as a conscious channel and names Ocyphius and Sylvester among the sources associated with her practice.",
+        "url": "https://www.odysseyofascension.com/"
+      },
+      "id": "claim-4208a1ac265aa2f9",
+      "personId": "roxanne-swainhart",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",
@@ -3379,6 +3520,23 @@
       },
       "id": "claim-f7c892f33dc2d3db",
       "personId": "althea-lucrezia-avanzo",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-17",
+      "entityId": "seven-charlie-wilde",
+      "entityLabel": "Pleiadian SEVEN",
+      "evidence": {
+        "qualification": "Keep this named collective separate from other Seven-labelled entities. No therapeutic claims endorsed.",
+        "section": "About Charlie; Pleiadian SEVEN paragraphs",
+        "summary": "Charlie identifies herself as a channeler and describes a connection with the Pleiadian SEVEN; her own channel is titled Charlie Wilde // Channeling SEVEN.",
+        "url": "https://ascensionseven.org/about/"
+      },
+      "id": "claim-fa995954d207fec8",
+      "personId": "charlie-wilde",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",

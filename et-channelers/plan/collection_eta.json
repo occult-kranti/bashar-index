@@ -1,0 +1,622 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-17T03:57:11.974376+00:00",
+  "status": "blocked",
+  "guaranteed_completion_date": null,
+  "no_finite_guaranteed_completion": true,
+  "asr_included": false,
+  "scope": "metadata-only conditional native audio and English-caption archive estimate",
+  "configuration": {
+    "assumed_not_live_runtime": true,
+    "workers": 4,
+    "upload_transfers": 4,
+    "upload_batch_items": 8,
+    "ready_items": 16,
+    "metadata_interval_seconds": 10.0,
+    "caption_interval_seconds": 15.0,
+    "private_ceiling_bytes": 17000000000
+  },
+  "inventory": {
+    "queue_items": 67594,
+    "queue_verified_pairs": 47,
+    "terminal_unavailable_items": 0,
+    "verified_pairs_for_calibration": 47
+  },
+  "encoding_evidence": {
+    "sampled_pairs": 47,
+    "sampled_audio_bytes": 950184130.0,
+    "sampled_audio_seconds": 66344.0,
+    "bytes_per_audio_second": {
+      "n": 47,
+      "p10": 12224.493382200042,
+      "median": 13826.309162821359,
+      "p90": 16673.03538295577
+    },
+    "duration_weighted_bytes_per_audio_second": 14322.080821174484,
+    "representative_sample_claimed": false
+  },
+  "timing_evidence": {
+    "attempt_elapsed_seconds": {
+      "n": 47,
+      "p10": 17.200000000000003,
+      "median": 33.0,
+      "p90": 57.8
+    },
+    "download_to_first_verification_seconds": {
+      "n": 47,
+      "p10": 28.0,
+      "median": 241.0,
+      "p90": 1618.4
+    },
+    "pure_upload_seconds_measured": false,
+    "receipt_spans_used_as_bandwidth": false,
+    "interpretation": "Attempt time includes metadata/pacing; verification lag includes queueing, uploads and cooldowns. Neither is isolated transfer time."
+  },
+  "download_progress_evidence": {
+    "verified_objects_with_progress": 0,
+    "per_worker_bytes_per_second": {
+      "n": 0,
+      "p10": null,
+      "median": null,
+      "p90": null
+    },
+    "sampled_prefix_bytes": 0,
+    "sampled_active_worker_seconds": 0,
+    "median_observed_fraction": null,
+    "interpretation": "Active download-prefix timings, excluding pre-request pacing and later upload/cooldown waits. They are not full-file completion times or measured aggregate concurrency; protocols/configurations may differ."
+  },
+  "assumptions": {
+    "download_rate_basis": "explicit assumed per-worker goodput; insufficient matched progress",
+    "download_bytes_per_second": [
+      1635778.56,
+      2097152.0,
+      2097152.0
+    ],
+    "aggregate_upload_mib_per_second": [
+      1,
+      4,
+      10
+    ],
+    "upload_rate_measured": false,
+    "availability_fractions": [
+      1,
+      0.5,
+      0.25
+    ],
+    "availability_is_assumed": true,
+    "unknown_shorts_seconds_if_no_observed_stratum": [
+      15,
+      60,
+      180
+    ],
+    "estimated_bytes_exclude_metadata_caption_and_catalog_overhead": true,
+    "model": "max(metadata request-start floor, audio bytes / aggregate download goodput, audio bytes / aggregate upload goodput); stages overlap. Add current wait once, then divide active time by assumed future availability."
+  },
+  "cooldowns": {
+    "audio_current_wait_hours": 21.72722911583053,
+    "caption_current_wait_hours": 19.38078250832028,
+    "audio_retry_after": 1794966049.999193,
+    "caption_retry_after": 1794957602.791406,
+    "caption_does_not_block_audio": true
+  },
+  "stages": {
+    "newest20": {
+      "remaining_items": 1373,
+      "known_duration_items": 1372,
+      "unknown_duration_items": 1,
+      "known_duration_seconds": 2094214.0,
+      "unknown_duration_by_tab": {
+        "videos": 1
+      },
+      "duration_seconds_scenarios": [
+        2094769.0,
+        2095636.0,
+        2098010.8
+      ],
+      "imputation_counts": {
+        "channel_tab": 1
+      },
+      "known_items_over_8_hours": 1,
+      "interpretation": "Unknown durations use channel/tab n>=5, else tab n>=5. With insufficient Shorts observations use explicit 15/60/180-second assumptions, not long-video pooling or a duration cap. Other sparse/unknown tabs fall back to pooled p25/median/p90. These are scenarios, not bounds/confidence intervals; no duration exclusion.",
+      "metadata_start_floor_hours": 3.811111111111111,
+      "known_items_estimated_over_private_cap": 0,
+      "scenarios": [
+        {
+          "name": "optimistic",
+          "audio_bytes": 25607489777.7378,
+          "metadata_start_floor_hours": 3.811111111111111,
+          "download_service_hours": 0.8479585176619491,
+          "upload_service_hours": 0.6783668141295591,
+          "overlapped_active_floor_hours": 3.811111111111111,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 25.53834022694164
+            },
+            {
+              "fraction": 0.5,
+              "hours": 29.349451338052752
+            },
+            {
+              "fraction": 0.25,
+              "hours": 36.97167356027497
+            }
+          ]
+        },
+        {
+          "name": "central",
+          "audio_bytes": 28974911228.7383,
+          "metadata_start_floor_hours": 3.811111111111111,
+          "download_service_hours": 0.9594662728819019,
+          "upload_service_hours": 1.9189325457638038,
+          "overlapped_active_floor_hours": 3.811111111111111,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 25.53834022694164
+            },
+            {
+              "fraction": 0.5,
+              "hours": 29.349451338052752
+            },
+            {
+              "fraction": 0.25,
+              "hours": 36.97167356027497
+            }
+          ]
+        },
+        {
+          "name": "cautious",
+          "audio_bytes": 34980208302.22334,
+          "metadata_start_floor_hours": 3.811111111111111,
+          "download_service_hours": 1.4850305484495672,
+          "upload_service_hours": 9.2665906223253,
+          "overlapped_active_floor_hours": 9.2665906223253,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 30.99381973815583
+            },
+            {
+              "fraction": 0.5,
+              "hours": 40.26041036048113
+            },
+            {
+              "fraction": 0.25,
+              "hours": 58.793591605131724
+            }
+          ]
+        }
+      ]
+    },
+    "newest50_inclusive": {
+      "remaining_items": 3402,
+      "known_duration_items": 3401,
+      "unknown_duration_items": 1,
+      "known_duration_seconds": 5220177.0,
+      "unknown_duration_by_tab": {
+        "videos": 1
+      },
+      "duration_seconds_scenarios": [
+        5220732.0,
+        5221599.0,
+        5223973.8
+      ],
+      "imputation_counts": {
+        "channel_tab": 1
+      },
+      "known_items_over_8_hours": 3,
+      "interpretation": "Unknown durations use channel/tab n>=5, else tab n>=5. With insufficient Shorts observations use explicit 15/60/180-second assumptions, not long-video pooling or a duration cap. Other sparse/unknown tabs fall back to pooled p25/median/p90. These are scenarios, not bounds/confidence intervals; no duration exclusion.",
+      "metadata_start_floor_hours": 9.447222222222223,
+      "known_items_estimated_over_private_cap": 0,
+      "scenarios": [
+        {
+          "name": "optimistic",
+          "audio_bytes": 63820803784.23999,
+          "metadata_start_floor_hours": 9.447222222222223,
+          "download_service_hours": 2.1133424104664056,
+          "upload_service_hours": 1.6906739283731245,
+          "overlapped_active_floor_hours": 9.447222222222223,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 31.17445133805275
+            },
+            {
+              "fraction": 0.5,
+              "hours": 40.62167356027497
+            },
+            {
+              "fraction": 0.25,
+              "hours": 59.51611800471942
+            }
+          ]
+        },
+        {
+          "name": "central",
+          "audio_bytes": 72195442098.27884,
+          "metadata_start_floor_hours": 9.447222222222223,
+          "download_service_hours": 2.3906576003723288,
+          "upload_service_hours": 4.7813152007446575,
+          "overlapped_active_floor_hours": 9.447222222222223,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 31.17445133805275
+            },
+            {
+              "fraction": 0.5,
+              "hours": 40.62167356027497
+            },
+            {
+              "fraction": 0.25,
+              "hours": 59.51611800471942
+            }
+          ]
+        },
+        {
+          "name": "cautious",
+          "audio_bytes": 87099500007.03392,
+          "metadata_start_floor_hours": 9.447222222222223,
+          "download_service_hours": 3.697674329083611,
+          "upload_service_hours": 23.073487813481734,
+          "overlapped_active_floor_hours": 23.073487813481734,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 44.80071692931226
+            },
+            {
+              "fraction": 0.5,
+              "hours": 67.87420474279399
+            },
+            {
+              "fraction": 0.25,
+              "hours": 114.02118036975746
+            }
+          ]
+        }
+      ]
+    },
+    "remaining_archive": {
+      "remaining_items": 64145,
+      "known_duration_items": 45242,
+      "unknown_duration_items": 18903,
+      "known_duration_seconds": 82505944.0,
+      "unknown_duration_by_tab": {
+        "unknown": 65,
+        "shorts": 18815,
+        "streams": 23
+      },
+      "duration_seconds_scenarios": [
+        82897269.25,
+        83804078.5,
+        86297182.19999999
+      ],
+      "imputation_counts": {
+        "pooled": 65,
+        "assumed_shorts_no_observations": 18815,
+        "channel_tab": 23
+      },
+      "known_items_over_8_hours": 18,
+      "interpretation": "Unknown durations use channel/tab n>=5, else tab n>=5. With insufficient Shorts observations use explicit 15/60/180-second assumptions, not long-video pooling or a duration cap. Other sparse/unknown tabs fall back to pooled p25/median/p90. These are scenarios, not bounds/confidence intervals; no duration exclusion.",
+      "metadata_start_floor_hours": 178.17777777777778,
+      "known_items_estimated_over_private_cap": 0,
+      "scenarios": [
+        {
+          "name": "optimistic",
+          "audio_bytes": 1013377119349.0801,
+          "metadata_start_floor_hours": 178.17777777777778,
+          "download_service_hours": 33.556657345728084,
+          "upload_service_hours": 26.845325876582464,
+          "overlapped_active_floor_hours": 178.17777777777778,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 199.90500689360832
+            },
+            {
+              "fraction": 0.5,
+              "hours": 378.0827846713861
+            },
+            {
+              "fraction": 0.25,
+              "hours": 734.4383402269416
+            }
+          ]
+        },
+        {
+          "name": "central",
+          "audio_bytes": 1158701098446.3503,
+          "metadata_start_floor_hours": 178.17777777777778,
+          "download_service_hours": 38.36887076319424,
+          "upload_service_hours": 76.73774152638848,
+          "overlapped_active_floor_hours": 178.17777777777778,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 199.90500689360832
+            },
+            {
+              "fraction": 0.5,
+              "hours": 378.0827846713861
+            },
+            {
+              "fraction": 0.25,
+              "hours": 734.4383402269416
+            }
+          ]
+        },
+        {
+          "name": "cautious",
+          "audio_bytes": 1438835972269.9807,
+          "metadata_start_floor_hours": 178.17777777777778,
+          "download_service_hours": 61.08355200655698,
+          "upload_service_hours": 381.1613645209155,
+          "overlapped_active_floor_hours": 381.1613645209155,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 402.88859363674607
+            },
+            {
+              "fraction": 0.5,
+              "hours": 784.0499581576615
+            },
+            {
+              "fraction": 0.25,
+              "hours": 1546.3726871994927
+            }
+          ]
+        }
+      ]
+    },
+    "newest50_incremental": {
+      "remaining_items": 2029,
+      "known_duration_items": 2029,
+      "unknown_duration_items": 0,
+      "known_duration_seconds": 3125963.0,
+      "unknown_duration_by_tab": {},
+      "duration_seconds_scenarios": [
+        3125963.0,
+        3125963.0,
+        3125963.0
+      ],
+      "imputation_counts": {},
+      "known_items_over_8_hours": 2,
+      "interpretation": "Unknown durations use channel/tab n>=5, else tab n>=5. With insufficient Shorts observations use explicit 15/60/180-second assumptions, not long-video pooling or a duration cap. Other sparse/unknown tabs fall back to pooled p25/median/p90. These are scenarios, not bounds/confidence intervals; no duration exclusion.",
+      "metadata_start_floor_hours": 5.633333333333334,
+      "known_items_estimated_over_private_cap": 0,
+      "scenarios": [
+        {
+          "name": "optimistic",
+          "audio_bytes": 38213314006.50219,
+          "metadata_start_floor_hours": 5.633333333333334,
+          "download_service_hours": 1.2653838928044567,
+          "upload_service_hours": 1.0123071142435653,
+          "overlapped_active_floor_hours": 5.633333333333334,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 27.36056244916386
+            },
+            {
+              "fraction": 0.5,
+              "hours": 32.9938957824972
+            },
+            {
+              "fraction": 0.25,
+              "hours": 44.260562449163864
+            }
+          ]
+        },
+        {
+          "name": "central",
+          "audio_bytes": 43220530869.54054,
+          "metadata_start_floor_hours": 5.633333333333334,
+          "download_service_hours": 1.431191327490427,
+          "upload_service_hours": 2.862382654980854,
+          "overlapped_active_floor_hours": 5.633333333333334,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 27.36056244916386
+            },
+            {
+              "fraction": 0.5,
+              "hours": 32.9938957824972
+            },
+            {
+              "fraction": 0.25,
+              "hours": 44.260562449163864
+            }
+          ]
+        },
+        {
+          "name": "cautious",
+          "audio_bytes": 52119291704.81057,
+          "metadata_start_floor_hours": 5.633333333333334,
+          "download_service_hours": 2.2126437806340435,
+          "upload_service_hours": 13.806897191156432,
+          "overlapped_active_floor_hours": 13.806897191156432,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 35.53412630698696
+            },
+            {
+              "fraction": 0.5,
+              "hours": 49.34102349814339
+            },
+            {
+              "fraction": 0.25,
+              "hours": 76.95481788045626
+            }
+          ]
+        }
+      ]
+    },
+    "all_indexed": {
+      "remaining_items": 67547,
+      "known_duration_items": 48643,
+      "unknown_duration_items": 18904,
+      "known_duration_seconds": 87726121.0,
+      "unknown_duration_by_tab": {
+        "videos": 1,
+        "unknown": 65,
+        "shorts": 18815,
+        "streams": 23
+      },
+      "duration_seconds_scenarios": [
+        88118001.25,
+        89025677.5,
+        91521155.99999999
+      ],
+      "imputation_counts": {
+        "channel_tab": 24,
+        "pooled": 65,
+        "assumed_shorts_no_observations": 18815
+      },
+      "known_items_over_8_hours": 21,
+      "interpretation": "Unknown durations use channel/tab n>=5, else tab n>=5. With insufficient Shorts observations use explicit 15/60/180-second assumptions, not long-video pooling or a duration cap. Other sparse/unknown tabs fall back to pooled p25/median/p90. These are scenarios, not bounds/confidence intervals; no duration exclusion.",
+      "metadata_start_floor_hours": 187.62777777777777,
+      "known_items_estimated_over_private_cap": 0,
+      "scenarios": [
+        {
+          "name": "optimistic",
+          "audio_bytes": 1077197923133.3201,
+          "metadata_start_floor_hours": 187.62777777777777,
+          "download_service_hours": 35.669999756194485,
+          "upload_service_hours": 28.535999804955587,
+          "overlapped_active_floor_hours": 187.62777777777777,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 209.3550068936083
+            },
+            {
+              "fraction": 0.5,
+              "hours": 396.98278467138607
+            },
+            {
+              "fraction": 0.25,
+              "hours": 772.2383402269415
+            }
+          ]
+        },
+        {
+          "name": "central",
+          "audio_bytes": 1230896540544.6294,
+          "metadata_start_floor_hours": 187.62777777777777,
+          "download_service_hours": 40.759528363566574,
+          "upload_service_hours": 81.51905672713315,
+          "overlapped_active_floor_hours": 187.62777777777777,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 209.3550068936083
+            },
+            {
+              "fraction": 0.5,
+              "hours": 396.98278467138607
+            },
+            {
+              "fraction": 0.25,
+              "hours": 772.2383402269415
+            }
+          ]
+        },
+        {
+          "name": "cautious",
+          "audio_bytes": 1525935472277.0146,
+          "metadata_start_floor_hours": 187.62777777777777,
+          "download_service_hours": 64.78122633564058,
+          "upload_service_hours": 404.23485233439726,
+          "overlapped_active_floor_hours": 404.23485233439726,
+          "calendar_hours_by_availability": [
+            {
+              "fraction": 1,
+              "hours": 425.9620814502278
+            },
+            {
+              "fraction": 0.5,
+              "hours": 830.196933784625
+            },
+            {
+              "fraction": 0.25,
+              "hours": 1638.6666384534196
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "staged_archive_active_floor_hours": {
+    "optimistic": 187.62222222222223,
+    "central": 187.62222222222223,
+    "cautious": 404.23485233439726
+  },
+  "captions": {
+    "pending_or_unknown_inventory_videos": 67578,
+    "tracks_per_pending_video_assumptions": [
+      0,
+      1,
+      2
+    ],
+    "request_start_floor_hours": [
+      0.0,
+      281.5708333333333,
+      563.1458333333334
+    ],
+    "meaning": "0/1/2 tracks are illustrative scenarios, not an upper bound; regional/published variants can exceed two. Unknown caption availability is not absence. Backfill may need additional metadata requests.",
+    "caption_wait_hours": 19.38078250832028
+  },
+  "limitations": [
+    "Successful early items and partial progress are a selected sample; do not extrapolate a confidence interval.",
+    "Bandwidth scenarios omit API/verification latency, retries, captions/catalog overhead and pipeline fill/drain; active times are conditional floors.",
+    "Unknown durations, changed/deleted sources, ongoing streams and long items exceeding available spool capacity can prevent full completion.",
+    "Current and future refusals may recur indefinitely; no finite guaranteed finish date follows from this model.",
+    "Upload rates are aggregate assumptions; transfer counts alone do not establish bandwidth."
+  ],
+  "input_snapshots": {
+    "full_queue": {
+      "sha256": "738edfa5b1fb4e92838a07732f4117f73680d2710cd2cf00014f666089fd8d23",
+      "bytes": 18054262,
+      "missing": false
+    },
+    "newest20": {
+      "sha256": "0ec9941370615d8ee5a03602db1218b02a309a25fad27cf933c90d177526d534",
+      "bytes": 403665,
+      "missing": false
+    },
+    "newest50_inclusive": {
+      "sha256": "c81dc98e0d50ebe8678311a978c9260cf70589227532b8030a7fd285b0e32490",
+      "bytes": 1014128,
+      "missing": false
+    },
+    "remaining_archive": {
+      "sha256": "f10405f414b8c3a99e0f2bd40ba0e818cd8bfd6ca1c6880c7b80e80e43b6406c",
+      "bytes": 17106616,
+      "missing": false
+    },
+    "audio_journal": {
+      "sha256": "d77538faf2565ea5dab9c46bb706fdb9670bd7a18ec097d9ee213702693ea58a",
+      "bytes": 516894,
+      "missing": false
+    },
+    "caption_journal": {
+      "sha256": "7c86a73abc922e612d301d499d03dc40ebdf19ca572a88cd79a0cc7802308d77",
+      "bytes": 177361,
+      "missing": false
+    },
+    "drive_cooldown": {
+      "sha256": "10d015a1d43be0601886472151ba48123f366dd393a85d11cdd803cd7d741320",
+      "bytes": 128,
+      "missing": false
+    }
+  },
+  "malformed_receipt_records_skipped": {
+    "audio": 0,
+    "caption": 0
+  }
+}

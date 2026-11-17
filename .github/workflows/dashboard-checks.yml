@@ -43,3 +43,5 @@ jobs:
           node --check assets/research-nav.js
           node --check dashboards/hub.js
           node --check channeling-atlas/dist/app.js
+      - name: Chrome capture extension offline contracts
+        run: node --test et-channelers/browser_capture_extension/tests/*.test.mjs
