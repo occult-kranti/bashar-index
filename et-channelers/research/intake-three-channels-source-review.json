@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "reviewer": "research_lead_agent",
+  "review_date": "2026-11-17",
+  "method": "Parent research lead independently read the official page bodies and explicitly accepted these four attributed relationships; this records that team review, not human verification.",
+  "previous_review": "analysis-plan-2026-11-16/parent-source-review.json",
+  "preserved_prior_relationships": 115,
+  "prior_source_sha256_utf8_lf": "642d2104185db80a9f048ac928c750eddb2962e7f1a1c246b759cd772cd77e4e",
+  "accepted_state": "parent_primary_source_reviewed",
+  "accepted_relationship_count": 4,
+  "result_relationship_count": 119,
+  "result_people_count": 31,
+  "result_source_label_count": 90,
+  "accepted_records": [
+    {
+      "claim_instance_id": "claim-fa995954d207fec8",
+      "person_id": "charlie-wilde",
+      "claimed_entity": "Pleiadian SEVEN",
+      "source_url": "https://ascensionseven.org/about/"
+    },
+    {
+      "claim_instance_id": "claim-2bfd50498d218533",
+      "person_id": "ayako-sekino",
+      "claimed_entity": "Bashar",
+      "source_url": "https://www.sekinoayako.art/profilenew"
+    },
+    {
+      "claim_instance_id": "claim-4208a1ac265aa2f9",
+      "person_id": "roxanne-swainhart",
+      "claimed_entity": "Ocyphius",
+      "source_url": "https://www.odysseyofascension.com/"
+    },
+    {
+      "claim_instance_id": "claim-1272e6f11620e46e",
+      "person_id": "roxanne-swainhart",
+      "claimed_entity": "Sylvester",
+      "source_url": "https://www.odysseyofascension.com/"
+    }
+  ],
+  "additional_primary_source_reviewed": [
+    "https://www.sekinoayako.art/en/profilenew"
+  ],
+  "identity_crosswalk": {
+    "roxanne-swainhart": {
+      "discovery_person_id": "person-05fde1a08a4e",
+      "historical_profile_id": "em-roxanne"
+    }
+  },
+  "unresolved": [
+    {
+      "video_id": "Rcemlb-WPPY",
+      "state": "pending_performer_evidence",
+      "meaning": "Title and uploader do not establish Roxanne as the Bashar performer; no accepted Roxanne-to-Bashar edge."
+    },
+    {
+      "collection_id": "infini-global",
+      "state": "publisher_ownership_unverified",
+      "meaning": "Subject association with Ayako does not establish account ownership or per-video performance."
+    },
+    {
+      "person_id": "ayako-sekino",
+      "state": "historical_chronology_unresolved",
+      "meaning": "Official profile describes two years; a producer biography describes five. No present channeling frequency is inferred."
+    }
+  ],
+  "meaning": "Acceptance verifies that the source attributes the claim, not the independent existence of claimed beings, efficacy, language modality or per-video speaker.",
+  "quoted_source_text_in_this_record": false
+}

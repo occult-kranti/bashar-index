@@ -33,7 +33,10 @@ PREDICATES = {
     "reports_guide_association": "Names as a guide",
 }
 # Reviewed human matches only. A collection/channel/guest name is not a profile ID.
-PROFILE_LINKS = {"daniel-scranton": "lk-daniel", "rob-gauthier": "lk-rob", "lyssa-royal-holt": "lk-lyssa"}
+PROFILE_LINKS = {"daniel-scranton": "lk-daniel", "rob-gauthier": "lk-rob", "lyssa-royal-holt": "lk-lyssa",
+                 "roxanne-swainhart": "em-roxanne"}
+# Discovery people and historical profile routes are separate namespaces.
+DISCOVERY_LINKS = {"roxanne-swainhart": "person-05fde1a08a4e"}
 
 
 def clean(value, *, limit=4000):
@@ -69,7 +72,7 @@ def public_url(value):
     return value
 
 
-def build_projection(source_bytes, *, edition_date=EDITION_DATE, atlas_profiles=()):
+def build_projection(source_bytes, *, edition_date=EDITION_DATE, atlas_profiles=(), atlas_people=()):
     date.fromisoformat(edition_date)
     # Git checkouts can use LF or CRLF. Hash the documented canonical UTF-8/LF
     # source so the same reviewed table rebuilds identically on Windows/Linux.
@@ -77,6 +80,7 @@ def build_projection(source_bytes, *, edition_date=EDITION_DATE, atlas_profiles=
     rows = list(csv.DictReader(io.StringIO(source_bytes.decode("utf-8"))))
     people, labels, relationships = {}, {}, []
     profile_ids = {profile["id"] for profile in atlas_profiles}
+    discovery_ids = {person["id"] for person in atlas_people}
     seen = set()
     for row in rows:
         if row.get("source_review_state") != REVIEW_STATE:
@@ -104,6 +108,9 @@ def build_projection(source_bytes, *, edition_date=EDITION_DATE, atlas_profiles=
         mapped = PROFILE_LINKS.get(person_id)
         if mapped and mapped in profile_ids:
             person["atlasProfileId"] = mapped
+        discovery_person = DISCOVERY_LINKS.get(person_id)
+        if discovery_person and discovery_person in discovery_ids:
+            person["discoveryPersonId"] = discovery_person
         if row.get("channel_ownership_verified") == "true":
             channel = {"url": public_url(row["channel_url"]), "evidenceUrl": public_url(row["ownership_source_url"]),
                        "basis": clean(row["ownership_evidence"])}
@@ -152,7 +159,8 @@ def main(argv=None):
     parser.add_argument("--edition-date", default=EDITION_DATE)
     args = parser.parse_args(argv)
     atlas = json.loads(args.atlas.read_text(encoding="utf-8"))
-    result = build_projection(args.source.read_bytes(), edition_date=args.edition_date, atlas_profiles=atlas["profiles"])
+    result = build_projection(args.source.read_bytes(), edition_date=args.edition_date, atlas_profiles=atlas["profiles"],
+                              atlas_people=atlas.get("discovery", {}).get("people", []))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result["meta"], ensure_ascii=True))

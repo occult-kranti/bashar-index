@@ -174,7 +174,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       }
       if (state === 'cooldown' && data.operation.retry_after) explanations.cooldown += ' Next attempt after ' + date(data.operation.retry_after) + '.';
       put('cc-current-state', labels[state]); put('cc-current-explanation', explanations[state]);
-      put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.verified_pairs));
+      put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.audio_archived_videos ?? data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
       if (Number.isFinite(data.counts.caption_verified_videos)) {
@@ -184,10 +184,17 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         put('cc-captions-summary', captionSummary);
       }
       put('cc-final-policy', data.operation.full_archive_requested ? 'Full archive follows the newest-50 tier.' : 'Final-round downloads are not enabled in this snapshot.');
-      put('cc-local-storage', (data.storage.local_bytes / 1e9).toFixed(2) + ' / ' + number(data.storage.ceiling_bytes / 1e9) + ' GB');
+      if (Number.isFinite(data.counts.asr_verified_videos)) {
+        const asrStates = {running:'GPU transcription was reported running.', complete:'The latest GPU batch reported completion.', stopped_error:'The GPU batch stopped for review.'};
+        const reported = asrStates[data.operation.asr_last_reported_state];
+        put('cc-asr-summary', number(data.counts.asr_verified_videos) + ' videos have generated ASR bundles verified on Drive. ' + number(data.counts.text_artifact_videos) + ' audio items have saved text; ' + number(data.counts.text_pending_videos) + ' still need complete text. Generated ASR accuracy is unreviewed. ' + number(data.counts.verified_pairs) + ' native audio pairs; ' + number(data.counts.browser_recorded_videos ?? 0) + ' re-encoded browser recordings.' + (reported ? ' ' + reported + ' Reported ' + date(data.operation.asr_reported_at) + '.' : ''));
+      }
+      const used = data.storage.managed_bytes ?? data.storage.local_bytes;
+      const cap = data.storage.managed_ceiling_bytes ?? data.storage.ceiling_bytes;
+      put('cc-local-storage', (used / 1e9).toFixed(2) + ' / ' + number(cap / 1e9) + ' GB' + (Number.isFinite(data.storage.managed_bytes) ? ' including tools and models' : ''));
       const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;
       const fill = document.getElementById('cc-storage-meter');
-      if (fill) { fill.max = data.storage.ceiling_bytes; fill.value = data.storage.local_bytes; }
+      if (fill) { fill.max = cap; fill.value = used; }
       const holder = document.getElementById('cc-stages');
       if (holder) { holder.replaceChildren(); for (const [i, stage] of data.stages.entries()) {
         const item = document.createElement('li'); item.className = 'cc-stage'; item.dataset.state = stage.state;

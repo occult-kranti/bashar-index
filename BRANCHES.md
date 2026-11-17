@@ -1,5 +1,7 @@
 # Branch register and development history
 
+**Integration update, November 17 04:00 UTC:** [PR #30](https://github.com/occult-kranti/bashar-index/pull/30) merged as [`d66e5e3`](https://github.com/occult-kranti/bashar-index/commit/d66e5e3d2e3c17a02578940cb224eaeafe72cf11), with `feat/browser-recovery-entity-directory` retained. Its CI passed 910 tests with 40 platform skips, and GitHub Pages deployed successfully. The active continuation is `feat/gpu-caption-fallback`, based on that merge, for leased CUDA transcription, three-channel intake, updated evidence/status and the user-activated Chrome capture implementation. The full branch/ancestry tables below remain the explicitly dated 00:45 UTC audit; their 30-head count and main pointer are historical, not a fresh inventory of this later continuation.
+
 Verified **17 November 2026, 00:45 UTC** against GitHub's branch/PR metadata and `git ls-remote` plus local commit ancestry. This is a dated inventory, not a live branch dashboard. No branches were merged, deleted, reset or force-pushed by this documentation pass.
 
 ## Current integration and working copies

@@ -1,5 +1,7 @@
 # Conditional collection estimate — 16 November 2026 planning session
 
+**Updated scope:** see the [17 November supplement for 74 channels](collection-eta-2026-11-17.md). The dated 71-channel report below is preserved unchanged.
+
 Computed **2026-11-17T01:03:25.876533+00:00** from a stable private metadata snapshot after the 71-channel intake. This report reads queue rows, durable receipts and selected JSON progress fields only. **No media/transcript content, source requests, Drive requests, ASR, model downloads or collector changes were performed.**
 
 **There is no finite guaranteed completion date while access is blocked and refusals can recur.** Under the assumptions below, completing the currently indexed native audio is approximately **7.7–16.5 active days as a service-time floor**, before unmeasured overhead and future downtime. This is a conditional capacity model, not a promised finish interval. At 50% future service availability, that becomes roughly **16.4–33.9 elapsed days including the current wait**, still not an upper bound.

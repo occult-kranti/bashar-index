@@ -1,0 +1,2 @@
+# This published, SHA-256-pinned Windows dependency artifact must retain its bytes.
+et-channelers/pipeline/requirements-gpu-asr-win-py312.lock -text

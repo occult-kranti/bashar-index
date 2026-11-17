@@ -1,38 +1,47 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-17T01:14:46Z",
+  "generated_at": "2026-11-17T04:27:18Z",
   "scope": "local_youtube_collection",
   "operation": {
-    "state": "cooldown",
-    "retry_after": "2026-11-18T01:13:30Z",
+    "state": "paused",
+    "retry_after": "2026-11-18T01:40:49Z",
+    "asr_last_reported_state": "complete",
+    "asr_reported_at": "2026-11-17T04:22:12Z",
     "workers": 4,
     "full_archive_requested": true,
     "cooldown_provider": "youtube",
-    "caption_state": "cooldown",
+    "caption_state": "paused",
     "caption_retry_after": "2026-11-17T23:20:02Z"
   },
   "counts": {
     "verified_pairs": 47,
     "audio_downloaded": 47,
+    "browser_recorded_videos": 0,
+    "audio_archived_videos": 47,
+    "asr_verified_videos": 27,
+    "text_artifact_videos": 42,
+    "text_pending_videos": 5,
     "caption_verified_videos": 15,
     "caption_verified_tracks": 20,
     "caption_none_english": 1,
     "caption_pending_videos": 31,
     "unavailable": 0,
     "awaiting_upload": 0,
-    "channels": 71,
-    "indexed_total": 66446,
-    "final_round_indexed": 63126
+    "channels": 74,
+    "indexed_total": 67594,
+    "final_round_indexed": 64145
   },
   "storage": {
-    "local_bytes": 194168708,
-    "ceiling_bytes": 17000000000
+    "local_bytes": 5095290997,
+    "ceiling_bytes": 17000000000,
+    "managed_bytes": 7022913710,
+    "managed_ceiling_bytes": 16000000000
   },
   "stages": [
     {
       "key": "newest20",
       "label": "Newest 20",
-      "total": 1360,
+      "total": 1420,
       "verified": 47,
       "unavailable": 0,
       "state": "in_progress"
@@ -40,7 +49,7 @@
     {
       "key": "newest50",
       "label": "Extend to 50",
-      "total": 3320,
+      "total": 3449,
       "verified": 47,
       "unavailable": 0,
       "state": "waiting"
@@ -48,7 +57,7 @@
     {
       "key": "final_archive",
       "label": "Archive the remainder",
-      "total": 63126,
+      "total": 64145,
       "verified": 0,
       "unavailable": 0,
       "state": "waiting"
