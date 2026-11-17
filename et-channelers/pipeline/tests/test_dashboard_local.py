@@ -43,6 +43,99 @@ class BuildTests(unittest.TestCase):
 
 
 class StatusExportTests(unittest.TestCase):
+    def test_publisher_editions_require_complete_proofs_and_never_promote_native_progress(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'sync').mkdir()
+            (root / 'jobs').mkdir()
+            (root / 'jobs/queue_newest20.csv').write_text(
+                'video_id,channel_dir\n12345678901,PRIVATE-PERSON\nABCDEFGHIJK,PRIVATE-PERSON\n', encoding='utf-8')
+            remote = ingestion_status.DEFAULT_REMOTE
+            def obj(kind, path):
+                return {'kind': kind, 'remote': path, 'bytes': 123, 'drive_id': 'PRIVATE-ID',
+                        'md5': 'a' * 32, 'sha256': 'b' * 64}
+            text_kind = 'publisher_authored_article_batch'
+            batch = {'schema_version': 1, 'status': 'verified', 'artifact_kind': text_kind,
+                     'changes_native_audio_count': False, 'changes_full_asr_count': False,
+                     'proof': obj(text_kind, remote + '/PRIVATE-PERSON/PublisherText/Batches/' + 'b' * 64 + '/publisher-text.zip'),
+                     'items': [{'video_id': '12345678901', 'author_html_sha256': 'c' * 64, 'text_sha256': 'd' * 64,
+                                'article_url': 'https://PRIVATE.invalid/article', 'title': 'PRIVATE TITLE'},
+                               {'video_id': [], 'author_html_sha256': 'c' * 64, 'text_sha256': 'd' * 64},
+                               {'video_id': 'NOTINTARGET', 'author_html_sha256': 'c' * 64, 'text_sha256': 'd' * 64}]}
+            parent = remote + '/PRIVATE-PERSON/Videos/ABCDEFGHIJK/PublisherVariants/' + 'b' * 64
+            variant = {'schema_version': 1, 'status': 'verified', 'artifact_kind': 'publisher_podcast_audio_variant',
+                       'video_id': 'ABCDEFGHIJK', 'channel_dir': 'PRIVATE-PERSON', 'native_youtube_bytes': False,
+                       'changes_native_audio_count': False, 'changes_full_asr_count': False,
+                       'audio': obj('publisher_podcast_audio_variant', parent + '/publisher-audio.mp3'),
+                       'provenance': obj('publisher_podcast_variant_provenance', parent + '/provenance.json')}
+            companion_path = root / 'sync/publisher_companion_manifest.jsonl'
+            variant_path = root / 'sync/publisher_variant_manifest.jsonl'
+            publisher_asr_path = root / 'sync/publisher_variant_asr_manifest.jsonl'
+            transcript = dict(batch, artifact_kind='publisher_transcript_batch',
+                              proof=obj('publisher_transcript_batch', remote + '/PRIVATE-PERSON/PublisherTranscripts/Batches/' + 'b' * 64 + '/publisher-transcripts.zip'),
+                              items=[dict(batch['items'][0], text_kind='publisher_transcript_untimed',
+                                          publisher_declares_transcript=True, language='en',
+                                          original_youtube_link='https://youtu.be/12345678901')])
+            transcript['proof'].pop('kind')  # the batch's artifact_kind supplies its role
+            variant_asr = dict(obj('publisher_variant_asr', parent + '/ASR/trial/trial.zip'),
+                               schema_version=1, status='verified', artifact_kind='publisher_variant_asr',
+                               associated_youtube_id='ABCDEFGHIJK', channel_dir='PRIVATE-PERSON',
+                               variant_id='b' * 64, run_id='trial', source_audio=dict(variant['audio']),
+                               source_provenance=dict(variant['provenance']), native_youtube_bytes=False,
+                               changes_native_audio_count=False, changes_native_asr_count=False,
+                               quality_state='unreviewed_asr')
+            variant_asr['source_audio'].pop('kind')
+            variant_asr['source_provenance'].pop('kind')
+            qualified = dict(variant, video_id='12345678901', artifact_kind='qualified_publisher_podcast_audio_variant',
+                             identity_basis='publisher_rss_source_id_references', direct_watch_link_present=False,
+                             association_human_verified=False)
+            qualified_parent = remote + '/PRIVATE-PERSON/Videos/12345678901/PublisherVariants/' + 'b' * 64
+            qualified['audio'] = obj('qualified_publisher_podcast_audio_variant', qualified_parent + '/publisher-audio.mp3')
+            qualified['provenance'] = obj('qualified_publisher_variant_provenance', qualified_parent + '/provenance.json')
+            qualified_asr = dict(variant_asr, associated_youtube_id='12345678901',
+                                 source_audio=dict(qualified['audio']), source_provenance=dict(qualified['provenance']),
+                                 remote=qualified_parent + '/ASR/trial/trial.zip')
+            publisher_asr_path.write_text(json.dumps(variant_asr) + '\n' + json.dumps(variant_asr) + '\n')
+            with publisher_asr_path.open('a') as stream:
+                stream.write(json.dumps(qualified_asr) + '\n')
+            def write(records, variants):
+                companion_path.write_text('\n'.join(json.dumps(x) for x in records) + '\n', encoding='utf-8')
+                variant_path.write_text('\n'.join(json.dumps(x) for x in variants) + '\n', encoding='utf-8')
+            write([batch, batch, transcript, {'artifact_kind': []}], [variant, variant, qualified])
+            result = ingestion_status.snapshot(root, now=1800000000)
+            self.assertEqual(result['counts']['publisher_text_target_videos'], 1)
+            self.assertEqual(result['counts']['publisher_audio_variant_target_videos'], 2)
+            self.assertEqual(result['counts']['publisher_audio_qualified_variant_target_videos'], 1)
+            self.assertEqual(result['counts']['publisher_transcript_target_videos'], 1)
+            self.assertEqual(result['counts']['publisher_variant_asr_target_videos'], 2)
+            for key in ('verified_pairs', 'audio_archived_videos', 'asr_verified_videos', 'text_available_videos'):
+                self.assertEqual(result['counts'][key], 0)
+            self.assertEqual(result['stages'][0]['verified'], 0)
+            for private in ('PRIVATE', 'ABCDEFGHIJK', '12345678901', 'https://', str(root)):
+                self.assertNotIn(private, json.dumps(result))
+            # An incomplete pair, a different remote, or mixed completion scope is not evidence.
+            variant['provenance'].pop('drive_id')
+            batch['proof']['remote'] = 'other:' + batch['proof']['remote']
+            write([batch], [variant])
+            invalid = ingestion_status.snapshot(root, now=1800000000)
+            self.assertEqual(invalid['counts']['publisher_text_target_videos'], 0)
+            self.assertEqual(invalid['counts']['publisher_audio_variant_target_videos'], 0)
+            self.assertEqual(invalid['counts']['publisher_variant_asr_target_videos'], 0)
+            batch['proof']['remote'] = remote + '/PRIVATE-PERSON/PublisherText/Batches/' + 'b' * 64 + '/publisher-text.zip'
+            batch['changes_full_asr_count'] = True
+            write([batch], [])
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_text_target_videos'], 0)
+            # An unrelated source proof or a non-English/non-transcript item never joins.
+            batch['changes_full_asr_count'] = False
+            transcript['items'][0]['publisher_declares_transcript'] = False
+            variant['provenance']['drive_id'] = 'PRIVATE-ID'
+            variant_asr['source_audio']['drive_id'] = 'WRONG-SOURCE'
+            publisher_asr_path.write_text(json.dumps(variant_asr) + '\n')
+            write([transcript], [variant])
+            rejected = ingestion_status.snapshot(root)
+            self.assertEqual(rejected['counts']['publisher_transcript_target_videos'], 0)
+            self.assertEqual(rejected['counts']['publisher_variant_asr_target_videos'], 0)
+
     def test_isolated_cli_exports_only_aggregates_from_an_unrelated_working_directory(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder) / 'private'

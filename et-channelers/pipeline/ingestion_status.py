@@ -10,6 +10,7 @@ import os
 import re
 import sys
 from pathlib import Path
+from urllib.parse import parse_qs, urlsplit
 
 if __package__:
     from .drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
@@ -117,6 +118,121 @@ def asr_records(path, identity_key='run_id'):
     return records.values()
 
 
+def publisher_coverage(root, targets, remote):
+    """Supplementary publisher editions never establish native/ASR completion."""
+    def rows(name):
+        path = root / 'sync' / name
+        if path.is_file():
+            for line in path.read_text(encoding='utf-8-sig').splitlines():
+                try:
+                    record = json.loads(line)
+                except ValueError:
+                    continue
+                if isinstance(record, dict):
+                    yield record
+
+    def object_proof(value, kind, kind_field='kind'):
+        return (isinstance(value, dict) and (kind_field is None or value.get(kind_field) == kind) and
+                type(value.get('bytes')) is int and value['bytes'] > 0 and
+                isinstance(value.get('drive_id'), str) and bool(value['drive_id']) and
+                isinstance(value.get('md5'), str) and bool(re.fullmatch('[0-9a-f]{32}', value['md5'])) and
+                isinstance(value.get('sha256'), str) and bool(re.fullmatch('[0-9a-f]{64}', value['sha256'])))
+
+    def separate(record, kind):
+        return (record.get('schema_version') == 1 and record.get('status') == 'verified' and record.get('artifact_kind') == kind and
+                record.get('changes_native_audio_count') is False and record.get('changes_full_asr_count') is False)
+
+    def original_video(link):
+        if not isinstance(link, str):
+            return None
+        try:
+            url = urlsplit(link)
+            if url.scheme not in {'http', 'https'} or url.username or url.password:
+                return None
+            if url.hostname in {'youtu.be', 'www.youtu.be'}:
+                return url.path.lstrip('/')
+            if url.hostname in {'youtube.com', 'www.youtube.com'} and url.path == '/watch':
+                values = parse_qs(url.query).get('v', [])
+                return values[0] if len(values) == 1 else None
+        except ValueError:
+            pass
+        return None
+
+    texts, transcripts, variants, qualified, variant_asr, variant_sources = set(), set(), set(), set(), set(), {}
+    for record in rows('publisher_companion_manifest.jsonl'):
+        kind = record.get('artifact_kind')
+        if not isinstance(kind, str) or kind not in {'publisher_authored_article_batch', 'publisher_transcript_batch'}:
+            continue
+        item = record.get('proof')
+        if not separate(record, kind) or not object_proof(item, kind, None):
+            continue
+        namespace, filename = ('PublisherText', 'publisher-text.zip') if kind == 'publisher_authored_article_batch' else ('PublisherTranscripts', 'publisher-transcripts.zip')
+        expected = (re.escape(remote) + r'/[A-Za-z0-9][A-Za-z0-9_.-]{0,119}/' + namespace + '/Batches/' +
+                    item['sha256'] + '/' + re.escape(filename))
+        if not isinstance(item.get('remote'), str) or not re.fullmatch(expected, item['remote']):
+            continue
+        entries = record.get('items')
+        for entry in entries if isinstance(entries, list) else []:
+            if (isinstance(entry, dict) and isinstance(entry.get('video_id'), str) and
+                    re.fullmatch('[A-Za-z0-9_-]{11}', entry['video_id']) and entry['video_id'] in targets and
+                    all(isinstance(entry.get(key), str) and re.fullmatch('[0-9a-f]{64}', entry[key])
+                        for key in ('author_html_sha256', 'text_sha256'))):
+                if kind == 'publisher_authored_article_batch':
+                    texts.add(entry['video_id'])
+                elif (entry.get('text_kind') == 'publisher_transcript_untimed' and
+                      entry.get('publisher_declares_transcript') is True and
+                      isinstance(entry.get('language'), str) and re.fullmatch(r'en(?:[-_][A-Za-z0-9-]+)?', entry['language']) and
+                      original_video(entry.get('original_youtube_link')) == entry['video_id']):
+                    transcripts.add(entry['video_id'])
+    for record in rows('publisher_variant_manifest.jsonl'):
+        kind = record.get('artifact_kind')
+        if kind == 'publisher_podcast_audio_variant':
+            provenance_kind = 'publisher_podcast_variant_provenance'
+        elif (kind == 'qualified_publisher_podcast_audio_variant' and
+              record.get('identity_basis') == 'publisher_rss_source_id_references' and
+              record.get('direct_watch_link_present') is False and record.get('association_human_verified') is False):
+            provenance_kind = 'qualified_publisher_variant_provenance'
+        else:
+            continue
+        row = record_row(record)
+        audio, provenance = record.get('audio'), record.get('provenance')
+        if (not separate(record, kind) or record.get('native_youtube_bytes') is not False or not row or
+                row['video_id'] not in targets or not object_proof(audio, kind) or
+                not object_proof(provenance, provenance_kind)):
+            continue
+        parent = remote + '/' + row['channel_dir'] + '/Videos/' + row['video_id'] + '/PublisherVariants/' + audio['sha256']
+        if audio.get('remote') == parent + '/publisher-audio.mp3' and provenance.get('remote') == parent + '/provenance.json':
+            variants.add(row['video_id'])
+            if kind == 'qualified_publisher_podcast_audio_variant':
+                qualified.add(row['video_id'])
+            variant_sources[(row['video_id'], audio['sha256'])] = record
+
+    def same_object(left, right):
+        # ASR receipts normalize source proofs to object-identity fields, while
+        # acquisition receipts additionally retain their publisher-role kind.
+        return object_proof(left, None, None) and all(
+            left[key] == right[key] for key in ('bytes', 'md5', 'sha256', 'remote', 'drive_id'))
+
+    for record in rows('publisher_variant_asr_manifest.jsonl'):
+        video_id, variant_id, run_id = record.get('associated_youtube_id'), record.get('variant_id'), record.get('run_id')
+        if not all(isinstance(value, str) for value in (video_id, variant_id, run_id)):
+            continue
+        source = variant_sources.get((video_id, variant_id))
+        if (not source or record.get('schema_version') != 1 or record.get('status') != 'verified' or
+                not object_proof(record, 'publisher_variant_asr', 'artifact_kind') or
+                record.get('native_youtube_bytes') is not False or record.get('changes_native_audio_count') is not False or
+                record.get('changes_native_asr_count') is not False or record.get('quality_state') != 'unreviewed_asr' or
+                record.get('channel_dir') != source['channel_dir'] or
+                not same_object(record.get('source_audio'), source['audio']) or
+                not same_object(record.get('source_provenance'), source['provenance']) or
+                not re.fullmatch(r'[A-Za-z0-9_-]{1,120}', run_id)):
+            continue
+        expected = source['audio']['remote'].rpartition('/')[0] + '/ASR/' + run_id + '/' + run_id + '.zip'
+        if record.get('remote') == expected:
+            variant_asr.add(video_id)
+    return texts, transcripts, variants, qualified, variant_asr
+
+
 def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     """Allowlisted public values only; no private strings are copied to the result."""
     now = dt.datetime.now(dt.timezone.utc).timestamp() if now is None else now
@@ -166,6 +282,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     fifty, _ = queue_ids(root, ("queue_newest50_enriched.csv", "queue_newest50.csv"))
     full, _ = queue_ids(root, ("queue_youtube_all_merged.csv", "queue_youtube_all.csv"))
     remaining, _ = queue_ids(root, ("queue_final_round.csv",))
+    publisher_texts, publisher_transcripts, publisher_variants, publisher_qualified, publisher_asr = publisher_coverage(root, twenty, remote)
     cooldown = read_object(root / "sync" / "drive_ingest_cooldown.json")
     # Support the runner's fixed filename, without exposing it in the export.
     if not cooldown:
@@ -251,6 +368,11 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                        "text_missing_videos": len(archived - text_available),
                        "caption_text_available_videos": len(caption_text_available),
                        "caption_inventory_review_videos": len(caption_text_available - caption_verified),
+                       "publisher_text_target_videos": len(publisher_texts),
+                       "publisher_transcript_target_videos": len(publisher_transcripts),
+                       "publisher_audio_variant_target_videos": len(publisher_variants),
+                       "publisher_audio_qualified_variant_target_videos": len(publisher_qualified),
+                       "publisher_variant_asr_target_videos": len(publisher_asr),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),
                        "unavailable": len(unavailable),

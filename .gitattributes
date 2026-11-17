@@ -2,6 +2,14 @@
 et-channelers/pipeline/requirements-gpu-asr-win-py312.lock -text
 # Preserve the exact executed gap-review worker and its provenance hash.
 et-channelers/pipeline/caption_gap_review.py -text
+# Preserve the exact frozen language-review worker and its provenance hash.
+et-channelers/pipeline/language_id_review.py -text
+# Preserve the separately admitted partial-ASR worker and provenance hash.
+et-channelers/pipeline/partial_asr_review.py -text
+# Preserve the separately assessed full-source adapter and provenance hash.
+et-channelers/pipeline/reviewed_metadata_asr.py -text
+# Preserve the separately accounted publisher-edition ASR adapter.
+et-channelers/pipeline/publisher_variant_asr.py -text
 # Browser build manifests bind raw source/bundle bytes across Windows and Linux.
 et-channelers/browser_capture_extension/*.js text eol=lf
 et-channelers/browser_capture_extension/*.mjs text eol=lf
