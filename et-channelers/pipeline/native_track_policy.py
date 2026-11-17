@@ -10,15 +10,16 @@ from urllib.parse import parse_qs, urlsplit
 
 LABEL_FIELDS = {'language', 'languageCode', 'audioLanguage', 'audioTrackId', 'displayName',
     'isOriginal', 'isDubbed', 'isAutoDubbed', 'isDescriptive', 'isSecondary', 'audioIsDefault',
-    'isDefault', 'isDrc', 'isVoiceBoost', 'isVb', 'xtags'}
+    'isDefault', 'isVoiceBoost', 'isVb', 'xtags'}
 AUDIO_CODEC = re.compile(r'^(?:mp4a\.[0-9.]+|opus|vorbis|mp3|aac)$')
+MAX_RAW_FORMATS = 8192
 
 
 def nonempty(value):
     return value is not None and value is not False and value != '' and value != {} and value != []
 
 
-def transport_track_tags(fmt):
+def transport_track_tags(fmt, explicit_drc=False):
     """Inspect URL/cipher query keys in memory; values never enter a proof."""
     urls = []
     if fmt.get('url') is not None:
@@ -33,7 +34,9 @@ def transport_track_tags(fmt):
     try:
         for url in urls:
             values = parse_qs(urlsplit(url).query, keep_blank_values=True)
-            if any(k.lower() in {'xtags', 'lang', 'language', 'acont', 'drc', 'vb'} and any(v) for k, v in values.items()): return True
+            for key, value in values.items():
+                if key.lower() == 'drc' and explicit_drc and value == ['1']: continue
+                if key.lower() in {'xtags', 'lang', 'language', 'acont', 'drc', 'vb'} and any(value): return True
     except ValueError: return True
     return False
 
@@ -42,54 +45,75 @@ def legacy_track_inventory(video_id, player_responses, chosen_client='mweb'):
     result = {'schema_version': 1, 'video_id': video_id, 'chosen_client': chosen_client,
         'eligible': False, 'reason': 'missing_raw_inventory', 'audio_representations': [],
         'context_only_responses': 0, 'inventory_responses': 0,
-        'completeness_basis': 'entire_parsed_returned_client_arrays', 'provider_global_inventory_claimed': False}
+        'completeness_basis': 'entire_parsed_returned_client_arrays', 'provider_global_inventory_claimed': False,
+        'inspection_complete': False, 'inspected_formats': 0, 'rejection_reasons': []}
     def hold(reason):
-        result['reason'] = reason
+        if reason not in result['rejection_reasons']: result['rejection_reasons'].append(reason)
+        result['reason'] = result['rejection_reasons'][0]
         return result
     if not isinstance(player_responses, list) or not 1 <= len(player_responses) <= 16: return hold('missing_raw_inventory')
-    seen = set()
+    seen = {}; structurally_complete = True
     for response in player_responses:
         if not isinstance(response, dict) or not isinstance(response.get('videoDetails'), dict) or response['videoDetails'].get('videoId') != video_id:
-            return hold('response_identity')
-        if not isinstance(response.get('playabilityStatus'), dict) or response['playabilityStatus'].get('status') != 'OK': return hold('response_not_playable')
-        if response.get('truncated') or response.get('__truncated'): return hold('response_incomplete')
-        if 'streamingData' not in response: return hold('response_incomplete')
+            hold('response_identity'); structurally_complete = False; continue
+        if not isinstance(response.get('playabilityStatus'), dict) or response['playabilityStatus'].get('status') != 'OK': hold('response_not_playable')
+        if response.get('truncated') or response.get('__truncated'): hold('response_incomplete'); structurally_complete = False
+        if 'streamingData' not in response:
+            hold('response_incomplete'); structurally_complete = False; continue
         streaming = response['streamingData']
         if streaming is None:  # pinned extractor's stripped initial caption context
             result['context_only_responses'] += 1
             continue
         if not isinstance(streaming, dict) or streaming.get('__yt_dlp_client') != chosen_client:
-            return hold('conflicting_client_inventory')
-        if not any(key in streaming for key in ('formats', 'adaptiveFormats')): return hold('response_incomplete')
+            hold('conflicting_client_inventory'); structurally_complete = False; continue
+        if not any(key in streaming for key in ('formats', 'adaptiveFormats')): hold('response_incomplete'); structurally_complete = False
         result['inventory_responses'] += 1
         for key in ('formats', 'adaptiveFormats'):
             formats = streaming.get(key, [])
-            if not isinstance(formats, list) or len(formats) > 4096: return hold('response_incomplete')
+            if not isinstance(formats, list) or len(formats) > 4096:
+                hold('response_incomplete'); structurally_complete = False; continue
             for fmt in formats:
-                if not isinstance(fmt, dict): return hold('malformed_format')
-                if fmt.get('__yt_dlp_client', chosen_client) != chosen_client: return hold('conflicting_client_inventory')
+                if result['inspected_formats'] >= MAX_RAW_FORMATS: return hold('inventory_limit')
+                result['inspected_formats'] += 1
+                if not isinstance(fmt, dict): hold('malformed_format'); structurally_complete = False; continue
+                if fmt.get('__yt_dlp_client', chosen_client) != chosen_client: hold('conflicting_client_inventory')
                 mime = fmt.get('mimeType')
-                if not isinstance(mime, str) or len(mime) > 256: return hold('malformed_format')
+                if not isinstance(mime, str) or len(mime) > 256: hold('malformed_format'); structurally_complete = False; continue
                 parts = re.fullmatch(r'(audio|video)/[A-Za-z0-9.+-]+;\s*codecs="([A-Za-z0-9., _+-]+)"', mime)
-                if not parts: return hold('malformed_format')
+                if not parts: hold('malformed_format'); structurally_complete = False; continue
                 codecs = [s.strip() for s in parts[2].split(',')]
                 audio_codecs = [s for s in codecs if AUDIO_CODEC.fullmatch(s)]
                 audio = parts[1] == 'audio' or bool(audio_codecs) or any(nonempty(fmt.get(k)) for k in ('audioQuality', 'audioChannels', 'audioSampleRate', 'audioTrack'))
                 if not audio: continue
                 itag = fmt.get('itag')
-                if type(itag) is not int or not 1 <= itag <= 99999: return hold('malformed_audio_itag')
-                if itag in seen: return hold('ambiguous_duplicate_itag')
-                seen.add(itag)
-                if fmt.get('audioTrack') not in (None, {}): return hold('track_labels_present')
-                if any(nonempty(fmt.get(k)) for k in LABEL_FIELDS) or transport_track_tags(fmt): return hold('track_labels_present')
-                if nonempty(fmt.get('drmFamilies')) or nonempty(fmt.get('drmTrackType')) or fmt.get('has_drm') is True:
-                    return hold('drm_audio_alternative')
+                if type(itag) is not int or not 1 <= itag <= 99999: hold('malformed_audio_itag'); continue
+                drc = fmt.get('isDrc')
+                if drc is not None and type(drc) is not bool: hold('malformed_drc_flag')
+                is_drc = drc is True
+                variant = (itag, is_drc)
+                if variant in seen: hold('ambiguous_duplicate_itag')
+                labels = fmt.get('audioTrack') not in (None, {}) or any(nonempty(fmt.get(k)) for k in LABEL_FIELDS) or transport_track_tags(fmt, is_drc)
+                if labels: hold('track_labels_present')
+                drm = nonempty(fmt.get('drmFamilies')) or nonempty(fmt.get('drmTrackType')) or fmt.get('has_drm') is True
+                if drm: hold('drm_audio_alternative')
                 length = fmt.get('contentLength')
                 if isinstance(length, str) and re.fullmatch(r'[0-9]{1,16}', length): length = int(length)
                 if type(length) is not int or not 0 < length <= 2**53: length = None
-                result['audio_representations'].append({'itag': itag, 'audio_only': parts[1] == 'audio',
-                    'codec': audio_codecs[0] if len(audio_codecs) == 1 else None, 'source_bytes': length})
+                row = {'itag': itag, 'audio_only': parts[1] == 'audio', 'is_drc': is_drc,
+                    'codec': audio_codecs[0] if len(audio_codecs) == 1 else None, 'source_bytes': length,
+                    'semantic_labels_present': bool(labels), 'has_drm': bool(drm)}
+                result['audio_representations'].append(row)
+                seen[variant] = row
+    result['inspection_complete'] = structurally_complete
     if not result['inventory_responses'] or not result['audio_representations']: return hold('no_audio_inventory')
+    normal = [row for row in result['audio_representations'] if not row['is_drc'] and row['audio_only']]
+    if not normal: hold('no_non_drc_audio')
+    for row in result['audio_representations']:
+        if not row['is_drc']: continue
+        base = seen.get((row['itag'], False))
+        if base is None or base['audio_only'] != row['audio_only'] or base['codec'] != row['codec']:
+            hold('unmatched_drc_variant')
+    if result['rejection_reasons']: return result
     result.update(eligible=True, reason='provider_single_legacy_track_inference', source_language=None, source_language_status='unknown',
                   origin_inferred=True, original_explicitly_verified=False)
     safe = (json.dumps(result, sort_keys=True, separators=(',', ':')) + '\n').encode()
@@ -103,7 +127,8 @@ def legacy_selection_proof(info, inventory):
         return None
     if info.get('language_preference') != -1:
         return None
-    matches = [f for f in inventory['audio_representations'] if str(f['itag']) == info.get('format_id') and f['audio_only']]
+    if info.get('isDrc') is True or info.get('is_drc') is True: return None
+    matches = [f for f in inventory['audio_representations'] if str(f['itag']) == info.get('format_id') and f['audio_only'] and not f.get('is_drc')]
     if len(matches) != 1 or matches[0]['codec'] != info.get('acodec'): return None
     if type(matches[0]['source_bytes']) is not int or matches[0]['source_bytes'] <= 0: return None
     if type(info.get('filesize')) is not int or info['filesize'] != matches[0]['source_bytes']: return None
@@ -115,4 +140,5 @@ def legacy_selection_proof(info, inventory):
         'normalized_language_used_as_audio_evidence': False,
         'language': None, 'language_preference': -1, 'original_label_present': False,
         'raw_inventory_sha256': inventory['inventory_sha256'], 'selected_itag': matches[0]['itag'],
+        'selected_is_drc': False,
         'completeness_basis': inventory['completeness_basis'], 'provider_global_inventory_claimed': False}

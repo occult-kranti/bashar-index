@@ -47,6 +47,7 @@ class NativeBatchTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
+        self.enterContext(patch.object(worker, 'TARGET', ID))
         self.enterContext(patch('socket.socket.connect', side_effect=AssertionError('network forbidden')))
         self.enterContext(patch('subprocess.Popen', side_effect=AssertionError('process forbidden')))
 
@@ -204,29 +205,31 @@ class NativeBatchTests(unittest.TestCase):
         self.assertIsNone(batch.source_error({'diagnostics': {'error_class': 'source_duration'}}))
         self.assertIsNone(batch.source_error({'diagnostics': {'error_class': 'unsafe raw message'}}))
 
-    def test_v3_controls_preserve_v2_history_and_enforce_new_scope(self):
+    def test_v4_controls_preserve_v3_history_and_enforce_new_scope(self):
         sync = self.root / 'sync'; sync.mkdir()
-        old_stop = sync / 'STOP_STOCK_WPC_BATCH'; old_stop.write_bytes(b'unchanged v2 refusal')
-        old_cooldown = sync / 'stock_wpc_batch_source_cooldown.json'
+        old_stop = sync / 'STOP_STOCK_WPC_BATCH_V3'; old_stop.write_bytes(b'unchanged v2 refusal')
+        old_cooldown = sync / 'stock_wpc_batch_v3_source_cooldown.json'
         worker.write(old_cooldown, {'retry_not_before_epoch': time.time() + 86400})
         original = {p: p.read_bytes() for p in (old_stop, old_cooldown)}
         paths = worker.control_paths(self.root)
-        self.assertEqual(paths['lease_path'].name, 'stock_wpc_batch_v3_lease.json')
-        self.assertEqual(paths['batch_stop_path'].name, 'STOP_STOCK_WPC_BATCH_V3')
-        self.assertEqual(paths['source_cooldown_path'].name, 'stock_wpc_batch_v3_source_cooldown.json')
+        self.assertEqual(paths['lease_path'].name, 'stock_wpc_batch_v4_lease.json')
+        self.assertEqual(paths['batch_stop_path'].name, 'STOP_STOCK_WPC_BATCH_V4')
+        self.assertEqual(paths['source_cooldown_path'].name, 'stock_wpc_batch_v4_source_cooldown.json')
         obj = batch.NativeBatch.__new__(batch.NativeBatch)
         obj.root = self.root; obj.lock = threading.RLock(); obj.source_stop = threading.Event()
         obj.stop_path = paths['batch_stop_path']; obj.cooldown_path = paths['source_cooldown_path']
         obj.last_guard = obj.last_inventory = time.monotonic()
         obj.lease = {'expires_at_epoch': time.time() + 60}
         obj.cap = batch.MANAGED; obj.external = obj.others = 0; obj.budget = None
+        obj.observe_pending_failures = Mock(); obj.http_review = {'review_sha256':'a'*64,'covered_event_ids':[],'allowed_video_ids':[ID]}
+        obj.policy_envelope = Mock(return_value={'state':batch.http_policy.empty_state()})
         with patch.object(batch.shutil, 'disk_usage', return_value=SimpleNamespace(free=10_000_000_000)):
-            obj.guard(source=True)
+            obj.guard(source=True, video_id=ID)
             obj.stop_path.write_bytes(b'new scope stopped')
-            with self.assertRaisesRegex(worker.Held, 'batch_source_stopped'): obj.guard(source=True)
+            with self.assertRaisesRegex(worker.Held, 'batch_source_stopped'): obj.guard(source=True, video_id=ID)
             obj.stop_path.unlink()
             worker.write(obj.cooldown_path, {'retry_not_before_epoch': time.time() + 86400})
-            with self.assertRaisesRegex(worker.Held, 'batch_source_cooldown'): obj.guard(source=True)
+            with self.assertRaisesRegex(worker.Held, 'batch_source_cooldown'): obj.guard(source=True, video_id=ID)
         self.assertEqual({p: p.read_bytes() for p in original}, original)
 
     def test_unbound_wpc_media_refusals_are_counted_without_target_or_batch_refusal(self):
@@ -234,18 +237,18 @@ class NativeBatchTests(unittest.TestCase):
         for phase in ('bootstrap', 'transfer'):
             state.phase = phase
             state.selected_metadata_saved = phase == 'transfer'
-            for status in (403, 429):
+            for status in (403,):
                 self.assertFalse(worker.record_browser_response(
                     state, 'https://r1.googlevideo.com/videoplayback?token=NEVER-EXPORT', status))
                 state.guard()
                 self.assertIsNone(state.refusal)
                 self.assertIsNone(batch.source_error({'diagnostics': state.summary()}))
         saved = worker.read(self.root / 'progress.json')
-        self.assertEqual(saved['browser_http_status_counts'], {'media:403': 2, 'media:429': 2})
-        self.assertEqual(saved['browser_unbound_media_failures'], {'403': 2, '429': 2})
+        self.assertEqual(saved['browser_http_status_counts'], {'media:403': 2})
+        self.assertEqual(saved['browser_unbound_media_failures'], {'403': 2})
         self.assertEqual(saved['browser_media_failure_binding'], 'unbound_provider_context')
         self.assertNotIn('NEVER-EXPORT', json.dumps(saved))
-        self.assertNotIn('video_id', json.dumps(saved))
+        self.assertIsNone(saved['http_failure'])
         self.assertEqual(saved['audio_bytes_written'], 0)
 
     def test_wpc_source_control_refusals_remain_fatal_without_claimed_video_binding(self):
@@ -272,6 +275,127 @@ class NativeBatchTests(unittest.TestCase):
                 with self.assertRaisesRegex(worker.Held, 'source_' + str(status)):
                     state.guard()
                 self.assertNotIn('NEVER-EXPORT', json.dumps(worker.read(self.root / 'progress.json')))
+
+    def test_exact_selected_media403_is_item_scoped_and_browser429_is_global(self):
+        state = worker.State({'preserved_controls': []}, self.root, time.time() + 60)
+        url = 'https://r1.googlevideo.com/videoplayback?private=NEVER-EXPORT'
+        state.phase = 'native_transfer'; state.selected_metadata_saved = True
+        state.selected_asset_url = url; state.selected_summary = {'format_id': '140', 'filesize': 123}
+        worker.record_python_http_refusal(state, url, 403, final_url=url, retry_after='120')
+        self.assertEqual(state.http_failure['action'], 'item_quarantine')
+        self.assertTrue(state.http_failure['binding_verified'])
+        self.assertEqual(state.http_failure['retry_after_state'], 'delay_seconds')
+        self.assertNotIn('NEVER-EXPORT', json.dumps(state.summary()))
+        for final in (None, 'https://www.youtube.com/watch?v=' + ID, url + 'changed'):
+            other = worker.State({'preserved_controls': []}, self.root, time.time() + 60)
+            other.phase = state.phase; other.selected_metadata_saved = True
+            other.selected_asset_url = url; other.selected_summary = state.selected_summary
+            worker.record_python_http_refusal(other, url, 403, final_url=final)
+            self.assertEqual(other.http_failure['action'], 'global_stop')
+        browser = worker.State({'preserved_controls': []}, self.root, time.time() + 60)
+        self.assertTrue(worker.record_browser_response(browser, url, 429))
+        self.assertEqual(browser.http_failure['action'], 'global_stop')
+        self.assertFalse(browser.http_failure['binding_verified'])
+
+    def policy_coordinator(self):
+        obj = batch.NativeBatch.__new__(batch.NativeBatch)
+        obj.root = self.root; obj.jobs = self.root / 'jobs'; obj.jobs.mkdir(exist_ok=True)
+        obj.lock = threading.RLock(); obj.source_stop = threading.Event(); obj.live_reservations = {}
+        obj.plan_sha = '0' * 64; obj.last_guard = obj.last_inventory = time.monotonic()
+        obj.lease = {'expires_at_epoch': time.time() + 60}; obj.budget = None
+        obj.cap = batch.MANAGED; obj.external = obj.others = 0
+        paths = worker.control_paths(self.root); paths['http_state_path'].parent.mkdir(exist_ok=True)
+        obj.stop_path = paths['batch_stop_path']; obj.cooldown_path = paths['source_cooldown_path']
+        obj.http_state_path = paths['http_state_path']
+        seed = self.root / 'seed.json'; worker.write(seed, batch.http_policy.empty_state())
+        obj.http_seed = {'path': str(seed), 'sha256': worker.digest(seed)}
+        worker.write(obj.http_state_path, {'schema_version': 1, 'seed_sha256': obj.http_seed['sha256'], 'state': batch.http_policy.empty_state()})
+        obj.http_review = {'review_sha256': 'a' * 64, 'covered_event_ids': [],
+                           'allowed_video_ids': [c * 11 for c in 'abcde']}
+        return obj
+
+    def failure(self, obj, ident, status=403):
+        folder = obj.jobs / ident; folder.mkdir(exist_ok=True)
+        worker.write(folder / 'attempt.json', {'video_id': ident, 'attempts_spent': 1})
+        url = 'https://r1.googlevideo.com/videoplayback?private=' + ident
+        event = batch.http_policy.classify_http_failure(status, url, url, url, 'native_transfer',
+            ident, {'format_id': '140'}, selection_validated=True)
+        return {'video_id': ident, 'diagnostics': {'error_class': 'source_' + str(status), 'http_failure': event,
+                                                  'http_failure_at_epoch': time.time()}}
+
+    def test_item_quarantine_is_durable_deduplicated_and_does_not_stop_peer(self):
+        obj = self.policy_coordinator(); failure = self.failure(obj, ID)
+        obj.refuse(failure); first = obj.http_state_path.read_bytes()
+        obj.refuse(failure)
+        self.assertEqual(first, obj.http_state_path.read_bytes())
+        self.assertFalse(obj.source_stop.is_set()); self.assertFalse(obj.stop_path.exists())
+        with self.assertRaisesRegex(worker.Held, 'item_quarantined'): obj.guard(source=True, video_id=ID)
+        obj.guard(source=True, video_id='b' * 11)
+        self.assertEqual(len(obj.policy_envelope()['state']['events']), 1)
+
+    def test_worker_global_escalation_after_item403_is_preserved_and_durable(self):
+        obj = self.policy_coordinator(); self.failure(obj, ID)
+        state = worker.State({'preserved_controls': []}, self.root, time.time() + 60)
+        url = 'https://r1.googlevideo.com/videoplayback?private=NEVER-EXPORT'
+        state.phase = 'native_transfer'; state.selected_metadata_saved = True; state.selected_asset_url = url
+        state.selected_summary = {'format_id': '140'}
+        worker.record_python_http_refusal(state, url, 403, final_url=url)
+        first = dict(state.http_failure); first_time = state.http_failure_at_epoch
+        obj.refuse({'video_id': ID, 'diagnostics': state.summary()})
+        self.assertFalse(obj.source_stop.is_set())
+        self.assertTrue(worker.record_browser_response(state, url, 429))
+        self.assertEqual(state.http_failure, first); self.assertEqual(state.http_failure_at_epoch, first_time)
+        self.assertEqual(state.http_escalation['action'], 'global_stop')
+        obj.refuse({'video_id': ID, 'diagnostics': state.summary()})
+        self.assertTrue(obj.source_stop.is_set())
+        self.assertEqual(len(obj.policy_envelope()['state']['events']), 2)
+        self.assertNotIn('NEVER-EXPORT', obj.http_state_path.read_text())
+
+    def test_bot_failure_cannot_be_masked_by_an_earlier_item403(self):
+        obj = self.policy_coordinator(); failure = self.failure(obj, ID)
+        failure['diagnostics'].update(error_class='bot_check', global_failure_code='bot_check',
+                                      global_failure_at_epoch=time.time())
+        obj.refuse(failure)
+        self.assertTrue(obj.source_stop.is_set())
+        self.assertEqual({r['event']['code'] for r in obj.policy_envelope()['state']['events'].values()}, {'source_403','bot_check'})
+
+    def test_replayed_progress_preserves_capture_time_and_unknown_time_holds(self):
+        obj = self.policy_coordinator(); failure = self.failure(obj, ID)
+        captured = time.time() - 120; failure['diagnostics']['http_failure_at_epoch'] = captured
+        obj.refuse(failure); obj.refuse(failure)
+        self.assertEqual(next(iter(obj.policy_envelope()['state']['events'].values()))['at_epoch'], captured)
+        other = self.failure(obj, 'b' * 11); other['diagnostics'].pop('http_failure_at_epoch')
+        obj.refuse(other)
+        self.assertTrue(obj.source_stop.is_set()); self.assertTrue(worker.read(obj.cooldown_path)['timestamp_unproven'])
+        self.assertEqual(len(obj.policy_envelope()['state']['events']), 1)
+
+    def test_concurrent_refusals_are_not_lost_and_third_observation_blocks_dispatch(self):
+        obj = self.policy_coordinator()
+        first, second = [self.failure(obj, c * 11) for c in 'ab']
+        with batch.ThreadPoolExecutor(max_workers=2) as pool:
+            list(pool.map(obj.refuse, [first, second]))
+        self.assertEqual(len(obj.policy_envelope()['state']['events']), 2)
+        self.assertFalse(obj.stop_path.exists())
+        third = self.failure(obj, 'c' * 11); folder = obj.jobs / ('c' * 11)
+        worker.write(folder / 'progress.json', third['diagnostics'])
+        obj.live_reservations['c' * 11] = {'folder': folder}
+        with self.assertRaisesRegex(worker.Held, 'batch_source_stopped'):
+            obj.guard(source=True, video_id='d' * 11)
+        self.assertTrue(obj.stop_path.exists()); self.assertFalse((obj.jobs / ('d' * 11)).exists())
+        state = obj.policy_envelope()['state']
+        self.assertEqual(len(state['events']), 3)
+        self.assertTrue(batch.http_policy.status(state, time.time() + 10000)['global_stop'])
+        self.assertIsNotNone(worker.read(obj.cooldown_path)['circuit_break'])
+
+    def test_rate_limit_state_survives_new_coordinator_and_no_history_reset(self):
+        obj = self.policy_coordinator(); obj.refuse(self.failure(obj, ID, 429))
+        state = obj.policy_envelope()['state']
+        self.assertTrue(batch.http_policy.status(state, time.time() + 10000)['global_stop'])
+        # A fresh Event object cannot erase the persisted global refusal.
+        obj.source_stop = threading.Event()
+        with self.assertRaisesRegex(worker.Held, 'batch_source_stopped'):
+            obj.guard(source=True, video_id='b' * 11)
+        self.assertEqual(obj.policy_envelope()['state'], state)
 
     def test_active_profile_growth_cannot_double_count_reserved_slots(self):
         spool = self.root / 'spool'; folders = [spool / 'a', spool / 'b']
@@ -478,6 +602,9 @@ class NativeBatchTests(unittest.TestCase):
                     'language_preference': preference, 'language': 'en'}
         with Offline({'quiet': True, 'format': worker.LEGACY_FORMAT_SELECTOR}, auto_init=False) as ydl:
             self.assertEqual([f['format_id'] for f in ydl._select_formats([fmt(-1)], ydl.format_selector)], ['140'])
+            drc = dict(fmt(-1), format_id='140-drc', quality=100)
+            self.assertEqual([f['format_id'] for f in ydl._select_formats([fmt(-1), drc], ydl.format_selector)], ['140'])
+            self.assertEqual(ydl._select_formats([drc], ydl.format_selector), [])
             for preference in (0, 5, 10, None):
                 self.assertEqual(ydl._select_formats([fmt(preference)], ydl.format_selector), [])
 

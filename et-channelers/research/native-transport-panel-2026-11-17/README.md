@@ -1,5 +1,56 @@
 # Native transport panel and first complete recovery
 
+## Automated continuation, 21:59 UTC
+
+The supported native route has reached **77 canonical audio/metadata pairs**;
+the 21:59 snapshot has **46 native-source ASR bundles**, 105 unique latest-20
+audio entries and 91 with saved text across canonical and publisher editions.
+The old SABR trial and its controls remain unchanged. The first complete-file
+proof and earlier outcomes below are dated history.
+
+Two new 20-item v4 frames completed in 359.016s and 501.406s. They produced 19
+immediate canonical archives containing 469,063,496 audio bytes and 28,982 source
+seconds. A twentieth complete file recovered offline after a Windows progress
+write failed; it was archived and transcribed without another source request.
+The repair uses unique temporary files, serialized progress and six bounded
+sharing/access-denied replace attempts. Executed failure evidence remains.
+
+Independent review corrected HTTP scope. Item quarantine requires exact
+selected-request and final-response asset binding. Unknown/control 403s,
+provider 429s and protection checks remain global. A durable three-distinct-item
+ten-minute breaker survives success, new batches and restarts. The two bound
+media 403s in the second frame stayed quarantined; neither asset was retried.
+The earlier historical refusal lacks final-URL/Retry-After evidence and remains
+explicitly unresolved rather than being relabeled as an observed absent header.
+The policy follows the distinction between a resource refusal and a request
+limit in [RFC9110](https://www.rfc-editor.org/rfc/rfc9110.html#section-15.5.4)
+and [RFC6585](https://www.rfc-editor.org/rfc/rfc6585.html#section-4).
+
+Offline catalog review also found normal and dynamic-range-compressed variants
+sharing a base itag. The policy now inspects the complete bounded raw catalog,
+binds every DRC variant to its unique normal base and selects only non-DRC audio.
+All original-track, codec and known-size gates remain. Default/dub preference
+cannot establish original status. Legacy single-track inference stays labeled,
+and unknown source language remains null.
+
+The [60-item series](../../pipeline/NATIVE_SERIES.md) started at 21:52:52 UTC
+with two source workers and a local English-to-GPU handoff. Its 5.5 GB spool and
+500 MB/three-pair staging allocation share the 16 GB managed ceiling. The eight
+English and four-source multilingual review frames have closed; three of the
+latter four produced verified Portuguese/English or inferred-English outputs,
+while one detector returned no reliable speech. Accuracy remains unreviewed.
+
+A [recovery checkpoint](https://drive.google.com/file/d/1y9upcWtUVDO0ZADb-rhaYVoj9VQwyzdh/view)
+preserves 669 allowlisted ZIP members: 1,747,438 bytes, SHA-256
+`90fa69e4dda5661d144986a31de4ceda366f7171bc695afaea29282d15d93721`.
+Exact Drive identity/size/MD5 and local member hashes were verified before only
+the new ZIP was retired. Code, proposals, admissions, receipts and safe scalars
+are retained; media, transcripts, full metadata, profiles, credentials and raw
+transport payloads are excluded. It is a per-file consistent checkpoint, not a
+globally atomic snapshot or authorization to restore live leases.
+
+## Historical first three recoveries, 19:40 UTC
+
 **Three browser-assisted native YouTube audio files and their metadata are now verified on Drive.** Canonical acquisition is 50 of the 1,420 newest-20 entries. The first recovery has an explicit codec-warning quality record; the two later files passed clean packet probes. These results do not establish universal availability or a guaranteed finish time.
 
 ## Later complete-file recovery, 19:40 UTC

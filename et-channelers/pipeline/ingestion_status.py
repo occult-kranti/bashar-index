@@ -39,6 +39,92 @@ def read_object(path):
         return {}
 
 
+def owned_process_alive(identity):
+    """Read-only Windows PID/creation-time proof; a reused PID is insufficient."""
+    pid, created = identity.get('pid'), identity.get('process_creation_filetime')
+    if os.name != 'nt' or type(pid) is not int or pid <= 0 or not str(created).isdigit():
+        return False
+    import ctypes
+    from ctypes import wintypes
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.GetProcessTimes.argtypes = [wintypes.HANDLE] + [ctypes.POINTER(wintypes.FILETIME)] * 4
+    kernel.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    handle = kernel.OpenProcess(0x1000, False, pid)
+    if not handle:
+        return False
+    try:
+        times = [wintypes.FILETIME() for _ in range(4)]
+        code = wintypes.DWORD()
+        return bool(kernel.GetProcessTimes(handle, *(ctypes.byref(x) for x in times)) and
+                    kernel.GetExitCodeProcess(handle, ctypes.byref(code)) and code.value == 259 and
+                    str((times[0].dwHighDateTime << 32) | times[0].dwLowDateTime) == str(created))
+    finally:
+        kernel.CloseHandle(handle)
+
+
+def active_native_series(root, now):
+    """Do not let the parked legacy collector mask a separately owned executor."""
+    lease = read_object(root / 'sync/stock_wpc_batch_v4_lease.json')
+    expiry = lease.get('expires_at_epoch')
+    if not (lease.get('state') == 'active' and lease.get('authorized') is True and
+            lease.get('source_scope_authorized') is True and
+            lease.get('profile') == 'stock_headful_wpc_native_batch_v4' and
+            type(expiry) in (int, float) and now < expiry and
+            lease.get('max_workers') in (1, 2)):
+        return {}
+    if (root / 'sync/STOP_STOCK_WPC_BATCH_V4').exists():
+        return {}
+    cooldown = read_object(root / 'sync/stock_wpc_batch_v4_source_cooldown.json')
+    if source_deadline([cooldown]) > now:
+        return {}
+    drive_cooldown_path = root / 'sync/drive_ingest_cooldown.json'
+    if drive_cooldown_path.exists():
+        try:
+            if float(read_object(drive_cooldown_path)['until_epoch']) > now:
+                return {}
+        except (KeyError, ValueError, TypeError):
+            return {}
+    for live in sorted((root / 'jobs').glob('native-series*/live'))[:20]:
+        if live.is_symlink() or any((live / name).exists() for name in
+                                   ('local-publication-hold.json', 'drive-hold.json', 'STOP_SERIES')):
+            continue
+        state = read_object(live / 'series-state.json')
+        invoked = read_object(live / 'source-invocation.json')
+        series, authorization = lease.get('series_proposal_sha256'), lease.get('root_authorization_sha256')
+        if not (isinstance(series, str) and re.fullmatch(r'[a-f0-9]{64}', series) and
+                isinstance(authorization, str) and re.fullmatch(r'[a-f0-9]{64}', authorization) and
+                state.get('status') == 'running' and state.get('proposal_sha256') == series and
+                state.get('authorization_sha256') == authorization and
+                invoked.get('series_proposal_sha256') == series and
+                invoked.get('root_authorization_sha256') == authorization and
+                lease.get('controller_identity') == {key: invoked.get(key) for key in
+                                                     ('pid', 'process_creation_filetime')} and
+                owned_process_alive(invoked)):
+            continue
+        consumer = read_object(live / 'consumer-state.json')
+        heartbeat = consumer.get('heartbeat_epoch')
+        gpu = read_object(root / 'sync/gpu_lease.json')
+        try:
+            gpu_expiry = dt.datetime.fromisoformat(gpu.get('expires_at', '').replace('Z', '+00:00'))
+            gpu_active = bool(gpu_expiry.tzinfo and gpu_expiry.timestamp() > now and
+                              gpu.get('state') == 'active' and gpu.get('authorized', True) is True and
+                              gpu.get('lease_id') == consumer.get('gpu_lease_id') and
+                              gpu.get('series_proposal_sha256') == series)
+        except (ValueError, TypeError, AttributeError):
+            gpu_active = False
+        asr_running = (consumer.get('series_proposal_sha256') == series and
+                       consumer.get('status') == 'waiting_or_processing' and gpu_active and
+                       consumer.get('phase') == 'gpu_running' and
+                       type(heartbeat) in (int, float) and 0 <= now - heartbeat <= 15 and
+                       owned_process_alive(consumer))
+        return {'workers': lease['max_workers'], 'asr_running': asr_running,
+                'asr_reported_at': stamp(heartbeat) if asr_running else None}
+    return {}
+
+
 def queue_ids(root, names):
     for name in names:
         path = root / "jobs" / name
@@ -443,7 +529,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     verified = {key for key, rec in latest.items() if proof(receipt_complete, rec, record_row(rec), remote)}
     supported_native = {key for key in verified if
                         latest[key].get('acquisition_profile') == 'stock_headful_wpc_native_full_v1' or
-                        latest[key].get('native_batch_profile') in ('stock_headful_wpc_native_batch_v1', 'stock_headful_wpc_native_batch_v2', 'stock_headful_wpc_native_batch_v3')}
+                        latest[key].get('native_batch_profile') in ('stock_headful_wpc_native_batch_v1', 'stock_headful_wpc_native_batch_v2', 'stock_headful_wpc_native_batch_v3', 'stock_headful_wpc_native_batch_v4')}
     browser_verified = set()
     for rec in asr_records(root / 'sync/browser_capture_manifest.jsonl', 'capture_id'):
         row = record_row(rec)
@@ -535,6 +621,11 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
         configured and supervisor.get('state') == 'caption_backfill_retry_budget_exhausted') else \
         'cooldown' if caption_until > now else 'pending' if caption_pending else \
         'complete' if captions or verified else 'unknown'
+    series = active_native_series(root, now)
+    if series:
+        state, workers, until, provider = 'running', series['workers'], None, None
+        if series['asr_running']:
+            asr_state, asr_reported_at = 'running', series['asr_reported_at']
     local_bytes = 0
     for base, dirs, files in os.walk(root, followlinks=False):
         dirs[:] = [name for name in dirs if not (Path(base) / name).is_symlink()]
