@@ -1,5 +1,32 @@
 # Conditional collection estimate — 17 November 2026 update
 
+## Completed 60-item series, 22:27 UTC
+
+The latest source series made 60 decisions in **27m22.68s**, archiving **30 new
+native audio/metadata pairs**: 651,969,521 audio bytes / 11.19 source hours.
+The parallel consumer verified **18 English ASR bundles / 7.85 source hours**,
+then retired its inputs and released the GPU/staging reservation. Twelve new
+recordings await language review. Three uncertain source attempts remain held;
+no retry is implied by a completed series.
+
+Together, the preceding two 20-item v4 frames and this series made **100
+first-pass decisions in 2,503.102453 seconds (41m43s)**: about 2.40 items/minute.
+The next-cohort selection snapshot identifies **1,213 untouched candidates**.
+At the aggregate observed mix, their first pass implies **8.4 active hours**;
+use **8–12 active hours** for planning while source availability, upload service
+and backpressure remain similar. This is not a statistical interval or a date
+for complete acquisition/transcription. It excludes recovery of held formats,
+source denials, uncertain attempts and additional language/ASR work. The new
+upload-overlap scheduler has only offline validation so far; no speedup is
+assumed in this estimate.
+
+The 22:27 aggregate has **100 native pairs / 63 native ASR / 128 deduplicated
+audio entries / 108 audio entries with saved text**. A single six-root inventory
+after closure measured **8.06 GB**, plus 300 MB of other active growth, below
+16 GB; physical free space was 36.36 GB. Source, English staging and GPU leases
+from the series are released. Later admissions retain their own exact budgets.
+The earlier measurements and hypothetical scenarios below remain dated records.
+
 ## Measured native batches, 21:59 UTC
 
 The current snapshot has 77 native audio/metadata pairs and 46 native-source ASR

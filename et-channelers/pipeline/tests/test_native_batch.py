@@ -491,6 +491,7 @@ class NativeBatchTests(unittest.TestCase):
     def test_fake_child_is_attached_before_go_and_cleaned_before_return(self):
         obj = batch.NativeBatch.__new__(batch.NativeBatch)
         obj.lock = threading.RLock(); obj.source_stop = threading.Event(); obj.plan_sha = '0' * 64
+        obj.dispatch_paused = threading.Event()
         obj.root = self.root; obj.spool = self.root; obj.jobs = self.root / 'jobs'; obj.guard = Mock(); obj.live_reservations = {}
         obj.s = {'max_asset_bytes': 1000, 'lease_id': 'fixture', 'python_executable': 'unused', 'job_wall_seconds': 600, 'spool_cap_bytes': 500_000_000}
         obj.settings_path = self.root / 'settings'; obj.lease_path = self.root / 'lease'; obj.stop_path = self.root / 'batch-stop'

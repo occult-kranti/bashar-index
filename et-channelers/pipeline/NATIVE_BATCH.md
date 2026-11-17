@@ -252,3 +252,22 @@ replace attempts with 775 ms total backoff. Progress snapshot/commit is
 serialized, and the first sanitized failure and retry counters remain in
 diagnostics. Exhausted or unrelated errors fail as `control_write_failed`;
 uncertain final-result writes never count as success.
+
+## Upload overlap and diagnostic successor
+
+The reviewed successor refills a free source slot before synchronously publishing
+a dequeued completion. It retains at most two tracked source futures and two
+queued completions, with one canonical writer. Pending futures consume virtual
+slots until actual child reservations exist, so the parent cannot promise the
+same free bytes twice. Retained completed files remain charged. Source stops,
+Drive cooldowns, staging pauses and insufficient capacity prevent refill.
+
+Raw inventory rows add allowlisted label field/key categories and classify at
+most eight tag projections independently across top-level, URL, cipher and
+cipher-URL origins. Equality and `all_exact_drc_only` are observation flags;
+they contain no URL/query values and do not change admission. Incomplete,
+opaque or compound tags remain unresolved. A separately admitted metadata-only
+review completed before selection with no audio output. Its original aggregate
+enum could not distinguish duplicated projections; the corrected diagnostics
+will collect that evidence from fresh admitted targets, without repeating the
+held target. Normal browser bootstrap remains observable network activity.

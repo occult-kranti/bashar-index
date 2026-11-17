@@ -41,6 +41,72 @@ def transport_track_tags(fmt, explicit_drc=False):
     return False
 
 
+DIAGNOSTIC_TRANSPORT_KEYS = frozenset({'xtags', 'lang', 'language', 'acont', 'drc', 'vb'})
+DIAGNOSTIC_TRACK_KEYS = frozenset({'id', 'displayName', 'audioIsDefault', 'languageCode', 'isOriginal', 'isDubbed', 'isAutoDubbed', 'isDescriptive', 'isSecondary'})
+
+
+def label_diagnostics(fmt):
+    """Bounded observation only; projections never change semantic admission."""
+    origins = ('top_level', 'url', 'cipher', 'cipher_url')
+    projections = {origin: [] for origin in origins}
+    result = {'label_fields_present': sorted(k for k in LABEL_FIELDS if nonempty(fmt.get(k))),
+        'audio_track_present': fmt.get('audioTrack') not in (None, {}),
+        'audio_track_known_keys': [], 'audio_track_unknown_key_present': False,
+        'transport_known_keys': [], 'transport_diagnostic_complete': True,
+        'xtags_state': 'absent', 'xtags_projection_count': 0,
+        'xtags_projection_limit_reached': False, 'xtags_projections_equal': None,
+        'all_exact_drc_only': False, 'semantic_admission_unchanged': True}
+    track = fmt.get('audioTrack')
+    if isinstance(track, dict):
+        result['audio_track_known_keys'] = sorted(k for k in DIAGNOSTIC_TRACK_KEYS if k in track)
+        result['audio_track_unknown_key_present'] = any(k not in DIAGNOSTIC_TRACK_KEYS for k in track)
+    elif track not in (None, {}):
+        result['audio_track_unknown_key_present'] = True
+    keys = set(); urls = []
+    def parsed(value):
+        if not isinstance(value, str) or len(value) > 32768: raise ValueError('bounded')
+        return parse_qs(value, keep_blank_values=True, max_num_fields=128)
+    def add(origin, values):
+        for value in values:
+            if result['xtags_projection_count'] >= 8:
+                result['xtags_projection_limit_reached'] = True
+                raise ValueError('bounded')
+            projections[origin].append(value); result['xtags_projection_count'] += 1
+    def inspect(values, origin):
+        keys.update(k.lower() for k in values if k.lower() in DIAGNOSTIC_TRANSPORT_KEYS)
+        for key, values0 in values.items():
+            if key.lower() == 'xtags': add(origin, values0)
+    def exact_drc(value):
+        return (isinstance(value, str) and len(value) <= 64 and '&' not in value and ';' not in value
+                and parsed(value) == {'drc': ['1']})
+    try:
+        if nonempty(fmt.get('xtags')): add('top_level', [fmt['xtags']])
+        if fmt.get('url') is not None: urls.append(('url', fmt['url']))
+        for field in ('signatureCipher', 'cipher'):
+            if fmt.get(field) is not None:
+                values = parsed(fmt[field]); inspect(values, 'cipher')
+                urls.extend(('cipher_url', value) for value in values.get('url', []))
+        if len(urls) > 3: raise ValueError('bounded')
+        for origin, value in urls:
+            if not isinstance(value, str) or len(value) > 32768: raise ValueError('bounded')
+            inspect(parsed(urlsplit(value).query), origin)
+    except (ValueError, TypeError):
+        result['transport_diagnostic_complete'] = False
+    # Compare bounded copies in memory only; no values or hashes of values leave.
+    all_values = [value for origin in origins for value in projections[origin]]
+    result['xtags_projection_counts'] = {origin: len(projections[origin]) for origin in origins}
+    result['xtags_by_origin'] = {origin: ('absent' if not projections[origin] else
+        'exact_drc_only' if all(exact_drc(value) for value in projections[origin]) else 'other_or_unreadable') for origin in origins}
+    complete = result['transport_diagnostic_complete']
+    if complete and len(all_values) >= 2 and all(isinstance(value, str) and len(value) <= 64 for value in all_values):
+        result['xtags_projections_equal'] = all(value == all_values[0] for value in all_values[1:])
+    result['all_exact_drc_only'] = bool(complete and all_values and all(exact_drc(value) for value in all_values))
+    if all_values or not complete:
+        result['xtags_state'] = 'exact_drc_only' if result['all_exact_drc_only'] else 'other_or_unreadable'
+    result['transport_known_keys'] = sorted(keys)
+    return result
+
+
 def legacy_track_inventory(video_id, player_responses, chosen_client='mweb'):
     result = {'schema_version': 1, 'video_id': video_id, 'chosen_client': chosen_client,
         'eligible': False, 'reason': 'missing_raw_inventory', 'audio_representations': [],
@@ -101,7 +167,8 @@ def legacy_track_inventory(video_id, player_responses, chosen_client='mweb'):
                 if type(length) is not int or not 0 < length <= 2**53: length = None
                 row = {'itag': itag, 'audio_only': parts[1] == 'audio', 'is_drc': is_drc,
                     'codec': audio_codecs[0] if len(audio_codecs) == 1 else None, 'source_bytes': length,
-                    'semantic_labels_present': bool(labels), 'has_drm': bool(drm)}
+                    'semantic_labels_present': bool(labels), 'has_drm': bool(drm),
+                    'label_diagnostics': label_diagnostics(fmt)}
                 result['audio_representations'].append(row)
                 seen[variant] = row
     result['inspection_complete'] = structurally_complete

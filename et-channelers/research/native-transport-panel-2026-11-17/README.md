@@ -1,5 +1,46 @@
 # Native transport panel and first complete recovery
 
+## Completed automated series, 22:27 UTC
+
+The initial three-frame series archived **30 new native pairs** (651,969,521 audio
+bytes / 11.19 measured source hours) in **27m22.68s**. Its parallel English
+consumer verified **18 new ASR bundles / 7.85 source hours** without Drive input
+pulls. Both executors and their matching reservations are closed. Thirty item
+holds remain; three source attempts have uncertain evidence and cannot be
+silently retried. Aggregate coverage is 100 native pairs, 63 native ASR, 128 unique
+audio entries and 108 audio entries with saved text. Accuracy remains unreviewed.
+
+The reviewed scheduling successor refills available source slots before
+synchronous publication, with virtual reservations, retained-file accounting and
+one canonical writer. Its portable fixtures preserve source/Drive/staging stops.
+New allowlisted label diagnostics preserve admission and omit raw URLs/values.
+The measured [ETA](../collection-eta-2026-11-17.md) now uses 100 first-pass decisions
+across three executions and distinguishes untouched work from held recovery.
+
+## Completed metadata-only observation, 22:35:59 UTC
+
+One separately admitted observation of a local DRC-label hold completed in
+15.797 seconds and stopped before selection. It saved sanitized raw and
+normalized inventories, with zero audio writes, zero finished downloads and no
+ASR, upload or canonical completion claim. The owned process exited, its profile
+was removed and the separate 400 MB reservation was released.
+
+All six DRC rows had `xtags` in both top-level and URL projections, with no
+audio-track object; non-DRC rows had no semantic-label flag. The original
+diagnostic enum combined those projections and could not resolve the tag
+contents. This is not evidence that the tags are processing-only, and no
+acceptance rule was relaxed. Corrected diagnostics now report each origin,
+bounded counts, equality and an all-exact-DRC-only flag without values. Fresh
+admitted targets will supply further evidence; no second probe of this held
+target is planned.
+
+The stock browser made 47 observed requests, including six unbound preview-media
+403 responses. Source-control responses were successful and no 429 occurred.
+Python made five wire requests and read about 5.05 MB of metadata; Python media
+requests and redirects were blocked. Ordinary browser bootstrap is therefore
+not described as zero network or zero media activity, and its unbound preview
+responses do not establish refusal of the requested recording.
+
 ## Automated continuation, 21:59 UTC
 
 The supported native route has reached **77 canonical audio/metadata pairs**;
