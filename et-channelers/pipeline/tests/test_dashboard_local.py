@@ -181,7 +181,7 @@ class StatusExportTests(unittest.TestCase):
         self.assertEqual(result['counts']['awaiting_upload'], 1)
         self.assertEqual(result['stages'][0]['total'], 2)
 
-    def test_caption_counts_require_current_policy_and_exact_remote_proofs(self):
+    def test_text_availability_preserves_partial_caption_inventory_and_requires_archived_proofs(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             (root / 'sync').mkdir()
@@ -204,21 +204,38 @@ class StatusExportTests(unittest.TestCase):
                             'remote':f'etdrive:04 Audio/PRIVATE-PERSON/Videos/{video}.captions.{identity}.zip'}})
                 value.update(changes)
                 return value
-            a, b, c, d, e, f, g = [f'PRIVATEid{n}1' for n in 'ABCDEFG']
-            audio_rows = [audio(video) for video in (a, b, e)]
+            a, b, c, d, e, f, g, h = [f'PRIVATEid{n}1' for n in 'ABCDEFGH']
+            audio_rows = [audio(video) for video in (a, b, e, f, g)]
             rows = [caption(a, tracks=2), caption(b, status='pending', tracks=2),
                     caption(c, status='none', tracks=0), caption(d, status='none', tracks=0, unresolved=['access']),
-                    caption(f), caption(g, policy='outdated')]
+                    caption(f), caption(g, policy='outdated'), caption(h)]
             rows[1]['tracks'][1]['status'] = 'ready'
+            rows[1]['unresolved'] = [{'reason':'original_origin_unproven'}]
             rows[4]['tracks'][0]['bundle']['remote'] = 'etdrive:WRONG/PRIVATE/file.zip'
-            for name, records in [('drive_ingest_manifest.jsonl',audio_rows),('drive_caption_manifest.jsonl',rows)]:
+            asr = [{'video_id':video, 'channel_dir':'PRIVATE-PERSON', 'run_id':'test-run',
+                    'status':'verified', 'artifact_kind':'asr_bundle', 'bytes':30,
+                    'drive_id':'SECRET ASR ID', 'md5':'1'*32, 'sha256':'2'*64,
+                    'source_audio_drive_id':'SECRET AUDIO ID', 'source_audio_sha256':'b'*64,
+                    'remote':f'etdrive:04 Audio/PRIVATE-PERSON/Videos/{video}/ASR/test-run/test-run.zip'}
+                   for video in (a, e)]
+            for name, records in [('drive_ingest_manifest.jsonl',audio_rows),
+                                  ('drive_caption_manifest.jsonl',rows), ('asr_manifest.jsonl',asr)]:
                 (root / 'sync' / name).write_text(''.join(json.dumps(row)+'\n' for row in records), encoding='utf-8')
             result = ingestion_status.snapshot(root, now=1800000000)
-        self.assertEqual(result['counts']['verified_pairs'], 3)
-        self.assertEqual(result['counts']['caption_verified_videos'], 1)
-        self.assertEqual(result['counts']['caption_verified_tracks'], 3)
+        self.assertEqual(result['counts']['verified_pairs'], 5)
+        self.assertEqual(result['counts']['caption_verified_videos'], 2)
+        self.assertEqual(result['counts']['caption_verified_tracks'], 4)
         self.assertEqual(result['counts']['caption_none_english'], 1)
         self.assertEqual(result['counts']['caption_pending_videos'], 5)
+        self.assertEqual(result['counts']['asr_verified_videos'], 2)
+        self.assertEqual(result['counts']['caption_text_available_videos'], 2)  # a, b only
+        self.assertEqual(result['counts']['caption_inventory_review_videos'], 1)  # b remains incomplete
+        self.assertEqual(result['counts']['text_available_videos'], 3)  # a, b, e; a is not double-counted
+        self.assertEqual(result['counts']['text_missing_videos'], 2)  # wrong proof and outdated policy
+        self.assertEqual(result['counts']['text_inventory_complete_videos'], 2)  # a, e
+        self.assertEqual(result['counts']['text_artifact_videos'], 2)  # compatibility semantics
+        self.assertEqual(result['counts']['text_pending_videos'], 3)
+        self.assertNotIn('speech_coverage', result['counts'])
         for private in ('PRIVATE', 'SECRET', 'etdrive:', 'WRONG', str(root)):
             self.assertNotIn(private, json.dumps(result))
 

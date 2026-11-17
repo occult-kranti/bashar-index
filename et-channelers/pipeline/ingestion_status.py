@@ -155,6 +155,11 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
         if proof(caption_receipt_complete, rec, row, remote):
             (caption_none if rec.get("status") == "none" else caption_verified).add(key)
     caption_pending = (verified | captions.keys()) - caption_verified - caption_none
+    # A verified track remains available while other tracks or inventory entries
+    # need review. Availability is not a claim about complete speech coverage.
+    caption_text_available = {key for key, _ in verified_tracks} & archived
+    text_available = (asr_verified | caption_text_available) & archived
+    text_inventory_complete = (asr_verified | caption_verified) & archived
     unavailable = {key for key, rec in latest.items() if terminal_unavailable(rec)}
     audio = {key for key, rec in latest.items() if rec.get("bytes", 0) and rec.get("sha256")}
     twenty, channels = queue_ids(root, ("queue_newest20_enriched.csv", "queue_newest20.csv"))
@@ -241,6 +246,11 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                        "asr_verified_videos": len(asr_verified),
                        "text_artifact_videos": len((asr_verified | caption_verified) & archived),
                        "text_pending_videos": len(archived - asr_verified - caption_verified),
+                       "text_available_videos": len(text_available),
+                       "text_inventory_complete_videos": len(text_inventory_complete),
+                       "text_missing_videos": len(archived - text_available),
+                       "caption_text_available_videos": len(caption_text_available),
+                       "caption_inventory_review_videos": len(caption_text_available - caption_verified),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),
                        "unavailable": len(unavailable),
