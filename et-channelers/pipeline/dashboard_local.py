@@ -206,6 +206,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         if (data.counts.publisher_audio_qualified_variant_target_videos > 0) publisherSummary += number(data.counts.publisher_audio_qualified_variant_target_videos) + ' source associations remain qualified. ';
         if (Number.isFinite(data.counts.publisher_variant_asr_target_videos)) publisherSummary += number(data.counts.publisher_variant_asr_target_videos) + ' podcast editions have ASR verified on Drive. ';
         if (Number.isFinite(data.counts.publisher_mirror_asr_target_videos)) publisherSummary += number(data.counts.publisher_mirror_asr_target_videos) + ' mirror editions have ASR or original/English translation bundles verified on Drive. ';
+        if (data.counts.publisher_standalone_timed_text_target_videos > 0) publisherSummary += number(data.counts.publisher_standalone_timed_text_target_videos) + ' entries have separate publisher timed text; its audio edition and manual/automatic origin are unverified. ';
         put('cc-publisher-summary', publisherSummary + 'Publisher transcripts can be untimed and editions can differ from YouTube; native-audio progress is shown above.');
       }
       if (data.browser_support?.state === 'verified_local') {

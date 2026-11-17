@@ -4,7 +4,7 @@ This repository contains **three related research projects with separate dataset
 
 **Start here:** [all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [branch inventory and history](BRANCHES.md) · [collection handoff](et-channelers/HANDOFF.md) · [future transcription/analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md).
 
-Repository guide checkpoint: **17 November 2026, 18:49 UTC**. Integration baseline is merged [PR #35](https://github.com/occult-kranti/bashar-index/pull/35), `e9a5a06`: 1,139 Python tests with 45 skips, 86 Node tests passed and Pages deployed. Its branch `feat/held-audio-language-review` is retained. Current work on `feat/chromium-adblock-support` adds tested browser support, bounded publisher batches and separate publisher-source ASR. **Native audio/metadata pairs are now 48**, including a complete browser-assisted native download with a retained codec warning and verified English ASR. **Twenty-eight publisher editions** have English captions or ASR/translation on Drive. Deduplicated latest-20 coverage is **76 audio entries, 74 with a verified audio edition and saved text**. Canonical native-source ASR is **29**: 27 English recordings plus Spanish and Japanese originals with separate English translations. Accuracy remains unreviewed. Both models are pinned in one isolated environment; scientific corpus analysis remains deferred. [HANDOFF](et-channelers/HANDOFF.md) records the active goal and next native batch.
+Repository guide checkpoint: **17 November 2026, 19:54 UTC**. Integration baseline is merged [PR #35](https://github.com/occult-kranti/bashar-index/pull/35), `e9a5a06`; [PR #36](https://github.com/occult-kranti/bashar-index/pull/36) contains the browser, native/publisher batch, ASR and dashboard continuation. Its branch `feat/chromium-adblock-support` is retained. **Native audio/metadata pairs are now 50**, including three complete browser-assisted recoveries: two with clean packet probes and one with a retained codec warning. **Twenty-eight publisher mirror editions** have English captions or ASR/translation on Drive. Deduplicated latest-20 coverage is **78 audio entries, 76 with a verified audio edition and saved text**. Canonical native-source ASR is **31**: 29 English recordings plus Spanish and Japanese originals with separate English translations. Three publisher timed-text sources are archived independently of audio. Accuracy and source-edition equivalence remain unreviewed. Models remain pinned in the isolated environment; scientific corpus analysis is deferred. [HANDOFF](et-channelers/HANDOFF.md) records current admissions and the next native batch.
 
 ## The three research lanes
 
@@ -47,22 +47,23 @@ The [dated collection snapshot](et-channelers/plan/ingestion_status.json) report
 |---|---:|
 | Tracked channels / indexed unique video IDs | 74 / 67,594 |
 | Newest-20 / inclusive newest-50 / remainder | 1,420 / 3,449 / 64,145 |
-| Audio/metadata pairs verified on Drive | 48 |
+| Audio/metadata pairs verified on Drive | 50 |
 | Verified English caption bundles | 20 |
 | Videos with complete verified caption inventories | 15 |
-| Archived native audio items with verified text available | 46; 29 ASR plus 17 with English captions, no overlap |
-| Text-inventory completion / saved-caption review / no saved text | 44 / 2 / 2 |
-| Native-source ASR videos verified on Drive | 29; about 10.8 audio hours, accuracy unreviewed |
+| Archived native audio items with verified text available | 48; 31 ASR plus 17 with English captions, no overlap |
+| Text-inventory completion / saved-caption review / no saved text | 46 / 2 / 2 |
+| Native-source ASR videos verified on Drive | 31; about 11.6 audio hours, accuracy unreviewed |
 | Additional latest-20 publisher-written companions | 16; author-written source material, not verified spoken transcripts |
 | Additional exact-ID publisher transcripts | 1; untimed, spoken coverage unverified |
 | Additional publisher podcast audio editions | 2; source/edition association retained separately from native audio |
 | Additional publisher mirror audio / English captions | 28 / 17; source editions and YouTube edit equivalence retained separately |
 | Mirror-edition ASR/translation sources verified on Drive | 11; ten English editions plus German original and separate English translation |
 | Publisher-edition ASR verified on Drive | 2; about 2.6 audio hours, accuracy and YouTube edit equivalence unreviewed |
-| Deduplicated latest-20 audio / audio with saved text | 76 / 75; canonical and publisher source overlaps counted once |
+| Deduplicated latest-20 audio / audio with saved text | 78 / 76; canonical and publisher source overlaps counted once |
+| Additional publisher timed-text sources | 3; recording edition and manual/automatic origin unverified |
 | Scientific corpus-analysis jobs | 0 |
 
-These are the new local YouTube lane's counts, not totals for older podcasts, archive.org sessions, publisher texts or the Atlas. Its snapshot records a source cooldown; a one-file recovery does not establish universal access or ongoing successful downloading. Audio, caption and Drive endpoint deadlines remain separate. Use the [Windows/rclone operating guide](et-channelers/pipeline/WINDOWS_DRIVE.md), [caption methods](et-channelers/pipeline/YOUTUBE_CAPTIONS_RESEARCH.md) and [archive catalog guide](et-channelers/pipeline/ARCHIVE_CATALOG.md) for controls and recovery. Their older dated examples retain their original queue counts.
+These are the new local YouTube lane's counts, not totals for older podcasts, archive.org sessions, publisher texts or the Atlas. Its snapshot records a source cooldown; three browser-assisted completions do not establish universal access or a sustained all-channel rate. Audio, caption and Drive endpoint deadlines remain separate. Use the [Windows/rclone operating guide](et-channelers/pipeline/WINDOWS_DRIVE.md), [caption methods](et-channelers/pipeline/YOUTUBE_CAPTIONS_RESEARCH.md) and [archive catalog guide](et-channelers/pipeline/ARCHIVE_CATALOG.md) for controls and recovery. Their older dated examples retain their original queue counts.
 
 The allowance is **20 decimal GB local total, with 2 GB left unused**. The active resource phase uses a tighter **16 GB managed ceiling**, including tools, checkouts, models, input copies and outputs. The older 17 GB collector is parked because it does not share these reservations. The inspected machine has an **8 GB RTX 4070 Laptop GPU**. Downloads are network/I/O work. CUDA inference has one GPU owner, a 6.5 GB VRAM ceiling and a **soft 70% rolling utilization target**. The completed English batches peaked at 67% over a 30-second window; the paired multilingual batch peaked at 62%. Brief samples can exceed that target. All current GPU batches have finished and released the device.
 

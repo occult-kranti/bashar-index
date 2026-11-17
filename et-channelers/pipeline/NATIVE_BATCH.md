@@ -30,14 +30,15 @@ Settings JSON fields:
 - `private_root`, `plan_path`, `pipeline_directory`, `python_executable`.
 - `owner`, `lease_id`, `remote`, `rclone`, optional `rclone_config`.
 - `workers` (1 or 2), `max_asset_bytes` (up to 2,000,000,000),
-  `spool_cap_bytes` (up to 4,500,000,000), `job_wall_seconds` (600–7200).
+  `spool_cap_bytes` (up to 6,000,000,000), `job_wall_seconds` (600–7200).
 - Exactly six disjoint `managed_roots`, including private data, project tools,
   all three project checkouts, and the task-owned `ms-playwright` cache.
 - `browser_executable`: the owned stock Chromium executable; `plugin_directory`
   and `wpc_copy`: the private filtered directory containing only the unmodified
   pinned WPC plugin; `ffprobe` and `ffmpeg`: existing local tools.
 - `code_pins`: `{path,sha256}` for dependencies, including worker, quality, Job
-  Object helper, `native_track_policy.py`, `drive_ingest.py`, `media_metadata.py`, `native_audio_sink.py`,
+  Object helper, `native_track_policy.py`, `native_metadata_snapshot.py`,
+  `drive_ingest.py`, `media_metadata.py`, `native_audio_sink.py`,
   and the exact installed WPC/extractor/runtime dependencies selected by owner.
 - `preserved_controls`: nonempty `{path,sha256}` snapshots of the legacy STOP
   and refusal controls that must remain unchanged. Do not include the canonical
@@ -78,9 +79,15 @@ admission is checked before another child starts, including retained profiles.
 
 Audio uses a hard pre-write per-file cap. At most two children reserve their
 audio cap plus 240MB each for profile/metadata/control overhead. The shared spool
-ceiling is 4.5GB; all six roots and other active reservations count against 16GB,
-with at least 2GB free disk. The existing shared `Budget` is reused; reservations
-charge spent child bytes once. Oversize media are held for a larger reviewed
+ceiling is explicitly admitted per run, up to 6GB; all six roots and other active reservations count against 16GB,
+with at least 2GB free disk. Existing `Budget` reservation checks use a partitioned
+snapshot: each active child folder is excluded from the filesystem walk and
+charged its full reserved slot, while inactive and retained files are counted
+once. Browser writes therefore cannot be counted twice across scans. Each
+child's actual folder/profile limits remain checked separately. Retained bytes
+can reduce concurrency to one worker; another slot waits before any source
+attempt is spent. A capacity failure retains its numeric snapshot in the parent
+audit. Oversize media are held for a larger reviewed
 reservation, never excluded by duration. There is no Range-resume/redownload of
 held attempts.
 
@@ -108,7 +115,9 @@ automatic source retry occurs after an attempt folder exists.
 Before the format selector runs, an allowlisted scalar format inventory is
 fsynced (up to512 representations with an explicit truncation flag). It records
 format/language/original-label evidence without URLs, tokens, headers or raw
-errors. Finite anchored errors distinguish unavailable format, live deferral,
+errors. Bounded exception chains retain only finite class/code/errno/WinError
+values and module/function/line locations, including wrapped downloader errors;
+raw messages, locals, URLs and tokens are never recorded. Finite anchored errors distinguish unavailable format, live deferral,
 and explicit access checks. This normalized diagnostic inventory alone cannot
 support a legacy inference or retrospectively explain older held attempts.
 
@@ -128,7 +137,13 @@ the exact raw audio-only itag, codec and known source size. Codec/bitrate
 representations such as139/140/251 do not themselves imply multiple tracks.
 Preference5/default is never treated as original. Labeled multitrack responses
 continue to require preference10 and an explicit original label. Missing raw
-inventory cannot be replaced by normalized-format guesses.
+inventory cannot be replaced by normalized-format guesses. The selector uses
+`language_preference<0` because the installed parser treats `=-1` as a string;
+the pre-transfer gate still requires exactly numeric -1, the same raw itag and
+codec, and equal positive known raw/normalized byte sizes. Missing sizes hold.
+The extractor can copy subtitle language into normalized audio formats. That
+normalized language is ignored as audio evidence only in the complete raw-bound
+legacy branch, and all emitted source-audio language fields remain null.
 
 The accepted legacy provenance says
 `origin_basis:provider_single_legacy_track_inference`, `origin_inferred:true`,
@@ -155,9 +170,13 @@ required. Other warnings/errors hold. Accepted exception output is explicitly
 
 Canonical upload reuses exact-pair `Rclone.copy_pair`, batched named-object
 stat/MD5/size plus distinct Drive IDs, and `verify_and_delete(require_metadata=True)`.
-The canonical verified journal precedes deletion. Existing differing metadata
-is an immutable conflict, not overwritten; owner-reviewed archival of old
-metadata is a separate action. Stored quality/provenance are included in the
+The canonical verified journal precedes deletion. After an immutable pair-copy
+conflict, the exact remote audio must match before the metadata helper may move
+old canonical metadata to its content-addressed `MetadataSnapshots` path.
+The move preserves and verifies its Drive identity, size and MD5; durable
+lineage precedes the new canonical metadata upload. Existing differing audio is
+never moved or overwritten. Ambiguous objects or dependencies remain held.
+Stored quality/provenance are included in the
 sidecar and receipt. The new batch journal contains only safe scalar proof.
 
 Resuming skips complete canonical receipts without source calls. Complete local

@@ -274,6 +274,67 @@ def browser_extension_status(root):
             'downloader_coexistence_verified': True, 'source_acceptance_verified': False}
 
 
+def publisher_timed_text_coverage(root, targets, remote):
+    """Count independently archived publisher text without inventing audio binding."""
+    found = set()
+    path = root / 'sync/publisher_caption_manifest.jsonl'
+    for line in path.read_text(encoding='utf-8-sig').splitlines() if path.is_file() else []:
+        try:
+            record = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(record, dict):
+            continue
+        if (record.get('schema_version') != 1 or record.get('status') != 'verified' or
+                record.get('artifact_kind') != 'publisher_provided_timed_text_batch' or
+                record.get('changes_native_audio_count') is not False or
+                record.get('changes_full_asr_count') is not False):
+            continue
+        bundle = record.get('proof')
+        if (not isinstance(bundle, dict) or type(bundle.get('bytes')) is not int or bundle['bytes'] <= 0 or
+                not isinstance(bundle.get('drive_id'), str) or not bundle['drive_id'] or
+                not isinstance(bundle.get('md5'), str) or not re.fullmatch('[0-9a-f]{32}', bundle['md5']) or
+                not isinstance(bundle.get('sha256'), str) or not re.fullmatch('[0-9a-f]{64}', bundle['sha256'])):
+            continue
+        entries = record.get('items')
+        for item in entries if isinstance(entries, list) else []:
+            if not isinstance(item, dict):
+                continue
+            video, channel = item.get('video_id'), item.get('channel_dir')
+            if (not isinstance(video, str) or not re.fullmatch('[A-Za-z0-9_-]{11}', video) or video not in targets or
+                    not isinstance(channel, str) or not re.fullmatch('[A-Za-z0-9][A-Za-z0-9_.-]{0,119}', channel) or
+                    bundle.get('remote') != remote + '/' + channel + '/PublisherCaptions/Batches/' + bundle['sha256'] + '/publisher-captions.zip' or
+                    type(item.get('source_bytes')) is not int or item['source_bytes'] <= 0 or
+                    not isinstance(item.get('source_sha256'), str) or not re.fullmatch('[0-9a-f]{64}', item['source_sha256']) or
+                    type(item.get('segment_count')) is not int or item['segment_count'] <= 0 or
+                    not isinstance(item.get('language'), str) or not re.fullmatch('en(?:-[A-Za-z]{2,8})?', item['language']) or
+                    item.get('language_basis') != 'publisher_rss_channel' or
+                    item.get('track_language_verified') is not False or
+                    item.get('caption_kind') != 'publisher_provided_unspecified' or
+                    item.get('translation_status') != 'not_declared' or
+                    item.get('recording_equivalence_verified') is not False or
+                    item.get('speech_coverage_verified') is not False or
+                    item.get('native_youtube_caption') is not False or item.get('audio_binding') is not None):
+                continue
+            try:
+                link = urlsplit(item.get('official_blog_youtube_reference', ''))
+                blog = urlsplit(item.get('official_blog_url', ''))
+                source = urlsplit(item.get('source_url', ''))
+                values = parse_qs(link.query).get('v', [])
+                linked = link.path.lstrip('/') if link.hostname == 'youtu.be' else (
+                    values[0] if link.hostname in {'youtube.com', 'www.youtube.com'} and link.path == '/watch' and len(values) == 1 else None)
+                if (linked != video or link.scheme != 'https' or link.username or link.password or
+                        blog.scheme != 'https' or not blog.hostname or blog.username or blog.password or
+                        source.scheme != 'https' or source.hostname != 'www.buzzsprout.com' or
+                        source.username or source.password or source.query or source.fragment or
+                        not re.fullmatch(r'/[0-9]+/[0-9]+/transcript\.vtt', source.path)):
+                    continue
+            except (ValueError, TypeError, AttributeError):
+                continue
+            found.add(video)
+    return found
+
+
 def publisher_mirror_coverage(root, targets, remote):
     """Count verified publisher mirrors without promoting native YouTube progress."""
     audio_ids, caption_ids, asr_ids, sources = set(), set(), set(), {}
@@ -428,6 +489,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     remaining, _ = queue_ids(root, ("queue_final_round.csv",))
     publisher_texts, publisher_transcripts, publisher_variants, publisher_qualified, publisher_asr = publisher_coverage(root, twenty, remote)
     mirror_audio, mirror_captions, mirror_asr = publisher_mirror_coverage(root, twenty, remote)
+    publisher_timed_text = publisher_timed_text_coverage(root, twenty, remote)
     cooldown = read_object(root / "sync" / "drive_ingest_cooldown.json")
     # Support the runner's fixed filename, without exposing it in the export.
     if not cooldown:
@@ -522,6 +584,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                        "publisher_mirror_audio_target_videos": len(mirror_audio),
                        "publisher_mirror_caption_target_videos": len(mirror_captions),
                        "publisher_mirror_asr_target_videos": len(mirror_asr),
+                       "publisher_standalone_timed_text_target_videos": len(publisher_timed_text),
                        "source_audio_available_target_videos": len((archived & twenty) | publisher_variants | mirror_audio),
                        "source_audio_with_text_target_videos": len((text_available & twenty) | publisher_asr | mirror_captions | mirror_asr),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),

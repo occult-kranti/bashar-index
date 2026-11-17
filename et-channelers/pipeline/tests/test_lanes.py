@@ -774,24 +774,45 @@ class TestDownloadEnclosures(LaneCase):
     def test_a_success_that_started_before_a_refusal_does_not_erase_it(self):
         # what the second review found: a download that started before a 429 and ended after it was written
         # last, and wiped the refusal, so the next run asked again at once
-        import time
+        import download_enclosures
         rows = self.rows(3)
+        success_requested = threading.Event()
+        refusal_written = threading.Event()
+        real_fetch = download_enclosures.fetch_one
+        real_append = download_enclosures.append_jsonl
 
         def slow():
-            time.sleep(3)
+            success_requested.set()
+            self.assertTrue(refusal_written.wait(10), "the refusal was not written while success was in flight")
             return AUDIO
+
+        def ordered_fetch(args, row, *rest):
+            if row["video_id"] == rows[1]["video_id"]:
+                self.assertTrue(success_requested.wait(10), "the success request did not start first")
+            return real_fetch(args, row, *rest)
+
+        def observe_append(path, record):
+            real_append(path, record)
+            if record.get("http_status") == 429:
+                refusal_written.set()
+
         Publisher.routes["/media/0.mp3"] = (200, "audio/mpeg", slow)
         Publisher.routes["/media/1.mp3"] = (429, "text/plain", b"slow down", {"Retry-After": "3600"})
         self.write_queue(rows[:2])
-        # Two workers race for the host's first turn. Only when file 0 wins does its download outlast file 1's
-        # refusal, which is the case under test; when file 1 wins, the host rests before file 0 is asked, so
-        # the run is set up again (at most three times)
-        for _ in range(3):
-            shutil.rmtree(self.root / "audio", ignore_errors=True)
-            first = self.download("--workers", "2", "--min-interval", "1", "--all")
-            if [r["status"] for r in self.manifest()] == ["error", "ok"]:
-                break
-        self.assertEqual(first.returncode, 3, first.stderr)
+        # Schedule the intended overlap explicitly, keeping the actual loopback HTTP,
+        # encoder, manifest append, and host gates. The event timeouts only bound a
+        # broken fixture; neither thread wins by luck or a fixed-duration sleep.
+        argv = ["download_enclosures.py", "--root", str(self.root), "--ffmpeg", self.ffmpeg,
+                "--ffprobe", "ffprobe-not-installed", "--workers", "2", "--min-interval", "1", "--all"]
+        stderr = io.StringIO()
+        with mock.patch.object(sys, "argv", argv), \
+                mock.patch.object(download_enclosures, "fetch_one", side_effect=ordered_fetch), \
+                mock.patch.object(download_enclosures, "append_jsonl", side_effect=observe_append), \
+                contextlib.redirect_stderr(stderr), contextlib.redirect_stdout(io.StringIO()):
+            with self.assertRaises(SystemExit) as first:
+                download_enclosures.main()
+        self.assertEqual(first.exception.code, 3, stderr.getvalue())
+        self.assertTrue(refusal_written.is_set())
         self.assertEqual([r["status"] for r in self.manifest()], ["error", "ok"])   # the refusal is written first
         self.write_queue(rows)
         Publisher.hits.clear()

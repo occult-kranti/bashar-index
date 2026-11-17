@@ -101,14 +101,18 @@ def legacy_selection_proof(info, inventory):
     """Bind the selected normalized representation to the raw unlabeled source."""
     if not isinstance(inventory, dict) or inventory.get('eligible') is not True or info.get('id') != inventory.get('video_id'):
         return None
-    if info.get('language_preference') != -1 or info.get('language') not in (None, ''):
+    if info.get('language_preference') != -1:
         return None
     matches = [f for f in inventory['audio_representations'] if str(f['itag']) == info.get('format_id') and f['audio_only']]
     if len(matches) != 1 or matches[0]['codec'] != info.get('acodec'): return None
-    if matches[0]['source_bytes'] is not None and info.get('filesize') != matches[0]['source_bytes']: return None
+    if type(matches[0]['source_bytes']) is not int or matches[0]['source_bytes'] <= 0: return None
+    if type(info.get('filesize')) is not int or info['filesize'] != matches[0]['source_bytes']: return None
     return {'basis': 'provider_single_legacy_track_inference', 'origin_basis': 'provider_single_legacy_track_inference',
         'origin_inferred': True, 'original_explicitly_verified': False, 'source_language': None,
         'source_language_status': 'unknown',
+        # The pinned extractor can fill normalized audio language from captions.
+        # Only the complete raw inventory establishes absence of audio labels.
+        'normalized_language_used_as_audio_evidence': False,
         'language': None, 'language_preference': -1, 'original_label_present': False,
         'raw_inventory_sha256': inventory['inventory_sha256'], 'selected_itag': matches[0]['itag'],
         'completeness_basis': inventory['completeness_basis'], 'provider_global_inventory_claimed': False}

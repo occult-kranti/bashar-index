@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 from pathlib import Path
+import sys
 import tempfile
 import threading
 import time
@@ -38,6 +39,8 @@ class FakeDrive:
         self.calls.append('stat')
         return {path: {'Size': p['bytes'], 'Hashes': {'MD5': p['md5']}, 'ID': '' if self.missing_id else str(i + 1)}
                 for i, (path, p) in enumerate(zip(paths, self.record))}
+    def stat(self, remote):
+        raise storage.IngestError('drive_conflict', 'fixture requires explicit conflict evidence')
 
 
 class NativeBatchTests(unittest.TestCase):
@@ -137,6 +140,58 @@ class NativeBatchTests(unittest.TestCase):
         obj.drive.fail_copy = False
         self.assertTrue(storage.receipt_complete(obj.publish(item(), result), item(), obj.s['remote']))
 
+    def test_conflicting_metadata_preservation_follows_exact_remote_audio_proof(self):
+        obj, folder, result = self.prepared()
+        original_copy = obj.drive.copy_pair; calls = []
+        def copy(*args):
+            calls.append('copy')
+            if len(calls) == 1: raise storage.IngestError('drive_conflict', 'fixture old metadata')
+            return original_copy(*args)
+        audio_proof = {'ID': 'audio-id', 'Size': result['audio']['bytes'], 'Hashes': {'MD5': result['audio']['md5']}}
+        old_metadata = {'ID': 'old-metadata-id', 'Size': 999, 'Hashes': {'MD5': 'a' * 32}}
+        def stat(remote): return old_metadata if remote.endswith('.info.json') else audio_proof
+        helper = Mock(return_value={'status': 'old_metadata_preserved', 'original_drive_id_preserved': True})
+        module = SimpleNamespace(preserve_conflicting_metadata=helper)
+        with patch.object(obj.drive, 'copy_pair', side_effect=copy), patch.object(obj.drive, 'stat', side_effect=stat), \
+                patch.dict(sys.modules, {'pipeline.native_metadata_snapshot': module}):
+            done = obj.publish(item(), result)
+        helper.assert_called_once()
+        self.assertEqual(helper.call_args.kwargs['observed_audio'], audio_proof)
+        self.assertEqual(helper.call_args.kwargs['observed_metadata'], old_metadata)
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(done['metadata_lineage']['original_drive_id_preserved'])
+
+    def test_conflicting_audio_never_reaches_metadata_preservation(self):
+        obj, folder, result = self.prepared(); obj.drive.fail_copy = True
+        helper = Mock()
+        with patch.object(obj.drive, 'stat', return_value={'ID': 'wrong-audio', 'Size': 999, 'Hashes': {'MD5': 'a' * 32}}), \
+                patch.dict(sys.modules, {'pipeline.native_metadata_snapshot': SimpleNamespace(preserve_conflicting_metadata=helper)}):
+            with self.assertRaises(storage.IngestError): obj.publish(item(), result)
+        helper.assert_not_called()
+        self.assertTrue((folder / (ID + '.webm')).exists())
+
+    def test_lost_metadata_move_ack_is_recovered_before_any_new_copy(self):
+        obj, folder, result = self.prepared(); obj.drive.fail_copy = True
+        with self.assertRaises(storage.IngestError): obj.publish(item(), result)
+        record = worker.read(folder / 'canonical-record.json')
+        storage.journal(self.root / 'sync/native_metadata_lineage_manifest.jsonl', {
+            'video_id': ID, 'kind': 'native_metadata_snapshot_preservation', 'status': 'move_intent',
+            'original': {'remote': record['metadata']['remote']},
+            'new_canonical_expected': {'sha256': record['metadata']['sha256']}})
+        obj.drive.fail_copy = False; obj.drive.calls.clear(); order = []
+        def stat(remote):
+            if remote.endswith('.info.json'): raise storage.IngestError('drive_not_found', 'moved')
+            return {'ID': 'audio-id', 'Size': record['bytes'], 'Hashes': {'MD5': record['md5']}}
+        def preserve(*args, **kwargs):
+            self.assertIsNone(kwargs['observed_metadata']); self.assertEqual(obj.drive.calls, [])
+            order.append('preserved')
+            return {'status': 'old_metadata_preserved'}
+        module = SimpleNamespace(preserve_conflicting_metadata=preserve)
+        with patch.object(obj.drive, 'stat', side_effect=stat), patch.dict(sys.modules, {'pipeline.native_metadata_snapshot': module}):
+            done = obj.publish(item(), result)
+        self.assertEqual(order, ['preserved']); self.assertEqual(obj.drive.calls, ['copy', 'stat'])
+        self.assertEqual(done['metadata_lineage']['status'], 'old_metadata_preserved')
+
     def test_changed_completed_audio_stops_before_upload(self):
         obj, folder, result = self.prepared()
         (folder / 'native-audio.webm').write_bytes(b'changed')
@@ -218,13 +273,39 @@ class NativeBatchTests(unittest.TestCase):
                     state.guard()
                 self.assertNotIn('NEVER-EXPORT', json.dumps(worker.read(self.root / 'progress.json')))
 
-    def test_reservation_counts_browser_and_audio_bytes_once(self):
-        # 100 bytes reserved; 40 audio +20 browser bytes already exist.
-        effective = batch.remaining_reservation(100, 60, 40)
-        outstanding = effective - 40
-        self.assertEqual(60 + outstanding, 100)
-        with self.assertRaisesRegex(worker.Held, 'child_reservation_exceeded'):
-            batch.remaining_reservation(100, 101, 40)
+    def test_active_profile_growth_cannot_double_count_reserved_slots(self):
+        spool = self.root / 'spool'; folders = [spool / 'a', spool / 'b']
+        for folder in folders: folder.mkdir(parents=True)
+        for folder in folders: (folder / 'profile').write_bytes(b'X' * 5)
+        budget = batch.SlotBudget(self.root, 1000, 224, 0, reserve=1)
+        budget.active = {str(i): {'path': folder / 'missing.part', 'bytes': 224} for i, folder in enumerate(folders)}
+        first = batch.capacity_snapshot(self.root, spool, folders)
+        for folder in folders: (folder / 'profile').write_bytes(b'X' * 25)
+        second = batch.capacity_snapshot(self.root, spool, folders)
+        # The old cross-time sum falsely reported488 for450 capacity.
+        self.assertGreater(2 * (224 - 5) + 50, 450)
+        self.assertEqual(first, second)
+        self.assertEqual(second['inactive_spool_bytes'] + budget._outstanding(), 448)
+        (self.root / 'unrelated').write_bytes(b'owned other bytes')
+        snapshot = batch.capacity_snapshot(self.root, spool, folders)
+        self.assertEqual(snapshot['inactive_private_bytes'], len(b'owned other bytes'))
+        self.assertEqual(snapshot['inactive_spool_bytes'], 0)
+
+    def test_retained_media_respects_explicit_cap_and_six_gb_allows_two_slots(self):
+        spool = self.root / 'spool'; active = spool / 'active'; active.mkdir(parents=True)
+        retained = spool / 'retained.part'
+        with retained.open('wb') as handle: handle.truncate(60_000_000)
+        snapshot = batch.capacity_snapshot(self.root, spool, [active])
+        slot = 2_000_000_000 + batch.HEADROOM
+        budget = batch.SlotBudget(self.root, batch.MANAGED, 2_000_000_000, 0)
+        budget.active = {'active': {'path': active / 'audio.part', 'bytes': slot}}
+        projected = snapshot['inactive_spool_bytes'] + budget._outstanding() + slot
+        self.assertGreater(projected, 4_500_000_000)
+        self.assertLess(projected, batch.MAX_SPOOL)
+        self.assertEqual(batch.MAX_SPOOL, 6_000_000_000)
+        budget.release('active')
+        self.assertLess(snapshot['inactive_spool_bytes'] + budget._outstanding() + slot, 4_500_000_000)
+        self.assertTrue(retained.exists())
 
     def test_child_lease_revocation_and_batch_stop_prevent_next_write(self):
         lease = self.root / 'lease.json'; stop = self.root / 'batch-stop'
@@ -290,6 +371,7 @@ class NativeBatchTests(unittest.TestCase):
         obj.s = {'max_asset_bytes': 1000, 'lease_id': 'fixture', 'python_executable': 'unused', 'job_wall_seconds': 600, 'spool_cap_bytes': 500_000_000}
         obj.settings_path = self.root / 'settings'; obj.lease_path = self.root / 'lease'; obj.stop_path = self.root / 'batch-stop'
         obj.budget = Mock(); obj.budget._outstanding.return_value = 0; events = []; folder = obj.jobs / ID
+        obj.capacity = {'inactive_spool_bytes': 0}
         class Process:
             returncode = 0
             def poll(self): return 0
@@ -358,6 +440,46 @@ class NativeBatchTests(unittest.TestCase):
         self.assertEqual(worker.diagnostic_reason("Sign in to confirm you're not a bot"), 'bot_check')
         self.assertIsNone(worker.diagnostic_reason('A video title says Requested format is not available'))
         self.assertIsNone(worker.diagnostic_reason('HTTP Error 403 with private URL'))
+
+    def test_wrapped_os_error_diagnostics_retain_codes_without_raw_messages(self):
+        class UnavailableVideoError(Exception): pass
+        try:
+            try:
+                error = PermissionError(13, 'https://media.invalid/?secret=NEVER-EXPORT')
+                error.winerror = 32
+                raise error
+            except OSError as cause:
+                raise UnavailableVideoError('private source details NEVER-EXPORT') from cause
+        except Exception as error:
+            proof = worker.safe_exception_chain(error)
+        self.assertEqual([n['exception_class'] for n in proof['nodes']], ['UnavailableVideoError', 'PermissionError'])
+        self.assertEqual(proof['nodes'][1]['errno'], 13); self.assertEqual(proof['nodes'][1]['winerror'], 32)
+        self.assertNotIn('NEVER-EXPORT', json.dumps(proof)); self.assertNotIn(str(self.root), json.dumps(proof))
+        self.assertTrue(proof['nodes'][0]['frames'])
+
+    def test_download_error_exc_info_and_cyclic_context_are_bounded(self):
+        class DownloadError(Exception): pass
+        held = worker.Held('python_body_cap'); outer = DownloadError('NEVER-EXPORT')
+        outer.exc_info = (type(held), held, None); held.__context__ = outer
+        proof = worker.safe_exception_chain(outer)
+        self.assertEqual(len(proof['nodes']), 2)
+        self.assertEqual(proof['nodes'][1]['link'], 'exc_info')
+        self.assertEqual(proof['nodes'][1]['code'], 'python_body_cap')
+        self.assertNotIn('NEVER-EXPORT', json.dumps(proof))
+
+    @unittest.skipUnless(importlib.util.find_spec('yt_dlp'), 'optional installed yt-dlp fixture')
+    def test_installed_legacy_selector_accepts_numeric_negative_preference(self):
+        from yt_dlp import YoutubeDL
+        class Offline(YoutubeDL):
+            def urlopen(self, *args, **kwargs): raise AssertionError('source forbidden')
+        def fmt(preference):
+            return {'format_id': '140', 'url': 'https://media.invalid/fixture', 'protocol': 'https',
+                    'ext': 'm4a', 'acodec': 'mp4a.40.2', 'vcodec': 'none',
+                    'language_preference': preference, 'language': 'en'}
+        with Offline({'quiet': True, 'format': worker.LEGACY_FORMAT_SELECTOR}, auto_init=False) as ydl:
+            self.assertEqual([f['format_id'] for f in ydl._select_formats([fmt(-1)], ydl.format_selector)], ['140'])
+            for preference in (0, 5, 10, None):
+                self.assertEqual(ydl._select_formats([fmt(preference)], ydl.format_selector), [])
 
     @unittest.skipUnless(importlib.util.find_spec('yt_dlp'), 'optional installed yt-dlp fixture')
     def test_installed_selector_failure_retains_inventory_before_selection(self):

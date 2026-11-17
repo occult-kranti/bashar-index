@@ -29,7 +29,7 @@ except ImportError:
     from native_batch_job import OwnedJob
     from gpu_asr import encoded
 
-MAX_SPOOL = 4_500_000_000
+MAX_SPOOL = 6_000_000_000
 MAX_ASSET = 2_000_000_000
 HEADROOM = 240_000_000
 MANAGED = 16_000_000_000
@@ -64,9 +64,41 @@ def source_error(result):
     return value if value in SOURCE_FAILURES else None
 
 
-def remaining_reservation(reserved, used, audio_size):
-    need(type(reserved) is int and 0 <= audio_size <= used <= reserved, 'child_reservation_exceeded')
-    return reserved - used + audio_size
+def capacity_snapshot(root, spool, active_folders):
+    """Count inactive files once; active child folders are charged full slots.
+
+    Children cannot share a Python lock. Never combine their bytes measured at
+    different instants with a sampled remaining reservation.
+    """
+    root, spool = Path(root).resolve(), Path(spool).resolve()
+    active = {Path(p).resolve() for p in active_folders}
+    need(all(p.is_relative_to(spool) and p != spool for p in active), 'capacity_scope')
+    private_bytes = spool_bytes = 0
+    for folder, directories, files in os.walk(root):
+        base = Path(folder)
+        for name in list(directories):
+            path = base / name
+            need(not storage.is_link(path), 'storage_link')
+            if path in active: directories.remove(name)
+        for name in files:
+            path = base / name
+            need(not storage.is_link(path), 'storage_link')
+            try: size = path.stat().st_size
+            except FileNotFoundError: continue
+            private_bytes += size
+            if path.is_relative_to(spool): spool_bytes += size
+    return {'inactive_private_bytes': private_bytes, 'inactive_spool_bytes': spool_bytes}
+
+
+class SlotBudget(storage.Budget):
+    """Reuse reservation checks with the coordinator's partitioned snapshot."""
+    inactive_bytes = 0
+
+    def usage(self, reconcile=False):
+        return self.inactive_bytes
+
+    def _outstanding(self, omit=None):
+        return sum(item['bytes'] for key, item in self.active.items() if key != omit)
 
 
 def exception_diagnostic(error):
@@ -154,7 +186,7 @@ class NativeBatch:
         self.roots = roots
         required = {Path(__file__).with_name(name).resolve() for name in (
             'native_batch_worker.py', 'native_batch_quality.py', 'native_batch_job.py', 'native_track_policy.py',
-            'drive_ingest.py', 'media_metadata.py', 'native_audio_sink.py')}
+            'drive_ingest.py', 'media_metadata.py', 'native_audio_sink.py', 'native_metadata_snapshot.py')}
         supplied = {Path(pin['path']).resolve() for pin in self.s['code_pins']}
         need(required <= supplied, 'required_code_pins')
         need(Path(self.s['pipeline_directory']).resolve() == Path(__file__).parent.resolve(), 'pipeline_directory')
@@ -194,17 +226,17 @@ class NativeBatch:
             need(limit > storage.JOURNAL_RESERVE and shutil.disk_usage(self.root).free >= FREE, 'managed_storage')
             if self.budget:
                 self.budget.cap = limit
-                for ident, reservation in self.live_reservations.items():
-                    folder = reservation['folder']
-                    matches = list(folder.glob('native-audio.*'))
-                    audio_size = matches[0].stat().st_size if len(matches) == 1 else 0
-                    if len(matches) == 1: self.budget.completed_path(ident, matches[0])
-                    used = storage.tree_bytes(folder)
-                    # Child writes include a browser profile. Charge remaining
-                    # reservation, not both its spent bytes and its full amount.
-                    self.budget.active[ident]['bytes'] = remaining_reservation(reservation['bytes'], used, audio_size)
-                need(self.budget.usage() + self.budget._outstanding() <= limit - storage.JOURNAL_RESERVE, 'managed_storage')
-                need(storage.tree_bytes(self.spool) + self.budget._outstanding() <= self.s['spool_cap_bytes'], 'spool_storage')
+                self.capacity = capacity_snapshot(self.root, self.spool,
+                    [reservation['folder'] for reservation in self.live_reservations.values()])
+                self.budget.inactive_bytes = self.capacity['inactive_private_bytes']
+                self.capacity.update(active_reserved_bytes=self.budget._outstanding(),
+                    private_limit_bytes=limit - storage.JOURNAL_RESERVE, spool_limit_bytes=self.s['spool_cap_bytes'])
+                for projected, ceiling, code in (
+                    (self.budget.usage() + self.budget._outstanding(), limit - storage.JOURNAL_RESERVE, 'managed_storage'),
+                    (self.capacity['inactive_spool_bytes'] + self.budget._outstanding(), self.s['spool_cap_bytes'], 'spool_storage')):
+                    if projected > ceiling:
+                        error = worker.Held(code); error.capacity_evidence = dict(self.capacity, projected_bytes=projected)
+                        raise error
             return limit
 
     def refuse(self, result):
@@ -228,7 +260,7 @@ class NativeBatch:
                 need(not folder.exists(), 'attempt_already_exists')
                 maximum = item.get('max_audio_bytes', self.s['max_asset_bytes'])
                 need(type(maximum) is int and 0 < maximum <= self.s['max_asset_bytes'], 'asset_deferred')
-                fits = storage.tree_bytes(self.spool) + self.budget._outstanding() + maximum + HEADROOM <= self.s['spool_cap_bytes']
+                fits = self.capacity['inactive_spool_bytes'] + self.budget._outstanding() + maximum + HEADROOM <= self.s['spool_cap_bytes']
                 if fits:
                     self.budget.reserve_item(ident, folder / 'native-audio.part', maximum, HEADROOM)
                     self.live_reservations[ident] = {'folder': folder, 'bytes': maximum + HEADROOM}
@@ -243,7 +275,7 @@ class NativeBatch:
                 need(bool(self.live_reservations), 'spool_storage_deferred')
             time.sleep(.5)  # wait for an existing owned worker/upload; no source attempt spent
         job = None; process = None; attached = False; closed = False; error = None
-        first_exception = None; process_cleanup_errors = []; profile_cleanup = None
+        first_exception = None; first_capacity_failure = None; process_cleanup_errors = []; profile_cleanup = None
         started = time.monotonic(); peak_profile = 0
         try:
             need(WINDOWS, 'windows_child_required')
@@ -268,6 +300,7 @@ class NativeBatch:
         except BaseException as exc:
             error = getattr(exc, 'code', getattr(exc, 'kind', 'native_child_failed'))
             first_exception = exception_diagnostic(exc)
+            first_capacity_failure = getattr(exc, 'capacity_evidence', None)
         finally:
             if process and not attached and process.poll() is None: process.kill()
             if job:
@@ -295,6 +328,7 @@ class NativeBatch:
                 'profile_cleaned': not (folder / 'profile-temp').exists(), 'observed_profile_peak_bytes': peak_profile,
                 'browser_disk_limit_is_observed_stop_target': True, 'error_class': error,
                 'first_parent_exception': first_exception, 'process_cleanup_errors': process_cleanup_errors,
+                'capacity_failure': first_capacity_failure,
                 'profile_cleanup': profile_cleanup,
                 'child_exit': process.returncode if process else None,
                 'elapsed_seconds': time.monotonic() - started})
@@ -359,8 +393,44 @@ class NativeBatch:
         for key, path, expected in (('audio', audio, record), ('metadata', metadata, record['metadata'])):
             if path.exists(): known[key] = storage.validate_local(path, expected, (trusted or {}).get(key))
             else: need(prior_verified, 'local_missing_without_drive_proof')
-        # Existing differing metadata is an immutable conflict, never overwritten.
-        if not prior_verified: self.drive.copy_pair(audio, metadata, record['remote'], record['metadata']['remote'])
+        if not prior_verified:
+            def preserve_metadata(observed_audio):
+                storage.verify_remote(observed_audio, record)
+                need(bool(observed_audio.get('ID')), 'drive_identity_missing')
+                try: observed_metadata = self.drive.stat(record['metadata']['remote'])
+                except storage.IngestError as missing:
+                    if missing.kind != 'drive_not_found': raise
+                    observed_metadata = None
+                try: from .native_metadata_snapshot import preserve_conflicting_metadata
+                except ImportError: from native_metadata_snapshot import preserve_conflicting_metadata
+                lineage = preserve_conflicting_metadata(self.root, record, self.drive,
+                    observed_audio=observed_audio, observed_metadata=observed_metadata, trusted=known)
+                if lineage:
+                    record['metadata_lineage'] = lineage
+                    write(record_path, record)
+                    storage.journal(self.state_path, record)
+
+            pending_lineage = storage.load_state(self.root / 'sync/native_metadata_lineage_manifest.jsonl').get(ident, {})
+            if (not record.get('metadata_lineage') and
+                    pending_lineage.get('kind') == 'native_metadata_snapshot_preservation' and
+                    pending_lineage.get('original', {}).get('remote') == record['metadata']['remote'] and
+                    pending_lineage.get('new_canonical_expected', {}).get('sha256') == record['metadata']['sha256']):
+                # A lost move ACK can leave canonical metadata absent. Read back
+                # the exact preserved object before allowing its replacement.
+                preserve_metadata(self.drive.stat(record['remote']))
+            try:
+                self.drive.copy_pair(audio, metadata, record['remote'], record['metadata']['remote'])
+            except storage.IngestError as error:
+                if error.kind != 'drive_conflict': raise
+                # Preserve only conflicting canonical metadata, after the exact
+                # new audio is verified remotely. Audio is never replaced.
+                try: observed_audio = self.drive.stat(record['remote'])
+                except storage.IngestError as missing:
+                    if missing.kind != 'drive_not_found': raise
+                    self.drive.copy(audio, record['remote'])  # immutable
+                    observed_audio = self.drive.stat(record['remote'])
+                preserve_metadata(observed_audio)
+                self.drive.copy_pair(audio, metadata, record['remote'], record['metadata']['remote'])
         relative = [storage.remote_relative(self.s['remote'], p['remote']) for p in (record, record['metadata'])]
         with storage.batch_manifest(self.root, relative) as manifest:
             remote = self.drive.stat_batch(self.s['remote'], relative, manifest)
@@ -381,7 +451,7 @@ class NativeBatch:
         with storage.exclusive_lock(self.root):
             self.jobs.mkdir(parents=True, exist_ok=True)
             limit = self.guard(force=True)
-            self.budget = storage.Budget(self.root, limit, self.s['max_asset_bytes'], FREE, cached=False)
+            self.budget = SlotBudget(self.root, limit, self.s['max_asset_bytes'], FREE, cached=False)
             previous = storage.load_state(self.state_path)
             pending = []
             for item in self.items:

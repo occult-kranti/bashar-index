@@ -35,7 +35,50 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Classify changed paths
+        id: changes
+        env:
+          CHANGE_EVENT: ${{ github.event_name }}
+          CHANGE_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          import subprocess
+
+          def git(*args):
+              return subprocess.run(
+                  ['git', *args], check=True, capture_output=True, timeout=45
+              ).stdout
+
+          run_python, reason = True, 'non_pull_request'
+          if os.environ.get('CHANGE_EVENT') == 'pull_request':
+              try:
+                  base = os.environ.get('CHANGE_BASE_SHA', '')
+                  head = git('rev-parse', '--verify', 'HEAD^{commit}').decode('ascii').strip()
+                  if not all(re.fullmatch(r'[0-9a-fA-F]{40}', sha) for sha in (base, head)):
+                      raise ValueError('invalid commit identity')
+                  try:
+                      git('cat-file', '-e', base + '^{commit}')
+                  except subprocess.CalledProcessError:
+                      git('fetch', '--no-tags', '--depth=1', 'origin', base)
+                      git('cat-file', '-e', base + '^{commit}')
+                  paths = git('diff', '--no-ext-diff', '--no-renames', '--name-only', '-z', base, head, '--').split(b'\0')
+                  paths = [path for path in paths if path]
+                  docs_only = bool(paths) and all(
+                      path.endswith(b'.md') or path == b'et-channelers/plan/ingestion_status.json'
+                      for path in paths
+                  )
+                  run_python = not docs_only
+                  reason = 'documentation_or_status_only' if docs_only else 'code_or_empty_diff'
+              except Exception:
+                  run_python, reason = True, 'diff_unavailable'
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              output.write('run_python=' + str(run_python).lower() + '\n')
+          print('Full Python suite: ' + str(run_python).lower() + ' (' + reason + ')')
+          PY
       - name: Full standard-library pipeline test suite
+        if: ${{ !cancelled() && steps.changes.outputs.run_python != 'false' }}
         run: python -m unittest discover -s et-channelers/pipeline/tests -v
       - name: Public media and credential guard
         run: python et-channelers/scripts/guard_no_raw_media.py

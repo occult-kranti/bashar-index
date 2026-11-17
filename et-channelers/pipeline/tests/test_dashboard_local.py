@@ -501,5 +501,56 @@ class StatusExportTests(unittest.TestCase):
             self.assertNotIn('PRIVATE ERROR', json.dumps(result))
 
 
+class PublisherTimedTextTests(unittest.TestCase):
+    def fixture(self):
+        item = {'video_id':'PRIVATEidA1', 'channel_dir':'PRIVATE-PERSON', 'source_bytes':83,
+                'source_sha256':'a'*64, 'segment_count':10, 'language':'en-gb',
+                'language_basis':'publisher_rss_channel', 'track_language_verified':False,
+                'caption_kind':'publisher_provided_unspecified', 'translation_status':'not_declared',
+                'recording_equivalence_verified':False, 'speech_coverage_verified':False,
+                'native_youtube_caption':False, 'audio_binding':None,
+                'official_blog_youtube_reference':'https://youtu.be/PRIVATEidA1',
+                'official_blog_url':'https://publisher.example/blog/PRIVATE',
+                'source_url':'https://www.buzzsprout.com/123/456/transcript.vtt'}
+        return {'schema_version':1, 'status':'verified', 'artifact_kind':'publisher_provided_timed_text_batch',
+                'changes_native_audio_count':False, 'changes_full_asr_count':False,
+                'proof':{'bytes':100, 'drive_id':'PRIVATE DRIVE ID', 'md5':'b'*32, 'sha256':'c'*64,
+                         'remote':'etdrive:04 Audio/PRIVATE-PERSON/PublisherCaptions/Batches/'+'c'*64+'/publisher-captions.zip'},
+                'items':[item]}
+
+    def test_caption_only_proof_deduplicates_without_claiming_audio_or_asr_and_export_is_private(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder); (root / 'sync').mkdir()
+            (root / 'jobs').mkdir()
+            (root / 'jobs/queue_newest20.csv').write_text('video_id,channel_dir\nPRIVATEidA1,PRIVATE-PERSON\n', encoding='utf-8')
+            record = self.fixture()
+            (root / 'sync/publisher_caption_manifest.jsonl').write_text(
+                'invalid json\n[]\n'+json.dumps(record)+'\n'+json.dumps(record)+'\n', encoding='utf-8')
+            self.assertEqual(ingestion_status.publisher_timed_text_coverage(root, {'PRIVATEidA1'}, 'etdrive:04 Audio'), {'PRIVATEidA1'})
+            counts = ingestion_status.snapshot(root, now=1800000000)['counts']
+            self.assertEqual(counts['publisher_standalone_timed_text_target_videos'], 1)
+            for key in ('verified_pairs', 'asr_verified_videos', 'source_audio_available_target_videos', 'source_audio_with_text_target_videos'):
+                self.assertEqual(counts[key], 0)
+            self.assertNotIn('PRIVATE', json.dumps(ingestion_status.snapshot(root, now=1800000000)))
+
+    def test_caption_only_missing_proofs_or_stronger_source_claims_are_rejected(self):
+        import copy
+        invalid = []
+        for scope, key, value in [('proof','bytes',True), ('proof','remote','etdrive:WRONG'),
+                ('item','official_blog_youtube_reference','https://youtu.be/OTHERidA111'),
+                ('item','language','ja'), ('item','audio_binding','invented hash'),
+                ('item','native_youtube_caption',True), ('item','speech_coverage_verified',True)]:
+            record = copy.deepcopy(self.fixture())
+            (record['proof'] if scope == 'proof' else record['items'][0])[key] = value
+            invalid.append(record)
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder); (root / 'sync').mkdir()
+            path = root / 'sync/publisher_caption_manifest.jsonl'
+            for number, record in enumerate(invalid):
+                with self.subTest(case=number):
+                    path.write_text(json.dumps(record)+'\n', encoding='utf-8')
+                    self.assertEqual(ingestion_status.publisher_timed_text_coverage(root, {'PRIVATEidA1'}, 'etdrive:04 Audio'), set())
+
+
 if __name__ == "__main__":
     unittest.main()

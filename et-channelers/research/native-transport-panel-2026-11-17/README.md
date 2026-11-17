@@ -1,6 +1,16 @@
 # Native transport panel and first complete recovery
 
-**A complete native YouTube audio file and its metadata are now verified on Drive.** Canonical acquisition is 48 of the 1,420 newest-20 entries. The new file has an explicit codec-warning quality record; this result does not establish universal availability or a guaranteed finish time.
+**Three browser-assisted native YouTube audio files and their metadata are now verified on Drive.** Canonical acquisition is 50 of the 1,420 newest-20 entries. The first recovery has an explicit codec-warning quality record; the two later files passed clean packet probes. These results do not establish universal availability or a guaranteed finish time.
+
+## Later complete-file recovery, 19:40 UTC
+
+The v3 run retained two complete original-English AAC files despite a local capacity stop: `z8r5M3P2hyE`, 31,560,882 bytes / 1,950.058 seconds / 83,982 packets, and `Wczu7qHICtI`, 13,984,294 bytes / 864.037732 seconds / 37,211 packets. The latter's selected size and finished callback survived even though the child result was interrupted. Each full extent passed the existing strict packet probe; this is not a full-decode or every-word accuracy claim. Offline recovery preserved the original attempts and made no further source request.
+
+Both canonical pairs are Drive-verified. Older different metadata was preserved with its original Drive identity before replacement. Sequential local-input GPU ASR produced 288 and 92 segments; both bundles were verified on Drive before owned input copies were retired. Canonical ASR is now 31 and deduplicated source-audio coverage is 78, with 76 having an audio edition and saved text.
+
+Independent review found a capacity race: outstanding reservations were combined with later filesystem scans while browser profiles kept growing. The repair partitions active folders, charges each full reservation, counts inactive files once, and defers dispatch before capacity is exhausted. A 6 GB spool fits the shared 16 GB ceiling and permits both workers alongside retained evidence. The new metadata helper also preserves exact older objects automatically, including interrupted-move recovery; differing audio remains a conflict. Focused counterexample, lifecycle, error-chain and metadata tests passed. The next fresh 20-item frame excludes all 13 spent attempts. The earlier single-file proof and historical trial outcomes below remain unchanged.
+
+The repaired fresh frame ran once and stopped after 15.734 seconds: zero new verified pairs, three held, seventeen pending, with two actual source attempts. One target had no eligible format; another selected original-English AAC, then its Python media GET returned HTTP 403 before audio bytes. There was no capacity failure. Both owned trees/profiles were cleaned and the 6 GB reservation released. This refusal is bound to a selected-media attempt and remains distinct from the earlier unbound browser observations. The source hold is preserved while its item/provider scope is reviewed; no denied-asset retry is claimed.
 
 ## Panel ownership and findings
 

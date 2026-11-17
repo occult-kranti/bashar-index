@@ -1,4 +1,4 @@
-"""Eight raw-inventory fixtures; no network, browser or media dependencies."""
+"""Raw-inventory fixtures; no network, browser or media dependencies."""
 import copy
 import json
 from pathlib import Path
@@ -53,6 +53,31 @@ class LegacyTrackTests(unittest.TestCase):
         self.assertFalse(inventory['eligible'])
         with self.assertRaisesRegex(worker.Held, 'original_audio_unproven'):
             worker.validate_selection(selected(language='en', language_preference=5), ID, None, 1000, {'mp4a.40.2'}, inventory)
+
+    def test_normalized_caption_language_is_not_source_audio_evidence(self):
+        inventory = policy.legacy_track_inventory(ID, [response()])
+        info = selected(language='en', subtitles={'en': []})
+        proof = worker.validate_selection(info, ID, None, 1000, {'mp4a.40.2'}, inventory)
+        self.assertFalse(proof['normalized_language_used_as_audio_evidence'])
+        self.assertIsNone(proof['source_language'])
+        for change in ({'language_preference': -2}, {'language_preference': 5},
+                       {'format_id': '251'}, {'filesize': 124}, {'filesize': None}, {'acodec': 'opus'}):
+            self.assertIsNone(policy.legacy_selection_proof(dict(info, **change), inventory))
+        for missing_size in (None, 0, True):
+            missing = copy.deepcopy(inventory)
+            next(f for f in missing['audio_representations'] if f['itag'] == 140)['source_bytes'] = missing_size
+            self.assertIsNone(policy.legacy_selection_proof(info, missing))
+        with tempfile.TemporaryDirectory() as tmp, patch.object(worker, 'TARGET', ID):
+            state = worker.State({'preserved_controls': []}, Path(tmp), time.time() + 60)
+            state.original_track = proof; state.raw_audio_inventory = inventory
+            worker.persist_selection(state, info, media_metadata.build_metadata)
+            metadata = worker.read(Path(tmp) / 'selected-metadata.info.json')
+            for value in (metadata['languages']['audio'], metadata['metadata']['language'],
+                          metadata['native_selection']['source_language'],
+                          metadata['native_selection']['format']['language']):
+                self.assertIsNone(value)
+            self.assertEqual(metadata['languages']['manual_subtitles'], ['en'])
+            self.assertEqual(info['language'], 'en')
 
     def test_labeled_multitrack_keeps_strict_explicit_original_branch(self):
         inventory = policy.legacy_track_inventory(ID, [response([

@@ -22,6 +22,10 @@ PROFILE = 'stock_headful_wpc_native_batch_v3'
 LEASE_NAME = 'stock_wpc_batch_v3_lease.json'
 STOP_NAME = 'STOP_STOCK_WPC_BATCH_V3'
 COOLDOWN_NAME = 'stock_wpc_batch_v3_source_cooldown.json'
+# yt-dlp's numeric filter grammar does not accept a leading minus sign.
+# The pre-transfer raw-inventory gate still requires exactly preference -1.
+LEGACY_FORMAT_SELECTOR = ('bestaudio[protocol=https][vcodec=none][language_preference<0][ext=m4a]/'
+                          'bestaudio[protocol=https][vcodec=none][language_preference<0]')
 LIMITS = {'audio_bytes': 64 * 1024**2, 'python_body_bytes': 100 * 1024**2,
           'python_wire_requests': 64, 'browser_observed_requests': 256,
           'profile_bytes': 150_000_000, 'spool_bytes': 256_000_000,
@@ -167,6 +171,44 @@ def diagnostic_reason(message):
         (r'^(?:Private video\b|This video is private\b)', 'private_video'),
         (r'^Video unavailable(?:[.!:]|$)', 'video_unavailable'))
     return next((code for pattern, code in patterns if re.search(pattern, text, re.I)), None)
+
+
+def safe_exception_chain(error):
+    """Bounded classes/codes/frame locations only; never exception messages."""
+    names = {'Held', 'QualityHold', 'DownloadError', 'ExtractorError', 'UnavailableVideoError',
+        'HTTPError', 'TransportError', 'ContentTooShortError', 'OSError', 'PermissionError',
+        'FileNotFoundError', 'TimeoutError', 'ConnectionError', 'ConnectionResetError',
+        'ConnectionAbortedError', 'BrokenPipeError', 'RuntimeError', 'ValueError', 'TypeError',
+        'AttributeError', 'NameError', 'OverflowError', 'AssertionError'}
+    codes = {'deadline', 'bootstrap_deadline', 'owner_stop', 'batch_source_stop', 'lease_revoked',
+        'source_history_changed', 'python_body_cap', 'python_request_cap', 'audio_byte_cap',
+        'short_local_write', 'output_scope', 'storage_link', 'source_403', 'source_429',
+        'browser_observed_request_cap', 'original_audio_unproven', 'native_completion_unproven',
+        'audio_probe_failed', 'audio_probe_invalid', 'audio_extent', 'warning_decode_failed'}
+    todo = [('root', error)]; seen = set(); nodes = []
+    while todo and len(nodes) < 8:
+        link, value = todo.pop(0)
+        if not isinstance(value, BaseException) or id(value) in seen: continue
+        seen.add(id(value)); name = type(value).__name__
+        node = {'link': link, 'exception_class': name if name in names else 'OtherError'}
+        for field in ('errno', 'winerror'):
+            number = getattr(value, field, None)
+            if type(number) is int and 0 <= number <= 65535: node[field] = number
+        code = getattr(value, 'code', None)
+        if name in {'Held', 'QualityHold'} and isinstance(code, str) and code in codes: node['code'] = code
+        frames = []; frame = value.__traceback__
+        while frame is not None and len(frames) < 8:
+            filename = Path(frame.tb_frame.f_code.co_filename).name
+            function = frame.tb_frame.f_code.co_name
+            frames.append({'module': filename if re.fullmatch(r'[A-Za-z0-9_.-]{1,100}', filename) else 'other',
+                'function': function if re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,79}', function) else 'other',
+                'line': frame.tb_lineno})
+            frame = frame.tb_next
+        node['frames'] = frames; nodes.append(node)
+        todo.extend([('cause', value.__cause__), ('context', value.__context__), ('wrapped_cause', getattr(value, 'cause', None))])
+        info = getattr(value, 'exc_info', None)
+        if isinstance(info, tuple) and len(info) == 3: todo.append(('exc_info', info[1]))
+    return {'schema_version': 1, 'nodes': nodes, 'truncated': bool(todo), 'raw_messages_retained': False}
 
 
 def save_format_inventory(state, info):
@@ -468,9 +510,7 @@ def child(config, admission_path):
         def process_video_result(self, info_dict, download=True):
             save_format_inventory(state, info_dict)
             if state.raw_audio_inventory and state.raw_audio_inventory.get('eligible'):
-                self.format_selector = self.build_format_selector(
-                    'bestaudio[protocol=https][vcodec=none][language_preference=-1][ext=m4a]/'
-                    'bestaudio[protocol=https][vcodec=none][language_preference=-1]')
+                self.format_selector = self.build_format_selector(LEGACY_FORMAT_SELECTOR)
             return super().process_video_result(info_dict, download=download)
         def build_request_director(self, handlers, preferences=None):
             return super().build_request_director([UrllibRH], preferences)
@@ -528,6 +568,8 @@ def child(config, admission_path):
     except BaseException as error:
         state.error = state.error or (error.code if isinstance(error, (Held, QualityHold)) else state.diagnostic_reason or 'native_downloader_failed')
         result['exception_class'] = type(error).__name__
+        try: result['exception_diagnostics'] = safe_exception_chain(error)
+        except Exception: result['exception_diagnostics'] = {'schema_version': 1, 'diagnostic_failed': True, 'raw_messages_retained': False}
     finally:
         fd_common.sanitize_open, http.client.HTTPConnection.putrequest, nodriver.start = original_open, original_put, original_start
         YoutubeIE._extract_formats_and_subtitles = original_formats
