@@ -1,5 +1,19 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Current continuation: collection and research, November 16 evening Eastern
+
+PR #27 merged at `3a2e488`; its branch remains. The following checkpoint supersedes older runtime counts and restart directions below. The research continuation is on `feat/channeler-research-plan`.
+
+At **2026-11-17 00:21 UTC**, the current YouTube lane has **47 verified audio/metadata pairs**, 20 verified English caption bundles across 17 videos, and no completed pairs awaiting upload. The new requested channel, **Multidimensional Soul / @Akanksshaa**, is registered as an interview host, with 1,417 indexed items (730 Videos, 684 Shorts, three streams). Do not assign guest speech or guest entities to the host. There are now **70 tracked channels**, 65,345 unique indexed IDs, 1,340 newest-20 items, 3,270 newest-50 items and 62,075 final-round items. Queue backups and intake provenance remain private. The private catalog checkpoint reflects these counts.
+
+The official yt-dlp nightly plus a local **Bgutil 2.0.2** PO-token provider and the explicitly selected `mweb` client recovered one previously blocked full audio file and verified it on Drive. A subsequent four-worker trial received a new media 403. **Supervisor PID 137316 is waiting**, with four download workers, four upload transfers, eight-pair batches, 16 ready/in-flight slots and 10-second metadata spacing. Its existing attempt count is 1 of 3; it was not reset. The source deadline is **2026-11-18 00:11:16 UTC / November 17, 7:11 p.m. Eastern**. Caption-only cooldown remains **2026-11-17 23:20:02 UTC**. These deadlines are preserved; the provider is not a universal fix for refusals. Provider PID 76376 binds only `127.0.0.1:4416`; anonymous token diagnostics are redacted. PIDs are dated observations: inspect saved state before acting.
+
+Automatic approval review rejected a proposed eight-worker restart with a retry-budget reset, returning only “blocked by policy.” The accepted smaller continuation preserves the budget and waits for the existing source deadline. Do not retry the rejected compound action or reinterpret the source refusal as item-only without reviewed evidence.
+
+Measured local footprint at this checkpoint is approximately 0.115 GB private plus 0.691 GB tools/repository. Keep the private ceiling at 17 GB and the owner's 2 GB total buffer. No ASR packages/models, transcription, embeddings or corpus-analysis jobs were started. The owner explicitly requests planning those next, not running them now; this supersedes the historical CPU speech-to-text restart instructions in sections 8–9.
+
+The [consolidated research plan](research/analysis-plan-2026-11-16/README.md) combines two search rounds and a third critique by systems, analysis and identity owners. Its [channeler–entity table](research/analysis-plan-2026-11-16/channeler-entity-table.md) contains 115 sourced relationships for 28 people, plus a separate host row. The lead independently reviewed 30 primary pages; this verifies documented self-attribution, not external beings or treatment effects. Seven channel-ownership gaps remain. Only the explicitly requested new channel was added to collection queues. The disabled implementation plan covers GPU scheduling, captions-first ASR, TF–IDF/BM25, embedding/topic comparisons, shared-entity networks, prediction windows, hypotheses, experiment designs, frequency/healing evidence and figures.
+
 ## Local Windows continuation, 2026-11-16
 
 PR #28 is merged on `main` at `22d89f2`; the published dashboards are current. PR #26 and its branch are retained. The new ingestion work is on

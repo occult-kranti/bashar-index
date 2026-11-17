@@ -125,7 +125,14 @@ def caption_fields(record, source, remote):
     bundles = []
     for track in proven:
         bundle = track["bundle"]
-        bundles.append({**{key: track.get(key, "") for key in ("track_id", "language", "kind", "ext")},
+        # Native provenance uses raw_format; keep ext for existing catalog readers.
+        formats = [track.get(key) for key in ("raw_format", "ext") if track.get(key) not in (None, "")]
+        extension = ""
+        if formats and all(isinstance(value, str) and value in {"json3", "vtt"} for value in formats):
+            if len(set(formats)) == 1:
+                extension = formats[0]
+        bundles.append({**{key: track.get(key, "") for key in ("track_id", "language", "kind")},
+                        "ext": extension,
                         **{key: bundle.get(key, "") for key in ("remote", "drive_id", "bytes", "md5", "sha256")}})
     result.update(caption_state=state, caption_receipt_status=record.get("status", ""),
                   caption_error_class=record.get("error_class", ""), caption_captured_at=record.get("captured_at", ""),

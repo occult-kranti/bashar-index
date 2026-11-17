@@ -39,6 +39,8 @@ param(
     [double]$RateMiB = 2,
     [ValidateRange(0, 3600)]
     [double]$MinInterval = 5,
+    [ValidateSet('default', 'mweb')]
+    [string]$YoutubeClient = 'default',
 
     [ValidateRange(0, 2147483647)]
     [int]$Limit = 0
@@ -132,6 +134,7 @@ $EtArguments = @(
     '--http-chunk-mib', '1',
     '--min-interval', $MinInterval.ToString([Globalization.CultureInfo]::InvariantCulture),
     '--ytdlp', $EtYtdlp,
+    '--youtube-client', $YoutubeClient,
     '--rclone', $EtRclone
 )
 if ($RcloneConfig) {

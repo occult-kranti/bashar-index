@@ -372,6 +372,7 @@ class CaptionIntegrationTests(StageFixture):
         command = tool.call_args.args[0]
         self.assertIn('--ignore-no-formats-error', command)
         self.assertNotIn('-f', command)
+        self.assertNotIn('--extractor-args', command)
         self.assertNotIn('--no-warnings', command)
         self.assertEqual(captions.select_tracks(result)['inventory_status'], 'incomplete')
         for flag in ('--simulate', '--write-subs', '--write-auto-subs'):
@@ -381,6 +382,7 @@ class CaptionIntegrationTests(StageFixture):
 
     def test_new_audio_extraction_declares_caption_intent_without_downloading_captions(self):
         args, item, _, info = self.setup_caption()
+        args.youtube_client = 'mweb'
         info.update(vcodec='none', protocol='https', ext='webm', url='https://rr1.googlevideo.com/videoplayback')
         tool = Mock(return_value=SimpleNamespace(returncode=0, stdout=json.dumps(info),
                     stderr='WARNING: [youtube] Video requires a GVS PO token'))
@@ -390,6 +392,7 @@ class CaptionIntegrationTests(StageFixture):
         self.assertIn('--simulate', command)
         self.assertIn('-f', command)
         self.assertIn('--write-auto-subs', command)
+        self.assertEqual(command[command.index('--extractor-args') + 1], 'youtube:player_client=mweb')
         self.assertNotIn('_caption_access_warning', result)
 
     def test_zip_writer_counts_duplicate_bytes_and_respects_whole_root_limit(self):
