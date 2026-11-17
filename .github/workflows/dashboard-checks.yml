@@ -32,6 +32,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
       - name: Full standard-library pipeline test suite
         run: python -m unittest discover -s et-channelers/pipeline/tests -v
       - name: Public media and credential guard
@@ -43,5 +46,5 @@ jobs:
           node --check assets/research-nav.js
           node --check dashboards/hub.js
           node --check channeling-atlas/dist/app.js
-      - name: Chrome capture extension offline contracts
-        run: node --test et-channelers/browser_capture_extension/tests/*.test.mjs
+      - name: Native audio adapter and Chrome extension offline contracts
+        run: node --test et-channelers/browser_capture_extension/tests/*.test.mjs et-channelers/pipeline/tests/test_browser_sabr_adapter.mjs

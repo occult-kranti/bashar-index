@@ -1,2 +1,7 @@
 # This published, SHA-256-pinned Windows dependency artifact must retain its bytes.
 et-channelers/pipeline/requirements-gpu-asr-win-py312.lock -text
+# Browser build manifests bind raw source/bundle bytes across Windows and Linux.
+et-channelers/browser_capture_extension/*.js text eol=lf
+et-channelers/browser_capture_extension/*.mjs text eol=lf
+et-channelers/browser_capture_extension/vendor/* text eol=lf
+et-channelers/pipeline/browser_sabr_adapter.mjs text eol=lf
