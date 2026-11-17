@@ -1,5 +1,7 @@
 # Analysis plan for the Bashar Index and the et-channelers corpus
 
+**Current implementation and evaluation contracts:** the [November 16 consolidated plan](research/analysis-plan-2026-11-16/README.md) and disabled JSON configuration supersede conflicting resource/sample proposals below. The [Dreemtime intake and common-event roadmap](research/cross-channel-events-2026-11-16.md) adds comparison of the same claimed/observable event across humans and attributed entities, using source spans, dates, independent references and matched/nonmatched retrieval evaluation. The [ROADMAP](ROADMAP.md) records the event-register fields and figure requirements. This addition starts no transcription, model or corpus-analysis jobs.
+
 *Written on 2026-11-14 from three independent drafts and a synthesis, made by an agent workflow that read the repository, the Bashar Index panel and the private store's tables (no transcript text is reproduced here). Counts are as of about 02:15 UTC that day; [README.md](README.md) and [HANDOFF.md](HANDOFF.md) have the current ones. The references in Appendix B are to be checked before they are cited. Section 12, added later that day from a deep-research survey, replaces decision D11, section 5.15 and the caps per channel in 4.6 and 5.5.*
 
 ## How this plan was chosen

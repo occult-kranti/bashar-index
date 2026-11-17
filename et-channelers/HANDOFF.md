@@ -1,5 +1,19 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Latest checkpoint: Chromium investigation and Dreemtime, 01:14 UTC November 17
+
+This section supersedes older runtime observations below. **No new full audio was acquired during the browser investigation:** 47 audio/metadata pairs remain verified on Drive, alongside 20 English-caption bundles across 17 videos. Native full-file attempts returned media 403 for the prior failing Elena item and a previously unattempted Dreemtime item. Anonymous Chrome playback was successful and two small WPC-backed range probes returned 206, but those probes did **not** establish full-file recovery. The newer official nightly is `2026.11.16.232655`; WPC `1.1.2` is installed locally. Persistent cookies, personal browser profiles and proxy rotation were not used.
+
+The new browser probe and in-process browser lease helper are explicit, experimental tools. Keeping a browser open and using yt-dlp's native downloader were tested without a full-file success. Do not claim a reliable Chromium workaround or automatically activate this path. Browser mode permits at most four leases and requires a private cap of at most 16 GB, reserving extra browser/tool overhead; temporary-profile cleanup failures require review. The ordinary native lane retains its 17 GB private cap. New download receipts now record actual stream start and elapsed time for future ETA calibration.
+
+**Dreemtime Academy / Hayden Crawford** is registered as an interview host: canonical `UCE6KE5xH13AMUajXvz_w8vA`, 1,101 indexed items (338 Videos, 117 recorded-stream listings, 646 Shorts). The queues now contain 1,360 newest-20 items, 3,320 newest-50 items, 66,446 unique IDs and 63,126 final-round items across 71 tracked priority channels. All preceding queue rows/order/metadata were retained and backed up under the ingestion lock. Per-episode speaker/entity attribution remains pending.
+
+At 01:14 UTC, **supervisor PID 186764** is waiting on the latest actual source deadline, **2026-11-18 01:13:30 UTC / November 17, 8:13 p.m. Eastern**. It keeps four source workers, four upload transfers, eight-pair batches, 16 ready/in-flight slots, 10-second metadata spacing and the existing 1-of-3 attempt count. No retry budget was reset. Captions retain their independent November 17 23:20:02 UTC deadline. The experimental shared-browser service was stopped; it was not a proven repair. Consult private state before using dated PIDs.
+
+The [conditional ETA report](research/collection-eta-2026-11-16.md) estimates about 3.6–8.9 active hours for newest 20, 9.1–22.2 active hours through newest 50, and 7.7–16.5 active days for all indexed audio, before overhead and future downtime. It models roughly 1.05–1.49 TB and explicitly imputes missing durations. Caption request floors are separate. Repeated refusals mean there is no finite guaranteed completion date; the report's earlier cooldown timestamp is a dated input, superseded by current state above.
+
+The Atlas `#/entities` view adds a separate 115-relationship/28-person/86-label extension with evidence links and filters; its historical scientific datasets remain byte-identical. Root [README](../README.md) now explains the entire repository, and [BRANCHES](../BRANCHES.md) inventories 30 remote branch tips, ancestry and worktrees. [Common-event research](research/cross-channel-events-2026-11-16.md) adds the user's Dreemtime/Sam candidate to the future analysis roadmap; metadata alone does not confirm a shared event. No new ASR, model, embedding or corpus-analysis job was started.
+
 ## Current continuation: collection and research, November 16 evening Eastern
 
 PR #27 merged at `3a2e488`; its branch remains. The following checkpoint supersedes older runtime counts and restart directions below. The research continuation is on `feat/channeler-research-plan`.

@@ -416,6 +416,20 @@ def run_tool(command, timeout=300):
     return result
 
 
+class BrowserAudioInfo(dict):
+    """Normal metadata keys plus an in-memory browser owner, never serialized."""
+    def __init__(self, info, lease):
+        super().__init__(info)
+        self.browser_lease = lease
+
+
+def close_browser_info(info):
+    lease = getattr(info, "browser_lease", None)
+    if lease is not None:
+        info.browser_lease = None
+        lease.close()
+
+
 def extract_audio(args, row, metadata_only=False):
     command = [args.ytdlp, "--ignore-config", "--proxy", "", "--no-playlist", "--no-progress",
                        "--skip-download", "--dump-single-json", "--retries", "0", "--extractor-retries", "0",
@@ -429,6 +443,27 @@ def extract_audio(args, row, metadata_only=False):
         # simulation returns before its subtitle transport or filesystem writes.
         command += ["--simulate", "--write-subs", "--write-auto-subs", "--sub-langs", "en.*",
                     "--sub-format", "json3/vtt"]
+    if getattr(args, "browser_audio", False) and not metadata_only:
+        from browser_audio import open_audio, BrowserAudioError
+        try:
+            extracted, lease = open_audio(row["url"], args.timeout,
+                caption_intent=getattr(args, "collect_captions", False))
+        except BrowserAudioError as exc:
+            raise IngestError(exc.kind, "Anonymous Chromium audio extraction failed") from None
+        info = BrowserAudioInfo(extracted, lease)
+        try:
+            if info.get("id") != row["video_id"]:
+                raise IngestError("metadata", "Browser metadata belongs to a different video")
+            if info.get("is_live") or info.get("live_status") in {"is_live", "is_upcoming"}:
+                raise IngestError("live", "Live/upcoming source remains pending")
+            if (info.get("vcodec") != "none" or info.get("protocol") != "https" or
+                    info.get("ext") not in NATIVE_EXTENSIONS):
+                raise IngestError("unsupported_format", "No supported native HTTPS audio selected")
+            checked_cdn_url(info.get("url", ""))
+        except BaseException:
+            close_browser_info(info)
+            raise
+        return info
     result = run_tool(command + [row["url"]], args.timeout)
     if result.returncode:
         kind = classify_error(result.stderr)
@@ -856,7 +891,7 @@ def ensure_metadata(args, row, rec, budget, limiter, stop, drive, state_path, in
         limiter.wait()
         if stop.is_set():
             raise IngestError("stopped", "Metadata backfill stopped before a request")
-        info = extract_audio(args, row)
+        info = extract_audio(args, row, metadata_only=True)
         captured_at = utc_now()
     from media_metadata import build_metadata
     data = build_metadata(info, row, captured_at or utc_now())
@@ -1311,9 +1346,14 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
                        duration_s=info.get("duration"), source_ext=info["ext"],
                        source_format_id=info.get("format_id"),
                        youtube_client=getattr(args, "youtube_client", "default"),
+                       browser_audio=bool(getattr(args, "browser_audio", False)),
                        target="native audio; no re-encode", title=row.get("title", ""))
             journal(state_path, rec)
+            rec["download_started_at"] = utc_now()
+            download_started = time.monotonic()
             measured = stream_audio(info, part, budget, args.rate_bytes, stop, getattr(args, "http_chunk_bytes", 0))
+            close_browser_info(info)
+            rec["download_elapsed_s"] = round(time.monotonic() - download_started, 3)
             rec.update(measured, status="download_complete", downloaded_at=utc_now())
             journal(state_path, rec)  # durable hashes before promoting the partial
             os.replace(part, path)
@@ -1371,6 +1411,7 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
         print(f"{row['video_id']}: {exc.kind}: {exc}", file=sys.stderr, flush=True)
         return IngestResult(row, rec, status=outcome) if stage_only else outcome
     finally:
+        close_browser_info(info)
         if reserved:
             budget.release(row["video_id"])
 
@@ -1720,6 +1761,8 @@ def parser():
     ap.add_argument("--min-interval", type=float, default=5.0, help="seconds between metadata request starts")
     ap.add_argument("--timeout", type=int, default=300)
     ap.add_argument("--ytdlp", default="yt-dlp")
+    ap.add_argument("--browser-audio", action="store_true",
+                    help="Keep an anonymous Chromium/WPC session alive through native audio transfer")
     ap.add_argument("--youtube-client", choices=("default", "mweb"), default="default",
                     help="explicit extraction profile; mweb requires a configured PO-token provider")
     ap.add_argument("--rclone", default="rclone")
@@ -1733,6 +1776,8 @@ def main(argv=None):
     ap = parser()
     args = ap.parse_args(argv)
     args.root = ensure_outside_git(args.root)
+    if args.browser_audio and (args.workers > 4 or args.max_local_gb > 16):
+        ap.error("Experimental browser audio requires <=4 workers and <=16 GB private storage, reserving extra browser scratch headroom")
     if not 0 < args.max_local_gb <= 20 or args.max_item_mb < 0 or args.min_free_gb < 0:
         ap.error("local cap must be positive and <= 20 GB; optional item cap/free floor cannot be negative")
     if args.rate_mib <= 0 or args.min_interval < 0 or args.limit < 0 or args.http_chunk_mib < 0:

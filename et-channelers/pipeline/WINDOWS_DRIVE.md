@@ -312,6 +312,33 @@ python -m unittest discover -s et-channelers/pipeline/tests -p test_supervise_dr
 
 ### Current source-client investigation (November 16 evening Eastern)
 
+**Later investigation, 01:14 UTC November 17:** installed official nightly `2026.11.16.232655`
+and the upstream browser-backed WPC provider `1.1.2`. The owner explicitly requested Chromium
+automation and another repair attempt. [`browser_source_probe.py`](browser_source_probe.py)
+confirmed anonymous Chrome playback with an allowlisted diagnostic record. Two small WPC-backed
+range requests succeeded, but full native transfers continued to return 403, including a bounded
+attempt on the new Dreemtime channel. Keeping Chromium alive during streaming and using yt-dlp's
+native downloader did not establish a reliable full-file fix. No additional full audio was verified.
+These observations supersede the earlier “not installed” WPC note below.
+
+[`browser_audio.py`](browser_audio.py) retains an entered yt-dlp/WPC context until the source
+worker closes its lease. `--browser-audio` / `-BrowserAudio` explicitly selects this experimental
+path; imports and ordinary runs do not start browsers. Its four-session pool uses fresh headless
+profiles, no personal account, and no proxy. Metadata-only backfills retain the normal CLI path.
+The experimental path requires at most four workers and a private ceiling of at most **16 GB**
+to reserve additional tool/browser scratch headroom within the 20 GB total and 2 GB buffer.
+It tracks its own temporary profiles and blocks further leases after failed cleanup. It has not
+passed sustained-transfer/storage validation and is **not enabled in the current supervisor**.
+Admission and socket waits are bounded; synchronous in-process extraction has no hard total
+wall-clock kill. Raw browser/network errors, tokens and URLs are never copied to receipts.
+
+The ordinary four-worker supervisor preserves the latest source deadline (November 18 01:13:30 UTC)
+and its existing retry count. No small range response is sufficient to clear a new full-file refusal.
+See [the dated ETA model](../research/collection-eta-2026-11-16.md): measured prefix goodput and
+explicit missing-duration/upload scenarios yield about 7.7–16.5 **active** days for indexed audio,
+not a promised completion interval. `collection_eta.py` is offline and starts no jobs. Download
+receipts now include `download_started_at` and `download_elapsed_s` for improved future calibration.
+
 The optional launcher/supervisor argument `-YoutubeClient mweb` forwards
 `--youtube-client mweb` to the collector's audio metadata extraction. The default remains
 `default`; caption backfill retains its own extraction behavior and cooldown. Receipts record the

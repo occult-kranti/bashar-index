@@ -17,6 +17,7 @@ param(
     [ValidateRange(0.01,100)][double]$RateMiB = 2,
     [ValidateRange(0,3600)][double]$MinInterval = 5,
     [ValidateSet('default','mweb')][string]$YoutubeClient = 'default',
+    [switch]$BrowserAudio,
     [ValidateRange(1,4)][int]$MaxAttempts = 3,
     [switch]$ResetRetryBudget
 )
@@ -116,7 +117,7 @@ function Write-ResumeState([string]$State, [double]$Until = 0, [int]$Code = 0) {
     $EtRecord = [ordered]@{schema_version=2;cooldown_scope_version=1;state=$State;updated_at=[DateTime]::UtcNow.ToString('o');
         mode=$Mode;supervisor_pid=$PID;attempts=$EtAttempts;max_attempts=$MaxAttempts;
         until_epoch=$Until;exit_code=$Code;download_workers=$DlWorkers;upload_transfers=$UploadTransfers;
-        youtube_client=$YoutubeClient;
+        youtube_client=$YoutubeClient;browser_audio=[bool]$BrowserAudio;
         cooldown_provider=$EtCooldownProvider;source_until_epoch=$EtSourceUntil;
         await_caption_backfill=$EtAwaitCaptionBackfill;caption_until_epoch=$EtCaptionUntil;
         caption_pending_videos=$EtCaptionPending;
@@ -208,6 +209,7 @@ try {
             '-ReadyItems',[string]$ReadyItems,'-RateMiB',$RateMiB.ToString([Globalization.CultureInfo]::InvariantCulture),
             '-MinInterval',$MinInterval.ToString([Globalization.CultureInfo]::InvariantCulture),
             '-YoutubeClient',$YoutubeClient)
+        if ($BrowserAudio) { $EtArguments += '-BrowserAudio' }
         if ($RcloneConfig) { $EtArguments += @('-RcloneConfig',$RcloneConfig) }
         if ($SkipCatalogCheckpoint) { $EtArguments += '-SkipCatalogCheckpoint' }
         $EtChildStarted = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds() / 1000.0

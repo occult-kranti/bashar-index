@@ -41,6 +41,7 @@ param(
     [double]$MinInterval = 5,
     [ValidateSet('default', 'mweb')]
     [string]$YoutubeClient = 'default',
+    [switch]$BrowserAudio,
 
     [ValidateRange(0, 2147483647)]
     [int]$Limit = 0
@@ -137,6 +138,7 @@ $EtArguments = @(
     '--youtube-client', $YoutubeClient,
     '--rclone', $EtRclone
 )
+if ($BrowserAudio) { $EtArguments += '--browser-audio' }
 if ($RcloneConfig) {
     $EtArguments += @('--rclone-config', $RcloneConfig)
 }

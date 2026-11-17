@@ -384,13 +384,14 @@ class SupervisorTests(unittest.TestCase):
 
     def test_budget_and_four_upload_transfers_are_forwarded_and_bounded(self):
         self.launcher.write_text(
-            "param([string]$PrivateRoot,[double]$MaxLocalGb,[int]$UploadTransfers,[string]$YoutubeClient,[Parameter(ValueFromRemainingArguments=$true)]$Rest)\n"
-            "@{cap=$MaxLocalGb;uploads=$UploadTransfers;client=$YoutubeClient} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $PrivateRoot 'settings.json')\nexit 0\n", encoding='utf-8')
-        result = self.run_supervisor('-MaxLocalGb', '16', '-UploadTransfers', '4', '-YoutubeClient', 'mweb')
+            "param([string]$PrivateRoot,[double]$MaxLocalGb,[int]$UploadTransfers,[string]$YoutubeClient,[switch]$BrowserAudio,[Parameter(ValueFromRemainingArguments=$true)]$Rest)\n"
+            "@{cap=$MaxLocalGb;uploads=$UploadTransfers;client=$YoutubeClient;browser=[bool]$BrowserAudio} | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $PrivateRoot 'settings.json')\nexit 0\n", encoding='utf-8')
+        result = self.run_supervisor('-MaxLocalGb', '16', '-UploadTransfers', '4', '-YoutubeClient', 'mweb', '-BrowserAudio')
         self.assertEqual(result.returncode, 0, result.stderr)
         settings = json.loads((self.root / 'settings.json').read_text(encoding='utf-8-sig'))
-        self.assertEqual(settings, {'cap': 16, 'uploads': 4, 'client': 'mweb'})
+        self.assertEqual(settings, {'cap': 16, 'uploads': 4, 'client': 'mweb', 'browser': True})
         self.assertEqual(self.state()['youtube_client'], 'mweb')
+        self.assertTrue(self.state()['browser_audio'])
         self.assertEqual(self.state()['private_root_ceiling_bytes'], 16_000_000_000)
         rejected = self.run_supervisor('-MaxLocalGb', '18')
         self.assertNotEqual(rejected.returncode, 0)

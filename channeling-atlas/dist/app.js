@@ -24,8 +24,106 @@ function profiles(){main.innerHTML=intro('THE PEOPLE BEHIND THE VOICES','People 
 function refreshProfiles(){const rows=DATA.profiles.filter(x=>matches(x)&&(!state.filter||x.classification===state.filter));document.querySelector('#results').innerHTML=rows.length?`<div class="profile-list">${rows.map(p=>`<article class="profile-card"><span class="badge">${esc(p.entity||'Channeling tradition')}</span><h3><a href="#/profiles/${encodeURIComponent(p.id)}" style="text-decoration:none">${esc(p.name)}</a></h3><div class="meta">${p.firstDate?date(p.firstDate)+' · '+esc(p.datePrecision||'reported date'):'First date not established'}</div><p>${esc(p.summary)}</p>${tags(p.themes)}${citations(p.sourceIds)}<a class="card-link" href="#/profiles/${encodeURIComponent(p.id)}">Read the full profile <span aria-hidden="true">↗</span></a></article>`).join('')}</div>`:empty();count(rows.length,DATA.profiles.length)}
 function timeline(){main.innerHTML=intro('DOCUMENTS, NOT COSMIC TIME','A history of the record.','Start at Ra in 1981, or trace the earlier context. Dates identify reported experiences, sessions, publications and discussions. They do not date the existence of a claimed entity.')+`<p style="margin-bottom:22px"><a class="text-link" href="#/profiles/hr-ra">Ra archive: January 15, 1981 to March 15, 1984 ↗</a></p>`+controls('Search events, people, traditions…',unique(DATA.events.map(x=>x.type)),'Event types',unique(DATA.events.filter(x=>/^\d{4}/.test(x.date)).map(x=>String(Math.floor(parseInt(x.date)/10)*10))));refreshTimeline()}
 function refreshTimeline(){const rows=DATA.events.filter(x=>matches(x)&&(!state.filter||x.type===state.filter)&&(!state.year||Math.floor(parseInt(x.date)/10)*10===Number(state.year))).sort((a,b)=>String(a.date||'9999').localeCompare(String(b.date||'9999')));document.querySelector('#results').innerHTML=rows.length?`<div class="timeline">${rows.map(x=>`<article class="timeline-event"><div class="timeline-date">${date(x.date)}</div><div class="timeline-content"><span class="badge">${esc(x.type||'Documented record')}</span><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p>${citations(x.sourceIds)}</div></article>`).join('')}</div>`:empty();count(rows.length,DATA.events.length)}
-function entities(){main.innerHTML=intro('A COMPARISON OF NARRATIVES','Entities & traditions','Names such as “Pleiadian,” “Essassani” and “Arcturian” belong to the sources’ own cosmologies. These groupings compare their language and relationships; they are not a verified biological taxonomy.')+controls('Search entities, traditions, claimed origins…',null);refreshEntities()}
-function refreshEntities(){const rows=DATA.entities.filter(matches);document.querySelector('#results').innerHTML=rows.length?`<div class="entity-list">${rows.map(x=>`<article class="entity-card"><span class="eyebrow">${esc(x.classification)}</span><h3>${esc(x.name)}</h3><p>${esc(x.description)}</p><div class="entity-links">${arr(x.profileIds).map(id=>profileMap.has(id)?`<a href="#/profiles/${encodeURIComponent(id)}">${esc(profileMap.get(id).name)} ↗</a>`:'').join('')}</div>${arr(x.caveats).map(c=>`<p class="tiny">${text(c)}</p>`).join('')}${citations(x.sourceIds)}</article>`).join('')}</div>`:empty();count(rows.length,DATA.entities.length)}
+let ENTITY_EXTENSION=null,entityRequest=null,entityLoadError=false;
+const entityState={search:'',scope:'all',group:'labels',type:''};
+function entitySearchText(value){return String(value||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
+function entityMatches(value){return !entityState.search||entitySearchText(value).includes(entitySearchText(entityState.search))}
+function entityPermalink(){
+ const params=new URLSearchParams();
+ if(entityState.search)params.set('q',entityState.search);
+ if(entityState.scope!=='all')params.set('scope',entityState.scope);
+ if(entityState.group!=='labels')params.set('group',entityState.group);
+ if(entityState.type)params.set('type',entityState.type);
+ history.replaceState(null,'','#/entities'+(params.size?'?'+params.toString():''));
+}
+function loadEntityExtension(){
+ if(ENTITY_EXTENSION||entityRequest)return;
+ entityLoadError=false;
+ entityRequest=fetch('entity-relationships.json').then(response=>{
+  if(!response.ok)throw Error('Relationship extension unavailable');return response.json();
+ }).then(data=>{
+  if(data.schemaVersion!==1||!data.meta||typeof data.meta.editionDate!=='string'||!data.predicates||typeof data.predicates!=='object'||!Array.isArray(data.relationships)||!Array.isArray(data.people)||!Array.isArray(data.labels))throw Error('Invalid relationship extension');
+  if(data.people.some(person=>!person||typeof person.id!=='string'||typeof person.name!=='string')||data.labels.some(label=>!label||typeof label.id!=='string'||typeof label.name!=='string'||!Array.isArray(label.aliases)||!Array.isArray(label.categories)||!Array.isArray(label.comparisonFamilies))||data.relationships.some(record=>!record||!record.evidence||typeof record.personId!=='string'||typeof record.entityId!=='string'||typeof record.capturedAt!=='string'))throw Error('Invalid relationship records');
+  ENTITY_EXTENSION=data;
+ }).catch(()=>{entityLoadError=true}).finally(()=>{
+  entityRequest=null;
+  if(currentView==='entities'&&document.querySelector('#entity-results')){renderEntityExtensionSummary();refreshEntities()}
+ });
+}
+function entities(){
+ main.innerHTML=intro('PEOPLE · ATTRIBUTED SOURCES · PRIMARY EVIDENCE','Entities & traditions','Follow who attributes a message to whom. Compare the source’s own labels, distinguish channeling from contact or guidance, and inspect the supporting page.')+
+ `<section class="entity-edition" id="entity-extension-summary" aria-label="Relationship directory edition"></section>
+ <form class="entity-toolbar" role="search" aria-label="Search entities and relationships" onsubmit="return false">
+  <label class="entity-search">Search people, entities or evidence<input id="entity-search" type="search" placeholder="Try Metatron, Quantamo, Pia Orleane…" value="${esc(entityState.search)}"></label>
+  <label>Collection<select id="entity-scope"><option value="all">All collections</option><option value="extension">Dated relationship extension</option><option value="historical">Historical Atlas groups</option></select></label>
+  <label>Group relationships by<select id="entity-group"><option value="labels">Claimed source label</option><option value="people">Human practitioner</option></select></label>
+  <label>Relationship<select id="entity-type"><option value="">All relationship types</option></select></label>
+ </form>
+ <div class="entity-results-heading"><p id="entity-result-count" role="status" aria-live="polite"></p><button type="button" class="entity-reset" data-entity-reset>Reset filters</button></div>
+ <div id="entity-results"></div>`;
+ main.querySelector('.page-intro').classList.add('entity-page-intro');
+ for(const key of ['scope','group'])document.querySelector('#entity-'+key).value=entityState[key];
+ renderEntityExtensionSummary();refreshEntities();loadEntityExtension();
+}
+function renderEntityExtensionSummary(){
+ const summary=document.querySelector('#entity-extension-summary');if(!summary)return;
+ if(!ENTITY_EXTENSION){
+  summary.innerHTML=entityLoadError?`<div><span class="eyebrow">RELATIONSHIP EXTENSION UNAVAILABLE</span><p>The historical Atlas remains available. The newer relationship file could not load.</p></div><button type="button" class="button secondary" data-entity-retry>Retry extension</button>`:
+   `<div><span class="eyebrow">DATED RELATIONSHIP EXTENSION</span><p role="status">Loading sourced relationships. The historical Atlas remains available below.</p></div>`;
+  return;
+ }
+ const data=ENTITY_EXTENSION;
+ summary.innerHTML=`<div><span class="eyebrow">RELATIONSHIP EXTENSION · ${esc(date(data.meta.editionDate))}</span><p><strong>${data.relationships.length} sourced relationships</strong> across ${data.people.length} people and ${data.labels.length} source labels. Each record retains its precise attribution and primary source.</p><p class="entity-scope-note">Shared labels do not establish a shared external identity. Hosts do not inherit their guests’ claimed entities. The historical Atlas and analysis counts stay unchanged.</p></div><a class="text-link" href="entity-relationships.json" download>Download extension JSON ↓</a>`;
+ const select=document.querySelector('#entity-type');
+ select.innerHTML='<option value="">All relationship types</option>'+Object.entries(data.predicates).map(([key,value])=>`<option value="${esc(key)}">${esc(value)}</option>`).join('');
+ if(!Object.hasOwn(data.predicates,entityState.type))entityState.type='';
+ select.value=entityState.type;
+}
+function historicalEntityCards(rows){return `<div class="entity-list">${rows.map(x=>`<article class="entity-card"><span class="eyebrow">${esc(x.classification)}</span><h3>${esc(x.name)}</h3><p>${esc(x.description)}</p><div class="entity-links">${arr(x.profileIds).map(id=>profileMap.has(id)?`<a href="#/profiles/${encodeURIComponent(id)}">${esc(profileMap.get(id).name)} ↗</a>`:'').join('')}</div>${arr(x.caveats).map(c=>`<p class="tiny">${text(c)}</p>`).join('')}${citations(x.sourceIds)}</article>`).join('')}</div>`}
+function relationshipEvidence(record,person,label){
+ const title=entityState.group==='people'?record.entityLabel:person.name;
+ const titleMarkup=entityState.group==='labels'&&person.atlasProfileId&&profileMap.has(person.atlasProfileId)?`<a href="#/profiles/${encodeURIComponent(person.atlasProfileId)}">${esc(title)} ↗</a>`:esc(title);
+ const evidence=record.evidence;
+ return `<article class="entity-relationship"><div class="entity-relationship-subject"><h4>${titleMarkup}</h4><p>${esc(record.predicate)}${entityState.group==='labels'?' · '+esc(record.entityLabel):''}</p><span class="entity-role">${record.role==='contactee'?'Contact / guidance account':'Channeling attribution'}</span></div>
+ <div class="entity-evidence"><p>${esc(evidence.summary)}</p>${evidence.qualification?`<p class="entity-qualification">${esc(evidence.qualification)}</p>`:''}<div class="entity-evidence-links"><a href="${url(evidence.url)}" target="_blank" rel="noopener noreferrer">Read primary source ↗</a><span>${esc(evidence.section)}</span></div><p class="entity-evidence-date">Source inspected ${esc(date(record.capturedAt.slice(0,10)))} · supports the attribution, not the claim’s truth.</p></div></article>`;
+}
+function refreshEntities(){
+ const target=document.querySelector('#entity-results');if(!target)return;
+ const data=ENTITY_EXTENSION,people=new Map(arr(data?.people).map(item=>[item.id,item])),labels=new Map(arr(data?.labels).map(item=>[item.id,item]));
+ const namedPeople=new Set(entityState.search?arr(data?.people).filter(person=>entityMatches(person.name)).map(person=>person.id):[]);
+ const namedLabels=new Set(entityState.search?arr(data?.labels).filter(label=>entityMatches(label.aliases.join(' '))).map(label=>label.id):[]);
+ const records=entityState.scope==='historical'?[]:arr(data?.relationships).filter(record=>{
+  const person=people.get(record.personId),label=labels.get(record.entityId);
+  const nameMatch=namedPeople.size||namedLabels.size?namedPeople.has(record.personId)||namedLabels.has(record.entityId):entityMatches([person?.name,record.entityLabel,label?.aliases.join(' '),label?.comparisonFamilies.join(' '),record.predicate,record.evidence.summary,record.evidence.section,record.evidence.url].join(' '));
+  return person&&label&&(!entityState.type||record.relationshipType===entityState.type)&&nameMatch;
+ });
+ const historical=entityState.scope==='extension'||entityState.type?[]:DATA.entities.filter(item=>entityMatches(JSON.stringify([item,arr(item.profileIds).map(id=>profileMap.get(id))])));
+ const groups=new Map();
+ for(const record of records){const id=entityState.group==='people'?record.personId:record.entityId;if(!groups.has(id))groups.set(id,[]);groups.get(id).push(record)}
+ const grouped=[...groups.entries()].sort((a,b)=>{
+  const index=entityState.group==='people'?people:labels;return index.get(a[0]).name.localeCompare(index.get(b[0]).name);
+ });
+ let extension='';
+ if(records.length){extension=`<section class="entity-collection" aria-labelledby="entity-extension-title"><div class="entity-collection-heading"><div><span class="eyebrow">${esc(date(data.meta.editionDate))} · PRIMARY-SOURCE ATTRIBUTIONS</span><h2 id="entity-extension-title">${entityState.group==='people'?'People & their attributed sources':'Claimed sources & their practitioners'}</h2></div><p>${groups.size} ${entityState.group==='people'?(groups.size===1?'person':'people'):(groups.size===1?'label group':'label groups')} · ${records.length} ${records.length===1?'relationship':'relationships'}</p></div><p class="entity-reading-key">${entityState.group==='people'?'Each person keeps their own relationships, even when a channel is shared.':'Open a label to compare its sourced attributions. A label group is not a merged entity identity.'}</p><div class="entity-directory">${grouped.map(([id,items])=>{
+   const group=entityState.group==='people'?people.get(id):labels.get(id);
+   const names=unique(items.map(item=>entityState.group==='people'?item.entityLabel:people.get(item.personId).name));
+   const preview=names.slice(0,4).join(' · ')+(names.length>4?` · +${names.length-4} more`:'');
+   const channels=entityState.group==='people'?arr(group.channels):[];
+   return `<details class="entity-group" ${entityState.search||grouped.length===1?'open':''}><summary><span><span class="entity-group-name">${esc(group.name)}</span><span class="entity-group-preview">${esc(preview)}</span></span><span class="entity-group-count">${items.length} ${items.length===1?'relationship':'relationships'}<span aria-hidden="true"> +</span></span></summary><div class="entity-group-body">${entityState.group==='labels'?`<p class="entity-label-context">Source labels: ${group.aliases.map(esc).join(' / ')} · ${group.categories.map(value=>esc(value.replaceAll('_',' '))).join(', ')}</p>`:channels.length?`<details class="entity-ownership"><summary>Inspect owned/shared-channel link evidence</summary>${channels.map(channel=>`<p><a href="${url(channel.url)}" target="_blank" rel="noopener noreferrer">Open channel ↗</a> · <a href="${url(channel.evidenceUrl)}" target="_blank" rel="noopener noreferrer">Ownership source ↗</a><span>${esc(channel.basis)}</span></p>`).join('')}</details>`:'<p class="entity-label-context">An owned channel has not been established in this extension.</p>'}${items.sort((a,b)=>people.get(a.personId).name.localeCompare(people.get(b.personId).name)||a.entityLabel.localeCompare(b.entityLabel)||a.id.localeCompare(b.id)).map(record=>relationshipEvidence(record,people.get(record.personId),labels.get(record.entityId))).join('')}</div></details>`;
+  }).join('')}</div></section>`}
+ const archive=historical.length?`<section class="entity-collection" aria-labelledby="entity-history-title"><div class="entity-collection-heading"><div><span class="eyebrow">HISTORICAL ATLAS · OCTOBER 23, 2026</span><h2 id="entity-history-title">Traditions in the original record</h2></div><p>${historical.length} of ${DATA.entities.length} narrative groups</p></div>${historicalEntityCards(historical)}</section>`:'';
+ target.innerHTML=extension+archive||empty(entityLoadError?'The extension could not load. Retry it above, or search the historical Atlas.':'Try another name or remove a relationship filter. A missing relationship is not evidence that no claim exists.');
+ const status=document.querySelector('#entity-result-count');
+ status.textContent=`${records.length} sourced ${records.length===1?'relationship':'relationships'}${data?' of '+data.relationships.length:''} · ${historical.length} historical ${historical.length===1?'group':'groups'} of ${DATA.entities.length}`;
+ document.querySelector('#entity-group').disabled=entityState.scope==='historical';
+ document.querySelector('#entity-type').disabled=entityState.scope==='historical'||!data;
+}
+main.addEventListener('input',event=>{if(event.target.id==='entity-search'){entityState.search=event.target.value;entityPermalink();refreshEntities()}});
+main.addEventListener('change',event=>{const key={'entity-scope':'scope','entity-group':'group','entity-type':'type'}[event.target.id];if(key){entityState[key]=event.target.value;if(key==='scope'&&entityState.scope==='historical'){entityState.type='';document.querySelector('#entity-type').value=''}entityPermalink();refreshEntities()}});
+main.addEventListener('click',event=>{
+ if(event.target.closest('[data-entity-reset]')){Object.assign(entityState,{search:'',scope:'all',group:'labels',type:''});entityPermalink();entities();document.querySelector('#entity-search').focus()}
+ if(event.target.closest('[data-entity-retry]')){loadEntityExtension();renderEntityExtensionSummary()}
+});
 function communities(){main.innerHTML=intro('PUBLIC CONVERSATIONS','Belief, doubt & discussion.','Public threads from Reddit, WizardForums and Become A Living God. Read them as samples of reception and discovery, with disagreement and access limits preserved. They do not represent whole communities.')+controls('Search threads, ideas, people…',unique(DATA.communityItems.map(x=>x.platform)),'Platforms');refreshCommunities()}
 function refreshCommunities(){const rows=DATA.communityItems.filter(x=>matches(x)&&(!state.filter||x.platform===state.filter));document.querySelector('#results').innerHTML=rows.length?`<div class="record-list">${rows.map(x=>`<article class="record"><div class="record-category">${esc(x.platform)}<div class="record-date">${date(x.date)}</div></div><div><h3><a href="${url(x.url)}" target="_blank" rel="noopener noreferrer">${esc(x.title)}</a></h3><p>${esc(x.summary)}</p><div class="tags"><span class="tag">${esc(x.position||'Public discussion')}</span></div><p class="tiny"><strong>Access:</strong> ${esc(x.access||'See source note')}</p>${citations(x.sourceIds)}</div><a class="external-arrow" href="${url(x.url)}" target="_blank" rel="noopener noreferrer" aria-label="Open ${esc(x.title)} in a new tab">↗</a></article>`).join('')}</div>`:empty();count(rows.length,DATA.communityItems.length)}
 function videos(){main.innerHTML=intro('WATCH & LISTEN','Follow the original voices.','A curated trail through public YouTube records, creator channels and recording catalogs. Read the access note: metadata, catalog descriptions and full recordings are different kinds of evidence.')+controls('Search recordings, speakers, topics…',null);refreshVideos()}
@@ -157,6 +255,12 @@ function renderRoute(){
  if(view==='discovery'&&params.has('tab')&&['all','account','playlist','video','people','queries'].includes(params.get('tab')))discoveryState.tab=params.get('tab');
  if(view==='analysis'&&params.has('channel')){analysisState.channel=params.get('channel');analysisState.tab='channel';}
  if(view==='analysis'&&params.has('tab')&&['channels','channel','compare','method'].includes(params.get('tab')))analysisState.tab=params.get('tab');
+  if(view==='entities'){
+   entityState.search=params.get('q')||'';
+   entityState.scope=['all','extension','historical'].includes(params.get('scope'))?params.get('scope'):'all';
+   entityState.group=params.get('group')==='people'?'people':'labels';
+   entityState.type=entityState.scope==='historical'?'':params.get('type')||'';
+  }
  const bodySelector=view==='analysis'?'#analysis-results':view==='youtube'?'#yt-results':view==='sessions'?'#session-results':view==='discovery'?'#discovery-results':'#results';
  if(!id||view!==previousView||!document.querySelector(bodySelector)){state.search='';state.filter='';state.year='';views[view]();}
  document.querySelectorAll('.main-nav a').forEach(a=>{if(a.hash==='#/'+view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});

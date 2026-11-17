@@ -1,151 +1,141 @@
-# The Bashar Index
+# Bashar Index, Channeling Atlas and ET-channeler archive
 
-An independent research site that indexes the public channeling sessions of **Bashar** (channeled by Darryl Anka): a 684-session catalogue (1984–2027), 75 structured digests of public recordings, a topic analysis with clustering, a glossary, a timeline, 56 redrawn concept diagrams, podcast appearances, and a skeptics section.
+This repository contains **three related research projects with separate datasets and build pipelines**: the original Bashar reference site, the cross-channel Channeling Atlas, and the ET-channeler discovery/collection project. They share public navigation; their people, uploads, recordings, documents and claims are different units and must not be added together.
 
-**Live site:** served from this repository via GitHub Pages (`index.html` at the root).
+**Start here:** [all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [branch inventory and history](BRANCHES.md) · [collection handoff](et-channelers/HANDOFF.md) · [future transcription/analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md).
 
-## Dashboard directory - 16 November 2026
+Repository checkpoint: **17 November 2026, 00:45 UTC**. GitHub `main` is [`0ad27f0`](https://github.com/occult-kranti/bashar-index/commit/0ad27f0c52ebfdfcccd1e33421bd09f40fcc3a2a), including merged [PR #29](https://github.com/occult-kranti/bashar-index/pull/29). Current unmerged work is on `feat/browser-recovery-entity-directory`; see [BRANCHES.md](BRANCHES.md) for verified ancestry and worktrees. **New ASR, model downloads, embeddings and corpus-analysis jobs remain off.** Earlier results remain published; their presence does not mean a new analysis is running.
 
-[Open all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/). The maintained pages share navigation and retain the date and scope of each dataset.
+## The three research lanes
 
-| Dashboard | What it shows |
-|---|---|
-| [Prediction timelines](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html) | 480 published candidates, filters, target windows and source evidence; these are not verified outcomes |
-| [Collection](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/) | Current newest-20 -> newest-50 -> remaining-archive snapshot, separately from older archive coverage |
-| [Channeler YouTube index](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/) | Standalone, searchable historical channel/video/playlist records |
-| [Channeling Atlas](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/) | People, entities, sources and analysis from the October research edition |
-| [Bashar Index](https://occult-kranti.github.io/bashar-index/) | The original focused reference and analysis |
-| [Research report](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/analysis/report.html) | Frozen 925-upload analysis and its limitations |
-
-The [separately hosted Atlas](https://channeling-atlas.whatswrong-inc.chatgpt.site) keeps its existing access settings. Earlier Claude artifact links are listed in the directory as historical copies. Published collection counts are a dated snapshot, not a live collector connection. UI updates do not imply a refresh of the scientific data.
-
-Rebuild and verification notes: [`dashboards/README.md`](dashboards/README.md).
-
-
-## Channeling Atlas handoff and roadmap
-
-The expanded cross-channel research project is in [`channeling-atlas/`](channeling-atlas/README.md). Its [handoff](channeling-atlas/README.md#handoff-resume-here) records the reviewed baseline, exact data/PDF hashes, safe rebuild commands, source boundaries and the separate GitHub/Sites repository layouts.
-
-The completed 23 October 2026 release contains a 925-upload analysis, per-account duration statistics, a caption/embedding pilot, a reviewed working paper and six build/review rounds. Read the [prioritized roadmap](channeling-atlas/README.md#roadmap-next-research-phase) before continuing: identity and sampling audit; dated activity/services refresh; caption and speaker validation; session deduplication; matched model comparisons; then a new dashboard/paper release.
-
-| Branch | Purpose |
-|---|---|
-| `main` | Reviewed integration and documentation |
-| [`release/channeling-atlas-2026-10-23`](https://github.com/occult-kranti/bashar-index/tree/release/channeling-atlas-2026-10-23) | Scientific baseline pinned to `bbe4801` |
-| [`research/channeling-atlas-next`](https://github.com/occult-kranti/bashar-index/tree/research/channeling-atlas-next) | Next work, starting with the handoff |
-| [`experiment-frequency-of-place`](https://github.com/occult-kranti/bashar-index/tree/experiment-frequency-of-place) | Existing experiment preserved for separate review |
-
-See the [branch register](channeling-atlas/research/maintenance/branch-register.json); every branch of this repository, with its status, is in [Branches and work so far](#branches-and-work-so-far) below. The root Bashar Index and nested Channeling Atlas have separate build pipelines. Run Atlas commands from `channeling-atlas/`; preserve the original root application. Human validation, authorship, ethics determination and submission readiness remain TBD in the working paper.
-
-## Branches and work so far
-
-This repository first held the Bashar Index, a one-page site about Bashar's public sessions. A panel analysis of its data followed, then the Channeling Atlas, a separate study of channeling (a person speaking as, or passing on the words of, another being) across YouTube channels, and since 2026-11-11 the ET-channelers work, which indexes and collects the public recordings and texts of channelers who say the beings they speak for are extraterrestrial (ET). The early work was committed directly to `main`, the default branch. Since 2026-11-13 each piece of work has been done on its own branch and merged into `main` by a GitHub pull request (PR), numbered PR #1, PR #2 and so on in the tables below.
-
-### Work so far
-
-| Date | Work | Where |
+| Lane | Scope and dated denominator | Source and continuation |
 |---|---|---|
-| 2026-09-16 | The Bashar Index: a one-page site, served by GitHub Pages, that indexes Bashar's public sessions (a 684-session catalogue, 75 digests of recordings, a topic analysis, a glossary, a timeline, 56 redrawn diagrams), with its data package and the Python that builds it. | [`index.html`](index.html), [`data/`](data/), [`src/`](src/); on `main` |
-| 2026-09-23 | A review panel tested the Index data: four pre-registered tests (their methods fixed before the data were analysed) on Bashar's dated predictions and audience questions, how the teachings shift over time, and a rubric for 2027 frozen in advance. The report measures the genre's habits, not whether any claim is true. | [`FINAL_REPORT.md`](FINAL_REPORT.md), [`analysis/`](analysis/), [`panel/`](panel/); on `main` |
-| 2026-10-22 | An experiment page, "The frequency of a place": a design for a test of Bashar's copper-sphere idea. Not merged. | branch `experiment-frequency-of-place` only |
-| 2026-10-23 | The Channeling Atlas: 925 YouTube uploads across channels, video lengths per account, a small trial on 30 English caption documents (video subtitles) and a 12-page working paper, with six review rounds. The release is pinned on its own branch. | [`channeling-atlas/`](channeling-atlas/README.md); on `main` |
-| 2026-10-23 | The Atlas handoff, an eight-item roadmap for its next phase and a register of the branches. | [`channeling-atlas/README.md`](channeling-atlas/README.md#handoff-resume-here), [`channeling-atlas/research/maintenance/`](channeling-atlas/research/maintenance/); on `main` |
-| 2026-10-23 | An Atlas expansion: an evidence explorer, a rewritten paper and a database of 949 audience questions and answers, as the Bashar Index's AI-written digests paraphrase them (not checked by a person), from 67 Bashar recordings. Its new YouTube collection was blocked. Not merged. | branch `research/atlas-expanded-qa` only |
-| 2026-11-11 | The ET-channelers work of 2026-10-22 to 2026-10-30: research notes on who channels whom, a YouTube index of 92 people (16 of their channels crawled, 466 videos) and its dashboard tables, and Bashar transcripts used to answer a question on astrology and calendars. | [`et-channelers/`](et-channelers/README.md); PR #1 |
-| 2026-11-11 | A batch pipeline for audio and speech-to-text, an inventory of channel sizes (at least 40,652 videos), a roadmap, and a guard that keeps media and transcripts out of this repository. A YouTube trial from a cloud server was refused. | [`et-channelers/pipeline/`](et-channelers/pipeline/README.md), [`et-channelers/ROADMAP.md`](et-channelers/ROADMAP.md); PR #1 |
-| 2026-11-13 | Collection routes that work from a cloud server (podcast feeds, creators' own audio files, publishers' own text pages), a sync to a private store, and a per-person coverage table that keeps the texts published by the sources apart from speech-to-text. Four reviewers checked it before the merge; each finding was fixed with a test. | [`et-channelers/plan/coverage.csv`](et-channelers/plan/coverage.csv); PR #1 |
-| 2026-11-13 | Each person's own website found from their YouTube channel page (45 of the 57 channels read declare one), each site asked what it publishes, and 4,461 session pages on four sites registered. | [`et-channelers/sources/`](et-channelers/sources/); PR #2 |
-| 2026-11-13 | One list of everyone tracked (103 rows), whole YouTube channels counted (videos, live streams and shorts), and collection mistakes stopped by rules and tests. | [`et-channelers/plan/targets.csv`](et-channelers/plan/targets.csv); PR #3 |
-| 2026-11-14 | Interviews sorted by kind and fetched only when the channeled being itself speaks in them (live channeling); Bashar's own sessions on archive.org (the Internet Archive) listed and queued (903 recordings); the Bashar Index data put to use in new tables. | [`et-channelers/plan/`](et-channelers/plan/); PR #4 |
-| 2026-11-14 | One command for a whole collection cycle; four AI agents (Claude Code helpers, each with one job) to run it, find new sources, read interviews and review changes; and two roadmap phases: 7a, comparing short videos with long recordings after collection, and 7b, how the agents run the cycle. On their first run the reading agents read 39 interview transcripts and found 21 with live channeling. | [`.claude/agents/`](.claude/agents/), [`et-channelers/pipeline/run_cycle.py`](et-channelers/pipeline/run_cycle.py); PR #5 |
-| 2026-11-14 | A table of every source with its link and method; a private GitHub store that can be read back into an empty folder; a browsable Google Drive copy by person, with long recordings cut into playable parts; collection paused, with a handoff, for the move to a GitHub Codespace (a cloud computer for development) with 16 GB of memory. | [`et-channelers/plan/sources.csv`](et-channelers/plan/sources.csv), [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md); PR #6 |
-| 2026-11-14 | After the pause: the Drive copy finished; the YouTube steps switched off, because youtube.com's robots.txt (the file where a site says what automated programs may fetch) disallows them; fixes for the 80 findings that two reviews confirmed; a plan for the analyses after collection. | [`et-channelers/ANALYSIS_PLAN.md`](et-channelers/ANALYSIS_PLAN.md), [`et-channelers/notes/`](et-channelers/notes/); PR #6 |
-| 2026-11-15 | Redirect rules for the feeds, texts and site-pages lanes, as the audio lane already had them: no redirect is followed to a host that is being left alone, every host a redirect leads to gets its own turn and its own Retry-After (the wait a server asks for), and each refusal is charged to the host that gave it. The lane test retries its two-worker setup, and the methods table states the redirect rules. | [`et-channelers/pipeline/feeds.py`](et-channelers/pipeline/feeds.py), [`et-channelers/plan/methods.csv`](et-channelers/plan/methods.csv); PR #7 |
-| 2026-11-15 | Every Bashar session on archive.org collected: all 903 recordings downloaded, with no failures, into the private store, and copied in full to the owner's Google Drive (`04 Audio`) in 18 rounds (1,422 files) of `drive_stage.py` (plan, batches, round, done), each round's ledger saved to the private store's release `handoff-2026-11-14`. The audio is in the private store and on Drive, not in this repository. | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md), [`et-channelers/ROADMAP.md`](et-channelers/ROADMAP.md); PR #8 |
-| 2026-11-15 | The next task, set by the owner: the newest 10, then 20, then 50 videos of each of the 63 tracked channels (612, 1,200 and 2,920 videos; 233, 496 and 1,217 hours), then a timeline of the predictions made on each channel. It waits for the owner's decision on YouTube's robots.txt and runs from the owner's own connection; the timelines stay private. | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) section 5; PR #9 |
-| 2026-11-15 | The owner opted in on YouTube's robots.txt (HANDOFF 6.6 b). From the Codespace, audio and captions still got YouTube's bot check (nothing is done to get past it); listings worked. `select_jobs.py --newest N` and the newest 10, 20 and 50 queues (612, 1,200 and 2,920 videos) from listings refreshed that day, with approximate upload dates for 2,919 of them. The downloads run on the owner's computer. | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) section 5; PR #10 |
-| 2026-11-15 | The sync, the collection cycles and speech-to-text running again, every new file held until it is transcribed. Fixed: the 80-hour cap of `select_episodes.py` counted episodes already here, so every cycle chose the same finished episodes and the podcast backlog (about 1,900) did not move. | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) section 4; PR #11 |
-| 2026-11-15 | The first pass of the prediction timelines: rules find the statements about the future in every text here and turn each time expression into a target window counted from the date it was said (9,467 items, 27 people, 6,775 candidates before the model pass; counts only in this repository, the quotes stay private). One command to restart every job after a Codespace restart, a hold that keeps new audio on disk until it is on Drive, and the first 50 episodes of the podcast backlog on Drive. | [`et-channelers/plan/prediction_counts.csv`](et-channelers/plan/prediction_counts.csv), [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) section 5; PR #12 |
-| 2026-11-15 | A pilot of the model pass: two AI coders, working apart, labelled 106 sampled prediction candidates by type; they agreed closely (Cohen's kappa 0.98 on prediction or not) and found 42% real predictions. Three filters it suggested (questions, reports of earlier statements, page furniture) dropped none of those, leaving 6,132 candidates. 128 podcast episodes of the backlog are on Drive. | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) section 5; PR #13 |
-| 2026-11-15 | A second, fresh sample of 112 candidates (two AI coders again, kappa 0.91) showed that most of Suzanne Lie's candidates were readers' comments stored with her blog posts; the prediction pass now cuts comment threads and post headers and counts repeated statements once. 5,599 candidates remain (5,148 distinct, 558 with a target window), 54% to 62% of them real predictions in the samples. | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) sections 5 and 7; PR #14 |
-| 2026-11-15 | A third, fresh sample of 99 prediction candidates (two AI coders, kappa 0.96) measured the rules without shaping them: about 56% of the candidates with a target date are real predictions (weighted by person; 95% interval about 47% to 65%), from 19% for Swaruu to 88% for Sam. The prediction pass, run again over 9,862 texts, finds 5,987 candidates (5,490 distinct, 572 with a target window). The texts lane now leaves readers' comment threads out of what it stores (a quarter of the words of Suzanne Lie's blog posts). The podcast backlog queue finished and is on Drive (4,014 files, 21.03 GB). | [`feat/comments-and-third-sample`](https://github.com/occult-kranti/bashar-index/tree/feat/comments-and-third-sample), PR #15 |
-| 2026-11-16 | The blackout theme check added to the analysis plan (12.4.1) and the roadmap: who predicted or warned about blackouts of the power grid and the internet, centred on each channel's newest 10 videos. Decision D12 removed at the owner's request: YouTube audio, captions and dates come from the owner's computer under the opt-in, and nothing else. | [`docs/blackout-theme-and-d12`](https://github.com/occult-kranti/bashar-index/tree/docs/blackout-theme-and-d12), PR #16 |
-| 2026-11-16 | The newest-tier run for the owner's computer: exact upload dates recorded with each download, rank order across channels, speech-to-text alongside the downloads, a tool check and an estimate before anything starts, and `run_all.py --queue` for a chosen queue file (the blackout-titled videos first). A table of the audio behind every transcript (`transcript_audio.py`, `plan/transcript_audio.csv`): all 214 downloaded recordings with a transcript are in the private store and on Drive; 85 more are being fetched; 9,837 have no recording here. | [`feat/newest-tier-lanes`](https://github.com/occult-kranti/bashar-index/tree/feat/newest-tier-lanes), PR #17 |
-| 2026-11-16 | Seven new filters for the prediction candidates, designed on the three labelled samples and reviewed adversarially: page furniture, editorial notes, promotion, lists of any time, dated headers, past anchors and past verbs; they drop 58 of 112 labelled false positives and no labelled prediction. The stored blog texts were rewritten without their reader comments (1,384 texts, a backup kept) and 58 pages' YouTube ids corrected. A sample summary table (`plan/prediction_samples.csv`) with Wilson and stratified intervals. A fix in the store sync: audio with a transcript was deleted before the Drive hold was read. Counts: 6,041 candidates, 5,517 distinct, 499 with a target window. | [`feat/prediction-filters-rederive`](https://github.com/occult-kranti/bashar-index/tree/feat/prediction-filters-rederive), PR #18 |
+| **Bashar Index** | September reference: **684 catalogued sessions/events (1984–2027), 75 AI-generated recording digests and 56 original diagram redrawings**. The catalogue and the 75-recording analysis are different samples. | [Root site](index.html), [data package](data/README.md), [digest schema](src/DIGEST_SPEC.md), [panel report](FINAL_REPORT.md), [analysis](analysis/README.md). |
+| **Channeling Atlas** | Frozen **23 October 2026** release: **925 uploads**, 881 usable durations, 178 publishing groups with measured lengths and a **30-document English-caption pilot**. These are convenience-sample units, not 925 people or a census of channelers. | [Atlas handoff and roadmap](channeling-atlas/README.md), [analysis sources](channeling-atlas/research/analysis/README.md), [working paper](channeling-atlas/research/paper/README.md). Scientific baseline pinned at `bbe4801`. |
+| **ET-channelers** | Historical October index: **92 people/group entries, 466 video rows (457 distinct IDs)**. Current local acquisition has a separate **71-channel / 66,446-ID listing snapshot**, including Dreemtime Academy. An indexed ID is not a downloaded recording or a transcript. | [Historical index provenance](et-channelers/README.md), [pipeline](et-channelers/pipeline/README.md), [current plan and evidence](et-channelers/research/analysis-plan-2026-11-16/README.md), [coverage tables](et-channelers/plan/coverage.csv). |
 
-### Branches
+The September panel report, October Atlas paper and November prediction samples answer different questions using different evidence. Discovery relationships, uploader accounts, human speakers and attributed entities remain distinct. The [source-reviewed relationship table](et-channelers/research/analysis-plan-2026-11-16/channeler-entity-table.md) records **115 relationships for 28 people from 30 first-party pages**; it is a dated discovery batch, not a worldwide count or verification of the claimed phenomena.
 
-| Branch | Status | Last commit | What it holds |
-|---|---|---|---|
-| `main` | default branch | 2026-11-15 | Everything merged so far. GitHub Pages serves the site from here. |
-| [`fix/redirect-rules-other-lanes`](https://github.com/occult-kranti/bashar-index/tree/fix/redirect-rules-other-lanes) | merged by PR #7 | 2026-11-15 | Redirect rules for the feeds, texts and site-pages lanes, the lane test's retried two-worker setup, and the redirect rules in the methods table. |
-| [`docs/bashar-archive-complete`](https://github.com/occult-kranti/bashar-index/tree/docs/bashar-archive-complete) | merged by PR #8 | 2026-11-15 | All 903 Bashar archive.org sessions downloaded and on Drive, the tables rebuilt to show them, and the final figures in the handoff, roadmap and READMEs. |
-| [`docs/next-task-newest-videos-predictions`](https://github.com/occult-kranti/bashar-index/tree/docs/next-task-newest-videos-predictions) | merged by PR #9 | 2026-11-15 | The owner's next task in the handoff, roadmap and READMEs: the newest 10, 20 and 50 videos of every channel, then a timeline of predictions per channel. |
-| [`feat/select-jobs-newest`](https://github.com/occult-kranti/bashar-index/tree/feat/select-jobs-newest) | merged by PR #10 | 2026-11-15 | `select_jobs.py` and `run_all.py --newest N`, approximate upload dates kept by `discover.py`, the owner's YouTube opt-in and the probe results in the handoff. |
-| [`feat/prediction-filters-rederive`](https://github.com/occult-kranti/bashar-index/tree/feat/prediction-filters-rederive) | merged by PR #18 | 2026-11-16 | Seven reviewed prediction filters, the blog-text rewrite, the sample summary, the sync hold fix. |
-| [`feat/newest-tier-lanes`](https://github.com/occult-kranti/bashar-index/tree/feat/newest-tier-lanes) | merged by PR #17 | 2026-11-16 | The newest-tier run for the owner's computer (dates, rank order, transcription alongside, tool check, `--queue`) and the transcript-audio table. |
-| [`docs/blackout-theme-and-d12`](https://github.com/occult-kranti/bashar-index/tree/docs/blackout-theme-and-d12) | merged by PR #16 | 2026-11-16 | The blackout theme in the plan and roadmap; D12 removed. |
-| [`feat/comments-and-third-sample`](https://github.com/occult-kranti/bashar-index/tree/feat/comments-and-third-sample) | merged by PR #15 | 2026-11-15 | The third prediction sample and its figure, the prediction pass over the newer texts, readers' comment threads left out by the texts lane. |
-| [`feat/prediction-validation`](https://github.com/occult-kranti/bashar-index/tree/feat/prediction-validation) | merged by PR #14 | 2026-11-15 | A fresh validation sample with a weighted score, blog comment threads cut from the prediction pass, post headers dropped, near-copies collapsed, and the new counts. |
-| [`feat/prediction-pilot`](https://github.com/occult-kranti/bashar-index/tree/feat/prediction-pilot) | merged by PR #13 | 2026-11-15 | A pilot of the model pass over the prediction candidates (`prediction_pilot.py`), three filters it suggested in `prediction_timeline.py`, the new counts, and the second Drive round of the podcast backlog. |
-| [`feat/prediction-timeline`](https://github.com/occult-kranti/bashar-index/tree/feat/prediction-timeline) | merged by PR #12 | 2026-11-15 | The rules pass of the prediction timelines (`prediction_timeline.py`) and its counts, `resume_jobs.sh` and `drive_hold.py`, the first Drive round of the podcast backlog, and the tables rebuilt by the cycles. |
-| [`docs/restart-jobs-prompt`](https://github.com/occult-kranti/bashar-index/tree/docs/restart-jobs-prompt) | merged by PR #11 | 2026-11-15 | The podcast backlog fix in `select_episodes.py`, skip messages that reflect the owner's YouTube opt-in, and the restarted jobs and prompt in the handoff. |
-| [`dashboard/sources-and-private-store`](https://github.com/occult-kranti/bashar-index/tree/dashboard/sources-and-private-store) | merged by PR #6, with this section | 2026-11-14 | The sources table, the private store, the Drive copy, the pause and handoff, and the work after the pause. |
-| [`automate/cycle-and-agents`](https://github.com/occult-kranti/bashar-index/tree/automate/cycle-and-agents) | merged by PR #5 | 2026-11-14 | The one-command cycle, the four AI agents and the reading agents' first run. |
-| [`collect/bashar-host-shows`](https://github.com/occult-kranti/bashar-index/tree/collect/bashar-host-shows) | merged by PR #4 | 2026-11-14 | Interviews by kind, Bashar's sessions on archive.org, the Bashar Index data put to use. |
-| [`research/targets-and-engines`](https://github.com/occult-kranti/bashar-index/tree/research/targets-and-engines) | merged by PR #3 | 2026-11-13 | One list of everyone tracked; whole channels counted. |
-| [`research/source-recon`](https://github.com/occult-kranti/bashar-index/tree/research/source-recon) | merged by PR #2 | 2026-11-13 | Official sites found from channel pages, and what each site publishes. |
-| [`integrate/multi-lane-archive`](https://github.com/occult-kranti/bashar-index/tree/integrate/multi-lane-archive) | merged by PR #1 | 2026-11-13 | Brought ET-channelers into `main`: routes that work from a cloud server, the private-store sync, the review fixes. |
-| [`research/et-channelers-youtube-index`](https://github.com/occult-kranti/bashar-index/tree/research/et-channelers-youtube-index) | merged by PR #1, through `integrate/multi-lane-archive`, which builds on its two commits | 2026-11-11 | The start of ET-channelers: the YouTube index of 92 people (16 channels crawled), the batch pipeline. |
-| [`research/atlas-expanded-qa`](https://github.com/occult-kranti/bashar-index/tree/research/atlas-expanded-qa) | not merged, no PR | 2026-10-23 | The Atlas expansion: evidence explorer, rewritten paper, Q&A database. |
-| [`research/channeling-atlas-next`](https://github.com/occult-kranti/bashar-index/tree/research/channeling-atlas-next) | merged without a PR | 2026-10-23 | The Atlas handoff commit `1d6eb36`, which is also on `main`. |
-| [`release/channeling-atlas-2026-10-23`](https://github.com/occult-kranti/bashar-index/tree/release/channeling-atlas-2026-10-23) | merged without a PR | 2026-10-23 | The Atlas release, pinned to `bbe4801` and kept fixed. |
-| [`experiment-frequency-of-place`](https://github.com/occult-kranti/bashar-index/tree/experiment-frequency-of-place) | not merged, no PR | 2026-10-22 | The experiment page "The frequency of a place". |
+The updated [Atlas entity directory](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/#/entities) exposes that separately dated relationship extension alongside the historical groups. [Dreemtime and common-event comparison](et-channelers/research/cross-channel-events-2026-11-16.md) documents channel intake and the future comparison roadmap. The [conditional collection ETA](et-channelers/research/collection-eta-2026-11-16.md) models about 8–17 active days for all indexed audio; current media refusals prevent a guaranteed finish date. [HANDOFF](et-channelers/HANDOFF.md) records the latest Chromium investigation and source state.
 
-Two branches are not merged, and neither has a pull request. `experiment-frequency-of-place` adds the experiment page to the site: a design for Bashar's copper-sphere test, with its physics model, research notes, diagrams, a Blender scene and an "Experiment" link in the navigation. The Atlas [branch register](channeling-atlas/research/maintenance/branch-register.json) keeps it apart until its code and its subject matter have had a review of their own. A trial merge into `main` conflicts only in this README: both sides add a row at the same place in the "What is here" table, and keeping both rows resolves it. `research/atlas-expanded-qa` adds the reviewed Atlas expansion under `channeling-atlas/research/expansion/` and `channeling-atlas/dist/expansion/`; its collector and query plan were written but collected nothing new, because outbound requests to YouTube were blocked. It merges into `main` without conflicts. Merging or deleting either branch is the owner's decision. Merged branches are kept on GitHub as a record.
+## Public interfaces
 
-### Outside this repository
+[Open the dashboard directory](https://occult-kranti.github.io/bashar-index/dashboards/). These six maintained repository interfaces share navigation and show their dataset dates.
 
-The audio, the texts published by the sources and the speech-to-text transcripts are kept in a private store and a Google Drive copy; none of them goes into this repository. On 2026-11-14 the collection held 1,138 audio files (819.5 hours), 8,425 texts published by the sources and 61 speech-to-text transcripts. By 2026-11-15 all 903 recordings of Bashar's sessions on archive.org were downloaded into the private store, with no failures, and copied in full to the Drive copy's `04 Audio` folder; the collection then held 1,779 audio files (1,454.0 hours) and the Drive copy 3,420 files (17.9 GB); the store and Drive figures in the table below are those of 2026-11-14.
-
-| What | Where |
+| Interface | Public URL and purpose |
 |---|---|
-| Private store | GitHub repository `occult-kranti/et-channelers-archive` (private), with the three releases below (a release is a set of files, called assets, attached to a GitHub repository). Its `main` branch holds the texts as plain files in `texts/`, by person, with the texts from the sources and the speech-to-text made here in separate folders. |
-| Release `archive-v1` | 64 assets, 10.52 GB: checked bundles of the audio, the speech-to-text transcripts and the texts published by the sources, read back with `sync_archive.py pull`. |
-| Release `archiveshelf-podcast-audio-v1` | 9 assets, 0.6 GB: the 16 podcast episodes held by ArchiveShelf, an earlier archive project of the owner's, byte for byte as ArchiveShelf holds them. |
-| Release `handoff-2026-11-14` | 7 assets, 0.17 GB: the pipeline's state without media, the Drive ledger (which file sits where on Drive), an outside snapshot of YouTube channel data, notes, and the memory files Claude Code keeps between sessions. |
-| Google Drive copy | The owner's Drive, folder "ET Channelers Archive", with a read-me: `01 Plans and reports`, `02 Tables`, `03 Transcripts` (by person; texts from the sources and speech-to-text made here in separate volumes), `04 Audio` (by person and source; 1,138 recordings as 1,958 playable files), `05 Analysis`, `06 Earlier work`. `03 Transcripts` and `04 Audio` hold 1,998 files (1,958 audio parts and 40 text volumes) in 77 folders. |
-| Collection dashboard | <https://claude.ai/artifact/898o4zpkocZ8qXjvR1xDfb>, a dashboard page on claude.ai (Anthropic's Claude website) whose tables come from the CSV files in [`et-channelers/plan/`](et-channelers/plan/). Like every claude.ai page, it opens only for the people the owner shares it with. |
-| Handoff | [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md): the state, how to set up the next Codespace and read the store back, the decisions waiting for the owner, and a prompt for the next session. |
+| Bashar Index | [Original reference and analysis](https://occult-kranti.github.io/bashar-index/) |
+| Channeling Atlas | [People, attributed entities, sources and the October research edition](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/) |
+| Atlas research report | [Frozen 925-upload analysis, figures and limitations](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/analysis/report.html) |
+| Channeler YouTube index | [Searchable historical channel/video/playlist records](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/) |
+| Collection monitor | [Newest-20 → newest-50 → remaining-archive snapshot](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/) |
+| Prediction timelines | [480 published candidates, target windows and guarded source evidence](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html) |
 
-The current state and the next steps are in [`et-channelers/HANDOFF.md`](et-channelers/HANDOFF.md) and [`et-channelers/ROADMAP.md`](et-channelers/ROADMAP.md). The next task, set by the owner on 2026-11-15: the newest 10, then 20, then 50 videos of every tracked channel, then a timeline of the predictions made on each channel (HANDOFF section 5). It waits for the owner's decision on YouTube's robots.txt and runs from the owner's own connection.
+Predictions are **candidates, not verified outcomes**. The collection monitor reads a committed, dated aggregate snapshot; it is not connected to a live process API. Updating navigation or styling does not refresh scientific data.
 
-## What is here
+The [separately hosted Atlas](https://channeling-atlas.whatswrong-inc.chatgpt.site) retains its existing access settings and separate source/deployment history. Its source root corresponds to this repository's `channeling-atlas/`, not the whole repository. Earlier [Bashar](https://claude.ai/artifact/MF1hY9MYG95BaSqm9KXTFM), [YouTube index](https://claude.ai/artifact/XFQHVyn2WSk7Xnn4yXpAa8), [collection](https://claude.ai/artifact/898o4zpkocZ8qXjvR1xDfb) and [experiment](https://claude.ai/artifact/EXrUcxSotuWRW8NCaBHieY) Claude artifacts are historical copies whose access depends on sharing. They are not evidence that those copies have been refreshed.
 
-| Path | Contents |
+## Current collection and deferred compute
+
+The supported local YouTube lane saves **native audio plus sanitized metadata**, verifies the exact Drive objects and writes durable receipts before deleting local copies. It also saves available **English published captions and original English automatic captions**, including regional English variants; other languages and machine translations are excluded. Caption bundles retain raw response, timed segments, readable text and provenance. No picture download, audio re-encoding or ASR is part of this lane.
+
+The requested order is **newest 20 per channel → extend to newest 50 → all indexed remainder**. The first two cohorts use the Videos tab; the remaining archive includes Videos, Shorts, recorded streams and legacy unknown-tab items. There is no duration filter. Newest-50 counts include newest-20 items and must not be added to them.
+
+The [committed snapshot](et-channelers/plan/ingestion_status.json), generated **2026-11-17 01:14:46 UTC**, reports:
+
+| Measure | Snapshot value |
+|---|---:|
+| Tracked channels / indexed unique video IDs | 71 / 66,446 |
+| Newest-20 / inclusive newest-50 / remainder | 1,360 / 3,320 / 63,126 |
+| Audio/metadata pairs verified on Drive | 47 |
+| Verified English caption bundles | 20 |
+| Videos with complete verified caption inventories | 15 |
+| New local ASR/analysis jobs enabled | 0 |
+
+These are the new local YouTube lane's counts, not totals for older podcasts, archive.org sessions, publisher texts or the Atlas. Its snapshot records a source cooldown; a one-file recovery does not establish universal access or ongoing successful downloading. Audio, caption and Drive endpoint deadlines remain separate. Use the [Windows/rclone operating guide](et-channelers/pipeline/WINDOWS_DRIVE.md), [caption methods](et-channelers/pipeline/YOUTUBE_CAPTIONS_RESEARCH.md) and [archive catalog guide](et-channelers/pipeline/ARCHIVE_CATALOG.md) for controls and recovery. Their older dated examples retain their original queue counts.
+
+The allowance is **20 decimal GB local total, with 2 GB left unused**. The current private-root ceiling is **17 GB**, leaving room for tools and checkouts; those external project bytes still count. Future environments, model caches, incomplete downloads, decoded scratch and outputs must be budgeted too. The inspected machine has an **8 GB RTX 4070 Laptop GPU**, not a 16 GB GPU. Downloads are network/I/O work. Future CUDA inference will use one GPU owner and a **soft 70% rolling utilization target**, not a promised instantaneous ceiling.
+
+Parallel ASR is deferred until shared interprocess reservations, deletion-aware leases, bounded artifact reading, versioned spans and CUDA/quality tests exist. The old transcriber is retained code, not the current launch path. The [disabled implementation plan](et-channelers/research/analysis-plan-2026-11-16/implementation-plan.json) and [illustrative search lexicon](et-channelers/research/analysis-plan-2026-11-16/search-lexicon.json) make that boundary explicit. The consolidated sample register supersedes older proposals: 30 development works, an 80-work weighted extraction test with at most eight windows per work, and a separate 6-development/18-held-out ASR calibration study. No sample has been executed by that plan.
+
+## Public repository, private working data and archives
+
+| Location | What belongs there |
 |---|---|
-| `index.html` | The original reference page with shared local navigation assets and web fonts. |
-| `data/` | The research data package: digests, catalogue, topic analysis, diagrams (JSON + SVG), glossary, timeline, manifests. See `data/README.md`. |
-| `src/` | The Python that builds the page (`build.py`, `css.py`, `js.py`, `svglib.py`, `diagrams_a.py`, `diagrams_b.py`), the analysis pipeline (`topics.py`) and the digest schema (`DIGEST_SPEC.md`). |
-| `et-channelers/` | The ET-channelers work from Claude sessions: research notes, a YouTube index of 92 people (16 of their channels crawled, 466 videos), the flat index and dashboard tables, and the transcript pipeline with its manifests and findings. Start with [`et-channelers/README.md`](et-channelers/README.md). Separate from `channeling-atlas/`. Since 2026-11-13 the pipeline also collects podcast episodes, creator-hosted audio and publisher texts (lanes that work where YouTube refuses cloud servers): see [`et-channelers/pipeline/README.md`](et-channelers/pipeline/README.md) and the per-person table in [`et-channelers/plan/coverage.csv`](et-channelers/plan/coverage.csv). |
+| **This public GitHub repository** | Code, public source metadata, dated aggregate tables, original summaries/diagrams, guarded excerpts, methods, frozen derivatives, figures and review receipts. |
+| **Local private root** (`$env:USERPROFILE\et-channelers-private` in the Windows guide) | Media/metadata spool, caption bundles, complete transcripts, exact queues, journals, receipts, locks and supervisor state, outside Git. |
+| **Local tools** (`$env:USERPROFILE\et-channelers-tools`) | Isolated Python tooling, rclone, source/JavaScript helpers and local QA artifacts. Tool bytes count toward the allowance. Credentials remain in private configuration. |
+| **Owner's Google Drive archive** | Verified source objects, transcripts/caption bundles, immutable catalog checkpoints and derived archive artifacts. The 20 GB limit is local; it is not a 20 GB Drive cap. |
+| **Historical private GitHub archive** | `occult-kranti/et-channelers-archive`, with earlier release bundles and text volumes, separate from the new direct-to-Drive lane. |
 
-## Rebuilding
+The historical private releases `archive-v1`, `archiveshelf-podcast-audio-v1` and `handoff-2026-11-14` preserve earlier audio/text bundles and state. At the **14 November** checkpoint they contained 64 assets/10.52 GB, 9 assets/0.6 GB and 7 assets/0.17 GB respectively. Those are historical release figures, not a fresh inventory. Drive's numbered areas are `01 Plans and reports`, `02 Tables`, `03 Transcripts`, `04 Audio`, `05 Analysis` and `06 Earlier work`; private receipts/catalogs map actual objects without publishing their identifiers.
 
-```
-pip install scikit-learn numpy
-python3 src/topics.py      # regenerates the analysis from data/digests
-python3 src/build.py       # regenerates index.html
+Keep source-authored text, published captions, automatic captions and local ASR distinct. Verify exact objects before cleanup; retain authoritative Drive audio for later bounded retrieval. Never import a private repository's raw transcript history into this public repository. The [handoff](et-channelers/HANDOFF.md), [roadmap](et-channelers/ROADMAP.md) and [preserved work log](BRANCHES.md#preserved-historical-work-log) retain earlier archive history.
+
+## Repository map and editing ownership
+
+Ownership names the workstream responsible for a change, not independent human validation.
+
+| Path | Source of truth / generated output | Responsible workstream |
+|---|---|---|
+| [`data/`](data/README.md), [`src/`](src/), [`index.html`](index.html) | Bashar research data and Python builder → original reference page. | Bashar reference/data |
+| [`analysis/`](analysis/README.md), [`panel/`](panel/), [`FINAL_REPORT.md`](FINAL_REPORT.md) | Historical preregistered analysis, results and review history. | Bashar methods/review |
+| [`channeling-atlas/dist/`](channeling-atlas/dist/), [`channeling-atlas/research/`](channeling-atlas/research/) | Maintained Atlas app; frozen October data, report/paper sources, figures and release receipts. | Atlas implementation/research |
+| [`et-channelers/youtube-index/`](et-channelers/youtube-index/), [`et-channelers/dashboard/data/`](et-channelers/dashboard/data/) | Historical index and four committed dashboard CSVs. | Corpus/index |
+| [`et-channelers/sources/`](et-channelers/sources/README.md), [`et-channelers/plan/`](et-channelers/plan/) | Source registry, public coverage/target tables and aggregate snapshots. | Collection/provenance |
+| [`et-channelers/pipeline/`](et-channelers/pipeline/README.md) | Windows Drive lane, retained multi-lane/legacy tools and tests. | Collection/systems |
+| [`et-channelers/dashboard/`](et-channelers/dashboard/), [`dashboards/`](dashboards/README.md), [`assets/`](assets/) | Public interfaces, templates/fragments and shared navigation. | UI/publication |
+| [Research plan](et-channelers/research/analysis-plan-2026-11-16/README.md) | Two research rounds, third-round critiques, relationships and disabled configuration. | Research lead / identity / evaluation |
+| [`.claude/agents/`](.claude/agents/) | Earlier role definitions for collection, discovery, reading and review. Their presence does not launch jobs. | Historical orchestration |
+| [`BRANCHES.md`](BRANCHES.md), [workflow](.github/workflows/dashboard-checks.yml) | Branch/PR provenance and CI checks. | Integration/review |
+
+Current collection entrypoints are `start_drive_ingest.ps1` (stages), `supervise_drive_ingest.ps1` (single-instance bounded retries), `drive_ingest.py` (budget/transfers/receipts), `youtube_captions.py` and `media_metadata.py` (caption/metadata handling), `archive_catalog.py` (immutable checkpoints), and `ingestion_status.py` (allowlisted export), all under `et-channelers/pipeline/`. `prepare_all_queue.py` and `prepare_collection_stages.py` prepare merged/staged queues. Building or testing is separate from launching a collector.
+
+## Generation and verification entrypoints
+
+Serve a local preview from the repository root:
+
+```text
+python -m http.server 8765
 ```
 
-(`build.py` expects the research files at the paths used during the original build; adjust the constants at the top of the file to point at `data/`.)
+Open `http://localhost:8765/dashboards/`. Most dashboards need HTTP for data requests; the embedded historical channel index also works as a standalone file.
 
-## Method and limits
+| Generated artifact | Entry point / constraint |
+|---|---|
+| Bashar root page | `src/build.py`; `src/topics.py` is the historical analysis generator. Both retain original machine-specific path assumptions. Port paths deliberately; do not blindly overwrite a reviewed snapshot. |
+| Channeler index | `et-channelers/pipeline/dashboard_index.py` embeds four `dashboard/data/*.csv` files into `index.template.html` → `index.html`, preserving dates and hashes. |
+| Collection page | `et-channelers/pipeline/dashboard_local.py` wraps `dashboard/collection/page.fragment.html` → `dashboard/collection/index.html`. |
+| Collection snapshot | `et-channelers/pipeline/ingestion_status.py` exports allowlisted private-state aggregates to `et-channelers/plan/ingestion_status.json`; [exact command](dashboards/README.md). |
+| Prediction page | `et-channelers/pipeline/prediction_page.py --refresh-public et-channelers/dashboard/predictions.html` changes presentation only. New evidence requires the private-corpus build and full guard. |
+| Atlas app / report / paper | App maintained in `channeling-atlas/dist/`; report generator `channeling-atlas/research/analysis/build_report.py`; [paper build instructions](channeling-atlas/research/paper/README.md). Preserve October pins unless producing a new scientific edition. |
 
-- Digests are AI-generated from auto-transcripts of public YouTube recordings. They are summaries, not transcripts; quotes are limited to 30 words and link back to the original recording.
-- Diagrams are original SVG redrawings of concepts described in sessions, each with a confidence grade. No handout artwork is reproduced.
-- Upload dates on re-upload channels are unreliable; the site flags these (`~`) and excludes them from year-based views.
-- All claims are reported as claims, not endorsed. The site includes critical and skeptical coverage.
+See [dashboard build/review instructions](dashboards/README.md) for complete commands. The older Atlas handoff mentions `research/validate.py` and `research/validate_discovery.py`; those files are absent from this GitHub checkout and are not currently runnable checks. GitHub and the separately hosted Site have different roots.
+
+The [CI workflow](.github/workflows/dashboard-checks.yml) defines routine checks. From the repository root:
+
+```text
+python -m unittest discover -s et-channelers/pipeline/tests -v
+python et-channelers/scripts/guard_no_raw_media.py
+python et-channelers/scripts/check_counts.py
+node --check assets/research-nav.js
+node --check dashboards/hub.js
+node --check channeling-atlas/dist/app.js
+```
+
+CI runs the full suite on Linux with its declared environment. Windows also has targeted supervisor/native-process fixtures; some Unix/platform fixtures are not portable. Inspect skips and run checks appropriate to the changed component. The public guard supports `--staged` and `--paths` for scoped review. Offline tests do not prove successful source access or upload.
+
+Collection-only dependencies are in [`requirements-download.txt`](et-channelers/pipeline/requirements-download.txt); rclone is separate. The older broad [`requirements.txt`](et-channelers/pipeline/requirements.txt) includes ASR dependencies and is not an instruction to install them for this lane. Local helper setup, source/client behavior, quota handling and restart controls belong in [WINDOWS_DRIVE.md](et-channelers/pipeline/WINDOWS_DRIVE.md).
+
+## Publication and interpretation safeguards
+
+- Raw media, full caption/transcript dumps, private contacts, credentials, signed transport URLs and private working ledgers stay out of this repository. Run the media/credential guard before publication; an ignore rule is not permission to publish a secret.
+- Bashar digests are AI-written summaries, not transcripts. Quotes are limited to 30 words and link to recordings. Diagrams are original redrawings with confidence grades; no handout artwork is reproduced.
+- Prediction publication additionally enforces per-item quotation share and per-person caps, speaker/contact/path checks and comparison with private source texts. A presentation refresh preserves exact published records and inherits the earlier share audit; it cannot recompute the 5% denominator without the private catalogue.
+- Re-upload dates are unreliable and flagged or excluded from date-based views. Recorded date, upload date, target date, missingness and coverage remain distinct.
+- Agent agreement, self-description, a regex hit, a topic cluster or a quoted measurement claim is not human validation or proof of truth. Host/guest identity, entity attribution, physical frequency and metaphor require separate evidence. Skeptical coverage remains part of the project.
+- Preserve immutable editions and original review receipts. An interface change does not certify changed scientific data or imply that an older review covers it.
 
 ## Not affiliated
 
-This project is not affiliated with, endorsed by, or connected to Bashar Communications, Inc. or Darryl Anka. Bashar® session recordings, transcripts and handouts are © Darryl Anka / Bashar Communications, Inc.; none are reproduced here. The code and the derived data in this repository are released under the MIT License (see `LICENSE`).
+This project is not affiliated with, endorsed by or connected to Bashar Communications, Inc. or Darryl Anka. Bashar® recordings, transcripts and handouts are © Darryl Anka / Bashar Communications, Inc.; full recordings/transcripts and handout artwork are not reproduced here. Original code and derived research material are released under the [MIT License](LICENSE), subject to third-party rights.
