@@ -19,13 +19,14 @@ import threading
 import time
 
 try:
-    from . import drive_ingest as storage, native_batch_worker as worker
+    from . import drive_ingest as storage, native_batch_worker as worker, native_http_policy as http_policy
     from .native_batch_job import OwnedJob
     from .gpu_asr import encoded
 except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import drive_ingest as storage
     import native_batch_worker as worker
+    import native_http_policy as http_policy
     from native_batch_job import OwnedJob
     from gpu_asr import encoded
 
@@ -37,6 +38,27 @@ FREE = 2_000_000_000
 WINDOWS = os.name == 'nt'
 SOURCE_FAILURES = {'source_403', 'source_429', 'bot_check', 'protection_failure', 'access_challenge'}
 need, read, write, digest = worker.need, worker.read, worker.write, worker.digest
+
+
+def handoff_module():
+    try: from . import native_asr_handoff
+    except ImportError: import native_asr_handoff
+    return native_asr_handoff
+
+
+def handoff_settings(root, remote, value):
+    if value is None: return None
+    fields = {'owner', 'lease_id', 'cap_bytes', 'max_pairs', 'retain_policy', 'capacity_wait_seconds', 'caption_bundle_paths'}
+    need(type(value) is dict and set(value) <= fields and fields - {'caption_bundle_paths'} <= set(value), 'handoff_settings')
+    need(value['retain_policy'] == 'explicit_original_english_v1' and
+         type(value['capacity_wait_seconds']) is int and 1 <= value['capacity_wait_seconds'] <= 1800, 'handoff_settings')
+    paths = value.get('caption_bundle_paths', {})
+    need(type(paths) is dict and len(paths) <= 20 and all(
+        isinstance(k, str) and re.fullmatch(r'[A-Za-z0-9_-]{11}', k) and type(v) is dict and len(v) <= 100 and
+        all(isinstance(track, str) and isinstance(path, str) and len(path) <= 2048 for track, path in v.items())
+        for k, v in paths.items()), 'handoff_caption_paths')
+    return handoff_module().Settings(root=root, remote=remote,
+        **{k: value[k] for k in ('owner', 'lease_id', 'cap_bytes', 'max_pairs', 'retain_policy')})
 
 
 def load_plan(path):
@@ -168,9 +190,12 @@ class NativeBatch:
         self.lease_path = controls['lease_path']
         self.stop_path = controls['batch_stop_path']
         self.cooldown_path = controls['source_cooldown_path']
+        self.http_state_path = controls['http_state_path']
         self.state_path = self.root / 'sync/drive_ingest_manifest.jsonl'
         self.batch_journal = self.root / 'sync/stock_wpc_batch_manifest.jsonl'
         self.lock = threading.RLock(); self.source_stop = threading.Event()
+        self.dispatch_paused = threading.Event()
+        self.handoff = handoff_settings(self.root, self.s['remote'], self.s.get('asr_handoff'))
         self.last_guard = self.last_inventory = 0; self.lease = None
         self.live_reservations = {}; self.budget = None
         self.external = self.others = 0
@@ -186,13 +211,37 @@ class NativeBatch:
         self.roots = roots
         required = {Path(__file__).with_name(name).resolve() for name in (
             'native_batch_worker.py', 'native_batch_quality.py', 'native_batch_job.py', 'native_track_policy.py',
-            'drive_ingest.py', 'media_metadata.py', 'native_audio_sink.py', 'native_metadata_snapshot.py')}
+            'drive_ingest.py', 'media_metadata.py', 'native_audio_sink.py', 'native_metadata_snapshot.py', 'native_http_policy.py')}
+        if self.handoff:
+            required.update(Path(__file__).with_name(name).resolve() for name in (
+                'native_asr_handoff.py', 'gpu_asr_queue.py', 'gpu_asr_provenance.json', 'gpu_asr_multilingual_provenance.json'))
+            need(set(self.s['asr_handoff'].get('caption_bundle_paths', {})) <= {i['video_id'] for i in self.items}, 'handoff_caption_scope')
         supplied = {Path(pin['path']).resolve() for pin in self.s['code_pins']}
         need(required <= supplied, 'required_code_pins')
         need(Path(self.s['pipeline_directory']).resolve() == Path(__file__).parent.resolve(), 'pipeline_directory')
+        self.http_seed = self.s['http_policy_seed']
+        self.http_review_pin = self.s['historical_http_review']
+        for pin in (self.http_seed, self.http_review_pin):
+            need(digest(pin['path']) == pin['sha256'], 'http_policy_proposal_changed')
+        self.http_review = dict(read(self.http_review_pin['path']), review_sha256=self.http_review_pin['sha256'])
+        need(set(self.http_review['allowed_video_ids']) == {i['video_id'] for i in self.items}, 'http_review_plan_binding')
         self.drive = drive or storage.Rclone(self.s['rclone'], self.s.get('rclone_config'), self.root / 'sync/drive_ingest_cooldown.json')
 
-    def guard(self, *, source=False, force=False):
+    def policy_envelope(self):
+        envelope = read(self.http_state_path)
+        need(envelope.get('schema_version') == 1 and envelope.get('seed_sha256') == self.http_seed['sha256'], 'http_state_binding')
+        seed = read(self.http_seed['path'])
+        need(all(envelope['state']['events'].get(key) == value for key, value in seed['events'].items()), 'http_seed_history_changed')
+        return envelope
+
+    def observe_pending_failures(self):
+        # Called under the same lock that admits children. Process a failure
+        # already fsynced by another child before authorizing another GO.
+        for ident, reservation in list(self.live_reservations.items()):
+            path = reservation['folder'] / 'progress.json'
+            if path.exists(): self.refuse({'video_id': ident, 'diagnostics': read(path)})
+
+    def guard(self, *, source=False, force=False, video_id=None):
         with self.lock:
             now = time.monotonic()
             if force or now - self.last_guard >= 1:
@@ -204,7 +253,10 @@ class NativeBatch:
                      lease.get('preserve_existing_cooldowns') is True and lease.get('max_workers') == self.s['workers'] and
                      lease.get('spool_cap_bytes') == self.s['spool_cap_bytes'] and lease.get('remote') == self.s['remote'], 'batch_lease')
                 need(lease.get('source_scope_authorized') is True, 'source_scope_not_admitted')
-                for pin in self.s['code_pins'] + self.s['preserved_controls']:
+                need(lease.get('http_policy_seed_sha256') == self.http_seed['sha256'] and
+                     lease.get('historical_http_review_sha256') == self.http_review_pin['sha256'] and
+                     lease.get('historical_http_review_authorized') is True, 'historical_http_review_not_admitted')
+                for pin in self.s['code_pins'] + self.s['preserved_controls'] + [self.http_seed, self.http_review_pin]:
                     need(digest(pin['path']) == pin['sha256'], 'pinned_dependency_or_history_changed')
                 need(self.s['preserved_controls'] and (self.root / 'sync/STOP_DRIVE_INGEST').exists(), 'old_collector_not_parked')
                 resource = read(self.root / 'sync/analysis_resource_plan.json')
@@ -214,11 +266,17 @@ class NativeBatch:
                 need(len(own) == 1 and own[0].get('max_bytes', 0) >= self.s['spool_cap_bytes'], 'resource_reservation')
                 self.others = sum(x['max_bytes'] for x in reservations if x.get('state') == 'active' and x.get('lease_id') != self.s['lease_id'])
                 self.cap = resource['accounting_cap_bytes']; self.lease = lease; self.last_guard = now
+                if getattr(self, 'handoff', None): handoff_module().admission_lease(self.handoff)
             need(type(self.lease.get('expires_at_epoch')) in (int, float) and time.time() < self.lease['expires_at_epoch'], 'lease_expired')
             if source:
+                self.observe_pending_failures()
                 need(not self.source_stop.is_set() and not self.stop_path.exists(), 'batch_source_stopped')
                 if self.cooldown_path.exists():
                     need(read(self.cooldown_path).get('retry_not_before_epoch', 0) <= time.time(), 'batch_source_cooldown')
+                need(video_id in self.http_review['allowed_video_ids'], 'http_review_target_not_admitted')
+                scope = http_policy.status(self.policy_envelope()['state'], time.time(),
+                    historical_review=self.http_review, candidate_video_id=video_id)
+                need(scope['dispatch_allowed'], 'item_quarantined' if scope['item_quarantined'] else 'http_policy_stopped')
             if force or now - self.last_inventory >= 12:
                 self.external = sum(storage.tree_bytes(p) for p in self.roots if p != self.root)
                 self.last_inventory = now
@@ -243,20 +301,56 @@ class NativeBatch:
         error = source_error(result)
         if not error: return
         with self.lock:
-            if self.source_stop.is_set(): return
-            self.source_stop.set()
+            ident = result.get('video_id')
+            diagnostics = result.get('diagnostics', {})
+            events = [(key, diagnostics.get(key), diagnostics.get(key + '_at_epoch'))
+                      for key in ('http_failure', 'http_escalation') if diagnostics.get(key) is not None]
+            global_code = diagnostics.get('global_failure_code')
+            if global_code in {'bot_check', 'protection_failure', 'access_challenge'}:
+                events.append(('global_failure', http_policy.global_failure_event(global_code, ident),
+                               diagnostics.get('global_failure_at_epoch')))
+            if (not events or error in {'bot_check', 'protection_failure', 'access_challenge'} and global_code not in {
+                    'bot_check', 'protection_failure', 'access_challenge'} or
+                    any(type(at) not in (int, float) or not math.isfinite(at) or not 0 < at <= time.time() + 5
+                        for _, _, at in events)):
+                # Old/malformed progress is not assigned a fabricated failure time.
+                self.latch_global(ident, 'source_scope_unknown', timestamp_unproven=True)
+                return
+            attempt = self.jobs / ident / 'attempt.json'
+            envelope = self.policy_envelope()
+            for slot, event, at_epoch in events:
+                try:
+                    need(event.get('video_id') == ident, 'http_event_target')
+                    event_id = hashlib.sha256(encoded({'plan': self.plan_sha, 'video_id': ident,
+                        'attempt': digest(attempt), 'observation': slot})).hexdigest()
+                    state = http_policy.apply_event(envelope['state'], event, event_id, at_epoch)
+                except (http_policy.PolicyError, worker.Held):
+                    self.latch_global(ident, 'source_scope_unknown'); return
+                if state != envelope['state']:
+                    write(self.http_state_path, dict(envelope, state=state))  # durable before dispatch/cleanup
+                    envelope['state'] = state
+                scope = http_policy.status(state, time.time(), historical_review=self.http_review, candidate_video_id=ident)
+                if event['action'] == 'global_stop' or scope['circuit_break']:
+                    self.latch_global(ident, event['code'], event=event, event_id=event_id, circuit=scope['circuit_break'])
+
+    def latch_global(self, ident, error, *, event=None, event_id=None, circuit=None, timestamp_unproven=False):
+        self.source_stop.set()
+        if not self.cooldown_path.exists():
             write(self.cooldown_path, {'schema_version': 1, 'profile': worker.PROFILE,
-                'plan_sha256': self.plan_sha, 'error_class': error, 'retry_not_before_epoch': time.time() + 86400,
-                'source_scope': 'stock_wpc_native_batch', 'requested_video_id': result.get('video_id'),
-                'refusal': result.get('diagnostics', {}).get('source_refusal'),
-                'requested_id_does_not_prove_which_page_refused': True})
-            self.stop_path.write_bytes(b'native batch source refusal; no automatic retry\n')
+                'plan_sha256': self.plan_sha, 'error_class': error,
+                'retry_not_before_epoch': max(time.time() + 86400, (event or {}).get('retry_not_before_epoch') or 0),
+                'source_scope': 'stock_wpc_native_batch_v4', 'requested_video_id': ident,
+                'http_event_id': event_id, 'http_failure': event, 'circuit_break': circuit,
+                'timestamp_unproven': timestamp_unproven})
+        if not self.stop_path.exists():
+            with self.stop_path.open('xb') as marker:
+                marker.write(b'native v4 global refusal; explicit review required\n'); marker.flush(); os.fsync(marker.fileno())
 
     def execute_child(self, item):
         ident = item['video_id']; folder = self.jobs / ident
         while True:
             with self.lock:
-                self.guard(source=True)
+                self.guard(source=True, video_id=ident)
                 need(not folder.exists(), 'attempt_already_exists')
                 maximum = item.get('max_audio_bytes', self.s['max_asset_bytes'])
                 need(type(maximum) is int and 0 < maximum <= self.s['max_asset_bytes'], 'asset_deferred')
@@ -285,9 +379,11 @@ class NativeBatch:
                 stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                 creationflags=subprocess.CREATE_NO_WINDOW)
             job.attach(process); attached = True
-            (folder / 'GO').write_bytes(b'owned_job_bound\n')
+            with self.lock:
+                self.guard(source=True, video_id=ident)
+                (folder / 'GO').write_bytes(b'owned_job_bound\n')
             while process.poll() is None:
-                self.guard(source=True)
+                self.guard(source=True, video_id=ident)
                 elapsed = time.monotonic() - started
                 need(elapsed < self.s['job_wall_seconds'], 'job_deadline')
                 status = read(folder / 'progress.json') if (folder / 'progress.json').exists() else {}
@@ -338,6 +434,62 @@ class NativeBatch:
         self.refuse(result)
         if error or not closed: result = dict(result, status='held', parent_error_class=error or 'cleanup_unproven')
         return result
+
+    def retain_handoff(self, folder, record, proofs, known):
+        if not getattr(self, 'handoff', None): return
+        module = handoff_module(); options = self.s['asr_handoff']
+        started = time.monotonic()
+        while True:
+            self.guard()
+            try:
+                retained = module.retain_before_cleanup(self.handoff, record, proofs, trusted=known,
+                    caption_bundle_paths=options.get('caption_bundle_paths', {}).get(record['video_id'], {}))
+                # Empty updates (caption-satisfied/deferred-language) must not
+                # discard the collector's existing trusted fingerprints.
+                known.update({k: tuple(v) for k, v in retained.get('collector_trusted', {}).items()})
+                try:
+                    write(folder / 'asr-handoff.json', {'schema_version': 1, 'handoff_id': retained['handoff_id'],
+                        'allocation_lease_id': self.handoff.lease_id, 'video_id': record['video_id'],
+                        'audio_sha256': record['sha256'], 'metadata_sha256': record['metadata']['sha256']})
+                except Exception:
+                    self.dispatch_paused.set(); raise
+                return
+            except storage.IngestError as error:
+                if error.kind not in {'handoff_capacity', 'locked'}:
+                    self.dispatch_paused.set(); raise
+                elapsed = time.monotonic() - started
+                try:
+                    write(folder / 'asr-handoff-wait.json', {'schema_version': 1,
+                        'state': 'waiting_for_queue_lock' if error.kind == 'locked' else 'waiting_for_consumer',
+                        'video_id': record['video_id'], 'elapsed_seconds': round(elapsed, 3),
+                        'original_files_retained': True, 'new_source_request': False})
+                except Exception:
+                    self.dispatch_paused.set(); raise
+                # An oversized English input cannot fit after a consumer drain.
+                oversized = error.kind == 'handoff_capacity' and record['bytes'] + record['metadata']['bytes'] + module.CONTROL_RESERVE > self.handoff.cap_bytes
+                if oversized or self.dispatch_paused.is_set() or elapsed >= options['capacity_wait_seconds']:
+                    self.dispatch_paused.set(); raise
+                time.sleep(1)  # local capacity only; no source/upload retry
+
+    def finalize_handoff(self, folder, done):
+        marker = folder / 'asr-handoff.json'
+        if not getattr(self, 'handoff', None) or not marker.exists(): return
+        try:
+            binding = read(marker)
+            need(binding.get('allocation_lease_id') == self.handoff.lease_id and
+                 binding.get('video_id') == done['video_id'] and binding.get('audio_sha256') == done['sha256'] and
+                 binding.get('metadata_sha256') == done['metadata']['sha256'], 'handoff_checkpoint_binding')
+            started = time.monotonic()
+            while True:
+                self.guard()
+                try:
+                    handoff_module().finalize_after_cleanup(self.handoff, binding['handoff_id'], done)
+                    break
+                except storage.IngestError as error:
+                    if error.kind != 'locked' or time.monotonic() - started >= self.s['asr_handoff']['capacity_wait_seconds']: raise
+                    time.sleep(1)  # lock was not acquired; no ambiguous mutation retry
+        except Exception:
+            self.dispatch_paused.set(); raise
 
     def publish(self, item, result):
         self.guard()
@@ -436,10 +588,12 @@ class NativeBatch:
             remote = self.drive.stat_batch(self.s['remote'], relative, manifest)
         proofs = {'audio': remote[relative[0]], 'metadata': remote[relative[1]]}
         check_pair_proofs(proofs, record)
+        self.retain_handoff(folder, record, proofs, known)
         done = storage.verify_and_delete(self.root, record, self.drive, self.state_path, require_metadata=True,
             allow_missing=prior_verified, trusted=known, remote_proofs=proofs)
         need(storage.receipt_complete(done, item, self.s['remote']), 'canonical_receipt_incomplete')
         write(record_path, done)
+        self.finalize_handoff(folder, done)
         storage.journal(self.batch_journal, {'schema_version': 1, 'profile': worker.PROFILE, 'video_id': ident,
             'status': 'verified', 'plan_sha256': self.plan_sha, 'quality_state': done['quality_state'],
             'audio_drive_id': done['drive_id'], 'metadata_drive_id': done['metadata']['drive_id']})
@@ -456,6 +610,9 @@ class NativeBatch:
             pending = []
             for item in self.items:
                 if storage.receipt_complete(previous.get(item['video_id'], {}), item, self.s['remote']):
+                    # Recover readiness after a lost finalize ACK, never pull or
+                    # download an already archived source again.
+                    self.finalize_handoff(self.jobs / item['video_id'], previous[item['video_id']])
                     counts['skipped'] += 1; continue
                 folder = self.jobs / item['video_id']
                 if folder.exists():
@@ -468,8 +625,8 @@ class NativeBatch:
             with ThreadPoolExecutor(max_workers=self.s['workers']) as pool:
                 active = {}
                 while active or pending:
-                    while pending and len(active) < self.s['workers'] and not self.source_stop.is_set():
-                        try: self.guard(source=True)
+                    while pending and len(active) < self.s['workers'] and not self.source_stop.is_set() and not self.dispatch_paused.is_set():
+                        try: self.guard(source=True, video_id=pending[0]['video_id'])
                         except Exception: counts['pending'] += len(pending); pending.clear(); break
                         item = pending.pop(0); active[pool.submit(self.execute_child, item)] = item
                     if not active:

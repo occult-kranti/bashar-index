@@ -1,5 +1,50 @@
 # Conditional collection estimate — 17 November 2026 update
 
+## Measured native batches, 21:59 UTC
+
+The current snapshot has 77 native audio/metadata pairs and 46 native-source ASR
+bundles. Including qualified publisher editions, 105 of 1,420 latest-20 entries
+have audio and 91 have an audio edition with saved text. A 60-item/three-frame
+series is running with two source workers, Drive archival and a parallel local
+English-ASR handoff. These are observed checkpoints, not a claim of completion.
+
+| Completed native frame | First-pass items | Wall time | Immediate Drive pairs | Audio bytes / source duration |
+|---|---:|---:|---:|---:|
+| v4 frame 1 | 20 | 359.016s (5m59s) | 12 | 216,163,605 / 13,356s |
+| v4 frame 2 | 20 | 501.406s (8m21s) | 7 | 252,899,891 / 15,626s |
+
+One additional complete file from frame 1 was recovered and archived offline
+after its local progress write failed. It is outside the immediate completion
+count above. The Windows write repair and a strict normal/DRC catalog repair
+were made before the 60-item series; its full measured result is not yet known.
+
+The two frames made 40 decisions in 860.422 seconds: about 2.79 items/minute.
+At that exact workload mix, another 1,300 first-pass decisions would take about
+**7.8 active hours**. Allow roughly **6–10 active hours for the remaining first
+pass** as an operational planning range, conditional on similar item mix,
+source availability, upload service and storage/GPU backpressure. This is not a
+statistical confidence interval, a bound, or an ETA for all audio and captions.
+Held formats, source denials, unknown-language review and further ASR still
+require work. A reliable all 1,420-audio-plus-text finish date is not established.
+
+ASR overlaps downloads. The eight-item English frame processed 9,325.877 source
+seconds in 745.016 wall seconds including staging/upload/retirement, with maximum
+rolling GPU use 60.71%. The first two local-handoff English inputs processed
+5,757.434 source seconds in 248.059 seconds, without Drive input pulls. The
+four-source multilingual review produced three verified original/English or
+inferred-English bundles and one no-reliable-speech hold. These are different
+workloads; none measures every-word accuracy or all-language throughput.
+
+The active reservations are 5.5 GB native plus 500 MB/three-pair English staging,
+with one GPU owner, a 6.5 GB VRAM maximum and soft 70% rolling target. Actual
+six-root storage was 8.09 GB at 21:59 UTC. Actual plus reserved future growth must
+fit 16 GB, within the owner's 20 GB allowance and 2 GB spare. Individual capacity
+waits are local backpressure and are not counted as source rate-limit periods.
+
+The sections and machine-readable estimate below retain their explicitly dated
+03:57/19:45 inputs and assumptions. They are historical scenarios rather than
+the current execution profile. Real-time capture remains parked.
+
 **19:45 UTC operational update:** 78 of 1,420 unique latest-20 entries have verified audio from canonical or publisher sources; 76 have an audio edition with saved text. Native acquisition is 50 and native ASR is 31. Three complete browser-assisted native files are verified, including two recovered locally after a capacity stop. Corrected reservation accounting and automatic metadata preservation then ran on a fresh 20-item frame; one selected-media HTTP 403 stopped it after 15.734 seconds, leaving seventeen pending and no new verified pairs. The denied asset and source hold remain preserved for scope review. No sustained all-channel throughput or finish date is established. Publisher editions, native duplicates, caption availability and ASR work remain separate inputs.
 
 All ten Athina publisher editions now have ASR; the remaining-eight controller completed in 629.848 seconds including staging/upload/cleanup. Native English ASR of the 26-minute recording took 50.766 seconds, with maximum rolling GPU use 29.37%. These are observed workload-specific results, not forecasts for all languages or recordings. The capacity scenarios below retain their original 03:57 snapshot/47-native-pair inputs; they are historical assumptions, not live remaining-work totals or a benchmark of the new route.

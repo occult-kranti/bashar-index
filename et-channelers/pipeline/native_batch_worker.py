@@ -14,18 +14,21 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
+import threading
 import time
 from urllib.parse import urlsplit
 
 TARGET = None  # bound from the hash-pinned plan before optional imports
-PROFILE = 'stock_headful_wpc_native_batch_v3'
-LEASE_NAME = 'stock_wpc_batch_v3_lease.json'
-STOP_NAME = 'STOP_STOCK_WPC_BATCH_V3'
-COOLDOWN_NAME = 'stock_wpc_batch_v3_source_cooldown.json'
+PROFILE = 'stock_headful_wpc_native_batch_v4'
+LEASE_NAME = 'stock_wpc_batch_v4_lease.json'
+STOP_NAME = 'STOP_STOCK_WPC_BATCH_V4'
+COOLDOWN_NAME = 'stock_wpc_batch_v4_source_cooldown.json'
+HTTP_STATE_NAME = 'stock_wpc_batch_v4_http_state.json'
 # yt-dlp's numeric filter grammar does not accept a leading minus sign.
 # The pre-transfer raw-inventory gate still requires exactly preference -1.
-LEGACY_FORMAT_SELECTOR = ('bestaudio[protocol=https][vcodec=none][language_preference<0][ext=m4a]/'
-                          'bestaudio[protocol=https][vcodec=none][language_preference<0]')
+LEGACY_FORMAT_SELECTOR = ('bestaudio[protocol=https][vcodec=none][language_preference<0][format_id!*=drc][ext=m4a]/'
+                          'bestaudio[protocol=https][vcodec=none][language_preference<0][format_id!*=drc]')
 LIMITS = {'audio_bytes': 64 * 1024**2, 'python_body_bytes': 100 * 1024**2,
           'python_wire_requests': 64, 'browser_observed_requests': 256,
           'profile_bytes': 150_000_000, 'spool_bytes': 256_000_000,
@@ -39,7 +42,7 @@ class Held(Exception):
 def control_paths(root):
     sync = Path(root) / 'sync'
     return {'lease_path': sync / LEASE_NAME, 'batch_stop_path': sync / STOP_NAME,
-            'source_cooldown_path': sync / COOLDOWN_NAME}
+            'source_cooldown_path': sync / COOLDOWN_NAME, 'http_state_path': sync / HTTP_STATE_NAME}
 
 
 def need(value, code):
@@ -57,11 +60,50 @@ def encoded(value):
     return (json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False) + '\n').encode()
 
 
-def write(path, value):
+CONTROL_REPLACE_DELAYS = (.025, .05, .1, .2, .4)
+
+
+def write(path, value, *, on_failure=None):
+    """Commit one control file; retry only bounded Windows sharing failures.
+
+    Every writer owns a distinct same-directory temporary file. A failed commit
+    never replaces the old proof or reports success, including result.json.
+    """
+    path = Path(path)
     raw = encoded(value); need(len(raw) <= 16 * 1024**2, 'control_size')
-    tmp = path.with_suffix(path.suffix + '.tmp')
-    with tmp.open('wb') as output: output.write(raw); output.flush(); os.fsync(output.fileno())
-    os.replace(tmp, path)
+    tmp = None; first = None; first_summary = None; retries = 0; stage = 'create'
+    def failure(error, retry):
+        nonlocal first, first_summary
+        safe = {'stage': stage, 'exception_class': 'PermissionError' if isinstance(error, PermissionError) else 'OSError'}
+        for key in ('errno', 'winerror'):
+            number = getattr(error, key, None)
+            if type(number) is int and 0 <= number <= 65535: safe[key] = number
+        if first is None: first = error; first_summary = safe
+        if on_failure is not None: on_failure(safe, retry)
+    try:
+        descriptor, name = tempfile.mkstemp(prefix='.' + path.name + '.', suffix='.tmp', dir=path.parent)
+        tmp = Path(name); stage = 'write_fsync'
+        with os.fdopen(descriptor, 'wb') as output:
+            output.write(raw); output.flush(); os.fsync(output.fileno())
+        stage = 'replace'
+        for attempt in range(len(CONTROL_REPLACE_DELAYS) + 1):
+            try:
+                os.replace(tmp, path)
+                return {'retry_attempts': retries, 'first_failure': first_summary}
+            except OSError as error:
+                retry = getattr(error, 'winerror', None) in {5, 32, 33} and attempt < len(CONTROL_REPLACE_DELAYS)
+                failure(error, retry)
+                if not retry: raise
+                retries += 1; time.sleep(CONTROL_REPLACE_DELAYS[attempt])
+    except OSError as error:
+        if first is None: failure(error, False)
+        # Held is deliberately not OSError: yt-dlp must not relabel a failed
+        # local progress write as UnavailableVideoError.
+        raise Held('control_write_failed') from first
+    finally:
+        if tmp is not None:
+            try: tmp.unlink(missing_ok=True)
+            except OSError: pass  # Only our temporary file; original failure still propagates.
 
 
 def read(path):
@@ -91,14 +133,32 @@ def endpoint(url):
     return 'other'
 
 
-def record_browser_response(state, url, status):
+def http_policy():
+    try: from . import native_http_policy
+    except ImportError: import native_http_policy
+    return native_http_policy
+
+
+def retain_http_failure(state, event, refusal):
+    """Keep first evidence plus at most one stronger global HTTP observation."""
+    if state.http_failure is None:
+        state.http_failure = event; state.http_failure_at_epoch = time.time()
+    elif (state.http_failure['action'] == 'item_quarantine' and event['action'] == 'global_stop'
+          and state.http_escalation is None):
+        state.http_escalation = event; state.http_escalation_at_epoch = time.time()
+    else:
+        return
+    state.error = event['code']; state.refusal = refusal; state.save(force=True)
+
+
+def record_browser_response(state, url, status, retry_after=None):
     """Observe WPC's homepage browser without attributing its media to TARGET."""
     category = endpoint(url)
     key = category + ':' + str(status)
     state.browser_status_counts[key] = state.browser_status_counts.get(key, 0) + 1
     if status not in (403, 429):
         return False
-    if category == 'media':
+    if category == 'media' and status == 403:
         # Stock WPC navigates to the homepage, not the requested video. These
         # events have no selected-format or video binding, even after Python
         # selects a format. Keep evidence without manufacturing a target refusal.
@@ -106,24 +166,27 @@ def record_browser_response(state, url, status):
         state.browser_unbound_media_failures[key] = state.browser_unbound_media_failures.get(key, 0) + 1
         state.save(force=True)
         return False
-    if category == 'source_control':
-        state.error = 'source_' + str(status)
-        state.refusal = {'endpoint': category, 'status': status, 'requested_video_id': TARGET,
+    if category == 'source_control' or status == 429:
+        event = http_policy().classify_http_failure(status, url, url, None,
+            state.phase, TARGET, None, transport='wpc_browser', selection_validated=False,
+            retry_after=retry_after, now_epoch=time.time())
+        retain_http_failure(state, event, {'endpoint': category, 'status': status, 'requested_video_id': TARGET,
                          'transport_origin': 'wpc_browser', 'source_binding': 'provider_source_control',
-                         'requested_video_binding_verified': False}
-        state.save(force=True)
+                         'requested_video_binding_verified': False})
         return True
     return False
 
 
-def record_python_http_refusal(state, url, status):
-    """Retain the existing fatal Python HTTP guards, independent of WPC events."""
+def record_python_http_refusal(state, url, status, *, final_url=None, method='GET', retry_after=None):
+    """Every refusal ends this child; only exactly bound media403 is item-scoped."""
     if status not in (403, 429):
         return
-    state.error = 'source_' + str(status)
-    state.refusal = {'endpoint': endpoint(url), 'status': status, 'video_id': TARGET,
-                     'transport_origin': 'yt_dlp_python'}
-    state.save(force=True)
+    event = http_policy().classify_http_failure(status, url, final_url,
+        state.selected_asset_url, state.phase, TARGET, state.selected_summary,
+        transport='yt_dlp_python', method=method, selection_validated=state.selected_metadata_saved,
+        retry_after=retry_after, now_epoch=time.time())
+    retain_http_failure(state, event, {'endpoint': endpoint(url), 'status': status, 'video_id': TARGET,
+                     'transport_origin': 'yt_dlp_python'})
 
 
 def original_track_proof(info):
@@ -140,6 +203,8 @@ def original_track_proof(info):
 def validate_selection(info, target, expected, maximum, codecs, legacy=None):
     need(info.get('id') == target and not info.get('is_live') and info.get('live_status') not in {'is_live', 'is_upcoming'}, 'source_identity')
     need(info.get('protocol') == 'https' and info.get('vcodec') == 'none' and info.get('acodec') in codecs, 'native_audio_selection')
+    need(info.get('isDrc') is not True and info.get('is_drc') is not True and
+         not re.search(r'(?:^|-)drc(?:-|$)', str(info.get('format_id', '')), re.I), 'native_audio_selection')
     need(info.get('has_drm') is not True, 'drm_not_admitted')
     try: original = original_track_proof(info)
     except Held:
@@ -184,7 +249,7 @@ def safe_exception_chain(error):
         'source_history_changed', 'python_body_cap', 'python_request_cap', 'audio_byte_cap',
         'short_local_write', 'output_scope', 'storage_link', 'source_403', 'source_429',
         'browser_observed_request_cap', 'original_audio_unproven', 'native_completion_unproven',
-        'audio_probe_failed', 'audio_probe_invalid', 'audio_extent', 'warning_decode_failed'}
+        'audio_probe_failed', 'audio_probe_invalid', 'audio_extent', 'warning_decode_failed', 'control_write_failed'}
     todo = [('root', error)]; seen = set(); nodes = []
     while todo and len(nodes) < 8:
         link, value = todo.pop(0)
@@ -221,21 +286,35 @@ def save_format_inventory(state, info):
     for value in formats[:512]:
         if not isinstance(value, dict): continue
         fmt = {key: token(value.get(key)) for key in ('format_id', 'protocol', 'ext', 'acodec', 'vcodec', 'language')}
+        # This hook precedes yt-dlp protocol completion. URL scheme is a
+        # transport hint only: it never establishes server access or success.
+        url = value.get('url')
+        fmt['url_present'] = isinstance(url, str) and bool(url)
+        try: scheme = urlsplit(url).scheme.lower() if fmt['url_present'] else None
+        except ValueError: scheme = None
+        fmt['url_scheme'] = scheme if scheme in {'https', 'http'} else ('other' if scheme else None)
+        fmt['protocol_state'] = 'reported' if fmt['protocol'] else 'pre_normalization_missing'
+        fmt['transport_hint'] = fmt['protocol'] or fmt['url_scheme']
+        fmt['access_proven'] = False
         for key in ('language_preference', 'filesize', 'filesize_approx', 'duration', 'available_at'):
             number = value.get(key)
             fmt[key] = number if type(number) in (int, float) and math.isfinite(number) and abs(number) <= 2**53 else None
         note = value.get('format_note')
         fmt['original_label_present'] = bool(isinstance(note, str) and re.search(r'\boriginal\b', note[:4096], re.I))
         fmt['has_drm'] = value.get('has_drm') if type(value.get('has_drm')) is bool else None
+        fmt['drc_variant'] = bool(re.search(r'(?:^|-)drc(?:-|$)', fmt['format_id'] or '', re.I))
         fmt['eligible_original_https_audio'] = bool(fmt['protocol'] == 'https' and fmt['vcodec'] == 'none' and
             fmt['acodec'] in {'opus', 'aac', 'mp4a.40.2'} and fmt['language_preference'] == 10 and
-            fmt['original_label_present'] and fmt['language'] and fmt['has_drm'] is not True)
+            fmt['original_label_present'] and fmt['language'] and fmt['has_drm'] is not True and not fmt['drc_variant'])
         output.append(fmt)
     live = info.get('live_status')
     record = {'schema_version': 1, 'video_id': TARGET, 'stage': 'before_format_selection',
         'worker_sha256': digest(__file__), 'format_count': len(formats), 'retained_format_count': len(output),
         'truncated': len(formats) > 512, 'formats': output,
         'original_https_audio_candidates': sum(x['eligible_original_https_audio'] for x in output),
+        'protocol_pending_count': sum(x['protocol_state'] == 'pre_normalization_missing' for x in output),
+        'https_audio_transport_hints': sum(x['transport_hint'] == 'https' and x['vcodec'] == 'none' and x['acodec'] not in {None, 'none'} for x in output),
+        'transport_hints_prove_access': False,
         'live_status': live if live in {'not_live', 'is_live', 'is_upcoming', 'was_live', 'post_live'} else None,
         'is_live': info.get('is_live') if type(info.get('is_live')) is bool else None}
     write(state.run / 'format-inventory.json', record)
@@ -277,8 +356,9 @@ def record_progress(state, value):
         need(value.get('info_dict', {}).get('id') == TARGET, 'finished_identity')
         count = value.get('downloaded_bytes')
         need(type(count) is int and count > 0, 'finished_bytes')
-        state.finished_count += 1; state.finished_bytes = count
-        state.save(force=True)
+        with state._save_lock:
+            state.finished_count += 1; state.finished_bytes = count
+            state.save(force=True)
     elif value.get('status') == 'downloading':
         state.save()
 
@@ -349,11 +429,19 @@ class State:
         self.last_check = self.last_save = 0; self.finished = False; self.available_at = None
         self.pump = None
         self.original_track = None
+        self.selected_asset_url = None  # ephemeral; never serialized or exported
+        self.http_failure = None
+        self.http_failure_at_epoch = None
+        self.http_escalation = None; self.http_escalation_at_epoch = None
+        self.global_failure_code = None; self.global_failure_at_epoch = None
         self.selected_summary = None; self.selected_metadata_saved = False
         self.finished_count = 0; self.finished_bytes = None; self.limit_sentinel_observed = False
         self.refusal = None
         self.format_inventory_saved = False; self.diagnostic_reason = None
         self.raw_audio_inventory = None
+        self._save_lock = threading.RLock()
+        self.control_write_first_failure = None
+        self.control_write_failure_count = self.control_write_retry_count = self.control_write_recovered_count = 0
 
     def guard(self):
         if self.pump: self.pump()
@@ -380,13 +468,29 @@ class State:
             'available_at_epoch': self.available_at, 'elapsed_seconds': round(time.monotonic() - self.started, 3),
             'selected_metadata_saved': self.selected_metadata_saved, 'native_finished_count': self.finished_count,
             'native_finished_bytes': self.finished_bytes, 'limit_sentinel_observed': self.limit_sentinel_observed,
-            'source_refusal': self.refusal, 'format_inventory_saved': self.format_inventory_saved,
+            'source_refusal': self.refusal, 'http_failure': self.http_failure,
+            'http_failure_at_epoch': self.http_failure_at_epoch,
+            'http_escalation': self.http_escalation, 'http_escalation_at_epoch': self.http_escalation_at_epoch,
+            'global_failure_code': self.global_failure_code, 'global_failure_at_epoch': self.global_failure_at_epoch,
+            'format_inventory_saved': self.format_inventory_saved,
             'diagnostic_reason': self.diagnostic_reason,
+            'control_write_diagnostics': {'first_failure': self.control_write_first_failure,
+                'failure_count': self.control_write_failure_count, 'retry_count': self.control_write_retry_count,
+                'recovered_writes': self.control_write_recovered_count},
             'legacy_track_inference_eligible': bool(self.raw_audio_inventory and self.raw_audio_inventory.get('eligible'))}
 
     def save(self, force=False):
-        if force or time.monotonic() - self.last_save >= 1:
-            write(self.run / 'progress.json', self.summary()); self.last_save = time.monotonic()
+        with self._save_lock:
+            if force or time.monotonic() - self.last_save >= 1:
+                def failed(safe, retry):
+                    if self.control_write_first_failure is None: self.control_write_first_failure = safe
+                    self.control_write_failure_count += 1
+                    self.control_write_retry_count += int(retry)
+                outcome = write(self.run / 'progress.json', self.summary(), on_failure=failed)
+                if outcome['retry_attempts']: self.control_write_recovered_count += 1
+                # Retry evidence appears in the next progress/final result;
+                # last_save changes only after an acknowledged atomic commit.
+                self.last_save = time.monotonic()
 
 
 class MeteredResponse:
@@ -478,7 +582,8 @@ def child(config, admission_path):
             if state.browser_requests > LIMITS['browser_observed_requests']:
                 state.error = 'browser_observed_request_cap'; browser.stop()
         async def responded(event):
-            if record_browser_response(state, event.response.url, int(event.response.status)):
+            retry_after = next((v for k, v in event.response.headers.items() if k.lower() == 'retry-after'), None)
+            if record_browser_response(state, event.response.url, int(event.response.status), retry_after):
                 browser.stop()
         browser.main_tab.add_handler(nodriver.cdp.network.RequestWillBeSent, requested)
         browser.main_tab.add_handler(nodriver.cdp.network.ResponseReceived, responded)
@@ -503,7 +608,10 @@ def child(config, admission_path):
             reason = diagnostic_reason(message)
             if reason:
                 state.diagnostic_reason = reason
-                if reason in {'bot_check', 'access_challenge'}: state.error = reason
+                if reason in {'bot_check', 'access_challenge'}:
+                    state.error = reason
+                    if state.global_failure_code is None:
+                        state.global_failure_code = reason; state.global_failure_at_epoch = time.time()
                 state.save(force=True)
 
     class NativeYoutubeDL(yt_dlp.YoutubeDL):
@@ -518,7 +626,11 @@ def child(config, admission_path):
             state.guard(); state.dispatches += 1
             try: response = super().urlopen(request)
             except HTTPError as error:
-                record_python_http_refusal(state, getattr(request, 'url', ''), error.status)
+                response = getattr(error, 'response', None)
+                headers = getattr(response, 'headers', {})
+                record_python_http_refusal(state, getattr(request, 'url', ''), error.status,
+                    final_url=getattr(response, 'url', None), method=getattr(request, 'method', 'GET'),
+                    retry_after=headers.get('Retry-After'))
                 raise
             state.guard()
             return MeteredResponse(response, state)
@@ -527,6 +639,7 @@ def child(config, admission_path):
                 native_audio_sink.CODECS, state.raw_audio_inventory)
             state.available_at = info.get('available_at')
             persist_selection(state, info, media_metadata.build_metadata)
+            state.selected_asset_url = info.get('url')
             return super().process_info(info)
 
     result = {'schema_version': 1, 'profile': PROFILE, 'video_id': TARGET, 'status': 'held'}
@@ -541,7 +654,7 @@ def child(config, admission_path):
         need(set(_pot_providers.value) == {'WPC'}, 'unexpected_provider')
         http.client.HTTPConnection.putrequest = put_request
         fd_common.sanitize_open = open_file
-        options = {'format': 'bestaudio[protocol=https][vcodec=none][language_preference=10][ext=m4a]/bestaudio[protocol=https][vcodec=none][language_preference=10]', 'outtmpl': str(run / 'native-audio.%(ext)s'),
+        options = {'format': 'bestaudio[protocol=https][vcodec=none][language_preference=10][format_id!*=drc][ext=m4a]/bestaudio[protocol=https][vcodec=none][language_preference=10][format_id!*=drc]', 'outtmpl': str(run / 'native-audio.%(ext)s'),
             'quiet': True, 'noprogress': True, 'logger': Quiet(), 'proxy': '', 'noplaylist': True, 'max_downloads': 1,
             'retries': 0, 'fragment_retries': 0, 'extractor_retries': 0, 'file_access_retries': 0,
             'continuedl': False, 'overwrites': False, 'fixup': 'never', 'postprocessors': [], 'updatetime': False,
@@ -567,10 +680,13 @@ def child(config, admission_path):
             original_audio_evidence=state.original_track, drive_uploaded=False)
     except BaseException as error:
         state.error = state.error or (error.code if isinstance(error, (Held, QualityHold)) else state.diagnostic_reason or 'native_downloader_failed')
+        if state.error in {'bot_check', 'protection_failure', 'access_challenge'} and state.global_failure_code is None:
+            state.global_failure_code = state.error; state.global_failure_at_epoch = time.time()
         result['exception_class'] = type(error).__name__
         try: result['exception_diagnostics'] = safe_exception_chain(error)
         except Exception: result['exception_diagnostics'] = {'schema_version': 1, 'diagnostic_failed': True, 'raw_messages_retained': False}
     finally:
+        state.selected_asset_url = None
         fd_common.sanitize_open, http.client.HTTPConnection.putrequest, nodriver.start = original_open, original_put, original_start
         YoutubeIE._extract_formats_and_subtitles = original_formats
         state.phase = 'terminal'; result['diagnostics'] = state.summary()

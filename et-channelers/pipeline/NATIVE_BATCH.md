@@ -9,7 +9,7 @@ available, and otherwise selects original HTTPS audio. There is no provider,
 client, account, cookie-profile, proxy, or transport fallback. Importing any of
 these modules starts no work.
 
-This is a separate admission profile, `stock_headful_wpc_native_batch_v3`.
+This is a separate admission profile, `stock_headful_wpc_native_batch_v4`.
 It does not resume old collectors, clear old cooldowns, or reuse a spent attempt.
 It is initially limited to an immutable plan of at most 20 items. Native audio
 and canonical pair counts remain distinct from publisher editions and ASR.
@@ -37,27 +37,41 @@ Settings JSON fields:
   and `wpc_copy`: the private filtered directory containing only the unmodified
   pinned WPC plugin; `ffprobe` and `ffmpeg`: existing local tools.
 - `code_pins`: `{path,sha256}` for dependencies, including worker, quality, Job
-  Object helper, `native_track_policy.py`, `native_metadata_snapshot.py`,
+  Object helper, `native_track_policy.py`, `native_metadata_snapshot.py`, `native_http_policy.py`,
   `drive_ingest.py`, `media_metadata.py`, `native_audio_sink.py`,
   and the exact installed WPC/extractor/runtime dependencies selected by owner.
 - `preserved_controls`: nonempty `{path,sha256}` snapshots of the legacy STOP
   and refusal controls that must remain unchanged. Do not include the canonical
   audio journal, which this workflow intentionally appends after verification.
+- `http_policy_seed` and `historical_http_review`: immutable `{path,sha256}`
+  proposals. The review contains exactly `covered_event_ids` and
+  `allowed_video_ids`; its allowlist must equal this plan's IDs.
 
-The owner creates `sync/stock_wpc_batch_v3_lease.json` with `schema_version:1`,
+The owner creates `sync/stock_wpc_batch_v4_lease.json` with `schema_version:1`,
 `state:"active"`, `authorized:true`, `source_scope_authorized:true`, exact
 `profile`, `owner`, `lease_id`, `settings_sha256`, `plan_sha256`,
 `worker_sha256`, `coordinator_sha256`, `max_workers`, `spool_cap_bytes`, `remote`,
-`expires_at_epoch`, and `preserve_existing_cooldowns:true`. The resource ledger
+`expires_at_epoch`, `preserve_existing_cooldowns:true`, `http_policy_seed_sha256`,
+`historical_http_review_sha256`, and `historical_http_review_authorized:true`.
+The resource ledger
 must contain its matching active reservation, a managed ceiling no higher than
 16GB, and `collector_dispatch_allowed:false`; `STOP_DRIVE_INGEST` stays present.
 This explicit source scope is an owner decision, not a tool-generated override.
-Version 3 uses `sync/STOP_STOCK_WPC_BATCH_V3` and
-`sync/stock_wpc_batch_v3_source_cooldown.json`; the shared spool and byte budget
-are unchanged. Its settings pin the original version 2 STOP and cooldown files
+Version 4 uses `sync/STOP_STOCK_WPC_BATCH_V4` and
+`sync/stock_wpc_batch_v4_source_cooldown.json`; the shared spool and byte budget
+are unchanged. Its settings pin the original version 2 and 3 STOP/cooldown files
 as preserved history. The prior observation is retained, not silently cleared or
 rewritten. A separate owner admission must bind the corrected scope and exclude
 the previously spent attempts.
+
+The owner seeds `sync/stock_wpc_batch_v4_http_state.json` once as
+`{schema_version:1,seed_sha256,state:<immutable seed contents>}`. Subsequent
+batches reuse this state; they never replace it with an empty ledger. Seed
+events must remain byte-equivalent data in every later state. The historical
+selected-media403 retains unknown final-response binding, its original event
+time and permanent item quarantine. Only the separately hash-bound owner review
+can permit the exact other plan IDs; it cannot authorize that held item or
+discount any new global event. Preparing a review does not authorize execution.
 
 After that admission, the owner can run:
 
@@ -99,13 +113,32 @@ or disk interception. Bootstrap is bounded to 90s; the owner supplies the whole
 job deadline. Parent/child lease and cancellation checks run at least once per
 second while progressing; parent monitoring can terminate blocked children.
 
-Python downloader HTTP403/429, browser source-control HTTP403/429, bot checks,
-or explicit protection failures stop this batch's source dispatch and cancel
-siblings. A new scoped 24-hour refusal record and `STOP_STOCK_WPC_BATCH_V3` are
-written without altering legacy history. Stock WPC opens the homepage; its
-unbound browser media HTTP403/429 events remain counted diagnostics and are not
-attributed to the selected target or used as a target-media breaker. Browser
-source-control refusal still stops even without a verified video binding.
+Every HTTP429, browser source-control403, bot/protection failure and unbound
+Python403 stops source dispatch and cancels siblings. A Python403 is item-only
+when a validated selection's exact URL equals both the outgoing GET request
+and final error-response URL, in the native transfer phase on a media endpoint.
+These comparisons use memory only; URLs, credentials and raw headers are not
+persisted. Redirects or missing final binding remain global. Safe proof records
+include booleans, format identifiers and bounded parsed Retry-After information.
+The failed child always stops; no alternate URL, format, client or retry follows.
+
+An exactly bound media403 permanently quarantines that video while other
+admitted resources may continue. Three distinct media403 IDs in600seconds latch
+a shared global breaker. A reviewed historical403 counts conservatively in its
+actual time window without claiming verified binding. The threshold is an owner
+policy, not a provider claim. Events deduplicate by immutable attempt identity;
+success, later batches and elapsed time do not clear quarantines or a latched
+global stop. The coordinator atomically fsyncs policy state under its dispatch
+lock and reads pending child failures immediately before authorizing GO.
+Worker capture timestamps survive replay; missing timestamps hold for review.
+The first HTTP observation is retained separately from a later global HTTP or
+bot/protection escalation, so an earlier item403 cannot mask a stronger stop.
+A global event writes a scoped cooldown (at least24hours and no earlier than a
+parsed server delay) and `STOP_STOCK_WPC_BATCH_V4`, without altering old controls.
+
+Stock WPC opens the homepage; its unbound browser media403 events remain counted
+diagnostics without selected-video attribution. Unbound browser media429 is
+global. Browser source-control refusal still stops without a video binding.
 Requested video ID labels the attempted scope; it does not prove a homepage
 refusal occurred on that watch page. Completed pairs can still upload. No
 automatic source retry occurs after an attempt folder exists.
@@ -186,3 +219,36 @@ resumed local files are hashed once by the shared verifier. Held/partial/spent
 source attempts are retained and never silently restarted. Captions and ASR are
 separate consumers of the canonical metadata/audio; this pilot does not claim
 their completion.
+
+Optional `asr_handoff` settings bind `owner`, `lease_id`, `cap_bytes` (at most
+1 GB), `max_pairs` (at most three), `retain_policy:
+explicit_original_english_v1`, and `capacity_wait_seconds` (1–1800). An optional
+`caption_bundle_paths` map is keyed by video ID, then track ID, with private
+cached ZIP paths. The helper, queue, and model-provenance files must be pinned;
+the separate handoff lease and resource reservation must already be active.
+The initial successor uses a 500 MB allowance while another ASR frame drains.
+
+After exact Drive pair proof, the helper retains English audio/metadata hardlinks
+before collector cleanup. Only explicit original-English evidence enables this
+route; inferred or foreign language produces a disabled metadata-only review
+without occupying a staging slot. A correctly bound, cached usable English
+caption can suppress ASR; unbound publisher text cannot. Missing or unproven
+caption coverage remains explicit and does not disable the English handoff.
+Readiness is finalized only after the canonical receipt is durable. The caller
+merges fingerprints refreshed after link creation to avoid redundant hashing.
+A bound local marker recovers a lost readiness acknowledgement without source
+requests. The consumer takes only its separate ASR lock, never the collector's
+lifetime lock.
+
+Full staging waits locally before further dispatch. On bounded timeout or an
+oversized input, the original files remain and future dispatch pauses; existing
+workers are not cancelled merely because staging is full. No HTTP cooldown is
+created or cleared. A later owner-approved continuation can finish the local
+handoff without redownloading the source.
+
+Control writes use unique same-directory temporary files and fsync before
+replace. Windows sharing/access-denied errors 5/32/33 receive at most six local
+replace attempts with 775 ms total backoff. Progress snapshot/commit is
+serialized, and the first sanitized failure and retry counters remain in
+diagnostics. Exhausted or unrelated errors fail as `control_write_failed`;
+uncertain final-result writes never count as success.
