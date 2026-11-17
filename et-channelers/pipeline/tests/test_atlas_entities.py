@@ -32,6 +32,14 @@ def encoded(rows):
 
 
 class AtlasEntitiesTests(unittest.TestCase):
+    def test_projection_is_identical_for_lf_crlf_and_utf8_bom_checkouts(self):
+        crlf = encoded([row()])
+        lf = crlf.replace(b'\r\n', b'\n')
+        expected = atlas.build_projection(lf)
+        self.assertEqual(expected, atlas.build_projection(crlf))
+        self.assertEqual(expected, atlas.build_projection(b'\xef\xbb\xbf' + crlf))
+        self.assertEqual(expected['meta']['sourceCanonicalization'], 'utf8-lf-v1')
+
     def test_projection_is_deterministic_and_only_explicit_public_fields_survive(self):
         source = encoded([row(private_path="PRIVATE", token="SECRET", transcript="FULL TRANSCRIPT")])
         result = atlas.build_projection(source)

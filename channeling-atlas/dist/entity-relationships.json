@@ -1134,7 +1134,8 @@
     "relationshipCount": 115,
     "scope": "Dated primary-source relationship extension; historical Atlas and analysis denominators are unchanged.",
     "source": "discovery-relationships.csv",
-    "sourceSha256": "6c24ac3b08841e8fd248e15b30fa187666a4ed3b9de6b0d73c94f28db9aa497a",
+    "sourceCanonicalization": "utf8-lf-v1",
+    "sourceSha256": "642d2104185db80a9f048ac928c750eddb2962e7f1a1c246b759cd772cd77e4e",
     "unit": "One human–claimed source–predicate–supporting page relationship. Labels compare claims, not verified external identities."
   },
   "people": [

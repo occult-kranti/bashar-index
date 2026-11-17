@@ -4,7 +4,7 @@ This repository contains **three related research projects with separate dataset
 
 **Start here:** [all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [branch inventory and history](BRANCHES.md) · [collection handoff](et-channelers/HANDOFF.md) · [future transcription/analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md).
 
-Repository checkpoint: **17 November 2026, 00:45 UTC**. GitHub `main` is [`0ad27f0`](https://github.com/occult-kranti/bashar-index/commit/0ad27f0c52ebfdfcccd1e33421bd09f40fcc3a2a), including merged [PR #29](https://github.com/occult-kranti/bashar-index/pull/29). Current unmerged work is on `feat/browser-recovery-entity-directory`; see [BRANCHES.md](BRANCHES.md) for verified ancestry and worktrees. **New ASR, model downloads, embeddings and corpus-analysis jobs remain off.** Earlier results remain published; their presence does not mean a new analysis is running.
+Repository guide checkpoint: **17 November 2026, 01:32 UTC**. Its branch ancestry baseline is [`0ad27f0`](https://github.com/occult-kranti/bashar-index/commit/0ad27f0c52ebfdfcccd1e33421bd09f40fcc3a2a), including merged [PR #29](https://github.com/occult-kranti/bashar-index/pull/29). This continuation is on `feat/browser-recovery-entity-directory`; see [BRANCHES.md](BRANCHES.md) for verified ancestry and worktrees. **The owner's newly activated goal authorizes contained GPU ASR for missing captions.** A separate environment and one pinned English model are being provisioned; embeddings and corpus analysis remain deferred. The latest resource/source state is at the top of [HANDOFF](et-channelers/HANDOFF.md).
 
 ## The three research lanes
 
@@ -50,7 +50,7 @@ The [committed snapshot](et-channelers/plan/ingestion_status.json), generated **
 | Audio/metadata pairs verified on Drive | 47 |
 | Verified English caption bundles | 20 |
 | Videos with complete verified caption inventories | 15 |
-| New local ASR/analysis jobs enabled | 0 |
+| Active ASR / corpus-analysis jobs at this snapshot | 0 / 0 |
 
 These are the new local YouTube lane's counts, not totals for older podcasts, archive.org sessions, publisher texts or the Atlas. Its snapshot records a source cooldown; a one-file recovery does not establish universal access or ongoing successful downloading. Audio, caption and Drive endpoint deadlines remain separate. Use the [Windows/rclone operating guide](et-channelers/pipeline/WINDOWS_DRIVE.md), [caption methods](et-channelers/pipeline/YOUTUBE_CAPTIONS_RESEARCH.md) and [archive catalog guide](et-channelers/pipeline/ARCHIVE_CATALOG.md) for controls and recovery. Their older dated examples retain their original queue counts.
 

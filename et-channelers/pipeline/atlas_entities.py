@@ -71,7 +71,10 @@ def public_url(value):
 
 def build_projection(source_bytes, *, edition_date=EDITION_DATE, atlas_profiles=()):
     date.fromisoformat(edition_date)
-    rows = list(csv.DictReader(io.StringIO(source_bytes.decode("utf-8-sig"))))
+    # Git checkouts can use LF or CRLF. Hash the documented canonical UTF-8/LF
+    # source so the same reviewed table rebuilds identically on Windows/Linux.
+    source_bytes = source_bytes.decode("utf-8-sig").replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+    rows = list(csv.DictReader(io.StringIO(source_bytes.decode("utf-8"))))
     people, labels, relationships = {}, {}, []
     profile_ids = {profile["id"] for profile in atlas_profiles}
     seen = set()
@@ -129,6 +132,7 @@ def build_projection(source_bytes, *, edition_date=EDITION_DATE, atlas_profiles=
     return {
         "schemaVersion": 1,
         "meta": {"editionDate": edition_date, "sourceSha256": hashlib.sha256(source_bytes).hexdigest(),
+                 "sourceCanonicalization": "utf8-lf-v1",
                  "source": "discovery-relationships.csv", "relationshipCount": len(relationships),
                  "peopleCount": len(people), "labelCount": len(labels),
                  "scope": "Dated primary-source relationship extension; historical Atlas and analysis denominators are unchanged.",

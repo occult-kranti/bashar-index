@@ -1,5 +1,13 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Active goal update: contained GPU transcription, 01:32 UTC November 17
+
+The owner's newly activated goal explicitly requests latest-20 audio for every channel, captions where available, and local GPU speech-to-text otherwise. This supersedes the earlier planning-only transcription instruction. A separate `tools/asr-venv` and one pinned English model are being provisioned; the collector environment is unchanged. The model candidate is `Systran/faster-distil-whisper-large-v3` at revision `c3058b475261292e64a0412df1d2681c06260fab`. No accuracy or GPU compatibility result is claimed before the smoke tests and source pilot.
+
+Private `sync/analysis_resource_plan.json` reserves 8 GB for environment/model/install staging, 200 MB for the first verified audio input, and 300 MB for an isolated maintainer SABR investigation, within a tighter 16 GB managed ceiling and the 20 GB total/2 GB buffer policy. The ordinary waiting supervisor was parked with the owner-specific STOP text `Codex resource phase: isolated ASR provisioning and bounded SABR investigation`. Do not remove that marker until the resource phase is explicitly reconciled. This serial phase prevents the old collector, which does not honor the new ASR reservations, from filling its spool during setup. Source deadlines remain recorded; the older waiting-PID observation below is superseded by the parked state.
+
+The systems owner provisions and measures the isolated environment. The queue owner identifies verified audio without complete English captions and holds immutable source leases; non-English material is not forced through an English-only model. The source owner investigates a maintainer-linked SABR test build after an anonymous Safari probe returned no audio/HLS formats. One GPU lease is assigned explicitly before inference. No embedding or scientific corpus-analysis job is activated by this goal update.
+
 ## Latest checkpoint: Chromium investigation and Dreemtime, 01:14 UTC November 17
 
 This section supersedes older runtime observations below. **No new full audio was acquired during the browser investigation:** 47 audio/metadata pairs remain verified on Drive, alongside 20 English-caption bundles across 17 videos. Native full-file attempts returned media 403 for the prior failing Elena item and a previously unattempted Dreemtime item. Anonymous Chrome playback was successful and two small WPC-backed range probes returned 206, but those probes did **not** establish full-file recovery. The newer official nightly is `2026.11.16.232655`; WPC `1.1.2` is installed locally. Persistent cookies, personal browser profiles and proxy rotation were not used.
