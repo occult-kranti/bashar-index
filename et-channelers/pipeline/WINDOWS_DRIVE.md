@@ -310,6 +310,41 @@ python -m unittest discover -s et-channelers/pipeline/tests -p test_supervise_dr
 
 ## Storage, verification, and recovery
 
+### Current source-client investigation (November 16 evening Eastern)
+
+The optional launcher/supervisor argument `-YoutubeClient mweb` forwards
+`--youtube-client mweb` to the collector's audio metadata extraction. The default remains
+`default`; caption backfill retains its own extraction behavior and cooldown. Receipts record the
+selected client and source format ID without signed media URLs or tokens.
+
+The local tools environment contains official yt-dlp nightly `2026.11.15.232800`, Deno `2.9.8`,
+and [Bgutil PO-token provider](https://github.com/Brainicism/bgutil-ytdlp-pot-provider) `2.0.2`
+(tag commit `26475e9d3665b972c4aeb83b4dbaafcf64b88438`). Its shared Node `24.18.0` HTTP provider
+listens only on `127.0.0.1:4416`. This follows the upstream
+[PO-token guidance](https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide); player, media and subtitle
+token contexts are distinct. A local console preload redacts token/visitor/cookie/authorization
+diagnostics. Private provenance records the package-lock and preload hashes. A nonbreaking
+production dependency audit fix removed high findings; four moderate transitive findings remain.
+No browser cookies, account rotation or proxy rotation were introduced.
+
+The [browser-backed WPC provider](https://github.com/coletdjnz/yt-dlp-getpot-wpc) was researched,
+not installed. Its experimental browser dependency and per-extraction browser cost make it a
+poor first choice for several parallel workers. Browser extensions and transcript libraries
+do not themselves demonstrate recovery from a timedtext 429. The existing caption lane therefore
+keeps its serialized 15-second start interval and recorded rest window.
+
+One normal `mweb`/provider probe returned the exact HTTP 206 range, followed by a successful full
+audio upload, Drive hash verification and local deletion. Only that item's prior refusal received
+an append-only repair acknowledgment. A later four-worker trial encountered a new media 403;
+the new deadline was preserved. The current supervisor waits until **2026-11-18 00:11:16 UTC**
+with four source workers, four upload transfers, eight-pair batches, 16 ready/in-flight slots,
+10-second metadata spacing and its existing 1-of-3 attempt count. It does not continuously probe
+during the wait. The provider is not claimed to solve every media or caption refusal.
+
+The provider process is local-session state, not an installed service. After a reboot, inspect
+its health and the private provenance before restarting the collector; do not assume this page
+establishes that either process is running. Keep credential and provider-token logs private.
+
 The wrapper requests four download workers, with at most one active item per channel, and a maximum
 private-root budget of **17 decimal GB**. Up to 1 GB is reserved for tools and repositories,
 and 2 GB remains as the owner's buffer within the 20 GB total allowance. The measured tools and

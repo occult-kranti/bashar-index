@@ -279,6 +279,67 @@ class CatalogTests(unittest.TestCase):
             result = catalog.caption_fields(caption_receipt(row, tracks=[broken]), row, "etdrive:04 Audio")
             self.assertEqual(result["caption_verified_tracks"], 0)
 
+    def test_native_caption_format_survives_catalog_prepare_and_rebuild(self):
+        row = queued()
+        self.queue_rows([row])
+        track = caption_track(row)
+        track["raw_format"] = track.pop("ext")
+        self.caption_state([caption_receipt(row, tracks=[track])])
+        plan = self.prepare()
+        projected = json.loads(catalog.rebuild(plan["manifest_path"])[0]["caption_bundles"])[0]
+        self.assertEqual(projected["ext"], "json3")
+        self.assertEqual(plan["counts"]["caption_verified_tracks"], 1)
+        for field in ("remote", "drive_id", "bytes", "md5", "sha256"):
+            self.assertEqual(projected[field], track["bundle"][field])
+
+    def test_caption_format_compatibility_keeps_proof_and_input_provenance_unchanged(self):
+        row = queued()
+        for formats, expected in (
+            ({"raw_format": "json3"}, "json3"),
+            ({"raw_format": "vtt"}, "vtt"),
+            ({"ext": "json3"}, "json3"),
+            ({"ext": "vtt"}, "vtt"),
+            ({"raw_format": "", "ext": "vtt"}, "vtt"),
+            ({"raw_format": None, "ext": "json3"}, "json3"),
+            ({"raw_format": "vtt", "ext": ""}, "vtt"),
+            ({"raw_format": "json3", "ext": "json3"}, "json3"),
+        ):
+            with self.subTest(formats=formats):
+                track = caption_track(row)
+                track.pop("ext")
+                track.update(formats)
+                record = caption_receipt(row, tracks=[track])
+                original = json.loads(json.dumps(record))
+                fields = catalog.caption_fields(record, row, "etdrive:04 Audio")
+                projected = json.loads(fields["caption_bundles"])[0]
+                self.assertEqual(projected["ext"], expected)
+                self.assertEqual(record, original)
+                self.assertEqual(fields["caption_state"], "verified")
+                for field in ("remote", "drive_id", "bytes", "md5", "sha256"):
+                    self.assertEqual(projected[field], track["bundle"][field])
+
+    def test_unknown_or_conflicting_caption_format_stays_blank_without_losing_proof(self):
+        row = queued()
+        cases = [{}, {"raw_format": "", "ext": None}, {"raw_format": "json3", "ext": "vtt"}]
+        for invalid in ("srt", "JSON3", " json3", "../../raw.vtt", 1, False, [], {}):
+            cases.extend(({"raw_format": invalid}, {"ext": invalid},
+                          {"raw_format": invalid, "ext": "vtt"},
+                          {"raw_format": "json3", "ext": invalid}))
+        for formats in cases:
+            with self.subTest(formats=formats):
+                track = caption_track(row)
+                track.pop("ext")
+                track.update(formats)
+                record = caption_receipt(row, tracks=[track])
+                original = json.loads(json.dumps(record))
+                fields = catalog.caption_fields(record, row, "etdrive:04 Audio")
+                projected = json.loads(fields["caption_bundles"])[0]
+                self.assertEqual(projected["ext"], "")
+                self.assertEqual(record, original)
+                self.assertEqual(fields["caption_verified_tracks"], 1)
+                for field in ("remote", "drive_id", "bytes", "md5", "sha256"):
+                    self.assertEqual(projected[field], track["bundle"][field])
+
     def test_caption_counts_include_verified_retained_tracks_but_not_policy_completion(self):
         row = queued()
         self.queue_rows([row])

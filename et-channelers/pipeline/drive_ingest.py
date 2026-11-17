@@ -421,6 +421,9 @@ def extract_audio(args, row, metadata_only=False):
                        "--skip-download", "--dump-single-json", "--retries", "0", "--extractor-retries", "0",
                        "--socket-timeout", "30", "--sleep-requests", "0.75"]
     command += ["--ignore-no-formats-error"] if metadata_only else ["-f", "bestaudio[protocol=https][vcodec=none]"]
+    client = getattr(args, "youtube_client", "default")
+    if client == "mweb":
+        command += ["--extractor-args", "youtube:player_client=mweb"]
     if metadata_only or getattr(args, "collect_captions", False):
         # Declare caption intent so yt-dlp reports access-policy warnings, while
         # simulation returns before its subtitle transport or filesystem writes.
@@ -1306,6 +1309,8 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
                 published = f"{published[:4]}-{published[4:6]}-{published[6:]}"
             rec.update(status="prepared", path=relative, published=published,
                        duration_s=info.get("duration"), source_ext=info["ext"],
+                       source_format_id=info.get("format_id"),
+                       youtube_client=getattr(args, "youtube_client", "default"),
                        target="native audio; no re-encode", title=row.get("title", ""))
             journal(state_path, rec)
             measured = stream_audio(info, part, budget, args.rate_bytes, stop, getattr(args, "http_chunk_bytes", 0))
@@ -1715,6 +1720,8 @@ def parser():
     ap.add_argument("--min-interval", type=float, default=5.0, help="seconds between metadata request starts")
     ap.add_argument("--timeout", type=int, default=300)
     ap.add_argument("--ytdlp", default="yt-dlp")
+    ap.add_argument("--youtube-client", choices=("default", "mweb"), default="default",
+                    help="explicit extraction profile; mweb requires a configured PO-token provider")
     ap.add_argument("--rclone", default="rclone")
     ap.add_argument("--rclone-config", type=Path)
     ap.add_argument("--stop-file", type=Path, help="persistent graceful stop marker (default <root>/sync/STOP_DRIVE_INGEST)")

@@ -2,6 +2,8 @@
 
 Work on the extraterrestrial-channeler thread of the Bashar Index: research notes on who channels whom, a crawl of their public YouTube channels, a flat index and dashboard of what was found, and a transcript pipeline used to answer questions about Bashar's recordings. This README follows the work from the first input to the last output, with the counts, the scripts that made each file, and what is missing.
 
+**Current continuation:** [Collection and research handoff](HANDOFF.md), [consolidated transcription/analysis plan](research/analysis-plan-2026-11-16/README.md), and [source-reviewed channeler–entity table](research/analysis-plan-2026-11-16/channeler-entity-table.md). The current local YouTube index covers 70 channels; historical sample counts below retain their original denominators. Future ASR and analysis jobs are disabled. All six published interfaces are linked from the [dashboard directory](https://occult-kranti.github.io/bashar-index/dashboards/).
+
 **Snapshot.** Channel index observed 2026-10-23. Dashboard built 2026-10-26. Transcripts collected 2026-10-30. The plan for the rest, the batch pipeline and the roadmap were added 2026-11-11 (Stage 9). This README written 2026-11-11 from the files and session logs. Everything here is AI-generated (Claude, with sub-agents) and has not been through human editorial review. Claims are reported as claims, as in the rest of the repository.
 
 **Not the Channeling Atlas.** [`channeling-atlas/`](../channeling-atlas/README.md) is a separate, larger and independently reviewed dataset (925 uploads). The numbers below use different denominators (92 people, 466 videos) and should not be added to or compared with the Atlas without the identity audit its roadmap calls N1.

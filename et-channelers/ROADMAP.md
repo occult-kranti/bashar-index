@@ -1,5 +1,7 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
+**Research continuation, November 16 evening Eastern:** [The new three-panel plan](research/analysis-plan-2026-11-16/README.md) records two search rounds and a third critique, source-reviewed channeler/entity relationships, disabled implementation configuration, future ASR evaluation, lexical/semantic/topic/network methods and figure contracts. No transcription or analysis jobs are enabled. Multidimensional Soul is now the 70th tracked channel; the saved index holds 65,345 unique items. The latest dated runtime state and source waits are at the top of [HANDOFF](HANDOFF.md); the collection dashboard reads the sanitized checkpoint.
+
 **Current archive instruction, 16 November 2026 after the dashboard release:** finish newest 20, extend to newest 50, then collect the entire remaining saved catalogue as native audio plus full sanitized metadata and available English published/original automatic captions. Use bounded download/upload stages and the private incremental catalog; preserve the 17 GB private-root ceiling, up to 1 GB of tool/repository overhead, the requested 2 GB reserve and the checksum-before-delete rule. Caption endpoint cooldowns defer English text independently while audio continues; captions use one request slot with at least 15 seconds between starts. No transcription in this pass.
 
 

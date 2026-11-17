@@ -1,54 +1,54 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-16T23:40:00Z",
+  "generated_at": "2026-11-17T00:26:10Z",
   "scope": "local_youtube_collection",
   "operation": {
     "state": "cooldown",
-    "retry_after": "2026-11-17T23:37:28Z",
-    "workers": 8,
+    "retry_after": "2026-11-18T00:11:16Z",
+    "workers": 4,
     "full_archive_requested": true,
     "cooldown_provider": "youtube",
     "caption_state": "cooldown",
     "caption_retry_after": "2026-11-17T23:20:02Z"
   },
   "counts": {
-    "verified_pairs": 46,
-    "audio_downloaded": 46,
+    "verified_pairs": 47,
+    "audio_downloaded": 47,
     "caption_verified_videos": 15,
     "caption_verified_tracks": 20,
     "caption_none_english": 1,
-    "caption_pending_videos": 30,
+    "caption_pending_videos": 31,
     "unavailable": 0,
     "awaiting_upload": 0,
-    "channels": 69,
-    "indexed_total": 63929,
-    "final_round_indexed": 60709
+    "channels": 70,
+    "indexed_total": 65345,
+    "final_round_indexed": 62075
   },
   "storage": {
-    "local_bytes": 90903358,
+    "local_bytes": 114735498,
     "ceiling_bytes": 17000000000
   },
   "stages": [
     {
       "key": "newest20",
       "label": "Newest 20",
-      "total": 1320,
-      "verified": 46,
+      "total": 1340,
+      "verified": 47,
       "unavailable": 0,
       "state": "in_progress"
     },
     {
       "key": "newest50",
       "label": "Extend to 50",
-      "total": 3220,
-      "verified": 46,
+      "total": 3270,
+      "verified": 47,
       "unavailable": 0,
       "state": "waiting"
     },
     {
       "key": "final_archive",
       "label": "Archive the remainder",
-      "total": 60709,
+      "total": 62075,
       "verified": 0,
       "unavailable": 0,
       "state": "waiting"
