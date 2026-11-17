@@ -81,8 +81,9 @@ class Fixtures(unittest.TestCase):
         state=s.state();return s.write({'offset':state['offset'],'seq':state['next_seq'],'bytes':data})
     def finish(self,s,**extra):return s.finish({'sourceBindingSha256':s.state()['binding_sha256'],'bytes':s.state()['offset'],'protocolEos':True,'reencoded':False,**extra})
 
-    def followup(self):
+    def followup(self,context='normal_user_chrome'):
         x=self.pilot();gateway=self.root/'gateway.py';gateway.write_text('# offline gateway')
+        self.lease['pilotPolicy']['acceptedContext']=context
         self.lease['gateway_sha256']=n.digest(gateway)['sha256'];n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
         with self.coordinator() as c:
             sink=c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
@@ -104,6 +105,92 @@ class Fixtures(unittest.TestCase):
             path=Path(policy['codePins'][name]['path']);path.write_text('// reviewed offline diagnostics '+name);policy['codePins'][name]['sha256']=n.digest(path)['sha256']
         n.atomic(self.root/'sync/native_batch_lease.json',self.lease);n.atomic(self.root/'sync/analysis_resource_plan.json',self.plan)
         return x,parent_folder
+
+    def normal_followup(self):
+        x,first=self.followup(context='automated_dedicated_chromium')
+        with self.coordinator() as c:
+            sink=c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
+            sink.authorize_request({'sourceBindingSha256':sink.state()['binding_sha256'],'requestSequence':1});self.fill(sink)
+            for number,data in enumerate((b'1234',b'5678')):
+                sink.segment({'number':number,'initialization':number==0,'startTimeMs':0,'endTimeMs':0 if number==0 else 69892,
+                    'declaredBytes':4,'byteOffset':number*4,'emittedBytes':4,'sha256':hashlib.sha256(data).hexdigest(),'initDiscardedBytes':0})
+            sink.retain('protocol');second=sink.folder
+        frozen=self.root/'frozen-v2';frozen.mkdir();pins={}
+        oldpins=n.read(self.root/'frozen/code.json')['files']
+        paths={'worker':Path(n.__file__),'gateway':Path(oldpins['gateway']['path']),**{k:Path(v['path']) for k,v in self.lease['pilotPolicy']['codePins'].items()}}
+        for name,path in paths.items():
+            target=frozen/(name+'.source');shutil.copyfile(path,target);pins[name]={'path':str(target),'sha256':n.digest(target)['sha256']}
+        n.atomic(frozen/'lease.json',self.lease);n.atomic(frozen/'code.json',{'schema_version':1,'files':pins})
+        diagnostics={'schemaVersion':1,'errorKind':'sdk_stalled','counts':{'request':1,'response':1,'policy':1,'protection':1,'observer_error':0,'reload':0},
+            'latest':{'protection':{'status':2},'response':{'status':200},'track':{'endOfStream':False},
+                'request':{'selectedAudioMatches':True,'selectedAudioCount':1,'selectedVideoCount':0,'playerTimeMs':69892,'bufferedDurationMs':69892,'bufferedStartMs':0}}}
+        n.atomic(frozen/'diagnostic.json',{'video_id':x['videoId'],'state':'held','error_class':'sdk_stalled','source_refusals':[],'sabr_diagnostics':diagnostics})
+        parent={'leaseSnapshot':{'path':str(frozen/'lease.json'),'sha256':n.digest(frozen/'lease.json')['sha256']},
+            'codeSnapshot':{'path':str(frozen/'code.json'),'sha256':n.digest(frozen/'code.json')['sha256']},
+            'diagnosticSnapshot':{'path':str(frozen/'diagnostic.json'),'sha256':n.digest(frozen/'diagnostic.json')['sha256']},
+            'attemptSha256':n.digest(self.root/'sync/native_context_pilot_followup_v2.json')['sha256'],
+            'jobStateSha256':n.digest(second/'state.json')['sha256'],'segmentLedgerSha256':n.digest(second/'segments.jsonl')['sha256'],'partialSha256':n.digest(second/'audio.part')['sha256']}
+        statement=self.root/'user-statement.txt';statement.write_text('Invented offline statement: normal playback continues beyond ninety seconds.')
+        evidence=self.root/'normal-playback.json';n.atomic(evidence,{'schema_version':1,'basis':'user_reported_normal_chrome_playback','video_id':x['videoId'],
+            'plays_beyond_seconds':90,'approvedByResourceOwner':True,'statement':{'path':str(statement),'sha256':n.digest(statement)['sha256']}})
+        self.lease['lease_id']='native-normal-context';self.plan['reservations'][0]['lease_id']=self.lease['lease_id']
+        self.lease['pilotPolicy'].update(kind=n.PILOT_V3,acceptedContext='normal_user_chrome',maxContextFollowups=1,parent=parent,
+            normalPlaybackEvidence={'path':str(evidence),'sha256':n.digest(evidence)['sha256']})
+        n.atomic(self.root/'sync/native_batch_lease.json',self.lease);n.atomic(self.root/'sync/analysis_resource_plan.json',self.plan)
+        return x,first,second
+
+    def test_normal_context_preserves_two_ancestors_and_labels_user_report(self):
+        x,first,second=self.normal_followup()
+        paths=[self.root/'sync/native_context_pilot_attempt.json',self.root/'sync/native_context_pilot_followup_v2.json',*first.iterdir(),*second.iterdir()]
+        before={p:p.read_bytes() for p in paths}
+        with self.coordinator() as c:
+            sink=c.begin(x,{'id':x['videoId']},output_budget_bytes=8);state=sink.state()
+            self.assertNotIn(sink.job_id,{first.name,second.name});self.assertEqual(len(c.states()),3)
+            self.assertGreater(c.inventory()['outstanding_bytes'],2*n.CONTROL_RESERVE)
+            provenance=state['acquisition_provenance'];self.assertEqual(provenance['normal_playback_basis'],'user_reported_normal_chrome_playback')
+            self.assertIs(provenance['normal_playback_observed_by_collector'],False)
+            self.assertNotIn('Invented offline statement',json.dumps(state))
+            sink.authorize_request({'sourceBindingSha256':state['binding_sha256'],'requestSequence':1})
+            spent=n.read(self.root/'sync/native_context_normal_chrome_attempt_v3.json');self.assertEqual(spent['schema_version'],3);self.assertEqual(spent['attempts_spent'],1)
+            sink.retain('forbidden')
+        self.assertEqual(before,{p:p.read_bytes() for p in paths})
+
+    def test_normal_context_rejects_wrong_context_changed_code_and_false_evidence(self):
+        x,first,second=self.normal_followup();baseline=copy.deepcopy(self.lease['pilotPolicy'])
+        bad=copy.deepcopy(baseline);bad['acceptedContext']='automated_dedicated_chromium'
+        changed=self.root/'changed-sdk.js';changed.write_text('// unauthorized transport change')
+        changedpin={'path':str(changed),'sha256':n.digest(changed)['sha256']}
+        changedpolicy=copy.deepcopy(baseline);changedpolicy['codePins']['sdk']=changedpin
+        evidencepath=Path(baseline['normalPlaybackEvidence']['path']);evidence=n.read(evidencepath);evidence['basis']='fresh_measured_playback'
+        wrong=self.root/'wrong-evidence.json';n.atomic(wrong,evidence)
+        wrongpolicy=copy.deepcopy(baseline);wrongpolicy['normalPlaybackEvidence']={'path':str(wrong),'sha256':n.digest(wrong)['sha256']}
+        diagpath=Path(baseline['parent']['diagnosticSnapshot']['path']);diag=n.read(diagpath);diag['sabr_diagnostics']['latest']['protection']['status']=3
+        refused=self.root/'refused-diagnostic.json';n.atomic(refused,diag)
+        refusedpolicy=copy.deepcopy(baseline);refusedpolicy['parent']['diagnosticSnapshot']={'path':str(refused),'sha256':n.digest(refused)['sha256']}
+        for policy,error in ((bad,'pilot_parent_context'),(changedpolicy,'pilot_context_code_changed'),(wrongpolicy,'pilot_normal_playback_evidence'),(refusedpolicy,'pilot_parent_diagnostic')):
+            with self.subTest(error=error):
+                self.lease['pilotPolicy']=policy;n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
+                with self.coordinator() as c:
+                    with self.assertRaisesRegex(n.SinkError,error):c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
+                self.assertFalse((self.root/'sync/native_context_normal_chrome_attempt_v3.json').exists())
+        self.lease['pilotPolicy']=baseline;n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
+        (first/'audio.part').write_bytes(b'corrupt!')
+        with self.coordinator() as c:
+            with self.assertRaisesRegex(n.SinkError,'pilot_parent_changed'):c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
+
+    def test_normal_context_reservations_replay_and_fourth_attempt_denied(self):
+        x,first,second=self.normal_followup();self.lease['spool_cap_bytes']=2*n.CONTROL_RESERVE+30_000;n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
+        with self.coordinator() as c:
+            with self.assertRaisesRegex(n.SinkError,'spool_storage_deferred'):c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
+        self.assertFalse((self.root/'sync/native_context_normal_chrome_attempt_v3.json').exists())
+        self.lease['spool_cap_bytes']=8_000_000_000;n.atomic(self.root/'sync/native_batch_lease.json',self.lease)
+        with self.coordinator() as c:
+            c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
+            with self.assertRaisesRegex(n.SinkError,'pilot_attempt_spent'):c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
+        self.lease['lease_id']='native-fourth';self.plan['reservations'][0]['lease_id']='native-fourth'
+        n.atomic(self.root/'sync/native_batch_lease.json',self.lease);n.atomic(self.root/'sync/analysis_resource_plan.json',self.plan)
+        with self.coordinator() as c:
+            with self.assertRaisesRegex(n.SinkError,'pilot_attempt_spent'):c.begin(x,{'id':x['videoId']},output_budget_bytes=8)
 
     def test_followup_unique_job_preserves_parent_even_after_new_refusal(self):
         x,parent=self.followup();paths=[self.root/'sync/native_context_pilot_attempt.json',*parent.iterdir()]

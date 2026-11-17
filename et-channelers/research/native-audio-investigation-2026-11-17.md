@@ -2,6 +2,10 @@
 
 Checkpoint: **06:12 UTC**. Scope is a native encoded-audio batch transport, with no real-time playback recording. The owner requested automated installation and testing; dedicated Chromium handles extension activation. No further manual reload or toolbar click is required for this research.
 
+**Diagnostic follow-up, 06:29 UTC:** a separately admitted automated Chromium run retained the identical 1,133,713-byte / 69.892-second prefix and stopped with `sdk_stalled` after 104.5 seconds. All 51 SDK responses had HTTP 200; the observed protection events remained status 2 (pending). The last request correctly reported player time and buffered coverage of 69,892 ms, matched the full selected audio format and selected no video. There were no reload requests, diagnostic observer errors or observed media 403/429. Thus missing playhead advancement is not the observed fault; the reason the server remains pending is unresolved. Both spent attempts and partials remain intact. The receiver was stopped after the test.
+
+The owner had already confirmed playback beyond 90 seconds in normal Chrome. That user report is distinguished from the dedicated automated result. Windows UI Automation has now reloaded only the owned helper in that existing browser, without CDP, profile/cookie export or restarting Chrome. A further test would use this materially different context, with its own admission and live video/permission check. Preparation is not a completed native download.
+
 ## Observed browser result
 
 A dedicated headful Chromium profile loaded extension v0.3.0 and successfully paired with the root-owned loopback receiver. It observed the normal player's current SABR request, then used googlevideo 5.0.1 for audio-only native transfer. The source session stayed in the page; the driver did not copy a personal profile or export cookies, URLs or tokens.

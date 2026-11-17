@@ -29,6 +29,10 @@ BINDING_FIELDS = {'videoId','itag','lastModified','xtags','mimeType','codec','co
                   'durationMs','language','originalBasis','trackId','noDRM','audioOnly','transportKind'}
 MIME_EXT = {'audio/webm':'webm','audio/mp4':'m4a','audio/ogg':'ogg'}
 CODECS = {'opus':'opus','vorbis':'vorbis','aac':'aac','mp4a.40.2':'aac'}
+PILOT_V1='accepted_chrome_sabr_single_fullfile_v1'
+PILOT_V2='accepted_chrome_sabr_diagnostic_followup_v2'
+PILOT_V3='accepted_normal_chrome_context_followup_v3'
+FOLLOWUP_KINDS={PILOT_V2,PILOT_V3}
 
 
 class SinkError(Exception):
@@ -107,6 +111,11 @@ def chain_hash(previous,proof):
     return hashlib.sha256(payload.encode('utf-8')).hexdigest()
 
 
+def pilot_lineage_hash(policy):
+    value={'parent':policy['parent'],'normalPlaybackEvidence':policy['normalPlaybackEvidence']} if policy['kind']==PILOT_V3 else policy['parent']
+    return hashlib.sha256(raw_json(value)).hexdigest()
+
+
 def tree_bytes(root):
     total=0
     for directory,folders,files in os.walk(root,followlinks=False):
@@ -173,13 +182,14 @@ class Coordinator:
         return [read(p) for p in (self.spool/'jobs').glob('*/state.json')]
 
     def pilot_attempt_path(self,lease):
-        name='native_context_pilot_followup_v2.json' if lease.get('pilotPolicy',{}).get('kind')=='accepted_chrome_sabr_diagnostic_followup_v2' else 'native_context_pilot_attempt.json'
+        name={PILOT_V2:'native_context_pilot_followup_v2.json',PILOT_V3:'native_context_normal_chrome_attempt_v3.json'}.get(lease.get('pilotPolicy',{}).get('kind'),'native_context_pilot_attempt.json')
         return self.root/'sync'/name
 
     def followup_parent(self,lease):
-        """One reviewed diagnostic successor; original attempt and evidence stay immutable."""
-        policy=lease['pilotPolicy'];parent=policy.get('parent')
-        need(isinstance(parent,dict) and set(parent)=={'leaseSnapshot','codeSnapshot','attemptSha256','jobStateSha256','segmentLedgerSha256','partialSha256'},'pilot_parent_fields')
+        """Finite v1 -> diagnostic v2 -> normal-context v3; every ancestor stays immutable."""
+        policy=lease['pilotPolicy'];parent=policy.get('parent');normal=policy['kind']==PILOT_V3
+        fields={'leaseSnapshot','codeSnapshot','attemptSha256','jobStateSha256','segmentLedgerSha256','partialSha256'}
+        need(isinstance(parent,dict) and set(parent)==fields|({'diagnosticSnapshot'} if normal else set()),'pilot_parent_fields')
         key=raw_json(lease)
         if self._parent_cache and self._parent_cache[0]==key:
             _,files,state=self._parent_cache
@@ -195,35 +205,63 @@ class Coordinator:
             need(isinstance(pin,dict) and set(pin)=={'path','sha256'},'pilot_parent_snapshot')
             return read(proven(pin['path'],pin['sha256']))
         previous=snapshot(parent['leaseSnapshot']);old=previous.get('pilotPolicy',{})
-        need(old.get('kind')=='accepted_chrome_sabr_single_fullfile_v1' and old.get('approvedByResourceOwner') is True and
+        need(old.get('kind')==(PILOT_V2 if normal else PILOT_V1) and old.get('approvedByResourceOwner') is True and
              previous.get('lease_id')!=self.lease_id and previous.get('owner')==self.owner and previous.get('max_workers')==1 and old.get('maxAttempts')==1,'pilot_parent_policy')
-        need(all(old.get(k)==policy.get(k) for k in ('targetVideoId','transportKind','acceptedContext','expectedDurationMs','durationToleranceMs')) and
+        need(all(old.get(k)==policy.get(k) for k in ('targetVideoId','transportKind','expectedDurationMs','durationToleranceMs')) and
              previous.get('remote')==lease['remote'] and previous.get('queue_sha256')==lease['queue_sha256'],'pilot_parent_scope')
+        need((old.get('acceptedContext')=='automated_dedicated_chromium' and policy.get('acceptedContext')=='normal_user_chrome') if normal
+             else old.get('acceptedContext')==policy.get('acceptedContext'),'pilot_parent_context')
         codes=snapshot(parent['codeSnapshot']);pins=codes.get('files',{})
         need(codes.get('schema_version')==1 and set(pins)=={'worker','gateway','sdk','observer','adapter'},'pilot_parent_codes')
         for name,pin in pins.items():
             expected=previous.get(name+'_sha256') if name in {'worker','gateway'} else old.get('codePins',{}).get(name,{}).get('sha256')
             need(isinstance(pin,dict) and set(pin)=={'path','sha256'} and pin['sha256']==expected,'pilot_parent_codes')
             proven(pin['path'],pin['sha256'])
-        need(all(policy['codePins'][name]['sha256']!=pins[name]['sha256'] for name in ('sdk','adapter')),'pilot_diagnostics_unchanged')
-        attempt=read(proven(self.root/'sync/native_context_pilot_attempt.json',parent['attemptSha256']))
+        if normal:
+            need(all(policy['codePins'][name]['sha256']==pins[name]['sha256'] for name in ('sdk','observer','adapter')),'pilot_context_code_changed')
+        else:need(all(policy['codePins'][name]['sha256']!=pins[name]['sha256'] for name in ('sdk','adapter')),'pilot_diagnostics_unchanged')
+        attempt=read(proven(self.pilot_attempt_path(previous),parent['attemptSha256']))
         need(attempt.get('attempts_spent')==1 and attempt.get('lease_id')==previous['lease_id'] and
              attempt.get('video_id')==policy['targetVideoId'] and attempt.get('canonical_cooldown_preserved') is True,'pilot_parent_attempt')
         ident=attempt.get('job_id','');need(isinstance(ident,str) and re.fullmatch(r'native-[a-f0-9]{24}',ident),'pilot_parent_job')
         folder=self.spool/'jobs'/ident;state=read(proven(folder/'state.json',parent['jobStateSha256']))
-        need(state.get('state')=='retained' and state.get('error_class')=='protocol' and not state.get('source_error_class') and not state.get('record') and not state.get('diagnostic_parent_job_id') and
+        need(state.get('state')=='retained' and state.get('error_class')=='protocol' and not state.get('source_error_class') and not state.get('record') and
+             (normal or not state.get('diagnostic_parent_job_id')) and
              state.get('native_lease_id')==previous['lease_id'] and state.get('owner')==self.owner and state.get('job_id')==ident and
              state.get('video_id')==policy['targetVideoId'] and state.get('source_requests')==attempt.get('source_requests') and
              0<state.get('source_requests',0)<=old.get('sourceRequestBudget',0) and
              state.get('binding_sha256')==attempt.get('source_binding_sha256')==binding_hash(state['binding']),'pilot_parent_not_terminal')
         proven(folder/'segments.jsonl',parent['segmentLedgerSha256']);partial=proven(folder/'audio.part',parent['partialSha256'])
         need(partial.stat().st_size==state.get('offset') and state.get('prefix_sha256')==parent['partialSha256'],'pilot_parent_partial')
-        self._parent_cache=(key,checked,state);return state
+        ancestors=[ident]
+        if normal:
+            need(type(policy.get('maxContextFollowups')) is int and policy['maxContextFollowups']==1,'pilot_context_single_attempt')
+            result=snapshot(parent['diagnosticSnapshot']);diag=result.get('sabr_diagnostics',{});counts=diag.get('counts',{});latest=diag.get('latest',{})
+            requests=state['source_requests'];request=latest.get('request',{})
+            need(result.get('video_id')==policy['targetVideoId'] and result.get('state')=='held' and result.get('error_class')=='sdk_stalled' and
+                 result.get('source_refusals')==[] and diag.get('schemaVersion')==1 and diag.get('errorKind')=='sdk_stalled' and
+                 all(counts.get(k)==requests for k in ('request','response','policy','protection')) and counts.get('observer_error')==0 and counts.get('reload')==0 and
+                 latest.get('protection',{}).get('status')==2 and latest.get('response',{}).get('status')==200 and
+                 request.get('selectedAudioMatches') is True and request.get('selectedAudioCount')==1 and request.get('selectedVideoCount')==0 and
+                 request.get('playerTimeMs')==state['media_end_ms'] and request.get('bufferedDurationMs')==state['media_end_ms'] and request.get('bufferedStartMs')==0 and
+                 latest.get('track',{}).get('endOfStream') is False,'pilot_parent_diagnostic')
+            evidence=snapshot(policy.get('normalPlaybackEvidence'));statement=evidence.get('statement')
+            need(set(evidence)=={'schema_version','basis','video_id','plays_beyond_seconds','approvedByResourceOwner','statement'} and
+                 evidence['schema_version']==1 and evidence['basis']=='user_reported_normal_chrome_playback' and evidence['video_id']==policy['targetVideoId'] and
+                 type(evidence['plays_beyond_seconds']) is int and evidence['plays_beyond_seconds']==90 and evidence['approvedByResourceOwner'] is True and
+                 isinstance(statement,dict) and set(statement)=={'path','sha256'},'pilot_normal_playback_evidence')
+            statement_path=proven(statement['path'],statement['sha256']);need(0<statement_path.stat().st_size<=16_384,'pilot_user_statement_bound')
+            ancestor=self.followup_parent(previous);checked.extend(self._parent_cache[1])
+            need(state.get('diagnostic_parent_job_id')==attempt.get('parent_job_id')==ancestor['job_id'] and
+                 state.get('diagnostic_lineage_sha256')==attempt.get('lineage_sha256')==pilot_lineage_hash(old) and
+                 attempt.get('parent_attempt_sha256')==old['parent']['attemptSha256'] and state['binding_sha256']==ancestor['binding_sha256'],'pilot_parent_lineage')
+            ancestors.extend(ancestor['_ancestor_job_ids'])
+        state={**state,'_ancestor_job_ids':ancestors};self._parent_cache=(key,checked,state);return state
 
     def pilot_policy(self,lease,context):
         policy=lease.get('pilotPolicy')
         if not policy or not context:return False
-        need(policy.get('kind') in {'accepted_chrome_sabr_single_fullfile_v1','accepted_chrome_sabr_diagnostic_followup_v2'} and policy.get('approvedByResourceOwner') is True,'pilot_policy')
+        need(policy.get('kind') in {PILOT_V1,*FOLLOWUP_KINDS} and policy.get('approvedByResourceOwner') is True,'pilot_policy')
         need(lease['max_workers']==1 and policy.get('maxAttempts')==1 and type(policy['maxAttempts']) is int,'pilot_single_attempt')
         need(policy.get('targetVideoId')=='EliqxbbQoRw' and policy.get('transportKind')=='sabr_reassembled' and
              policy.get('acceptedContext') in {'normal_user_chrome','automated_dedicated_chromium'},'pilot_scope')
@@ -244,7 +282,7 @@ class Coordinator:
             need(isinstance(pin,dict) and set(pin)=={'path','sha256'},'pilot_code_pin')
             path=Path(pin['path']).resolve();need(any(path.is_relative_to(root) for root in self.roots),'pilot_code_unaccounted')
             need(path.is_file() and digest(path)['sha256']==pin['sha256'],'pilot_code_changed')
-        parent=self.followup_parent(lease) if policy['kind']=='accepted_chrome_sabr_diagnostic_followup_v2' else None
+        parent=self.followup_parent(lease) if policy['kind'] in FOLLOWUP_KINDS else None
         if parent:need(binding_hash(selected)==parent['binding_sha256'],'pilot_parent_binding')
         attempt=self.pilot_attempt_path(lease)
         if attempt.exists():
@@ -252,7 +290,7 @@ class Coordinator:
             need(context.get('job_id')==spent.get('job_id') and spent.get('lease_id')==self.lease_id and
                  spent.get('source_binding_sha256')==binding_hash(selected),'pilot_attempt_spent')
             if parent:need(spent.get('parent_attempt_sha256')==policy['parent']['attemptSha256'] and
-                           spent.get('lineage_sha256')==hashlib.sha256(raw_json(policy['parent'])).hexdigest(),'pilot_parent_changed')
+                           spent.get('lineage_sha256')==pilot_lineage_hash(policy),'pilot_parent_changed')
         else:
             need(context.get('job_id') is None and policy.get('bindFirstValidatedHash') is True,'pilot_binding_unproven')
         return policy
@@ -324,8 +362,8 @@ class Coordinator:
             need(type(maximum) is int and maximum>0,'output_budget_required')
             context={'binding':selected,'output_budget_bytes':maximum,'job_id':None}
             self.guard(source=True,context=context)
-            parent=self.followup_parent(lease) if lease.get('pilotPolicy',{}).get('kind')=='accepted_chrome_sabr_diagnostic_followup_v2' else None
-            active=[s for s in states if s['state']!='deleted' and (not parent or s['job_id']!=parent['job_id'])]
+            parent=self.followup_parent(lease) if lease.get('pilotPolicy',{}).get('kind') in FOLLOWUP_KINDS else None
+            active=[s for s in states if s['state']!='deleted' and (not parent or s['job_id'] not in parent['_ancestor_job_ids'])]
             need(not any(s['video_id']==video for s in active),'source_already_leased')
             need(len(active)<lease['max_workers'],'worker_slots_full')
             self.inventory(maximum+CONTROL_RESERVE,force=True)
@@ -333,12 +371,12 @@ class Coordinator:
             except (ValueError,TypeError,KeyError):raise SinkError('metadata_video_id') from None
             need(meta.get('source',{}).get('video_id')==video,'metadata_video_id')
             need(len(raw_json(meta))<=MAX_CONTROL//2,'metadata_too_large')
-            lineage=hashlib.sha256(raw_json(lease['pilotPolicy']['parent'])).hexdigest() if parent else None
+            lineage=pilot_lineage_hash(lease['pilotPolicy']) if parent else None
             ident='native-'+(hashlib.sha256((binding_hash(selected)+lineage).encode()).hexdigest() if parent else binding_hash(selected))[:24];folder=self.spool/'jobs'/ident
             need(not folder.exists(),'existing_job_requires_resume')
             if lease.get('pilotPolicy'):
                 attempt_path=self.pilot_attempt_path(lease);need(not attempt_path.exists(),'pilot_attempt_spent')
-                spent={'schema_version':2 if parent else 1,'lease_id':self.lease_id,'job_id':ident,
+                spent={'schema_version':3 if lease['pilotPolicy']['kind']==PILOT_V3 else 2 if parent else 1,'lease_id':self.lease_id,'job_id':ident,
                     'video_id':video,'source_binding_sha256':binding_hash(selected),'attempts_spent':1,'source_requests':0,
                     'spent_at_epoch':time.time(),'canonical_cooldown_preserved':True}
                 if parent:spent.update(parent_job_id=parent['job_id'],parent_attempt_sha256=lease['pilotPolicy']['parent']['attemptSha256'],lineage_sha256=lineage)
@@ -354,6 +392,9 @@ class Coordinator:
                 state['acquisition_provenance']={'context_kind':lease['pilotPolicy']['acceptedContext'],
                     'basis':'resource_owner_lease_policy','pilot_policy_kind':lease['pilotPolicy']['kind'],'native_lease_id':self.lease_id}
             if parent:state.update(diagnostic_parent_job_id=parent['job_id'],diagnostic_lineage_sha256=lineage)
+            if lease.get('pilotPolicy',{}).get('kind')==PILOT_V3:
+                state['acquisition_provenance'].update(normal_playback_basis='user_reported_normal_chrome_playback',
+                    normal_playback_evidence_sha256=lease['pilotPolicy']['normalPlaybackEvidence']['sha256'],normal_playback_observed_by_collector=False)
             folder.mkdir(parents=True);(folder/'audio.part').touch();atomic(folder/'metadata.pending.json',meta);atomic(folder/'state.json',state)
             sink=Sink(self,ident);self.live[ident]=sink;return sink
 

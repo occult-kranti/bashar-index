@@ -138,6 +138,32 @@ request playhead/buffer progress, policy/seek/reload and format events; HTTP 200
 is not itself classified as successful protocol acceptance. This follow-up does
 not authorize a general retry loop or parallel batch collection.
 
+### One change to the normal Chrome context
+
+`accepted_normal_chrome_context_followup_v3` is restricted to the proven
+automated-v2-to-normal-Chrome transition, with one attempt and
+`maxContextFollowups=1`. It keeps the same target, full format, queue,
+destination and reviewed v2 SDK/observer/adapter hashes. The parent additionally
+requires `diagnosticSnapshot: {path,sha256}` proving the observed SDK stall,
+pending protection and correct playhead/format. Both earlier lineage chains
+are rechecked and counted in storage; neither is modified or resumed.
+
+`normalPlaybackEvidence: {path,sha256}` binds the owner's existing playback
+report and its exact private statement. It is explicitly typed
+`user_reported_normal_chrome_playback`, never collector-observed continuous
+playback. The media provenance contains the evidence hash and basis, not the
+statement or local paths. The fixed new spend receipt is
+`sync/native_context_normal_chrome_attempt_v3.json`; replay or another lineage
+is rejected. The live source identity/permission guard still runs at activation.
+
+The owned status page offers read-only **Check target tab**, idle-only
+**Reload helper**, and **Start admitted native trial**. Start repeats the exact
+single-target and actual granted-host-permission checks, then pairs with the
+receiver before injecting the unchanged native runtime. Only messages from
+this extension's exact status page can invoke these controls. The validated
+protocol report is available for scoped UI automation without CDP, exported
+profiles or cookies. The controls do not auto-start source work.
+
 ## Transport identity and completion
 
 The adapter identity has exactly `videoId`, `itag`, `lastModified`, `xtags`,
