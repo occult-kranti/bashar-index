@@ -174,7 +174,9 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       }
       if (state === 'cooldown' && data.operation.retry_after) explanations.cooldown += ' Next attempt after ' + date(data.operation.retry_after) + '.';
       if (state === 'paused' && data.operation.cooldown_provider === 'youtube' && data.operation.retry_after) explanations.paused += ' The recorded source retry window ends ' + date(data.operation.retry_after) + '; this does not resume collection automatically.';
-      put('cc-current-state', labels[state]); put('cc-current-explanation', explanations[state]);
+      const supportedNative = Number.isFinite(data.counts.supported_native_verified_videos) ? data.counts.supported_native_verified_videos : 0;
+      put('cc-current-state', supportedNative > 0 ? 'Native route verified' : labels[state]);
+      put('cc-current-explanation', supportedNative > 0 ? number(supportedNative) + ' complete native-format recording(s) from the browser-assisted route have paired metadata verified on Drive. Source quality notes and publisher coverage are shown below.' : explanations[state]);
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.audio_archived_videos ?? data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
@@ -202,13 +204,25 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         if (Number.isFinite(data.counts.publisher_transcript_target_videos)) publisherSummary += number(data.counts.publisher_transcript_target_videos) + ' have publisher transcripts; ';
         publisherSummary += number(data.counts.publisher_audio_variant_target_videos) + ' have publisher podcast audio variants. ';
         if (data.counts.publisher_audio_qualified_variant_target_videos > 0) publisherSummary += number(data.counts.publisher_audio_qualified_variant_target_videos) + ' source associations remain qualified. ';
-        if (Number.isFinite(data.counts.publisher_variant_asr_target_videos)) publisherSummary += number(data.counts.publisher_variant_asr_target_videos) + ' publisher editions have ASR verified on Drive. ';
+        if (Number.isFinite(data.counts.publisher_variant_asr_target_videos)) publisherSummary += number(data.counts.publisher_variant_asr_target_videos) + ' podcast editions have ASR verified on Drive. ';
+        if (Number.isFinite(data.counts.publisher_mirror_asr_target_videos)) publisherSummary += number(data.counts.publisher_mirror_asr_target_videos) + ' mirror editions have ASR or original/English translation bundles verified on Drive. ';
         put('cc-publisher-summary', publisherSummary + 'Publisher transcripts can be untimed and editions can differ from YouTube; native-audio progress is shown above.');
+      }
+      if (data.browser_support?.state === 'verified_local') {
+        put('cc-browser-summary', 'Project Chromium: ' + data.browser_support.name + ' ' + data.browser_support.version + ' installed. Local filtering and downloader coexistence passed ' + date(data.browser_support.tested_at) + '. Full-file source transfer has separate acceptance checks.');
+      }
+      if (Number.isFinite(data.counts.publisher_mirror_audio_target_videos) && Number.isFinite(data.counts.publisher_mirror_caption_target_videos)) {
+        put('cc-mirror-audio', number(data.counts.publisher_mirror_audio_target_videos));
+        put('cc-mirror-captions', number(data.counts.publisher_mirror_caption_target_videos));
+        const mirrors = document.getElementById('cc-mirrors'); if (mirrors) mirrors.hidden = false;
+        if (Number.isFinite(data.counts.source_audio_available_target_videos)) {
+          put('cc-source-coverage', number(data.counts.source_audio_available_target_videos) + ' latest-20 entries have verified audio from at least one source; ' + number(data.counts.source_audio_with_text_target_videos) + ' have a verified audio edition with saved text. Counts deduplicate entries across native and publisher sources; publisher edits may differ.');
+        }
       }
       const used = data.storage.managed_bytes ?? data.storage.local_bytes;
       const cap = data.storage.managed_ceiling_bytes ?? data.storage.ceiling_bytes;
       put('cc-local-storage', (used / 1e9).toFixed(2) + ' / ' + number(cap / 1e9) + ' GB' + (Number.isFinite(data.storage.managed_bytes) ? ' including tools and models' : ''));
-      const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;
+      const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = supportedNative > 0 ? 'verified' : state;
       const fill = document.getElementById('cc-storage-meter');
       if (fill) { fill.max = cap; fill.value = used; }
       const holder = document.getElementById('cc-stages');

@@ -4,7 +4,7 @@ This repository contains **three related research projects with separate dataset
 
 **Start here:** [all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [branch inventory and history](BRANCHES.md) · [collection handoff](et-channelers/HANDOFF.md) · [future transcription/analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md).
 
-Repository guide checkpoint: **17 November 2026, 11:17 UTC**. Integration baseline is [`aa9a367`](https://github.com/occult-kranti/bashar-index/commit/aa9a367ecc9201110bcfb7a5342119d858be408b), including merged [PR #34](https://github.com/occult-kranti/bashar-index/pull/34). CI ran 1,098 Python tests with 42 skips and all 86 Node tests passed; Pages deployed successfully. Earlier work branches are retained. Current work on `feat/held-audio-language-review` examines unresolved archived audio and adds a bounded interval-language review, separately from full transcription. Native browser recovery remains unproved; [BRANCHES.md](BRANCHES.md) preserves integration history. **Contained CUDA transcription has produced 28 Drive-verified full-recording bundles:** 26 English recordings plus Spanish and Japanese originals with separate English translations. Separate gap/audio reviews do not increase that count. Accuracy remains unreviewed. Both models are pinned in one isolated environment; embeddings and scientific corpus analysis remain deferred. The latest resource/source state is at the top of [HANDOFF](et-channelers/HANDOFF.md).
+Repository guide checkpoint: **17 November 2026, 18:49 UTC**. Integration baseline is merged [PR #35](https://github.com/occult-kranti/bashar-index/pull/35), `e9a5a06`: 1,139 Python tests with 45 skips, 86 Node tests passed and Pages deployed. Its branch `feat/held-audio-language-review` is retained. Current work on `feat/chromium-adblock-support` adds tested browser support, bounded publisher batches and separate publisher-source ASR. **Native audio/metadata pairs are now 48**, including a complete browser-assisted native download with a retained codec warning and verified English ASR. **Twenty-eight publisher editions** have English captions or ASR/translation on Drive. Deduplicated latest-20 coverage is **76 audio entries, 74 with a verified audio edition and saved text**. Canonical native-source ASR is **29**: 27 English recordings plus Spanish and Japanese originals with separate English translations. Accuracy remains unreviewed. Both models are pinned in one isolated environment; scientific corpus analysis remains deferred. [HANDOFF](et-channelers/HANDOFF.md) records the active goal and next native batch.
 
 ## The three research lanes
 
@@ -47,16 +47,19 @@ The [dated collection snapshot](et-channelers/plan/ingestion_status.json) report
 |---|---:|
 | Tracked channels / indexed unique video IDs | 74 / 67,594 |
 | Newest-20 / inclusive newest-50 / remainder | 1,420 / 3,449 / 64,145 |
-| Audio/metadata pairs verified on Drive | 47 |
+| Audio/metadata pairs verified on Drive | 48 |
 | Verified English caption bundles | 20 |
 | Videos with complete verified caption inventories | 15 |
-| Archived audio items with verified text available | 45; 28 ASR plus 17 with English captions, no overlap |
-| Text-inventory completion / saved-caption review / no saved text | 43 / 2 / 2 |
-| ASR videos verified on Drive | 28; about 10.4 audio hours, accuracy unreviewed |
+| Archived native audio items with verified text available | 46; 29 ASR plus 17 with English captions, no overlap |
+| Text-inventory completion / saved-caption review / no saved text | 44 / 2 / 2 |
+| Native-source ASR videos verified on Drive | 29; about 10.8 audio hours, accuracy unreviewed |
 | Additional latest-20 publisher-written companions | 16; author-written source material, not verified spoken transcripts |
 | Additional exact-ID publisher transcripts | 1; untimed, spoken coverage unverified |
 | Additional publisher podcast audio editions | 2; source/edition association retained separately from native audio |
+| Additional publisher mirror audio / English captions | 28 / 17; source editions and YouTube edit equivalence retained separately |
+| Mirror-edition ASR/translation sources verified on Drive | 11; ten English editions plus German original and separate English translation |
 | Publisher-edition ASR verified on Drive | 2; about 2.6 audio hours, accuracy and YouTube edit equivalence unreviewed |
+| Deduplicated latest-20 audio / audio with saved text | 76 / 75; canonical and publisher source overlaps counted once |
 | Scientific corpus-analysis jobs | 0 |
 
 These are the new local YouTube lane's counts, not totals for older podcasts, archive.org sessions, publisher texts or the Atlas. Its snapshot records a source cooldown; a one-file recovery does not establish universal access or ongoing successful downloading. Audio, caption and Drive endpoint deadlines remain separate. Use the [Windows/rclone operating guide](et-channelers/pipeline/WINDOWS_DRIVE.md), [caption methods](et-channelers/pipeline/YOUTUBE_CAPTIONS_RESEARCH.md) and [archive catalog guide](et-channelers/pipeline/ARCHIVE_CATALOG.md) for controls and recovery. Their older dated examples retain their original queue counts.
@@ -66,6 +69,8 @@ The allowance is **20 decimal GB local total, with 2 GB left unused**. The activ
 The [leased CUDA worker](et-channelers/pipeline/GPU_ASR_SETUP.md) uses exact audio/model/environment proofs, versioned bundles and proof-before-release input leases. English transcripts and original-language/English translation views remain distinct from publisher captions. Automated transcription accuracy is unreviewed; successful storage verification does not establish accuracy. The old transcriber is retained code, not the current launch path. The [disabled scientific analysis plan](et-channelers/research/analysis-plan-2026-11-16/implementation-plan.json) and [illustrative search lexicon](et-channelers/research/analysis-plan-2026-11-16/search-lexicon.json) remain planning artifacts. Their separate 6-development/18-held-out ASR calibration study has not been executed by the acquisition batches.
 
 The [Chrome helper](et-channelers/browser_capture_extension/README.md) has an experimental native SABR downloader. Earlier automated trials transferred 1,133,713 bytes / 69.892 seconds, then stalled with protection pending. The repaired acceptance gate requires SPS1 from a complete matching ordinary-player response. Its actual isolated-browser trial received SPS3 and stopped before native BEGIN; no new audio or completed source attempt was created. Both earlier partials remain retained. **Real-time capture remains parked.** Native batch dispatch still requires one complete locally validated and Drive-verified file; the source window ends November 18 at 07:31:07 UTC. See [the transport investigation](et-channelers/research/native-audio-investigation-2026-11-17.md).
+
+The official [uBlock Origin Lite installer and isolated Chromium factory](et-channelers/pipeline/BROWSER_ADBLOCK.md) passed a controlled local filtering/coexistence test. [Publisher recovery](et-channelers/research/publisher-mirrors-2026-11-17.md) now covers 17 Magenta Pixie, ten Athina and one Pavlina edition. Their captions and ASR remain source-specific. The [native transport panel](et-channelers/research/native-transport-panel-2026-11-17/README.md) delivered one complete native YouTube file plus English ASR. A broader pilot is being repaired after local profile cleanup stopped it; no media source refusal was recorded in that pilot. Managed storage includes the task-owned Playwright cache: the six-root 18:49 UTC checkpoint was **7.93 GB**, below the 16 GB managed ceiling.
 
 The [caption-gap review](et-channelers/research/caption-gap-review-2026-11-17.md) reuses verified Drive audio and existing English captions. It decoded once per reviewed run while retaining only gap windows, then used 32.459 seconds of CUDA ASR input for a 75-minute source. Three of five candidate words already match adjacent captions; two remain unresolved. No missing words, full coverage or new completed transcript are claimed. The [reproducible worker and execution contract](et-channelers/pipeline/CAPTION_GAP_REVIEW.md) preserve original caption alternatives and separate unreviewed evidence.
 

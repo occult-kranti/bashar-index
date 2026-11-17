@@ -31,6 +31,7 @@ import concurrent.futures as cf
 import contextlib
 import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -55,6 +56,7 @@ JOURNAL_RESERVE = 64 * 1024 * 1024
 METADATA_HEADROOM = 4 * 1024 * 1024
 CHUNK = 1024 * 1024
 NATIVE_EXTENSIONS = {"webm", "m4a", "opus", "ogg"}
+MAX_SOURCE_AVAILABILITY_WAIT = 30.0
 _JOURNAL_LOCK = threading.Lock()
 _ROOT_BUDGETS = {}  # writes to registered run roots also admit journal bytes
 _DRIVE_CALLS = threading.BoundedSemaphore(2)
@@ -100,9 +102,10 @@ def control_file(path, encoded, atomic=False):
 class IngestError(RuntimeError):
     """Only safe, nonsensitive messages are carried into the journal/log."""
 
-    def __init__(self, kind, message):
+    def __init__(self, kind, message, *, retry_not_before_epoch=None):
         super().__init__(message)
         self.kind = kind
+        self.retry_not_before_epoch = retry_not_before_epoch
 
 
 class StopControl:
@@ -516,6 +519,42 @@ class MediaRedirect(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
+def source_available_at(info):
+    """Use the same selected-format scope as yt-dlp's FileDownloader.download.
+
+    Extraction with download=False does not execute its mandatory site wait.
+    Do not inspect unselected entries in info['formats'] or request ad bypass.
+    """
+    formats = info.get("requested_formats") or [info]
+    if not isinstance(formats, list) or not formats or any(not isinstance(f, dict) for f in formats):
+        raise IngestError("source_availability_invalid", "Selected audio availability metadata is invalid")
+    values = []
+    for selected in formats:
+        value = selected.get("available_at")
+        if value is None:
+            value = 0
+        if type(value) not in (int, float) or not 0 <= value <= 253402300799 or not math.isfinite(value):
+            raise IngestError("source_availability_invalid", "Selected audio availability metadata is invalid")
+        values.append(value)
+    return max(values)
+
+
+def wait_for_source_availability(info, stop):
+    deadline = source_available_at(info)
+    started = time.monotonic()
+    while True:
+        if stop.is_set():
+            raise IngestError("stopped", "Run stopped before audio became available")
+        remaining = deadline - time.time()
+        if remaining <= 0:
+            return deadline
+        allowance = MAX_SOURCE_AVAILABILITY_WAIT - (time.monotonic() - started)
+        if remaining > MAX_SOURCE_AVAILABILITY_WAIT or allowance <= 0:
+            raise IngestError("source_not_ready", "Selected audio is not yet available; item deferred without a media request",
+                              retry_not_before_epoch=deadline)
+        stop.wait(min(0.25, remaining, allowance))
+
+
 def stream_audio(info, part, budget, rate_bytes, stop, http_chunk_bytes=0):
     """Write admitted chunks; optional HTTP ranges require exact offsets/totals.
 
@@ -523,14 +562,17 @@ def stream_audio(info, part, budget, rate_bytes, stop, http_chunk_bytes=0):
     range may fall back to a complete response; later ranges must return 206.
     There are no retries, alternate clients, cookies, or proxy connections.
     """
+    total = int(info["filesize"]) if info.get("filesize") else None
+    if total is not None and (total <= 0 or total > budget.file_cap):
+        raise IngestError("deferred_storage", "Selected audio length exceeds the available buffer; retained in queue")
+    wait_for_source_availability(info, stop)
+    if total is not None:
+        budget.admit_size(part, total)  # recheck reservation/free space after a site wait, before GET
     headers = {key: value for key, value in (info.get("http_headers") or {}).items()
                if key.lower() in {"user-agent", "accept", "accept-language", "origin", "referer"}}
     opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), MediaRedirect())
     started, downloaded = time.monotonic(), 0
     reported = started
-    total = int(info["filesize"]) if info.get("filesize") else None
-    if total is not None and (total <= 0 or total > budget.file_cap):
-        raise IngestError("deferred_storage", "Selected audio length exceeds the available buffer; retained in queue")
     md5, sha256 = hashlib.md5(), hashlib.sha256()
     validator = None
     try:
@@ -1276,6 +1318,11 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
     collect_metadata = getattr(args, "collect_metadata", True)
     captions = None
     try:
+        if prior and prior.get("error_class") == "source_not_ready":
+            available = source_available_at({"available_at": prior.get("availability_retry_not_before_epoch")})
+            if available > time.time():
+                raise IngestError("source_not_ready", "Selected audio availability deadline has not elapsed; no source request made",
+                                  retry_not_before_epoch=available)
         if (getattr(args, "collect_captions", False) and prior and prior.get("status") == "deleted"
                 and prior.get("metadata", {}).get("drive_id")):
             captions = prepare_captions(args, row, rec, budget, limiter, stop)
@@ -1348,6 +1395,8 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
                        youtube_client=getattr(args, "youtube_client", "default"),
                        browser_audio=bool(getattr(args, "browser_audio", False)),
                        target="native audio; no re-encode", title=row.get("title", ""))
+            rec["selected_audio_available_at_epoch"] = source_available_at(info)
+            rec.pop("availability_retry_not_before_epoch", None)
             journal(state_path, rec)
             rec["download_started_at"] = utc_now()
             download_started = time.monotonic()
@@ -1397,7 +1446,7 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
         return "deleted"
     except IngestError as exc:
         # Preserve completion evidence alongside an upload failure for restart.
-        outcome = {"deferred_storage": "deferred_storage", "live": "deferred_live",
+        outcome = {"deferred_storage": "deferred_storage", "live": "deferred_live", "source_not_ready": "deferred_availability",
                    "no_formats": "deferred_format", "stopped": "paused"}.get(exc.kind, "error")
         if exc.kind == "unavailable" and not rec.get("sha256") and not rec.get("metadata"):
             outcome = "unavailable"
@@ -1405,8 +1454,11 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
         if exc.kind in HARD_BLOCKS:
             rec["source_error_class"] = exc.kind
             rec["retry_not_before_epoch"] = time.time() + 86400
+        if exc.kind == "source_not_ready":
+            # Per-item availability is not the shared source-refusal cooldown.
+            rec["availability_retry_not_before_epoch"] = exc.retry_not_before_epoch
         journal(state_path, rec)
-        if exc.kind not in {"unavailable", "login_required", "deferred_storage", "live", "unsupported_format", "no_formats"}:
+        if exc.kind not in {"unavailable", "login_required", "deferred_storage", "live", "unsupported_format", "no_formats", "source_not_ready"}:
             stop.set()  # One block or Drive fault stops new work immediately.
         print(f"{row['video_id']}: {exc.kind}: {exc}", file=sys.stderr, flush=True)
         return IngestResult(row, rec, status=outcome) if stage_only else outcome

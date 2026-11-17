@@ -67,6 +67,13 @@ def publisher_language(metadata,archive,external=None,external_sha=None):
 
 def prepare_job(item):
     document=read(item['archive_receipt_path']);archive=document['variant'] if item.get('receipt_selector')=='variant' else document
+    if archive.get('kind') in {'qualified_publisher_mirror_audio_variant','publisher_mirror_audio_variant'}:
+        if __package__:
+            from .publisher_mirror_asr import prepare_mirror_job
+        else:
+            from publisher_mirror_asr import prepare_mirror_job
+        need(not item.get('receipt_selector'),'mirror_receipt_selector')
+        return prepare_mirror_job(item,archive)
     need(archive.get('status')=='verified' and archive.get('native_youtube_bytes') is False and archive.get('artifact_kind') in ARTIFACTS,'variant_archive')
     audio,provenance=proof(archive['audio']),proof(archive['provenance'])
     need('/PublisherVariants/'+audio['sha256']+'/' in audio['remote'] and provenance['remote'].rpartition('/')[0]==audio['remote'].rpartition('/')[0],'variant_remote_identity')

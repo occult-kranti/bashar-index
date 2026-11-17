@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-17T11:14:36Z",
+  "generated_at": "2026-11-17T19:13:22Z",
   "scope": "local_youtube_collection",
   "operation": {
     "state": "paused",
@@ -14,15 +14,16 @@
     "caption_retry_after": "2026-11-17T23:20:02Z"
   },
   "counts": {
-    "verified_pairs": 47,
-    "audio_downloaded": 47,
+    "verified_pairs": 48,
+    "audio_downloaded": 48,
+    "supported_native_verified_videos": 1,
     "browser_recorded_videos": 0,
-    "audio_archived_videos": 47,
-    "asr_verified_videos": 28,
-    "text_artifact_videos": 43,
+    "audio_archived_videos": 48,
+    "asr_verified_videos": 29,
+    "text_artifact_videos": 44,
     "text_pending_videos": 4,
-    "text_available_videos": 45,
-    "text_inventory_complete_videos": 43,
+    "text_available_videos": 46,
+    "text_inventory_complete_videos": 44,
     "text_missing_videos": 2,
     "caption_text_available_videos": 17,
     "caption_inventory_review_videos": 2,
@@ -31,10 +32,15 @@
     "publisher_audio_variant_target_videos": 2,
     "publisher_audio_qualified_variant_target_videos": 1,
     "publisher_variant_asr_target_videos": 2,
+    "publisher_mirror_audio_target_videos": 28,
+    "publisher_mirror_caption_target_videos": 17,
+    "publisher_mirror_asr_target_videos": 11,
+    "source_audio_available_target_videos": 76,
+    "source_audio_with_text_target_videos": 74,
     "caption_verified_videos": 15,
     "caption_verified_tracks": 20,
     "caption_none_english": 1,
-    "caption_pending_videos": 31,
+    "caption_pending_videos": 32,
     "unavailable": 0,
     "awaiting_upload": 0,
     "channels": 74,
@@ -42,17 +48,28 @@
     "final_round_indexed": 64145
   },
   "storage": {
-    "local_bytes": 5124508337,
+    "local_bytes": 5150931013,
     "ceiling_bytes": 17000000000,
-    "managed_bytes": 7114060424,
+    "managed_bytes": 7932965395,
     "managed_ceiling_bytes": 16000000000
+  },
+  "browser_support": {
+    "state": "verified_local",
+    "name": "uBlock Origin Lite",
+    "version": "2026.1116.1650",
+    "browser_version": "151.0.7922.34",
+    "mode": "optimal",
+    "tested_at": "2026-11-17T15:34:01Z",
+    "local_filtering_verified": true,
+    "downloader_coexistence_verified": true,
+    "source_acceptance_verified": false
   },
   "stages": [
     {
       "key": "newest20",
       "label": "Newest 20",
       "total": 1420,
-      "verified": 47,
+      "verified": 48,
       "unavailable": 0,
       "state": "in_progress"
     },
@@ -60,7 +77,7 @@
       "key": "newest50",
       "label": "Extend to 50",
       "total": 3449,
-      "verified": 47,
+      "verified": 48,
       "unavailable": 0,
       "state": "waiting"
     },

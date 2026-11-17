@@ -120,6 +120,7 @@
 .cc-current h2,.cc-archive-intro h2 { margin:6px 0 0; font:400 30px/1.2 var(--font-anthropic-serif); letter-spacing:-.02em; }
 .cc-operation { flex:none; border:1px solid var(--color-border-line); padding:6px 10px; font-size:12px; font-weight:600; border-radius:3px; }
 .cc-operation[data-state="cooldown"] { color:var(--color-warn); background:color-mix(in srgb,var(--color-warn) 8%,var(--color-panel)); border-color:color-mix(in srgb,var(--color-warn) 35%,var(--color-border-line)); }
+.cc-operation[data-state="verified"] { color:var(--color-ok); border-color:var(--color-ok); }
 .cc-current-explanation { margin:14px 0 24px; color:var(--color-fg-muted); font-size:14px; max-width:76ch; }
 .cc-current-metrics { display:grid; grid-template-columns:1.5fr repeat(3,1fr); padding:4px 0 26px; gap:18px; }
 .cc-current-metrics>div { min-width:0; border-inline-start:1px solid var(--color-border-line); padding-inline-start:18px; }
@@ -127,6 +128,14 @@
 .cc-metric-number { display:block; color:var(--color-fg); font:400 clamp(28px,3vw,40px)/1.15 var(--font-anthropic-serif); font-variant-numeric:tabular-nums; letter-spacing:-.025em; }
 .cc-primary-metric .cc-metric-number { color:var(--color-ok); }
 .cc-metric-label { display:block; font-size:12px; color:var(--color-fg-muted); max-width:22ch; margin-top:8px; }
+.cc-mirrors { display:grid; grid-template-columns:minmax(0,1.4fr) minmax(0,1fr); gap:24px; padding:20px 0; margin-bottom:24px; border-block:1px solid var(--color-border-line); }
+.cc-mirrors[hidden] { display:none; }
+.cc-mirrors h3 { margin:0 0 6px; font-size:15px; font-weight:650; }
+.cc-mirrors p { margin:0; max-width:58ch; color:var(--color-fg-muted); font-size:12px; line-height:1.6; }
+.cc-mirrors dl { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; margin:0; }
+.cc-mirrors dt { color:var(--color-fg-muted); font-size:12px; line-height:1.5; }
+.cc-mirrors dd { margin:4px 0 0; color:var(--color-ok); font:400 30px/1.2 var(--font-anthropic-serif); font-variant-numeric:tabular-nums; }
+@media(max-width:600px) { .cc-mirrors { grid-template-columns:1fr; gap:16px; } }
 .cc-stages { list-style:none; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; padding:0; margin:0; border-block:1px solid var(--color-border-line); }
 .cc-stage { padding:20px 18px; border-inline-start:1px solid var(--color-border-line); min-width:0; }
 .cc-stage:first-child { padding-inline-start:0; border:0; }
@@ -198,11 +207,17 @@
           <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label">Channels in this pass</span></div>
           <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label">Items in the full index</span></div>
         </div>
+        <section class="cc-mirrors" id="cc-mirrors" aria-labelledby="cc-mirrors-heading" hidden>
+          <div><h3 id="cc-mirrors-heading">Publisher mirrors on Drive</h3><p>Complete publisher audio linked to latest-20 entries by video references or matched by owner, title, date and duration. YouTube edit equivalence remains unverified. <a href="../../research/chromium-adblock-2026-11-17.md">Source evidence</a>.</p></div>
+          <dl><div><dt>Latest-20 entries with audio</dt><dd id="cc-mirror-audio">&mdash;</dd></div><div><dt>With English timed captions</dt><dd id="cc-mirror-captions">&mdash;</dd></div></dl>
+        </section>
+        <p class="cc-current-explanation" id="cc-source-coverage">Source coverage counts are calculated from verified archive receipts.</p>
         <p class="cc-current-explanation" id="cc-captions-summary">English published and automatic captions are collected when available.</p>
         <p class="cc-current-explanation" id="cc-asr-summary">Generated speech-to-text is saved separately from source captions.</p>
         <p class="cc-current-explanation"><span id="cc-publisher-summary">Publisher-written companions and podcast editions are archived with their own source labels.</span> <a href="../../research/publisher-companions-2026-11-17.md">Publisher source details</a>.</p>
+        <p class="cc-current-explanation"><span id="cc-browser-summary">Project Chromium browser support is recorded separately from download completion.</span> <a href="../../research/chromium-adblock-2026-11-17.md">Browser test evidence</a>.</p>
         <p class="cc-current-explanation"><b>Caption review &middot; 17 November, 08:57 UTC:</b> a targeted GPU review produced five word estimates: three already match nearby captions and two remain unresolved. Original caption versions are preserved. <a href="../../research/caption-gap-review-2026-11-17.md">Review evidence and limits</a>.</p>
-        <p class="cc-current-explanation"><b>Native transfer test &middot; 17 November, 07:35 UTC:</b> the repaired observer detected a source rejection and stopped before downloading. Both earlier 69.9-second partials are retained; no new recording is counted. The normal Chrome connection remains pending. <a href="../../research/native-audio-investigation-2026-11-17.md">Read the test evidence</a>.</p>
+        <p class="cc-current-explanation"><b>Native recovery &middot; 17 November:</b> a complete 26-minute original audio file and its metadata are verified on Drive. The source's single Opus decoder warning is retained in its quality record. <a href="../../research/native-transport-panel-2026-11-17/README.md">Read the transport panel and recovery evidence</a>.</p>
         <ol class="cc-stages" id="cc-stages" aria-label="Collection sequence"><li class="cc-stage">Loading the collection sequence&hellip;</li></ol>
         <div class="cc-current-foot"><div><span class="cc-storage-label">Project storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="17000000000" value="0" aria-label="Project storage used"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
         <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>

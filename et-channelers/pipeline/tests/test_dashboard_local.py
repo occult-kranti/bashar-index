@@ -1,6 +1,7 @@
 """Tests for dashboard_local.py (invented fragment, no network)."""
 import json
 import csv
+import hashlib
 import subprocess
 import sys
 import tempfile
@@ -43,6 +44,126 @@ class BuildTests(unittest.TestCase):
 
 
 class StatusExportTests(unittest.TestCase):
+    def test_verified_publisher_mirrors_and_captions_keep_separate_counts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'sync').mkdir()
+            (root / 'jobs').mkdir()
+            (root / 'jobs/queue_newest20.csv').write_text(
+                'video_id,channel_dir\n12345678901,PRIVATE-PERSON\n', encoding='utf-8')
+            parent = ingestion_status.DEFAULT_REMOTE + '/PRIVATE-PERSON/Videos/12345678901/PublisherVariants/' + 'a' * 64
+            def obj(path, digest='b' * 64):
+                return {'remote': path, 'bytes': 123, 'drive_id': 'PRIVATE-' + hashlib.sha256(path.encode()).hexdigest()[:16],
+                        'md5': 'c' * 32, 'sha256': digest}
+            record = {'schema_version': 1, 'kind': 'qualified_publisher_mirror_audio_variant', 'status': 'verified',
+                      'associated_youtube_id': '12345678901', 'channel_dir': 'PRIVATE-PERSON', 'variant_id': 'a' * 64,
+                      'association_method': 'publisher_owner_title_date_duration', 'native_youtube_bytes': False,
+                      'changes_native_audio_count': False, 'changes_native_asr_count': False,
+                      'changes_native_caption_count': False, 'exact_youtube_crossreference': False, 'human_verified': False,
+                      'audio': obj(parent + '/publisher-audio.aac', 'a' * 64),
+                      'provenance': obj(parent + '/provenance.json'),
+                      'caption_bundle': dict(obj(parent + '/Captions/' + 'b' * 64 + '/captions.zip'),
+                                             language='en', usable_timed_text=True)}
+            path = root / 'sync/publisher_mirror_manifest.jsonl'
+            def write():
+                path.write_text(json.dumps(record) + '\n' + json.dumps(record) + '\n{partial', encoding='utf-8')
+            write()
+            result = ingestion_status.snapshot(root)
+            self.assertEqual(result['counts']['publisher_mirror_audio_target_videos'], 1)
+            self.assertEqual(result['counts']['publisher_mirror_caption_target_videos'], 1)
+            self.assertEqual(result['counts']['source_audio_available_target_videos'], 1)
+            self.assertEqual(result['counts']['source_audio_with_text_target_videos'], 1)
+            for key in ('verified_pairs', 'audio_archived_videos', 'asr_verified_videos', 'text_available_videos'):
+                self.assertEqual(result['counts'][key], 0)
+            for private in ('PRIVATE', '12345678901', str(root)):
+                self.assertNotIn(private, json.dumps(result))
+            provenance_id = record['provenance']['drive_id']
+            record['provenance']['drive_id'] = record['audio']['drive_id']
+            write()
+            invalid_pair = ingestion_status.snapshot(root)['counts']
+            self.assertEqual(invalid_pair['publisher_mirror_audio_target_videos'], 0)
+            self.assertEqual(invalid_pair['publisher_mirror_caption_target_videos'], 0)
+            record['provenance']['drive_id'] = provenance_id
+            caption_id = record['caption_bundle']['drive_id']
+            for source_id in (record['audio']['drive_id'], provenance_id):
+                record['caption_bundle']['drive_id'] = source_id
+                write()
+                invalid_caption = ingestion_status.snapshot(root)['counts']
+                self.assertEqual(invalid_caption['publisher_mirror_audio_target_videos'], 1)
+                self.assertEqual(invalid_caption['publisher_mirror_caption_target_videos'], 0)
+                self.assertEqual(invalid_caption['source_audio_with_text_target_videos'], 0)
+            record['caption_bundle']['drive_id'] = caption_id
+            record['caption_bundles'] = [record.pop('caption_bundle')]
+            write()
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_mirror_caption_target_videos'], 1)
+            record['caption_bundles'][0]['language'] = 'ja'
+            write()
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_mirror_caption_target_videos'], 0)
+            generated = dict(obj(parent + '/ASR/trial/trial.zip'), schema_version=1, status='verified',
+                             artifact_kind='publisher_variant_asr', associated_youtube_id='12345678901',
+                             channel_dir='PRIVATE-PERSON', variant_id='a' * 64, run_id='trial',
+                             quality_state='unreviewed_asr', source_audio=dict(record['audio']),
+                             source_provenance=dict(record['provenance']), native_youtube_bytes=False,
+                             changes_native_audio_count=False, changes_native_asr_count=False)
+            asr_path = root / 'sync/publisher_variant_asr_manifest.jsonl'
+            asr_path.write_text(json.dumps(generated) + '\n', encoding='utf-8')
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_mirror_asr_target_videos'], 1)
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['source_audio_with_text_target_videos'], 1)
+            result_id = generated['drive_id']
+            for source_id in (record['audio']['drive_id'], provenance_id):
+                generated['drive_id'] = source_id
+                asr_path.write_text(json.dumps(generated) + '\n', encoding='utf-8')
+                invalid_asr = ingestion_status.snapshot(root)['counts']
+                self.assertEqual(invalid_asr['publisher_mirror_audio_target_videos'], 1)
+                self.assertEqual(invalid_asr['publisher_mirror_asr_target_videos'], 0)
+                self.assertEqual(invalid_asr['source_audio_with_text_target_videos'], 0)
+            generated['drive_id'] = result_id
+            generated['source_audio']['sha256'] = 'd' * 64
+            asr_path.write_text(json.dumps(generated) + '\n', encoding='utf-8')
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_mirror_asr_target_videos'], 0)
+            record.update(kind='publisher_mirror_audio_variant', association_method='publisher_rss_exact_youtube_id',
+                          exact_youtube_crossreference=True, original_youtube_link='https://youtu.be/12345678901')
+            write()
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_mirror_audio_target_videos'], 1)
+            record['original_youtube_link'] = 'https://youtu.be/DIFFERENTID'
+            write()
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_mirror_audio_target_videos'], 0)
+            record['original_youtube_link'] = 'https://youtu.be/12345678901'
+            record['provenance']['drive_id'] = ''
+            write()
+            self.assertEqual(ingestion_status.snapshot(root)['counts']['publisher_mirror_audio_target_videos'], 0)
+
+    def test_local_browser_proof_is_private_and_never_promotes_source_acceptance(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root / 'sync').mkdir()
+            proof = root / 'provisioning/adblock-v1/runs/example/audit-summary.json'
+            proof.parent.mkdir(parents=True)
+            content = b'{"private_fixture":"SECRET DETAILS"}'
+            proof.write_bytes(content)
+            record = {'schema_version': 1, 'status': 'verified_local', 'scope': 'project_isolated_chromium',
+                      'name': 'uBlock Origin Lite', 'version': '2026.1116.1650', 'browser_version': '151.0.7922.34',
+                      'mode': 'optimal', 'tested_at': '2026-11-17T15:34:01Z',
+                      'local_filtering_verified': True, 'downloader_coexistence_verified': True,
+                      'profiles_cleaned': True, 'source_acceptance_verified': True,
+                      'private_url': 'https://SECRET.invalid',
+                      'proof': {'path': proof.relative_to(root).as_posix(), 'bytes': len(content),
+                                'sha256': hashlib.sha256(content).hexdigest()}}
+            state = root / 'sync/browser_extensions_state.json'
+            state.write_text(json.dumps(record), encoding='utf-8')
+            result = ingestion_status.snapshot(root)
+            self.assertEqual(result['browser_support']['state'], 'verified_local')
+            self.assertFalse(result['browser_support']['source_acceptance_verified'])
+            self.assertEqual(result['counts']['verified_pairs'], 0)
+            for value in ('SECRET', str(root), 'https://', 'sha256', 'audit-summary'):
+                self.assertNotIn(value, json.dumps(result))
+            proof.write_bytes(content + b'changed')
+            self.assertEqual(ingestion_status.snapshot(root)['browser_support']['state'], 'not_verified')
+            proof.write_bytes(content)
+            record['proof']['path'] = str(Path(folder).parent / 'outside/audit-summary.json')
+            state.write_text(json.dumps(record), encoding='utf-8')
+            self.assertEqual(ingestion_status.snapshot(root)['browser_support']['state'], 'not_verified')
+
     def test_publisher_editions_require_complete_proofs_and_never_promote_native_progress(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

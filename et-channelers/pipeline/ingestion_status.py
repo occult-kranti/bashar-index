@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import csv
 import datetime as dt
+import hashlib
 import json
 import os
 import re
@@ -233,12 +234,155 @@ def publisher_coverage(root, targets, remote):
     return texts, transcripts, variants, qualified, variant_asr
 
 
+def browser_extension_status(root):
+    """A local compatibility receipt cannot establish live source acceptance."""
+    record = read_object(root / 'sync/browser_extensions_state.json')
+    if not record:
+        return {'state': 'not_recorded'}
+    invalid = {'state': 'not_verified'}
+    if (record.get('schema_version') != 1 or record.get('status') != 'verified_local' or
+            record.get('scope') != 'project_isolated_chromium' or record.get('name') != 'uBlock Origin Lite' or
+            not all(record.get(key) is True for key in
+                    ('local_filtering_verified', 'downloader_coexistence_verified', 'profiles_cleaned'))):
+        return invalid
+    for key in ('version', 'browser_version'):
+        if not isinstance(record.get(key), str) or not re.fullmatch(r'[0-9]{1,8}(?:\.[0-9]{1,8}){1,3}', record[key]):
+            return invalid
+    if not isinstance(record.get('mode'), str) or record['mode'] not in {'basic', 'optimal', 'complete'}:
+        return invalid
+    item = record.get('proof')
+    if (not isinstance(item, dict) or not isinstance(item.get('path'), str) or
+            type(item.get('bytes')) is not int or not 0 < item['bytes'] <= 65_536 or
+            not isinstance(item.get('sha256'), str) or not re.fullmatch('[0-9a-f]{64}', item['sha256'])):
+        return invalid
+    try:
+        relative = Path(item['path'])
+        path = (root / relative).resolve()
+        if relative.is_absolute() or path.name != 'audit-summary.json' or not path.is_relative_to(root.resolve()):
+            return invalid
+        content = path.read_bytes()
+        if len(content) != item['bytes'] or hashlib.sha256(content).hexdigest() != item['sha256']:
+            return invalid
+        tested = dt.datetime.fromisoformat(record.get('tested_at', '').replace('Z', '+00:00'))
+        if not tested.tzinfo:
+            return invalid
+    except (OSError, ValueError, TypeError, AttributeError):
+        return invalid
+    return {'state': 'verified_local', 'name': 'uBlock Origin Lite', 'version': record['version'],
+            'browser_version': record['browser_version'], 'mode': record['mode'],
+            'tested_at': stamp(tested.timestamp()), 'local_filtering_verified': True,
+            'downloader_coexistence_verified': True, 'source_acceptance_verified': False}
+
+
+def publisher_mirror_coverage(root, targets, remote):
+    """Count verified publisher mirrors without promoting native YouTube progress."""
+    audio_ids, caption_ids, asr_ids, sources = set(), set(), set(), {}
+    path = root / 'sync/publisher_mirror_manifest.jsonl'
+    if not path.is_file():
+        return audio_ids, caption_ids, asr_ids
+
+    def object_proof(value):
+        return (isinstance(value, dict) and type(value.get('bytes')) is int and value['bytes'] > 0 and
+                isinstance(value.get('drive_id'), str) and bool(value['drive_id']) and
+                all(isinstance(value.get(key), str) and re.fullmatch(pattern, value[key])
+                    for key, pattern in (('sha256', '[0-9a-f]{64}'), ('md5', '[0-9a-f]{32}'))))
+
+    def exact_reference(record):
+        try:
+            url = urlsplit(record.get('original_youtube_link', ''))
+            if url.scheme not in {'https', 'http'} or url.username or url.password:
+                return False
+            if url.hostname in {'youtu.be', 'www.youtu.be'}:
+                return url.path.lstrip('/') == record.get('associated_youtube_id')
+            return (url.hostname in {'youtube.com', 'www.youtube.com'} and url.path == '/watch' and
+                    parse_qs(url.query).get('v') == [record.get('associated_youtube_id')])
+        except (ValueError, TypeError, AttributeError):
+            return False
+
+    for line in path.read_text(encoding='utf-8-sig').splitlines():
+        try:
+            record = json.loads(line)
+        except ValueError:
+            continue
+        if (not isinstance(record, dict) or record.get('schema_version') != 1 or
+                record.get('status') != 'verified' or
+                not all(record.get(key) is False for key in ('native_youtube_bytes', 'changes_native_audio_count',
+                    'changes_native_asr_count', 'changes_native_caption_count', 'human_verified'))):
+            continue
+        qualified = (record.get('kind') == 'qualified_publisher_mirror_audio_variant' and
+                     record.get('association_method') == 'publisher_owner_title_date_duration' and
+                     record.get('exact_youtube_crossreference') is False)
+        exact = (record.get('kind') == 'publisher_mirror_audio_variant' and
+                 record.get('association_method') == 'publisher_rss_exact_youtube_id' and
+                 record.get('exact_youtube_crossreference') is True and exact_reference(record))
+        if not (qualified or exact):
+            continue
+        row = record_row({'video_id': record.get('associated_youtube_id'), 'channel_dir': record.get('channel_dir')})
+        audio, provenance = record.get('audio'), record.get('provenance')
+        if (not row or row['video_id'] not in targets or not object_proof(audio) or not object_proof(provenance) or
+                audio['drive_id'] == provenance['drive_id'] or record.get('variant_id') != audio['sha256']):
+            continue
+        parent = (remote + '/' + row['channel_dir'] + '/Videos/' + row['video_id'] +
+                  '/PublisherVariants/' + audio['sha256'])
+        if (not isinstance(audio.get('remote'), str) or
+                not re.fullmatch(re.escape(parent) + r'/publisher-audio\.(?:aac|m4a|mp3|opus|ogg|webm|flac)', audio['remote']) or
+                provenance.get('remote') != parent + '/provenance.json'):
+            continue
+        audio_ids.add(row['video_id'])
+        sources[(row['video_id'], audio['sha256'])] = record
+        captions = record.get('caption_bundles')
+        if not isinstance(captions, list):
+            captions = [record.get('caption_bundle')]
+        for caption in captions:
+            if (object_proof(caption) and caption.get('usable_timed_text') is True and
+                    caption['drive_id'] not in {audio['drive_id'], provenance['drive_id']} and
+                    isinstance(caption.get('language'), str) and re.fullmatch(r'en(?:[-_][A-Za-z0-9-]+)?', caption['language']) and
+                    caption.get('remote') == parent + '/Captions/' + caption['sha256'] + '/captions.zip'):
+                caption_ids.add(row['video_id'])
+    asr_path = root / 'sync/publisher_variant_asr_manifest.jsonl'
+    for line in asr_path.read_text(encoding='utf-8-sig').splitlines() if asr_path.is_file() else []:
+        try:
+            record = json.loads(line)
+        except ValueError:
+            continue
+        if not isinstance(record, dict):
+            continue
+        video_id, variant_id, run_id = (record.get(key) for key in ('associated_youtube_id', 'variant_id', 'run_id'))
+        if not all(isinstance(value, str) for value in (video_id, variant_id, run_id)):
+            continue
+        source = sources.get((video_id, variant_id))
+        if (not source or record.get('schema_version') != 1 or record.get('status') != 'verified' or
+                record.get('artifact_kind') != 'publisher_variant_asr' or not object_proof(record) or
+                record['drive_id'] in {source['audio']['drive_id'], source['provenance']['drive_id']} or
+                record.get('quality_state') != 'unreviewed_asr' or record.get('channel_dir') != source['channel_dir'] or
+                not re.fullmatch('[A-Za-z0-9_-]{1,120}', run_id) or
+                not all(record.get(key) is False for key in ('native_youtube_bytes', 'changes_native_audio_count', 'changes_native_asr_count'))):
+            continue
+        same_source = True
+        for key, source_key in (('source_audio', 'audio'), ('source_provenance', 'provenance')):
+            value, expected = record.get(key), source[source_key]
+            if not object_proof(value) or any(value.get(field) != expected[field] for field in ('bytes', 'drive_id', 'remote', 'md5', 'sha256')):
+                same_source = False
+        if not same_source:
+            continue
+        if (record.get('profile') == 'publisher-mirror-german-and-english-asr-v1' and
+                record.get('output_contract') != 'original-and-english-v1'):
+            continue
+        parent = source['audio']['remote'].rpartition('/')[0]
+        if record.get('remote') == parent + '/ASR/' + run_id + '/' + run_id + '.zip':
+            asr_ids.add(video_id)
+    return audio_ids, caption_ids, asr_ids
+
+
 def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     """Allowlisted public values only; no private strings are copied to the result."""
     now = dt.datetime.now(dt.timezone.utc).timestamp() if now is None else now
     latest = latest_records(root / "sync" / "drive_ingest_manifest.jsonl")
     captions = latest_records(root / "sync" / "drive_caption_manifest.jsonl")
     verified = {key for key, rec in latest.items() if proof(receipt_complete, rec, record_row(rec), remote)}
+    supported_native = {key for key in verified if
+                        latest[key].get('acquisition_profile') == 'stock_headful_wpc_native_full_v1' or
+                        latest[key].get('native_batch_profile') in ('stock_headful_wpc_native_batch_v1', 'stock_headful_wpc_native_batch_v2', 'stock_headful_wpc_native_batch_v3')}
     browser_verified = set()
     for rec in asr_records(root / 'sync/browser_capture_manifest.jsonl', 'capture_id'):
         row = record_row(rec)
@@ -283,6 +427,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     full, _ = queue_ids(root, ("queue_youtube_all_merged.csv", "queue_youtube_all.csv"))
     remaining, _ = queue_ids(root, ("queue_final_round.csv",))
     publisher_texts, publisher_transcripts, publisher_variants, publisher_qualified, publisher_asr = publisher_coverage(root, twenty, remote)
+    mirror_audio, mirror_captions, mirror_asr = publisher_mirror_coverage(root, twenty, remote)
     cooldown = read_object(root / "sync" / "drive_ingest_cooldown.json")
     # Support the runner's fixed filename, without exposing it in the export.
     if not cooldown:
@@ -359,6 +504,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                           "cooldown_provider": provider, "caption_state": caption_state,
                           "caption_retry_after": stamp(caption_until) if caption_until else None},
             "counts": {"verified_pairs": len(verified), "audio_downloaded": len(audio),
+                       "supported_native_verified_videos": len(supported_native),
                        "browser_recorded_videos": len(browser_verified), "audio_archived_videos": len(archived),
                        "asr_verified_videos": len(asr_verified),
                        "text_artifact_videos": len((asr_verified | caption_verified) & archived),
@@ -373,12 +519,17 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                        "publisher_audio_variant_target_videos": len(publisher_variants),
                        "publisher_audio_qualified_variant_target_videos": len(publisher_qualified),
                        "publisher_variant_asr_target_videos": len(publisher_asr),
+                       "publisher_mirror_audio_target_videos": len(mirror_audio),
+                       "publisher_mirror_caption_target_videos": len(mirror_captions),
+                       "publisher_mirror_asr_target_videos": len(mirror_asr),
+                       "source_audio_available_target_videos": len((archived & twenty) | publisher_variants | mirror_audio),
+                       "source_audio_with_text_target_videos": len((text_available & twenty) | publisher_asr | mirror_captions | mirror_asr),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),
                        "unavailable": len(unavailable),
                        "awaiting_upload": len(audio - verified), "channels": channels,
                        "indexed_total": len(full | twenty | fifty), "final_round_indexed": len(remaining)},
-            "storage": storage,
+            "storage": storage, "browser_support": browser_extension_status(root),
             "stages": [{"key": "newest20", "label": "Newest 20", "total": len(twenty),
                         "verified": len(twenty & archived), "unavailable": len(twenty & unavailable),
                         "state": "complete" if complete20 else "in_progress"},
