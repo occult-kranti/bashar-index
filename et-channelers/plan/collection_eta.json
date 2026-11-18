@@ -1,37 +1,36 @@
 {
   "schema_version": 2,
   "scope": "collection_eta",
-  "generated_at": "2026-11-18T04:41:35Z",
+  "generated_at": "2026-11-18T07:04:10Z",
   "current": {
-    "generated_at": "2026-11-18T04:41:35Z",
-    "status_snapshot_at": "2026-11-18T04:41:31Z",
+    "generated_at": "2026-11-18T07:04:10Z",
+    "status_snapshot_at": "2026-11-18T07:04:06Z",
     "status": "conditional_only",
     "guaranteed_completion_date": null,
     "full_audio_and_text_completion_hours": null,
     "newest20_items": 1420,
     "coverage": {
-      "verified_pairs": 201,
+      "verified_pairs": 287,
       "asr_verified_videos": 91,
-      "source_audio_available_target_videos": 231,
+      "source_audio_available_target_videos": 321,
       "source_audio_with_text_target_videos": 136,
       "text_available_videos": 108,
       "text_inventory_complete_videos": 106,
-      "text_missing_videos": 93,
+      "text_missing_videos": 179,
       "caption_verified_videos": 15,
       "caption_verified_tracks": 20,
       "caption_text_available_videos": 17,
       "caption_inventory_review_videos": 2
     },
     "measured_service": {
-      "started_at": "2026-11-17T23:47:08.328675Z",
-      "ended_at": "2026-11-18T00:13:30.207154Z",
-      "elapsed_seconds": 1581.8784790039062,
-      "first_pass_decisions": 40,
-      "verified_native_pairs": 30,
-      "held_or_uncertain_decisions": 10,
-      "verified_audio_bytes": 743607049,
-      "decisions_per_hour": 91.03101275559133,
-      "verified_pairs_per_hour": 68.2732595666935,
+      "started_at": "2026-11-18T04:54:52.497097Z",
+      "ended_at": "2026-11-18T05:02:07.736313Z",
+      "elapsed_seconds": 435.23921608924866,
+      "first_pass_decisions": 20,
+      "verified_native_pairs": 15,
+      "held_or_uncertain_decisions": 5,
+      "verified_audio_bytes": 347194262,
+      "decisions_per_hour": 165.42626982683456,
       "immediate_success_fraction": 0.75,
       "includes_startup_source_metadata_upload_and_backpressure": true,
       "isolated_bandwidth_measurement": false
@@ -77,38 +76,40 @@
       "scope": "Previously held native audio; two independently admitted frames"
     },
     "untouched_first_pass": {
-      "items": 1113,
-      "same_service_active_hours": 12.226602410634358,
+      "items": 1006,
+      "same_service_active_hours": 6.08125904702478,
       "planning_active_hours": [
-        12.226602410634358,
-        24.453204821268717
+        6.08125904702478,
+        12.16251809404956
       ],
       "calendar_hours_at_half_availability": [
-        24.453204821268717,
-        48.90640964253743
+        12.16251809404956,
+        24.32503618809912
       ],
       "planning_multiplier_assumed": [
         1,
         2
       ],
       "confidence_interval": false,
-      "frames": 58,
-      "selected_items": 1153,
+      "frames": 53,
+      "selected_items": 1046,
       "completed_decisions": 40,
-      "current_cohort_items": 20,
+      "original_selected_items": 1153,
+      "current_cohort_items": 1046,
       "current_cohort_index": null,
-      "later_prepared_items": 1093,
-      "state": "held_native_source",
+      "later_prepared_items": 0,
+      "state": "running_admitted_cohort",
       "scope": "Decisions on the frozen untouched selection, including holds and failures"
     },
     "assumptions": [
-      "Latest completed 40-decision run is the end-to-end service baseline; startup and initial ASR staging wait are included.",
+      "Latest completed download-only direct frame is the service baseline; startup, source, upload and closure time are included.",
       "Recovery item mix differs from the calibration run. A 1\u20132x service-time allowance is an explicit planning assumption, not a statistical interval.",
       "Active hours assume similar source availability, successful-file lengths, Drive service and storage backpressure. Admission waits and downtime add calendar time.",
       "Only a separately admitted cohort may run. Later prepared cohorts remain disabled; a scenario does not authorize or schedule them.",
       "ASR is separate and may overlap acquisition. Language review, uncertain attempts, item quarantines and unavailable sources prevent a reliable all-audio-plus-text finish date."
     ],
-    "historical_8_to_12_active_hours_superseded": true
+    "historical_8_to_12_active_hours_superseded": true,
+    "calibration": "completed_download_only_frame"
   },
   "historical_assumptions": {
     "schema_version": 1,

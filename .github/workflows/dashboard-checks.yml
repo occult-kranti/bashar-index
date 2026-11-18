@@ -65,12 +65,15 @@ jobs:
                       git('cat-file', '-e', base + '^{commit}')
                   paths = git('diff', '--no-ext-diff', '--no-renames', '--name-only', '-z', base, head, '--').split(b'\0')
                   paths = [path for path in paths if path]
+                  generated = {b'et-channelers/plan/' + name for name in (
+                      b'ingestion_status.json', b'collection_eta.json', b'channel_download_coverage.json',
+                      b'channel_download_coverage.csv', b'downloaded_videos.csv')}
                   docs_only = bool(paths) and all(
-                      path.endswith(b'.md') or path == b'et-channelers/plan/ingestion_status.json'
+                      path.endswith(b'.md') or path in generated
                       for path in paths
                   )
                   run_python = not docs_only
-                  reason = 'documentation_or_status_only' if docs_only else 'code_or_empty_diff'
+                  reason = 'documentation_or_collection_snapshot_only' if docs_only else 'code_or_empty_diff'
               except Exception:
                   run_python, reason = True, 'diff_unavailable'
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
@@ -84,6 +87,8 @@ jobs:
         run: python et-channelers/scripts/guard_no_raw_media.py
       - name: Published count consistency
         run: python et-channelers/scripts/check_counts.py
+      - name: Collection snapshot consistency
+        run: python et-channelers/scripts/check_collection_snapshot.py
       - name: Dashboard JavaScript syntax
         run: |
           node --check assets/research-nav.js

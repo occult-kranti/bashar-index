@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "source_kind": "frozen_implementation_source_only",
+  "implementation_revision": "typed-parent-deadline-recovery2",
+  "baseline_code_manifest_sha256": "0d3940d7f7e55300e92d8259e1b3630652bd153072ae4f9480158041f362b27e",
+  "baseline_module_sha256": {
+    "native_batch.py": "1485114e6ea7959ca47fa06d6f28259be502a995ca4b0b67897c106d894f073d",
+    "native_batch_worker.py": "da81d7d597e0580f6fe92c90a5d7222c06ad5015063c0d2bcf24b8f10c6d5d37",
+    "native_http_policy.py": "b482ed01e1e67a86c3a4e1020ae97c124ec9ea84274d7e69102c00ea04667f59",
+    "native_http_policy_v4_frozen.py": "0d94b8b702eee1380c8d6f980cc976474de3678354e3ce7cdc684130814b5dcd",
+    "bulk_contract.py": "6ee7b41ac060256ff29271b4a468f393f015a237d660376829551adb6df67014",
+    "native_bulk_controller.py": "727fa74fd533b4dd80111e7b403d0cf385a0c06822359ce109163a5d9bb69e19",
+    "frozen_ingestion_coverage.py": "19cf11e7c4532bc91b1acf841610b8595651672833dc0765db59d9292c910fa1"
+  },
+  "coverage_baseline": {
+    "git_commit": "930809",
+    "source": "et-channelers/pipeline/ingestion_status.py",
+    "sha256": "19cf11e7c4532bc91b1acf841610b8595651672833dc0765db59d9292c910fa1"
+  },
+  "portable_changes": [
+    "Resolve pipeline dependencies relative to this package rather than a workstation path.",
+    "Adapt frozen coverage imports to parent pipeline dependencies for package and isolated-file loading."
+  ],
+  "runtime_policy_changed": false,
+  "active_executor_changed": false,
+  "runtime_data_included": false,
+  "baseline_function_ast_sha256": {
+    "native_batch.py": "0a1104b32cff97f23fb518a83b1305f9c48716309a6f5b2112ca407cc1261b01",
+    "native_batch_worker.py": "e05bc86b2feaf81d8336baadea563f1d40ef7b73f601dc1735f9afea676dd4e9",
+    "native_http_policy.py": "ba5c26413592a5f3f6596a1ebeaa136aa9fe7ddb040973ed6e18bf9f03b56cde",
+    "native_http_policy_v4_frozen.py": "c05e8dcf727a554e243425dc301a22ba2b20cfb77a8786d77266ec86269da649",
+    "bulk_contract.py": "d3c50ae368ef94d236d0a12df534efae67884761686949361c408d911acc9106",
+    "native_bulk_controller.py": "2d25cf04887fd67141bb6a89da180c7e7cf03fcc5ff3ff06cc1833cc92eee713",
+    "frozen_ingestion_coverage.py": "38094726ea51d086c5ed7c272ed491e6e7b3f045c0deef0c7e4fac70836ae1ee"
+  },
+  "baseline_function_ast_algorithm": "canonical_AST_without_empty_type_params_v1"
+}

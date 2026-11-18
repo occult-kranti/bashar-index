@@ -429,10 +429,10 @@ def completed_recovery_service(root, live, remote=DEFAULT_REMOTE):
             'includes_startup_source_metadata_upload_and_backpressure': True, 'isolated_bandwidth_measurement': False}
 
 
-def operational_estimate(root, live, next_selection, campaign_selection, status, *, now=None, remote=DEFAULT_REMOTE, recovery_live=None):
+def operational_estimate(root, live, next_selection, campaign_selection, status, *, now=None, remote=DEFAULT_REMOTE, recovery_live=None, service_direct=False):
     """Current, conditional first-pass scenarios; all-text completion stays unknown."""
     now = time.time() if now is None else now
-    service = completed_service(root, live, remote)
+    service = (completed_recovery_service if service_direct else completed_service)(root, live, remote)
     next_count = read_object(next_selection).get('counts', {}).get('selected')
     campaign = read_object(campaign_selection).get('counts', {})
     untouched, frames = campaign.get('selected'), campaign.get('frames')
@@ -454,6 +454,14 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
     coverage = {key: counts[key] for key in coverage_keys if type(counts.get(key)) is int}
     twenty = next((stage.get('total') for stage in status.get('stages', []) if stage.get('key') == 'newest20'), None)
     lane = status.get('native_lane', {})
+    original_selection = untouched
+    bulk = lane.get('kind') == 'native_v5_bulk'
+    if bulk:
+        remaining_scope, scope_frames = lane.get('source_count'), lane.get('planned_frames')
+        if not (type(remaining_scope) is int and 0 < remaining_scope <= untouched and
+                type(scope_frames) is int and scope_frames > 0):
+            raise ValueError('Invalid finite-cohort scope')
+        untouched, frames = remaining_scope, scope_frames
     next_state = 'running' if lane.get('kind') == 'native_v4_direct_batch' and lane.get('state') == 'running' else 'prepared_not_confirmed_running'
     recovery_paths = list(recovery_live or [])
     recovery = None
@@ -484,10 +492,10 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
     if done == next_count:
         next_state = 'terminal_with_holds' if recovery['held_or_uncertain_decisions'] else 'complete'
     v5 = lane.get('kind') in {'native_v5_direct_batch', 'native_v5_source_hold'}
-    campaign_running = lane.get('kind') in {'native_v4_campaign', 'native_v5_direct_batch'} and lane.get('state') == 'running'
-    campaign_held = lane.get('kind') in {'native_v4_source_hold', 'native_v5_source_hold'}
+    campaign_running = lane.get('kind') in {'native_v4_campaign', 'native_v5_direct_batch', 'native_v5_bulk'} and lane.get('state') == 'running'
+    campaign_held = lane.get('kind') in {'native_v4_source_hold', 'native_v5_source_hold'} or bulk and lane.get('state') == 'paused'
     campaign_done = lane.get('prior_completed_decisions', 0) if v5 else lane.get('completed_decisions', 0) if campaign_running or campaign_held else 0
-    cohort_items = lane.get('frame_items') if v5 else lane.get('source_count') if campaign_running or campaign_held else None
+    cohort_items = lane.get('frame_items') if v5 and not lane.get('completed_frame_decisions') else lane.get('source_count') if campaign_running or campaign_held else None
     if type(campaign_done) is not int or not 0 <= campaign_done <= untouched:
         raise ValueError('Invalid campaign progress')
     cohort_items = cohort_items if type(cohort_items) is int and 0 < cohort_items <= untouched else None
@@ -505,17 +513,19 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
                 scope='Previously held native audio; two independently admitted frames'),
             'untouched_first_pass': dict(scenario(untouched - campaign_done), frames=frames,
                 selected_items=untouched, completed_decisions=campaign_done,
+                original_selected_items=original_selection,
                 current_cohort_items=cohort_items, current_cohort_index=lane.get('cohort_index') if campaign_running or campaign_held else None,
-                later_prepared_items=untouched - campaign_done - cohort_items if v5 and cohort_items else untouched - cohort_items if cohort_items else untouched,
+                later_prepared_items=untouched - campaign_done - (cohort_items or 0) if v5 else untouched - cohort_items if cohort_items else untouched,
                 state='running_admitted_cohort' if campaign_running else 'held_native_source' if campaign_held else 'prepared_campaign_disabled',
                 scope='Decisions on the frozen untouched selection, including holds and failures'),
             'assumptions': [
-                'Latest completed 40-decision run is the end-to-end service baseline; startup and initial ASR staging wait are included.',
+                'Latest completed download-only direct frame is the service baseline; startup, source, upload and closure time are included.' if service_direct else 'Latest completed 40-decision run is the end-to-end service baseline; startup and initial ASR staging wait are included.',
                 'Recovery item mix differs from the calibration run. A 1–2x service-time allowance is an explicit planning assumption, not a statistical interval.',
                 'Active hours assume similar source availability, successful-file lengths, Drive service and storage backpressure. Admission waits and downtime add calendar time.',
                 'Only a separately admitted cohort may run. Later prepared cohorts remain disabled; a scenario does not authorize or schedule them.',
                 'ASR is separate and may overlap acquisition. Language review, uncertain attempts, item quarantines and unavailable sources prevent a reliable all-audio-plus-text finish date.'],
-            'historical_8_to_12_active_hours_superseded': True}
+            'historical_8_to_12_active_hours_superseded': True,
+            'calibration': 'completed_download_only_frame' if service_direct else 'completed_joint_series'}
 
 
 def main(argv=None):
@@ -527,6 +537,7 @@ def main(argv=None):
     ap.add_argument("--out", type=Path)
     ap.add_argument("--refresh-operational", action="store_true", help="Replace the current operational section, retaining dated historical assumptions")
     ap.add_argument("--service-live", type=Path, help="Terminal series JSON proof directory; no media is read")
+    ap.add_argument("--service-direct", action="store_true", help="Calibrate from a bound completed download-only direct frame")
     ap.add_argument("--next-selection", type=Path)
     ap.add_argument("--campaign-selection", type=Path)
     ap.add_argument("--status-snapshot", type=Path, help="Saved aggregate status checkpoint")
@@ -552,7 +563,8 @@ def main(argv=None):
             previous = read_object(args.out)
             historical = previous.get('historical_assumptions', previous)
             current = operational_estimate(args.root, args.service_live, args.next_selection,
-                args.campaign_selection, read_object(args.status_snapshot), remote=args.remote, recovery_live=args.recovery_live)
+                args.campaign_selection, read_object(args.status_snapshot), remote=args.remote, recovery_live=args.recovery_live,
+                service_direct=args.service_direct)
             result = {'schema_version': 2, 'scope': 'collection_eta', 'generated_at': current['generated_at'],
                       'current': current, 'historical_assumptions': historical}
             args.out.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n', encoding='utf-8')
