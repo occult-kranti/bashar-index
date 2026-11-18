@@ -54,6 +54,7 @@ class BrowserLifetimeTests(unittest.TestCase):
         self.cli.return_value = types.SimpleNamespace(returncode=0, stderr="",
             stdout=json.dumps({"id": VIDEO_ID, "title": "Metadata only"}))
         self.budget = Mock()
+        self.budget.lock = threading.RLock()
         self.budget.write.side_effect = lambda handle, data: handle.write(data)
         self.stop = threading.Event()
         self.state_path = self.root / "sync" / "drive_ingest_manifest.jsonl"

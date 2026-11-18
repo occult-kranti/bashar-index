@@ -114,6 +114,55 @@ class ParallelReview(unittest.TestCase):
                             (self.root / rec["metadata"]["path"]).exists() for rec in state.values()))
         self.assertLess(ingest.tree_bytes(self.root), 2_000_000_000)
 
+    def test_audio_promotion_keeps_reservation_checks_outside_the_path_transition(self):
+        row = dict(video_id="00000000001", channel_dir="channel-1", tab="videos",
+                   listing_rank="0", url="https://www.youtube.com/watch?v=00000000001")
+        args = self.args(download_only=True)
+        budget = ingest.Budget(self.root, args.max_local_bytes, 0, 0, cached=True)
+        ingest._ROOT_BUDGETS[self.root.resolve()] = budget
+        promoted, release_promotion, reservation_started = (threading.Event() for _ in range(3))
+        budget_was_available = []
+        original_replace = ingest.os.replace
+
+        def stream(info, part, current_budget, *unused):
+            with part.open("wb") as handle:
+                current_budget.write(handle, b"x" * 100)
+            return ingest.hash_file(part)
+
+        def hold_promoted_path(source, destination):
+            original_replace(source, destination)
+            if str(source).endswith(".webm.part"):
+                promoted.set()
+                self.assertTrue(release_promotion.wait(timeout=3))
+
+        def reserve_next_item():
+            self.assertTrue(promoted.wait(timeout=3))
+            available = budget.lock.acquire(blocking=False)
+            budget_was_available.append(available)
+            if available:
+                budget.lock.release()
+            reservation_started.set()
+            budget.reserve_item("next", self.root / "next.webm.part", 100)
+
+        info = dict(id=row["video_id"], ext="webm", filesize=100, duration=60, vcodec="none")
+        with patch.object(ingest, "extract_audio", return_value=info), \
+                patch.object(ingest, "stream_audio", side_effect=stream), \
+                patch.object(ingest.os, "replace", side_effect=hold_promoted_path), \
+                ThreadPoolExecutor(max_workers=2) as pool:
+            first = pool.submit(ingest.ingest_one, args, row, budget, Mock(), threading.Event(),
+                                None, self.state)
+            second = pool.submit(reserve_next_item)
+            try:
+                self.assertTrue(reservation_started.wait(timeout=3))
+                # Reservation checks cannot observe a renamed partial while its
+                # active slot still points to the old path.
+                self.assertEqual(budget_was_available, [False])
+            finally:
+                release_promotion.set()
+            self.assertEqual(first.result(timeout=3), "downloaded")
+            second.result(timeout=3)
+        self.assertTrue((self.root / "audio/channel-1/Videos/00000000001.webm").is_file())
+
     def test_crash_between_pair_deletions_resumes_from_durable_verified_receipt(self):
         row, rec = self.pair()
         drive = self.drive(rec)

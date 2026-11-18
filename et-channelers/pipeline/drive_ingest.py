@@ -1405,8 +1405,11 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
             rec["download_elapsed_s"] = round(time.monotonic() - download_started, 3)
             rec.update(measured, status="download_complete", downloaded_at=utc_now())
             journal(state_path, rec)  # durable hashes before promoting the partial
-            os.replace(part, path)
-            budget.completed_path(row["video_id"], path)
+            # Keep reservation readers from observing the renamed partial
+            # before its active slot points to the completed file.
+            with budget.lock:
+                os.replace(part, path)
+                budget.completed_path(row["video_id"], path)
             trusted["audio"] = fingerprint(path)
             rec.update(status="downloaded")
             journal(state_path, rec)
