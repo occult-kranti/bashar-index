@@ -15,6 +15,64 @@ AUDIO_CODEC = re.compile(r'^(?:mp4a\.[0-9.]+|opus|vorbis|mp3|aac)$')
 MAX_RAW_FORMATS = 8192
 
 
+# The source coordinator pins this local decoder before dispatch.
+try:
+    from . import xtags_decode as _decoder
+except ImportError:
+    import xtags_decode as _decoder
+
+
+SEMANTIC_TRANSPORT_KEYS = {key.lower() for key in LABEL_FIELDS if key != 'xtags'} | {
+    'lang', 'vlang', 'acont', 'vb', 'audio_track_id', 'atrack'}
+
+
+def semantic_field_present(fmt, key):
+    # False is still declared metadata: in particular isOriginal=False conflicts
+    # with original inference. isDrc is deliberately not a semantic field.
+    if key not in fmt:
+        return False
+    value = fmt[key]
+    return value is not None and value != '' and value != {} and value != []
+
+
+def known_drc_processing(fmt):
+    if fmt.get('isDrc') is not True:
+        return False
+    if not _decoder.observe(fmt.get('xtags'), encoding='top_level_protobuf')['exact_drc_only']:
+        return False
+    urls, projections = [], []
+    def inspect(values):
+        normalized = {key.lower(): value for key, value in values.items()}
+        if len(normalized) != len(values):
+            raise ValueError('case_colliding_transport_keys')
+        values = normalized
+        if any(k in values for k in SEMANTIC_TRANSPORT_KEYS):
+            raise ValueError('semantic_transport_tag')
+        if 'drc' in values and values['drc'] != ['1']:
+            raise ValueError('conflicting_drc')
+        projections.extend(values.get('xtags', []))
+    def query(value):
+        if not isinstance(value, str) or len(value) > 32768:
+            raise ValueError('query_bound')
+        return parse_qs(value, keep_blank_values=True, max_num_fields=128)
+    try:
+        if fmt.get('url') is not None:
+            urls.append(fmt['url'])
+        for key in ('signatureCipher', 'cipher'):
+            if fmt.get(key) is not None:
+                values = query(fmt[key]); inspect(values); urls.extend(values.get('url', []))
+        if len(urls) > 3:
+            return False
+        for url in urls:
+            if not isinstance(url, str) or len(url) > 32768:
+                return False
+            inspect(query(urlsplit(url).query))
+        return 1 <= len(projections) <= 8 and all(
+            _decoder.observe(value, encoding='url_query')['exact_drc_only'] for value in projections)
+    except (ValueError, TypeError):
+        return False
+
+
 def nonempty(value):
     return value is not None and value is not False and value != '' and value != {} and value != []
 
@@ -22,6 +80,7 @@ def nonempty(value):
 def transport_track_tags(fmt, explicit_drc=False):
     """Inspect URL/cipher query keys in memory; values never enter a proof."""
     urls = []
+    processing = explicit_drc and known_drc_processing(fmt)
     if fmt.get('url') is not None:
         if not isinstance(fmt['url'], str): return True
         urls.append(fmt['url'])
@@ -29,14 +88,18 @@ def transport_track_tags(fmt, explicit_drc=False):
         if fmt.get(key) is not None:
             if not isinstance(fmt[key], str): return True
             values = parse_qs(fmt[key], keep_blank_values=True)
-            if any(k in values for k in ('xtags', 'lang', 'language', 'acont')): return True
+            keys = {k.lower() for k in values}
+            if any(k in keys for k in SEMANTIC_TRANSPORT_KEYS): return True
+            if 'xtags' in keys and not processing: return True
             urls.extend(values.get('url', []))
     try:
         for url in urls:
             values = parse_qs(urlsplit(url).query, keep_blank_values=True)
             for key, value in values.items():
                 if key.lower() == 'drc' and explicit_drc and value == ['1']: continue
-                if key.lower() in {'xtags', 'lang', 'language', 'acont', 'drc', 'vb'} and any(value): return True
+                if key.lower() == 'xtags' and processing: continue
+                if key.lower() in SEMANTIC_TRANSPORT_KEYS: return True
+                if key.lower() in {'xtags', 'drc'} and any(value): return True
     except ValueError: return True
     return False
 
@@ -158,7 +221,8 @@ def legacy_track_inventory(video_id, player_responses, chosen_client='mweb'):
                 is_drc = drc is True
                 variant = (itag, is_drc)
                 if variant in seen: hold('ambiguous_duplicate_itag')
-                labels = fmt.get('audioTrack') not in (None, {}) or any(nonempty(fmt.get(k)) for k in LABEL_FIELDS) or transport_track_tags(fmt, is_drc)
+                processing = known_drc_processing(fmt)
+                labels = fmt.get('audioTrack') not in (None, {}) or any(semantic_field_present(fmt, k) for k in LABEL_FIELDS if k != 'xtags' or not processing) or transport_track_tags(fmt, is_drc)
                 if labels: hold('track_labels_present')
                 drm = nonempty(fmt.get('drmFamilies')) or nonempty(fmt.get('drmTrackType')) or fmt.get('has_drm') is True
                 if drm: hold('drm_audio_alternative')
@@ -168,7 +232,9 @@ def legacy_track_inventory(video_id, player_responses, chosen_client='mweb'):
                 row = {'itag': itag, 'audio_only': parts[1] == 'audio', 'is_drc': is_drc,
                     'codec': audio_codecs[0] if len(audio_codecs) == 1 else None, 'source_bytes': length,
                     'semantic_labels_present': bool(labels), 'has_drm': bool(drm),
-                    'label_diagnostics': label_diagnostics(fmt)}
+                    'label_diagnostics': label_diagnostics(fmt),
+                    'decoded_drc_processing_only': processing,
+                    'declared_semantic_fields': sorted(k for k in LABEL_FIELDS if semantic_field_present(fmt, k) and (k != 'xtags' or not processing))}
                 result['audio_representations'].append(row)
                 seen[variant] = row
     result['inspection_complete'] = structurally_complete

@@ -1,5 +1,31 @@
 # Conditional collection estimate — 17 November 2026 update
 
+## Current continuation, November 18 00:05:09 UTC
+
+The frozen snapshot has **128 native pairs / 77 native ASR / 156 unique audio
+entries / 122 audio entries with saved text**. The amended 40-target source run
+has 22 new canonical pairs: its first frame ended with 15 verified and 5 held,
+and its second frame is still running. The separate 42-input English consumer
+uses one input per process and publishes valid results immediately. A retained
+word-alignment/segment-timing case is excluded; its cause remains unresolved.
+Do not extrapolate a final rate from this unfinished run.
+
+The completed initial 60-item baseline remains **1,642.680453 seconds** for 30
+archives and 18 overlapping English ASR bundles, with 8.06 GB measured after its
+closure. The earlier **8 to 12 active-hour first-pass planning range** was conditional
+on that workload mix; it is neither a completion date nor a guarantee for all
+held audio, languages and transcripts. Decoded DRC metadata has now enabled one
+strict full-native recovery, but one successful repair does not quantify the
+remaining held population. A separate 30-item recovery and finite campaign are
+prepared only and remain disabled.
+
+Current six-root storage is **8,328,191,629 bytes (8.33 GB)** under the 16 GB
+managed ceiling. Native growth remains 5.5 GB and staging 500 MB/three pairs;
+other active allocations and 2 GB physical spare must still pass admission.
+The historical measurements and remaining-work denominators below retain their
+original dates. Global source holds, Drive service and ASR backpressure can add
+wall time; no reliable all-audio-plus-text finish date is established.
+
 ## Completed 60-item series, 22:27 UTC
 
 The latest source series made 60 decisions in **27m22.68s**, archiving **30 new

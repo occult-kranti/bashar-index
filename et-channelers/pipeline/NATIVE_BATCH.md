@@ -37,7 +37,7 @@ Settings JSON fields:
   and `wpc_copy`: the private filtered directory containing only the unmodified
   pinned WPC plugin; `ffprobe` and `ffmpeg`: existing local tools.
 - `code_pins`: `{path,sha256}` for dependencies, including worker, quality, Job
-  Object helper, `native_track_policy.py`, `native_metadata_snapshot.py`, `native_http_policy.py`,
+  Object helper, `native_track_policy.py`, `xtags_decode.py`, `native_metadata_snapshot.py`, `native_http_policy.py`,
   `drive_ingest.py`, `media_metadata.py`, `native_audio_sink.py`,
   and the exact installed WPC/extractor/runtime dependencies selected by owner.
 - `preserved_controls`: nonempty `{path,sha256}` snapshots of the legacy STOP
@@ -158,12 +158,25 @@ A read-only wrapper also observes `_extract_formats_and_subtitles` before the
 pinned extractor filters URL-less or SABR representations. A second policy
 branch is eligible only when the complete returned mweb audio-bearing inventory
 has valid target/playability, valid untruncated arrays, at least one audio
-representation, and no track labels, audio language, default/dub/descriptive/
-secondary indications, DRC/voice-boost flags, track tags, DRM alternatives,
-duplicate base itags or conflicting returned-client inventory. Context-only
+representation, and no semantic track labels, audio language, default/dub/
+descriptive/secondary indications, voice-boost flags, unknown track tags, DRM
+alternatives or conflicting returned-client inventory. Normal base itags must
+be unique. An explicit DRC counterpart is permitted only under the narrow
+decoded-processing rule below; it cannot be selected. Context-only
 initial caption data and caption translation-language lists are not audio-track
 evidence. The observation preserves original objects/callbacks and sends no
 additional requests.
+
+Top-level `xtags` and transport query projections use different encodings.
+The bounded `xtags_decode.py` decodes top-level FormatXTags protobuf and parses
+the URL/cipher query projections independently. An explicit `isDrc:true` row
+may be recognized as processing-only only when every present projection is
+valid and contains exactly the known `drc=1` pair, with a matching unique normal
+itag/codec base. Malformed, duplicate, unknown, compound or semantic tags hold.
+Declared semantic fields remain evidence even when their value is false;
+`isOriginal:false` is not treated as absence. DRC-only catalogs and ambiguous
+duplicates hold. Only the non-DRC representation can pass transfer selection.
+The decoder is an exact required code pin; importing it performs no I/O.
 
 Only that branch permits a normalized unlabeled preference-1 format, bound to
 the exact raw audio-only itag, codec and known source size. Codec/bitrate
@@ -271,3 +284,20 @@ review completed before selection with no audio output. Its original aggregate
 enum could not distinguish duplicated projections; the corrected diagnostics
 will collect that evidence from fresh admitted targets, without repeating the
 held target. Normal browser bootstrap remains observable network activity.
+
+## Proven decoded-format recovery
+
+After primary-schema review and a separate exact admission, one full-native
+trial validated 13 audio-bearing representations, including six DRC counterparts
+whose tags decoded as processing-only. It selected normal AAC and archived
+10,339,840 bytes / 638.850612 seconds / 27,513 packets after strict probe and
+paired Drive verification. No re-encoding or source-language upgrade occurred.
+The original metadata-only trial and failed attempts remain preserved. See
+[protocol evidence and limits](../research/decoded-native-audio-formats-2026-11-18.md).
+
+This repair does not grant recovery of old holds or change HTTP refusal policy.
+At the November 18 00:05 UTC snapshot, the 40-target source continuation and
+separate 42-input English consumer are active under their own amendment. The
+healthy consumer publishes one valid input per process; the retained
+word-alignment/segment-timing-error item is excluded. The separate 30-item DRC
+recovery and finite campaign remain disabled pending exact review.

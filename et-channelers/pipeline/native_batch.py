@@ -210,7 +210,7 @@ class NativeBatch:
         need(all(any(p.is_relative_to(q) for q in roots) for p in (self.root, Path(__file__).resolve(), Path(self.s['python_executable']).resolve())), 'managed_roots')
         self.roots = roots
         required = {Path(__file__).with_name(name).resolve() for name in (
-            'native_batch_worker.py', 'native_batch_quality.py', 'native_batch_job.py', 'native_track_policy.py',
+            'native_batch_worker.py', 'native_batch_quality.py', 'native_batch_job.py', 'native_track_policy.py', 'xtags_decode.py',
             'drive_ingest.py', 'media_metadata.py', 'native_audio_sink.py', 'native_metadata_snapshot.py', 'native_http_policy.py')}
         if self.handoff:
             required.update(Path(__file__).with_name(name).resolve() for name in (

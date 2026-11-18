@@ -1,5 +1,25 @@
 # Native transport panel and first complete recovery
 
+## Proven decoded-DRC recovery and active continuation, November 18 00:05 UTC
+
+A new strict protocol decoder resolved the earlier representation mismatch:
+top-level `xtags` is encoded protobuf, whereas its transport projection is a
+query value. The separately admitted full-native trial inspected 13 audio-bearing
+rows, proved all 6 DRC counterparts contained only the known processing marker,
+and selected a normal representation. It archived **10,339,840 AAC bytes /
+638.850612 seconds / 27,513 packets**, passing the strict packet probe and paired
+Drive verification without re-encoding. Unknown audio language remains unknown.
+The original metadata-only result and every earlier hold remain preserved;
+this was a material code-recovery admission, not an unchanged diagnostic retry.
+See [protocol evidence and limits](../decoded-native-audio-formats-2026-11-18.md).
+
+The aggregate is now **128 native pairs / 77 native ASR / 156 unique audio entries /
+122 with saved text**. A separately amended 40-target source continuation and
+42-input English consumer are active. The consumer publishes one valid input
+per process and excludes the retained word-alignment/segment-timing-error case.
+The 30 held-DRC and long-campaign proposals remain disabled. Global refusal and
+quality gates are unchanged. The older sections below retain their dated results.
+
 ## Completed automated series, 22:27 UTC
 
 The initial three-frame series archived **30 new native pairs** (651,969,521 audio

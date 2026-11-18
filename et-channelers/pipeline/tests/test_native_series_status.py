@@ -89,6 +89,29 @@ class NativeSeriesStatusTests(unittest.TestCase):
                      series_proposal_sha256='a' * 64))
             self.assertFalse(status.active_native_series(self.root, 1000)['asr_running'])
 
+    def test_separate_frame_must_be_an_owned_child_of_the_series(self):
+        child = dict(pid=5432, process_creation_filetime='123456999')
+        self.put(self.root / 'sync/stock_wpc_batch_v4_lease.json', dict(self.lease, controller_identity=child))
+        with patch.object(status, 'owned_process_alive', return_value=True), \
+                patch.object(status, 'owned_process_child_of', return_value=True) as relation:
+            self.assertEqual(status.snapshot(self.root, now=1000)['operation']['state'], 'running')
+            relation.assert_called_with(child, self.identity)
+        with patch.object(status, 'owned_process_alive', return_value=True), \
+                patch.object(status, 'owned_process_child_of', return_value=False):
+            self.assertEqual(status.snapshot(self.root, now=1000)['operation']['state'], 'paused')
+
+    def test_campaign_uses_the_same_lease_and_process_proof_requirements(self):
+        previous = self.live
+        self.live = self.root / 'jobs/native-campaign-test/live'
+        self.live.mkdir(parents=True)
+        for name in ('series-state.json', 'source-invocation.json', 'consumer-state.json'):
+            self.put(self.live / name, json.loads((previous / name).read_bytes()))
+        self.put(previous / 'series-state.json', {'status': 'finished_with_holds'})
+        with patch.object(status, 'owned_process_alive', return_value=True):
+            self.assertEqual(status.snapshot(self.root, now=1000)['operation']['state'], 'running')
+        with patch.object(status, 'owned_process_alive', return_value=False):
+            self.assertEqual(status.snapshot(self.root, now=1000)['operation']['state'], 'paused')
+
 
 if __name__ == '__main__':
     unittest.main()
