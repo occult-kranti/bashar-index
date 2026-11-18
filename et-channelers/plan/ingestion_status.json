@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-18T22:32:48Z",
+  "generated_at": "2026-11-18T23:50:09Z",
   "scope": "local_youtube_collection",
   "operation": {
-    "state": "paused",
+    "state": "ready",
     "retry_after": null,
     "asr_last_reported_state": "paused",
     "asr_reported_at": "2026-11-18T03:35:23Z",
@@ -22,19 +22,19 @@
   },
   "native_lane": {
     "kind": "native_v5_bulk",
-    "namespace": "stock_wpc_batch_v5_bulk_recovery5",
+    "namespace": "stock_wpc_batch_v5_bulk_recovery7",
     "workers": 2,
-    "source_count": 453,
-    "planned_frames": 23,
-    "completed_frames": 10,
-    "completed_decisions": 200,
-    "started_at": "2026-11-18T17:06:24Z",
+    "source_count": 14,
+    "planned_frames": 1,
+    "completed_frames": 1,
+    "completed_decisions": 14,
+    "started_at": "2026-11-18T22:20:52Z",
     "asr_handoff_enabled": false,
     "automatic_resume": false,
-    "state": "paused",
+    "state": "ready",
     "process_confirmed": false,
-    "proof": "finite_cohort_hold",
-    "reason": "source_or_owner_hold"
+    "proof": "released_completed_bulk_cohort",
+    "finished_at": "2026-11-18T22:29:50Z"
   },
   "counts": {
     "verified_pairs": 1108,
@@ -73,9 +73,9 @@
     "final_round_indexed": 64145
   },
   "storage": {
-    "local_bytes": 7131726785,
+    "local_bytes": 7322029957,
     "ceiling_bytes": 17000000000,
-    "managed_bytes": 10138884225,
+    "managed_bytes": 10329694415,
     "managed_ceiling_bytes": 16000000000
   },
   "browser_support": {

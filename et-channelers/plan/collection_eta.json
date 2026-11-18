@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
   "scope": "collection_eta",
-  "generated_at": "2026-11-18T22:32:56Z",
+  "generated_at": "2026-11-18T23:50:17Z",
   "current": {
-    "generated_at": "2026-11-18T22:32:56Z",
-    "status_snapshot_at": "2026-11-18T22:32:48Z",
+    "generated_at": "2026-11-18T23:50:17Z",
+    "status_snapshot_at": "2026-11-18T23:50:09Z",
     "status": "conditional_only",
     "guaranteed_completion_date": null,
     "full_audio_and_text_completion_hours": null,
@@ -77,29 +77,29 @@
       "scope": "Previously held native audio; two independently admitted frames"
     },
     "untouched_first_pass": {
-      "items": 253,
-      "same_service_active_hours": 1.529382245424721,
+      "items": 14,
+      "same_service_active_hours": 0.08462984757290946,
       "planning_active_hours": [
-        1.529382245424721,
-        3.058764490849442
+        0.08462984757290946,
+        0.16925969514581893
       ],
       "calendar_hours_at_half_availability": [
-        3.058764490849442,
-        6.117528981698884
+        0.16925969514581893,
+        0.33851939029163786
       ],
       "planning_multiplier_assumed": [
         1,
         2
       ],
       "confidence_interval": false,
-      "frames": 23,
-      "selected_items": 453,
-      "completed_decisions": 200,
+      "frames": 1,
+      "selected_items": 14,
+      "completed_decisions": 0,
       "original_selected_items": 1153,
-      "current_cohort_items": 453,
+      "current_cohort_items": null,
       "current_cohort_index": null,
-      "later_prepared_items": 0,
-      "state": "held_native_source",
+      "later_prepared_items": 14,
+      "state": "prepared_campaign_disabled",
       "scope": "Decisions on the frozen untouched selection, including holds and failures"
     },
     "assumptions": [
