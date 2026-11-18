@@ -33,7 +33,7 @@ def channel_activity(root, rows, available, at):
     lane = status.native_bulk_lane(root, at.timestamp())
     namespace = lane.get('namespace', '')
     scope, attempts = set(), {}
-    if re.fullmatch(r'stock_wpc_batch_v5_bulk(?:_recovery[0-9]+)?', namespace):
+    if re.fullmatch(r'stock_wpc_batch_v5_bulk(?:_recovery[0-9]+|_recovery6_prototype)?', namespace):
         lease = status.read_object(root / 'sync' / (namespace + '_lease.json'))
         ids = lease.get('allowed_video_ids', [])
         if (lane.get('state') == 'running' and lane.get('process_confirmed') is True and lease.get('state') == 'active' and

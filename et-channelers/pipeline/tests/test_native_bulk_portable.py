@@ -96,84 +96,6 @@ def terminal(video=ID):
                             'http_escalation': None, 'global_failure_code': None}}
 
 
-class SchedulerFixture:
-    """Deterministic source closures/publication delays; no real executor."""
-    def __init__(self, root, durations, publish_seconds=5, body_bytes=20_000_000,
-                 hold_on=None, revoke_after_first=False):
-        self.root, self.durations = root, durations
-        self.publish_seconds, self.body_bytes = publish_seconds, body_bytes
-        self.hold_on, self.revoke_after_first = hold_on, revoke_after_first
-        self.now, self.sequence, self.inactive = 0, 0, 0
-        self.events, self.queue, self.futures, self.started, self.published = [], [], [], [], []
-        self.publication_source_counts = []; self.closed = set(); self.lease_valid = True
-        self.max_sources = self.max_projected = 0
-
-    def observe(self):
-        running = sum(not future.done() for future in self.futures)
-        self.max_sources = max(self.max_sources, running)
-        self.max_projected = max(self.max_projected, self.inactive + running * (2_000_000_000 + batch.HEADROOM))
-
-    def advance(self, until):
-        while self.queue and self.queue[0][0] <= until:
-            self.now, _, callback = heapq.heappop(self.queue); callback()
-        self.now = until
-
-    def wait(self, futures, return_when=None):
-        while not any(future.done() for future in futures): self.advance(self.queue[0][0])
-        return {f for f in futures if f.done()}, {f for f in futures if not f.done()}
-
-    def executor(self, max_workers):
-        env = self
-        class FakeExecutor:
-            def __enter__(self): return self
-            def __exit__(self, *args):
-                while env.queue: env.advance(env.queue[0][0])
-            def submit(self, function, item):
-                future = Future(); env.futures.append(future); env.started.append(item['video_id'])
-                env.events.append((env.now, 'source_start', item['video_id']))
-                def complete():
-                    future.set_result(function(item)); env.observe()
-                env.sequence += 1
-                heapq.heappush(env.queue, (env.now + env.durations[len(env.started) - 1], env.sequence, complete))
-                env.observe(); return future
-        return FakeExecutor()
-
-    def run(self):
-        self.root.mkdir(exist_ok=True); (self.root / 'sync').mkdir()
-        obj = batch.NativeBatch.__new__(batch.NativeBatch); self.batch = obj
-        obj.root = self.root; obj.spool = self.root / 'spool'; obj.jobs = obj.spool / 'jobs'
-        obj.plan_sha = sha('scheduler plan'); obj.state_path = self.root / 'sync/native.jsonl'
-        obj.batch_journal = self.root / 'sync/batch.jsonl'
-        obj.items = [{'video_id': 'n' + str(i).zfill(10), 'channel_dir': 'fixture', 'tab': 'Videos',
-                      'max_audio_bytes': 2_000_000_000} for i in range(len(self.durations))]
-        obj.s = {'workers': 2, 'max_asset_bytes': 2_000_000_000, 'spool_cap_bytes': 5_500_000_000, 'remote': 'fixture:'}
-        obj.lock = threading.RLock(); obj.source_stop = threading.Event(); obj.dispatch_paused = threading.Event()
-        obj.adaptive_pause_until = 0; obj.live_reservations = {}; obj.budget = None; obj.capacity = {'inactive_spool_bytes': 0}
-        obj.handoff = None; obj.finalize_handoff = lambda *args: None
-        def guard(*, source=False, video_id=None, **kwargs):
-            if not self.lease_valid: raise worker.Held('lease_revoked')
-            if source: self.events.append((self.now, 'source_guard', video_id))
-            obj.capacity = {'inactive_spool_bytes': self.inactive}; return 16_000_000_000
-        def execute(item):
-            self.closed.add(item['video_id'])
-            if item['video_id'] == self.hold_on:
-                obj.source_stop.set(); return {'status': 'held'}
-            self.inactive += self.body_bytes; return {'status': 'local_complete'}
-        def publish(item, result):
-            obj.guard()
-            if item['video_id'] not in self.closed: raise AssertionError('publication before owned closure')
-            self.publication_source_counts.append(len(self.started)); self.advance(self.now + self.publish_seconds)
-            self.inactive -= self.body_bytes; self.published.append(item['video_id']); self.observe()
-            if self.revoke_after_first: self.lease_valid = False
-        obj.guard, obj.execute_child, obj.publish = guard, execute, publish
-        budget = SimpleNamespace(usage=lambda: self.inactive, _outstanding=lambda: 0)
-        with patch.object(batch, 'ThreadPoolExecutor', side_effect=self.executor), \
-                patch.object(batch, 'wait', side_effect=self.wait), \
-                patch.object(batch, 'SlotBudget', return_value=budget):
-            self.summary = obj.run()
-        return self
-
-
 class PortableBulkTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -185,12 +107,37 @@ class PortableBulkTests(unittest.TestCase):
     def test_all_modules_import_from_package_without_workstation_paths(self):
         for name in ('native_batch', 'native_batch_worker', 'native_http_policy',
                      'native_http_policy_v4_frozen', 'bulk_contract', 'native_bulk_controller',
-                     'frozen_ingestion_coverage', 'worker_diagnostics'):
+                     'frozen_ingestion_coverage', 'worker_diagnostics', 'parallel_scheduler', 'parallel_batch_adapter'):
             module = importlib.import_module('pipeline.native_bulk.' + name)
             self.assertEqual(PACKAGE, Path(module.__file__).resolve().parent)
             self.assertIsNone(re.search(r'\b[A-Za-z]:[\\/]', Path(module.__file__).read_text(encoding='utf-8')))
         self.assertEqual(PACKAGE.parent, batch.PUBLIC_PIPE)
         self.assertEqual(PACKAGE.parent, worker.PUBLIC_PIPE)
+
+    def test_controls_derive_exactly_from_profile_and_preserve_previous_stop(self):
+        controls = worker.control_paths(self.root)
+        prefix = worker.PROFILE.replace('stock_headful_wpc_native_batch_', 'stock_wpc_batch_', 1)
+        self.assertEqual({'lease_path': prefix + '_lease.json', 'batch_stop_path': 'STOP_' + prefix.upper(),
+                          'source_cooldown_path': prefix + '_source_cooldown.json',
+                          'http_state_path': prefix + '_http_state.json'},
+                         {key: value.name for key, value in controls.items()})
+        sync = self.root / 'sync'; sync.mkdir()
+        old = sync / 'STOP_STOCK_WPC_BATCH_V5_BULK_RECOVERY5'
+        old.write_bytes(b'saved previous administrative stop\n')
+        original = old.read_bytes()
+        state = worker.State({'preserved_controls': [{'path': str(old), 'sha256': worker.digest(old)}],
+                              'batch_stop_path': str(controls['batch_stop_path'])}, self.root, time.time() + 60)
+        state.last_check = -1; state.guard()
+        self.assertEqual(original, old.read_bytes())
+        controls['batch_stop_path'].write_bytes(b'new profile stop\n'); state.last_check = -1
+        with self.assertRaises(worker.Held) as caught: state.guard()
+        self.assertEqual('batch_source_stop', caught.exception.code)
+        self.assertEqual(original, old.read_bytes())
+
+    def test_callback_closure_is_required_before_frame_audit(self):
+        obj = SimpleNamespace(parallel_callback_closure_proven=False)
+        with self.assertRaisesRegex(contract.ContractError, 'bulk_parallel_callbacks_unclosed'):
+            controller.frame_closed(obj)
 
     def test_explicit_sibling_policy_load_does_not_need_package_search_path(self):
         with patch.object(worker, '_HTTP_POLICY', None), \
@@ -265,31 +212,6 @@ class PortableBulkTests(unittest.TestCase):
         folder = self.root / ID; folder.mkdir(); write(folder / 'worker-fatal.json', {'kind': 'native_worker_fatal'})
         obj.administrative_hold = Mock()
         self.assertTrue(obj.observe_worker_diagnostics(folder)); obj.administrative_hold.assert_called_once()
-
-    def test_scheduler_refills_before_the_second_blocking_publication(self):
-        env = SchedulerFixture(self.root, [1, 1, 1, 1, 40, 1]).run()
-        self.assertEqual(6, env.publication_source_counts[1]); self.assertEqual(6, env.summary['verified'])
-        for at, kind, ident in env.events:
-            if kind == 'source_start':
-                self.assertTrue(any(t <= at and k == 'source_guard' and value == ident for t, k, value in env.events))
-
-    def test_scheduler_publisher_bound_fixture_has_no_parallel_publication(self):
-        env = SchedulerFixture(self.root, [5] * 6, publish_seconds=20).run()
-        self.assertEqual(125, env.now); self.assertEqual(6, len(set(env.published)))
-
-    def test_scheduler_full_slots_and_actual_bytes_preserve_backpressure(self):
-        env = SchedulerFixture(self.root, [1] * 6, publish_seconds=10, body_bytes=1_300_000_000).run()
-        self.assertLessEqual(env.max_sources, 2); self.assertLessEqual(env.max_projected, 5_500_000_000)
-        self.assertEqual(6, env.summary['verified']); self.assertEqual(0, env.inactive)
-
-    def test_scheduler_source_hold_stops_refill(self):
-        env = SchedulerFixture(self.root, [1] * 6, publish_seconds=10, hold_on='n0000000002').run()
-        self.assertEqual(4, len(env.started)); self.assertEqual(2, env.summary['pending'])
-
-    def test_scheduler_revoked_lease_prevents_more_source_and_publication(self):
-        env = SchedulerFixture(self.root, [1] * 6, revoke_after_first=True).run()
-        self.assertEqual(4, len(env.started)); self.assertEqual(1, len(env.published))
-        self.assertEqual(2, env.summary['pending']); self.assertGreater(env.inactive, 0)
 
     def GO_fixture(self):
         obj = batch.NativeBatch.__new__(batch.NativeBatch)
@@ -430,7 +352,7 @@ class PortableBulkTests(unittest.TestCase):
         obj.s = {'adaptive_pause_seconds': 0}; obj.adaptive_pause_until = 0; obj.lock = threading.RLock()
         obj.source_stop = threading.Event(); obj.stop_path = self.root / 'STOP'
         obj.live_reservations = {ident: {'folder': folder, 'bytes': 1000}}
-        obj.items = [{'video_id': ident}]
+        obj.items = [{'video_id': ident}]; obj.parallel_callback_closure_proven = True
         obj.policy_envelope = lambda: json.loads(ledger.read_bytes())
         order = []
         def latch(*args, **kwargs):

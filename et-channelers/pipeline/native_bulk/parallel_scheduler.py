@@ -2,8 +2,7 @@
 
 The caller owns byte admission, source policy, actual archive verification and
 owned-process closure. This module neither starts an executor nor interprets a
-worker's acquisition status as an archive receipt. Existing executors do not
-import it. Callbacks must be bounded and cooperate with the external stop signal.
+worker's acquisition status as an archive receipt. The finite-cohort adapter imports this module only under its own grant. Callbacks must be bounded and cooperate with the external stop signal.
 """
 from __future__ import annotations
 
@@ -137,7 +136,8 @@ class ParallelScheduler:
     def __init__(self, items, *, execute_source, publish, before_submit,
                  source_guard, drive_guard, stop_owned, stop_requested=lambda:False,
                  observe=None, source_workers=2, max_outstanding=4,
-                 poll_seconds=.02, drain_timeout_seconds=30., max_timing_events=32768):
+                 poll_seconds=.02, drain_timeout_seconds=30., max_timing_events=32768,
+                 fatal_event=None):
         self.items = tuple(items)
         _need(bool(self.items) and len(self.items) <= 1280 and all(isinstance(x, WorkItem) for x in self.items), 'finite_work_scope')
         _need(len({x.key for x in self.items}) == len(self.items), 'duplicate_work_item')
@@ -156,7 +156,10 @@ class ParallelScheduler:
         self.source_workers = source_workers; self.max_outstanding_limit = max_outstanding
         self.poll_seconds = poll_seconds; self.drain_timeout_seconds = drain_timeout_seconds
         self.max_timing_events = max_timing_events
-        self._lock = RLock(); self._event_lock = RLock(); self._failure_lock = RLock(); self._fatal = Event()
+        _need(fatal_event is None or isinstance(fatal_event, Event), 'fatal_event_contract')
+        self._lock = RLock(); self._event_lock = RLock(); self._failure_lock = RLock()
+        self._fatal = fatal_event if fatal_event is not None else Event()
+        self._owned_futures = []
         self._reason = None; self._timings = []; self._ran = False
 
     def _fail(self, reason):
@@ -165,6 +168,10 @@ class ParallelScheduler:
         with self._failure_lock:
             if self._reason is None: self._reason = reason
             self._fatal.set()
+
+    def callbacks_closed(self):
+        """Callback closure only; the caller must separately prove owned jobs."""
+        return all(future.done() for future in self._owned_futures)
 
     def _emit(self, kind, key=None, duration=None):
         with self._event_lock:
@@ -293,6 +300,7 @@ class ParallelScheduler:
                                 _need(type(allowed) is bool, 'admission_decision_required')
                                 if not allowed or self._fatal.is_set(): break
                                 future = source_pool.submit(self._source, item)
+                                self._owned_futures.append(future)
                                 active[future] = item; pending.popleft(); submitted += 1
                             self._emit('source_submitted', item.key)
                             peak_source = max(peak_source, len(active))
@@ -304,7 +312,9 @@ class ParallelScheduler:
 
                     if not self._fatal.is_set() and publisher is None and ready:
                         value = ready.popleft()
-                        publisher = (publisher_pool.submit(self._publication, value), value)
+                        publication_future = publisher_pool.submit(self._publication, value)
+                        self._owned_futures.append(publication_future)
+                        publisher = (publication_future, value)
                         peak_outstanding = max(peak_outstanding, len(active)+len(ready)+1)
                         progressed = True
 
