@@ -378,8 +378,8 @@ def _native_bulk_lane(root, now):
 
 def _native_bulk_lease(root, now, lease, namespace):
     if not (lease.get('state') in {'active', 'released'} and isinstance(lease.get('profile'), str) and
-            re.fullmatch(r'stock_headful_wpc_native_batch_v5_bulk(?:_recovery[0-9]+)?', lease['profile']) and
-            re.fullmatch(r'stock_wpc_batch_v5_bulk(?:_recovery[0-9]+)?', namespace) and
+            re.fullmatch(r'stock_headful_wpc_native_batch_v5_bulk(?:_recovery[0-9]+|_recovery6_prototype)?', lease['profile']) and
+            namespace == lease['profile'].replace('stock_headful_wpc_native_batch_', 'stock_wpc_batch_', 1) and
             all(lease.get(key) is True for key in ('authorized', 'source_scope_authorized', 'finite_cohort_scope_authorized'))):
         return {}
     for home in sorted((root / 'jobs').glob('native-http-v5-bulk-*'))[:16]:
