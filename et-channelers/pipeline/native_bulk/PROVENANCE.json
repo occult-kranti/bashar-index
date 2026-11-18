@@ -1,17 +1,19 @@
 {
   "schema_version": 1,
   "source_kind": "frozen_implementation_source_only",
-  "implementation_revision": "bounded-owned-profile-cleanup-recovery5",
-  "baseline_code_manifest_sha256": "bc0203f100ccf82a960052c9197e60fdea63e8ad2bd602c3277d4e3489d7650d",
+  "implementation_revision": "parallel-source-publication-recovery6-namespace-isolated",
+  "baseline_code_manifest_sha256": "b6dc6ba419331abb2014049c3bd8612c88bdea29922caace75d86ee5360bf399",
   "baseline_module_sha256": {
-    "native_batch.py": "cbe2d3ec5dd12f040f90d037e89967f70a5ad30ee38643bf0b1d97b016ab4285",
-    "native_batch_worker.py": "c0c9f70e5120eb9238c4a649ecdc1916e2fa4c74c85ab1d2f8cb418e33486e0a",
+    "native_batch.py": "5570ebf841c1bbc66afb59fefba1d466f2b097f9cbba21f502c822c6dc8db777",
+    "native_batch_worker.py": "f17af4c9bf6c6231512b2de9109c1a6e1eabbd0e9ae3f88362109a62634c640a",
     "native_http_policy.py": "b482ed01e1e67a86c3a4e1020ae97c124ec9ea84274d7e69102c00ea04667f59",
     "native_http_policy_v4_frozen.py": "0d94b8b702eee1380c8d6f980cc976474de3678354e3ce7cdc684130814b5dcd",
-    "bulk_contract.py": "73c9f1cfe72a245cb3bef00849287fc65f99514cb7f78e625df1735723aedadf",
-    "native_bulk_controller.py": "f96ed74e6498685655edd1909f5ac5562de0147ed7ab788e3223c9bd1bffa8ed",
+    "bulk_contract.py": "3f033eee747541ad9dbc7bdeca0858614c5e917349e0e87a9a43cc78ac3a8588",
+    "native_bulk_controller.py": "052c4b4d416a4aca4ad3dbcc7f24dd8d7af2a3960f5a239e30d1a5a98d8026ff",
     "frozen_ingestion_coverage.py": "19cf11e7c4532bc91b1acf841610b8595651672833dc0765db59d9292c910fa1",
-    "worker_diagnostics.py": "f54263d75264b210da9d19e68cc3b55fa5fac6f8c8ae51445706989e33bc2b3f"
+    "worker_diagnostics.py": "f54263d75264b210da9d19e68cc3b55fa5fac6f8c8ae51445706989e33bc2b3f",
+    "parallel_scheduler.py": "77f4f5aae9fb579c627988cf2b3c01edafa21aa239c03f46a07acd823dfaf660",
+    "parallel_batch_adapter.py": "0f9f94062baf670823f536da2da85afa6ff8f1711f8add2f5ae6d9d1c06af0f0"
   },
   "coverage_baseline": {
     "git_commit": "930809",
@@ -20,20 +22,23 @@
   },
   "portable_changes": [
     "Resolve pipeline dependencies relative to this package rather than a workstation path.",
-    "Adapt frozen coverage imports to parent pipeline dependencies for package and isolated-file loading."
+    "Adapt frozen coverage imports to parent pipeline dependencies for package and isolated-file loading.",
+    "Mirror the reviewed parallel adapter and shared fatal-event scheduler without runtime data or execution grants."
   ],
   "runtime_policy_changed": false,
   "active_executor_changed": false,
   "runtime_data_included": false,
   "baseline_function_ast_sha256": {
-    "native_batch.py": "4bf0a652a869a435227b0262bde63b9ff5ffc271fef9f48ca06a90a34b835d88",
-    "native_batch_worker.py": "3eee8aca03bd9c457a161d85e3eac73795d980dd870b8ac2b477f9cec0d84410",
+    "native_batch.py": "5b5b6cfd8e4b40559866e890b171bae99136f764682cb1ed41697a1853c75082",
+    "native_batch_worker.py": "2230ed4f951c0d94f92c19cdbef390bb44c0c1fde5ec7c3f4b7617f0897bb4d6",
     "native_http_policy.py": "ba5c26413592a5f3f6596a1ebeaa136aa9fe7ddb040973ed6e18bf9f03b56cde",
     "native_http_policy_v4_frozen.py": "c05e8dcf727a554e243425dc301a22ba2b20cfb77a8786d77266ec86269da649",
     "bulk_contract.py": "d3c50ae368ef94d236d0a12df534efae67884761686949361c408d911acc9106",
-    "native_bulk_controller.py": "2d25cf04887fd67141bb6a89da180c7e7cf03fcc5ff3ff06cc1833cc92eee713",
+    "native_bulk_controller.py": "6e7c0e88b5585c4ffaa2120360edba104781ace0887dc1ad92bce47c262abbef",
     "frozen_ingestion_coverage.py": "38094726ea51d086c5ed7c272ed491e6e7b3f045c0deef0c7e4fac70836ae1ee",
-    "worker_diagnostics.py": "19ba90e4bcc7610b670fba84624d1ca25cfba0f7eef61abda9e34f3aabea8fe7"
+    "worker_diagnostics.py": "19ba90e4bcc7610b670fba84624d1ca25cfba0f7eef61abda9e34f3aabea8fe7",
+    "parallel_scheduler.py": "1acab40b2ff0c4f3f85ed76f56d89d44f8afa8b260125036357408fcc5ba98b2",
+    "parallel_batch_adapter.py": "0b990f67182e0024ecc5f498bb2a519869ead328f6a12312c9bcfa0e16221945"
   },
   "baseline_function_ast_algorithm": "canonical_AST_without_empty_type_params_v1"
 }

@@ -33,6 +33,8 @@ worker=_private('owned_native_worker_bulk','native_batch_worker.py')
 bulk_contract=worker.bulk_contract()
 ingestion_status=_private('owned_bulk_frozen_ingestion_coverage','frozen_ingestion_coverage.py')
 worker_diagnostics=_private('owned_bulk_worker_diagnostics','worker_diagnostics.py')
+parallel_scheduler=_private('owned_bulk_parallel_scheduler','parallel_scheduler.py')
+parallel_adapter=_private('owned_bulk_parallel_batch_adapter','parallel_batch_adapter.py')
 
 MAX_SPOOL = 6_000_000_000
 MAX_ASSET = 2_000_000_000
@@ -214,7 +216,7 @@ class NativeBatch:
         self.s = read(self.settings_path)
         self.root = Path(self.s['private_root']).resolve()
         self.plan_sha, self.items = load_plan(self.s['plan_path'])
-        self.spool = self.root / 'stock_wpc_batch_v5_bulk_recovery5'
+        self.spool = self.root / 'stock_wpc_batch_v5_bulk_recovery6_prototype'
         self.jobs = self.spool / 'jobs' / self.plan_sha[:16]
         controls = worker.control_paths(self.root)
         self.lease_path = controls['lease_path']
@@ -222,7 +224,7 @@ class NativeBatch:
         self.cooldown_path = controls['source_cooldown_path']
         self.http_state_path = controls['http_state_path']
         self.state_path = self.root / 'sync/drive_ingest_manifest.jsonl'
-        self.batch_journal = self.root / 'sync/stock_wpc_batch_v5_bulk_recovery5_manifest.jsonl'
+        self.batch_journal = self.root / 'sync/stock_wpc_batch_v5_bulk_recovery6_prototype_manifest.jsonl'
         self.lock = threading.RLock(); self.source_stop = threading.Event()
         self.dispatch_paused = threading.Event()
         self.handoff = handoff_settings(self.root, self.s['remote'], self.s.get('asr_handoff'))
@@ -240,7 +242,7 @@ class NativeBatch:
              all(not p.is_relative_to(q) for p in roots for q in roots if p != q), 'managed_roots')
         need(all(any(p.is_relative_to(q) for q in roots) for p in (self.root, Path(__file__).resolve(), Path(self.s['python_executable']).resolve())), 'managed_roots')
         self.roots = roots
-        required={Path(__file__).with_name(name).resolve() for name in ('native_batch_worker.py','native_http_policy.py','native_http_policy_v4_frozen.py','bulk_contract.py','native_bulk_controller.py','frozen_ingestion_coverage.py')}
+        required={Path(__file__).with_name(name).resolve() for name in ('native_batch.py','worker_diagnostics.py','native_batch_worker.py','native_http_policy.py','native_http_policy_v4_frozen.py','bulk_contract.py','native_bulk_controller.py','frozen_ingestion_coverage.py','parallel_scheduler.py','parallel_batch_adapter.py')}
         required.update((PUBLIC_PIPE/name).resolve() for name in ('native_batch_quality.py','native_batch_job.py','native_track_policy.py','xtags_decode.py','drive_ingest.py','media_metadata.py','native_audio_sink.py','native_metadata_snapshot.py','publisher_mirror.py','chromium_capture_service.py'))
         need(self.handoff is None,'v5_no_asr_handoff')
         if self.handoff:
@@ -855,75 +857,7 @@ class NativeBatch:
                 if kind.startswith('drive_'): self.source_stop.set()
 
     def run(self):
-        self.spool.mkdir(exist_ok=True)
-        counts = {'verified': 0, 'skipped': 0, 'held': 0, 'pending': 0}
-        with storage.exclusive_lock(self.root):
-            self.jobs.mkdir(parents=True, exist_ok=True)
-            limit = self.guard(force=True, force_inventory=True)
-            self.budget = SlotBudget(self.root, limit, self.s['max_asset_bytes'], FREE, cached=False)
-            previous = storage.load_state(self.state_path)
-            pending = []
-            for item in self.items:
-                if storage.receipt_complete(previous.get(item['video_id'], {}), item, self.s['remote']):
-                    # Recover readiness after a lost finalize ACK, never pull or
-                    # download an already archived source again.
-                    self.finalize_handoff(self.jobs / item['video_id'], previous[item['video_id']])
-                    counts['skipped'] += 1; continue
-                folder = self.jobs / item['video_id']
-                if folder.exists():
-                    result = read(folder / 'result.json') if (folder / 'result.json').exists() else {}
-                    if result.get('status') == 'local_complete' or (folder / 'canonical-record.json').exists():
-                        try: self.publish(item, result); counts['verified'] += 1
-                        except Exception: counts['held'] += 1
-                    else: counts['held'] += 1
-                else: pending.append(item)
-            with ThreadPoolExecutor(max_workers=self.s['workers']) as pool:
-                active = {}; ready = []  # frame/byte bounded completions; one publisher
-                while active or pending or ready:
-                    self.drain_completed_source_futures(active,ready,counts)
-                    while pending and len(active) < self.s['workers'] and not self.source_stop.is_set() and not self.dispatch_paused.is_set():
-                        if time.time()<self.adaptive_pause_until:break
-                        try:
-                            with self.lock:
-                                limit = self.guard(source=True, video_id=pending[0]['video_id'])
-                                if time.time()<self.adaptive_pause_until:break
-                                if storage.read_drive_cooldown(self.root / 'sync/drive_ingest_cooldown.json'):
-                                    self.dispatch_paused.set(); break
-                                maximum = pending[0].get('max_audio_bytes', self.s['max_asset_bytes'])
-                                need(type(maximum) is int and 0 < maximum <= self.s['max_asset_bytes'], 'asset_deferred')
-                                # Completed files remain inactive bytes. Do not queue a child
-                                # against space the single publisher has yet to release.
-                                # A submitted future may still be waiting for this lock.
-                                # Charge its whole slot until execute_child makes the real
-                                # reservation visible; never submit twice against one slot.
-                                virtual = sum(candidate.get('max_audio_bytes', self.s['max_asset_bytes']) + HEADROOM
-                                    for future, candidate in active.items()
-                                    if not future.done() and candidate['video_id'] not in self.live_reservations)
-                                committed = self.budget._outstanding() + virtual + maximum + HEADROOM
-                                if (self.capacity['inactive_spool_bytes'] + committed > self.s['spool_cap_bytes'] or
-                                        self.budget.usage() + committed > limit - storage.JOURNAL_RESERVE):
-                                    break
-                                item = pending.pop(0); active[pool.submit(self.execute_child, item)] = item
-                        except Exception:
-                            counts['pending'] += len(pending); pending.clear(); break
-                    if ready:
-                        # One publisher; yield scheduler after exactly one pair.
-                        item,result=ready.pop(0)
-                        try: self.publish(item, result); counts['verified'] += 1
-                        except Exception as exc:
-                            counts['held'] += 1
-                            kind = getattr(exc, 'kind', getattr(exc, 'code', 'native_batch_failed'))
-                            storage.journal(self.batch_journal, {'schema_version': 1, 'profile': worker.PROFILE, 'video_id': item['video_id'],
-                                'status': 'held', 'error_class': kind, 'plan_sha256': self.plan_sha})
-                            if kind.startswith('drive_'): self.source_stop.set()
-                        continue
-                    if not active:
-                        if pending and time.time()<self.adaptive_pause_until and not self.source_stop.is_set():
-                            self.guard(force=True);time.sleep(max(0,min(.25,self.adaptive_pause_until-time.time())));continue
-                        counts['pending'] += len(pending); break
-                    wait(active, return_when=FIRST_COMPLETED)
-            write(self.jobs / 'summary.json', {'schema_version': 1, 'profile': worker.PROFILE, 'plan_sha256': self.plan_sha, **counts})
-        return counts
+        return parallel_adapter.run_batch(self, sys.modules[__name__], parallel_scheduler)
 
 
 def main(argv=None):

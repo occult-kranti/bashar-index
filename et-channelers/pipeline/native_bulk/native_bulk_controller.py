@@ -28,6 +28,7 @@ need = contract.need
 
 def frame_closed(batch):
     """Only saved metadata. Never infer zero source attempts from missing files."""
+    need(getattr(batch, 'parallel_callback_closure_proven', False) is True, 'bulk_parallel_callbacks_unclosed')
     proofs = []
     for marker in sorted(batch.jobs.glob('*/attempt.json')):
         ident = marker.parent.name
@@ -126,7 +127,8 @@ class BulkController:
                     state['current_frame']['phase'] = 'owned_closure'
                     closed = frame_closed(batch)
                     need(not batch.source_stop.is_set() and not batch.dispatch_paused.is_set() and
-                         not batch.stop_path.exists() and result.get('pending') == 0,
+                         not batch.stop_path.exists() and result.get('pending') == 0 and result.get('inflight') == 0 and
+                         result.get('parallel_state') == 'complete' and result.get('parallel_callbacks_closed') is True,
                          'bulk_frame_held_requires_review')
                     envelope = batch.policy_envelope()
                     policy = batch_module.http_policy.status(envelope['state'], time.time(),

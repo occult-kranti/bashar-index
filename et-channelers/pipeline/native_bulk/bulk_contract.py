@@ -10,7 +10,7 @@ from pathlib import Path
 import re
 import time
 
-PROFILE = 'stock_headful_wpc_native_batch_v5_bulk_recovery5'
+PROFILE = 'stock_headful_wpc_native_batch_v5_bulk_recovery6_prototype'
 MAX_COHORT = 1280
 MAX_FRAME = 20
 SHA = re.compile(r'[a-f0-9]{64}\Z')
