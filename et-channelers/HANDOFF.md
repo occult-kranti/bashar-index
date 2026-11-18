@@ -1,5 +1,20 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Current acquisition handoff, November 18, 22:29 UTC
+
+The latest finite native batch is **terminal: 14 attempts, 13 verified paired audio/metadata archives, one hold, 539.12 seconds**. All owned jobs and child audits closed; its matching lease and 4.8 GB future-growth reservation are released. The preceding Source6 cohort closed at 21:13 UTC after 253 attempts, 208 paired archives and 45 holds. Aggregate counts and job status come from the dated [collection dashboard](dashboard/collection/); a snapshot taken before a terminal can still show that past job as running. Preserve every real receipt, metadata file, partial input and complete HTTP ledger when preparing later work.
+
+The latest-20 goal remains active across 74 creators. The frozen 1,420 Videos-tab rows leave 60 missing selection slots against 1,480; see the [five-creator gap table](ROADMAP.md#twenty-audio-items-for-each-creator). Next50 and the rest-of-channel index follow that goal. ASR remains paused, with no automatic GPU restart.
+
+The combined-video fallback has receipt/dashboard support but **zero real archived editions** so far. Its first trial stopped on a local historical-process probe during metadata processing. Preserve that attempt and the unstarted second item separately: metadata wire counts were not captured and zero selected-media GETs are only a program-order inference. The corrected one-item successor must bind actual closed historical jobs and the newest whole provider ledger. It must not relabel an uncertain attempt or replay the failed first item. The separate official publisher audio-CDN request returned HTTP 403 and added no audio; retain its scoped hold.
+
+The 14-item batch used the independently reviewed capacity-stat cache and a corrected 4.8 GB contract. Its first preflight caught a stale 5.5 GB literal before Source or resource writes; the unused grant was revoked and a distinct corrected packet passed the actual full frame-admission checks. Do not restart an old packet or change a running implementation. Evaluate further worker increases from selected-size reservations and measured phases while retaining the 2 GB per-item maximum, full unknown-size slots, all managed roots and the 2 GB physical spare.
+
+Code and snapshot releases use isolated worktrees. [PR #64](https://github.com/occult-kranti/bashar-index/pull/64) merged qualified-edition receipt/coverage support after its own full CI. [PR #66](https://github.com/occult-kranti/bashar-index/pull/66) published a dated 1,144-audio checkpoint eight seconds before the latest native batch closed; later receipts and status belong in a new checkpoint. Preserve earlier branches and independently pinned source executables. The [branch register](../BRANCHES.md) and [dashboard hub](../dashboards/) are the navigation entry points.
+
+All subsequent operational sections are historical, dated observations; they do not authorize replay or transcription.
+
+
 ## Source6 parallel publication trial, November 18, 19:04 UTC
 
 Source6 launched once at **19:02:38 UTC** for the **253 untouched items remaining after Source5's 200 actual attempts**, partitioned into 13 frames. Two source callbacks and one separate publisher share the existing finite owner grant, full static reservations and 5.5 GB spool allowance. The first strict native AAC archive was paired-verified and locally retired at **19:04:05 UTC**. The dated receipt observation is **925/1,420 selected audio entries**; public dashboards/CSVs have their own saved timestamps. ASR remains paused. The first Source6 frame later closed with 15 paired archives / five holds and 422,862,190 audio bytes over approximately 571.54 seconds. Seven source-future submissions occurred strictly during actual copy calls; this proves scheduling overlap, not simultaneous audio transfer or a controlled production speedup. The content and hold mix differ from earlier frames. The durable report confirms the overlap but does not establish a production speedup.
