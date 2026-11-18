@@ -1,22 +1,23 @@
 {
   "schema_version": 2,
   "scope": "collection_eta",
-  "generated_at": "2026-11-18T21:20:26Z",
+  "generated_at": "2026-11-18T22:29:42Z",
   "current": {
-    "generated_at": "2026-11-18T21:20:26Z",
-    "status_snapshot_at": "2026-11-18T21:20:19Z",
+    "generated_at": "2026-11-18T22:29:42Z",
+    "status_snapshot_at": "2026-11-18T22:29:34Z",
     "status": "conditional_only",
     "guaranteed_completion_date": null,
     "full_audio_and_text_completion_hours": null,
     "newest20_items": 1420,
     "coverage": {
-      "verified_pairs": 1095,
+      "verified_pairs": 1107,
       "asr_verified_videos": 91,
-      "source_audio_available_target_videos": 1132,
+      "source_audio_available_target_videos": 1144,
+      "qualified_youtube_audio_edition_target_videos": 0,
       "source_audio_with_text_target_videos": 136,
       "text_available_videos": 108,
       "text_inventory_complete_videos": 106,
-      "text_missing_videos": 987,
+      "text_missing_videos": 999,
       "caption_verified_videos": 15,
       "caption_verified_tracks": 20,
       "caption_text_available_videos": 17,
@@ -76,29 +77,29 @@
       "scope": "Previously held native audio; two independently admitted frames"
     },
     "untouched_first_pass": {
-      "items": 253,
-      "same_service_active_hours": 1.529382245424721,
+      "items": 14,
+      "same_service_active_hours": 0.08462984757290946,
       "planning_active_hours": [
-        1.529382245424721,
-        3.058764490849442
+        0.08462984757290946,
+        0.16925969514581893
       ],
       "calendar_hours_at_half_availability": [
-        3.058764490849442,
-        6.117528981698884
+        0.16925969514581893,
+        0.33851939029163786
       ],
       "planning_multiplier_assumed": [
         1,
         2
       ],
       "confidence_interval": false,
-      "frames": 23,
-      "selected_items": 453,
-      "completed_decisions": 200,
+      "frames": 1,
+      "selected_items": 14,
+      "completed_decisions": 0,
       "original_selected_items": 1153,
-      "current_cohort_items": 453,
+      "current_cohort_items": 14,
       "current_cohort_index": null,
       "later_prepared_items": 0,
-      "state": "held_native_source",
+      "state": "running_admitted_cohort",
       "scope": "Decisions on the frozen untouched selection, including holds and failures"
     },
     "assumptions": [

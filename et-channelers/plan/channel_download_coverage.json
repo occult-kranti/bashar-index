@@ -1,17 +1,19 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-18T21:20:26.865940Z",
+  "generated_at": "2026-11-18T22:29:42.688863Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
-    "youtube_native_audio": 1095,
+    "youtube_native_audio": 1107,
     "publisher_only_audio": 37,
-    "audio_available": 1132,
+    "qualified_youtube_audio": 0,
+    "qualified_youtube_only_audio": 0,
+    "audio_available": 1144,
     "native_asr": 91,
     "native_caption_videos": 17,
     "audio_with_saved_text": 136,
-    "remaining_audio": 288
+    "remaining_audio": 276
   },
   "channels": [
     {
@@ -20,6 +22,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 1,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 18,
       "with_saved_text": 2,
       "remaining_audio": 2
@@ -30,6 +33,7 @@
       "target": 1,
       "youtube_audio": 1,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 1,
       "with_saved_text": 1,
       "remaining_audio": 0
@@ -40,6 +44,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 1,
       "remaining_audio": 4
@@ -50,6 +55,7 @@
       "target": 20,
       "youtube_audio": 19,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 19,
       "with_saved_text": 2,
       "remaining_audio": 1
@@ -60,6 +66,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 2,
       "remaining_audio": 3
@@ -70,6 +77,7 @@
       "target": 20,
       "youtube_audio": 18,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 18,
       "with_saved_text": 2,
       "remaining_audio": 2
@@ -80,6 +88,7 @@
       "target": 14,
       "youtube_audio": 13,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 13,
       "with_saved_text": 1,
       "remaining_audio": 1
@@ -90,6 +99,7 @@
       "target": 20,
       "youtube_audio": 10,
       "publisher_only_audio": 9,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 19,
       "with_saved_text": 10,
       "remaining_audio": 1
@@ -100,6 +110,7 @@
       "target": 20,
       "youtube_audio": 18,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 18,
       "with_saved_text": 3,
       "remaining_audio": 2
@@ -110,6 +121,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 3,
       "remaining_audio": 3
@@ -120,6 +132,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 2,
       "remaining_audio": 4
@@ -130,6 +143,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 1,
       "remaining_audio": 3
@@ -140,6 +154,7 @@
       "target": 20,
       "youtube_audio": 14,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 14,
       "with_saved_text": 0,
       "remaining_audio": 6
@@ -150,6 +165,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 3,
       "remaining_audio": 4
@@ -160,6 +176,7 @@
       "target": 20,
       "youtube_audio": 14,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 14,
       "with_saved_text": 1,
       "remaining_audio": 6
@@ -170,6 +187,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 2,
       "remaining_audio": 3
@@ -180,6 +198,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 2,
       "remaining_audio": 3
@@ -190,6 +209,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 2,
       "remaining_audio": 4
@@ -200,6 +220,7 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 15,
       "with_saved_text": 2,
       "remaining_audio": 5
@@ -210,6 +231,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 0,
       "remaining_audio": 4
@@ -220,6 +242,7 @@
       "target": 9,
       "youtube_audio": 9,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 9,
       "with_saved_text": 3,
       "remaining_audio": 0
@@ -230,6 +253,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 1,
       "remaining_audio": 4
@@ -240,6 +264,7 @@
       "target": 20,
       "youtube_audio": 18,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 18,
       "with_saved_text": 2,
       "remaining_audio": 2
@@ -250,6 +275,7 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 15,
       "with_saved_text": 2,
       "remaining_audio": 5
@@ -260,6 +286,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 3,
       "remaining_audio": 3
@@ -268,11 +295,12 @@
       "channel": "BASHAR AYAKO",
       "channel_dir": "infini-global",
       "target": 20,
-      "youtube_audio": 13,
+      "youtube_audio": 14,
       "publisher_only_audio": 0,
-      "audio_total": 13,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 14,
       "with_saved_text": 3,
-      "remaining_audio": 7
+      "remaining_audio": 6
     },
     {
       "channel": "Ismael Perez",
@@ -280,6 +308,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 2,
       "remaining_audio": 4
@@ -290,6 +319,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 2,
       "remaining_audio": 3
@@ -300,6 +330,7 @@
       "target": 20,
       "youtube_audio": 7,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 7,
       "with_saved_text": 1,
       "remaining_audio": 13
@@ -310,6 +341,7 @@
       "target": 20,
       "youtube_audio": 19,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 19,
       "with_saved_text": 1,
       "remaining_audio": 1
@@ -320,6 +352,7 @@
       "target": 2,
       "youtube_audio": 1,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 1,
       "with_saved_text": 1,
       "remaining_audio": 1
@@ -330,6 +363,7 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 15,
       "with_saved_text": 2,
       "remaining_audio": 5
@@ -340,6 +374,7 @@
       "target": 20,
       "youtube_audio": 11,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 11,
       "with_saved_text": 0,
       "remaining_audio": 9
@@ -350,6 +385,7 @@
       "target": 20,
       "youtube_audio": 18,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 18,
       "with_saved_text": 2,
       "remaining_audio": 2
@@ -360,6 +396,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 1,
       "remaining_audio": 3
@@ -370,6 +407,7 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 15,
       "with_saved_text": 1,
       "remaining_audio": 5
@@ -380,6 +418,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 3,
       "remaining_audio": 4
@@ -390,6 +429,7 @@
       "target": 20,
       "youtube_audio": 11,
       "publisher_only_audio": 3,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 14,
       "with_saved_text": 2,
       "remaining_audio": 6
@@ -400,6 +440,7 @@
       "target": 14,
       "youtube_audio": 9,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 9,
       "with_saved_text": 1,
       "remaining_audio": 5
@@ -410,6 +451,7 @@
       "target": 20,
       "youtube_audio": 19,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 19,
       "with_saved_text": 2,
       "remaining_audio": 1
@@ -420,6 +462,7 @@
       "target": 20,
       "youtube_audio": 18,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 18,
       "with_saved_text": 2,
       "remaining_audio": 2
@@ -430,6 +473,7 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 15,
       "with_saved_text": 1,
       "remaining_audio": 5
@@ -440,6 +484,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 1,
       "remaining_audio": 3
@@ -450,6 +495,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 3,
       "remaining_audio": 3
@@ -460,6 +506,7 @@
       "target": 20,
       "youtube_audio": 4,
       "publisher_only_audio": 16,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 20,
       "with_saved_text": 17,
       "remaining_audio": 0
@@ -470,6 +517,7 @@
       "target": 20,
       "youtube_audio": 19,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 19,
       "with_saved_text": 2,
       "remaining_audio": 1
@@ -480,6 +528,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 2,
       "remaining_audio": 4
@@ -490,6 +539,7 @@
       "target": 20,
       "youtube_audio": 10,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 10,
       "with_saved_text": 1,
       "remaining_audio": 10
@@ -500,6 +550,7 @@
       "target": 20,
       "youtube_audio": 13,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 13,
       "with_saved_text": 1,
       "remaining_audio": 7
@@ -508,11 +559,12 @@
       "channel": "Akanksshaa / Multidimensional Soul",
       "channel_dir": "multidimensional-soul",
       "target": 20,
-      "youtube_audio": 16,
+      "youtube_audio": 17,
       "publisher_only_audio": 0,
-      "audio_total": 16,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 17,
       "with_saved_text": 2,
-      "remaining_audio": 4
+      "remaining_audio": 3
     },
     {
       "channel": "Nora Herold",
@@ -520,6 +572,7 @@
       "target": 20,
       "youtube_audio": 19,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 19,
       "with_saved_text": 2,
       "remaining_audio": 1
@@ -530,6 +583,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 2,
       "remaining_audio": 3
@@ -540,6 +594,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 1,
       "remaining_audio": 4
@@ -550,6 +605,7 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 1,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 2,
       "remaining_audio": 4
@@ -558,11 +614,12 @@
       "channel": "Pleiadian Council Whispers",
       "channel_dir": "pleiadian-council-whispers",
       "target": 20,
-      "youtube_audio": 14,
+      "youtube_audio": 15,
       "publisher_only_audio": 0,
-      "audio_total": 14,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 15,
       "with_saved_text": 2,
-      "remaining_audio": 6
+      "remaining_audio": 5
     },
     {
       "channel": "Rachel Chamness (Sound Waves Heal)",
@@ -570,6 +627,7 @@
       "target": 20,
       "youtube_audio": 9,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 9,
       "with_saved_text": 1,
       "remaining_audio": 11
@@ -578,31 +636,34 @@
       "channel": "Rachel & Kevin Pasdon",
       "channel_dir": "rachel-kevin-pasdon",
       "target": 20,
-      "youtube_audio": 17,
+      "youtube_audio": 18,
       "publisher_only_audio": 0,
-      "audio_total": 17,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 18,
       "with_saved_text": 1,
-      "remaining_audio": 3
+      "remaining_audio": 2
     },
     {
       "channel": "Riz Mirza",
       "channel_dir": "riz-mirza",
       "target": 20,
-      "youtube_audio": 18,
+      "youtube_audio": 19,
       "publisher_only_audio": 0,
-      "audio_total": 18,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 19,
       "with_saved_text": 2,
-      "remaining_audio": 2
+      "remaining_audio": 1
     },
     {
       "channel": "Rob Gauthier",
       "channel_dir": "rob-gauthier",
       "target": 20,
-      "youtube_audio": 17,
+      "youtube_audio": 18,
       "publisher_only_audio": 0,
-      "audio_total": 17,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 18,
       "with_saved_text": 2,
-      "remaining_audio": 3
+      "remaining_audio": 2
     },
     {
       "channel": "Odyssey of Ascension",
@@ -610,6 +671,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 1,
       "remaining_audio": 3
@@ -618,11 +680,12 @@
       "channel": "Sam the Illusionist",
       "channel_dir": "sam-the-illusionist",
       "target": 20,
-      "youtube_audio": 15,
+      "youtube_audio": 16,
       "publisher_only_audio": 0,
-      "audio_total": 15,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 16,
       "with_saved_text": 1,
-      "remaining_audio": 5
+      "remaining_audio": 4
     },
     {
       "channel": "Sarah Evans (Into the Blue Channeling)",
@@ -630,6 +693,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 1,
       "remaining_audio": 3
@@ -640,6 +704,7 @@
       "target": 20,
       "youtube_audio": 16,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 0,
       "remaining_audio": 4
@@ -648,11 +713,12 @@
       "channel": "Shaun Swanson",
       "channel_dir": "shaun-swanson",
       "target": 20,
-      "youtube_audio": 18,
+      "youtube_audio": 19,
       "publisher_only_audio": 0,
-      "audio_total": 18,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 19,
       "with_saved_text": 1,
-      "remaining_audio": 2
+      "remaining_audio": 1
     },
     {
       "channel": "Sounds True",
@@ -660,6 +726,7 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 15,
       "with_saved_text": 0,
       "remaining_audio": 5
@@ -670,6 +737,7 @@
       "target": 20,
       "youtube_audio": 9,
       "publisher_only_audio": 7,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 16,
       "with_saved_text": 0,
       "remaining_audio": 4
@@ -678,11 +746,12 @@
       "channel": "Stewart Pearce",
       "channel_dir": "stewart-pearce",
       "target": 20,
-      "youtube_audio": 14,
+      "youtube_audio": 15,
       "publisher_only_audio": 0,
-      "audio_total": 14,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 15,
       "with_saved_text": 1,
-      "remaining_audio": 6
+      "remaining_audio": 5
     },
     {
       "channel": "Suzanne Lie",
@@ -690,6 +759,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 4,
       "remaining_audio": 3
@@ -700,6 +770,7 @@
       "target": 20,
       "youtube_audio": 14,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 14,
       "with_saved_text": 1,
       "remaining_audio": 6
@@ -708,31 +779,34 @@
       "channel": "Tolec",
       "channel_dir": "tolec",
       "target": 20,
-      "youtube_audio": 14,
+      "youtube_audio": 15,
       "publisher_only_audio": 0,
-      "audio_total": 14,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 15,
       "with_saved_text": 0,
-      "remaining_audio": 6
+      "remaining_audio": 5
     },
     {
       "channel": "Tracey Milne",
       "channel_dir": "tracey-milne",
       "target": 20,
-      "youtube_audio": 17,
+      "youtube_audio": 18,
       "publisher_only_audio": 0,
-      "audio_total": 17,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 18,
       "with_saved_text": 1,
-      "remaining_audio": 3
+      "remaining_audio": 2
     },
     {
       "channel": "Tyler Ellison",
       "channel_dir": "tyler-ellison",
       "target": 20,
-      "youtube_audio": 11,
+      "youtube_audio": 12,
       "publisher_only_audio": 0,
-      "audio_total": 11,
+      "qualified_youtube_only_audio": 0,
+      "audio_total": 12,
       "with_saved_text": 1,
-      "remaining_audio": 9
+      "remaining_audio": 8
     },
     {
       "channel": "Wendy Kennedy",
@@ -740,6 +814,7 @@
       "target": 20,
       "youtube_audio": 14,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 14,
       "with_saved_text": 0,
       "remaining_audio": 6
@@ -750,6 +825,7 @@
       "target": 20,
       "youtube_audio": 17,
       "publisher_only_audio": 0,
+      "qualified_youtube_only_audio": 0,
       "audio_total": 17,
       "with_saved_text": 0,
       "remaining_audio": 3
@@ -757,16 +833,16 @@
   ],
   "activity": {
     "schema_version": 1,
-    "generated_at": "2026-11-18T21:20:26.865940Z",
-    "state": "paused",
-    "cohort_items": 0,
+    "generated_at": "2026-11-18T22:29:42.688863Z",
+    "state": "running",
+    "cohort_items": 14,
     "summary": {
-      "saved": 1132,
+      "saved": 1144,
       "downloading": 0,
       "processing": 0,
-      "awaiting_upload": 0,
+      "awaiting_upload": 1,
       "queued": 0,
-      "other_pending": 288
+      "other_pending": 275
     },
     "channels": [
       {
@@ -1048,12 +1124,12 @@
         "channel": "BASHAR AYAKO",
         "channel_dir": "infini-global",
         "target": 20,
-        "saved": 13,
+        "saved": 14,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 7
+        "other_pending": 6
       },
       {
         "channel": "Ismael Perez",
@@ -1312,12 +1388,12 @@
         "channel": "Akanksshaa / Multidimensional Soul",
         "channel_dir": "multidimensional-soul",
         "target": 20,
-        "saved": 16,
+        "saved": 17,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 4
+        "other_pending": 3
       },
       {
         "channel": "Nora Herold",
@@ -1367,12 +1443,12 @@
         "channel": "Pleiadian Council Whispers",
         "channel_dir": "pleiadian-council-whispers",
         "target": 20,
-        "saved": 14,
+        "saved": 15,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 6
+        "other_pending": 5
       },
       {
         "channel": "Rachel Chamness (Sound Waves Heal)",
@@ -1389,16 +1465,27 @@
         "channel": "Rachel & Kevin Pasdon",
         "channel_dir": "rachel-kevin-pasdon",
         "target": 20,
-        "saved": 17,
+        "saved": 18,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 3
+        "other_pending": 2
       },
       {
         "channel": "Riz Mirza",
         "channel_dir": "riz-mirza",
+        "target": 20,
+        "saved": 19,
+        "downloading": 0,
+        "processing": 0,
+        "awaiting_upload": 0,
+        "queued": 0,
+        "other_pending": 1
+      },
+      {
+        "channel": "Rob Gauthier",
+        "channel_dir": "rob-gauthier",
         "target": 20,
         "saved": 18,
         "downloading": 0,
@@ -1408,37 +1495,26 @@
         "other_pending": 2
       },
       {
-        "channel": "Rob Gauthier",
-        "channel_dir": "rob-gauthier",
-        "target": 20,
-        "saved": 17,
-        "downloading": 0,
-        "processing": 0,
-        "awaiting_upload": 0,
-        "queued": 0,
-        "other_pending": 3
-      },
-      {
         "channel": "Odyssey of Ascension",
         "channel_dir": "roxanne-swainhart",
         "target": 20,
         "saved": 17,
         "downloading": 0,
         "processing": 0,
-        "awaiting_upload": 0,
+        "awaiting_upload": 1,
         "queued": 0,
-        "other_pending": 3
+        "other_pending": 2
       },
       {
         "channel": "Sam the Illusionist",
         "channel_dir": "sam-the-illusionist",
         "target": 20,
-        "saved": 15,
+        "saved": 16,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 5
+        "other_pending": 4
       },
       {
         "channel": "Sarah Evans (Into the Blue Channeling)",
@@ -1466,12 +1542,12 @@
         "channel": "Shaun Swanson",
         "channel_dir": "shaun-swanson",
         "target": 20,
-        "saved": 18,
+        "saved": 19,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 2
+        "other_pending": 1
       },
       {
         "channel": "Sounds True",
@@ -1499,12 +1575,12 @@
         "channel": "Stewart Pearce",
         "channel_dir": "stewart-pearce",
         "target": 20,
-        "saved": 14,
+        "saved": 15,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 6
+        "other_pending": 5
       },
       {
         "channel": "Suzanne Lie",
@@ -1532,34 +1608,34 @@
         "channel": "Tolec",
         "channel_dir": "tolec",
         "target": 20,
-        "saved": 14,
+        "saved": 15,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 6
+        "other_pending": 5
       },
       {
         "channel": "Tracey Milne",
         "channel_dir": "tracey-milne",
         "target": 20,
-        "saved": 17,
+        "saved": 18,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 3
+        "other_pending": 2
       },
       {
         "channel": "Tyler Ellison",
         "channel_dir": "tyler-ellison",
         "target": 20,
-        "saved": 11,
+        "saved": 12,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 9
+        "other_pending": 8
       },
       {
         "channel": "Wendy Kennedy",
