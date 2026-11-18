@@ -36,6 +36,16 @@ class SnapshotChecks(unittest.TestCase):
     def test_matching_tables_accept_formula_escaped_ids_and_titles(self):
         self.assertEqual(checker.check(self.root), {'channels': 1, 'audio': 1, 'target': 2})
 
+    def test_git_normalized_lf_and_windows_crlf_tables_are_equivalent(self):
+        for name in ('channel_download_coverage.csv', 'downloaded_videos.csv'):
+            p = self.root / name
+            p.write_bytes(p.read_bytes().replace(b'\r\n', b'\n'))
+        self.assertEqual(checker.check(self.root), {'channels': 1, 'audio': 1, 'target': 2})
+        p = self.root / 'channel_download_coverage.csv'
+        p.write_bytes(p.read_bytes().replace(b'A channel', b'A changed channel'))
+        with self.assertRaisesRegex(ValueError, 'channel_csv_drift'):
+            checker.check(self.root)
+
     def test_changed_summary_cannot_pass_a_generated_only_release(self):
         self.data['summary']['audio_available'] = 2
         self.save()

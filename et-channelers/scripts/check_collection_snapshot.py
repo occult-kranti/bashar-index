@@ -40,7 +40,10 @@ def check(folder):
              and row['audio_total'] + row['remaining_audio'] == row['target']
              and row['with_saved_text'] <= row['audio_total'], 'channel_totals')
         by_channel[slug] = row
-    need((folder / 'channel_download_coverage.csv').read_bytes() == csv_bytes(channels, CHANNEL_FIELDS), 'channel_csv_drift')
+    # Git stores text CSVs with LF even when a Windows exporter writes CRLF.
+    actual_csv = (folder / 'channel_download_coverage.csv').read_bytes().replace(b'\r\n', b'\n')
+    expected_csv = csv_bytes(channels, CHANNEL_FIELDS).replace(b'\r\n', b'\n')
+    need(actual_csv == expected_csv, 'channel_csv_drift')
     reader = csv.DictReader(io.StringIO((folder / 'downloaded_videos.csv').read_text(encoding='utf-8-sig')))
     need(tuple(reader.fieldnames or ()) == VIDEO_FIELDS, 'video_csv_header')
     videos = list(reader)
