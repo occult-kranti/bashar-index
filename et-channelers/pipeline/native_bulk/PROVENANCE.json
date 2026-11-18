@@ -25,12 +25,13 @@
   "active_executor_changed": false,
   "runtime_data_included": false,
   "baseline_function_ast_sha256": {
-    "native_batch.py": "b68d200158a9f4ae8762e302d27d8de834c720337f8ad690ea52e387b6561e78",
-    "native_batch_worker.py": "1b5367794d6cf7768fb08a99102f3c62c442e20da331bbbd84df9385373132ea",
-    "native_http_policy.py": "a071ec77f2fec815a74f9816cf9ce9025cfccfff6d0adfafbacc84ddd54bf18f",
-    "native_http_policy_v4_frozen.py": "18079debbc234a8394a66b9761ffe1e4cc89d3be88925cbd481564197edd9f25",
-    "bulk_contract.py": "66e575e2b9085841595d53541ffe383167e033e7283d9c2dea03b914bfe14810",
-    "native_bulk_controller.py": "76e4a0b2cb8515f039c02333d1420b99d51ffe01128b2869c88d076190dda01b",
-    "frozen_ingestion_coverage.py": "fddd66037bcb00f9af4fcf1947b5d4ed687460fd1bf0c54e3b2d1455be38be41"
-  }
+    "native_batch.py": "0a1104b32cff97f23fb518a83b1305f9c48716309a6f5b2112ca407cc1261b01",
+    "native_batch_worker.py": "e05bc86b2feaf81d8336baadea563f1d40ef7b73f601dc1735f9afea676dd4e9",
+    "native_http_policy.py": "ba5c26413592a5f3f6596a1ebeaa136aa9fe7ddb040973ed6e18bf9f03b56cde",
+    "native_http_policy_v4_frozen.py": "c05e8dcf727a554e243425dc301a22ba2b20cfb77a8786d77266ec86269da649",
+    "bulk_contract.py": "d3c50ae368ef94d236d0a12df534efae67884761686949361c408d911acc9106",
+    "native_bulk_controller.py": "2d25cf04887fd67141bb6a89da180c7e7cf03fcc5ff3ff06cc1833cc92eee713",
+    "frozen_ingestion_coverage.py": "38094726ea51d086c5ed7c272ed491e6e7b3f045c0deef0c7e4fac70836ae1ee"
+  },
+  "baseline_function_ast_algorithm": "canonical_AST_without_empty_type_params_v1"
 }

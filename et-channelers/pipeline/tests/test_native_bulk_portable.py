@@ -30,6 +30,19 @@ def sha(value):
     return hashlib.sha256(value.encode()).hexdigest()
 
 
+def normalized_ast(value):
+    """Ignore only the empty type-parameter field added in Python 3.12."""
+    if isinstance(value, ast.AST):
+        return {'node': type(value).__name__, 'fields': [
+            [name, normalized_ast(field)] for name, field in ast.iter_fields(value)
+            if not (name == 'type_params' and field == [])]}
+    if isinstance(value, list):
+        return [normalized_ast(item) for item in value]
+    if isinstance(value, bytes):
+        return {'bytes_hex': value.hex()}
+    return value
+
+
 def write(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value), encoding='utf-8')
@@ -107,12 +120,23 @@ class PortableBulkTests(unittest.TestCase):
 
     def test_function_bodies_match_frozen_source_provenance(self):
         provenance = json.loads((PACKAGE / 'PROVENANCE.json').read_bytes())
+        self.assertEqual('canonical_AST_without_empty_type_params_v1',
+                         provenance['baseline_function_ast_algorithm'])
         for name, expected in provenance['baseline_function_ast_sha256'].items():
             tree = ast.parse((PACKAGE / name).read_text(encoding='utf-8'))
-            functions = [ast.dump(node, include_attributes=False) for node in ast.walk(tree)
+            functions = [normalized_ast(node) for node in ast.walk(tree)
                          if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))]
             actual = hashlib.sha256(json.dumps(functions, separators=(',', ':')).encode()).hexdigest()
             self.assertEqual(expected, actual, name)
+        # Python 3.11 omits this field; Python 3.12+ supplies an empty list.
+        old = ast.parse('def example():\n    return 1').body[0]
+        modern = ast.parse('def example():\n    return 1').body[0]
+        modern.type_params = []
+        if 'type_params' not in modern._fields:
+            modern._fields += ('type_params',)
+        if 'type_params' in old._fields:
+            old._fields = tuple(field for field in old._fields if field != 'type_params')
+        self.assertEqual(normalized_ast(old), normalized_ast(modern))
         self.assertEqual(worker.PROFILE, contract.PROFILE)
         self.assertEqual(60, worker.GO_WAIT_SECONDS)
 
