@@ -73,6 +73,19 @@ class CollectionEtaTests(unittest.TestCase):
             self.assertEqual(campaign['selected_items'], 1153)
             self.assertEqual(campaign['later_prepared_items'], 553)
 
+    def test_limited_v5_frame_keeps_prior_progress_without_crediting_startup_failures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); live = self.operational_fixture(root)
+            status = {'scope': 'local_youtube_collection', 'native_lane': dict(kind='native_v5_source_hold', state='paused',
+                frame_items=20, prior_completed_decisions=40)}
+            result = eta.operational_estimate(root, live, root / 'next.json', root / 'campaign.json', status)
+            campaign = result['untouched_first_pass']
+            self.assertEqual(campaign['items'], 1113)
+            self.assertEqual(campaign['completed_decisions'], 40)
+            self.assertEqual(campaign['later_prepared_items'], 1093)
+            self.assertEqual(campaign['state'], 'held_native_source')
+            self.assertIsNone(result['guaranteed_completion_date'])
+
     def test_incomplete_or_mismatched_terminal_proof_cannot_calibrate_current_eta(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); live = self.operational_fixture(root)

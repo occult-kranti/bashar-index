@@ -1,10 +1,10 @@
 {
   "schema_version": 2,
   "scope": "collection_eta",
-  "generated_at": "2026-11-18T03:57:12Z",
+  "generated_at": "2026-11-18T04:41:35Z",
   "current": {
-    "generated_at": "2026-11-18T03:57:12Z",
-    "status_snapshot_at": "2026-11-18T03:57:08Z",
+    "generated_at": "2026-11-18T04:41:35Z",
+    "status_snapshot_at": "2026-11-18T04:41:31Z",
     "status": "conditional_only",
     "guaranteed_completion_date": null,
     "full_audio_and_text_completion_hours": null,
@@ -12,7 +12,7 @@
     "coverage": {
       "verified_pairs": 201,
       "asr_verified_videos": 91,
-      "source_audio_available_target_videos": 229,
+      "source_audio_available_target_videos": 231,
       "source_audio_with_text_target_videos": 136,
       "text_available_videos": 108,
       "text_inventory_complete_videos": 106,
@@ -95,9 +95,9 @@
       "frames": 58,
       "selected_items": 1153,
       "completed_decisions": 40,
-      "current_cohort_items": 600,
-      "current_cohort_index": 1,
-      "later_prepared_items": 553,
+      "current_cohort_items": 20,
+      "current_cohort_index": null,
+      "later_prepared_items": 1093,
       "state": "held_native_source",
       "scope": "Decisions on the frozen untouched selection, including holds and failures"
     },

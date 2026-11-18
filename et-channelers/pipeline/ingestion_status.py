@@ -99,7 +99,7 @@ def owned_process_child_of(child, parent):
         kernel.CloseHandle(handle)
 
 
-def owned_native_batch_command(identity, settings_path):
+def owned_native_batch_command(identity, settings_path, coordinator_path=None):
     """Verify the live Windows command binds this code and exact settings file."""
     if os.name != 'nt' or not owned_process_alive(identity):
         return False
@@ -142,7 +142,8 @@ def owned_native_batch_command(identity, settings_path):
             kernel.LocalFree(argv)
         if len(args) == 6 and args[1] in {'-I', '-u'}:
             args.pop(1)
-        return (len(args) == 5 and Path(args[1]).resolve() == Path(__file__).with_name('native_batch.py').resolve() and
+        program = coordinator_path or Path(__file__).with_name('native_batch.py')
+        return (len(args) == 5 and Path(args[1]).resolve() == Path(program).resolve() and
                 args[2] == '--settings' and Path(args[3]).resolve() == settings_path.resolve() and args[4] == '--execute')
     finally:
         kernel.CloseHandle(handle)
@@ -245,6 +246,97 @@ def _direct_native_batch(root, now):
         return {'state': 'running', 'kind': 'native_v4_direct_batch', 'workers': lease['max_workers'],
                 'process_confirmed': True, 'proof': 'owned_bound_direct_process',
                 'frame_items': len(ids), 'started_at': stamp(started), 'asr_handoff_enabled': False}
+    return {}
+
+
+def private_code_pin(root, pin):
+    """Validate a small source-code proof without executing private code."""
+    try:
+        path = Path(pin['path']).resolve()
+        size = pin['bytes']
+        return (path.is_relative_to(root.resolve()) and path.suffix == '.py' and
+                not path.is_symlink() and type(size) is int and 0 < size <= 131072 and
+                path.stat().st_size == size and hashlib.sha256(path.read_bytes()).hexdigest() == pin['sha256'])
+    except (OSError, ValueError, TypeError, KeyError):
+        return False
+
+
+def native_v5_lane(root, now):
+    """A private executor needs its actual grant, pinned files and live command."""
+    try:
+        return _native_v5_lane(root, now)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return {}
+
+
+def _native_v5_lane(root, now):
+    paths = sorted((root / 'sync').glob('stock_wpc_batch_v5*_lease.json'),
+                   key=lambda path: read_object(path).get('created_at_epoch', 0), reverse=True)
+    for path in paths[:16]:
+        result = _native_v5_lease(root, now, read_object(path), path.name[:-len('_lease.json')])
+        if result:
+            return result
+    return {}
+
+
+def _native_v5_lease(root, now, lease, namespace):
+    if not (lease.get('state') in {'active', 'released'} and lease.get('authorized') is True and
+            lease.get('source_scope_authorized') is True and isinstance(lease.get('profile'), str) and
+            re.fullmatch(r'stock_headful_wpc_native_batch_v5(?:_recovery[0-9]+)?', lease['profile']) and
+            re.fullmatch(r'stock_wpc_batch_v5(?:_recovery[0-9]+)?', namespace)):
+        return {}
+    for live in sorted((root / 'jobs').glob('native-http-v5-*/runtime-*'))[:64]:
+        active, invoked = (read_object(live / name) for name in ('activation.json', 'invocation.json'))
+        settings, plan, grant = (bound_json(root, active.get(key)) for key in ('settings', 'plan', 'root_grant'))
+        ids = invoked.get('allowed_video_ids')
+        if not (settings and plan and grant and isinstance(ids, list) and len(ids) == 20 and len(set(ids)) == 20 and
+                all(isinstance(ident, str) and re.fullmatch(r'[A-Za-z0-9_-]{11}', ident) for ident in ids) and
+                ids == lease.get('allowed_video_ids') == grant.get('allowed_video_ids') and
+                {item['video_id'] for item in plan['items']} == set(ids) and
+                invoked.get('source_count') == len(ids) and invoked.get('status') == 'running' and
+                invoked.get('profile') == settings.get('profile') == grant.get('profile') == lease['profile'] and
+                lease.get('max_workers') == settings.get('workers') == grant.get('workers') == 2 and
+                invoked.get('lease_id') == active.get('lease_id') == settings.get('lease_id') == lease.get('lease_id') and
+                all(invoked.get(key + '_sha256') == active[key]['sha256'] == lease.get(key + '_sha256')
+                    for key in ('settings', 'plan')) and
+                invoked.get('root_grant_sha256') == active['root_grant']['sha256'] == lease.get('root_admission_sha256') and
+                grant.get('settings_sha256') == lease['settings_sha256'] and grant.get('plan_sha256') == lease['plan_sha256'] and
+                grant.get('authorized') is True and grant.get('source_scope_authorized') is True and
+                grant.get('synthetic_v4_breaker_override_authorized') is True and
+                grant.get('asr_handoff') is False and settings.get('asr_handoff') is None and
+                invoked.get('asr_handoff_enabled') is False and
+                all(private_code_pin(root, active.get(key, {})) for key in ('code', 'worker', 'policy')) and
+                invoked.get('native_batch_sha256') == lease.get('coordinator_sha256') == active['code']['sha256'] and
+                invoked.get('worker_sha256') == lease.get('worker_sha256') == active['worker']['sha256'] and
+                grant.get('http_policy_sha256') == active['policy']['sha256']):
+            continue
+        base = {'kind': 'native_v5_direct_batch', 'workers': lease.get('max_workers', 2),
+                'frame_items': len(ids), 'asr_handoff_enabled': False,
+                'started_at': stamp(invoked['started_at_epoch']), 'automatic_resume': False}
+        prior = native_source_hold(root, now).get('completed_decisions')
+        if type(prior) is int and prior >= 0:
+            base['prior_completed_decisions'] = prior
+        envelope = read_object(root / ('sync/' + namespace + '_http_state.json'))
+        state = envelope.get('state', {})
+        if not (envelope.get('schema_version') == 5 and isinstance(state, dict) and
+                envelope.get('seed_sha256') == grant.get('http_policy_seed_sha256') == lease.get('http_policy_seed_sha256') and
+                state.get('policy') == 'native-http-consecutive-transfer-v5' and
+                state.get('root_review_sha256') == grant.get('root_policy_review_sha256')):
+            continue
+        cooldown = read_object(root / ('sync/' + namespace + '_source_cooldown.json'))
+        until = cooldown.get('retry_not_before_epoch', 0)
+        if type(until) not in (int, float) or not 0 <= until < 253402300799:
+            return {}
+        if (root / ('sync/STOP_' + namespace.upper())).exists() or state.get('circuit_break') or until > now:
+            actual_refusal = bool(state.get('circuit_break') or until > now)
+            return dict(base, state='paused', kind='native_v5_source_hold', process_confirmed=False,
+                        proof='current_native_stop_or_refusal' if actual_refusal else 'owner_pause',
+                        reason='source_control_hold' if actual_refusal else 'worker_startup',
+                        retry_after=stamp(until) if until > now else None)
+        expiry = min(lease.get('expires_at_epoch', 0), grant.get('expires_at_epoch', 0))
+        if (lease['state'] == 'active' and now < expiry and
+                owned_native_batch_command(invoked, Path(active['settings']['path']), Path(active['code']['path']))):
+            return dict(base, state='running', process_confirmed=True, proof='owned_bound_direct_process')
     return {}
 
 
@@ -916,7 +1008,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     legacy_operation = {'state': state, 'retry_after': stamp(until) if until else None,
                         'cooldown_provider': provider, 'workers': workers, 'full_archive_requested': archive_all}
     series = active_native_series(root, now)
-    native_lane = (native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
+    native_lane = (native_v5_lane(root, now) or native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
         'state': 'running', 'workers': series['workers'], 'kind': 'native_v4',
         'process_confirmed': True, 'proof': 'owned_live_process'}
     if series.get('kind') == 'native_v4_campaign':
@@ -929,7 +1021,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
             asr_state, asr_reported_at = 'running', series['asr_reported_at']
     elif native_lane:
         state, workers, until, provider = native_lane['state'], native_lane['workers'], None, None
-        if native_lane.get('kind') == 'native_v4_source_hold':
+        if native_lane.get('kind') in {'native_v4_source_hold', 'native_v5_source_hold'}:
             provider = 'youtube'
             retry = native_lane.get('retry_after')
             until = dt.datetime.fromisoformat(retry.replace('Z', '+00:00')).timestamp() if retry else None
