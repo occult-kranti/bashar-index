@@ -582,5 +582,109 @@ class PortableCapacityTests(unittest.TestCase):
         self.assertEqual(20, self.obj.budget.inactive_bytes)
 
 
+class CleanupClock:
+    def __init__(self):
+        self.now = 0.; self.sleeps = []
+
+    def sleep(self, seconds):
+        self.sleeps.append(seconds); self.now += seconds
+
+
+class CleanupProfile:
+    """Invented path metadata only; no directory is created or removed."""
+    def __init__(self, folder, *, exists=True, symlink=False, junction=False, parent=None):
+        self.folder = folder; self.present = exists; self.link = symlink
+        self.junction = junction; self.parent_override = parent
+
+    def exists(self): return self.present
+    def resolve(self): return (self.parent_override or self.folder) / 'profile-temp'
+    def is_symlink(self): return self.link
+    def is_junction(self): return self.junction
+
+
+class PortableProfileCleanupTests(unittest.TestCase):
+    def setUp(self):
+        self.enterContext(patch('socket.socket.connect', side_effect=AssertionError('network forbidden')))
+        self.enterContext(patch('subprocess.Popen', side_effect=AssertionError('process forbidden')))
+        self.enterContext(patch('shutil.rmtree', side_effect=AssertionError('real deletion forbidden')))
+
+    def fixture(self, **changes):
+        folder = Path(tempfile.gettempdir()).resolve() / 'native-bulk-invented-cleanup-fixture'
+        return folder, CleanupProfile(folder, **changes), CleanupClock()
+
+    def sharing(self, code):
+        error = PermissionError(13, 'PRIVATE_MESSAGE_NOT_RETAINED'); error.winerror = code
+        return error
+
+    def resolves(self, code):
+        folder, profile, clock = self.fixture(); calls = []
+        def remove(path):
+            calls.append(path)
+            if len(calls) < 4: raise self.sharing(code)
+            profile.present = False
+        result = batch.cleanup_profile(profile, folder, True, remove=remove,
+                                       sleep=clock.sleep, clock=lambda: clock.now)
+        self.assertTrue(result['cleaned']); self.assertEqual(4, result['attempts'])
+        self.assertEqual([.5, 1, 2], clock.sleeps)
+        self.assertEqual(code, result['first_failure']['winerror'])
+        self.assertNotIn('PRIVATE_MESSAGE', str(result))
+
+    def test_win32_sharing_resolves_without_source_or_real_delete(self):
+        self.resolves(32)
+
+    def test_win33_lock_resolves_without_source_or_real_delete(self):
+        self.resolves(33)
+
+    def test_exhaustion_retains_profile_and_bounds_scheduled_sleep(self):
+        folder, profile, clock = self.fixture(); calls = []
+        def remove(path):
+            calls.append(path); raise self.sharing(32)
+        result = batch.cleanup_profile(profile, folder, True, remove=remove,
+                                       sleep=clock.sleep, clock=lambda: clock.now)
+        self.assertFalse(result['cleaned']); self.assertTrue(result['retained_for_owner_cleanup'])
+        self.assertEqual(6, len(calls)); self.assertEqual(15.5, sum(clock.sleeps))
+        self.assertEqual(15.5, result['elapsed_seconds']); self.assertEqual(6, len(result['failures']))
+        self.assertEqual(result['first_failure'], result['failures'][0])
+
+    def test_nonsharing_error_is_not_retried(self):
+        folder, profile, clock = self.fixture(); calls = []
+        def remove(path):
+            calls.append(path); raise self.sharing(5)
+        result = batch.cleanup_profile(profile, folder, True, remove=remove,
+                                       sleep=clock.sleep, clock=lambda: clock.now)
+        self.assertEqual(1, len(calls)); self.assertEqual([], clock.sleeps)
+        self.assertFalse(result['cleaned']); self.assertEqual('nonsharing_error_no_retry', result['stop_reason'])
+
+    def test_failed_remove_but_actual_absence_is_clean_truth_without_retry(self):
+        folder, profile, clock = self.fixture(); calls = []
+        def remove(path):
+            calls.append(path); profile.present = False; raise self.sharing(5)
+        result = batch.cleanup_profile(profile, folder, True, remove=remove,
+                                       sleep=clock.sleep, clock=lambda: clock.now)
+        self.assertTrue(result['cleaned']); self.assertEqual(1, len(calls)); self.assertEqual([], clock.sleeps)
+        self.assertEqual(5, result['first_failure']['winerror'])
+        self.assertEqual('profile_absent_after_failure', result['stop_reason'])
+        self.assertNotIn('retained_for_owner_cleanup', result)
+
+    def assert_not_removed(self, *, processes_gone=True, **changes):
+        folder, profile, clock = self.fixture(**changes); calls = []
+        with self.assertRaises(worker.Held):
+            batch.cleanup_profile(profile, folder, processes_gone, remove=calls.append,
+                                  sleep=clock.sleep, clock=lambda: clock.now)
+        self.assertEqual([], calls); self.assertEqual([], clock.sleeps)
+
+    def test_wrong_parent_is_not_deleted(self):
+        self.assert_not_removed(parent=Path(tempfile.gettempdir()).resolve() / 'other-invented-owner')
+
+    def test_symlink_is_not_deleted(self):
+        self.assert_not_removed(symlink=True)
+
+    def test_reparse_junction_is_not_deleted(self):
+        self.assert_not_removed(junction=True)
+
+    def test_unclosed_job_is_not_deleted(self):
+        self.assert_not_removed(processes_gone=False)
+
+
 if __name__ == '__main__':
     unittest.main()

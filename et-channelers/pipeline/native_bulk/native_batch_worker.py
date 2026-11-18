@@ -23,11 +23,11 @@ PUBLIC_PIPE=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(PUBLIC_PIPE))
 
 TARGET = None  # bound from the hash-pinned plan before optional imports
-PROFILE = 'stock_headful_wpc_native_batch_v5_bulk_recovery4'
-LEASE_NAME = 'stock_wpc_batch_v5_bulk_recovery4_lease.json'
-STOP_NAME = 'STOP_STOCK_WPC_BATCH_V5_BULK_RECOVERY4'
-COOLDOWN_NAME = 'stock_wpc_batch_v5_bulk_recovery4_source_cooldown.json'
-HTTP_STATE_NAME = 'stock_wpc_batch_v5_bulk_recovery4_http_state.json'
+PROFILE = 'stock_headful_wpc_native_batch_v5_bulk_recovery5'
+LEASE_NAME = 'stock_wpc_batch_v5_bulk_recovery5_lease.json'
+STOP_NAME = 'STOP_STOCK_WPC_BATCH_V5_BULK_RECOVERY5'
+COOLDOWN_NAME = 'stock_wpc_batch_v5_bulk_recovery5_source_cooldown.json'
+HTTP_STATE_NAME = 'stock_wpc_batch_v5_bulk_recovery5_http_state.json'
 # yt-dlp's numeric filter grammar does not accept a leading minus sign.
 # The pre-transfer raw-inventory gate still requires exactly preference -1.
 LEGACY_FORMAT_SELECTOR = ('bestaudio[protocol=https][vcodec=none][language_preference<0][format_id!*=drc][ext=m4a]/'
@@ -435,7 +435,7 @@ def validate(config, admission, *, now=None):
     need(len(items) == 1 and config.get('item') == items[0], 'target_binding')
     item = items[0]
     root = Path(settings['private_root']).resolve(); run = Path(config['run_root']).resolve()
-    expected = root / 'stock_wpc_batch_v5_bulk_recovery4/jobs' / admission['plan_sha256'][:16] / item['video_id']
+    expected = root / 'stock_wpc_batch_v5_bulk_recovery5/jobs' / admission['plan_sha256'][:16] / item['video_id']
     need(run == expected.resolve(), 'run_path')
     controls = control_paths(root)
     need(Path(config.get('lease_path', '')).resolve() == controls['lease_path'] and

@@ -145,24 +145,41 @@ def exception_diagnostic(error):
     return result
 
 
-def cleanup_profile(profile, folder, processes_gone, *, remove=shutil.rmtree, sleep=time.sleep):
-    """Filesystem-only retries after the owned Job Object is empty."""
-    result = {'attempts': 0, 'cleaned': not profile.exists(), 'failures': []}
-    if not profile.exists(): return result
-    need(processes_gone and profile.resolve().parent == folder.resolve() and not profile.is_symlink() and
-         not getattr(profile, 'is_junction', lambda: False)(), 'cleanup_path')
-    for delay in (0, .25, .75):
-        if delay: sleep(delay)
-        result['attempts'] += 1
+def cleanup_profile(profile, folder, processes_gone, *, remove=shutil.rmtree, sleep=time.sleep, clock=time.monotonic):
+    """Bounded filesystem-only retries after the actual owned Job is empty.
+
+    Only Win32 sharing/lock violations32/33 are retryable. The15.5s window
+    bounds retry scheduling; a blocking filesystem call itself is not canceled.
+    No Source request, forced unlock, ACL change or unowned kill occurs here.
+    """
+    started=clock();window=15.5
+    result={'attempts':0,'cleaned':False,'failures':[],'first_failure':None,
+            'retry_window_seconds':window,'scheduled_sleep_seconds':0.0}
+    def owned_path():
+        need(processes_gone and profile.resolve().parent==folder.resolve() and not profile.is_symlink() and
+             not getattr(profile,'is_junction',lambda:False)(),'cleanup_path')
+    def finish(reason=None):
+        result['elapsed_seconds']=max(0,clock()-started)
+        if reason is not None:result['stop_reason']=reason
+        if not result['cleaned']:result['retained_for_owner_cleanup']=True
+        return result
+    owned_path()
+    if not profile.exists():result['cleaned']=True;return finish()
+    for delay in (0,.5,1,2,4,8):
+        if delay:
+            remaining=window-(clock()-started)
+            if remaining<=0:return finish('retry_window_exhausted')
+            actual=min(delay,remaining);sleep(actual);result['scheduled_sleep_seconds']+=actual
+        owned_path();result['attempts']+=1
         try:
-            remove(profile)
-            result['cleaned'] = not profile.exists()
-            if result['cleaned']: return result
+            remove(profile);result['cleaned']=not profile.exists()
+            return finish(None if result['cleaned'] else 'profile_still_exists')
         except OSError as error:
-            result['failures'].append(exception_diagnostic(error))
-            if not profile.exists(): result['cleaned'] = True; return result
-    result['retained_for_owner_cleanup'] = True
-    return result
+            failure=exception_diagnostic(error);result['failures'].append(failure)
+            if result['first_failure'] is None:result['first_failure']=failure
+            if not profile.exists():result['cleaned']=True;return finish('profile_absent_after_failure')
+            if getattr(error,'winerror',None) not in {32,33}:return finish('nonsharing_error_no_retry')
+    return finish('retry_window_exhausted')
 
 
 def check_pair_proofs(proofs, record):
@@ -197,7 +214,7 @@ class NativeBatch:
         self.s = read(self.settings_path)
         self.root = Path(self.s['private_root']).resolve()
         self.plan_sha, self.items = load_plan(self.s['plan_path'])
-        self.spool = self.root / 'stock_wpc_batch_v5_bulk_recovery4'
+        self.spool = self.root / 'stock_wpc_batch_v5_bulk_recovery5'
         self.jobs = self.spool / 'jobs' / self.plan_sha[:16]
         controls = worker.control_paths(self.root)
         self.lease_path = controls['lease_path']
@@ -205,7 +222,7 @@ class NativeBatch:
         self.cooldown_path = controls['source_cooldown_path']
         self.http_state_path = controls['http_state_path']
         self.state_path = self.root / 'sync/drive_ingest_manifest.jsonl'
-        self.batch_journal = self.root / 'sync/stock_wpc_batch_v5_bulk_recovery4_manifest.jsonl'
+        self.batch_journal = self.root / 'sync/stock_wpc_batch_v5_bulk_recovery5_manifest.jsonl'
         self.lock = threading.RLock(); self.source_stop = threading.Event()
         self.dispatch_paused = threading.Event()
         self.handoff = handoff_settings(self.root, self.s['remote'], self.s.get('asr_handoff'))
