@@ -29,7 +29,7 @@ Work on the extraterrestrial-channeler thread of the Bashar Index: research note
 | The Bashar Index, claude.ai page (September 2026 version) | <https://claude.ai/artifact/MF1hY9MYG95BaSqm9KXTFM> |
 | The Frequency of a Place (experiment page) | <https://claude.ai/artifact/EXrUcxSotuWRW8NCaBHieY>. Its code is on the repository branch `experiment-frequency-of-place`. |
 
-PR #42 merged as `86d54816` after 1,400 Python tests (47 skips), 86 Node tests, the media guard and 54 count checks passed. Pages deployment 44241054031 succeeded. Its retained `feat/native-v5-live-status-2026-11-18` branch follows PR #41's channel table and public CSV exports. The continuation `feat/collection-snapshot-refresh-2026-11-18` needs its own exact-head CI verdict. [The historical investigation](research/native-audio-investigation-2026-11-17.md) retains the earlier partial SABR trial; the [later panel record](research/native-transport-panel-2026-11-17/README.md) documents complete native HTTPS downloads.
+PR #43 merged as `6fce268e` after 1,427 Python tests (47 skips), 86 Node tests, the media guard, 54 count checks and snapshot consistency passed. Its `feat/collection-snapshot-refresh-2026-11-18` branch is retained. Metadata-only checkpoint branches publish only the five aggregate JSON/CSV files; their CI keeps media, count, consistency and browser-contract checks while skipping the full Python suite. Code changes still require that suite. [The historical investigation](research/native-audio-investigation-2026-11-17.md) retains the earlier partial SABR trial; the [later panel record](research/native-transport-panel-2026-11-17/README.md) documents complete native HTTPS downloads.
 
 ## At a glance
 
