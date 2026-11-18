@@ -131,7 +131,9 @@ class Extensions(unittest.IsolatedAsyncioTestCase):
         launch = c.build_extension_launch(self.downloader, self.adblock)
         real = Worker("b" * 32, "background.js", {**self.blocker, "name": "Localized public name"})
         wrong_version = Worker("c" * 32, "background.js", {**self.blocker, "version": "0.0.1"})
-        result = await c.select_adblock_worker(Context([Worker(c.DOWNLOADER_ID), wrong_version, real]), launch.adblocker, timeout_seconds=.1)
+        # This fixture checks identity, not a 100 ms wall-clock deadline on a
+        # shared CI runner. Dedicated timeout fixtures below retain short bounds.
+        result = await c.select_adblock_worker(Context([Worker(c.DOWNLOADER_ID), wrong_version, real]), launch.adblocker, timeout_seconds=2)
         self.assertIs(result.worker, real)
         self.assertEqual(result.extension_id, "b" * 32)
         self.assertEqual(result.version, self.blocker["version"])
@@ -143,7 +145,7 @@ class Extensions(unittest.IsolatedAsyncioTestCase):
         launch = c.build_extension_launch(self.downloader, self.adblock)
         self.assertEqual(launch.adblocker.worker_path, "js/background.js")
         worker = Worker("b" * 32, "js/background.js", manifest)
-        result = await c.select_adblock_worker(Context([worker]), launch.adblocker, timeout_seconds=.1)
+        result = await c.select_adblock_worker(Context([worker]), launch.adblocker, timeout_seconds=2)
         self.assertIs(result.worker, worker)
         self.assertEqual((self.adblock / "manifest.json").read_bytes(), before)
 
@@ -158,7 +160,7 @@ class Extensions(unittest.IsolatedAsyncioTestCase):
         launch = c.build_extension_launch(self.downloader, self.adblock)
         workers = [Worker(ch * 32, "background.js", self.blocker) for ch in "bc"]
         with self.assertRaisesRegex(c.ExtensionError, "ambiguous_adblock_worker"):
-            await c.select_adblock_worker(Context(workers), launch.adblocker, timeout_seconds=.1)
+            await c.select_adblock_worker(Context(workers), launch.adblocker, timeout_seconds=2)
         class Hanging(Worker):
             async def evaluate(self, expression):
                 await asyncio.sleep(10)
@@ -167,7 +169,7 @@ class Extensions(unittest.IsolatedAsyncioTestCase):
 
     def factory(self, browser, **kwargs):
         args = dict(owned_profile_path=self.root / "new-owned-profile", executable_path=self.executable,
-                    downloader_dir=self.downloader, adblocker_dir=self.adblock, worker_timeout_seconds=.01)
+                    downloader_dir=self.downloader, adblocker_dir=self.adblock, worker_timeout_seconds=2)
         args.update(kwargs)
         return c.launch_project_chromium(browser, **args)
 
