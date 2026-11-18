@@ -68,6 +68,66 @@ class BulkStatusTests(unittest.TestCase):
         with patch.object(status, 'owned_native_batch_command', return_value=alive):
             return status.native_bulk_lane(self.root, 1000)
 
+    def rebind_namespace(self, namespace, profile):
+        old = self.namespace
+        (self.root / ('sync/' + old + '_lease.json')).unlink()
+        (self.root / ('sync/' + old + '_http_state.json')).rename(
+            self.root / ('sync/' + namespace + '_http_state.json'))
+        self.namespace = namespace
+        self.grant['profile'] = profile
+        self.write(self.grant_path, self.grant)
+        self.lease.update(profile=profile, root_admission_sha256=self.pin(self.grant_path)['sha256'])
+        self.write(self.root / ('sync/' + namespace + '_lease.json'), self.lease)
+        self.invoked['root_grant_sha256'] = self.lease['root_admission_sha256']
+        self.state['root_grant_sha256'] = self.lease['root_admission_sha256']
+        self.write(self.live / 'source-invocation.json', self.invoked)
+        self.save_state()
+
+    def test_exact_recovery6_prototype_still_requires_owned_pid_creation_and_command(self):
+        self.rebind_namespace('stock_wpc_batch_v5_bulk_recovery6_prototype',
+            'stock_headful_wpc_native_batch_v5_bulk_recovery6_prototype')
+        expected = dict(self.invoked['controller_identity'])
+        def owned(identity, *args, **kwargs):
+            return identity == expected
+        with patch.object(status, 'owned_native_batch_command', side_effect=owned) as command:
+            lane = status.native_bulk_lane(self.root, 1000)
+            self.assertEqual(('running', True, self.namespace),
+                (lane['state'], lane['process_confirmed'], lane['namespace']))
+            self.assertEqual(expected, command.call_args.args[0])
+            self.assertEqual('bulk', command.call_args.kwargs['command_mode'])
+            # Matching metadata with a reused PID cannot replace the actual
+            # Windows creation-time/command proof.
+            self.invoked['controller_identity'] = dict(expected, process_creation_filetime='5679')
+            self.state['controller_identity'] = dict(self.invoked['controller_identity'])
+            self.write(self.live / 'source-invocation.json', self.invoked)
+            self.save_state()
+            self.assertEqual({}, status.native_bulk_lane(self.root, 1000))
+
+    def test_prototype_support_keeps_code_and_scope_pin_checks(self):
+        self.rebind_namespace('stock_wpc_batch_v5_bulk_recovery6_prototype',
+            'stock_headful_wpc_native_batch_v5_bulk_recovery6_prototype')
+        self.assertTrue(self.lane()['process_confirmed'])
+        mapping = self.home / 'map.json'
+        saved = mapping.read_bytes()
+        value = json.loads(saved)
+        value['frames'][0]['video_ids'].reverse()
+        self.write(mapping, value)
+        self.assertEqual({}, self.lane())
+        mapping.write_bytes(saved)
+        Path(self.codes[0]['path']).write_text('# changed code\n', encoding='utf-8')
+        self.assertEqual({}, self.lane())
+
+    def test_unrelated_or_mismatched_prototype_namespace_is_not_accepted(self):
+        self.rebind_namespace('stock_wpc_batch_v5_bulk_recovery6_prototype',
+            'stock_headful_wpc_native_batch_v5_bulk_recovery6_prototype')
+        for namespace in ('stock_wpc_batch_v5_bulk_recovery7_prototype',
+                'stock_wpc_batch_v5_bulk_recovery6_prototype_extra',
+                'stock_wpc_batch_v5_bulk_recovery5'):
+            with self.subTest(namespace=namespace), \
+                    patch.object(status, 'owned_native_batch_command') as command:
+                self.assertEqual({}, status._native_bulk_lease(self.root, 1000, self.lease, namespace))
+                command.assert_not_called()
+
     def test_metadata_alone_cannot_claim_running(self):
         self.assertEqual(self.lane()['source_count'], 2)
         self.assertTrue(self.lane()['process_confirmed'])
