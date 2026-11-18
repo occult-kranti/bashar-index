@@ -164,6 +164,16 @@
 .cc-eta dd+p { margin-top:8px; }
 .cc-eta summary { color:var(--color-ok); cursor:pointer; font-size:12px; padding-block:6px; }
 .cc-eta summary:focus-visible { outline:2px solid var(--color-fg); outline-offset:3px; }
+.cc-coverage { margin-block:28px; min-width:0; }
+.cc-coverage-controls { display:flex; flex-wrap:wrap; gap:14px; align-items:end; margin-block:16px; }
+.cc-coverage-controls label { display:flex; flex-direction:column; gap:6px; font-size:12px; min-width:0; }
+.cc-coverage-controls input, .cc-coverage-controls select { font:inherit; color:var(--color-fg); background:var(--color-panel); border:1px solid var(--color-border-line); border-radius:4px; padding:9px; max-width:100%; }
+.cc-coverage-sort { font:inherit; color:inherit; border:0; padding:6px 0; background:transparent; cursor:pointer; text-align:inherit; }
+.cc-coverage [aria-sort=ascending] .cc-coverage-sort::after { content:' \2191'; }
+.cc-coverage [aria-sort=descending] .cc-coverage-sort::after { content:' \2193'; }
+.cc-coverage :is(input,select,button):focus-visible { outline:2px solid var(--color-fg); outline-offset:3px; }
+.cc-coverage-name { white-space:normal !important; min-width:170px; max-width:300px; }
+.cc-coverage-note { color:var(--color-fg-muted); font-size:12px; line-height:1.6; max-width:85ch; }
 @media(max-width:700px) { .cc-eta dl { grid-template-columns:1fr; gap:16px; } .cc-eta dl>div+div { border-top:1px solid var(--color-border-line); padding-top:16px; } }
 .cc-archive-intro { margin-top:16px; padding-top:12px; scroll-margin-top:20px; }
 .cc-section-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; }
@@ -207,7 +217,7 @@
     <p class="cc-hero-note">Native audio, source metadata and available English captions. Transcription follows only where usable text is missing.</p>
   </header>
   <div class="cc-workspace">
-    <aside class="cc-rail"><nav class="cc-nav" aria-label="Collection sections"><div class="cc-nav-group"><p>Collection</p><a class="cc-nav-link" href="#collection-current" data-go="collection-current">Current collection</a><a class="cc-nav-link" href="#archive-overview" data-go="archive-overview">Historical archive</a></div><div class="cc-nav-group"><p>Archive & sources</p><a class="cc-nav-link" href="#people-states" data-go="people-states">Coverage by state</a><a class="cc-nav-link" href="#sources" data-go="sources">Sources & links</a><a class="cc-nav-link" href="#methods" data-go="methods">Collection methods</a><a class="cc-nav-link" href="#everyone" data-go="everyone">People & groups</a><a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar recordings</a><a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a><a class="cc-nav-link" href="#per-person" data-go="per-person">Texts by person</a><a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio & transcripts</a></div><div class="cc-nav-group"><p>Research</p><a class="cc-nav-link" href="#predictions" data-go="predictions">Prediction candidates</a><a class="cc-nav-link" href="#keywords" data-go="keywords">Title keywords</a><a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackout references</a><a class="cc-nav-link" href="#contacts" data-go="contacts">Websites & contacts</a></div></nav><a class="cc-rail-top" href="#top">Back to top &uarr;</a></aside>
+    <aside class="cc-rail"><nav class="cc-nav" aria-label="Collection sections"><div class="cc-nav-group"><p>Collection</p><a class="cc-nav-link" href="#collection-current" data-go="collection-current">Current collection</a><a class="cc-nav-link" href="#channel-downloads" data-go="channel-downloads">Channel downloads</a><a class="cc-nav-link" href="#archive-overview" data-go="archive-overview">Historical archive</a></div><div class="cc-nav-group"><p>Archive & sources</p><a class="cc-nav-link" href="#people-states" data-go="people-states">Coverage by state</a><a class="cc-nav-link" href="#sources" data-go="sources">Sources & links</a><a class="cc-nav-link" href="#methods" data-go="methods">Collection methods</a><a class="cc-nav-link" href="#everyone" data-go="everyone">People & groups</a><a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar recordings</a><a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a><a class="cc-nav-link" href="#per-person" data-go="per-person">Texts by person</a><a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio & transcripts</a></div><div class="cc-nav-group"><p>Research</p><a class="cc-nav-link" href="#predictions" data-go="predictions">Prediction candidates</a><a class="cc-nav-link" href="#keywords" data-go="keywords">Title keywords</a><a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackout references</a><a class="cc-nav-link" href="#contacts" data-go="contacts">Websites & contacts</a></div></nav><a class="cc-rail-top" href="#top">Back to top &uarr;</a></aside>
     <main class="cc-main" id="collection-content">
       <section class="cc-current" id="collection-current" tabindex="-1" aria-labelledby="cc-current-heading">
         <div class="cc-current-top"><div><p class="cc-eyebrow">Current collection &middot; YouTube</p><h2 id="cc-current-heading">Newest first. Every channel.</h2></div><span class="cc-operation" id="cc-current-state" role="status">Loading snapshot</span></div>
@@ -245,6 +255,28 @@
         <div class="cc-current-foot"><div><span class="cc-storage-label">Project storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="17000000000" value="0" aria-label="Project storage used"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
         <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>
         <p class="cc-snapshot-time" id="cc-legacy-summary"></p>
+      </section>
+      <section class="cc-coverage" id="channel-downloads" aria-labelledby="cc-coverage-heading">
+        <p class="cc-eyebrow">Latest-20 download coverage</p>
+        <h2 id="cc-coverage-heading">Every channel, at a glance.</h2>
+        <p id="cc-coverage-summary" class="cc-coverage-note">Reading verified audio and text coverage&hellip;</p>
+        <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. Targets use up to 20 indexed videos per channel. Publisher editions keep their own source labels; YouTube edit equivalence may be unverified. Text availability does not establish transcription accuracy.</p>
+        <div class="cc-coverage-controls">
+          <label for="cc-coverage-search">Find a channel<input type="search" id="cc-coverage-search" placeholder="Channel name" autocomplete="off"></label>
+          <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>
+          <span id="cc-coverage-shown" class="cc-coverage-note" role="status"></span>
+        </div>
+        <div class="cc-scroll cc-short" tabindex="0" role="region" aria-label="Channel coverage table; scroll horizontally on smaller screens">
+          <table class="cc-table"><caption class="cc-coverage-note">Verified newest-20 archive coverage. Select a column heading to sort.</caption><thead><tr>
+            <th scope="col" class="cc-left" data-coverage-key="channel" aria-sort="ascending"><button class="cc-coverage-sort" type="button">Channel</button></th>
+            <th scope="col" data-coverage-key="audio_total" aria-sort="none"><button class="cc-coverage-sort" type="button">Audio / target</button></th>
+            <th scope="col" data-coverage-key="youtube_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">YouTube</button></th>
+            <th scope="col" data-coverage-key="publisher_only_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Publisher only</button></th>
+            <th scope="col" data-coverage-key="with_saved_text" aria-sort="none"><button class="cc-coverage-sort" type="button">With text</button></th>
+            <th scope="col" data-coverage-key="remaining_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Audio remaining</button></th>
+          </tr></thead><tbody id="cc-coverage-body"><tr><td colspan="6" class="cc-left">Loading channel coverage&hellip;</td></tr></tbody></table>
+        </div>
+        <p class="cc-coverage-note"><a href="../../plan/channel_download_coverage.csv" download>Channel table CSV</a> &middot; <a href="../../plan/downloaded_videos.csv" download>Every saved video: titles, YouTube links and text status</a></p>
       </section>
       <section class="cc-archive-intro" id="archive-overview" aria-labelledby="cc-archive-heading">
         <div class="cc-section-heading"><div><p class="cc-eyebrow">Historical snapshot</p><h2 id="cc-archive-heading">The research corpus</h2></div><span class="cc-snapshot-label">16 November 2026</span></div>
