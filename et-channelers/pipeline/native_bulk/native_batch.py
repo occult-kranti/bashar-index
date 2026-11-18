@@ -32,6 +32,7 @@ http_policy=_private('owned_native_http_bulk_policy','native_http_policy.py')
 worker=_private('owned_native_worker_bulk','native_batch_worker.py')
 bulk_contract=worker.bulk_contract()
 ingestion_status=_private('owned_bulk_frozen_ingestion_coverage','frozen_ingestion_coverage.py')
+worker_diagnostics=_private('owned_bulk_worker_diagnostics','worker_diagnostics.py')
 
 MAX_SPOOL = 6_000_000_000
 MAX_ASSET = 2_000_000_000
@@ -132,6 +133,15 @@ def exception_diagnostic(error):
     for field in ('errno', 'winerror'):
         value = getattr(error, field, None)
         if type(value) is int and 0 <= value <= 65535: result[field] = value
+    frames=[];tb=error.__traceback__
+    allowed_modules={'native_batch.py','native_batch_worker.py','drive_ingest.py','pathlib.py','shutil.py','bulk_contract.py','native_http_policy.py','native_batch_job.py','native_audio_sink.py','worker_diagnostics.py'}
+    while tb is not None and len(frames)<8:
+        name=Path(tb.tb_frame.f_code.co_filename).name
+        row={'module':name if name in allowed_modules else 'other_module','line':int(tb.tb_lineno)}
+        function=tb.tb_frame.f_code.co_name
+        if name in allowed_modules and re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]{0,79}',function):row['function']=function
+        frames.append(row);tb=tb.tb_next
+    result['frames']=frames
     return result
 
 
@@ -187,7 +197,7 @@ class NativeBatch:
         self.s = read(self.settings_path)
         self.root = Path(self.s['private_root']).resolve()
         self.plan_sha, self.items = load_plan(self.s['plan_path'])
-        self.spool = self.root / 'stock_wpc_batch_v5_bulk_recovery2'
+        self.spool = self.root / 'stock_wpc_batch_v5_bulk_recovery4'
         self.jobs = self.spool / 'jobs' / self.plan_sha[:16]
         controls = worker.control_paths(self.root)
         self.lease_path = controls['lease_path']
@@ -195,12 +205,12 @@ class NativeBatch:
         self.cooldown_path = controls['source_cooldown_path']
         self.http_state_path = controls['http_state_path']
         self.state_path = self.root / 'sync/drive_ingest_manifest.jsonl'
-        self.batch_journal = self.root / 'sync/stock_wpc_batch_v5_bulk_recovery2_manifest.jsonl'
+        self.batch_journal = self.root / 'sync/stock_wpc_batch_v5_bulk_recovery4_manifest.jsonl'
         self.lock = threading.RLock(); self.source_stop = threading.Event()
         self.dispatch_paused = threading.Event()
         self.handoff = handoff_settings(self.root, self.s['remote'], self.s.get('asr_handoff'))
         self.last_guard = self.last_inventory = 0; self.lease = None
-        self.live_reservations = {}; self.budget = None;self.adaptive_pause_until=0
+        self.live_reservations = {}; self.live_captures = {}; self.budget = None;self.adaptive_pause_until=0
         self._partition_cache=None;self._partition_key=None;self._partition_at=0
         self.external = self.others = 0
         need(type(self.s.get('workers')) is int and 1 <= self.s['workers'] <= 2, 'worker_count')
@@ -356,6 +366,7 @@ class NativeBatch:
             need(type(self.lease.get('expires_at_epoch')) in (int, float) and time.time() < self.lease['expires_at_epoch'], 'lease_expired')
             if source:
                 self.observe_pending_failures()
+                self.observe_worker_diagnostics()
                 if video_id is not None and not (self.jobs/video_id/'GO').exists():self.fresh_source_coverage(video_id)
                 need(not self.source_stop.is_set() and not self.stop_path.exists(), 'batch_source_stopped')
                 if self.cooldown_path.exists():
@@ -406,6 +417,25 @@ class NativeBatch:
                 if time.time()>=self.adaptive_pause_until:return
             time.sleep(.25)
 
+    def await_owned_GO(self,ident,folder,process,spawned_at):
+        # Parent finishes or holds before the child's existing60s GO wait.
+        deadline=spawned_at+worker.GO_WAIT_SECONDS-5
+        waited_from=time.monotonic();pause_observed=False
+        while True:
+            with self.lock:
+                self.guard(source=True,force=True,video_id=ident)
+                need(not self.dispatch_paused.is_set(),'dispatch_paused')
+                need(process.poll() is None,'child_exited_before_GO')
+                self.observe_worker_diagnostics()
+                need(not self.source_stop.is_set(),'batch_source_stopped')
+                need(time.monotonic()<deadline,'pre_GO_dispatch_wait_deadline')
+                remaining=self.adaptive_pause_until-time.time()
+                if remaining<=0:
+                    (folder/'GO').write_bytes(b'owned_job_bound\n')
+                    return {'pause_observed':pause_observed,'waited_seconds':time.monotonic()-waited_from,'GO_committed_at_epoch':time.time(),'bounded_seconds':worker.GO_WAIT_SECONDS-5}
+                pause_observed=True
+            time.sleep(min(.25,max(.001,remaining)))
+
     def administrative_hold(self,reason):
         self.source_stop.set()
         if not self.stop_path.exists():self.stop_path.write_bytes((reason+'; Root reconciliation required\n').encode())
@@ -450,12 +480,32 @@ class NativeBatch:
             self.administrative_hold('parent timeout evidence or provenance invalid')
             return False
 
+    def observe_worker_diagnostics(self,folder=None):
+        with self.lock:
+            fatal = any(getattr(capture,'events',0)>0 or getattr(capture,'failure',None) is not None
+                        for capture in getattr(self,'live_captures',{}).values())
+            folders = [row['folder'] for row in getattr(self,'live_reservations',{}).values()]
+            if folder is not None: folders.append(folder)
+            for path in folders:
+                path=Path(path)
+                if (path/'worker-fatal.json').exists():fatal=True
+                audit=path/'parent-audit.json'
+                if audit.exists():
+                    try:
+                        value=read(audit).get('child_diagnostic_capture') or {}
+                        if value.get('structured_events',0)>0 or value.get('capture_failure') is not None:fatal=True
+                    except (OSError,ValueError,TypeError,AttributeError):fatal=True
+            if fatal:self.administrative_hold('worker fatal or diagnostic capture failure')
+            return fatal
+
     def finalize_child_result(self,ident,folder,result,*,parent_deadline=None,parent_error=None):
         # Final/progress HTTP is always committed before timeout isolation or
         # slot release. Parent-censored evidence never fabricates worker state.
         with self.lock:
             try:
                 self.observe_pending_failures(result)
+                fatal_seen=self.observe_worker_diagnostics(folder)
+                if fatal_seen:parent_error='worker_fatal_observed'
                 diagnostics=result.get('diagnostics',{})
                 progress=read(folder/'progress.json') if (folder/'progress.json').exists() else {}
                 if any(isinstance(value,dict) and value.get('error_class')=='control_write_failed' for value in (diagnostics,progress)):
@@ -464,7 +514,7 @@ class NativeBatch:
                 if parent_error and parent_error not in {'source_refusal','item_quarantined'} and not known_deadline:
                     self.administrative_hold('unclassified parent failure')
                 complete=(folder/'result.json').exists() and bulk_contract.terminal_result_complete(result,ident)
-                censored=False if complete else self.parent_timeout_descriptor(ident,folder,result,parent_deadline,parent_error)
+                censored=False if complete or fatal_seen else self.parent_timeout_descriptor(ident,folder,result,parent_deadline,parent_error)
                 if not complete and not censored:self.administrative_hold('bulk terminal result missing or incomplete')
                 self.release_after_reconcile(ident)
                 return censored
@@ -499,36 +549,42 @@ class NativeBatch:
             time.sleep(.5)  # wait for an existing owned worker/upload; no source attempt spent
         job = None; process = None; attached = False; closed = False; error = None
         first_exception = None; first_capacity_failure = None; process_cleanup_errors = []; profile_cleanup = None;child_identity=None;parent_deadline=None
-        started = time.monotonic(); peak_profile = 0
+        started = time.monotonic(); peak_profile = 0; diagnostic_capture=None; diagnostic_summary=None; parent_stage='before_spawn';GO_wait=None
         try:
             self.wait_adaptive_dispatch(ident)
             need(WINDOWS, 'windows_child_required')
             job = OwnedJob()
+            diagnostic_capture = worker_diagnostics.StderrCapture(folder)
+            with self.lock:self.live_captures[ident]=diagnostic_capture
+            parent_stage='spawn_child';spawned_at=time.monotonic()
             process = subprocess.Popen([self.s['python_executable'], '-I', str(Path(worker.__file__).resolve()), '--child',
                 '--config', str(folder / 'config.json'), '--admission', str(self.lease_path)],
-                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE,
                 creationflags=subprocess.CREATE_NO_WINDOW)
+            parent_stage='attach_owned_job'
             job.attach(process); attached = True
+            diagnostic_capture.start(process.stderr)
             child_identity=bulk_contract.windows_identity(process.pid,process._handle)
             write(folder/'child-owner.json',{'schema_version':1,'owned_child':child_identity,'plan_sha256':self.plan_sha,'cohort_frame_index':self.s['cohort_frame_index']})
-            with self.lock:
-                self.guard(source=True, force=True, video_id=ident)
-                need(not self.dispatch_paused.is_set(), 'dispatch_paused')
-                need(time.time()>=self.adaptive_pause_until,'adaptive_dispatch_deferred')
-                need(process.poll() is None,'child_exited_before_GO')
-                (folder / 'GO').write_bytes(b'owned_job_bound\n')
+            parent_stage='pre_GO_wait'
+            GO_wait=self.await_owned_GO(ident,folder,process,spawned_at)
             while process.poll() is None:
+                parent_stage='live_source_guard'
                 self.guard(source=True, video_id=ident)
+                need(diagnostic_capture.failure is None,'diagnostic_capture_failed')
+                need(diagnostic_capture.events == 0,'worker_fatal_observed')
                 elapsed = time.monotonic() - started
                 if elapsed>=self.s['job_wall_seconds']:
                     parent_deadline={'kind':'job_deadline','configured_seconds':self.s['job_wall_seconds'],'actual_elapsed_seconds':elapsed}
                     raise worker.Held('job_deadline')
+                parent_stage='progress_read'
                 status = read(folder / 'progress.json') if (folder / 'progress.json').exists() else {}
                 if status.get('phase','bootstrap')=='bootstrap' and elapsed>=90:
                     parent_deadline={'kind':'bootstrap_deadline','configured_seconds':90,'actual_elapsed_seconds':elapsed}
                     raise worker.Held('bootstrap_deadline')
                 if status.get('error_class') in SOURCE_FAILURES:
                     self.refuse({'video_id': ident, 'diagnostics': status}); raise worker.Held('source_refusal')
+                parent_stage='profile_accounting'
                 profile_size = storage.tree_bytes(folder / 'profile-temp'); peak_profile = max(peak_profile, profile_size)
                 need(profile_size <= 150_000_000 and storage.tree_bytes(folder) <= maximum + HEADROOM, 'observed_child_spool')
                 time.sleep(.5)
@@ -536,6 +592,8 @@ class NativeBatch:
             error = getattr(exc, 'code', getattr(exc, 'kind', 'native_child_failed'))
             first_exception = exception_diagnostic(exc)
             first_capacity_failure = getattr(exc, 'capacity_evidence', None)
+            if error in {'diagnostic_capture_failed','worker_fatal_observed','pre_GO_dispatch_wait_deadline'}:
+                with self.lock: self.administrative_hold('child diagnostic failure or fatal worker observation')
         finally:
             if process and not attached and process.poll() is None: process.kill()
             if job:
@@ -548,6 +606,12 @@ class NativeBatch:
                 except subprocess.TimeoutExpired as exc:
                     process_cleanup_errors.append(exception_diagnostic(exc)); process.kill(); process.wait(timeout=5)
                     error = error or 'child_cleanup_failed'
+            if diagnostic_capture is not None:
+                try: diagnostic_summary = diagnostic_capture.finish()
+                except BaseException as diagnostic_error:
+                    diagnostic_summary = {'capture_failure':worker_diagnostics.exception_rows(diagnostic_error),'worker_result_authority':False}
+                    error = 'diagnostic_capture_failed'
+                    first_exception = first_exception or exception_diagnostic(diagnostic_error)
             if not closed or process_cleanup_errors:
                 self.source_stop.set()
                 self.stop_path.write_bytes(b'owned child cleanup requires review\n')
@@ -562,7 +626,8 @@ class NativeBatch:
             write(folder / 'parent-audit.json', {'schema_version': 1, 'video_id': ident, 'owned_processes_gone': closed,
                 'profile_cleaned': not (folder / 'profile-temp').exists(), 'observed_profile_peak_bytes': peak_profile,
                 'browser_disk_limit_is_observed_stop_target': True, 'error_class': error,
-                'first_parent_exception': first_exception, 'process_cleanup_errors': process_cleanup_errors,
+                'first_parent_exception': first_exception, 'parent_operation_stage':parent_stage, 'pre_GO_wait':GO_wait, 'process_cleanup_errors': process_cleanup_errors,
+                'child_diagnostic_capture':diagnostic_summary,
                 'capacity_failure': first_capacity_failure,
                 'profile_cleanup': profile_cleanup,
                 'child_exit': process.returncode if process else None,
@@ -576,7 +641,9 @@ class NativeBatch:
                 if not isinstance(result,dict):result={'status':'held','video_id':ident,'diagnostics':{'error_class':error or 'child_result_missing_or_invalid'}}
                 # Commit terminal source evidence while this child remains in
                 # the scan set and the same lock still excludes every new GO.
-                censored=self.finalize_child_result(ident,folder,result,parent_deadline=parent_deadline,parent_error=error)
+                try:censored=self.finalize_child_result(ident,folder,result,parent_deadline=parent_deadline,parent_error=error)
+                finally:
+                    if ident not in self.live_reservations:self.live_captures.pop(ident,None)
                 if censored:result={'status':'held','video_id':ident,'parent_censored_descriptor':'parent-censored.json','source_access':'unknown'}
         if error or not closed: result = dict(result, status='held', parent_error_class=error or 'cleanup_unproven')
         return result
@@ -755,6 +822,21 @@ class NativeBatch:
             'audio_drive_id': done['drive_id'], 'metadata_drive_id': done['metadata']['drive_id']})
         return done
 
+    def drain_completed_source_futures(self,active,ready,counts):
+        complete=[future for future in active if future.done()]
+        for future in complete:
+            item = active.pop(future)
+            try:
+                result = future.result()
+                if result.get('status') == 'local_complete': ready.append((item, result))
+                else: counts['held'] += 1
+            except Exception as exc:
+                counts['held'] += 1
+                kind = getattr(exc, 'kind', getattr(exc, 'code', 'native_batch_failed'))
+                storage.journal(self.batch_journal, {'schema_version': 1, 'profile': worker.PROFILE, 'video_id': item['video_id'],
+                    'status': 'held', 'error_class': kind, 'plan_sha256': self.plan_sha})
+                if kind.startswith('drive_'): self.source_stop.set()
+
     def run(self):
         self.spool.mkdir(exist_ok=True)
         counts = {'verified': 0, 'skipped': 0, 'held': 0, 'pending': 0}
@@ -779,8 +861,9 @@ class NativeBatch:
                     else: counts['held'] += 1
                 else: pending.append(item)
             with ThreadPoolExecutor(max_workers=self.s['workers']) as pool:
-                active = {}; ready = []  # at most two dequeued completions; one writer
+                active = {}; ready = []  # frame/byte bounded completions; one publisher
                 while active or pending or ready:
+                    self.drain_completed_source_futures(active,ready,counts)
                     while pending and len(active) < self.s['workers'] and not self.source_stop.is_set() and not self.dispatch_paused.is_set():
                         if time.time()<self.adaptive_pause_until:break
                         try:
@@ -807,33 +890,21 @@ class NativeBatch:
                         except Exception:
                             counts['pending'] += len(pending); pending.clear(); break
                     if ready:
-                        # Refill first; execute_child still owns final reservation and GO.
-                        for item, result in ready:
-                            try: self.publish(item, result); counts['verified'] += 1
-                            except Exception as exc:
-                                counts['held'] += 1
-                                kind = getattr(exc, 'kind', getattr(exc, 'code', 'native_batch_failed'))
-                                storage.journal(self.batch_journal, {'schema_version': 1, 'profile': worker.PROFILE, 'video_id': item['video_id'],
-                                    'status': 'held', 'error_class': kind, 'plan_sha256': self.plan_sha})
-                                if kind.startswith('drive_'): self.source_stop.set()
-                        ready.clear(); continue
-                    if not active:
-                        if pending and time.time()<self.adaptive_pause_until and not self.source_stop.is_set():
-                            self.guard(force=True);time.sleep(max(0,min(.25,self.adaptive_pause_until-time.time())));continue
-                        counts['pending'] += len(pending); break
-                    complete, _ = wait(active, return_when=FIRST_COMPLETED)
-                    for future in complete:
-                        item = active.pop(future)
-                        try:
-                            result = future.result()
-                            if result.get('status') == 'local_complete': ready.append((item, result))
-                            else: counts['held'] += 1
+                        # One publisher; yield scheduler after exactly one pair.
+                        item,result=ready.pop(0)
+                        try: self.publish(item, result); counts['verified'] += 1
                         except Exception as exc:
                             counts['held'] += 1
                             kind = getattr(exc, 'kind', getattr(exc, 'code', 'native_batch_failed'))
                             storage.journal(self.batch_journal, {'schema_version': 1, 'profile': worker.PROFILE, 'video_id': item['video_id'],
                                 'status': 'held', 'error_class': kind, 'plan_sha256': self.plan_sha})
                             if kind.startswith('drive_'): self.source_stop.set()
+                        continue
+                    if not active:
+                        if pending and time.time()<self.adaptive_pause_until and not self.source_stop.is_set():
+                            self.guard(force=True);time.sleep(max(0,min(.25,self.adaptive_pause_until-time.time())));continue
+                        counts['pending'] += len(pending); break
+                    wait(active, return_when=FIRST_COMPLETED)
             write(self.jobs / 'summary.json', {'schema_version': 1, 'profile': worker.PROFILE, 'plan_sha256': self.plan_sha, **counts})
         return counts
 

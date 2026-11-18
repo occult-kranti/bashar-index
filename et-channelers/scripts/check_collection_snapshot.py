@@ -75,6 +75,22 @@ def check(folder):
                'audio_with_saved_text': 'with_saved_text', 'remaining_audio': 'remaining_audio'}
     need(type(summary.get('channels')) is int and summary['channels'] == len(channels) and all(type(summary.get(key)) is int and
          summary[key] == sum(row[field] for row in channels) for key, field in mapping.items()), 'summary_totals')
+    activity = data.get('activity')
+    if activity is not None:
+        stages = ('saved', 'downloading', 'processing', 'awaiting_upload', 'queued', 'other_pending')
+        need(activity.get('schema_version') == 1 and isinstance(activity.get('channels'), list), 'activity_schema')
+        seen_activity = set()
+        for row in activity['channels']:
+            slug = row.get('channel_dir')
+            need(slug in by_channel and slug not in seen_activity and
+                 row.get('target') == by_channel[slug]['target'] and row.get('saved') == by_channel[slug]['audio_total'] and
+                 all(type(row.get(key)) is int and row[key] >= 0 for key in stages) and
+                 sum(row[key] for key in stages) == row['target'], 'activity_partition')
+            seen_activity.add(slug)
+        need(seen_activity == set(by_channel) and all(activity.get('summary', {}).get(key) ==
+             sum(row[key] for row in activity['channels']) for key in stages), 'activity_totals')
+        if activity.get('state') != 'running':
+            need(activity['summary']['downloading'] == activity['summary']['processing'] == 0, 'activity_ownership')
     for name, scope in (('ingestion_status.json', 'local_youtube_collection'), ('collection_eta.json', 'collection_eta')):
         value = json.loads((folder / name).read_text(encoding='utf-8'))
         need(value.get('scope') == scope, 'snapshot_scope')

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Upload-date distribution of the frozen newest-20 video sample, with exact, estimated and unknown dates kept separate.">
+<title>Upload timeline · Newest-20 dataset</title>
+<style>
+:root{color-scheme:light;--ink:#21362f;--muted:#5b6962;--paper:#f5f2eb;--panel:#fffefa;--line:#d8ded6;--teal:#166c61;--amber:#b77b27;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);line-height:1.55}main{max-width:1240px;margin:auto;padding:32px 24px 64px}a{color:var(--teal);text-underline-offset:3px}h1,h2{line-height:1.15;letter-spacing:-.025em}h1{font:clamp(30px,5vw,52px)/1.08 Georgia,serif;margin:18px 0}h2{font-size:22px;margin:0 0 8px}.eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:11px;color:var(--teal);font-weight:750}.intro{max-width:840px;color:var(--muted)}.stamp{font-size:12px;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:24px 0}.metric,section,.controls{background:var(--panel);border:1px solid var(--line);border-radius:8px}.metric{padding:16px}.metric strong{display:block;font:30px Georgia,serif}.metric span{font-size:12px;color:var(--muted)}.controls{display:flex;gap:16px;align-items:end;flex-wrap:wrap;padding:16px;margin:24px 0 12px}.controls label{display:grid;gap:5px;font-size:12px;font-weight:650}.controls select{max-width:100%;min-height:42px;border:1px solid var(--line);background:white;border-radius:5px;color:var(--ink);padding:7px 10px;font:inherit}.controls label:first-child{flex:1 1 240px}.controls button{min-height:42px;background:var(--teal);color:white;border:0;border-radius:5px;padding:9px 14px;font:inherit;font-size:13px;cursor:pointer}:focus-visible{outline:3px solid var(--amber);outline-offset:3px}section{padding:24px;margin:20px 0}.note{color:var(--muted);font-size:13px;max-width:950px}.plot{width:100%;min-height:330px}.scroll{overflow:auto;max-width:100%}.heatmap{min-width:650px}.table-scroll{overflow:auto;max-height:650px}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}th:first-child,td:first-child{text-align:left}thead{position:sticky;top:0;background:var(--panel)}.pair{display:grid;grid-template-columns:1fr 1fr;gap:20px}.pair section{min-width:0}.pair .plot{min-height:350px}.method{font-size:13px}.method summary{cursor:pointer;font-weight:650}.status{font-size:13px;color:var(--muted);margin:14px 0}.error{color:#9a332a;font-weight:650}.download-note{font-size:12px;color:var(--muted)}
+@media(max-width:800px){.pair{grid-template-columns:1fr;gap:0}.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}section{padding:16px}main{padding:20px 14px 48px}.metric{padding:12px}.controls{gap:12px}.controls label{flex:1 1 130px}}
+@media print{body{background:white}main{max-width:none}.controls button{display:none}section,.metric{break-inside:avoid;border-color:#aaa}.plot{min-height:300px}}
+</style>
+</head>
+<body>
+<main>
+<nav aria-label="Research navigation"><a href="https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/">Download dashboard</a> · <a href="https://occult-kranti.github.io/bashar-index/dashboards/">All dashboards</a></nav>
+<p class="eyebrow">Dataset observatory · newest 20 per indexed channel</p>
+<h1>When were these videos published?</h1>
+<p class="intro">The upload-date distribution of the selected video sample. Exact platform dates, index estimates and missing dates remain distinct. These charts describe this capped sample; they do not estimate a channel’s total output over time.</p>
+<p id="stamp" class="stamp">Loading the embedded dataset…</p>
+<div class="metrics" aria-label="Dataset date coverage">
+ <div class="metric"><strong id="m-records">—</strong><span>selected videos</span></div>
+ <div class="metric"><strong id="m-creators">—</strong><span>creators</span></div>
+ <div class="metric"><strong id="m-exact">—</strong><span>exact metadata dates</span></div>
+ <div class="metric"><strong id="m-estimated">—</strong><span>estimated dates</span></div>
+ <div class="metric"><strong id="m-unknown">—</strong><span>undated records</span></div>
+</div>
+<div class="controls" aria-label="Timeline filters">
+ <label for="creator">Creator<select id="creator"><option value="all">All creators</option></select></label>
+ <label for="quality">Date evidence<select id="quality"><option value="all">All date qualities</option><option value="exact">Exact metadata dates</option><option value="estimated">Estimated dates</option><option value="unknown">Undated records</option></select></label>
+ <label for="period">Time bins<select id="period"><option value="month">Month</option><option value="week">Week, starting Monday</option></select></label>
+ <button id="export-csv" type="button">Export filtered CSV</button>
+ <button id="export-json" type="button">Download dataset JSON</button>
+</div>
+<p id="selection" class="status" role="status"></p>
+<section aria-labelledby="distribution-heading">
+ <h2 id="distribution-heading">Upload-date distribution</h2>
+ <p class="note">Stacked counts preserve date quality. Hover for counts, zoom to a period, or use the chart toolbar to save an SVG. Estimated dates remain approximate at every bin size.</p>
+ <div id="distribution" class="plot" role="img" aria-label="Upload counts over time by date quality"></div>
+</section>
+<div class="pair">
+ <section aria-labelledby="age-heading"><h2 id="age-heading">How recent is the sample?</h2><p class="note">Age at the dataset snapshot, including a separate undated bucket.</p><div id="age" class="plot" role="img" aria-label="Video age distribution"></div></section>
+ <section aria-labelledby="quality-heading"><h2 id="quality-heading">Date evidence in this view</h2><p class="note">A complete count includes missing dates. An estimated date is not promoted to exact by being plotted.</p><div id="evidence" class="plot" role="img" aria-label="Exact estimated and unknown date counts"></div></section>
+</div>
+<section aria-labelledby="heatmap-heading">
+ <h2 id="heatmap-heading">Creator × upload month</h2>
+ <p class="note">Each cell counts selected videos with dates. Empty cells are observed zeroes within the displayed span; undated records remain in the summary and exports. Scroll horizontally on smaller screens.</p>
+ <div class="scroll"><div id="heatmap" class="plot heatmap" role="img" aria-label="Monthly selected-video counts per creator"></div></div>
+</section>
+<section aria-labelledby="spans-heading">
+ <h2 id="spans-heading">The selected window for each creator</h2>
+ <p class="note">Ranges use dated records in the current filter. A range can contain estimated endpoints; it is not a measured publication cadence. Targets below 20 reflect the frozen indexed sample.</p>
+ <div class="table-scroll" tabindex="0" role="region" aria-label="Creator date ranges"><table><thead><tr><th scope="col">Creator</th><th scope="col">Selected</th><th scope="col">Exact</th><th scope="col">Estimated</th><th scope="col">Undated</th><th scope="col">Earliest date</th><th scope="col">Latest date</th><th scope="col">Span, days</th></tr></thead><tbody id="spans"></tbody></table></div>
+</section>
+<section class="method">
+ <details open><summary>Sources, date precision and scope</summary>
+ <p>The source is the frozen newest-20 index, with optional matching cached platform metadata. The original approximate index date remains in the row-level export when an exact date is available. Unavailable dates stay unknown; invalid dates stop the build. No video page, audio file or transcript is fetched by this report.</p>
+ <p>Exact means a valid date field was present in the corresponding cached platform metadata; it does not imply second-level time precision. Index dates are explicitly approximate. Differences between a platform upload, a premiere and a publisher’s podcast edition are not silently treated as identical events.</p>
+ <p>All selected entries are accounted for in the counters and downloadable dataset. Date charts omit undated x-axis positions, while the age/evidence charts, creator table and exports retain them. The selected latest-20 windows differ across creators, so this is a sample distribution rather than a common observation window.</p>
+ <p id="provenance" class="stamp"></p>
+ <p class="download-note">This HTML contains its data and the Plotly Cartesian renderer, so it can be opened offline. Plotly.js 4.1.1 is distributed under the MIT license; its license notice is embedded with the renderer.</p>
+ </details>
+</section>
+<noscript><p class="error">JavaScript is required for the interactive charts. The accompanying CSV and JSON preserve all rows and date-quality fields.</p></noscript>
+</main>
+<script>__PLOTLY_JS__</script>
+<script id="timeline-data" type="application/json">__TIMELINE_DATA__</script>
+<script>
+'use strict';
+const DATA = JSON.parse(document.getElementById('timeline-data').textContent);
+const RECORDS = DATA.records;
+const COLORS = {exact:'#166c61',estimated:'#bd842e',unknown:'#78837c'};
+const $ = id => document.getElementById(id);
+const fmt = number => Number(number).toLocaleString();
+const dateOf = row => row.upload_date || null;
+const qualityOf = row => ['exact','estimated'].includes(row.date_quality) && dateOf(row) ? row.date_quality : 'unknown';
+const labelOf = row => row.channel_name || row.channel || row.channel_dir;
+const escapeHtml = value => String(value).replace(/[&<>"']/g, character => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
+const CONFIG = {responsive:true,displaylogo:false,toImageButtonOptions:{format:'svg',filename:'newest20-upload-timeline'},modeBarButtonsToRemove:['lasso2d','select2d']};
+const BASE = {paper_bgcolor:'#fffefa',plot_bgcolor:'#fffefa',font:{family:'system-ui, sans-serif',size:12,color:'#21362f'},margin:{l:55,r:20,t:16,b:62},legend:{orientation:'h',y:1.14},hoverlabel:{align:'left'},xaxis:{gridcolor:'#e6eae2'},yaxis:{gridcolor:'#e6eae2',rangemode:'tozero'}};
+function qualities(rows) { const result={exact:0,estimated:0,unknown:0}; for(const row of rows) result[qualityOf(row)]++; return result; }
+function bin(date, period) { if(period==='month') return date.slice(0,7)+'-01'; const point=new Date(date+'T00:00:00Z'); point.setUTCDate(point.getUTCDate()-(point.getUTCDay()+6)%7); return point.toISOString().slice(0,10); }
+function selected() {return RECORDS.filter(row=>($('creator').value==='all'||row.channel_dir===$('creator').value)&&($('quality').value==='all'||qualityOf(row)===$('quality').value));}
+function emptyLayout(text) {return {...BASE,height:350,annotations:[{text,x:.5,y:.5,xref:'paper',yref:'paper',showarrow:false}],xaxis:{visible:false},yaxis:{visible:false}};}
+function plotDates(rows) {
+ const period=$('period').value, groups=new Map();
+ for(const row of rows){if(!dateOf(row))continue;const key=bin(dateOf(row),period);if(!groups.has(key))groups.set(key,{exact:0,estimated:0});groups.get(key)[qualityOf(row)]++;}
+ const x=[...groups.keys()].sort();
+ const traces=['exact','estimated'].map(quality=>({type:'bar',name:quality==='exact'?'Exact metadata date':'Estimated date',x,y:x.map(key=>groups.get(key)[quality]),marker:{color:COLORS[quality]},hovertemplate:'%{x|%Y-%m-%d}<br>%{y} selected videos<extra>'+quality+'</extra>'}));
+ return Plotly.react('distribution',traces,x.length?{...BASE,barmode:'stack',xaxis:{...BASE.xaxis,type:'date',title:{text:period==='month'?'Upload month':'Week starting Monday'},rangeslider:{visible:true,thickness:.11}},yaxis:{...BASE.yaxis,title:{text:'Selected videos'},dtick:undefined},height:420}:emptyLayout('No dated records in this filter'),CONFIG);
+}
+function plotAges(rows) {
+ const labels=['Future dated','0–7 days','8–30 days','31–90 days','91–365 days','Over one year','Undated'];
+ const counts=Object.fromEntries(['exact','estimated','unknown'].map(key=>[key,Array(labels.length).fill(0)]));
+ const rawAsOf=DATA.generated_at||new Date().toISOString(),asOf=new Date(rawAsOf.slice(0,10)+'T00:00:00Z');
+ for(const row of rows){const quality=qualityOf(row);let index=6;if(dateOf(row)){const age=Math.floor((asOf-new Date(dateOf(row)+'T00:00:00Z'))/86400000);index=age<0?0:age<=7?1:age<=30?2:age<=90?3:age<=365?4:5;}counts[quality][index]++;}
+ return Plotly.react('age',['exact','estimated','unknown'].map(key=>({type:'bar',name:key,x:labels,y:counts[key],marker:{color:COLORS[key]},hovertemplate:'%{x}<br>%{y} selected videos<extra>'+key+'</extra>'})),{...BASE,barmode:'stack',showlegend:false,height:350,margin:{...BASE.margin,b:100},xaxis:{tickangle:-30,automargin:true},yaxis:{...BASE.yaxis,title:{text:'Selected videos'}}},CONFIG);
+}
+function plotEvidence(rows) {
+ const q=qualities(rows),keys=['exact','estimated','unknown'];
+ return Plotly.react('evidence',[{type:'bar',orientation:'h',y:['Exact metadata','Estimated','Undated'],x:keys.map(key=>q[key]),marker:{color:keys.map(key=>COLORS[key])},text:keys.map(key=>fmt(q[key])),textposition:'auto',hovertemplate:'%{y}: %{x}<extra></extra>'}],{...BASE,height:350,margin:{l:115,r:20,t:16,b:50},xaxis:{...BASE.xaxis,title:{text:'Selected videos'},rangemode:'tozero'},yaxis:{autorange:'reversed'}},CONFIG);
+}
+function plotHeatmap(rows) {
+ const names=new Map(rows.map(row=>[row.channel_dir,labelOf(row)])),creators=[...names].sort((a,b)=>a[1].localeCompare(b[1]));
+ const dates=rows.map(dateOf).filter(Boolean).sort(),months=[];
+ if(dates.length){const cursor=new Date(dates[0].slice(0,7)+'-01T00:00:00Z'),end=dates[dates.length-1].slice(0,7);while(cursor.toISOString().slice(0,7)<=end){months.push(cursor.toISOString().slice(0,7));cursor.setUTCMonth(cursor.getUTCMonth()+1);}}
+ const counts=new Map();for(const row of rows){if(dateOf(row)){const key=row.channel_dir+'|'+dateOf(row).slice(0,7);counts.set(key,(counts.get(key)||0)+1);}}
+ const z=creators.map(([slug])=>months.map(month=>counts.get(slug+'|'+month)||0));
+ const layout={...BASE,height:Math.max(340,creators.length*22+130),margin:{l:230,r:55,t:20,b:65},xaxis:{type:'category',tickangle:-45,nticks:12,title:{text:'Upload month'}},yaxis:{autorange:'reversed',automargin:true},coloraxis:{colorscale:[[0,'#f5f3ed'],[.2,'#cde3db'],[.65,'#6fa99a'],[1,'#166c61']],colorbar:{title:{text:'Videos'}}}};
+ return Plotly.react('heatmap',months.length?[{type:'heatmap',x:months,y:creators.map(row=>escapeHtml(row[1])),z,coloraxis:'coloraxis',hovertemplate:'%{y}<br>%{x}: %{z} selected videos<extra></extra>'}]:[],months.length?layout:emptyLayout('No dated records to place on the monthly heatmap'),CONFIG);
+}
+function creatorTable(rows) {
+ const groups=new Map();for(const row of rows){if(!groups.has(row.channel_dir))groups.set(row.channel_dir,[]);groups.get(row.channel_dir).push(row);}
+ const body=$('spans');body.replaceChildren();
+ for(const [,items] of [...groups].sort((a,b)=>labelOf(a[1][0]).localeCompare(labelOf(b[1][0])))){
+  const q=qualities(items),dates=items.map(dateOf).filter(Boolean).sort(),span=dates.length?Math.round((new Date(dates[dates.length-1])-new Date(dates[0]))/86400000):null;
+  const values=[labelOf(items[0]),items.length,q.exact,q.estimated,q.unknown,dates[0]||'—',dates[dates.length-1]||'—',span===null?'—':span],tr=document.createElement('tr');
+  for(const value of values){const td=document.createElement('td');td.textContent=String(value);tr.append(td);}body.append(tr);
+ }
+ if(!rows.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=8;td.textContent='No selected records match this filter.';tr.append(td);body.append(tr);}
+}
+function download(name, text, mime) {const url=URL.createObjectURL(new Blob([text],{type:mime})),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function csvCell(value) {let text=value===null||value===undefined?'':String(value);if([61,43,45,64].includes(text.trimStart().charCodeAt(0))||[9,10,13].includes(text.charCodeAt(0)))text="'"+text;return '"'+text.replaceAll('"','""')+'"';}
+$('export-csv').addEventListener('click',()=>{const fields=['video_id','channel_name','channel_dir','title','url','listing_rank','upload_date','date_quality','original_estimated_date','exact_date_provenance'],newline=String.fromCharCode(13,10),rows=[fields,...selected().map(row=>fields.map(field=>typeof row[field]==='object'&&row[field]!==null?JSON.stringify(row[field]):row[field]))];download('newest20-upload-timeline.csv',String.fromCharCode(0xfeff)+rows.map(row=>row.map(csvCell).join(',')).join(newline)+newline,'text/csv;charset=utf-8');});
+$('export-json').addEventListener('click',()=>download('newest20-upload-timeline.json',JSON.stringify(DATA,null,2),'application/json'));
+async function render() {
+ document.documentElement.dataset.chartsReady='false';
+ const rows=selected(),q=qualities(rows),dates=rows.map(dateOf).filter(Boolean).sort();
+ $('selection').textContent=fmt(rows.length)+' selected records in view · '+fmt(q.exact)+' exact · '+fmt(q.estimated)+' estimated · '+fmt(q.unknown)+' undated'+(dates.length?' · '+dates[0]+' to '+dates[dates.length-1]:'');
+ creatorTable(rows);
+ await Promise.all([plotDates(rows),plotAges(rows),plotEvidence(rows),plotHeatmap(rows)]);
+ document.documentElement.dataset.chartsReady='true';
+}
+const allQuality=qualities(RECORDS),creators=new Map(RECORDS.map(row=>[row.channel_dir,labelOf(row)]));
+for(const [slug,name] of [...creators].sort((a,b)=>a[1].localeCompare(b[1]))){const option=document.createElement('option');option.value=slug;option.textContent=name;$('creator').append(option);}
+$('m-records').textContent=fmt(RECORDS.length);$('m-creators').textContent=fmt(creators.size);$('m-exact').textContent=fmt(allQuality.exact);$('m-estimated').textContent=fmt(allQuality.estimated);$('m-unknown').textContent=fmt(allQuality.unknown);
+$('stamp').textContent='Frozen selected sample · report generated '+(DATA.generated_at?new Date(DATA.generated_at).toLocaleString('en-US',{timeZone:'America/New_York',dateStyle:'medium',timeStyle:'short'})+' Eastern':'not recorded')+' · source dates shown at day precision';
+$('provenance').textContent='Date provenance and original estimates are included per record in the JSON/CSV. Renderer: official Plotly Cartesian4.1.1. This report makes no network requests.';
+for(const id of ['creator','quality','period'])$(id).addEventListener('change',()=>render().catch(showError));
+function showError(error){$('selection').className='status error';$('selection').textContent='The interactive charts could not be rendered. The embedded dataset and exports remain available.';console.error(error);}
+render().catch(showError);
+</script>
+</body>
+</html>

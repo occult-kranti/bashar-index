@@ -151,6 +151,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (state === 'running') explanation = 'The owned native process was confirmed running when this snapshot was saved. ' + (data.native_lane?.asr_handoff_enabled === false ? 'This batch does not hand audio to ASR. ' : '') + 'This page does not poll the worker.';
       if (data.native_lane?.kind === 'native_v4_source_hold') explanation = 'Native YouTube acquisition is held ' + (data.native_lane.reason === 'repeated_bound_403' ? 'after repeated HTTP 403 responses. ' : 'by its current source controls. ') + 'Saved recordings remain available. Further acquisition needs a reviewed source recovery; transcription is tracked separately.';
       if (data.native_lane?.kind === 'native_v5_source_hold') explanation = data.native_lane.reason === 'worker_startup' ? 'The native batch is paused after a local worker startup failure. This is an administrative pause; no new completed audio is credited. Saved recordings remain available while the startup fix is prepared.' : 'The native batch is held by its current source controls. Saved recordings remain available; no automatic retry is scheduled.';
+      if (data.native_lane?.kind === 'native_v5_bulk' && data.native_lane.reason === 'worker_diagnostics_missing') explanation = 'A download worker ended without saving its final diagnostics. The batch is paused for a reviewed continuation. Completed audio and metadata remain verified on Drive; this diagnostic failure does not establish a new source rate limit.';
       if (snapshotAge >= 10) explanation += ' This checkpoint is ' + Math.floor(snapshotAge) + ' minutes old; present worker state needs a fresh snapshot.';
       if (supportedNative > 0) explanation += ' ' + number(supportedNative) + ' native-format recordings from the browser-assisted route have paired metadata verified on Drive.';
       put('cc-current-explanation', explanation);
@@ -268,20 +269,34 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (data.schema_version !== 1 || data.scope !== 'newest20_receipt_coverage' || !Array.isArray(data.channels)) throw new Error('unexpected coverage');
       const numeric = ['target','youtube_audio','publisher_only_audio','audio_total','with_saved_text','remaining_audio'];
       if (!data.channels.every(row => typeof row.channel === 'string' && numeric.every(key => Number.isInteger(row[key]) && row[key] >= 0) && row.target <= 20 && row.youtube_audio + row.publisher_only_audio === row.audio_total && row.audio_total + row.remaining_audio === row.target && row.with_saved_text <= row.audio_total)) throw new Error('invalid channel counts');
+      const stages = ['saved','downloading','processing','awaiting_upload','queued','other_pending'];
+      const activity = data.activity;
+      const byChannel = new Map((Array.isArray(activity?.channels) ? activity.channels : []).map(row => [row.channel_dir, row]));
+      const activityValid = activity?.schema_version === 1 && byChannel.size === data.channels.length && data.channels.every(row => {
+        const current = byChannel.get(row.channel_dir);
+        return current && stages.every(field => Number.isInteger(current[field]) && current[field] >= 0) && current.saved === row.audio_total && current.target === row.target && stages.reduce((total, field) => total + current[field], 0) === row.target;
+      });
+      const channels = data.channels.map(row => {
+        const current = activityValid ? byChannel.get(row.channel_dir) : null;
+        return {...row, active: current ? current.downloading + current.processing + current.awaiting_upload : -1, queued: current ? current.queued : -1, activity: current};
+      });
       let key = 'channel', ascending = true;
-      const addCell = (tr, value, name = false) => { const cell = document.createElement('td'); cell.textContent = String(value); if (name) cell.className = 'cc-left cc-coverage-name'; tr.append(cell); };
+      const addCell = (tr, value, name = false) => { const cell = document.createElement('td'); cell.textContent = String(value); if (name) cell.className = 'cc-left cc-coverage-name'; tr.append(cell); return cell; };
       function render() {
         const query = search.value.trim().toLocaleLowerCase();
-        const rows = data.channels.filter(row => row.channel.toLocaleLowerCase().includes(query) && (filter.value === 'audio' ? row.remaining_audio > 0 : filter.value === 'text' ? row.audio_total > row.with_saved_text : true));
+        const rows = channels.filter(row => row.channel.toLocaleLowerCase().includes(query) && (filter.value === 'active' ? row.active > 0 : filter.value === 'audio' ? row.remaining_audio > 0 : filter.value === 'text' ? row.audio_total > row.with_saved_text : true));
         rows.sort((a,b) => (typeof a[key] === 'string' ? a[key].localeCompare(b[key]) : a[key] - b[key]) * (ascending ? 1 : -1));
         body.replaceChildren();
         for (const row of rows) {
           const tr = document.createElement('tr');
           addCell(tr, row.channel, true); addCell(tr, row.audio_total + ' / ' + row.target);
+          const activeCell = addCell(tr, row.active < 0 ? '—' : row.active);
+          if (row.activity) activeCell.setAttribute('aria-label', row.active + ' in progress: ' + row.activity.downloading + ' downloading, ' + row.activity.processing + ' preparing or validating, ' + row.activity.awaiting_upload + ' awaiting upload');
+          addCell(tr, row.queued < 0 ? '—' : row.queued);
           for (const field of ['youtube_audio','publisher_only_audio','with_saved_text','remaining_audio']) addCell(tr, row[field]);
           body.append(tr);
         }
-        if (!rows.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 6; td.className = 'cc-left'; td.textContent = 'No channels match these filters.'; tr.append(td); body.append(tr); }
+        if (!rows.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 8; td.className = 'cc-left'; td.textContent = 'No channels match these filters.'; tr.append(td); body.append(tr); }
         for (const header of headers) header.setAttribute('aria-sort', header.dataset.coverageKey === key ? (ascending ? 'ascending' : 'descending') : 'none');
         put('cc-coverage-shown', rows.length + ' of ' + data.channels.length + ' channels shown.');
       }
@@ -289,10 +304,21 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       for (const header of headers) header.querySelector('button').addEventListener('click', () => { const next = header.dataset.coverageKey; ascending = key === next ? !ascending : next === 'channel'; key = next; render(); });
       const totals = data.summary;
       put('cc-coverage-summary', number(totals.audio_available) + ' / ' + number(totals.latest20_target) + ' entries have saved audio: ' + number(totals.youtube_native_audio) + ' YouTube originals and ' + number(totals.publisher_only_audio) + ' additional publisher editions. ' + number(totals.audio_with_saved_text) + ' have an audio edition with saved captions or a transcript.');
+      const activityTotals = activityValid ? stages.reduce((result, field) => ({...result, [field]: channels.reduce((total, row) => total + row.activity[field], 0)}), {}) : null;
+      put('cc-coverage-activity', activityTotals ? 'At this checkpoint: ' + number(activityTotals.downloading) + ' transferring audio, ' + number(activityTotals.processing) + ' preparing or validating, and ' + number(activityTotals.awaiting_upload) + ' awaiting upload. ' + number(activityTotals.queued) + ' are queued in the running batch. In progress includes these three working stages; remaining entries need separate scheduling or recovery.' : 'Worker activity was not verified for this checkpoint; archived counts remain available.');
+      const activityDownload = document.getElementById('cc-activity-download');
+      if (activityDownload && activityValid) {
+        const csvCell = value => { let text = String(value); if ([61,43,45,64].includes(text.trimStart().charCodeAt(0)) || [9,10,13].includes(text.charCodeAt(0))) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
+        const records = [['Creator','Target','Saved audio','Downloading','Preparing or validating','Awaiting upload','Queued','Other pending'], ...channels.map(row => [row.channel,row.target,...stages.map(field => row.activity[field])])];
+        const newline = String.fromCharCode(13,10);
+        const url = URL.createObjectURL(new Blob([String.fromCharCode(0xfeff) + records.map(row => row.map(csvCell).join(',')).join(newline) + newline], {type:'text/csv;charset=utf-8'}));
+        activityDownload.href = url; activityDownload.hidden = false;
+        window.addEventListener('pagehide', () => URL.revokeObjectURL(url), {once:true});
+      }
       put('cc-coverage-date', date(data.generated_at));
       render();
     } catch (_) {
-      body.replaceChildren(); const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 6; td.className = 'cc-left'; td.textContent = 'The channel coverage checkpoint could not be loaded.'; tr.append(td); body.append(tr);
+      body.replaceChildren(); const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 8; td.className = 'cc-left'; td.textContent = 'The channel coverage checkpoint could not be loaded.'; tr.append(td); body.append(tr);
       put('cc-coverage-summary', 'Channel coverage is unavailable. Use the dated collection snapshot above.');
       put('cc-coverage-date', 'unavailable'); put('cc-coverage-shown', ''); search.disabled = true; filter.disabled = true;
     }
@@ -565,19 +591,24 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. Targets use up to 20 indexed videos per channel. Publisher editions keep their own source labels; YouTube edit equivalence may be unverified. Text availability does not establish transcription accuracy.</p>
         <div class="cc-coverage-controls">
           <label for="cc-coverage-search">Find a channel<input type="search" id="cc-coverage-search" placeholder="Channel name" autocomplete="off"></label>
-          <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>
+          <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="active">Working now</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>
           <span id="cc-coverage-shown" class="cc-coverage-note" role="status"></span>
         </div>
         <div class="cc-scroll cc-short" tabindex="0" role="region" aria-label="Channel coverage table; scroll horizontally on smaller screens">
           <table class="cc-table"><caption class="cc-coverage-note">Verified newest-20 archive coverage. Select a column heading to sort.</caption><thead><tr>
             <th scope="col" class="cc-left" data-coverage-key="channel" aria-sort="ascending"><button class="cc-coverage-sort" type="button">Channel</button></th>
             <th scope="col" data-coverage-key="audio_total" aria-sort="none"><button class="cc-coverage-sort" type="button">Audio / target</button></th>
+            <th scope="col" data-coverage-key="active" aria-sort="none"><button class="cc-coverage-sort" type="button">In progress</button></th>
+            <th scope="col" data-coverage-key="queued" aria-sort="none"><button class="cc-coverage-sort" type="button">Queued</button></th>
             <th scope="col" data-coverage-key="youtube_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">YouTube</button></th>
             <th scope="col" data-coverage-key="publisher_only_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Publisher only</button></th>
             <th scope="col" data-coverage-key="with_saved_text" aria-sort="none"><button class="cc-coverage-sort" type="button">With text</button></th>
             <th scope="col" data-coverage-key="remaining_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Audio remaining</button></th>
-          </tr></thead><tbody id="cc-coverage-body"><tr><td colspan="6" class="cc-left">Loading channel coverage&hellip;</td></tr></tbody></table>
+          </tr></thead><tbody id="cc-coverage-body"><tr><td colspan="8" class="cc-left">Loading channel coverage&hellip;</td></tr></tbody></table>
         </div>
+        <p id="cc-coverage-activity" class="cc-coverage-note">Worker stages are shown when a verified activity checkpoint is available.</p>
+        <p class="cc-coverage-note"><a id="cc-activity-download" download="creator-download-activity.csv" hidden>Download creator activity CSV</a></p>
+        <p class="cc-coverage-note"><a href="timeline.html">Explore the selected dataset’s upload timeline</a> &middot; exact and estimated dates, creator heatmap, and downloadable data.</p>
         <p class="cc-coverage-note"><a href="../../plan/channel_download_coverage.csv" download>Channel table CSV</a> &middot; <a href="../../plan/downloaded_videos.csv" download>Every saved video: titles, YouTube links and text status</a></p>
       </section>
       <section class="cc-archive-intro" id="archive-overview" aria-labelledby="cc-archive-heading">

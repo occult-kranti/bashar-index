@@ -1,7 +1,9 @@
 """Portable finite-cohort fixtures only; no network, workers, Drive or private data."""
 import ast
 import hashlib
+import heapq
 import importlib
+import io
 import json
 from pathlib import Path
 import re
@@ -10,6 +12,7 @@ import tempfile
 import threading
 import time
 from types import SimpleNamespace
+from concurrent.futures import Future
 import unittest
 from unittest.mock import patch, Mock
 
@@ -93,6 +96,84 @@ def terminal(video=ID):
                             'http_escalation': None, 'global_failure_code': None}}
 
 
+class SchedulerFixture:
+    """Deterministic source closures/publication delays; no real executor."""
+    def __init__(self, root, durations, publish_seconds=5, body_bytes=20_000_000,
+                 hold_on=None, revoke_after_first=False):
+        self.root, self.durations = root, durations
+        self.publish_seconds, self.body_bytes = publish_seconds, body_bytes
+        self.hold_on, self.revoke_after_first = hold_on, revoke_after_first
+        self.now, self.sequence, self.inactive = 0, 0, 0
+        self.events, self.queue, self.futures, self.started, self.published = [], [], [], [], []
+        self.publication_source_counts = []; self.closed = set(); self.lease_valid = True
+        self.max_sources = self.max_projected = 0
+
+    def observe(self):
+        running = sum(not future.done() for future in self.futures)
+        self.max_sources = max(self.max_sources, running)
+        self.max_projected = max(self.max_projected, self.inactive + running * (2_000_000_000 + batch.HEADROOM))
+
+    def advance(self, until):
+        while self.queue and self.queue[0][0] <= until:
+            self.now, _, callback = heapq.heappop(self.queue); callback()
+        self.now = until
+
+    def wait(self, futures, return_when=None):
+        while not any(future.done() for future in futures): self.advance(self.queue[0][0])
+        return {f for f in futures if f.done()}, {f for f in futures if not f.done()}
+
+    def executor(self, max_workers):
+        env = self
+        class FakeExecutor:
+            def __enter__(self): return self
+            def __exit__(self, *args):
+                while env.queue: env.advance(env.queue[0][0])
+            def submit(self, function, item):
+                future = Future(); env.futures.append(future); env.started.append(item['video_id'])
+                env.events.append((env.now, 'source_start', item['video_id']))
+                def complete():
+                    future.set_result(function(item)); env.observe()
+                env.sequence += 1
+                heapq.heappush(env.queue, (env.now + env.durations[len(env.started) - 1], env.sequence, complete))
+                env.observe(); return future
+        return FakeExecutor()
+
+    def run(self):
+        self.root.mkdir(exist_ok=True); (self.root / 'sync').mkdir()
+        obj = batch.NativeBatch.__new__(batch.NativeBatch); self.batch = obj
+        obj.root = self.root; obj.spool = self.root / 'spool'; obj.jobs = obj.spool / 'jobs'
+        obj.plan_sha = sha('scheduler plan'); obj.state_path = self.root / 'sync/native.jsonl'
+        obj.batch_journal = self.root / 'sync/batch.jsonl'
+        obj.items = [{'video_id': 'n' + str(i).zfill(10), 'channel_dir': 'fixture', 'tab': 'Videos',
+                      'max_audio_bytes': 2_000_000_000} for i in range(len(self.durations))]
+        obj.s = {'workers': 2, 'max_asset_bytes': 2_000_000_000, 'spool_cap_bytes': 5_500_000_000, 'remote': 'fixture:'}
+        obj.lock = threading.RLock(); obj.source_stop = threading.Event(); obj.dispatch_paused = threading.Event()
+        obj.adaptive_pause_until = 0; obj.live_reservations = {}; obj.budget = None; obj.capacity = {'inactive_spool_bytes': 0}
+        obj.handoff = None; obj.finalize_handoff = lambda *args: None
+        def guard(*, source=False, video_id=None, **kwargs):
+            if not self.lease_valid: raise worker.Held('lease_revoked')
+            if source: self.events.append((self.now, 'source_guard', video_id))
+            obj.capacity = {'inactive_spool_bytes': self.inactive}; return 16_000_000_000
+        def execute(item):
+            self.closed.add(item['video_id'])
+            if item['video_id'] == self.hold_on:
+                obj.source_stop.set(); return {'status': 'held'}
+            self.inactive += self.body_bytes; return {'status': 'local_complete'}
+        def publish(item, result):
+            obj.guard()
+            if item['video_id'] not in self.closed: raise AssertionError('publication before owned closure')
+            self.publication_source_counts.append(len(self.started)); self.advance(self.now + self.publish_seconds)
+            self.inactive -= self.body_bytes; self.published.append(item['video_id']); self.observe()
+            if self.revoke_after_first: self.lease_valid = False
+        obj.guard, obj.execute_child, obj.publish = guard, execute, publish
+        budget = SimpleNamespace(usage=lambda: self.inactive, _outstanding=lambda: 0)
+        with patch.object(batch, 'ThreadPoolExecutor', side_effect=self.executor), \
+                patch.object(batch, 'wait', side_effect=self.wait), \
+                patch.object(batch, 'SlotBudget', return_value=budget):
+            self.summary = obj.run()
+        return self
+
+
 class PortableBulkTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -104,7 +185,7 @@ class PortableBulkTests(unittest.TestCase):
     def test_all_modules_import_from_package_without_workstation_paths(self):
         for name in ('native_batch', 'native_batch_worker', 'native_http_policy',
                      'native_http_policy_v4_frozen', 'bulk_contract', 'native_bulk_controller',
-                     'frozen_ingestion_coverage'):
+                     'frozen_ingestion_coverage', 'worker_diagnostics'):
             module = importlib.import_module('pipeline.native_bulk.' + name)
             self.assertEqual(PACKAGE, Path(module.__file__).resolve().parent)
             self.assertIsNone(re.search(r'\b[A-Za-z]:[\\/]', Path(module.__file__).read_text(encoding='utf-8')))
@@ -139,6 +220,132 @@ class PortableBulkTests(unittest.TestCase):
         self.assertEqual(normalized_ast(old), normalized_ast(modern))
         self.assertEqual(worker.PROFILE, contract.PROFILE)
         self.assertEqual(60, worker.GO_WAIT_SECONDS)
+
+    def test_fatal_diagnostics_keep_safe_classes_and_control_stage_without_messages(self):
+        diagnostics = batch.worker_diagnostics
+        cause = PermissionError('https://fixture.invalid/?token=secret Authorization: fixture')
+        cause.winerror = 5
+        error = worker.Held('control_write_failed'); error.__cause__ = cause
+        error.control_diagnostic = {'stage': 'replace', 'target': 'result.json', 'retry_attempts': 5,
+                                    'url': 'https://fixture.invalid/private'}
+        event = diagnostics.sanitized_event({'kind': 'native_worker_fatal', 'exceptions': diagnostics.exception_rows(error)})
+        rendered = json.dumps(event)
+        self.assertIn('PermissionError', rendered); self.assertIn('replace', rendered)
+        self.assertEqual(5, event['exceptions'][1]['winerror'])
+        self.assertNotIn('fixture.invalid', rendered); self.assertNotIn('Authorization', rendered)
+        self.assertFalse(event['worker_result_authority']); self.assertEqual('unknown', event['source_access'])
+
+    def test_durable_outer_fatal_is_separate_from_worker_result(self):
+        diagnostics = batch.worker_diagnostics
+        folder = self.root / ID; folder.mkdir()
+        config = folder / 'config.json'; write(config, {'run_root': str(folder)})
+        with patch.object(diagnostics.os, 'write') as stderr:
+            result = diagnostics.report_fatal(PermissionError('secret URL'), ['--config', str(config)])
+        self.assertTrue(result['fatal_file_written']); self.assertTrue((folder / 'worker-fatal.json').is_file())
+        self.assertFalse((folder / 'result.json').exists())
+        self.assertNotIn('secret URL', (folder / 'worker-fatal.json').read_text())
+        self.assertTrue(stderr.call_args.args[1].startswith(diagnostics.PREFIX))
+
+    def test_stderr_bounds_discard_unstructured_oversized_and_unknown_fields(self):
+        diagnostics = batch.worker_diagnostics
+        event = {'kind': 'native_worker_fatal', 'exceptions': [{'exception_class': 'PermissionError', 'winerror': 5,
+                 'message': 'https://fixture.invalid/?token=secret'}], 'url': 'https://fixture.invalid/private'}
+        line = diagnostics.PREFIX + json.dumps(event).encode() + b'\n'
+        capture = diagnostics.StderrCapture(self.root)
+        capture.consume(io.BytesIO(b'raw secret\n' + b'x' * (diagnostics.LINE_CAP + 1) + b'\n' + line * 500))
+        summary = capture.finish(); saved = capture.path.read_bytes()
+        self.assertLessEqual(len(saved), diagnostics.CAP); self.assertTrue(summary['retention_truncated'])
+        self.assertEqual(1, summary['oversized_lines_discarded'])
+        self.assertNotIn(b'fixture.invalid', saved); self.assertNotIn(b'raw secret', saved)
+        self.assertFalse(summary['worker_result_authority'])
+
+    def test_closed_fatal_still_holds_without_live_reservation(self):
+        obj = batch.NativeBatch.__new__(batch.NativeBatch)
+        obj.lock = threading.RLock(); obj.live_captures = {}; obj.live_reservations = {}
+        folder = self.root / ID; folder.mkdir(); write(folder / 'worker-fatal.json', {'kind': 'native_worker_fatal'})
+        obj.administrative_hold = Mock()
+        self.assertTrue(obj.observe_worker_diagnostics(folder)); obj.administrative_hold.assert_called_once()
+
+    def test_scheduler_refills_before_the_second_blocking_publication(self):
+        env = SchedulerFixture(self.root, [1, 1, 1, 1, 40, 1]).run()
+        self.assertEqual(6, env.publication_source_counts[1]); self.assertEqual(6, env.summary['verified'])
+        for at, kind, ident in env.events:
+            if kind == 'source_start':
+                self.assertTrue(any(t <= at and k == 'source_guard' and value == ident for t, k, value in env.events))
+
+    def test_scheduler_publisher_bound_fixture_has_no_parallel_publication(self):
+        env = SchedulerFixture(self.root, [5] * 6, publish_seconds=20).run()
+        self.assertEqual(125, env.now); self.assertEqual(6, len(set(env.published)))
+
+    def test_scheduler_full_slots_and_actual_bytes_preserve_backpressure(self):
+        env = SchedulerFixture(self.root, [1] * 6, publish_seconds=10, body_bytes=1_300_000_000).run()
+        self.assertLessEqual(env.max_sources, 2); self.assertLessEqual(env.max_projected, 5_500_000_000)
+        self.assertEqual(6, env.summary['verified']); self.assertEqual(0, env.inactive)
+
+    def test_scheduler_source_hold_stops_refill(self):
+        env = SchedulerFixture(self.root, [1] * 6, publish_seconds=10, hold_on='n0000000002').run()
+        self.assertEqual(4, len(env.started)); self.assertEqual(2, env.summary['pending'])
+
+    def test_scheduler_revoked_lease_prevents_more_source_and_publication(self):
+        env = SchedulerFixture(self.root, [1] * 6, revoke_after_first=True).run()
+        self.assertEqual(4, len(env.started)); self.assertEqual(1, len(env.published))
+        self.assertEqual(2, env.summary['pending']); self.assertGreater(env.inactive, 0)
+
+    def GO_fixture(self):
+        obj = batch.NativeBatch.__new__(batch.NativeBatch)
+        obj.lock = threading.RLock(); obj.source_stop = threading.Event(); obj.dispatch_paused = threading.Event()
+        obj.adaptive_pause_until = 0; obj.observe_worker_diagnostics = lambda: False
+        clock = SimpleNamespace(now=0.0)
+        process = SimpleNamespace(poll=lambda: None)
+        def sleep(seconds): clock.now += seconds
+        def run():
+            with patch.object(batch.time, 'time', side_effect=lambda: clock.now), \
+                    patch.object(batch.time, 'monotonic', side_effect=lambda: clock.now), \
+                    patch.object(batch.time, 'sleep', side_effect=sleep):
+                return obj.await_owned_GO(ID, self.root, process, 0.0)
+        return obj, clock, process, run
+
+    def test_pre_GO_sibling_pause_after_spawn_waits_then_commits(self):
+        obj, clock, process, run = self.GO_fixture(); calls = []
+        def guard(**kwargs):
+            calls.append(kwargs)
+            if len(calls) == 1: obj.adaptive_pause_until = 30.0
+        obj.guard = guard; result = run()
+        self.assertTrue((self.root / 'GO').is_file()); self.assertTrue(result['pause_observed'])
+        self.assertGreaterEqual(result['waited_seconds'], 30); self.assertLess(result['waited_seconds'], worker.GO_WAIT_SECONDS)
+        self.assertGreater(len(calls), 1); self.assertTrue(all(row['source'] and row['force'] for row in calls))
+
+    def test_pre_GO_revocation_or_global_guard_hold_never_commits(self):
+        obj, clock, process, run = self.GO_fixture()
+        def guard(**kwargs):
+            obj.adaptive_pause_until = 30
+            if clock.now >= 1: raise worker.Held('lease_revoked')
+        obj.guard = guard
+        with self.assertRaises(worker.Held) as caught: run()
+        self.assertEqual('lease_revoked', caught.exception.code); self.assertFalse((self.root / 'GO').exists())
+
+    def test_pre_GO_child_exit_and_captured_fatal_each_block_commit(self):
+        obj, clock, process, run = self.GO_fixture(); obj.guard = lambda **kwargs: None
+        process.poll = lambda: 3
+        with self.assertRaises(worker.Held) as caught: run()
+        self.assertEqual('child_exited_before_GO', caught.exception.code); self.assertFalse((self.root / 'GO').exists())
+        process.poll = lambda: None; obj.observe_worker_diagnostics = lambda: obj.source_stop.set()
+        with self.assertRaises(worker.Held): run()
+        self.assertFalse((self.root / 'GO').exists())
+
+    def test_pre_GO_parent_bound_expires_inside_child_window_without_timeout_exemption(self):
+        obj, clock, process, run = self.GO_fixture(); obj.adaptive_pause_until = 1000
+        obj.guard = lambda **kwargs: None
+        with self.assertRaises(worker.Held) as caught: run()
+        self.assertEqual('pre_GO_dispatch_wait_deadline', caught.exception.code)
+        self.assertEqual(worker.GO_WAIT_SECONDS - 5, clock.now); self.assertFalse((self.root / 'GO').exists())
+
+    def test_parent_exception_context_keeps_frames_and_numbers_without_private_text(self):
+        try: raise PermissionError(13, 'https://fixture.invalid/private?token=secret')
+        except PermissionError as error: value = batch.exception_diagnostic(error)
+        self.assertEqual('PermissionError', value['exception_class']); self.assertEqual(13, value['errno'])
+        self.assertTrue(value['frames']); self.assertNotIn('fixture.invalid', str(value))
+        self.assertNotIn(str(self.root), str(value))
 
     def frames(self):
         ids = ['f' + str(i).zfill(10) for i in range(21)]

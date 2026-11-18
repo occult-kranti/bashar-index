@@ -10,6 +10,7 @@
     ['hub', 'All dashboards', 'dashboards/'],
     ['predictions', 'Predictions', 'et-channelers/dashboard/predictions.html'],
     ['collection', 'Collection', 'et-channelers/dashboard/collection/'],
+    ['timeline', 'Upload timeline', 'et-channelers/dashboard/collection/timeline.html'],
     ['youtube', 'Channel index', 'et-channelers/dashboard/'],
     ['atlas', 'Atlas', 'channeling-atlas/dist/'],
     ['bashar', 'Bashar index', ''],

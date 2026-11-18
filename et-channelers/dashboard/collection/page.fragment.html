@@ -263,19 +263,24 @@
         <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. Targets use up to 20 indexed videos per channel. Publisher editions keep their own source labels; YouTube edit equivalence may be unverified. Text availability does not establish transcription accuracy.</p>
         <div class="cc-coverage-controls">
           <label for="cc-coverage-search">Find a channel<input type="search" id="cc-coverage-search" placeholder="Channel name" autocomplete="off"></label>
-          <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>
+          <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="active">Working now</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>
           <span id="cc-coverage-shown" class="cc-coverage-note" role="status"></span>
         </div>
         <div class="cc-scroll cc-short" tabindex="0" role="region" aria-label="Channel coverage table; scroll horizontally on smaller screens">
           <table class="cc-table"><caption class="cc-coverage-note">Verified newest-20 archive coverage. Select a column heading to sort.</caption><thead><tr>
             <th scope="col" class="cc-left" data-coverage-key="channel" aria-sort="ascending"><button class="cc-coverage-sort" type="button">Channel</button></th>
             <th scope="col" data-coverage-key="audio_total" aria-sort="none"><button class="cc-coverage-sort" type="button">Audio / target</button></th>
+            <th scope="col" data-coverage-key="active" aria-sort="none"><button class="cc-coverage-sort" type="button">In progress</button></th>
+            <th scope="col" data-coverage-key="queued" aria-sort="none"><button class="cc-coverage-sort" type="button">Queued</button></th>
             <th scope="col" data-coverage-key="youtube_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">YouTube</button></th>
             <th scope="col" data-coverage-key="publisher_only_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Publisher only</button></th>
             <th scope="col" data-coverage-key="with_saved_text" aria-sort="none"><button class="cc-coverage-sort" type="button">With text</button></th>
             <th scope="col" data-coverage-key="remaining_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Audio remaining</button></th>
-          </tr></thead><tbody id="cc-coverage-body"><tr><td colspan="6" class="cc-left">Loading channel coverage&hellip;</td></tr></tbody></table>
+          </tr></thead><tbody id="cc-coverage-body"><tr><td colspan="8" class="cc-left">Loading channel coverage&hellip;</td></tr></tbody></table>
         </div>
+        <p id="cc-coverage-activity" class="cc-coverage-note">Worker stages are shown when a verified activity checkpoint is available.</p>
+        <p class="cc-coverage-note"><a id="cc-activity-download" download="creator-download-activity.csv" hidden>Download creator activity CSV</a></p>
+        <p class="cc-coverage-note"><a href="timeline.html">Explore the selected dataset’s upload timeline</a> &middot; exact and estimated dates, creator heatmap, and downloadable data.</p>
         <p class="cc-coverage-note"><a href="../../plan/channel_download_coverage.csv" download>Channel table CSV</a> &middot; <a href="../../plan/downloaded_videos.csv" download>Every saved video: titles, YouTube links and text status</a></p>
       </section>
       <section class="cc-archive-intro" id="archive-overview" aria-labelledby="cc-archive-heading">
