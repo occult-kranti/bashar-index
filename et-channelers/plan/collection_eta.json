@@ -1,22 +1,22 @@
 {
   "schema_version": 2,
   "scope": "collection_eta",
-  "generated_at": "2026-11-18T07:38:48Z",
+  "generated_at": "2026-11-18T08:09:19Z",
   "current": {
-    "generated_at": "2026-11-18T07:38:48Z",
-    "status_snapshot_at": "2026-11-18T07:38:43Z",
+    "generated_at": "2026-11-18T08:09:19Z",
+    "status_snapshot_at": "2026-11-18T08:09:15Z",
     "status": "conditional_only",
     "guaranteed_completion_date": null,
     "full_audio_and_text_completion_hours": null,
     "newest20_items": 1420,
     "coverage": {
-      "verified_pairs": 367,
+      "verified_pairs": 444,
       "asr_verified_videos": 91,
-      "source_audio_available_target_videos": 402,
+      "source_audio_available_target_videos": 479,
       "source_audio_with_text_target_videos": 136,
       "text_available_videos": 108,
       "text_inventory_complete_videos": 106,
-      "text_missing_videos": 259,
+      "text_missing_videos": 336,
       "caption_verified_videos": 15,
       "caption_verified_tracks": 20,
       "caption_text_available_videos": 17,
@@ -76,15 +76,15 @@
       "scope": "Previously held native audio; two independently admitted frames"
     },
     "untouched_first_pass": {
-      "items": 906,
-      "same_service_active_hours": 5.476760135789712,
+      "items": 826,
+      "same_service_active_hours": 4.9931610068016585,
       "planning_active_hours": [
-        5.476760135789712,
-        10.953520271579425
+        4.9931610068016585,
+        9.986322013603317
       ],
       "calendar_hours_at_half_availability": [
-        10.953520271579425,
-        21.90704054315885
+        9.986322013603317,
+        19.972644027206634
       ],
       "planning_multiplier_assumed": [
         1,
@@ -93,7 +93,7 @@
       "confidence_interval": false,
       "frames": 53,
       "selected_items": 1046,
-      "completed_decisions": 140,
+      "completed_decisions": 220,
       "original_selected_items": 1153,
       "current_cohort_items": 1046,
       "current_cohort_index": null,
