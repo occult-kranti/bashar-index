@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-18T03:57:08Z",
+  "generated_at": "2026-11-18T04:41:31Z",
   "scope": "local_youtube_collection",
   "operation": {
     "state": "paused",
-    "retry_after": "2026-11-19T02:59:03Z",
+    "retry_after": null,
     "asr_last_reported_state": "paused",
     "asr_reported_at": "2026-11-18T03:35:23Z",
     "workers": 2,
@@ -21,19 +21,18 @@
     "full_archive_requested": true
   },
   "native_lane": {
-    "state": "paused",
-    "kind": "native_v4_source_hold",
+    "kind": "native_v5_source_hold",
     "workers": 2,
-    "process_confirmed": false,
-    "proof": "current_native_stop_or_refusal",
-    "reason": "repeated_bound_403",
-    "retry_after": "2026-11-19T02:59:03Z",
+    "frame_items": 20,
+    "asr_handoff_enabled": false,
+    "started_at": "2026-11-18T04:30:14Z",
     "automatic_resume": false,
-    "source_count": 600,
-    "completed_decisions": 40,
-    "completed_frames": 2,
-    "cohort_index": 1,
-    "planned_frames": 30
+    "prior_completed_decisions": 40,
+    "state": "paused",
+    "process_confirmed": false,
+    "proof": "owner_pause",
+    "reason": "worker_startup",
+    "retry_after": null
   },
   "counts": {
     "verified_pairs": 201,
@@ -54,11 +53,11 @@
     "publisher_audio_variant_target_videos": 2,
     "publisher_audio_qualified_variant_target_videos": 1,
     "publisher_variant_asr_target_videos": 2,
-    "publisher_mirror_audio_target_videos": 28,
+    "publisher_mirror_audio_target_videos": 30,
     "publisher_mirror_caption_target_videos": 17,
     "publisher_mirror_asr_target_videos": 11,
     "publisher_standalone_timed_text_target_videos": 3,
-    "source_audio_available_target_videos": 229,
+    "source_audio_available_target_videos": 231,
     "source_audio_with_text_target_videos": 136,
     "caption_verified_videos": 15,
     "caption_verified_tracks": 20,
@@ -71,9 +70,9 @@
     "final_round_indexed": 64145
   },
   "storage": {
-    "local_bytes": 5521109079,
+    "local_bytes": 5522664107,
     "ceiling_bytes": 17000000000,
-    "managed_bytes": 8306746558,
+    "managed_bytes": 8308681727,
     "managed_ceiling_bytes": 16000000000
   },
   "browser_support": {

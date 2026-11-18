@@ -1,10 +1,14 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
-## Latest steering and receipt checkpoint, 2026-11-18 03:57 UTC
+## Latest steering and receipt checkpoint, 2026-11-18 04:41 UTC
 
 **Do not resume transcription without a new user instruction.** The user requested a pause after the current recording and redirected effort to batch downloading, code and source research. The corrected ASR venv run added six verified results, bringing native ASR to 91 and saved-text coverage to 136. Its GPU and owned jobs are released; `asr/STOP_ASR` persists. Three retained input pairs total 17,616,816 bytes, including one next item staged during the pause race without inference. The private administrative closure records that race; do not repeat the earlier incorrect claim that no later child was forked.
 
-Audio coverage is 229/1,420: 201 native pairs plus 28 additional publisher editions. The 600-item native v4 campaign archived 38 pairs before a synthetic three-distinct-403/600-second breaker held it. Source workers are terminal. Only its unused 5.5 GB future-growth reservation and source lease were released; the original browser cache and a 7,012,352-byte incomplete audio file remain charged to actual storage, with original audits and all refusal controls preserved. The 600-item scope is not complete. Source-policy v5 preparation must preserve denied assets/history and requires a separate concrete review; no new source activity is established by this document. Transcription remains paused while download recovery proceeds. The dashboard reports the actual native hold separately from the older parked collector.
+Audio coverage is 231/1,420: 201 native pairs plus 30 additional publisher editions. Captivate added two Lee Harris MP3 editions with full-packet duration checks, exact Drive size/MD5/ID proofs and owned media cleanup. Its publisher lease and unused 500 MB growth allocation are released.
+
+The v5 exact-20 native trial stopped administratively after a local startup failure: 10 held, 10 pending, zero new verified recordings. The worker waited only five seconds for GO while the parent could scan storage for longer. Original child stdout was discarded; the exact failure reconstruction and its inference limits are retained privately. The recovery uses a bounded 60-second handshake, cached inventory and explicit private-policy imports; it needs its own immutable grant and actual live acceptance. The read-only dashboard exporter validates private grant/code/settings/plan/process proofs and distinguishes this local pause from source refusals. Do not credit failed startup rows as completed recordings.
+
+The earlier 600-item v4 campaign archived 38 pairs before its synthetic three-distinct-403/600-second hold. It is not complete. Its original controls, cache and 7,012,352-byte partial remain retained and charged to actual storage; only unused future growth was released. ASR remains paused. Latest source readiness must come from actual current runtime/lease proofs, not these dated notes.
 
 ## Current per-channel download inventory, November 18
 

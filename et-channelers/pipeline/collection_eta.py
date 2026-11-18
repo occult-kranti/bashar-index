@@ -483,10 +483,11 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
         raise ValueError('Recovery decisions exceed selected scope')
     if done == next_count:
         next_state = 'terminal_with_holds' if recovery['held_or_uncertain_decisions'] else 'complete'
-    campaign_running = lane.get('kind') == 'native_v4_campaign' and lane.get('state') == 'running'
-    campaign_held = lane.get('kind') == 'native_v4_source_hold'
-    campaign_done = lane.get('completed_decisions', 0) if campaign_running or campaign_held else 0
-    cohort_items = lane.get('source_count') if campaign_running or campaign_held else None
+    v5 = lane.get('kind') in {'native_v5_direct_batch', 'native_v5_source_hold'}
+    campaign_running = lane.get('kind') in {'native_v4_campaign', 'native_v5_direct_batch'} and lane.get('state') == 'running'
+    campaign_held = lane.get('kind') in {'native_v4_source_hold', 'native_v5_source_hold'}
+    campaign_done = lane.get('prior_completed_decisions', 0) if v5 else lane.get('completed_decisions', 0) if campaign_running or campaign_held else 0
+    cohort_items = lane.get('frame_items') if v5 else lane.get('source_count') if campaign_running or campaign_held else None
     if type(campaign_done) is not int or not 0 <= campaign_done <= untouched:
         raise ValueError('Invalid campaign progress')
     cohort_items = cohort_items if type(cohort_items) is int and 0 < cohort_items <= untouched else None
@@ -505,7 +506,7 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
             'untouched_first_pass': dict(scenario(untouched - campaign_done), frames=frames,
                 selected_items=untouched, completed_decisions=campaign_done,
                 current_cohort_items=cohort_items, current_cohort_index=lane.get('cohort_index') if campaign_running or campaign_held else None,
-                later_prepared_items=untouched - cohort_items if cohort_items else untouched,
+                later_prepared_items=untouched - campaign_done - cohort_items if v5 and cohort_items else untouched - cohort_items if cohort_items else untouched,
                 state='running_admitted_cohort' if campaign_running else 'held_native_source' if campaign_held else 'prepared_campaign_disabled',
                 scope='Decisions on the frozen untouched selection, including holds and failures'),
             'assumptions': [

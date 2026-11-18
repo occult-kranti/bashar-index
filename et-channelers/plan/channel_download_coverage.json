@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-18T04:06:43.134904Z",
+  "generated_at": "2026-11-18T04:41:36.178287Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
     "youtube_native_audio": 201,
-    "publisher_only_audio": 28,
-    "audio_available": 229,
+    "publisher_only_audio": 30,
+    "audio_available": 231,
     "native_asr": 91,
     "native_caption_videos": 17,
     "audio_with_saved_text": 136,
-    "remaining_audio": 1191
+    "remaining_audio": 1189
   },
   "channels": [
     {
@@ -389,10 +389,10 @@
       "channel_dir": "lee-harris",
       "target": 20,
       "youtube_audio": 1,
-      "publisher_only_audio": 1,
-      "audio_total": 2,
+      "publisher_only_audio": 3,
+      "audio_total": 4,
       "with_saved_text": 2,
-      "remaining_audio": 18
+      "remaining_audio": 16
     },
     {
       "channel": "Leslie Muller",
