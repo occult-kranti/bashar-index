@@ -65,6 +65,40 @@ def owned_process_alive(identity):
         kernel.CloseHandle(handle)
 
 
+def owned_process_child_of(child, parent):
+    """Prove a separately launched frame belongs to the live series process."""
+    if os.name != 'nt':
+        return False
+    if not owned_process_alive(child) or not owned_process_alive(parent):
+        return False
+    if int(child['process_creation_filetime']) < int(parent['process_creation_filetime']):
+        return False
+    import ctypes
+    from ctypes import wintypes
+    class BasicInformation(ctypes.Structure):
+        _fields_ = [('reserved1', ctypes.c_void_p), ('peb', ctypes.c_void_p),
+                    ('reserved2', ctypes.c_void_p * 2), ('pid', ctypes.c_size_t),
+                    ('parent_pid', ctypes.c_size_t)]
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    native = ctypes.WinDLL('ntdll')
+    native.NtQueryInformationProcess.argtypes = [wintypes.HANDLE, wintypes.ULONG, ctypes.c_void_p,
+                                                wintypes.ULONG, ctypes.POINTER(wintypes.ULONG)]
+    native.NtQueryInformationProcess.restype = wintypes.LONG
+    handle = kernel.OpenProcess(0x1000, False, child['pid'])
+    if not handle:
+        return False
+    try:
+        info, returned = BasicInformation(), wintypes.ULONG()
+        return (native.NtQueryInformationProcess(handle, 0, ctypes.byref(info), ctypes.sizeof(info),
+                                                 ctypes.byref(returned)) == 0 and
+                info.pid == child['pid'] and info.parent_pid == parent['pid'])
+    finally:
+        kernel.CloseHandle(handle)
+
+
 def active_native_series(root, now):
     """Do not let the parked legacy collector mask a separately owned executor."""
     lease = read_object(root / 'sync/stock_wpc_batch_v4_lease.json')
@@ -87,21 +121,26 @@ def active_native_series(root, now):
                 return {}
         except (KeyError, ValueError, TypeError):
             return {}
-    for live in sorted((root / 'jobs').glob('native-series*/live'))[:20]:
+    candidates = [*(root / 'jobs').glob('native-series*/live'),
+                  *(root / 'jobs').glob('native-campaign*/live')]
+    for live in sorted(candidates)[:64]:
         if live.is_symlink() or any((live / name).exists() for name in
                                    ('local-publication-hold.json', 'drive-hold.json', 'STOP_SERIES')):
             continue
         state = read_object(live / 'series-state.json')
         invoked = read_object(live / 'source-invocation.json')
         series, authorization = lease.get('series_proposal_sha256'), lease.get('root_authorization_sha256')
+        identity = {key: invoked.get(key) for key in ('pid', 'process_creation_filetime')}
+        frame_identity = lease.get('controller_identity')
+        controller_bound = isinstance(frame_identity, dict) and (
+            frame_identity == identity or owned_process_child_of(frame_identity, identity))
         if not (isinstance(series, str) and re.fullmatch(r'[a-f0-9]{64}', series) and
                 isinstance(authorization, str) and re.fullmatch(r'[a-f0-9]{64}', authorization) and
                 state.get('status') == 'running' and state.get('proposal_sha256') == series and
                 state.get('authorization_sha256') == authorization and
                 invoked.get('series_proposal_sha256') == series and
                 invoked.get('root_authorization_sha256') == authorization and
-                lease.get('controller_identity') == {key: invoked.get(key) for key in
-                                                     ('pid', 'process_creation_filetime')} and
+                controller_bound and
                 owned_process_alive(invoked)):
             continue
         consumer = read_object(live / 'consumer-state.json')
@@ -529,7 +568,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     verified = {key for key, rec in latest.items() if proof(receipt_complete, rec, record_row(rec), remote)}
     supported_native = {key for key in verified if
                         latest[key].get('acquisition_profile') == 'stock_headful_wpc_native_full_v1' or
-                        latest[key].get('native_batch_profile') in ('stock_headful_wpc_native_batch_v1', 'stock_headful_wpc_native_batch_v2', 'stock_headful_wpc_native_batch_v3', 'stock_headful_wpc_native_batch_v4')}
+                        latest[key].get('native_batch_profile') in ('stock_headful_wpc_native_batch_v1', 'stock_headful_wpc_native_batch_v2', 'stock_headful_wpc_native_batch_v3', 'stock_headful_wpc_native_batch_v4', 'stock_headful_wpc_native_drc_recovery_v1')}
     browser_verified = set()
     for rec in asr_records(root / 'sync/browser_capture_manifest.jsonl', 'capture_id'):
         row = record_row(rec)
