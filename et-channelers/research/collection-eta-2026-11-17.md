@@ -1,5 +1,7 @@
 # Conditional collection estimate — 17 November 2026 update
 
+**Historical report:** the [18 November measured ETA](collection-eta-2026-11-18.md) and the dashboard current section supersede the active-state and first-pass timing claims below. These earlier measurements and assumptions retain their observation dates.
+
 ## Current continuation, November 18 00:05:09 UTC
 
 The frozen snapshot has **128 native pairs / 77 native ASR / 156 unique audio

@@ -21,7 +21,7 @@ import time
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from drive_ingest import (CAPTION_POLICY, caption_receipt_complete, receipt_complete,
                           terminal_unavailable)
-from ingestion_status import proof, record_row, source_deadline
+from ingestion_status import bound_json, proof, read_object, record_row, source_deadline, stamp
 
 MIB = 1024 ** 2
 DEFAULT_REMOTE = "etdrive:04 Audio"
@@ -46,6 +46,10 @@ def epoch(value):
         return parsed.timestamp() if parsed.tzinfo else None
     except (ValueError, OverflowError):
         return None
+
+
+def precise_stamp(value):
+    return dt.datetime.fromtimestamp(value, dt.timezone.utc).isoformat(timespec='microseconds').replace('+00:00', 'Z')
 
 
 def quantile(values, q):
@@ -347,6 +351,171 @@ def estimate(rows, records, caption_records=(), *, stage_rows=None, logs=(), rem
     return result
 
 
+def completed_service(root, live, remote=DEFAULT_REMOTE):
+    """Whole admitted-run service from terminal saved proofs, including waits.
+
+    Only small JSON evidence/receipt files are read. No media is hashed, probed,
+    transferred, or fetched. Outcome IDs are joined privately and never exported.
+    """
+    state = read_object(live / 'series-state.json')
+    invoked = read_object(live / 'source-invocation.json')
+    exited = read_object(live / 'source-process-exit.json')
+    released = read_object(live / 'native-allocation-released.json')
+    start, end = epoch(invoked.get('at')), epoch(exited.get('at'))
+    if not (state.get('status') in {'complete', 'finished_with_holds'} and
+            state.get('proposal_sha256') == invoked.get('series_proposal_sha256') and
+            state.get('authorization_sha256') == invoked.get('root_authorization_sha256') and
+            isinstance(state.get('proposal_sha256'), str) and len(state['proposal_sha256']) == 64 and
+            isinstance(state.get('authorization_sha256'), str) and len(state['authorization_sha256']) == 64 and
+            exited.get('exit_code') == 0 and released.get('lease_id') and
+            start is not None and end is not None and end > start):
+        raise ValueError('No complete admitted-run timing proof')
+    frames = state.get('frames')
+    if not isinstance(frames, dict) or not frames:
+        raise ValueError('Missing terminal frame outcomes')
+    outcomes = {}
+    for frame in frames.values():
+        if frame.get('phase') != 'drained' or not isinstance(frame.get('outcomes'), dict):
+            raise ValueError('Unfinished frame cannot calibrate an ETA')
+        for key, value in frame['outcomes'].items():
+            if key in outcomes:
+                raise ValueError('Repeated frame identity')
+            outcomes[key] = value
+    records, _ = records_from_bytes(read_snapshot(root / 'sync/drive_ingest_manifest.jsonl')[0])
+    verified = verified_records(records, remote)
+    canonical = {key: verified[key] for key, outcome in outcomes.items()
+                 if outcome.get('status') == 'canonical_verified' and key in verified}
+    expected = sum(outcome.get('status') == 'canonical_verified' for outcome in outcomes.values())
+    if not outcomes or len(canonical) != expected:
+        raise ValueError('Terminal counts do not match complete receipt pairs')
+    seconds = end - start
+    return {'started_at': precise_stamp(start), 'ended_at': precise_stamp(end), 'elapsed_seconds': seconds,
+            'first_pass_decisions': len(outcomes), 'verified_native_pairs': len(canonical),
+            'held_or_uncertain_decisions': len(outcomes) - len(canonical),
+            'verified_audio_bytes': sum(rec['bytes'] for rec in canonical.values()),
+            'decisions_per_hour': len(outcomes) * 3600 / seconds,
+            'verified_pairs_per_hour': len(canonical) * 3600 / seconds,
+            'immediate_success_fraction': len(canonical) / len(outcomes),
+            'includes_startup_source_metadata_upload_and_backpressure': True,
+            'isolated_bandwidth_measurement': False}
+
+
+def completed_recovery_service(root, live, remote=DEFAULT_REMOTE):
+    active, invoked, terminal, exited = (read_object(live / name) for name in
+        ('activation.json', 'invocation.json', 'terminal.json', 'source-process-exit.json'))
+    start, end = positive(invoked.get('started_at_epoch')), epoch(exited.get('at'))
+    summary = terminal.get('summary', {})
+    required = ('parent_process_exited', 'child_audits_complete', 'owned_jobs_closed',
+                'matching_reservation_released', 'matching_lease_released')
+    if not (terminal.get('status') == 'terminal' and all(terminal.get(key) is True for key in required) and
+            all(terminal.get(key + '_sha256') == invoked.get(key + '_sha256') == active.get(key, {}).get('sha256')
+                and bound_json(root, active.get(key)) for key in ('plan', 'settings', 'root_grant')) and
+            terminal.get('lease_id') == invoked.get('lease_id') == active.get('lease_id') and
+            all(exited.get(key) == invoked.get(key) for key in ('pid', 'process_creation_filetime')) and
+            exited.get('exit_code') in (0, 3) and start and end and end > start and
+            all(type(summary.get(key)) is int and summary[key] >= 0 for key in ('verified', 'held', 'pending', 'skipped')) and
+            summary['pending'] == 0 and sum(summary[key] for key in ('verified', 'held', 'pending', 'skipped')) == invoked.get('source_count')):
+        raise ValueError('Missing bound terminal recovery evidence')
+    records, _ = records_from_bytes(read_snapshot(root / 'sync/drive_ingest_manifest.jsonl')[0])
+    verified = verified_records(records, remote)
+    pairs = [rec for rec in verified.values() if rec.get('native_batch_plan_sha256') == invoked.get('plan_sha256')]
+    if len(pairs) != summary['verified']:
+        raise ValueError('Recovery terminal summary does not match canonical pairs')
+    count, seconds = invoked['source_count'], end - start
+    return {'started_at': precise_stamp(start), 'ended_at': precise_stamp(end), 'elapsed_seconds': seconds,
+            'first_pass_decisions': count, 'verified_native_pairs': len(pairs),
+            'held_or_uncertain_decisions': summary['held'], 'verified_audio_bytes': sum(rec['bytes'] for rec in pairs),
+            'decisions_per_hour': count * 3600 / seconds, 'immediate_success_fraction': len(pairs) / count,
+            'includes_startup_source_metadata_upload_and_backpressure': True, 'isolated_bandwidth_measurement': False}
+
+
+def operational_estimate(root, live, next_selection, campaign_selection, status, *, now=None, remote=DEFAULT_REMOTE, recovery_live=None):
+    """Current, conditional first-pass scenarios; all-text completion stays unknown."""
+    now = time.time() if now is None else now
+    service = completed_service(root, live, remote)
+    next_count = read_object(next_selection).get('counts', {}).get('selected')
+    campaign = read_object(campaign_selection).get('counts', {})
+    untouched, frames = campaign.get('selected'), campaign.get('frames')
+    if (status.get('scope') != 'local_youtube_collection' or
+            any(type(n) is not int or n <= 0 for n in (next_count, untouched, frames))):
+        raise ValueError('Missing current aggregate queue evidence')
+    rate = service['decisions_per_hour']
+    def scenario(items, service_rate=rate):
+        active = items / service_rate
+        return {'items': items, 'same_service_active_hours': active,
+                'planning_active_hours': [active, active * 2],
+                'calendar_hours_at_half_availability': [active * 2, active * 4],
+                'planning_multiplier_assumed': [1, 2], 'confidence_interval': False}
+    counts = status.get('counts', {})
+    coverage_keys = ('verified_pairs', 'asr_verified_videos', 'source_audio_available_target_videos',
+                     'source_audio_with_text_target_videos', 'text_available_videos',
+                     'text_inventory_complete_videos', 'text_missing_videos', 'caption_verified_videos',
+                     'caption_verified_tracks', 'caption_text_available_videos', 'caption_inventory_review_videos')
+    coverage = {key: counts[key] for key in coverage_keys if type(counts.get(key)) is int}
+    twenty = next((stage.get('total') for stage in status.get('stages', []) if stage.get('key') == 'newest20'), None)
+    lane = status.get('native_lane', {})
+    next_state = 'running' if lane.get('kind') == 'native_v4_direct_batch' and lane.get('state') == 'running' else 'prepared_not_confirmed_running'
+    recovery_paths = list(recovery_live or [])
+    recovery = None
+    if recovery_paths:
+        plans = [read_object(path / 'invocation.json').get('plan_sha256') for path in recovery_paths]
+        if len(set(plans)) != len(plans):
+            raise ValueError('A recovery frame was supplied more than once')
+        services = [completed_recovery_service(root, path, remote) for path in recovery_paths]
+        start = min(epoch(value['started_at']) for value in services)
+        end = max(epoch(value['ended_at']) for value in services)
+        count = sum(value['first_pass_decisions'] for value in services)
+        verified_count = sum(value['verified_native_pairs'] for value in services)
+        # Include the elapsed admission gap between separately owned frames.
+        seconds = end - start if len(services) > 1 else services[0]['elapsed_seconds']
+        recovery = {'started_at': precise_stamp(start), 'ended_at': precise_stamp(end), 'elapsed_seconds': seconds,
+                    'frame_service_seconds': sum(value['elapsed_seconds'] for value in services),
+                    'completed_frames': len(services), 'first_pass_decisions': count,
+                    'verified_native_pairs': verified_count,
+                    'held_or_uncertain_decisions': sum(value['held_or_uncertain_decisions'] for value in services),
+                    'verified_audio_bytes': sum(value['verified_audio_bytes'] for value in services),
+                    'decisions_per_hour': count * 3600 / seconds,
+                    'immediate_success_fraction': verified_count / count,
+                    'includes_interframe_admission_wait': len(services) > 1,
+                    'isolated_bandwidth_measurement': False}
+    done = recovery['first_pass_decisions'] if recovery else 0
+    if done > next_count:
+        raise ValueError('Recovery decisions exceed selected scope')
+    if done == next_count:
+        next_state = 'terminal_with_holds' if recovery['held_or_uncertain_decisions'] else 'complete'
+    campaign_running = lane.get('kind') == 'native_v4_campaign' and lane.get('state') == 'running'
+    campaign_done = lane.get('completed_decisions', 0) if campaign_running else 0
+    cohort_items = lane.get('source_count') if campaign_running else None
+    if type(campaign_done) is not int or not 0 <= campaign_done <= untouched:
+        raise ValueError('Invalid campaign progress')
+    cohort_items = cohort_items if type(cohort_items) is int and 0 < cohort_items <= untouched else None
+    return {'generated_at': stamp(now), 'status_snapshot_at': status.get('generated_at'),
+            'status': 'conditional_only', 'guaranteed_completion_date': None,
+            'full_audio_and_text_completion_hours': None, 'newest20_items': twenty,
+            'coverage': coverage, 'measured_service': service,
+            'next_recovery_batch': dict(scenario(next_count - done, recovery['decisions_per_hour'] if recovery else rate),
+                selected_items=next_count, completed_decisions=done,
+                completed_verified_pairs=recovery['verified_native_pairs'] if recovery else 0,
+                completed_held_items=recovery['held_or_uncertain_decisions'] if recovery else 0,
+                measured_service=recovery,
+                state=next_state, current_frame_items=lane.get('frame_items') if next_state == 'running' else None,
+                current_frame_started_at=lane.get('started_at') if next_state == 'running' else None,
+                scope='Previously held native audio; two independently admitted frames'),
+            'untouched_first_pass': dict(scenario(untouched - campaign_done), frames=frames,
+                selected_items=untouched, completed_decisions=campaign_done,
+                current_cohort_items=cohort_items, current_cohort_index=lane.get('cohort_index') if campaign_running else None,
+                later_prepared_items=untouched - cohort_items if cohort_items else untouched,
+                state='running_admitted_cohort' if campaign_running else 'prepared_campaign_disabled',
+                scope='Decisions on the frozen untouched selection, including holds and failures'),
+            'assumptions': [
+                'Latest completed 40-decision run is the end-to-end service baseline; startup and initial ASR staging wait are included.',
+                'Recovery item mix differs from the calibration run. A 1–2x service-time allowance is an explicit planning assumption, not a statistical interval.',
+                'Active hours assume similar source availability, successful-file lengths, Drive service and storage backpressure. Admission waits and downtime add calendar time.',
+                'Only a separately admitted cohort may run. Later prepared cohorts remain disabled; a scenario does not authorize or schedule them.',
+                'ASR is separate and may overlap acquisition. Language review, uncertain attempts, item quarantines and unavailable sources prevent a reliable all-audio-plus-text finish date.'],
+            'historical_8_to_12_active_hours_superseded': True}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, required=True)
@@ -354,6 +523,13 @@ def main(argv=None):
     ap.add_argument("--queue", type=Path)
     ap.add_argument("--progress-log", type=Path, action="append", default=[])
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--refresh-operational", action="store_true", help="Replace the current operational section, retaining dated historical assumptions")
+    ap.add_argument("--service-live", type=Path, help="Terminal series JSON proof directory; no media is read")
+    ap.add_argument("--next-selection", type=Path)
+    ap.add_argument("--campaign-selection", type=Path)
+    ap.add_argument("--status-snapshot", type=Path, help="Saved aggregate status checkpoint")
+    ap.add_argument("--recovery-live", type=Path, action='append', default=[],
+                    help="Completed direct-recovery proof directory; repeat for independent frames")
     ap.add_argument("--workers", type=int, choices=range(1, 9), default=4)
     ap.add_argument("--metadata-interval", type=float, default=10)
     ap.add_argument("--caption-interval", type=float, default=15)
@@ -364,6 +540,23 @@ def main(argv=None):
     ap.add_argument("--availability", type=float, nargs="+", default=(1, .5, .25),
                     help="Assumed future available fractions, each greater than zero and at most one")
     args = ap.parse_args(argv)
+    if args.refresh_operational:
+        if not all((args.out, args.service_live, args.next_selection, args.campaign_selection, args.status_snapshot)):
+            ap.error('Operational refresh requires output, terminal service, both selections and aggregate status')
+        if args.out.resolve().is_relative_to(args.root.resolve()) or args.out.resolve() in {
+                path.resolve() for path in (args.next_selection, args.campaign_selection, args.status_snapshot)}:
+            ap.error('Output must be separate from private evidence')
+        try:
+            previous = read_object(args.out)
+            historical = previous.get('historical_assumptions', previous)
+            current = operational_estimate(args.root, args.service_live, args.next_selection,
+                args.campaign_selection, read_object(args.status_snapshot), remote=args.remote, recovery_live=args.recovery_live)
+            result = {'schema_version': 2, 'scope': 'collection_eta', 'generated_at': current['generated_at'],
+                      'current': current, 'historical_assumptions': historical}
+            args.out.write_text(json.dumps(result, indent=2, allow_nan=False) + '\n', encoding='utf-8')
+        except (OSError, ValueError, TypeError, KeyError):
+            ap.exit(2, 'ETA input error: incomplete terminal/selection/status evidence; no estimate written.\n')
+        return 0
     if not all(math.isfinite(v) and v >= 0 for v in (args.metadata_interval, args.caption_interval)):
         ap.error("Intervals must be finite and nonnegative")
     try:

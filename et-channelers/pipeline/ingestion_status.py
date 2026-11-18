@@ -99,6 +99,155 @@ def owned_process_child_of(child, parent):
         kernel.CloseHandle(handle)
 
 
+def owned_native_batch_command(identity, settings_path):
+    """Verify the live Windows command binds this code and exact settings file."""
+    if os.name != 'nt' or not owned_process_alive(identity):
+        return False
+    import ctypes
+    from ctypes import wintypes
+    class UnicodeString(ctypes.Structure):
+        _fields_ = [('length', wintypes.USHORT), ('maximum', wintypes.USHORT), ('buffer', ctypes.c_void_p)]
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    native = ctypes.WinDLL('ntdll')
+    shell = ctypes.WinDLL('shell32')
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    native.NtQueryInformationProcess.argtypes = [wintypes.HANDLE, wintypes.ULONG, ctypes.c_void_p,
+                                                wintypes.ULONG, ctypes.POINTER(wintypes.ULONG)]
+    native.NtQueryInformationProcess.restype = wintypes.LONG
+    shell.CommandLineToArgvW.argtypes = [wintypes.LPCWSTR, ctypes.POINTER(ctypes.c_int)]
+    shell.CommandLineToArgvW.restype = ctypes.POINTER(wintypes.LPWSTR)
+    kernel.LocalFree.argtypes = [ctypes.c_void_p]
+    handle = kernel.OpenProcess(0x1000, False, identity['pid'])
+    if not handle:
+        return False
+    try:
+        length = wintypes.ULONG()
+        native.NtQueryInformationProcess(handle, 60, None, 0, ctypes.byref(length))
+        if not 0 < length.value <= 131072:
+            return False
+        buffer = ctypes.create_string_buffer(length.value)
+        if native.NtQueryInformationProcess(handle, 60, buffer, length, ctypes.byref(length)) != 0:
+            return False
+        value = ctypes.cast(buffer, ctypes.POINTER(UnicodeString)).contents
+        command = ctypes.wstring_at(value.buffer, value.length // 2)
+        count = ctypes.c_int()
+        argv = shell.CommandLineToArgvW(command, ctypes.byref(count))
+        if not argv:
+            return False
+        try:
+            args = [argv[i] for i in range(count.value)]
+        finally:
+            kernel.LocalFree(argv)
+        if len(args) == 6 and args[1] in {'-I', '-u'}:
+            args.pop(1)
+        return (len(args) == 5 and Path(args[1]).resolve() == Path(__file__).with_name('native_batch.py').resolve() and
+                args[2] == '--settings' and Path(args[3]).resolve() == settings_path.resolve() and args[4] == '--execute')
+    finally:
+        kernel.CloseHandle(handle)
+
+
+def bound_json(root, pin):
+    """Read only a small, pinned JSON proof inside the private root."""
+    if not isinstance(pin, dict):
+        return {}
+    try:
+        path = Path(pin.get('path', '')).resolve()
+        size = pin.get('bytes')
+        if (not path.is_relative_to(root.resolve()) or path.suffix != '.json' or path.is_symlink() or
+                type(size) is not int or not 0 < size <= 8_000_000 or path.stat().st_size != size):
+            return {}
+        data = path.read_bytes()
+        if hashlib.sha256(data).hexdigest() != pin.get('sha256'):
+            return {}
+        value = json.loads(data.decode('utf-8-sig'))
+        return value if isinstance(value, dict) else {}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+def direct_native_batch(root, now):
+    """Direct frames have their own proof; they never impersonate a series."""
+    try:
+        return _direct_native_batch(root, now)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return {}
+
+
+def _direct_native_batch(root, now):
+    lease = read_object(root / 'sync/stock_wpc_batch_v4_lease.json')
+    expiry = lease.get('expires_at_epoch')
+    if not (lease.get('state') in {'active', 'released'} and lease.get('authorized') is True and
+            lease.get('source_scope_authorized') is True and lease.get('max_workers') in (1, 2) and
+            lease.get('profile') == 'stock_headful_wpc_native_batch_v4' and
+            type(expiry) in (int, float)):
+        return {}
+    if (root / 'sync/STOP_STOCK_WPC_BATCH_V4').exists():
+        return {}
+    if source_deadline([read_object(root / 'sync/stock_wpc_batch_v4_source_cooldown.json')]) > now:
+        return {}
+    http = read_object(root / 'sync/stock_wpc_batch_v4_http_state.json').get('state', {})
+    if not isinstance(http, dict) or http.get('policy') != 'native-http-refusal-v4' or http.get('circuit_break') is not None:
+        return {}
+    drive_path = root / 'sync/drive_ingest_cooldown.json'
+    if drive_path.exists():
+        until = read_object(drive_path).get('until_epoch')
+        if type(until) not in (int, float) or not 0 < until <= now:
+            return {}
+    code = hashlib.sha256(Path(__file__).with_name('native_batch.py').read_bytes()).hexdigest()
+    worker = hashlib.sha256(Path(__file__).with_name('native_batch_worker.py').read_bytes()).hexdigest()
+    candidates = (root / 'jobs').glob('native-*/runtime-frame*')
+    for live in sorted(candidates)[:128]:
+        if live.is_symlink() or any((live / name).exists() for name in
+                ('local-publication-hold.json', 'drive-hold.json')):
+            continue
+        invoked = read_object(live / 'invocation.json')
+        active = read_object(live / 'activation.json')
+        settings, plan, grant = (bound_json(root, active.get(key)) for key in ('settings', 'plan', 'root_grant'))
+        if not settings or not plan or not grant:
+            continue
+        bindings = all(invoked.get(key + '_sha256') == active.get(key, {}).get('sha256') == lease.get(key + '_sha256')
+                       for key in ('settings', 'plan', 'root_grant'))
+        ids = invoked.get('allowed_video_ids')
+        started = invoked.get('started_at_epoch')
+        if not (bindings and active.get('status') == 'active' and invoked.get('status') == 'running' and
+                invoked.get('lease_id') == active.get('lease_id') == settings.get('lease_id') == lease.get('lease_id') == grant.get('lease_id') and
+                grant.get('authorized') is True and grant.get('state') == 'admitted' and
+                grant.get('plan_sha256') == lease.get('plan_sha256') and grant.get('settings_sha256') == lease.get('settings_sha256') and
+                invoked.get('native_batch_sha256') == lease.get('coordinator_sha256') == grant.get('coordinator_sha256') == code and
+                invoked.get('worker_sha256') == lease.get('worker_sha256') == grant.get('worker_sha256') == worker and
+                isinstance(ids, list) and ids and all(isinstance(x, str) for x in ids) and len(ids) == len(set(ids)) and
+                ids == active.get('allowed_video_ids') == lease.get('allowed_video_ids') == grant.get('allowed_video_ids') and
+                invoked.get('source_count') == len(ids) and
+                Path(settings.get('private_root', '')).resolve() == root.resolve() and
+                Path(settings.get('plan_path', '')).resolve() == Path(active['plan']['path']).resolve() and
+                type(started) in (int, float) and started <= now):
+            continue
+        terminal = read_object(live / 'terminal.json')
+        exited = read_object(live / 'source-process-exit.json')
+        if terminal or exited:
+            if (lease.get('state') == 'released' and terminal.get('status') == 'terminal' and
+                    all(terminal.get(key) is True for key in ('parent_process_exited', 'child_audits_complete',
+                        'owned_jobs_closed', 'matching_reservation_released', 'matching_lease_released')) and
+                    terminal.get('lease_id') == invoked.get('lease_id') and
+                    all(terminal.get(key) == invoked.get(key) for key in
+                        ('root_grant_sha256', 'plan_sha256', 'settings_sha256')) and
+                    all(exited.get(key) == invoked.get(key) for key in ('pid', 'process_creation_filetime')) and
+                    exited.get('exit_code') in (0, 3) and not owned_process_alive(invoked)):
+                return {'state': 'ready', 'kind': 'native_v4_direct_batch', 'workers': lease['max_workers'],
+                        'process_confirmed': False, 'proof': 'released_terminal_direct_frame',
+                        'frame_items': len(ids), 'started_at': stamp(started), 'asr_handoff_enabled': False}
+            continue
+        if not (lease.get('state') == 'active' and now < expiry and
+                owned_native_batch_command(invoked, Path(active['settings']['path']))):
+            continue
+        return {'state': 'running', 'kind': 'native_v4_direct_batch', 'workers': lease['max_workers'],
+                'process_confirmed': True, 'proof': 'owned_bound_direct_process',
+                'frame_items': len(ids), 'started_at': stamp(started), 'asr_handoff_enabled': False}
+    return {}
+
+
 def active_native_series(root, now):
     """Do not let the parked legacy collector mask a separately owned executor."""
     lease = read_object(root / 'sync/stock_wpc_batch_v4_lease.json')
@@ -122,7 +271,8 @@ def active_native_series(root, now):
         except (KeyError, ValueError, TypeError):
             return {}
     candidates = [*(root / 'jobs').glob('native-series*/live'),
-                  *(root / 'jobs').glob('native-campaign*/live')]
+                  *(root / 'jobs').glob('native-campaign*/live'),
+                  *(root / 'jobs').glob('native-campaign*/cohort*/live')]
     for live in sorted(candidates)[:64]:
         if live.is_symlink() or any((live / name).exists() for name in
                                    ('local-publication-hold.json', 'drive-hold.json', 'STOP_SERIES')):
@@ -159,8 +309,66 @@ def active_native_series(root, now):
                        consumer.get('phase') == 'gpu_running' and
                        type(heartbeat) in (int, float) and 0 <= now - heartbeat <= 15 and
                        owned_process_alive(consumer))
-        return {'workers': lease['max_workers'], 'asr_running': asr_running,
-                'asr_reported_at': stamp(heartbeat) if asr_running else None}
+        result = {'workers': lease['max_workers'], 'asr_running': asr_running,
+                  'asr_reported_at': stamp(heartbeat) if asr_running else None}
+        if state.get('profile') == 'native-campaign-download-only-v1':
+            frames = state.get('frames', {})
+            result.update(kind='native_v4_campaign', asr_handoff_enabled=False,
+                completed_decisions=sum(len(frame.get('outcomes', {})) for frame in frames.values()
+                                        if isinstance(frame, dict) and frame.get('phase') == 'drained'),
+                completed_frames=sum(isinstance(frame, dict) and frame.get('phase') == 'drained' for frame in frames.values()))
+            for key in ('source_count', 'cohort_index', 'planned_frames'):
+                if type(invoked.get(key)) is int and 0 < invoked[key] <= 2000:
+                    result[key] = invoked[key]
+        return result
+    return {}
+
+
+def completed_native_lane(root, now):
+    """A released, bound terminal run proves readiness, never a running worker.
+
+    Legacy SABR receipts and STOP_DRIVE_INGEST belong to the parked collector.
+    Current v4 source/Drive holds still apply to this independently owned lane.
+    """
+    lease = read_object(root / 'sync/stock_wpc_batch_v4_lease.json')
+    if not (lease.get('state') == 'released' and lease.get('owned_native_processes_gone') is True and
+            lease.get('authorized') is True and lease.get('source_scope_authorized') is True and
+            lease.get('profile') == 'stock_headful_wpc_native_batch_v4' and
+            lease.get('max_workers') in (1, 2)):
+        return {}
+    if (root / 'sync/STOP_STOCK_WPC_BATCH_V4').exists():
+        return {}
+    if source_deadline([read_object(root / 'sync/stock_wpc_batch_v4_source_cooldown.json')]) > now:
+        return {}
+    http = read_object(root / 'sync/stock_wpc_batch_v4_http_state.json')
+    if not (http.get('schema_version') == 1 and isinstance(http.get('state'), dict) and
+            http['state'].get('policy') == 'native-http-refusal-v4' and
+            http['state'].get('circuit_break') is None):
+        return {}
+    drive_path = root / 'sync/drive_ingest_cooldown.json'
+    if drive_path.exists():
+        until = read_object(drive_path).get('until_epoch')
+        if type(until) not in (int, float) or not 0 < until <= now:
+            return {}
+    series, authorization = lease.get('series_proposal_sha256'), lease.get('root_authorization_sha256')
+    if not all(isinstance(x, str) and re.fullmatch(r'[a-f0-9]{64}', x) for x in (series, authorization)):
+        return {}
+    for live in sorted((root / 'jobs').glob('native-series*/live'))[:64]:
+        if live.is_symlink() or any((live / name).exists() for name in
+                                   ('local-publication-hold.json', 'drive-hold.json', 'STOP_SERIES')):
+            continue
+        state = read_object(live / 'series-state.json')
+        invoked = read_object(live / 'source-invocation.json')
+        exited = read_object(live / 'source-process-exit.json')
+        released = read_object(live / 'native-allocation-released.json')
+        if (state.get('status') in {'complete', 'finished_with_holds'} and
+                state.get('proposal_sha256') == invoked.get('series_proposal_sha256') == series and
+                state.get('authorization_sha256') == invoked.get('root_authorization_sha256') == authorization and
+                exited.get('exit_code') == 0 and released.get('lease_id') == lease.get('lease_id') and
+                type(invoked.get('pid')) is int and str(invoked.get('process_creation_filetime', '')).isdigit() and
+                not owned_process_alive(invoked)):
+            return {'state': 'ready', 'workers': lease['max_workers'], 'kind': 'native_v4',
+                    'process_confirmed': False, 'proof': 'released_terminal_run'}
     return {}
 
 
@@ -660,11 +868,23 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
         configured and supervisor.get('state') == 'caption_backfill_retry_budget_exhausted') else \
         'cooldown' if caption_until > now else 'pending' if caption_pending else \
         'complete' if captions or verified else 'unknown'
+    legacy_operation = {'state': state, 'retry_after': stamp(until) if until else None,
+                        'cooldown_provider': provider, 'workers': workers, 'full_archive_requested': archive_all}
     series = active_native_series(root, now)
+    native_lane = (direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
+        'state': 'running', 'workers': series['workers'], 'kind': 'native_v4',
+        'process_confirmed': True, 'proof': 'owned_live_process'}
+    if series.get('kind') == 'native_v4_campaign':
+        native_lane.update({key: value for key, value in series.items() if key not in
+                           ('workers', 'asr_running', 'asr_reported_at')})
     if series:
         state, workers, until, provider = 'running', series['workers'], None, None
+        archive_all = False
         if series['asr_running']:
             asr_state, asr_reported_at = 'running', series['asr_reported_at']
+    elif native_lane:
+        state, workers, until, provider = native_lane['state'], native_lane['workers'], None, None
+        archive_all = False
     local_bytes = 0
     for base, dirs, files in os.walk(root, followlinks=False):
         dirs[:] = [name for name in dirs if not (Path(base) / name).is_symlink()]
@@ -695,6 +915,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                           "workers": workers, "full_archive_requested": archive_all,
                           "cooldown_provider": provider, "caption_state": caption_state,
                           "caption_retry_after": stamp(caption_until) if caption_until else None},
+            "legacy_operation": legacy_operation, "native_lane": native_lane,
             "counts": {"verified_pairs": len(verified), "audio_downloaded": len(audio),
                        "supported_native_verified_videos": len(supported_native),
                        "browser_recorded_videos": len(browser_verified), "audio_archived_videos": len(archived),

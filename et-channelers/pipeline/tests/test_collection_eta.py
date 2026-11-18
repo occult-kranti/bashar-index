@@ -27,6 +27,106 @@ def receipt(item, size=10000):
 
 
 class CollectionEtaTests(unittest.TestCase):
+    def operational_fixture(self, root):
+        live = root / 'live'; live.mkdir()
+        (root / 'sync').mkdir()
+        item = row()
+        (root / 'sync/drive_ingest_manifest.jsonl').write_text(json.dumps(receipt(item)), encoding='utf-8')
+        values = {
+            'series-state.json': dict(status='finished_with_holds', proposal_sha256='a' * 64,
+                authorization_sha256='b' * 64, frames={'0': dict(phase='drained', outcomes={
+                    item['video_id']: {'status': 'canonical_verified'}, 'PRIVATE-ID': {'status': 'uncertain'}})}),
+            'source-invocation.json': dict(at='2026-11-17T23:50:00Z', series_proposal_sha256='a' * 64,
+                root_authorization_sha256='b' * 64, private_token='SECRET'),
+            'source-process-exit.json': dict(at='2026-11-18T00:10:00Z', exit_code=0),
+            'native-allocation-released.json': dict(lease_id='PRIVATE-LEASE')}
+        for name, value in values.items():
+            (live / name).write_text(json.dumps(value), encoding='utf-8')
+        for name, counts in [('next.json', {'selected': 30}), ('campaign.json', {'selected': 1153, 'frames': 58})]:
+            (root / name).write_text(json.dumps({'counts': counts}), encoding='utf-8')
+        return live
+
+    def test_terminal_service_includes_full_waits_and_counts_verified_success_separately(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); live = self.operational_fixture(root)
+            status = {'scope': 'local_youtube_collection', 'generated_at': '2026-11-18T00:11:00Z',
+                      'counts': {'verified_pairs': 1, 'asr_verified_videos': 0, 'private_token': 'SECRET'},
+                      'stages': [{'key': 'newest20', 'total': 1420}]}
+            result = eta.operational_estimate(root, live, root / 'next.json', root / 'campaign.json', status, now=1800000000)
+            service = result['measured_service']
+            self.assertEqual(service['elapsed_seconds'], 1200)
+            self.assertEqual(service['first_pass_decisions'], 2)
+            self.assertEqual(service['verified_native_pairs'], 1)
+            self.assertEqual(service['held_or_uncertain_decisions'], 1)
+            self.assertEqual(service['immediate_success_fraction'], .5)
+            self.assertEqual(result['next_recovery_batch']['planning_active_hours'], [5, 10])
+            self.assertIsNone(result['full_audio_and_text_completion_hours'])
+            self.assertIsNone(result['guaranteed_completion_date'])
+            for private in ('PRIVATE', 'SECRET', str(root), row()['video_id'], 'a' * 64):
+                self.assertNotIn(private, json.dumps(result))
+            status['native_lane'] = dict(kind='native_v4_campaign', state='running', source_count=600,
+                                         cohort_index=1, completed_decisions=20)
+            running = eta.operational_estimate(root, live, root / 'next.json', root / 'campaign.json', status)
+            campaign = running['untouched_first_pass']
+            self.assertEqual(campaign['state'], 'running_admitted_cohort')
+            self.assertEqual(campaign['items'], 1133)
+            self.assertEqual(campaign['selected_items'], 1153)
+            self.assertEqual(campaign['later_prepared_items'], 553)
+
+    def test_incomplete_or_mismatched_terminal_proof_cannot_calibrate_current_eta(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); live = self.operational_fixture(root)
+            for name, changed in [('source-process-exit.json', {'exit_code': 1}),
+                                  ('native-allocation-released.json', {}),
+                                  ('series-state.json', {'status': 'running'}),
+                                  ('source-invocation.json', {'root_authorization_sha256': 'c' * 64})]:
+                path = live / name; original = path.read_text(encoding='utf-8')
+                path.write_text(json.dumps(changed), encoding='utf-8')
+                with self.subTest(name=name), self.assertRaises(ValueError):
+                    eta.completed_service(root, live)
+                path.write_text(original, encoding='utf-8')
+            (root / 'sync/drive_ingest_manifest.jsonl').write_text('', encoding='utf-8')
+            with self.assertRaises(ValueError):
+                eta.completed_service(root, live)
+
+    def test_completed_recovery_subtracts_decisions_without_treating_holds_as_success(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); service = self.operational_fixture(root)
+            live = root / 'recovery'; live.mkdir()
+            def put(name, value):
+                path = live / name; data = json.dumps(value).encode(); path.write_bytes(data)
+                return {'path': str(path), 'bytes': len(data), 'sha256': eta.hashlib.sha256(data).hexdigest()}
+            pins = {key: put(key + '.json', {'private_proof': 'SECRET'}) for key in ('plan', 'settings', 'root_grant')}
+            put('activation.json', dict(pins, lease_id='PRIVATE-LEASE'))
+            invoked = dict(pid=123, process_creation_filetime='456', source_count=2,
+                           started_at_epoch=eta.epoch('2026-11-18T00:20:00Z'), lease_id='PRIVATE-LEASE',
+                           **{key + '_sha256': pin['sha256'] for key, pin in pins.items()})
+            put('invocation.json', invoked)
+            put('source-process-exit.json', dict(pid=123, process_creation_filetime='456', exit_code=3,
+                                               at='2026-11-18T00:22:00Z'))
+            terminal = dict(status='terminal', lease_id='PRIVATE-LEASE',
+                parent_process_exited=True, child_audits_complete=True, owned_jobs_closed=True,
+                matching_reservation_released=True, matching_lease_released=True,
+                summary={'verified': 1, 'held': 1, 'pending': 0, 'skipped': 0, 'note': 'PRIVATE'},
+                **{key + '_sha256': pin['sha256'] for key, pin in pins.items()})
+            put('terminal.json', terminal)
+            rec = dict(receipt(row()), native_batch_plan_sha256=pins['plan']['sha256'])
+            (root / 'sync/drive_ingest_manifest.jsonl').write_text(json.dumps(rec), encoding='utf-8')
+            (root / 'next.json').write_text(json.dumps({'counts': {'selected': 2}}), encoding='utf-8')
+            status = {'scope': 'local_youtube_collection', 'counts': {}, 'stages': []}
+            result = eta.operational_estimate(root, service, root / 'next.json', root / 'campaign.json', status,
+                                              recovery_live=[live])
+            recovery = result['next_recovery_batch']
+            self.assertEqual(recovery['state'], 'terminal_with_holds')
+            self.assertEqual(recovery['items'], 0)
+            self.assertEqual(recovery['completed_verified_pairs'], 1)
+            self.assertEqual(recovery['completed_held_items'], 1)
+            self.assertEqual(recovery['planning_active_hours'], [0, 0])
+            self.assertNotIn('PRIVATE', json.dumps(result)); self.assertNotIn('SECRET', json.dumps(result))
+            with self.assertRaises(ValueError):
+                eta.operational_estimate(root, service, root / 'next.json', root / 'campaign.json', status,
+                                          recovery_live=[live, live])
+
     def test_mixed_receipt_wait_is_not_transfer_rate_and_progress_is_deduplicated(self):
         item = row()
         final = receipt(item)
