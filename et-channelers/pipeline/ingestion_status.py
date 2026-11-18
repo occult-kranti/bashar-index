@@ -99,7 +99,7 @@ def owned_process_child_of(child, parent):
         kernel.CloseHandle(handle)
 
 
-def owned_native_batch_command(identity, settings_path, coordinator_path=None):
+def owned_native_batch_command(identity, settings_path, coordinator_path=None, command_mode='direct'):
     """Verify the live Windows command binds this code and exact settings file."""
     if os.name != 'nt' or not owned_process_alive(identity):
         return False
@@ -143,6 +143,9 @@ def owned_native_batch_command(identity, settings_path, coordinator_path=None):
         if len(args) == 6 and args[1] in {'-I', '-u'}:
             args.pop(1)
         program = coordinator_path or Path(__file__).with_name('native_batch.py')
+        if command_mode == 'bulk':
+            return (len(args) == 5 and Path(args[1]).resolve() == Path(program).resolve() and
+                    args[2:4] == ['run', '--settings'] and Path(args[4]).resolve() == settings_path.resolve())
         return (len(args) == 5 and Path(args[1]).resolve() == Path(program).resolve() and
                 args[2] == '--settings' and Path(args[3]).resolve() == settings_path.resolve() and args[4] == '--execute')
     finally:
@@ -333,10 +336,121 @@ def _native_v5_lease(root, now, lease, namespace):
                         proof='current_native_stop_or_refusal' if actual_refusal else 'owner_pause',
                         reason='source_control_hold' if actual_refusal else 'worker_startup',
                         retry_after=stamp(until) if until > now else None)
+        terminal = read_object(live / 'terminal.json')
+        summary = terminal.get('summary', {})
+        if (lease['state'] == 'released' and terminal.get('status') == 'terminal' and
+                all(terminal.get(key) is True for key in ('parent_process_exited', 'owned_jobs_closed',
+                    'child_audits_complete', 'matching_lease_released', 'matching_reservation_released')) and
+                terminal.get('lease_id') == lease['lease_id'] and
+                all(terminal.get(key + '_sha256') == invoked.get(key + '_sha256')
+                    for key in ('plan', 'settings', 'root_grant')) and
+                all(type(summary.get(key)) is int and summary[key] >= 0
+                    for key in ('verified', 'held', 'pending', 'skipped')) and
+                sum(summary[key] for key in ('verified', 'held', 'pending', 'skipped')) == len(ids) and summary['pending'] == 0 and
+                not owned_process_alive(invoked)):
+            return dict(base, state='ready', process_confirmed=False, proof='released_terminal_direct_frame',
+                        completed_frame_decisions=len(ids), verified_in_frame=summary['verified'],
+                        held_in_frame=summary['held'], prior_completed_decisions=(prior or 0) + len(ids))
         expiry = min(lease.get('expires_at_epoch', 0), grant.get('expires_at_epoch', 0))
         if (lease['state'] == 'active' and now < expiry and
                 owned_native_batch_command(invoked, Path(active['settings']['path']), Path(active['code']['path']))):
             return dict(base, state='running', process_confirmed=True, proof='owned_bound_direct_process')
+    return {}
+
+
+def native_bulk_lane(root, now):
+    """Read a finite cohort's pinned scope and actual owned controller command."""
+    try:
+        return _native_bulk_lane(root, now)
+    except (OSError, ValueError, TypeError, KeyError, AttributeError, StopIteration):
+        return {}
+
+
+def _native_bulk_lane(root, now):
+    paths = sorted((root / 'sync').glob('stock_wpc_batch_v5_bulk*_lease.json'),
+                   key=lambda path: read_object(path).get('created_at_epoch', 0), reverse=True)
+    for path in paths[:16]:
+        result = _native_bulk_lease(root, now, read_object(path), path.name[:-len('_lease.json')])
+        if result:
+            return result
+    return {}
+
+
+def _native_bulk_lease(root, now, lease, namespace):
+    if not (lease.get('state') in {'active', 'released'} and isinstance(lease.get('profile'), str) and
+            re.fullmatch(r'stock_headful_wpc_native_batch_v5_bulk(?:_recovery[0-9]+)?', lease['profile']) and
+            re.fullmatch(r'stock_wpc_batch_v5_bulk(?:_recovery[0-9]+)?', namespace) and
+            all(lease.get(key) is True for key in ('authorized', 'source_scope_authorized', 'finite_cohort_scope_authorized'))):
+        return {}
+    for home in sorted((root / 'jobs').glob('native-http-v5-bulk-*'))[:16]:
+        packet = read_object(home / 'root-review-packet.json')
+        settings_pin = packet.get('controller_settings', {})
+        settings = bound_json(root, settings_pin)
+        if not settings:
+            continue
+        grant_path = Path(settings['root_admission_path'])
+        grant = bound_json(root, {'path': str(grant_path), 'bytes': grant_path.stat().st_size,
+                                  'sha256': lease.get('root_admission_sha256')})
+        manifest = bound_json(root, settings.get('cohort_manifest'))
+        mapping = bound_json(root, settings.get('frame_map'))
+        ids, frames = manifest.get('allowed_video_ids'), mapping.get('frames')
+        if not (grant and isinstance(ids, list) and 0 < len(ids) <= 1280 and len(set(ids)) == len(ids) and
+                all(isinstance(ident, str) and re.fullmatch(r'[A-Za-z0-9_-]{11}', ident) for ident in ids) and
+                ids == lease.get('allowed_video_ids') == grant.get('allowed_video_ids') and isinstance(frames, list) and
+                [ident for frame in frames for ident in frame['video_ids']] == ids and
+                grant.get('authorized') is True and grant.get('finite_cohort_scope_authorized') is True and
+                grant.get('source_scope_authorized') is True and grant.get('ASR') is False and grant.get('GPU') is False and
+                grant.get('profile') == lease['profile'] and grant.get('owner') == settings.get('owner') == lease.get('owner') == 'root' and
+                settings.get('lease_id') == lease.get('lease_id') and
+                settings_pin.get('sha256') == grant.get('controller_settings_sha256') == lease.get('controller_settings_sha256') and
+                all(settings[key]['sha256'] == grant.get(key + '_sha256') == lease.get(key + '_sha256')
+                    for key in ('cohort_manifest', 'frame_map'))):
+            continue
+        codes = {Path(pin['path']).name: pin for pin in packet.get('private_code', [])}
+        fields = {'controller': 'native_bulk_controller.py', 'coordinator': 'native_batch.py',
+                  'worker': 'native_batch_worker.py', 'http_policy': 'native_http_policy.py', 'contract': 'bulk_contract.py'}
+        if not all(private_code_pin(root, codes.get(filename, {})) and
+                   codes[filename]['sha256'] == grant.get(key + '_sha256') for key, filename in fields.items()):
+            continue
+        live = home / 'runtime'
+        invoked = read_object(live / 'source-invocation.json')
+        state = read_object(live / 'cohort-state.json')
+        if not (invoked and state and invoked.get('controller_identity') == state.get('controller_identity') and
+                invoked.get('root_grant_sha256') == state.get('root_grant_sha256') == lease.get('root_admission_sha256') and
+                all(invoked.get(key + '_sha256') == state.get(key + '_sha256') == lease.get(key + '_sha256')
+                    for key in ('controller_settings', 'cohort_manifest', 'frame_map'))):
+            continue
+        completed = state.get('frames')
+        if not isinstance(completed, list) or len(completed) > len(frames):
+            continue
+        decisions = 0
+        for index, row in enumerate(completed):
+            summary = row.get('summary', {})
+            if not (row.get('frame_index') == index and row.get('plan_sha256') == frames[index]['plan_sha256'] and
+                    row.get('status') == 'terminal_closed' and
+                    all(type(summary.get(key)) is int and summary[key] >= 0 for key in ('verified', 'held', 'pending', 'skipped')) and
+                    summary['pending'] == 0 and sum(summary[key] for key in ('verified', 'held', 'pending', 'skipped')) == len(frames[index]['video_ids'])):
+                return {}
+            decisions += len(frames[index]['video_ids'])
+        result = {'kind': 'native_v5_bulk', 'workers': 2, 'source_count': len(ids), 'planned_frames': len(frames),
+                  'completed_frames': len(completed), 'completed_decisions': decisions,
+                  'started_at': stamp(invoked['started_at_epoch']), 'asr_handoff_enabled': False,
+                  'automatic_resume': False}
+        ledger = read_object(root / ('sync/' + namespace + '_http_state.json'))
+        if (ledger.get('schema_version') != 5 or ledger.get('seed_sha256') != grant.get('http_policy_seed_sha256')):
+            continue
+        held = ((root / ('sync/STOP_' + namespace.upper())).exists() or
+                ledger.get('state', {}).get('circuit_break') or state.get('status') == 'held_reconciliation_required')
+        expiry = min(lease.get('expires_at_epoch', 0), grant.get('expires_at_epoch', 0))
+        if held or now >= expiry:
+            return dict(result, state='paused', process_confirmed=False, proof='finite_cohort_hold',
+                        reason='source_or_owner_hold')
+        if (lease['state'] == 'active' and state.get('status') == 'active' and
+                owned_native_batch_command(invoked['controller_identity'], Path(settings_pin['path']),
+                                           Path(codes['native_bulk_controller.py']['path']), command_mode='bulk')):
+            current = state.get('current_frame') or {}
+            return dict(result, state='running', process_confirmed=True, proof='owned_bound_bulk_process',
+                        current_frame_index=current.get('frame_index'))
     return {}
 
 
@@ -1008,7 +1122,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     legacy_operation = {'state': state, 'retry_after': stamp(until) if until else None,
                         'cooldown_provider': provider, 'workers': workers, 'full_archive_requested': archive_all}
     series = active_native_series(root, now)
-    native_lane = (native_v5_lane(root, now) or native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
+    native_lane = (native_bulk_lane(root, now) or native_v5_lane(root, now) or native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
         'state': 'running', 'workers': series['workers'], 'kind': 'native_v4',
         'process_confirmed': True, 'proof': 'owned_live_process'}
     if series.get('kind') == 'native_v4_campaign':

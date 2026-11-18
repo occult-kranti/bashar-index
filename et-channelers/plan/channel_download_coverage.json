@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-18T04:41:36.178287Z",
+  "generated_at": "2026-11-18T06:45:38.977262Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
-    "youtube_native_audio": 201,
+    "youtube_native_audio": 240,
     "publisher_only_audio": 30,
-    "audio_available": 231,
+    "audio_available": 270,
     "native_asr": 91,
     "native_caption_videos": 17,
     "audio_with_saved_text": 136,
-    "remaining_audio": 1189
+    "remaining_audio": 1150
   },
   "channels": [
     {
@@ -78,11 +78,11 @@
       "channel": "Ashtar Command: Lower Decks",
       "channel_dir": "ashtar-command-lower-decks",
       "target": 14,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 11
+      "remaining_audio": 10
     },
     {
       "channel": "Athina Król",
@@ -128,21 +128,21 @@
       "channel": "チャネラー純子 Channeler Junko",
       "channel_dir": "channeler-junko",
       "target": 20,
-      "youtube_audio": 2,
+      "youtube_audio": 3,
       "publisher_only_audio": 0,
-      "audio_total": 2,
+      "audio_total": 3,
       "with_saved_text": 1,
-      "remaining_audio": 18
+      "remaining_audio": 17
     },
     {
       "channel": "Charlie Wilde // Channeling SEVEN",
       "channel_dir": "charlie-wilde",
       "target": 20,
-      "youtube_audio": 7,
+      "youtube_audio": 10,
       "publisher_only_audio": 0,
-      "audio_total": 7,
+      "audio_total": 10,
       "with_saved_text": 0,
-      "remaining_audio": 13
+      "remaining_audio": 10
     },
     {
       "channel": "Gosia Duszak (Cosmic Agency)",
@@ -158,11 +158,11 @@
       "channel": "Daniel Scranton",
       "channel_dir": "daniel-scranton",
       "target": 20,
-      "youtube_audio": 1,
+      "youtube_audio": 2,
       "publisher_only_audio": 0,
-      "audio_total": 1,
+      "audio_total": 2,
       "with_saved_text": 1,
-      "remaining_audio": 19
+      "remaining_audio": 18
     },
     {
       "channel": "Darryl Anka",
@@ -188,6 +188,16 @@
       "channel": "Debbra Lupien",
       "channel_dir": "debbra-lupien",
       "target": 20,
+      "youtube_audio": 4,
+      "publisher_only_audio": 0,
+      "audio_total": 4,
+      "with_saved_text": 2,
+      "remaining_audio": 16
+    },
+    {
+      "channel": "Dreemtime Academy",
+      "channel_dir": "dreemtime-academy",
+      "target": 20,
       "youtube_audio": 3,
       "publisher_only_audio": 0,
       "audio_total": 3,
@@ -195,24 +205,14 @@
       "remaining_audio": 17
     },
     {
-      "channel": "Dreemtime Academy",
-      "channel_dir": "dreemtime-academy",
-      "target": 20,
-      "youtube_audio": 2,
-      "publisher_only_audio": 0,
-      "audio_total": 2,
-      "with_saved_text": 2,
-      "remaining_audio": 18
-    },
-    {
       "channel": "Elena Danaan",
       "channel_dir": "elena-danaan",
       "target": 20,
-      "youtube_audio": 9,
+      "youtube_audio": 11,
       "publisher_only_audio": 0,
-      "audio_total": 9,
+      "audio_total": 11,
       "with_saved_text": 0,
-      "remaining_audio": 11
+      "remaining_audio": 9
     },
     {
       "channel": "Elizabeth April",
@@ -308,11 +308,11 @@
       "channel": "Jamye Price",
       "channel_dir": "jamye-price",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Kayleigh O'Keefe",
@@ -338,11 +338,11 @@
       "channel": "Krista Raisa",
       "channel_dir": "krista-raisa",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 0,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Kristin Davies",
@@ -358,11 +358,11 @@
       "channel": "Laarkmaa",
       "channel_dir": "laarkmaa",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Lauren Galey",
@@ -408,11 +408,11 @@
       "channel": "LightingClarity",
       "channel_dir": "lightingclarity",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 2,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Lily Nova",
@@ -428,21 +428,21 @@
       "channel": "Lorie Ladd",
       "channel_dir": "lorie-ladd",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Louise Kay",
       "channel_dir": "louise-kay",
       "target": 20,
-      "youtube_audio": 2,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 2,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 18
+      "remaining_audio": 16
     },
     {
       "channel": "Lyssa Royal Holt",
@@ -468,11 +468,11 @@
       "channel": "Megan Rose",
       "channel_dir": "megan-rose",
       "target": 20,
-      "youtube_audio": 4,
+      "youtube_audio": 5,
       "publisher_only_audio": 0,
-      "audio_total": 4,
+      "audio_total": 5,
       "with_saved_text": 2,
-      "remaining_audio": 16
+      "remaining_audio": 15
     },
     {
       "channel": "Micheila Sheldan",
@@ -488,11 +488,11 @@
       "channel": "Michelle Robinson",
       "channel_dir": "michelle-robinson",
       "target": 20,
-      "youtube_audio": 1,
+      "youtube_audio": 2,
       "publisher_only_audio": 0,
-      "audio_total": 1,
+      "audio_total": 2,
       "with_saved_text": 1,
-      "remaining_audio": 19
+      "remaining_audio": 18
     },
     {
       "channel": "Mônica de Medeiros",
@@ -588,31 +588,31 @@
       "channel": "Riz Mirza",
       "channel_dir": "riz-mirza",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 2,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Rob Gauthier",
       "channel_dir": "rob-gauthier",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 2,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Odyssey of Ascension",
       "channel_dir": "roxanne-swainhart",
       "target": 20,
-      "youtube_audio": 2,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 2,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 18
+      "remaining_audio": 16
     },
     {
       "channel": "Sam the Illusionist",
@@ -628,15 +628,35 @@
       "channel": "Sarah Evans (Into the Blue Channeling)",
       "channel_dir": "sarah-evans",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Saraharyana",
       "channel_dir": "saraharyana",
+      "target": 20,
+      "youtube_audio": 11,
+      "publisher_only_audio": 0,
+      "audio_total": 11,
+      "with_saved_text": 0,
+      "remaining_audio": 9
+    },
+    {
+      "channel": "Shaun Swanson",
+      "channel_dir": "shaun-swanson",
+      "target": 20,
+      "youtube_audio": 4,
+      "publisher_only_audio": 0,
+      "audio_total": 4,
+      "with_saved_text": 1,
+      "remaining_audio": 16
+    },
+    {
+      "channel": "Sounds True",
+      "channel_dir": "sounds-true",
       "target": 20,
       "youtube_audio": 9,
       "publisher_only_audio": 0,
@@ -645,44 +665,24 @@
       "remaining_audio": 11
     },
     {
-      "channel": "Shaun Swanson",
-      "channel_dir": "shaun-swanson",
+      "channel": "Steve Nobel",
+      "channel_dir": "steve-nobel",
+      "target": 20,
+      "youtube_audio": 7,
+      "publisher_only_audio": 0,
+      "audio_total": 7,
+      "with_saved_text": 0,
+      "remaining_audio": 13
+    },
+    {
+      "channel": "Stewart Pearce",
+      "channel_dir": "stewart-pearce",
       "target": 20,
       "youtube_audio": 3,
       "publisher_only_audio": 0,
       "audio_total": 3,
       "with_saved_text": 1,
       "remaining_audio": 17
-    },
-    {
-      "channel": "Sounds True",
-      "channel_dir": "sounds-true",
-      "target": 20,
-      "youtube_audio": 6,
-      "publisher_only_audio": 0,
-      "audio_total": 6,
-      "with_saved_text": 0,
-      "remaining_audio": 14
-    },
-    {
-      "channel": "Steve Nobel",
-      "channel_dir": "steve-nobel",
-      "target": 20,
-      "youtube_audio": 6,
-      "publisher_only_audio": 0,
-      "audio_total": 6,
-      "with_saved_text": 0,
-      "remaining_audio": 14
-    },
-    {
-      "channel": "Stewart Pearce",
-      "channel_dir": "stewart-pearce",
-      "target": 20,
-      "youtube_audio": 2,
-      "publisher_only_audio": 0,
-      "audio_total": 2,
-      "with_saved_text": 1,
-      "remaining_audio": 18
     },
     {
       "channel": "Suzanne Lie",
@@ -698,11 +698,11 @@
       "channel": "The Judah Channel",
       "channel_dir": "the-judah-channel",
       "target": 20,
-      "youtube_audio": 2,
+      "youtube_audio": 3,
       "publisher_only_audio": 0,
-      "audio_total": 2,
+      "audio_total": 3,
       "with_saved_text": 1,
-      "remaining_audio": 18
+      "remaining_audio": 17
     },
     {
       "channel": "Tolec",
@@ -718,41 +718,41 @@
       "channel": "Tracey Milne",
       "channel_dir": "tracey-milne",
       "target": 20,
-      "youtube_audio": 3,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 3,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 17
+      "remaining_audio": 16
     },
     {
       "channel": "Tyler Ellison",
       "channel_dir": "tyler-ellison",
       "target": 20,
-      "youtube_audio": 2,
+      "youtube_audio": 4,
       "publisher_only_audio": 0,
-      "audio_total": 2,
+      "audio_total": 4,
       "with_saved_text": 1,
-      "remaining_audio": 18
+      "remaining_audio": 16
     },
     {
       "channel": "Wendy Kennedy",
       "channel_dir": "wendy-kennedy",
       "target": 20,
-      "youtube_audio": 2,
+      "youtube_audio": 3,
       "publisher_only_audio": 0,
-      "audio_total": 2,
+      "audio_total": 3,
       "with_saved_text": 0,
-      "remaining_audio": 18
+      "remaining_audio": 17
     },
     {
       "channel": "Wieteke Koolhof",
       "channel_dir": "wieteke-koolhof",
       "target": 20,
-      "youtube_audio": 9,
+      "youtube_audio": 11,
       "publisher_only_audio": 0,
-      "audio_total": 9,
+      "audio_total": 11,
       "with_saved_text": 0,
-      "remaining_audio": 11
+      "remaining_audio": 9
     }
   ]
 }

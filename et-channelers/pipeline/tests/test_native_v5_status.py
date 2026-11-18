@@ -98,6 +98,22 @@ class V5StatusTests(unittest.TestCase):
         self.save(self.root / 'sync/stock_wpc_batch_v5_lease.json', self.lease)
         self.assertEqual(self.lane(), {})
 
+    def test_released_terminal_needs_closed_ownership_and_keeps_holds_separate(self):
+        self.lease['state'] = 'released'
+        self.save(self.root / 'sync/stock_wpc_batch_v5_lease.json', self.lease)
+        terminal = dict(status='terminal', lease_id='owned-v5', parent_process_exited=True,
+            owned_jobs_closed=True, child_audits_complete=True, matching_lease_released=True,
+            matching_reservation_released=True, summary=dict(verified=15, held=5, pending=0, skipped=0, profile=self.profile),
+            **{key + '_sha256': self.pins[key]['sha256'] for key in ('settings', 'plan', 'root_grant')})
+        self.save(self.live / 'terminal.json', terminal)
+        with patch.object(status, 'owned_process_alive', return_value=False):
+            lane = self.lane(False)
+        self.assertEqual((lane['state'], lane['verified_in_frame'], lane['held_in_frame']), ('ready', 15, 5))
+        self.assertEqual(lane['prior_completed_decisions'], 20)
+        terminal['owned_jobs_closed'] = False
+        self.save(self.live / 'terminal.json', terminal)
+        self.assertEqual(self.lane(False), {})
+
 
 if __name__ == '__main__':
     unittest.main()

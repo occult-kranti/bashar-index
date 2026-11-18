@@ -102,6 +102,17 @@ class CollectionEtaTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 eta.completed_service(root, live)
 
+    def test_finite_remaining_cohort_projects_its_own_scope(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); live = self.operational_fixture(root)
+            status = {'scope': 'local_youtube_collection', 'native_lane': dict(kind='native_v5_bulk',
+                state='running', source_count=42, planned_frames=3, completed_decisions=20)}
+            result = eta.operational_estimate(root, live, root / 'next.json', root / 'campaign.json', status)
+            scenario = result['untouched_first_pass']
+            self.assertEqual((scenario['selected_items'], scenario['items'], scenario['frames']), (42, 22, 3))
+            self.assertEqual(scenario['original_selected_items'], 1153)
+            self.assertEqual(scenario['later_prepared_items'], 0)
+
     def test_completed_recovery_subtracts_decisions_without_treating_holds_as_success(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); service = self.operational_fixture(root)
@@ -136,6 +147,11 @@ class CollectionEtaTests(unittest.TestCase):
             self.assertEqual(recovery['completed_held_items'], 1)
             self.assertEqual(recovery['planning_active_hours'], [0, 0])
             self.assertNotIn('PRIVATE', json.dumps(result)); self.assertNotIn('SECRET', json.dumps(result))
+            direct = eta.operational_estimate(root, live, root / 'next.json', root / 'campaign.json', status, service_direct=True)
+            self.assertEqual(direct['calibration'], 'completed_download_only_frame')
+            self.assertEqual(direct['measured_service']['elapsed_seconds'], 120)
+            self.assertEqual(direct['measured_service']['verified_native_pairs'], 1)
+            self.assertIsNone(direct['guaranteed_completion_date'])
             with self.assertRaises(ValueError):
                 eta.operational_estimate(root, service, root / 'next.json', root / 'campaign.json', status,
                                           recovery_live=[live, live])
