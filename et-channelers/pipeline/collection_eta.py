@@ -448,6 +448,7 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
                 'planning_multiplier_assumed': [1, 2], 'confidence_interval': False}
     counts = status.get('counts', {})
     coverage_keys = ('verified_pairs', 'asr_verified_videos', 'source_audio_available_target_videos',
+                     'qualified_youtube_audio_edition_target_videos',
                      'source_audio_with_text_target_videos', 'text_available_videos',
                      'text_inventory_complete_videos', 'text_missing_videos', 'caption_verified_videos',
                      'caption_verified_tracks', 'caption_text_available_videos', 'caption_inventory_review_videos')

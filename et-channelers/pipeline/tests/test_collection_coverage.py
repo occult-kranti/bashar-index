@@ -8,6 +8,7 @@ import unittest
 import subprocess
 import sys
 from pipeline import collection_coverage as coverage
+from pipeline.tests.test_qualified_edition_receipts import receipt_fixture
 
 
 class CoverageTests(unittest.TestCase):
@@ -93,6 +94,46 @@ class CoverageTests(unittest.TestCase):
         public, videos = self.run_coverage()
         self.assertEqual(public['channels'][0]['remaining_audio'], 1)
         self.assertEqual(videos, [])
+
+    def test_qualified_youtube_edition_adds_audio_with_explicit_source_and_zero_text(self):
+        self.journal('progressive_audio_extracts_manifest.jsonl', [receipt_fixture()])
+        self.journal('asr_manifest.jsonl', [self.asr])
+        public, videos = self.run_coverage()
+        self.assertEqual(1, public['summary']['audio_available'])
+        self.assertEqual(1, public['summary']['qualified_youtube_only_audio'])
+        self.assertEqual(0, public['summary']['youtube_native_audio'])
+        self.assertEqual(0, public['summary']['publisher_only_audio'])
+        self.assertEqual(0, public['summary']['audio_with_saved_text'])
+        self.assertEqual('youtube_track_unverified', videos[0]['audio_source'])
+        self.assertEqual(1, public['activity']['summary']['saved'])
+        self.assertNotIn('source-provenance', json.dumps((public, videos)))
+
+    def test_native_and_publisher_overlap_do_not_double_count_or_mislabel_edition(self):
+        self.journal('progressive_audio_extracts_manifest.jsonl', [receipt_fixture(), receipt_fixture()])
+        self.journal('drive_ingest_manifest.jsonl', [self.audio])
+        public, videos = self.run_coverage()
+        self.assertEqual(1, public['summary']['audio_available'])
+        self.assertEqual(0, public['summary']['qualified_youtube_only_audio'])
+        self.assertEqual('youtube_native', videos[0]['audio_source'])
+        self.journal('drive_ingest_manifest.jsonl', [])
+        self.journal('publisher_mirror_manifest.jsonl', [self.mirror()])
+        public, videos = self.run_coverage()
+        self.assertEqual(1, public['summary']['publisher_only_audio'])
+        self.assertEqual(0, public['summary']['qualified_youtube_only_audio'])
+        self.assertEqual('publisher_edition', videos[0]['audio_source'])
+
+    def test_qualified_proof_must_match_queue_creator_and_tab(self):
+        self.journal('progressive_audio_extracts_manifest.jsonl', [receipt_fixture()])
+        self.queue[0]['channel_dir'] = 'different-creator'
+        public, videos = self.run_coverage()
+        self.assertEqual(0, public['summary']['audio_available']); self.assertEqual([], videos)
+
+    def test_legacy_or_partial_edition_receipt_never_credits_a_download(self):
+        record = receipt_fixture(); record['audio']['remote_proof']['bytes'] -= 1
+        legacy = receipt_fixture(); legacy['kind'] = 'youtube_progressive_AAC_packet_preserving_extract'
+        self.journal('progressive_audio_extracts_manifest.jsonl', [record, legacy])
+        public, videos = self.run_coverage()
+        self.assertEqual(0, public['summary']['audio_available']); self.assertEqual([], videos)
 
     def test_duplicate_video_or_rank_does_not_inflate_the_target(self):
         self.queue.append(dict(self.queue[0]))

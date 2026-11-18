@@ -17,11 +17,13 @@ if __package__:
     from .drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
                                caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from .chromium_capture_service import browser_receipt_complete
+    from . import qualified_edition_receipts
 else:  # -I deliberately removes the script directory from the default import path.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
                               caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from chromium_capture_service import browser_receipt_complete
+    import qualified_edition_receipts
 
 DEFAULT_REMOTE = "etdrive:04 Audio"
 
@@ -670,6 +672,39 @@ def latest_records(path):
     return records
 
 
+def qualified_edition_coverage(root, targets, remote, target_rows=None):
+    """Count paired qualified audio without granting native or text coverage."""
+    root = Path(root)
+    if target_rows is None:
+        for name in ('queue_newest20_enriched.csv', 'queue_newest20.csv'):
+            path = root / 'jobs' / name
+            if path.is_file():
+                with path.open(encoding='utf-8-sig', newline='') as handle:
+                    target_rows = list(csv.DictReader(handle))
+                break
+    owners = {}
+    for row in target_rows or ():
+        ident = row.get('video_id')
+        owner = (row.get('channel_dir'), row.get('tab'))
+        owners[ident] = owner if ident not in owners or owners[ident] == owner else None
+    path = root / 'sync/progressive_audio_extracts_manifest.jsonl'
+    accepted = set()
+    if not path.is_file() or path.stat().st_size > 64_000_000:
+        return accepted
+    with path.open(encoding='utf-8-sig') as handle:
+        while line := handle.readline(2_000_001):
+            if len(line) > 2_000_000:
+                return set()  # incomplete inventory must never inflate counts
+            try:
+                record = json.loads(line)
+                edition = qualified_edition_receipts.validate(record, remote_base=remote)
+            except (qualified_edition_receipts.ReceiptHold, TypeError, ValueError, KeyError, OverflowError):
+                continue
+            if edition.video_id in targets and owners.get(edition.video_id) == (edition.channel_dir, record['tab']):
+                accepted.add(edition.video_id)
+    return accepted
+
+
 def source_deadline(records):
     return max((rec.get('retry_not_before_epoch', 0) for rec in records
                 if (rec.get('source_error_class') or rec.get('error_class')) in HARD_BLOCKS
@@ -1078,6 +1113,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     remaining, _ = queue_ids(root, ("queue_final_round.csv",))
     publisher_texts, publisher_transcripts, publisher_variants, publisher_qualified, publisher_asr = publisher_coverage(root, twenty, remote)
     mirror_audio, mirror_captions, mirror_asr = publisher_mirror_coverage(root, twenty, remote)
+    qualified_audio = qualified_edition_coverage(root, twenty, remote)
     publisher_timed_text = publisher_timed_text_coverage(root, twenty, remote)
     cooldown = read_object(root / "sync" / "drive_ingest_cooldown.json")
     # Support the runner's fixed filename, without exposing it in the export.
@@ -1204,7 +1240,8 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                        "publisher_mirror_caption_target_videos": len(mirror_captions),
                        "publisher_mirror_asr_target_videos": len(mirror_asr),
                        "publisher_standalone_timed_text_target_videos": len(publisher_timed_text),
-                       "source_audio_available_target_videos": len((archived & twenty) | publisher_variants | mirror_audio),
+                       "qualified_youtube_audio_edition_target_videos": len(qualified_audio),
+                       "source_audio_available_target_videos": len((archived & twenty) | publisher_variants | mirror_audio | qualified_audio),
                        "source_audio_with_text_target_videos": len((text_available & twenty) | publisher_asr | mirror_captions | mirror_asr),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),

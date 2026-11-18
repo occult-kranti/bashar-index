@@ -260,7 +260,7 @@
         <p class="cc-eyebrow">Latest-20 download coverage</p>
         <h2 id="cc-coverage-heading">Every channel, at a glance.</h2>
         <p id="cc-coverage-summary" class="cc-coverage-note">Reading verified audio and text coverage&hellip;</p>
-        <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. Targets use up to 20 indexed videos per channel. Publisher editions keep their own source labels; YouTube edit equivalence may be unverified. Text availability does not establish transcription accuracy.</p>
+        <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. Targets use up to 20 indexed videos per channel. Publisher editions keep their own source labels. Other YouTube editions have unverified original track and spoken language. Text availability does not establish transcription accuracy.</p>
         <div class="cc-coverage-controls">
           <label for="cc-coverage-search">Find a channel<input type="search" id="cc-coverage-search" placeholder="Channel name" autocomplete="off"></label>
           <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="active">Working now</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>
@@ -274,9 +274,10 @@
             <th scope="col" data-coverage-key="queued" aria-sort="none"><button class="cc-coverage-sort" type="button">Queued</button></th>
             <th scope="col" data-coverage-key="youtube_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">YouTube</button></th>
             <th scope="col" data-coverage-key="publisher_only_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Publisher only</button></th>
+            <th scope="col" data-coverage-key="qualified_youtube_only_audio" aria-sort="none"><button class="cc-coverage-sort" type="button" title="Audio extracted from a YouTube edition; original track and spoken language are unverified">YouTube editions</button></th>
             <th scope="col" data-coverage-key="with_saved_text" aria-sort="none"><button class="cc-coverage-sort" type="button">With text</button></th>
             <th scope="col" data-coverage-key="remaining_audio" aria-sort="none"><button class="cc-coverage-sort" type="button">Audio remaining</button></th>
-          </tr></thead><tbody id="cc-coverage-body"><tr><td colspan="8" class="cc-left">Loading channel coverage&hellip;</td></tr></tbody></table>
+          </tr></thead><tbody id="cc-coverage-body"><tr><td colspan="9" class="cc-left">Loading channel coverage&hellip;</td></tr></tbody></table>
         </div>
         <p id="cc-coverage-activity" class="cc-coverage-note">Worker stages are shown when a verified activity checkpoint is available.</p>
         <p class="cc-coverage-note"><a id="cc-activity-download" download="creator-download-activity.csv" hidden>Download creator activity CSV</a></p>

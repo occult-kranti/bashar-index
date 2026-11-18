@@ -28,7 +28,8 @@ class SnapshotChecks(unittest.TestCase):
 
     def save(self):
         (self.root / 'channel_download_coverage.json').write_text(json.dumps(self.data), encoding='utf-8')
-        (self.root / 'channel_download_coverage.csv').write_bytes(checker.csv_bytes([self.channel], checker.CHANNEL_FIELDS))
+        fields = checker.QUALIFIED_CHANNEL_FIELDS if 'qualified_youtube_only_audio' in self.channel else checker.CHANNEL_FIELDS
+        (self.root / 'channel_download_coverage.csv').write_bytes(checker.csv_bytes([self.channel], fields))
         (self.root / 'downloaded_videos.csv').write_bytes(checker.csv_bytes([self.video], checker.VIDEO_FIELDS))
         for name, scope in (('ingestion_status.json', 'local_youtube_collection'), ('collection_eta.json', 'collection_eta')):
             (self.root / name).write_text(json.dumps({'scope': scope}), encoding='utf-8')
@@ -81,3 +82,25 @@ class SnapshotChecks(unittest.TestCase):
         p.write_bytes(p.read_bytes().replace(b"'=A title", b'=A title'))
         with self.assertRaisesRegex(ValueError, 'unsafe_spreadsheet_cell'):
             checker.check(self.root)
+
+    def qualified(self):
+        self.channel.update(youtube_audio=0, qualified_youtube_only_audio=1, with_saved_text=0)
+        self.data['summary'].update(youtube_native_audio=0, qualified_youtube_only_audio=1,
+                                    qualified_youtube_audio=1, audio_with_saved_text=0)
+        self.video.update(audio_source='youtube_track_unverified', saved_text=False, native_audio_bytes='')
+
+    def test_qualified_category_counts_without_native_or_text_promotion(self):
+        self.qualified(); self.save()
+        self.assertEqual(checker.check(self.root), {'channels': 1, 'audio': 1, 'target': 2})
+        self.video['saved_text'] = True; self.save()
+        with self.assertRaisesRegex(ValueError, 'video_source_or_text'): checker.check(self.root)
+
+    def test_qualified_channel_or_summary_cannot_double_count_an_edition(self):
+        self.qualified(); self.channel['youtube_audio'] = 1; self.save()
+        with self.assertRaisesRegex(ValueError, 'channel_totals'): checker.check(self.root)
+        self.qualified(); self.data['summary']['qualified_youtube_audio'] = 0; self.save()
+        with self.assertRaisesRegex(ValueError, 'summary_qualified_union'): checker.check(self.root)
+
+    def test_legacy_fields_cannot_hide_a_positive_qualified_summary(self):
+        self.data['summary']['qualified_youtube_only_audio'] = 1; self.save()
+        with self.assertRaisesRegex(ValueError, 'summary_qualified_without_rows'): checker.check(self.root)

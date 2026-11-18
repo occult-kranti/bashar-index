@@ -298,8 +298,9 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (!response.ok) throw new Error('coverage unavailable');
       const data = await response.json();
       if (data.schema_version !== 1 || data.scope !== 'newest20_receipt_coverage' || !Array.isArray(data.channels)) throw new Error('unexpected coverage');
-      const numeric = ['target','youtube_audio','publisher_only_audio','audio_total','with_saved_text','remaining_audio'];
-      if (!data.channels.every(row => typeof row.channel === 'string' && numeric.every(key => Number.isInteger(row[key]) && row[key] >= 0) && row.target <= 20 && row.youtube_audio + row.publisher_only_audio === row.audio_total && row.audio_total + row.remaining_audio === row.target && row.with_saved_text <= row.audio_total)) throw new Error('invalid channel counts');
+      data.channels = data.channels.map(row => ({...row, qualified_youtube_only_audio: row.qualified_youtube_only_audio ?? 0}));
+      const numeric = ['target','youtube_audio','publisher_only_audio','qualified_youtube_only_audio','audio_total','with_saved_text','remaining_audio'];
+      if (!data.channels.every(row => typeof row.channel === 'string' && numeric.every(key => Number.isInteger(row[key]) && row[key] >= 0) && row.target <= 20 && row.youtube_audio + row.publisher_only_audio + row.qualified_youtube_only_audio === row.audio_total && row.audio_total + row.remaining_audio === row.target && row.with_saved_text <= row.audio_total)) throw new Error('invalid channel counts');
       const stages = ['saved','downloading','processing','awaiting_upload','queued','other_pending'];
       const activity = data.activity;
       const byChannel = new Map((Array.isArray(activity?.channels) ? activity.channels : []).map(row => [row.channel_dir, row]));
@@ -324,17 +325,18 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
           const activeCell = addCell(tr, row.active < 0 ? '\u2014' : row.active);
           if (row.activity) activeCell.setAttribute('aria-label', row.active + ' in progress: ' + row.activity.downloading + ' downloading, ' + row.activity.processing + ' preparing or validating, ' + row.activity.awaiting_upload + ' awaiting upload');
           addCell(tr, row.queued < 0 ? '\u2014' : row.queued);
-          for (const field of ['youtube_audio','publisher_only_audio','with_saved_text','remaining_audio']) addCell(tr, row[field]);
+          for (const field of ['youtube_audio','publisher_only_audio','qualified_youtube_only_audio','with_saved_text','remaining_audio']) addCell(tr, row[field]);
           body.append(tr);
         }
-        if (!rows.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 8; td.className = 'cc-left'; td.textContent = 'No channels match these filters.'; tr.append(td); body.append(tr); }
+        if (!rows.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 9; td.className = 'cc-left'; td.textContent = 'No channels match these filters.'; tr.append(td); body.append(tr); }
         for (const header of headers) header.setAttribute('aria-sort', header.dataset.coverageKey === key ? (ascending ? 'ascending' : 'descending') : 'none');
         put('cc-coverage-shown', rows.length + ' of ' + data.channels.length + ' channels shown.');
       }
       search.addEventListener('input', render); filter.addEventListener('change', render);
       for (const header of headers) header.querySelector('button').addEventListener('click', () => { const next = header.dataset.coverageKey; ascending = key === next ? !ascending : next === 'channel'; key = next; render(); });
       const totals = data.summary;
-      put('cc-coverage-summary', number(totals.audio_available) + ' / ' + number(totals.latest20_target) + ' entries have saved audio: ' + number(totals.youtube_native_audio) + ' YouTube originals and ' + number(totals.publisher_only_audio) + ' additional publisher editions. ' + number(totals.audio_with_saved_text) + ' have an audio edition with saved captions or a transcript.');
+      const qualifiedOnly = totals.qualified_youtube_only_audio ?? 0;
+      put('cc-coverage-summary', number(totals.audio_available) + ' / ' + number(totals.latest20_target) + ' entries have saved audio: ' + number(totals.youtube_native_audio) + ' YouTube native recordings and ' + number(totals.publisher_only_audio) + ' additional publisher editions' + (qualifiedOnly ? ', plus ' + number(qualifiedOnly) + ' YouTube editions with unverified track and language' : '') + '. ' + number(totals.audio_with_saved_text) + ' have an audio edition with saved captions or a transcript.');
       const activityTotals = activityValid ? stages.reduce((result, field) => ({...result, [field]: channels.reduce((total, row) => total + row.activity[field], 0)}), {}) : null;
       put('cc-coverage-activity', activityTotals ? 'At this checkpoint: ' + number(activityTotals.downloading) + ' transferring audio, ' + number(activityTotals.processing) + ' preparing or validating, and ' + number(activityTotals.awaiting_upload) + ' awaiting upload. ' + number(activityTotals.queued) + ' are queued in the running batch. In progress includes these three working stages; remaining entries need separate scheduling or recovery.' : 'Worker activity was not verified for this checkpoint; archived counts remain available.');
       const activityDownload = document.getElementById('cc-activity-download');
@@ -349,7 +351,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       put('cc-coverage-date', date(data.generated_at));
       render();
     } catch (_) {
-      body.replaceChildren(); const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 8; td.className = 'cc-left'; td.textContent = 'The channel coverage checkpoint could not be loaded.'; tr.append(td); body.append(tr);
+      body.replaceChildren(); const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 9; td.className = 'cc-left'; td.textContent = 'The channel coverage checkpoint could not be loaded.'; tr.append(td); body.append(tr);
       put('cc-coverage-summary', 'Channel coverage is unavailable. Use the dated collection snapshot above.');
       put('cc-coverage-date', 'unavailable'); put('cc-coverage-shown', ''); search.disabled = true; filter.disabled = true;
     }
