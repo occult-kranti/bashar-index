@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "source_kind": "frozen_implementation_source_only",
-  "implementation_revision": "bounded-owned-pre-GO-wait-recovery4",
-  "baseline_code_manifest_sha256": "cf8d654330bc62cd0eb4e84126cd82d313aa4123ef5cfc38b6cf355ed3dc03cf",
+  "implementation_revision": "bounded-owned-profile-cleanup-recovery5",
+  "baseline_code_manifest_sha256": "bc0203f100ccf82a960052c9197e60fdea63e8ad2bd602c3277d4e3489d7650d",
   "baseline_module_sha256": {
-    "native_batch.py": "9695b6f46afb7b3d171bc2197c0672e64dd2d82ad5cc695e523b86a79be59183",
-    "native_batch_worker.py": "f0c40c3ba4c9c56b36a1ad4fa73f3586b47c971e0c23a382dd44fd71d0e95e33",
+    "native_batch.py": "cbe2d3ec5dd12f040f90d037e89967f70a5ad30ee38643bf0b1d97b016ab4285",
+    "native_batch_worker.py": "c0c9f70e5120eb9238c4a649ecdc1916e2fa4c74c85ab1d2f8cb418e33486e0a",
     "native_http_policy.py": "b482ed01e1e67a86c3a4e1020ae97c124ec9ea84274d7e69102c00ea04667f59",
     "native_http_policy_v4_frozen.py": "0d94b8b702eee1380c8d6f980cc976474de3678354e3ce7cdc684130814b5dcd",
-    "bulk_contract.py": "ac2d7bf64bf4f1d5271c4a2d3d73ee93c315e542b3d432f6ec30ff48bd4cc6bd",
+    "bulk_contract.py": "73c9f1cfe72a245cb3bef00849287fc65f99514cb7f78e625df1735723aedadf",
     "native_bulk_controller.py": "f96ed74e6498685655edd1909f5ac5562de0147ed7ab788e3223c9bd1bffa8ed",
     "frozen_ingestion_coverage.py": "19cf11e7c4532bc91b1acf841610b8595651672833dc0765db59d9292c910fa1",
     "worker_diagnostics.py": "f54263d75264b210da9d19e68cc3b55fa5fac6f8c8ae51445706989e33bc2b3f"
@@ -26,8 +26,8 @@
   "active_executor_changed": false,
   "runtime_data_included": false,
   "baseline_function_ast_sha256": {
-    "native_batch.py": "6e5143b0a5c7bdae07d1b153a94d22a0aa38a72e1b7f60f013f6b28345e388d8",
-    "native_batch_worker.py": "df69b6c613cfa356e0ae76e0ad5474710a79d42002033420582b6b20b6aee0cb",
+    "native_batch.py": "4bf0a652a869a435227b0262bde63b9ff5ffc271fef9f48ca06a90a34b835d88",
+    "native_batch_worker.py": "3eee8aca03bd9c457a161d85e3eac73795d980dd870b8ac2b477f9cec0d84410",
     "native_http_policy.py": "ba5c26413592a5f3f6596a1ebeaa136aa9fe7ddb040973ed6e18bf9f03b56cde",
     "native_http_policy_v4_frozen.py": "c05e8dcf727a554e243425dc301a22ba2b20cfb77a8786d77266ec86269da649",
     "bulk_contract.py": "d3c50ae368ef94d236d0a12df534efae67884761686949361c408d911acc9106",
