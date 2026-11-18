@@ -17,13 +17,13 @@ if __package__:
     from .drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
                                caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from .chromium_capture_service import browser_receipt_complete
-    from . import qualified_edition_receipts
+    from . import qualified_edition_receipts, qualified_direct_audio_receipts
 else:  # -I deliberately removes the script directory from the default import path.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
                               caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from chromium_capture_service import browser_receipt_complete
-    import qualified_edition_receipts
+    import qualified_edition_receipts, qualified_direct_audio_receipts
 
 DEFAULT_REMOTE = "etdrive:04 Audio"
 
@@ -378,6 +378,65 @@ def _native_bulk_lane(root, now):
     return {}
 
 
+def _status_identity(value):
+    if not isinstance(value, dict) or type(value.get('pid')) is not int or value['pid'] <= 0:
+        return None
+    creation = value.get('process_creation_filetime')
+    if type(creation) not in (int, str) or not str(creation).isascii() or not str(creation).isdigit() or int(creation) <= 0:
+        return None
+    return value['pid'], str(creation)
+
+
+def completed_bulk_lane(root, home, lease, state, result):
+    """Show an actually closed latest cohort without probing historical PIDs."""
+    if not (lease.get('state') == 'released' and lease.get('owned_native_processes_gone') is True and
+            state.get('status') == 'complete' and state.get('current_frame') is None and
+            result['completed_frames'] == result['planned_frames'] and
+            result['completed_decisions'] == result['source_count']):
+        return {}
+    owner = home / 'owner-runtime-v1'
+    terminal = read_object(owner / 'terminal.json')
+    reviewed = read_object(owner / 'terminal-review.json')
+    invoked = read_object(owner / 'invocation.json')
+    exited = read_object(owner / 'source-process-exit.json')
+    closed = read_object(owner / 'owned-controller-closure.json')
+    grant = lease.get('root_admission_sha256')
+    controller, launcher = _status_identity(state.get('controller_identity')), _status_identity(closed.get('identity'))
+    bases, reviewed_bases = invoked.get('base_controller_identities'), reviewed.get('base_controller_identities')
+    parent = invoked.get('parent_proof', {})
+    rows = read_object(root / 'sync/analysis_resource_plan.json').get('reservations', [])
+    own_rows = [row for row in rows if row.get('lease_id') == lease.get('lease_id')]
+    if not (all(doc.get('root_grant_sha256') == grant for doc in (terminal, reviewed, invoked, exited)) and
+            terminal.get('status') == 'terminal' and terminal.get('cohort_status') == 'complete' and
+            terminal.get('source_count') == terminal.get('attempted_items') == result['source_count'] and
+            terminal.get('closed_frames') == result['planned_frames'] and terminal.get('exit_code') == 0 and
+            all(terminal.get(key) is True for key in ('owned_jobs_closed', 'child_audits_complete',
+                'matching_lease_released', 'matching_reservation_released')) and
+            reviewed.get('controller_state') == state and reviewed.get('owned_job_closed') is True and
+            reviewed.get('child_audits_complete') is True and
+            exited.get('derived_from_supervisor_actual_exit') is True and exited.get('exit_code') == 0 and
+            terminal.get('at') == reviewed.get('at') == exited.get('at') and terminal.get('at') and
+            all(closed.get(key) is True for key in ('attached', 'closed', 'owned_job_empty',
+                'owned_process_closed', 'process_returned', 'job_returned')) and closed.get('exit_code') == 0 and
+            launcher is not None and launcher == _status_identity(invoked.get('launcher_identity')) ==
+                _status_identity(reviewed.get('launcher_identity')) == _status_identity(exited) and controller is not None and
+            isinstance(bases, list) and len(bases) == 1 and isinstance(reviewed_bases, list) and len(reviewed_bases) == 1 and
+            controller == _status_identity(bases[0]) == _status_identity(reviewed_bases[0]) and
+            parent.get('parent_verified') is True and parent.get('same_owned_Windows_job') is True and
+            _status_identity(parent.get('launcher_identity')) == launcher and
+            _status_identity(parent.get('base_controller_identity')) == controller and
+            ('parent_pid' not in bases[0] or bases[0]['parent_pid'] == launcher[0]) and
+            len(own_rows) == 1 and own_rows[0].get('state') == 'released' and
+            own_rows[0].get('root_grant_sha256') == grant and
+            type(lease.get('spool_cap_bytes')) is int and
+            own_rows[0].get('max_bytes') == lease['spool_cap_bytes'] and
+            type(state.get('finished_at_epoch')) in (int, float) and
+            state['finished_at_epoch'] >= state.get('started_at_epoch', 0)):
+        return {}
+    return dict(result, state='ready', process_confirmed=False, proof='released_completed_bulk_cohort',
+                finished_at=stamp(state['finished_at_epoch']))
+
+
 def _native_bulk_lease(root, now, lease, namespace):
     if not (lease.get('state') in {'active', 'released'} and isinstance(lease.get('profile'), str) and
             re.fullmatch(r'stock_headful_wpc_native_batch_v5_bulk(?:_recovery[0-9]+|_recovery6_prototype)?', lease['profile']) and
@@ -443,6 +502,10 @@ def _native_bulk_lease(root, now, lease, namespace):
             continue
         held = ((root / ('sync/STOP_' + namespace.upper())).exists() or
                 ledger.get('state', {}).get('circuit_break') or state.get('status') == 'held_reconciliation_required')
+        if not held:
+            completed_lane = completed_bulk_lane(root, home, lease, state, result)
+            if completed_lane:
+                return completed_lane
         expiry = min(lease.get('expires_at_epoch', 0), grant.get('expires_at_epoch', 0))
         if held or now >= expiry:
             reason = 'source_or_owner_hold'
@@ -697,7 +760,9 @@ def qualified_edition_coverage(root, targets, remote, target_rows=None):
                 return set()  # incomplete inventory must never inflate counts
             try:
                 record = json.loads(line)
-                edition = qualified_edition_receipts.validate(record, remote_base=remote)
+                reader = (qualified_direct_audio_receipts if isinstance(record, dict) and
+                          record.get('source_format_id') == '140' else qualified_edition_receipts)
+                edition = reader.validate(record, remote_base=remote)
             except (qualified_edition_receipts.ReceiptHold, TypeError, ValueError, KeyError, OverflowError):
                 continue
             if edition.video_id in targets and owners.get(edition.video_id) == (edition.channel_dir, record['tab']):
