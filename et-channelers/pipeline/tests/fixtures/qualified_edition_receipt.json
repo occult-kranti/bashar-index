@@ -1,0 +1,336 @@
+{
+  "audio": {
+    "local_proof": {
+      "bytes": 512,
+      "md5": "56907396339ca2b099bd12245f936ddc",
+      "sha256": "471be6558b665e4f6dd49f1184814d1491b0315d466beea768c153cc5500c836"
+    },
+    "remote_proof": {
+      "bytes": 512,
+      "drive_id": "source-audio",
+      "md5": "56907396339ca2b099bd12245f936ddc",
+      "relative_path": "example/AudioExtracts/abcdefghijk/edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f/audio-extract.m4a",
+      "remote": "etdrive:04 Audio/example/AudioExtracts/abcdefghijk/edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f/audio-extract.m4a"
+    }
+  },
+  "channel_dir": "example",
+  "full_speech_coverage_verified": false,
+  "kind": "qualified_youtube_audio_edition",
+  "metadata": {
+    "local_proof": {
+      "bytes": 4949,
+      "md5": "546dc27a58cd2ddff797a6dd84f7e1b7",
+      "sha256": "fe6d877bceac7f9511d87362eb40e5d1f27ed871a2727cc50cac5068d0f639b3"
+    },
+    "remote_proof": {
+      "bytes": 4949,
+      "drive_id": "source-provenance",
+      "md5": "546dc27a58cd2ddff797a6dd84f7e1b7",
+      "relative_path": "example/AudioExtracts/abcdefghijk/edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f/provenance.json",
+      "remote": "etdrive:04 Audio/example/AudioExtracts/abcdefghijk/edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f/provenance.json"
+    }
+  },
+  "native_HTTP_success_reset_allowed": false,
+  "native_canonical_promotion": false,
+  "native_count_increment": 0,
+  "native_quality_state": null,
+  "origin_inferred": false,
+  "original_audio_track_identity_verified": false,
+  "provenance": {
+    "audio": {
+      "bytes": 512,
+      "md5": "56907396339ca2b099bd12245f936ddc",
+      "sha256": "471be6558b665e4f6dd49f1184814d1491b0315d466beea768c153cc5500c836"
+    },
+    "channel_dir": "example",
+    "full_speech_coverage_verified": false,
+    "kind": "qualified_youtube_audio_edition",
+    "native_HTTP_success_reset_allowed": false,
+    "native_canonical_promotion": false,
+    "native_quality_state": null,
+    "origin_inferred": false,
+    "original_audio_track_identity_verified": false,
+    "qualification": {
+      "payload": {
+        "AAC_preservation": {
+          "AAC_packet_payload_preserved": true,
+          "Drive_publication_performed": false,
+          "GPU_requested": false,
+          "audio_reencode_requested": false,
+          "cleanup_performed": false,
+          "derived_AAC_packets": {
+            "algorithm": "SHA256_of_ordered_size64be_and_packet_SHA256",
+            "discard_padding": 0,
+            "packet_count": 3,
+            "packet_duration_samples_sha256": "71eb9cc54c04a26c15c4daeb63ffe8a24733ed1713c13279fe2f896c66013bd0",
+            "packet_duration_sum_seconds": 0.06,
+            "packet_payload_bytes": 33,
+            "packet_sequence_sha256": "bc8d01bc0c833eb34c3cb3febdcb857e8c22e4d708feb001d74df114ba8748fa",
+            "padding_sequence_sha256": "53351442ab5916cf201eef5327a250b0f539a815be1dd914fe4922f8fe696c48",
+            "skip_samples": 0
+          },
+          "derived_audio": {
+            "channels": 2,
+            "codec": "aac",
+            "duration_seconds": 0.06,
+            "extradata_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "profile": "LC",
+            "sample_rate": 48000,
+            "start_time_seconds": 0.0,
+            "video_streams": 0
+          },
+          "derived_audio_file": {
+            "bytes": 512,
+            "md5": "56907396339ca2b099bd12245f936ddc",
+            "sha256": "471be6558b665e4f6dd49f1184814d1491b0315d466beea768c153cc5500c836"
+          },
+          "duration_tolerance_seconds": 0.05,
+          "full_speech_coverage_claimed": false,
+          "native_canonical_promotion": false,
+          "original_audio_track_identity_verified": false,
+          "private_muxed_source_file": {
+            "bytes": 2048,
+            "md5": "8e63a6bf08c76247864da129ee8994cb",
+            "sha256": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f"
+          },
+          "quality_contract": "progressive_MP4_AAC_packet_preserving_streamcopy",
+          "queue_duration_seconds_hint": 0.06,
+          "raw_muxed_source_and_packet_proofs_private": true,
+          "remuxed_container": true,
+          "schema_version": 1,
+          "source_AAC_packets": {
+            "algorithm": "SHA256_of_ordered_size64be_and_packet_SHA256",
+            "discard_padding": 0,
+            "packet_count": 3,
+            "packet_duration_samples_sha256": "71eb9cc54c04a26c15c4daeb63ffe8a24733ed1713c13279fe2f896c66013bd0",
+            "packet_duration_sum_seconds": 0.06,
+            "packet_payload_bytes": 33,
+            "packet_sequence_sha256": "bc8d01bc0c833eb34c3cb3febdcb857e8c22e4d708feb001d74df114ba8748fa",
+            "padding_sequence_sha256": "53351442ab5916cf201eef5327a250b0f539a815be1dd914fe4922f8fe696c48",
+            "skip_samples": 0
+          },
+          "source_audio": {
+            "channels": 2,
+            "codec": "aac",
+            "duration_seconds": 0.06,
+            "extradata_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "profile": "LC",
+            "sample_rate": 48000,
+            "start_time_seconds": 0.0,
+            "video_streams": 1
+          },
+          "source_minus_queue_duration_seconds": 0.0,
+          "spoken_language_verified": false
+        },
+        "derived_audio_file": {
+          "bytes": 512,
+          "md5": "56907396339ca2b099bd12245f936ddc",
+          "sha256": "471be6558b665e4f6dd49f1184814d1491b0315d466beea768c153cc5500c836"
+        },
+        "full_speech_coverage_verified": false,
+        "native_HTTP_success_reset_allowed": false,
+        "native_canonical_promotion": false,
+        "native_quality_state": null,
+        "origin_inferred": false,
+        "original_audio_track_identity_verified": false,
+        "recording_edit_identity_verified": false,
+        "selection": {
+          "duration_seconds": 0.06,
+          "filesize": 2048,
+          "format_id": "18",
+          "has_drm": false,
+          "is_drc": false,
+          "live_status": "not_live",
+          "metadata_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "protocol": "https",
+          "video_id": "abcdefghijk"
+        },
+        "source_file": {
+          "bytes": 2048,
+          "md5": "8e63a6bf08c76247864da129ee8994cb",
+          "sha256": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f"
+        },
+        "source_http": {
+          "body_complete": true,
+          "body_sha256": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f",
+          "content_length": 2048,
+          "content_range": null,
+          "exact_on_write_limit": 2048,
+          "final_url_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "finished_count": 1,
+          "headers_checked_before_sink_write": true,
+          "media_requests": 1,
+          "received_bytes": 2048,
+          "redirect_count": 0,
+          "request_url_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "retry_count": 0,
+          "selected_format_id": "18",
+          "selected_url_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "selected_video_id": "abcdefghijk",
+          "status": 200,
+          "written_bytes": 2048
+        },
+        "speaker_identity_verified": false,
+        "spoken_language_verified": false,
+        "translation_status": "unknown"
+      },
+      "payload_encoding": "canonical-json-utf8-sorted-compact-no-newline-v1",
+      "payload_sha256": "c839791656d990520db1fb5653a55ad05fcecc88e4ec8aa3a258f9ef39070a6d",
+      "verifier_artifact": {
+        "bytes": 10864,
+        "sha256": "519b5dd2232fa77be1c998763256da320be07b0b8021e71e9cd6978d35e528ec"
+      }
+    },
+    "recording_edit_identity_verified": false,
+    "schema_version": 1,
+    "source_format_id": "18",
+    "speaker_identity_verified": false,
+    "spoken_language_verified": false,
+    "tab": "videos",
+    "translation_status": "unknown",
+    "variant_id": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f",
+    "video_id": "abcdefghijk"
+  },
+  "qualification": {
+    "payload": {
+      "AAC_preservation": {
+        "AAC_packet_payload_preserved": true,
+        "Drive_publication_performed": false,
+        "GPU_requested": false,
+        "audio_reencode_requested": false,
+        "cleanup_performed": false,
+        "derived_AAC_packets": {
+          "algorithm": "SHA256_of_ordered_size64be_and_packet_SHA256",
+          "discard_padding": 0,
+          "packet_count": 3,
+          "packet_duration_samples_sha256": "71eb9cc54c04a26c15c4daeb63ffe8a24733ed1713c13279fe2f896c66013bd0",
+          "packet_duration_sum_seconds": 0.06,
+          "packet_payload_bytes": 33,
+          "packet_sequence_sha256": "bc8d01bc0c833eb34c3cb3febdcb857e8c22e4d708feb001d74df114ba8748fa",
+          "padding_sequence_sha256": "53351442ab5916cf201eef5327a250b0f539a815be1dd914fe4922f8fe696c48",
+          "skip_samples": 0
+        },
+        "derived_audio": {
+          "channels": 2,
+          "codec": "aac",
+          "duration_seconds": 0.06,
+          "extradata_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "profile": "LC",
+          "sample_rate": 48000,
+          "start_time_seconds": 0.0,
+          "video_streams": 0
+        },
+        "derived_audio_file": {
+          "bytes": 512,
+          "md5": "56907396339ca2b099bd12245f936ddc",
+          "sha256": "471be6558b665e4f6dd49f1184814d1491b0315d466beea768c153cc5500c836"
+        },
+        "duration_tolerance_seconds": 0.05,
+        "full_speech_coverage_claimed": false,
+        "native_canonical_promotion": false,
+        "original_audio_track_identity_verified": false,
+        "private_muxed_source_file": {
+          "bytes": 2048,
+          "md5": "8e63a6bf08c76247864da129ee8994cb",
+          "sha256": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f"
+        },
+        "quality_contract": "progressive_MP4_AAC_packet_preserving_streamcopy",
+        "queue_duration_seconds_hint": 0.06,
+        "raw_muxed_source_and_packet_proofs_private": true,
+        "remuxed_container": true,
+        "schema_version": 1,
+        "source_AAC_packets": {
+          "algorithm": "SHA256_of_ordered_size64be_and_packet_SHA256",
+          "discard_padding": 0,
+          "packet_count": 3,
+          "packet_duration_samples_sha256": "71eb9cc54c04a26c15c4daeb63ffe8a24733ed1713c13279fe2f896c66013bd0",
+          "packet_duration_sum_seconds": 0.06,
+          "packet_payload_bytes": 33,
+          "packet_sequence_sha256": "bc8d01bc0c833eb34c3cb3febdcb857e8c22e4d708feb001d74df114ba8748fa",
+          "padding_sequence_sha256": "53351442ab5916cf201eef5327a250b0f539a815be1dd914fe4922f8fe696c48",
+          "skip_samples": 0
+        },
+        "source_audio": {
+          "channels": 2,
+          "codec": "aac",
+          "duration_seconds": 0.06,
+          "extradata_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "profile": "LC",
+          "sample_rate": 48000,
+          "start_time_seconds": 0.0,
+          "video_streams": 1
+        },
+        "source_minus_queue_duration_seconds": 0.0,
+        "spoken_language_verified": false
+      },
+      "derived_audio_file": {
+        "bytes": 512,
+        "md5": "56907396339ca2b099bd12245f936ddc",
+        "sha256": "471be6558b665e4f6dd49f1184814d1491b0315d466beea768c153cc5500c836"
+      },
+      "full_speech_coverage_verified": false,
+      "native_HTTP_success_reset_allowed": false,
+      "native_canonical_promotion": false,
+      "native_quality_state": null,
+      "origin_inferred": false,
+      "original_audio_track_identity_verified": false,
+      "recording_edit_identity_verified": false,
+      "selection": {
+        "duration_seconds": 0.06,
+        "filesize": 2048,
+        "format_id": "18",
+        "has_drm": false,
+        "is_drc": false,
+        "live_status": "not_live",
+        "metadata_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "protocol": "https",
+        "video_id": "abcdefghijk"
+      },
+      "source_file": {
+        "bytes": 2048,
+        "md5": "8e63a6bf08c76247864da129ee8994cb",
+        "sha256": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f"
+      },
+      "source_http": {
+        "body_complete": true,
+        "body_sha256": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f",
+        "content_length": 2048,
+        "content_range": null,
+        "exact_on_write_limit": 2048,
+        "final_url_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "finished_count": 1,
+        "headers_checked_before_sink_write": true,
+        "media_requests": 1,
+        "received_bytes": 2048,
+        "redirect_count": 0,
+        "request_url_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "retry_count": 0,
+        "selected_format_id": "18",
+        "selected_url_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "selected_video_id": "abcdefghijk",
+        "status": 200,
+        "written_bytes": 2048
+      },
+      "speaker_identity_verified": false,
+      "spoken_language_verified": false,
+      "translation_status": "unknown"
+    },
+    "payload_encoding": "canonical-json-utf8-sorted-compact-no-newline-v1",
+    "payload_sha256": "c839791656d990520db1fb5653a55ad05fcecc88e4ec8aa3a258f9ef39070a6d",
+    "verifier_artifact": {
+      "bytes": 10864,
+      "sha256": "519b5dd2232fa77be1c998763256da320be07b0b8021e71e9cd6978d35e528ec"
+    }
+  },
+  "recording_edit_identity_verified": false,
+  "root_grant_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "schema_version": 1,
+  "source_format_id": "18",
+  "speaker_identity_verified": false,
+  "spoken_language_verified": false,
+  "status": "verified",
+  "tab": "videos",
+  "translation_status": "unknown",
+  "variant_id": "edc335b0d0b05205123bc3d08f4d5fd6bb83842a0d80b2956590bb466993324f",
+  "video_id": "abcdefghijk"
+}

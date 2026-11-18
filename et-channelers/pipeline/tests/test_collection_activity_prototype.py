@@ -1,5 +1,6 @@
 """Bound prototype scope must reach the creator table and its activity export."""
 import csv
+from copy import deepcopy
 import datetime as dt
 import io
 import json
@@ -103,18 +104,28 @@ vm.createContext(context);vm.runInContext(input.source+'\nglobalThis.run=collect
  const first={cells:row.children.map(x=>x.textContent),aria:row.children[2].attrs['aria-label']};
  get('cc-coverage-filter').value='active';get('cc-coverage-filter').handlers.change();
  process.stdout.write(JSON.stringify({first,activeRows:get('cc-coverage-body').children.length,
- message:get('cc-coverage-activity').textContent,csv:await csv.text()}));})().catch(e=>{console.error(e);process.exit(1);});
+ message:get('cc-coverage-activity').textContent,summary:get('cc-coverage-summary').textContent,csv:await csv.text()}));})().catch(e=>{console.error(e);process.exit(1);});
 '''
-        result=subprocess.run([shutil.which('node'),'-e',program],input=json.dumps(payload),
-            capture_output=True,text=True,timeout=15)
-        self.assertEqual(0,result.returncode,result.stderr)
-        rendered=json.loads(result.stdout)
-        self.assertEqual(['Creator','1 / 6','3','1'],rendered['first']['cells'][:4])
-        self.assertEqual(1,rendered['activeRows'])
-        self.assertIn('1 downloading, 1 preparing or validating, 1 awaiting upload',rendered['first']['aria'])
-        self.assertIn('1 are queued in the running batch',rendered['message'])
-        rows=list(csv.reader(io.StringIO(rendered['csv'].lstrip('\ufeff'))))
-        self.assertEqual(['Creator','6','1','1','1','1','1','1'],rows[1])
+        for qualified in (0,1):
+            with self.subTest(qualified_youtube_edition=qualified):
+                current=deepcopy(payload)
+                if qualified:
+                    current['data']['channels'][0].update(qualified_youtube_only_audio=1,audio_total=2,remaining_audio=4)
+                    current['data']['summary'].update(qualified_youtube_only_audio=1,audio_available=2)
+                    current['data']['activity']['channels'][0].update(saved=2,other_pending=0)
+                result=subprocess.run([shutil.which('node'),'-e',program],input=json.dumps(current),
+                    capture_output=True,text=True,timeout=15)
+                self.assertEqual(0,result.returncode,result.stderr)
+                rendered=json.loads(result.stdout)
+                self.assertEqual(['Creator',str(1+qualified)+' / 6','3','1'],rendered['first']['cells'][:4])
+                self.assertEqual(str(qualified),rendered['first']['cells'][6])
+                self.assertEqual(9,len(rendered['first']['cells']))
+                self.assertEqual(1,rendered['activeRows'])
+                self.assertIn('1 downloading, 1 preparing or validating, 1 awaiting upload',rendered['first']['aria'])
+                self.assertIn('1 are queued in the running batch',rendered['message'])
+                self.assertEqual(bool(qualified),'unverified track and language' in rendered['summary'])
+                rows=list(csv.reader(io.StringIO(rendered['csv'].lstrip('\ufeff'))))
+                self.assertEqual(['Creator','6',str(1+qualified),'1','1','1','1',str(1-qualified)],rows[1])
 
 
 if __name__=='__main__':unittest.main()
