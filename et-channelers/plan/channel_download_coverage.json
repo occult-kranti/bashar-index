@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-18T22:32:56.716839Z",
+  "generated_at": "2026-11-18T23:50:18.129167Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
@@ -833,8 +833,8 @@
   ],
   "activity": {
     "schema_version": 1,
-    "generated_at": "2026-11-18T22:32:56.716839Z",
-    "state": "paused",
+    "generated_at": "2026-11-18T23:50:18.129167Z",
+    "state": "ready",
     "cohort_items": 0,
     "summary": {
       "saved": 1145,
