@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-18T20:49:37.280651Z",
+  "generated_at": "2026-11-18T21:20:26.865940Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
-    "youtube_native_audio": 1058,
+    "youtube_native_audio": 1095,
     "publisher_only_audio": 37,
-    "audio_available": 1095,
+    "audio_available": 1132,
     "native_asr": 91,
     "native_caption_videos": 17,
     "audio_with_saved_text": 136,
-    "remaining_audio": 325
+    "remaining_audio": 288
   },
   "channels": [
     {
@@ -88,11 +88,11 @@
       "channel": "Athina Król",
       "channel_dir": "athina-krol",
       "target": 20,
-      "youtube_audio": 5,
+      "youtube_audio": 10,
       "publisher_only_audio": 9,
-      "audio_total": 14,
+      "audio_total": 19,
       "with_saved_text": 10,
-      "remaining_audio": 6
+      "remaining_audio": 1
     },
     {
       "channel": "Aurora Ray",
@@ -268,11 +268,11 @@
       "channel": "BASHAR AYAKO",
       "channel_dir": "infini-global",
       "target": 20,
-      "youtube_audio": 6,
+      "youtube_audio": 13,
       "publisher_only_audio": 0,
-      "audio_total": 6,
+      "audio_total": 13,
       "with_saved_text": 3,
-      "remaining_audio": 14
+      "remaining_audio": 7
     },
     {
       "channel": "Ismael Perez",
@@ -448,11 +448,11 @@
       "channel": "Lyssa Royal Holt",
       "channel_dir": "lyssa-royal-holt",
       "target": 20,
-      "youtube_audio": 8,
+      "youtube_audio": 17,
       "publisher_only_audio": 0,
-      "audio_total": 8,
+      "audio_total": 17,
       "with_saved_text": 3,
-      "remaining_audio": 12
+      "remaining_audio": 3
     },
     {
       "channel": "Magenta Pixie",
@@ -688,11 +688,11 @@
       "channel": "Suzanne Lie",
       "channel_dir": "suzanne-lie-ph-d",
       "target": 20,
-      "youtube_audio": 8,
+      "youtube_audio": 17,
       "publisher_only_audio": 0,
-      "audio_total": 8,
+      "audio_total": 17,
       "with_saved_text": 4,
-      "remaining_audio": 12
+      "remaining_audio": 3
     },
     {
       "channel": "The Judah Channel",
@@ -708,11 +708,11 @@
       "channel": "Tolec",
       "channel_dir": "tolec",
       "target": 20,
-      "youtube_audio": 7,
+      "youtube_audio": 14,
       "publisher_only_audio": 0,
-      "audio_total": 7,
+      "audio_total": 14,
       "with_saved_text": 0,
-      "remaining_audio": 13
+      "remaining_audio": 6
     },
     {
       "channel": "Tracey Milne",
@@ -757,16 +757,16 @@
   ],
   "activity": {
     "schema_version": 1,
-    "generated_at": "2026-11-18T20:49:37.280651Z",
-    "state": "running",
-    "cohort_items": 253,
+    "generated_at": "2026-11-18T21:20:26.865940Z",
+    "state": "paused",
+    "cohort_items": 0,
     "summary": {
-      "saved": 1095,
+      "saved": 1132,
       "downloading": 0,
-      "processing": 2,
-      "awaiting_upload": 1,
-      "queued": 45,
-      "other_pending": 277
+      "processing": 0,
+      "awaiting_upload": 0,
+      "queued": 0,
+      "other_pending": 288
     },
     "channels": [
       {
@@ -850,12 +850,12 @@
         "channel": "Athina Król",
         "channel_dir": "athina-krol",
         "target": 20,
-        "saved": 14,
+        "saved": 19,
         "downloading": 0,
-        "processing": 1,
+        "processing": 0,
         "awaiting_upload": 0,
-        "queued": 5,
-        "other_pending": 0
+        "queued": 0,
+        "other_pending": 1
       },
       {
         "channel": "Aurora Ray",
@@ -1048,12 +1048,12 @@
         "channel": "BASHAR AYAKO",
         "channel_dir": "infini-global",
         "target": 20,
-        "saved": 6,
+        "saved": 13,
         "downloading": 0,
-        "processing": 1,
+        "processing": 0,
         "awaiting_upload": 0,
-        "queued": 10,
-        "other_pending": 3
+        "queued": 0,
+        "other_pending": 7
       },
       {
         "channel": "Ismael Perez",
@@ -1246,12 +1246,12 @@
         "channel": "Lyssa Royal Holt",
         "channel_dir": "lyssa-royal-holt",
         "target": 20,
-        "saved": 8,
+        "saved": 17,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
-        "other_pending": 1
+        "queued": 0,
+        "other_pending": 3
       },
       {
         "channel": "Magenta Pixie",
@@ -1510,12 +1510,12 @@
         "channel": "Suzanne Lie",
         "channel_dir": "suzanne-lie-ph-d",
         "target": 20,
-        "saved": 8,
+        "saved": 17,
         "downloading": 0,
         "processing": 0,
-        "awaiting_upload": 1,
-        "queued": 10,
-        "other_pending": 1
+        "awaiting_upload": 0,
+        "queued": 0,
+        "other_pending": 3
       },
       {
         "channel": "The Judah Channel",
@@ -1532,12 +1532,12 @@
         "channel": "Tolec",
         "channel_dir": "tolec",
         "target": 20,
-        "saved": 7,
+        "saved": 14,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 9,
-        "other_pending": 4
+        "queued": 0,
+        "other_pending": 6
       },
       {
         "channel": "Tracey Milne",
