@@ -89,3 +89,18 @@ class BulkStatusTests(unittest.TestCase):
         self.save_state()
         self.assertEqual(self.lane()['state'], 'paused')
         self.assertFalse(self.lane()['process_confirmed'])
+
+    def test_missing_worker_diagnostics_is_an_administrative_hold(self):
+        self.state.update(status='held_reconciliation_required',
+            failed_frame={'error_class': 'bulk_child_diagnostics_missing'})
+        self.save_state()
+        self.assertEqual(self.lane()['reason'], 'worker_diagnostics_missing')
+
+    def test_actual_source_circuit_takes_precedence_over_diagnostic_hold(self):
+        self.state.update(status='held_reconciliation_required',
+            failed_frame={'error_class': 'bulk_child_diagnostics_missing'})
+        self.save_state()
+        self.write(self.root / ('sync/' + self.namespace + '_http_state.json'),
+            {'schema_version': 5, 'seed_sha256': '1' * 64,
+             'state': {'circuit_break': {'reason': 'provider_hold'}}})
+        self.assertEqual(self.lane()['reason'], 'source_control_hold')

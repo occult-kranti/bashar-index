@@ -52,6 +52,21 @@ class SnapshotChecks(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'summary_totals'):
             checker.check(self.root)
 
+    def test_activity_partition_and_ownership_cannot_inflate_work(self):
+        stages = dict(saved=1, downloading=0, processing=0, awaiting_upload=0, queued=1, other_pending=0)
+        self.data['activity'] = dict(schema_version=1, state='running', summary=dict(stages),
+            channels=[dict(channel_dir='a-channel', target=2, **stages)])
+        self.save(); checker.check(self.root)
+        self.data['activity']['channels'][0]['queued'] = 2
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'activity_partition'):
+            checker.check(self.root)
+        self.data['activity']['channels'][0].update(queued=0, downloading=1)
+        self.data['activity']['summary'].update(queued=0, downloading=1)
+        self.data['activity']['state'] = 'paused'; self.save()
+        with self.assertRaisesRegex(ValueError, 'activity_ownership'):
+            checker.check(self.root)
+
     def test_missing_inventory_row_and_duplicate_identity_are_rejected(self):
         p = self.root / 'downloaded_videos.csv'
         p.write_bytes(checker.csv_bytes([], checker.VIDEO_FIELDS))

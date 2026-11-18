@@ -1,6 +1,6 @@
 # ET channelers: YouTube crawl, index, dashboard and transcript pipeline
 
-**Latest checkpoint, 2026-11-18 07:04 UTC:** 287 native pairs + 34 additional publisher editions = 321 audio entries; 136 have saved text. Native ASR is 91 and remains paused by the owner, with `STOP_ASR` preserved. A process-bound 1,046-item / 53-frame cohort is running with two source workers and one publisher; 40 decisions have closed across two frames. Four new Steve Nobel official-feed editions have separate publisher proofs. The [remaining first-pass estimate](dashboard/collection/#collection-eta) is 6.1–12.2 active service hours under stated assumptions, including held decisions; complete calendar ETA remains unknown. The [optimization panel](research/download-optimization-panel-2026-11-18.md) compares transports, captions, concurrency and upload improvements. The [portable executor](pipeline/native_bulk/README.md) preserves the implementation separately from running code. Earlier dated checkpoints below are historical.
+**Operational update, November 18:** the [channel/activity table](dashboard/collection/#channel-downloads) and [ETA](dashboard/collection/#collection-eta) carry their own receipt/proof timestamps. At 16:01 UTC, 685 selected entries had saved audio and recovery4 was running its separately admitted 617-target / 31-frame cohort with two source workers and one publisher. ASR remains paused with `STOP_ASR` preserved; the 500 MB future-growth reservation is released, while retained inputs remain accounted for. Steve Nobel now has seven separately qualified official-feed audio editions. The [optimization panel](research/download-optimization-panel-2026-11-18.md) records changed paths and limitations; no production speedup or complete calendar finish is claimed. Earlier dated checkpoints below are historical.
 
 The [current channel download table](dashboard/collection/#channel-downloads) covers all 74 channels in the newest-20 queue, with separate YouTube audio, additional publisher editions, saved text and remaining-audio counts. Download the [channel CSV](plan/channel_download_coverage.csv) or [complete saved-video inventory](plan/downloaded_videos.csv). Each file is a dated receipt checkpoint; acquisition continues independently of page publication. Regenerate these files with `python -I et-channelers/pipeline/collection_coverage.py --root PRIVATE_ROOT --out et-channelers/plan/channel_download_coverage.json`, then rebuild the collection page with `pipeline/dashboard_local.py`.
 
@@ -20,6 +20,7 @@ Work on the extraterrestrial-channeler thread of the Bashar Index: research note
 | **Handoff (start here when resuming)** | [`HANDOFF.md`](HANDOFF.md): where everything is, how to set up a new Codespace, what was paused and how to start it again. |
 | Dashboard hub | <https://occult-kranti.github.io/bashar-index/dashboards/>: all current public interfaces. |
 | Collection dashboard | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/>: current acquisition snapshot and dated historical archive, backed by [`plan/`](plan/). The earlier claude.ai artifact is historical. |
+| Selected-video upload timeline | [`dashboard/collection/timeline.html`](dashboard/collection/timeline.html): the full 1,420-video / 74-creator sample, with exact, estimated and unknown date evidence, filters and CSV/JSON exports. |
 | Prediction timelines | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html>: filterable candidate statements; candidates are not verified predictions. |
 | Channeler YouTube index | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/>. Page source: [`dashboard/index.html`](dashboard/index.html). |
 | Channeler/entity directory | <https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/#/entities>: reviewed relationships and source links, with uncertain attribution kept explicit. |
@@ -30,6 +31,23 @@ Work on the extraterrestrial-channeler thread of the Bashar Index: research note
 | The Frequency of a Place (experiment page) | <https://claude.ai/artifact/EXrUcxSotuWRW8NCaBHieY>. Its code is on the repository branch `experiment-frequency-of-place`. |
 
 PR #43 merged as `6fce268e` after 1,427 Python tests (47 skips), 86 Node tests, the media guard, 54 count checks and snapshot consistency passed. Its `feat/collection-snapshot-refresh-2026-11-18` branch is retained. Metadata-only checkpoint branches publish only the five aggregate JSON/CSV files; their CI keeps media, count, consistency and browser-contract checks while skipping the full Python suite. Code changes still require that suite. [The historical investigation](research/native-audio-investigation-2026-11-17.md) retains the earlier partial SABR trial; the [later panel record](research/native-transport-panel-2026-11-17/README.md) documents complete native HTTPS downloads.
+
+## Download activity and date exports
+
+The channel table's **in progress** value is downloading + processing + awaiting upload. Its **creator activity CSV** exports all 74 creators and the following six mutually exclusive states, which sum to each creator's selected target. These are saved checkpoint observations, not a live worker API.
+
+| State | Meaning at the checkpoint |
+|---|---|
+| Saved | A native or qualified publisher audio edition has verified paired archive receipts; this takes precedence over acquisition-result labels. |
+| Downloading | A confirmed owned child in the active exact cohort reports native audio transfer. |
+| Processing | A confirmed owned child is preparing or validating rather than reporting transfer. |
+| Awaiting upload | The active cohort has a local-complete result, no live owned child and no verified saved receipt yet. |
+| Queued | Selected by the confirmed running cohort, with no attempt folder yet. |
+| Other pending | All other unsaved entries, including held, uncertain, unconfirmed or separately scheduled cases; no retry permission is implied. |
+
+The [upload-date timeline](dashboard/collection/timeline.html) reconciles **1,420 videos / 74 creators: 581 exact dates, 838 estimates and one unknown**. Exact dates come from matching saved YouTube metadata; all 1,419 original index estimates remain available, including the 577 that differ from an exact override. Upload dates are not recording dates. These capped newest-20 windows differ across creators and do not measure total channel production or a common observation period.
+
+Download the [video-level date CSV](dashboard/collection/dataset_timeline_videos.csv), [monthly distribution CSV](dashboard/collection/dataset_timeline_monthly.csv) or [complete timeline JSON](dashboard/collection/dataset_timeline.json). The standalone HTML embeds its data and local Plotly renderer. `pipeline/dataset_timeline.py` uses local saved inputs only, validates membership/calendar dates/conflicts, and strips private cache paths. Saved-audio flags reflect the supplied receipt snapshot. The creator activity CSV, static [channel counts CSV](plan/channel_download_coverage.csv) and [saved-video CSV](plan/downloaded_videos.csv) serve different grains.
 
 ## At a glance
 

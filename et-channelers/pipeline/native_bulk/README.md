@@ -18,6 +18,12 @@ This snapshot includes the typed parent-deadline path. An explicit parent bootst
 
 The bounded capacity cache preserves full active reservations and reconciles a finished folder as inactive before releasing its slot. Windows process identity and owned-process closure checks remain required for execution. Metadata-only planning and the synthetic tests can import the package independently of a workstation layout.
 
+The scheduler drains finished source work, refills the existing two slots when guards and full reservations permit, then publishes one ready pair. Publication remains serial. This ordering does not promise a production speedup; publication-bound work can still determine throughput.
+
+Each child has bounded sanitized stderr capture and a separate durable fatal diagnostic path. Only allowlisted exception classes, numeric errors and control-write stages are retained; unstructured stderr, URLs and credentials are discarded. A fatal diagnostic cannot replace a worker result or prove zero source access. Unknown crashes, control-write failures and diagnostic failures hold the batch, including fatal evidence found after a child has closed. HTTP evidence is ingested before any diagnostic hold or slot release.
+
+An owned child can wait up to 55 seconds before GO when a sibling extends the adaptive pause after it was spawned. The parent repeats source, lease, stop, process and diagnostic checks throughout this wait. It commits GO only after the pause expires and before the child's existing 60-second window. Revocation, a global hold, a child exit or the bounded wait deadline prevents GO; this administrative deadline never becomes a censored source timeout.
+
 `frozen_ingestion_coverage.py` contains the tested coverage/proof implementation from the source revision recorded in `PROVENANCE.json`. Its functions are preserved; only imports are adapted to this package's parent pipeline. The executor imports this frozen module for local receipt coverage, never invokes its exporter CLI, and does not depend on edits to the live status exporter. Source-critical parent pipeline dependencies remain pinned by the admission contract.
 
 `PROVENANCE.json` records source-code hashes and the portability changes. It contains no runtime proposals or operational evidence. Targeted synthetic tests live in `pipeline/tests/test_native_bulk_portable.py`; they forbid network connections and process launch.

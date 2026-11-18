@@ -432,7 +432,7 @@ def _native_bulk_lease(root, now, lease, namespace):
                     summary['pending'] == 0 and sum(summary[key] for key in ('verified', 'held', 'pending', 'skipped')) == len(frames[index]['video_ids'])):
                 return {}
             decisions += len(frames[index]['video_ids'])
-        result = {'kind': 'native_v5_bulk', 'workers': 2, 'source_count': len(ids), 'planned_frames': len(frames),
+        result = {'kind': 'native_v5_bulk', 'namespace': namespace, 'workers': 2, 'source_count': len(ids), 'planned_frames': len(frames),
                   'completed_frames': len(completed), 'completed_decisions': decisions,
                   'started_at': stamp(invoked['started_at_epoch']), 'asr_handoff_enabled': False,
                   'automatic_resume': False}
@@ -443,8 +443,13 @@ def _native_bulk_lease(root, now, lease, namespace):
                 ledger.get('state', {}).get('circuit_break') or state.get('status') == 'held_reconciliation_required')
         expiry = min(lease.get('expires_at_epoch', 0), grant.get('expires_at_epoch', 0))
         if held or now >= expiry:
+            reason = 'source_or_owner_hold'
+            if ledger.get('state', {}).get('circuit_break'):
+                reason = 'source_control_hold'
+            elif state.get('failed_frame', {}).get('error_class') == 'bulk_child_diagnostics_missing':
+                reason = 'worker_diagnostics_missing'
             return dict(result, state='paused', process_confirmed=False, proof='finite_cohort_hold',
-                        reason='source_or_owner_hold')
+                        reason=reason)
         if (lease['state'] == 'active' and state.get('status') == 'active' and
                 owned_native_batch_command(invoked['controller_identity'], Path(settings_pin['path']),
                                            Path(codes['native_bulk_controller.py']['path']), command_mode='bulk')):

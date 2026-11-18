@@ -23,11 +23,11 @@ PUBLIC_PIPE=Path(__file__).resolve().parent.parent
 sys.path.insert(0,str(PUBLIC_PIPE))
 
 TARGET = None  # bound from the hash-pinned plan before optional imports
-PROFILE = 'stock_headful_wpc_native_batch_v5_bulk_recovery2'
-LEASE_NAME = 'stock_wpc_batch_v5_bulk_recovery2_lease.json'
-STOP_NAME = 'STOP_STOCK_WPC_BATCH_V5_BULK_RECOVERY2'
-COOLDOWN_NAME = 'stock_wpc_batch_v5_bulk_recovery2_source_cooldown.json'
-HTTP_STATE_NAME = 'stock_wpc_batch_v5_bulk_recovery2_http_state.json'
+PROFILE = 'stock_headful_wpc_native_batch_v5_bulk_recovery4'
+LEASE_NAME = 'stock_wpc_batch_v5_bulk_recovery4_lease.json'
+STOP_NAME = 'STOP_STOCK_WPC_BATCH_V5_BULK_RECOVERY4'
+COOLDOWN_NAME = 'stock_wpc_batch_v5_bulk_recovery4_source_cooldown.json'
+HTTP_STATE_NAME = 'stock_wpc_batch_v5_bulk_recovery4_http_state.json'
 # yt-dlp's numeric filter grammar does not accept a leading minus sign.
 # The pre-transfer raw-inventory gate still requires exactly preference -1.
 LEGACY_FORMAT_SELECTOR = ('bestaudio[protocol=https][vcodec=none][language_preference<0][format_id!*=drc][ext=m4a]/'
@@ -104,7 +104,9 @@ def write(path, value, *, on_failure=None):
         if first is None: failure(error, False)
         # Held is deliberately not OSError: yt-dlp must not relabel a failed
         # local progress write as UnavailableVideoError.
-        raise Held('control_write_failed') from first
+        failure_error = Held('control_write_failed')
+        failure_error.control_diagnostic = {'stage':stage,'target':path.name if path.name in {'result.json','progress.json'} else 'other_control','retry_attempts':retries}
+        raise failure_error from first
     finally:
         if tmp is not None:
             try: tmp.unlink(missing_ok=True)
@@ -252,7 +254,7 @@ def diagnostic_reason(message):
         (r'^No video formats found(?:[!.]|$)', 'no_formats'),
         (r'^This video is DRM protected', 'drm_not_admitted'),
         (r'^(?:Premieres in\b|This live event will begin\b)', 'deferred_live'),
-        (r'^Sign in to confirm you(?:[’\']re| are) not a bot', 'bot_check'),
+        (r'^Sign in to confirm you(?:[\u2019\']re| are) not a bot', 'bot_check'),
         (r'^(?:CAPTCHA\b|Protection rejected\b)', 'access_challenge'),
         (r'^(?:Private video\b|This video is private\b)', 'private_video'),
         (r'^Video unavailable(?:[.!:]|$)', 'video_unavailable'))
@@ -433,7 +435,7 @@ def validate(config, admission, *, now=None):
     need(len(items) == 1 and config.get('item') == items[0], 'target_binding')
     item = items[0]
     root = Path(settings['private_root']).resolve(); run = Path(config['run_root']).resolve()
-    expected = root / 'stock_wpc_batch_v5_bulk_recovery2/jobs' / admission['plan_sha256'][:16] / item['video_id']
+    expected = root / 'stock_wpc_batch_v5_bulk_recovery4/jobs' / admission['plan_sha256'][:16] / item['video_id']
     need(run == expected.resolve(), 'run_path')
     controls = control_paths(root)
     need(Path(config.get('lease_path', '')).resolve() == controls['lease_path'] and
@@ -755,8 +757,17 @@ def main():
 
 
 if __name__ == '__main__':
-    try: sys.exit(main())
+    try: exit_code = main()
     except BaseException as error:
-        if isinstance(error, SystemExit): raise
+        if isinstance(error, SystemExit) and error.code in (None, 0): raise
+        try:
+            import importlib.util
+            spec = importlib.util.spec_from_file_location('owned_outer_fatal_diagnostics',Path(__file__).with_name('worker_diagnostics.py'))
+            diagnostics = importlib.util.module_from_spec(spec); spec.loader.exec_module(diagnostics)
+            diagnostics.report_fatal(error)
+        except BaseException:
+            try: os.write(2,b'NATIVE_FATAL_V1 {"kind":"native_worker_fatal","exceptions":[{"exception_class":"OtherException"}]}\n')
+            except OSError: pass
         print(json.dumps({'status': 'held_before_worker', 'error_class': error.code if isinstance(error, Held) else 'configuration_failed'}))
         sys.exit(3)
+    else: sys.exit(exit_code)

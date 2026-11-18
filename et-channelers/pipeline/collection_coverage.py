@@ -21,6 +21,57 @@ except ImportError:
     import drive_ingest as storage
 
 
+ACTIVITY_FIELDS = ('saved', 'downloading', 'processing', 'awaiting_upload', 'queued', 'other_pending')
+
+
+def channel_activity(root, rows, available, at):
+    """Partition missing entries using bound ownership and saved worker metadata."""
+    by_video = {row['video_id']: row for row in rows}
+    grouped = defaultdict(list)
+    for row in rows:
+        grouped[row['channel_dir']].append(row)
+    lane = status.native_bulk_lane(root, at.timestamp())
+    namespace = lane.get('namespace', '')
+    scope, attempts = set(), {}
+    if re.fullmatch(r'stock_wpc_batch_v5_bulk(?:_recovery[0-9]+)?', namespace):
+        lease = status.read_object(root / 'sync' / (namespace + '_lease.json'))
+        ids = lease.get('allowed_video_ids', [])
+        if (lane.get('state') == 'running' and lane.get('process_confirmed') is True and lease.get('state') == 'active' and
+                isinstance(ids, list) and len(ids) == lane.get('source_count') and set(ids) <= by_video.keys()):
+            scope = set(ids)
+            for path in (root / namespace / 'jobs').glob('*/*/attempt.json'):
+                if path.parent.name in scope:
+                    # Repeated attempt folders cannot establish current activity.
+                    attempts[path.parent.name] = path.parent if path.parent.name not in attempts else None
+    counters = defaultdict(Counter)
+    for ident, row in by_video.items():
+        field = 'other_pending'
+        if ident in available:
+            field = 'saved'
+        elif ident in scope:
+            if ident not in attempts:
+                field = 'queued'
+            elif attempts[ident] is not None:
+                folder = attempts[ident]
+                owner = status.read_object(folder / 'child-owner.json').get('owned_child')
+                progress = status.read_object(folder / 'progress.json')
+                result = status.read_object(folder / 'result.json')
+                if lane.get('process_confirmed') is True and isinstance(owner, dict) and status.owned_process_alive(owner):
+                    field = 'downloading' if progress.get('phase') == 'native_transfer' else 'processing'
+                elif result.get('status') == 'local_complete':
+                    field = 'awaiting_upload'
+        counters[row['channel_dir']][field] += 1
+    channels = []
+    for slug, items in sorted(grouped.items()):
+        names = Counter(item.get('source_channel_name') or slug for item in items)
+        channels.append(dict(channel=names.most_common(1)[0][0], channel_dir=slug, target=len(items),
+            **{field: counters[slug][field] for field in ACTIVITY_FIELDS}))
+    return {'schema_version': 1, 'generated_at': at.isoformat().replace('+00:00', 'Z'),
+        'state': lane.get('state', 'unconfirmed'), 'cohort_items': len(scope),
+        'summary': {field: sum(row[field] for row in channels) for field in ACTIVITY_FIELDS},
+        'channels': channels}
+
+
 def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE):
     root = Path(root)
     rows = list(csv.DictReader(io.StringIO((root / 'jobs/queue_newest20_enriched.csv').read_text(encoding='utf-8-sig'))))
@@ -79,7 +130,7 @@ def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE):
             'youtube_native_audio': len(audio), 'publisher_only_audio': len(available - audio),
             'audio_available': len(available), 'native_asr': len(asr), 'native_caption_videos': len(caption_ids),
             'audio_with_saved_text': len(text), 'remaining_audio': len(targets - available)},
-        'channels': channels}, videos
+        'channels': channels, 'activity': channel_activity(root, rows, available, at)}, videos
 
 
 def csv_bytes(rows, fields):
