@@ -154,6 +154,17 @@
 .cc-current-foot>p { font-size:12px; margin:0; text-align:end; }
 .cc-current-foot>p span,.cc-snapshot-time { color:var(--color-fg-muted); }
 .cc-snapshot-time { font-size:11px; margin:14px 0 0; padding-top:12px; border-top:1px solid var(--color-border-line); }
+.cc-eta { border-block:1px solid var(--color-border-line); margin:0 0 24px; padding:20px 0; scroll-margin-top:20px; }
+.cc-eta h3 { margin:0 0 8px; font-size:17px; font-weight:600; }
+.cc-eta p { margin:8px 0; color:var(--color-fg-muted); font-size:12px; line-height:1.6; max-width:85ch; }
+.cc-eta dl { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr)); gap:24px; margin:18px 0; }
+.cc-eta dl>div { min-width:0; }
+.cc-eta dt { color:var(--color-fg-muted); font-size:12px; }
+.cc-eta dd { margin:6px 0 0; color:var(--color-fg); font:400 24px/1.25 var(--font-anthropic-serif); font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.cc-eta dd+p { margin-top:8px; }
+.cc-eta summary { color:var(--color-ok); cursor:pointer; font-size:12px; padding-block:6px; }
+.cc-eta summary:focus-visible { outline:2px solid var(--color-fg); outline-offset:3px; }
+@media(max-width:700px) { .cc-eta dl { grid-template-columns:1fr; gap:16px; } .cc-eta dl>div+div { border-top:1px solid var(--color-border-line); padding-top:16px; } }
 .cc-archive-intro { margin-top:16px; padding-top:12px; scroll-margin-top:20px; }
 .cc-section-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .cc-snapshot-label { font-size:11px; color:var(--color-fg-muted); border:1px solid var(--color-border-line); padding:5px 8px; }
@@ -207,6 +218,18 @@
           <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label">Channels in this pass</span></div>
           <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label">Items in the full index</span></div>
         </div>
+        <section class="cc-eta" id="collection-eta" aria-labelledby="cc-eta-heading">
+          <h3 id="cc-eta-heading">How long will collection take?</h3>
+          <p id="cc-eta-coverage">Reading coverage from the saved estimate&hellip;</p>
+          <dl>
+            <div><dt>Next recovery batch</dt><dd id="cc-eta-next-value">Loading&hellip;</dd><p id="cc-eta-next-scope">Previously held native audio, estimated separately.</p></div>
+            <div><dt>Untouched newest-20 first pass</dt><dd id="cc-eta-first-value">Loading&hellip;</dd><p id="cc-eta-first-scope">Queue selection and admission state are shown with the estimate.</p></div>
+            <div><dt>All newest-20 audio + text</dt><dd>Finish date unknown</dd><p>Quarantines, unavailable sources, language review and ASR holds still need resolution. Captions and ASR are tracked separately below.</p></div>
+          </dl>
+          <p id="cc-eta-calendar">Active service time excludes future downtime and admission delays.</p>
+          <details><summary>Timing evidence and assumptions</summary><p id="cc-eta-evidence">Loading the completed-run service measurement&hellip;</p><p>Measured run ended <time id="cc-eta-basis-date">loading</time>. The older 8&ndash;12 active-hour scenario is superseded by this completed run. These are conditional planning scenarios, not statistical bounds or guaranteed dates. <a href="../../research/collection-eta-2026-11-18.md">Evidence and limits</a>.</p></details>
+          <p>Estimate generated <time id="cc-eta-date">loading</time>. <span id="cc-eta-freshness">Reading checkpoint age&hellip;</span></p>
+        </section>
         <section class="cc-mirrors" id="cc-mirrors" aria-labelledby="cc-mirrors-heading" hidden>
           <div><h3 id="cc-mirrors-heading">Publisher mirrors on Drive</h3><p>Complete publisher audio linked to latest-20 entries by video references or matched by owner, title, date and duration. YouTube edit equivalence remains unverified. <a href="../../research/chromium-adblock-2026-11-17.md">Source evidence</a>.</p></div>
           <dl><div><dt>Latest-20 entries with audio</dt><dd id="cc-mirror-audio">&mdash;</dd></div><div><dt>With English timed captions</dt><dd id="cc-mirror-captions">&mdash;</dd></div></dl>
@@ -221,6 +244,7 @@
         <ol class="cc-stages" id="cc-stages" aria-label="Collection sequence"><li class="cc-stage">Loading the collection sequence&hellip;</li></ol>
         <div class="cc-current-foot"><div><span class="cc-storage-label">Project storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="17000000000" value="0" aria-label="Project storage used"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
         <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>
+        <p class="cc-snapshot-time" id="cc-legacy-summary"></p>
       </section>
       <section class="cc-archive-intro" id="archive-overview" aria-labelledby="cc-archive-heading">
         <div class="cc-section-heading"><div><p class="cc-eyebrow">Historical snapshot</p><h2 id="cc-archive-heading">The research corpus</h2></div><span class="cc-snapshot-label">16 November 2026</span></div>

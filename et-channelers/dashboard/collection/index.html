@@ -131,7 +131,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (!response.ok) throw new Error('status unavailable');
       const data = await response.json();
       if (data.schema_version !== 1 || data.scope !== 'local_youtube_collection') throw new Error('unexpected status');
-      const labels = {cooldown:'Waiting for Drive', paused:'Collection paused', ready:'Ready to resume', running:'Collecting audio', unknown:'Status not yet recorded'};
+      const labels = {cooldown:'Waiting for Drive', paused:'Collection paused', ready:'Ready at saved checkpoint', running:'Running at saved checkpoint', unknown:'Status not yet recorded'};
       const explanations = {cooldown:'Drive has temporarily limited requests. Downloaded files are retained for the next upload attempt.', paused:'Collection is paused. Completed audio and metadata remain available for a safe resume.', ready:'The last Drive retry window has passed. This snapshot does not confirm that a worker is running.', running:'Audio and metadata are being saved together. Local copies are released after Drive verification.', unknown:'Queue totals are available; a current worker state has not been recorded.'};
       const state = labels[data.operation.state] ? data.operation.state : 'unknown';
       if (data.operation.cooldown_provider === 'youtube') {
@@ -144,8 +144,16 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (state === 'cooldown' && data.operation.retry_after) explanations.cooldown += ' Next attempt after ' + date(data.operation.retry_after) + '.';
       if (state === 'paused' && data.operation.cooldown_provider === 'youtube' && data.operation.retry_after) explanations.paused += ' The recorded source retry window ends ' + date(data.operation.retry_after) + '; this does not resume collection automatically.';
       const supportedNative = Number.isFinite(data.counts.supported_native_verified_videos) ? data.counts.supported_native_verified_videos : 0;
-      put('cc-current-state', supportedNative > 0 ? 'Native route verified' : labels[state]);
-      put('cc-current-explanation', supportedNative > 0 ? number(supportedNative) + ' complete native-format recording(s) from the browser-assisted route have paired metadata verified on Drive. Source quality notes and publisher coverage are shown below.' : explanations[state]);
+      put('cc-current-state', labels[state]);
+      const nativeReady = data.native_lane?.state === 'ready';
+      let explanation = nativeReady ? 'The last owned native run is terminal and its allocation is released. The native lane is ready for a separately admitted batch; no worker is confirmed running.' : explanations[state];
+      const snapshotAge = (Date.now() - new Date(data.generated_at).getTime()) / 60000;
+      if (state === 'running') explanation = 'The owned native process was confirmed running when this snapshot was saved. ' + (data.native_lane?.asr_handoff_enabled === false ? 'This batch does not hand audio to ASR. ' : '') + 'This page does not poll the worker.';
+      if (snapshotAge >= 10) explanation += ' This checkpoint is ' + Math.floor(snapshotAge) + ' minutes old; present worker state needs a fresh snapshot.';
+      if (supportedNative > 0) explanation += ' ' + number(supportedNative) + ' native-format recordings from the browser-assisted route have paired metadata verified on Drive.';
+      put('cc-current-explanation', explanation);
+      const legacy = data.legacy_operation;
+      put('cc-legacy-summary', legacy ? 'Legacy collector: ' + (labels[legacy.state] || 'state unconfirmed').toLowerCase() + (legacy.retry_after ? '; its recorded retry window ends ' + date(legacy.retry_after) : '') + '. Its preserved controls are separate from the native batch lane.' : '');
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.audio_archived_videos ?? data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
@@ -192,7 +200,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const used = data.storage.managed_bytes ?? data.storage.local_bytes;
       const cap = data.storage.managed_ceiling_bytes ?? data.storage.ceiling_bytes;
       put('cc-local-storage', (used / 1e9).toFixed(2) + ' / ' + number(cap / 1e9) + ' GB' + (Number.isFinite(data.storage.managed_bytes) ? ' including tools and models' : ''));
-      const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = supportedNative > 0 ? 'verified' : state;
+      const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;
       const fill = document.getElementById('cc-storage-meter');
       if (fill) { fill.max = cap; fill.value = used; }
       const holder = document.getElementById('cc-stages');
@@ -209,7 +217,45 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       } }
     } catch (_) { put('cc-current-state', 'Status unavailable'); put('cc-current-explanation', 'The latest collection snapshot could not be loaded. The historical archive tables remain available below.'); }
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', collectionStatus, {once:true}); else collectionStatus();
+  async function collectionEta() {
+    const hours = (values) => Array.isArray(values) && values.length === 2 && values.every(v => Number.isFinite(v) && v >= 0) ? values.map(v => v.toFixed(1)).join('–') : 'Unknown';
+    try {
+      const response = await fetch(BASE + 'collection_eta.json', {cache:'no-cache'});
+      if (!response.ok) throw new Error('estimate unavailable');
+      const data = await response.json();
+      if (data.schema_version !== 2 || data.scope !== 'collection_eta' || !data.current) throw new Error('unexpected estimate');
+      const current = data.current, next = current.next_recovery_batch, first = current.untouched_first_pass, service = current.measured_service;
+      const nextMinutes = next.planning_active_hours?.map(v => v * 60);
+      put('cc-eta-next-value', next.items === 0 ? 'Selected plan terminal' : Array.isArray(nextMinutes) && nextMinutes.every(Number.isFinite) ? nextMinutes.map(v => Math.round(v)).join('–') + ' active min' : 'Unknown');
+      let recoveryScope = number(next.items) + ' items remain in the ' + number(next.selected_items ?? next.items) + '-item recovery plan. ';
+      if (next.completed_decisions > 0) recoveryScope += number(next.completed_decisions) + ' decisions completed: ' + number(next.completed_verified_pairs) + ' verified, ' + number(next.completed_held_items) + ' held. ';
+      recoveryScope += next.state === 'running' ? 'Owned batch confirmed running at the saved checkpoint.' : ['terminal_with_holds', 'complete'].includes(next.state) ? 'The selected recovery plan is terminal; held items need separate review.' : 'Remaining frames need separate admission; no worker is confirmed running by this ETA checkpoint.';
+      put('cc-eta-next-scope', recoveryScope);
+      put('cc-eta-first-value', hours(first.planning_active_hours) + ' active h');
+      let firstScope = number(first.items) + ' decisions remain from the ' + number(first.selected_items ?? first.items) + '-item frozen selection / ' + number(first.frames) + ' frames. ';
+      firstScope += first.state === 'running_admitted_cohort' ? number(first.current_cohort_items) + '-item cohort running at the checkpoint; ' + number(first.later_prepared_items) + ' later items remain prepared and disabled. ' : 'Campaign is prepared; running is not confirmed by this checkpoint. ';
+      put('cc-eta-first-scope', firstScope + 'This estimates a first pass, including holds and failures.');
+      put('cc-eta-calendar', 'At 50% availability, the untouched first pass would take ' + hours(first.calendar_hours_at_half_availability) + ' calendar hours, plus admission delays.');
+      put('cc-eta-evidence', number(service.first_pass_decisions) + ' decisions in ' + (service.elapsed_seconds / 60).toFixed(1) + ' minutes; ' + number(service.verified_native_pairs) + ' verified pairs (' + Math.round(service.immediate_success_fraction * 100) + '% immediate success). Includes startup, source requests, upload and backpressure. The range assumes 1–2× that service time; item mix may differ.');
+      const c = current.coverage;
+      put('cc-eta-coverage', number(c.source_audio_available_target_videos) + ' / ' + number(current.newest20_items) + ' latest-20 entries have verified audio from any source; ' + number(c.source_audio_with_text_target_videos) + ' have an audio edition with saved text. ' + number(c.verified_pairs) + ' native pairs and ' + number(c.asr_verified_videos) + ' native ASR bundles.');
+      put('cc-eta-date', date(current.generated_at));
+      put('cc-eta-basis-date', date(service.ended_at));
+      const generated = new Date(current.status_snapshot_at).getTime();
+      const age = Number.isFinite(generated) ? Math.max(0, (Date.now() - generated) / 3600000) : null;
+      put('cc-eta-freshness', age === null ? 'Coverage checkpoint date unavailable.' : 'Coverage checkpoint ' + date(current.status_snapshot_at) + (age >= 1 ? ' · ' + Math.floor(age) + ' hours old; refresh before using it as current queue state.' : '.'));
+    } catch (_) {
+      put('cc-eta-next-value', 'Unavailable'); put('cc-eta-first-value', 'Unavailable');
+      put('cc-eta-next-scope', 'No current recovery estimate is available.');
+      put('cc-eta-first-scope', 'No current first-pass estimate is available.');
+      put('cc-eta-coverage', 'Estimate coverage is unavailable; collection counts are shown separately above.');
+      put('cc-eta-date', 'unavailable'); put('cc-eta-basis-date', 'unavailable');
+      put('cc-eta-evidence', 'The saved ETA could not be loaded. No finish date is inferred from historical transfer assumptions.');
+      put('cc-eta-freshness', 'Estimate checkpoint unavailable.');
+    }
+  }
+  const loadCollection = () => { collectionStatus(); collectionEta(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadCollection, {once:true}); else loadCollection();
 })();
 </script>
 <style>
@@ -367,6 +413,17 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
 .cc-current-foot>p { font-size:12px; margin:0; text-align:end; }
 .cc-current-foot>p span,.cc-snapshot-time { color:var(--color-fg-muted); }
 .cc-snapshot-time { font-size:11px; margin:14px 0 0; padding-top:12px; border-top:1px solid var(--color-border-line); }
+.cc-eta { border-block:1px solid var(--color-border-line); margin:0 0 24px; padding:20px 0; scroll-margin-top:20px; }
+.cc-eta h3 { margin:0 0 8px; font-size:17px; font-weight:600; }
+.cc-eta p { margin:8px 0; color:var(--color-fg-muted); font-size:12px; line-height:1.6; max-width:85ch; }
+.cc-eta dl { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr)); gap:24px; margin:18px 0; }
+.cc-eta dl>div { min-width:0; }
+.cc-eta dt { color:var(--color-fg-muted); font-size:12px; }
+.cc-eta dd { margin:6px 0 0; color:var(--color-fg); font:400 24px/1.25 var(--font-anthropic-serif); font-variant-numeric:tabular-nums; overflow-wrap:anywhere; }
+.cc-eta dd+p { margin-top:8px; }
+.cc-eta summary { color:var(--color-ok); cursor:pointer; font-size:12px; padding-block:6px; }
+.cc-eta summary:focus-visible { outline:2px solid var(--color-fg); outline-offset:3px; }
+@media(max-width:700px) { .cc-eta dl { grid-template-columns:1fr; gap:16px; } .cc-eta dl>div+div { border-top:1px solid var(--color-border-line); padding-top:16px; } }
 .cc-archive-intro { margin-top:16px; padding-top:12px; scroll-margin-top:20px; }
 .cc-section-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; }
 .cc-snapshot-label { font-size:11px; color:var(--color-fg-muted); border:1px solid var(--color-border-line); padding:5px 8px; }
@@ -420,6 +477,18 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
           <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label">Channels in this pass</span></div>
           <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label">Items in the full index</span></div>
         </div>
+        <section class="cc-eta" id="collection-eta" aria-labelledby="cc-eta-heading">
+          <h3 id="cc-eta-heading">How long will collection take?</h3>
+          <p id="cc-eta-coverage">Reading coverage from the saved estimate&hellip;</p>
+          <dl>
+            <div><dt>Next recovery batch</dt><dd id="cc-eta-next-value">Loading&hellip;</dd><p id="cc-eta-next-scope">Previously held native audio, estimated separately.</p></div>
+            <div><dt>Untouched newest-20 first pass</dt><dd id="cc-eta-first-value">Loading&hellip;</dd><p id="cc-eta-first-scope">Queue selection and admission state are shown with the estimate.</p></div>
+            <div><dt>All newest-20 audio + text</dt><dd>Finish date unknown</dd><p>Quarantines, unavailable sources, language review and ASR holds still need resolution. Captions and ASR are tracked separately below.</p></div>
+          </dl>
+          <p id="cc-eta-calendar">Active service time excludes future downtime and admission delays.</p>
+          <details><summary>Timing evidence and assumptions</summary><p id="cc-eta-evidence">Loading the completed-run service measurement&hellip;</p><p>Measured run ended <time id="cc-eta-basis-date">loading</time>. The older 8&ndash;12 active-hour scenario is superseded by this completed run. These are conditional planning scenarios, not statistical bounds or guaranteed dates. <a href="../../research/collection-eta-2026-11-18.md">Evidence and limits</a>.</p></details>
+          <p>Estimate generated <time id="cc-eta-date">loading</time>. <span id="cc-eta-freshness">Reading checkpoint age&hellip;</span></p>
+        </section>
         <section class="cc-mirrors" id="cc-mirrors" aria-labelledby="cc-mirrors-heading" hidden>
           <div><h3 id="cc-mirrors-heading">Publisher mirrors on Drive</h3><p>Complete publisher audio linked to latest-20 entries by video references or matched by owner, title, date and duration. YouTube edit equivalence remains unverified. <a href="../../research/chromium-adblock-2026-11-17.md">Source evidence</a>.</p></div>
           <dl><div><dt>Latest-20 entries with audio</dt><dd id="cc-mirror-audio">&mdash;</dd></div><div><dt>With English timed captions</dt><dd id="cc-mirror-captions">&mdash;</dd></div></dl>
@@ -434,6 +503,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         <ol class="cc-stages" id="cc-stages" aria-label="Collection sequence"><li class="cc-stage">Loading the collection sequence&hellip;</li></ol>
         <div class="cc-current-foot"><div><span class="cc-storage-label">Project storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="17000000000" value="0" aria-label="Project storage used"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
         <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>
+        <p class="cc-snapshot-time" id="cc-legacy-summary"></p>
       </section>
       <section class="cc-archive-intro" id="archive-overview" aria-labelledby="cc-archive-heading">
         <div class="cc-section-heading"><div><p class="cc-eyebrow">Historical snapshot</p><h2 id="cc-archive-heading">The research corpus</h2></div><span class="cc-snapshot-label">16 November 2026</span></div>

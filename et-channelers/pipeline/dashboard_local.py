@@ -162,7 +162,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (!response.ok) throw new Error('status unavailable');
       const data = await response.json();
       if (data.schema_version !== 1 || data.scope !== 'local_youtube_collection') throw new Error('unexpected status');
-      const labels = {cooldown:'Waiting for Drive', paused:'Collection paused', ready:'Ready to resume', running:'Collecting audio', unknown:'Status not yet recorded'};
+      const labels = {cooldown:'Waiting for Drive', paused:'Collection paused', ready:'Ready at saved checkpoint', running:'Running at saved checkpoint', unknown:'Status not yet recorded'};
       const explanations = {cooldown:'Drive has temporarily limited requests. Downloaded files are retained for the next upload attempt.', paused:'Collection is paused. Completed audio and metadata remain available for a safe resume.', ready:'The last Drive retry window has passed. This snapshot does not confirm that a worker is running.', running:'Audio and metadata are being saved together. Local copies are released after Drive verification.', unknown:'Queue totals are available; a current worker state has not been recorded.'};
       const state = labels[data.operation.state] ? data.operation.state : 'unknown';
       if (data.operation.cooldown_provider === 'youtube') {
@@ -175,8 +175,16 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (state === 'cooldown' && data.operation.retry_after) explanations.cooldown += ' Next attempt after ' + date(data.operation.retry_after) + '.';
       if (state === 'paused' && data.operation.cooldown_provider === 'youtube' && data.operation.retry_after) explanations.paused += ' The recorded source retry window ends ' + date(data.operation.retry_after) + '; this does not resume collection automatically.';
       const supportedNative = Number.isFinite(data.counts.supported_native_verified_videos) ? data.counts.supported_native_verified_videos : 0;
-      put('cc-current-state', supportedNative > 0 ? 'Native route verified' : labels[state]);
-      put('cc-current-explanation', supportedNative > 0 ? number(supportedNative) + ' complete native-format recording(s) from the browser-assisted route have paired metadata verified on Drive. Source quality notes and publisher coverage are shown below.' : explanations[state]);
+      put('cc-current-state', labels[state]);
+      const nativeReady = data.native_lane?.state === 'ready';
+      let explanation = nativeReady ? 'The last owned native run is terminal and its allocation is released. The native lane is ready for a separately admitted batch; no worker is confirmed running.' : explanations[state];
+      const snapshotAge = (Date.now() - new Date(data.generated_at).getTime()) / 60000;
+      if (state === 'running') explanation = 'The owned native process was confirmed running when this snapshot was saved. ' + (data.native_lane?.asr_handoff_enabled === false ? 'This batch does not hand audio to ASR. ' : '') + 'This page does not poll the worker.';
+      if (snapshotAge >= 10) explanation += ' This checkpoint is ' + Math.floor(snapshotAge) + ' minutes old; present worker state needs a fresh snapshot.';
+      if (supportedNative > 0) explanation += ' ' + number(supportedNative) + ' native-format recordings from the browser-assisted route have paired metadata verified on Drive.';
+      put('cc-current-explanation', explanation);
+      const legacy = data.legacy_operation;
+      put('cc-legacy-summary', legacy ? 'Legacy collector: ' + (labels[legacy.state] || 'state unconfirmed').toLowerCase() + (legacy.retry_after ? '; its recorded retry window ends ' + date(legacy.retry_after) : '') + '. Its preserved controls are separate from the native batch lane.' : '');
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.audio_archived_videos ?? data.counts.verified_pairs));
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
@@ -223,7 +231,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const used = data.storage.managed_bytes ?? data.storage.local_bytes;
       const cap = data.storage.managed_ceiling_bytes ?? data.storage.ceiling_bytes;
       put('cc-local-storage', (used / 1e9).toFixed(2) + ' / ' + number(cap / 1e9) + ' GB' + (Number.isFinite(data.storage.managed_bytes) ? ' including tools and models' : ''));
-      const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = supportedNative > 0 ? 'verified' : state;
+      const status = document.getElementById('cc-current-state'); if (status) status.dataset.state = state;
       const fill = document.getElementById('cc-storage-meter');
       if (fill) { fill.max = cap; fill.value = used; }
       const holder = document.getElementById('cc-stages');
@@ -240,7 +248,45 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       } }
     } catch (_) { put('cc-current-state', 'Status unavailable'); put('cc-current-explanation', 'The latest collection snapshot could not be loaded. The historical archive tables remain available below.'); }
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', collectionStatus, {once:true}); else collectionStatus();
+  async function collectionEta() {
+    const hours = (values) => Array.isArray(values) && values.length === 2 && values.every(v => Number.isFinite(v) && v >= 0) ? values.map(v => v.toFixed(1)).join('–') : 'Unknown';
+    try {
+      const response = await fetch(BASE + 'collection_eta.json', {cache:'no-cache'});
+      if (!response.ok) throw new Error('estimate unavailable');
+      const data = await response.json();
+      if (data.schema_version !== 2 || data.scope !== 'collection_eta' || !data.current) throw new Error('unexpected estimate');
+      const current = data.current, next = current.next_recovery_batch, first = current.untouched_first_pass, service = current.measured_service;
+      const nextMinutes = next.planning_active_hours?.map(v => v * 60);
+      put('cc-eta-next-value', next.items === 0 ? 'Selected plan terminal' : Array.isArray(nextMinutes) && nextMinutes.every(Number.isFinite) ? nextMinutes.map(v => Math.round(v)).join('–') + ' active min' : 'Unknown');
+      let recoveryScope = number(next.items) + ' items remain in the ' + number(next.selected_items ?? next.items) + '-item recovery plan. ';
+      if (next.completed_decisions > 0) recoveryScope += number(next.completed_decisions) + ' decisions completed: ' + number(next.completed_verified_pairs) + ' verified, ' + number(next.completed_held_items) + ' held. ';
+      recoveryScope += next.state === 'running' ? 'Owned batch confirmed running at the saved checkpoint.' : ['terminal_with_holds', 'complete'].includes(next.state) ? 'The selected recovery plan is terminal; held items need separate review.' : 'Remaining frames need separate admission; no worker is confirmed running by this ETA checkpoint.';
+      put('cc-eta-next-scope', recoveryScope);
+      put('cc-eta-first-value', hours(first.planning_active_hours) + ' active h');
+      let firstScope = number(first.items) + ' decisions remain from the ' + number(first.selected_items ?? first.items) + '-item frozen selection / ' + number(first.frames) + ' frames. ';
+      firstScope += first.state === 'running_admitted_cohort' ? number(first.current_cohort_items) + '-item cohort running at the checkpoint; ' + number(first.later_prepared_items) + ' later items remain prepared and disabled. ' : 'Campaign is prepared; running is not confirmed by this checkpoint. ';
+      put('cc-eta-first-scope', firstScope + 'This estimates a first pass, including holds and failures.');
+      put('cc-eta-calendar', 'At 50% availability, the untouched first pass would take ' + hours(first.calendar_hours_at_half_availability) + ' calendar hours, plus admission delays.');
+      put('cc-eta-evidence', number(service.first_pass_decisions) + ' decisions in ' + (service.elapsed_seconds / 60).toFixed(1) + ' minutes; ' + number(service.verified_native_pairs) + ' verified pairs (' + Math.round(service.immediate_success_fraction * 100) + '% immediate success). Includes startup, source requests, upload and backpressure. The range assumes 1–2× that service time; item mix may differ.');
+      const c = current.coverage;
+      put('cc-eta-coverage', number(c.source_audio_available_target_videos) + ' / ' + number(current.newest20_items) + ' latest-20 entries have verified audio from any source; ' + number(c.source_audio_with_text_target_videos) + ' have an audio edition with saved text. ' + number(c.verified_pairs) + ' native pairs and ' + number(c.asr_verified_videos) + ' native ASR bundles.');
+      put('cc-eta-date', date(current.generated_at));
+      put('cc-eta-basis-date', date(service.ended_at));
+      const generated = new Date(current.status_snapshot_at).getTime();
+      const age = Number.isFinite(generated) ? Math.max(0, (Date.now() - generated) / 3600000) : null;
+      put('cc-eta-freshness', age === null ? 'Coverage checkpoint date unavailable.' : 'Coverage checkpoint ' + date(current.status_snapshot_at) + (age >= 1 ? ' · ' + Math.floor(age) + ' hours old; refresh before using it as current queue state.' : '.'));
+    } catch (_) {
+      put('cc-eta-next-value', 'Unavailable'); put('cc-eta-first-value', 'Unavailable');
+      put('cc-eta-next-scope', 'No current recovery estimate is available.');
+      put('cc-eta-first-scope', 'No current first-pass estimate is available.');
+      put('cc-eta-coverage', 'Estimate coverage is unavailable; collection counts are shown separately above.');
+      put('cc-eta-date', 'unavailable'); put('cc-eta-basis-date', 'unavailable');
+      put('cc-eta-evidence', 'The saved ETA could not be loaded. No finish date is inferred from historical transfer assumptions.');
+      put('cc-eta-freshness', 'Estimate checkpoint unavailable.');
+    }
+  }
+  const loadCollection = () => { collectionStatus(); collectionEta(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadCollection, {once:true}); else loadCollection();
 })();
 </script>
 """

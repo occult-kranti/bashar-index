@@ -1,4 +1,5 @@
 """Live executor reporting must not promote stale leases or expose identities."""
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -111,6 +112,119 @@ class NativeSeriesStatusTests(unittest.TestCase):
             self.assertEqual(status.snapshot(self.root, now=1000)['operation']['state'], 'running')
         with patch.object(status, 'owned_process_alive', return_value=False):
             self.assertEqual(status.snapshot(self.root, now=1000)['operation']['state'], 'paused')
+
+    def test_nested_download_only_cohort_reports_only_drained_decisions_and_no_asr(self):
+        live = self.root / 'jobs/native-campaign-download-test/cohort1/live'; live.mkdir(parents=True)
+        self.put(self.live / 'series-state.json', {'status': 'finished_with_holds'})
+        self.put(live / 'series-state.json', dict(status='running', profile='native-campaign-download-only-v1',
+                 proposal_sha256='a' * 64, authorization_sha256='b' * 64,
+                 frames={'0': {'phase': 'drained', 'outcomes': {'PRIVATE-ID': {'status': 'canonical_verified'}}},
+                         '1': {'phase': 'dispatch_intent'}}))
+        self.put(live / 'source-invocation.json', dict(self.identity, series_proposal_sha256='a' * 64,
+                 root_authorization_sha256='b' * 64, source_count=600, cohort_index=1, planned_frames=30))
+        with patch.object(status, 'owned_process_alive', return_value=True):
+            result = status.snapshot(self.root, now=1000)
+        self.assertEqual(result['native_lane']['kind'], 'native_v4_campaign')
+        self.assertEqual(result['native_lane']['source_count'], 600)
+        self.assertEqual(result['native_lane']['completed_decisions'], 1)
+        self.assertFalse(result['native_lane']['asr_handoff_enabled'])
+        self.assertFalse(result['operation']['full_archive_requested'])
+        self.assertNotIn('PRIVATE', json.dumps(result))
+
+    def terminal_fixture(self):
+        self.put(self.root / 'sync/stock_wpc_batch_v4_lease.json', dict(self.lease,
+                 state='released', owned_native_processes_gone=True, lease_id='PRIVATE-LEASE'))
+        self.put(self.live / 'series-state.json', dict(status='finished_with_holds',
+                 proposal_sha256='a' * 64, authorization_sha256='b' * 64))
+        self.put(self.live / 'source-process-exit.json', {'exit_code': 0})
+        self.put(self.live / 'native-allocation-released.json', {'lease_id': 'PRIVATE-LEASE'})
+        self.put(self.root / 'sync/stock_wpc_batch_v4_http_state.json', dict(schema_version=1,
+                 state={'policy': 'native-http-refusal-v4', 'circuit_break': None}))
+
+    def test_terminal_native_lane_ready_is_separate_from_legacy_hold(self):
+        self.terminal_fixture()
+        self.put(self.root / 'sync/native_batch_source_cooldown.json', dict(schema_version=1,
+                 endpoint='youtube_native_audio', source_error_class='forbidden', retry_not_before_epoch=1100))
+        with patch.object(status, 'owned_process_alive', return_value=False):
+            result = status.snapshot(self.root, now=1000)
+        self.assertEqual(result['operation']['state'], 'ready')
+        self.assertEqual(result['legacy_operation']['state'], 'paused')
+        self.assertFalse(result['native_lane']['process_confirmed'])
+        self.assertEqual(result['native_lane']['proof'], 'released_terminal_run')
+        self.assertTrue((self.root / 'sync/STOP_DRIVE_INGEST').exists())
+        for private in ('PRIVATE', '4321', '123456789', 'a' * 64):
+            self.assertNotIn(private, json.dumps(result))
+
+    def test_terminal_lane_requires_release_dead_process_and_current_policy_without_hold(self):
+        self.terminal_fixture()
+        with patch.object(status, 'owned_process_alive', return_value=True):
+            self.assertFalse(status.completed_native_lane(self.root, 1000))
+        with patch.object(status, 'owned_process_alive', return_value=False):
+            for path, value in [(self.live / 'source-process-exit.json', {'exit_code': 1}),
+                                (self.live / 'native-allocation-released.json', {'lease_id': 'WRONG'}),
+                                (self.root / 'sync/stock_wpc_batch_v4_http_state.json', dict(schema_version=1,
+                                 state={'policy': 'native-http-refusal-v4', 'circuit_break': {'code': 'hold'}}))]:
+                original = path.read_text(encoding='utf-8'); self.put(path, value)
+                self.assertFalse(status.completed_native_lane(self.root, 1000))
+                path.write_text(original, encoding='utf-8')
+
+    def test_direct_frame_requires_all_pins_exact_root_command_and_live_identity(self):
+        live = self.root / 'jobs/native-recovery-test/runtime-frame1-v1'; live.mkdir(parents=True)
+        def pin(name, value):
+            path = live / name; self.put(path, value); data = path.read_bytes()
+            return {'path': str(path), 'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest()}
+        code = hashlib.sha256(Path(status.__file__).with_name('native_batch.py').read_bytes()).hexdigest()
+        worker = hashlib.sha256(Path(status.__file__).with_name('native_batch_worker.py').read_bytes()).hexdigest()
+        ids = ['PRIVATE-ID']
+        plan = pin('plan.json', {'items': ids})
+        settings = pin('settings.json', {'private_root': str(self.root), 'lease_id': 'PRIVATE-LEASE', 'plan_path': plan['path']})
+        grant = pin('grant.json', dict(authorized=True, state='admitted', lease_id='PRIVATE-LEASE',
+                    allowed_video_ids=ids, plan_sha256=plan['sha256'], settings_sha256=settings['sha256'],
+                    coordinator_sha256=code, worker_sha256=worker))
+        lease = dict(self.lease, lease_id='PRIVATE-LEASE', root_grant_sha256=grant['sha256'],
+                     settings_sha256=settings['sha256'], plan_sha256=plan['sha256'],
+                     coordinator_sha256=code, worker_sha256=worker, allowed_video_ids=ids)
+        self.put(self.root / 'sync/stock_wpc_batch_v4_lease.json', lease)
+        self.put(self.root / 'sync/stock_wpc_batch_v4_http_state.json', dict(schema_version=1,
+                 state={'policy': 'native-http-refusal-v4', 'circuit_break': None}))
+        self.put(live / 'activation.json', dict(status='active', settings=settings, plan=plan,
+                 root_grant=grant, lease_id='PRIVATE-LEASE', allowed_video_ids=ids))
+        invoked = dict(self.identity, status='running', lease_id='PRIVATE-LEASE',
+                       root_grant_sha256=grant['sha256'], settings_sha256=settings['sha256'],
+                       plan_sha256=plan['sha256'], native_batch_sha256=code, worker_sha256=worker,
+                       allowed_video_ids=ids, source_count=1, started_at_epoch=999)
+        self.put(live / 'invocation.json', invoked)
+        with patch.object(status, 'owned_native_batch_command', return_value=True):
+            result = status.direct_native_batch(self.root, 1000)
+            self.assertEqual(result['state'], 'running')
+            self.assertEqual(result['frame_items'], 1)
+            self.assertFalse(result['asr_handoff_enabled'])
+            for private in ('PRIVATE', str(self.root), '4321', code, worker):
+                self.assertNotIn(private, json.dumps(result))
+            for changed in [dict(invoked, native_batch_sha256='c' * 64),
+                            dict(invoked, allowed_video_ids=['OTHER-ID']), dict(invoked, settings_sha256='c' * 64)]:
+                self.put(live / 'invocation.json', changed)
+                self.assertFalse(status.direct_native_batch(self.root, 1000))
+            self.put(live / 'invocation.json', invoked)
+            path = Path(settings['path']); path.write_text('{}', encoding='utf-8')
+            self.assertFalse(status.direct_native_batch(self.root, 1000))
+        with patch.object(status, 'owned_native_batch_command', return_value=False):
+            self.assertFalse(status.direct_native_batch(self.root, 1000))
+        # Restore the settings pin, then prove terminal exit=3 with a held item
+        # can establish readiness only after both owned resources are released.
+        self.put(Path(settings['path']), {'private_root': str(self.root), 'lease_id': 'PRIVATE-LEASE', 'plan_path': plan['path']})
+        self.put(self.root / 'sync/stock_wpc_batch_v4_lease.json', dict(lease, state='released'))
+        self.put(live / 'source-process-exit.json', dict(self.identity, exit_code=3))
+        terminal = dict(status='terminal', lease_id='PRIVATE-LEASE', root_grant_sha256=grant['sha256'],
+                        settings_sha256=settings['sha256'], plan_sha256=plan['sha256'],
+                        parent_process_exited=True, child_audits_complete=True, owned_jobs_closed=True,
+                        matching_reservation_released=True, matching_lease_released=True)
+        self.put(live / 'terminal.json', terminal)
+        with patch.object(status, 'owned_process_alive', return_value=False):
+            self.assertEqual(status.direct_native_batch(self.root, 1000)['state'], 'ready')
+            for change in ({'matching_lease_released': False}, {'root_grant_sha256': 'c' * 64}):
+                self.put(live / 'terminal.json', dict(terminal, **change))
+                self.assertFalse(status.direct_native_batch(self.root, 1000))
 
 
 if __name__ == '__main__':
