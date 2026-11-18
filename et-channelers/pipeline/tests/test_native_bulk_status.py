@@ -164,3 +164,76 @@ class BulkStatusTests(unittest.TestCase):
             {'schema_version': 5, 'seed_sha256': '1' * 64,
              'state': {'circuit_break': {'reason': 'provider_hold'}}})
         self.assertEqual(self.lane()['reason'], 'source_control_hold')
+
+    def close_bulk_fixture(self):
+        self.state.update(status='complete', current_frame=None, finished_at_epoch=950,
+            frames=[{'frame_index': 0, 'plan_sha256': '9' * 64, 'status': 'terminal_closed',
+                     'summary': {'verified': 1, 'held': 1, 'pending': 0, 'skipped': 0}}])
+        self.save_state()
+        self.lease.update(state='released', owned_native_processes_gone=True, spool_cap_bytes=100)
+        self.write(self.root / ('sync/' + self.namespace + '_lease.json'), self.lease)
+        self.write(self.root / 'sync/analysis_resource_plan.json', {'reservations': [
+            {'lease_id': 'bulk-test', 'state': 'released', 'max_bytes': 100,
+             'root_grant_sha256': self.lease['root_admission_sha256']}]})
+        owner = self.home / 'owner-runtime-v1'; owner.mkdir()
+        launcher = {'pid': 4321, 'process_creation_filetime': '8765'}
+        base = dict(self.invoked['controller_identity'], parent_pid=launcher['pid'])
+        common = {'root_grant_sha256': self.lease['root_admission_sha256'], 'at': 'fixture-terminal'}
+        self.write(owner / 'terminal.json', dict(common, status='terminal', cohort_status='complete',
+            source_count=2, attempted_items=2, closed_frames=1, exit_code=0, owned_jobs_closed=True,
+            child_audits_complete=True, matching_lease_released=True, matching_reservation_released=True))
+        self.write(owner / 'terminal-review.json', dict(common, controller_state=self.state,
+            owned_job_closed=True, child_audits_complete=True, launcher_identity=launcher,
+            base_controller_identities=[base]))
+        self.write(owner / 'invocation.json', dict(common, launcher_identity=launcher,
+            base_controller_identities=[base], parent_proof={'parent_verified': True, 'same_owned_Windows_job': True,
+                'launcher_identity': launcher, 'base_controller_identity': base}))
+        self.write(owner / 'source-process-exit.json', dict(common, **launcher,
+            exit_code=0, derived_from_supervisor_actual_exit=True))
+        self.write(owner / 'owned-controller-closure.json', dict(identity=launcher, exit_code=0,
+            attached=True, closed=True, owned_job_empty=True, owned_process_closed=True,
+            process_returned=True, job_returned=True))
+        return owner
+
+    def test_latest_closed_cohort_remains_visible_after_expiry_without_PID_probe(self):
+        self.close_bulk_fixture()
+        with patch.object(status, 'owned_native_batch_command', side_effect=AssertionError('historical PID must not be probed')):
+            lane = status.native_bulk_lane(self.root, 3000)
+        self.assertEqual(('ready', False, 2, 1),
+            (lane['state'], lane['process_confirmed'], lane['completed_decisions'], lane['completed_frames']))
+        self.assertEqual('released_completed_bulk_cohort', lane['proof'])
+
+    def test_incomplete_worker_audits_or_resource_release_cannot_claim_completed(self):
+        owner = self.close_bulk_fixture()
+        terminal = status.read_object(owner / 'terminal.json'); terminal['child_audits_complete'] = False
+        self.write(owner / 'terminal.json', terminal)
+        self.assertEqual({}, self.lane(False))
+        terminal['child_audits_complete'] = True; self.write(owner / 'terminal.json', terminal)
+        self.write(self.root / 'sync/analysis_resource_plan.json', {'reservations': []})
+        self.assertEqual({}, self.lane(False))
+
+    def test_mismatched_closed_job_identity_cannot_replace_actual_closure(self):
+        owner = self.close_bulk_fixture()
+        closed = status.read_object(owner / 'owned-controller-closure.json')
+        closed['identity']['process_creation_filetime'] = 'different'
+        self.write(owner / 'owned-controller-closure.json', closed)
+        self.assertEqual({}, self.lane(False))
+
+    def test_source_hold_still_takes_precedence_over_completed_run(self):
+        self.close_bulk_fixture()
+        (self.root / ('sync/STOP_' + self.namespace.upper())).write_text('hold')
+        lane = self.lane(False)
+        self.assertEqual('paused', lane['state'])
+        self.assertFalse(lane['process_confirmed'])
+
+    def test_exit_and_parent_creation_identities_must_match_the_closed_graph(self):
+        owner = self.close_bulk_fixture()
+        path = owner / 'source-process-exit.json'; saved = path.read_bytes()
+        value = status.read_object(path); value['process_creation_filetime'] = '12345'
+        self.write(path, value)
+        self.assertEqual({}, self.lane(False))
+        path.write_bytes(saved)
+        path = owner / 'invocation.json'; value = status.read_object(path)
+        value['parent_proof']['base_controller_identity']['pid'] += 1
+        self.write(path, value)
+        self.assertEqual({}, self.lane(False))

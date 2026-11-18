@@ -9,6 +9,7 @@ import subprocess
 import sys
 from pipeline import collection_coverage as coverage
 from pipeline.tests.test_qualified_edition_receipts import receipt_fixture
+from pipeline.tests.test_qualified_direct_audio_receipts import fixture as direct_fixture, seal as seal_direct
 
 
 class CoverageTests(unittest.TestCase):
@@ -107,6 +108,36 @@ class CoverageTests(unittest.TestCase):
         self.assertEqual('youtube_track_unverified', videos[0]['audio_source'])
         self.assertEqual(1, public['activity']['summary']['saved'])
         self.assertNotIn('source-provenance', json.dumps((public, videos)))
+
+    def direct_edition(self):
+        record = direct_fixture()
+        record.update(channel_dir='example', tab='videos')
+        seal_direct(record)
+        for key in ('audio', 'metadata'):
+            proof = record[key]['remote_proof']
+            proof['remote'] = proof['remote'].replace('testdrive:Audio', 'etdrive:04 Audio', 1)
+        return record
+
+    def test_qualified_direct_audio_counts_unknown_track_without_native_or_text(self):
+        self.journal('progressive_audio_extracts_manifest.jsonl', [self.direct_edition()])
+        self.journal('asr_manifest.jsonl', [self.asr])
+        public, videos = self.run_coverage()
+        self.assertEqual(1, public['summary']['audio_available'])
+        self.assertEqual(1, public['summary']['qualified_youtube_only_audio'])
+        self.assertEqual(0, public['summary']['youtube_native_audio'])
+        self.assertEqual(0, public['summary']['audio_with_saved_text'])
+        self.assertEqual('youtube_track_unverified', videos[0]['audio_source'])
+
+    def test_direct_and_muxed_editions_deduplicate_with_each_other_and_native(self):
+        self.journal('progressive_audio_extracts_manifest.jsonl', [self.direct_edition(), receipt_fixture()])
+        public, videos = self.run_coverage()
+        self.assertEqual(1, public['summary']['audio_available'])
+        self.assertEqual(1, public['summary']['qualified_youtube_only_audio'])
+        self.journal('drive_ingest_manifest.jsonl', [self.audio])
+        public, videos = self.run_coverage()
+        self.assertEqual(1, public['summary']['audio_available'])
+        self.assertEqual(0, public['summary']['qualified_youtube_only_audio'])
+        self.assertEqual('youtube_native', videos[0]['audio_source'])
 
     def test_native_and_publisher_overlap_do_not_double_count_or_mislabel_edition(self):
         self.journal('progressive_audio_extracts_manifest.jsonl', [receipt_fixture(), receipt_fixture()])
