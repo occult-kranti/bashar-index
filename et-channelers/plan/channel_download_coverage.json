@@ -1,28 +1,28 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-18T17:40:08.902964Z",
+  "generated_at": "2026-11-18T17:46:55.151817Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
-    "youtube_native_audio": 789,
+    "youtube_native_audio": 799,
     "publisher_only_audio": 37,
-    "audio_available": 826,
+    "audio_available": 836,
     "native_asr": 91,
     "native_caption_videos": 17,
     "audio_with_saved_text": 136,
-    "remaining_audio": 594
+    "remaining_audio": 584
   },
   "channels": [
     {
       "channel": "Aaron Abke",
       "channel_dir": "aaron-abke",
       "target": 20,
-      "youtube_audio": 8,
+      "youtube_audio": 9,
       "publisher_only_audio": 1,
-      "audio_total": 9,
+      "audio_total": 10,
       "with_saved_text": 2,
-      "remaining_audio": 11
+      "remaining_audio": 10
     },
     {
       "channel": "Aluna Ash",
@@ -38,11 +38,11 @@
       "channel": "Andrew Bayuk",
       "channel_dir": "andrew-bayuk",
       "target": 20,
-      "youtube_audio": 6,
+      "youtube_audio": 7,
       "publisher_only_audio": 0,
-      "audio_total": 6,
+      "audio_total": 7,
       "with_saved_text": 1,
-      "remaining_audio": 14
+      "remaining_audio": 13
     },
     {
       "channel": "Anrita Melchizedek",
@@ -68,11 +68,11 @@
       "channel": "Ashley Cunningham",
       "channel_dir": "ashley-cunningham",
       "target": 20,
-      "youtube_audio": 7,
+      "youtube_audio": 8,
       "publisher_only_audio": 0,
-      "audio_total": 7,
+      "audio_total": 8,
       "with_saved_text": 2,
-      "remaining_audio": 13
+      "remaining_audio": 12
     },
     {
       "channel": "Ashtar Command: Lower Decks",
@@ -148,11 +148,11 @@
       "channel": "Gosia Duszak (Cosmic Agency)",
       "channel_dir": "cosmic-agency-gosia",
       "target": 20,
-      "youtube_audio": 7,
+      "youtube_audio": 8,
       "publisher_only_audio": 0,
-      "audio_total": 7,
+      "audio_total": 8,
       "with_saved_text": 3,
-      "remaining_audio": 13
+      "remaining_audio": 12
     },
     {
       "channel": "Daniel Scranton",
@@ -178,11 +178,11 @@
       "channel": "Debbie Solaris",
       "channel_dir": "debbie-solaris",
       "target": 20,
-      "youtube_audio": 7,
+      "youtube_audio": 8,
       "publisher_only_audio": 0,
-      "audio_total": 7,
+      "audio_total": 8,
       "with_saved_text": 2,
-      "remaining_audio": 13
+      "remaining_audio": 12
     },
     {
       "channel": "Debbra Lupien",
@@ -258,11 +258,11 @@
       "channel": "Gigi Young",
       "channel_dir": "gigi-young",
       "target": 20,
-      "youtube_audio": 7,
+      "youtube_audio": 8,
       "publisher_only_audio": 0,
-      "audio_total": 7,
+      "audio_total": 8,
       "with_saved_text": 3,
-      "remaining_audio": 13
+      "remaining_audio": 12
     },
     {
       "channel": "BASHAR AYAKO",
@@ -328,11 +328,11 @@
       "channel": "Kelly Kolodney",
       "channel_dir": "kelly-kolodney",
       "target": 20,
-      "youtube_audio": 8,
+      "youtube_audio": 9,
       "publisher_only_audio": 0,
-      "audio_total": 8,
+      "audio_total": 9,
       "with_saved_text": 2,
-      "remaining_audio": 12
+      "remaining_audio": 11
     },
     {
       "channel": "Krista Raisa",
@@ -398,11 +398,11 @@
       "channel": "Leslie Muller",
       "channel_dir": "leslie-muller",
       "target": 14,
-      "youtube_audio": 6,
+      "youtube_audio": 7,
       "publisher_only_audio": 0,
-      "audio_total": 6,
+      "audio_total": 7,
       "with_saved_text": 1,
-      "remaining_audio": 8
+      "remaining_audio": 7
     },
     {
       "channel": "LightingClarity",
@@ -418,11 +418,11 @@
       "channel": "Lily Nova",
       "channel_dir": "lily-nova",
       "target": 20,
-      "youtube_audio": 8,
+      "youtube_audio": 9,
       "publisher_only_audio": 0,
-      "audio_total": 8,
+      "audio_total": 9,
       "with_saved_text": 2,
-      "remaining_audio": 12
+      "remaining_audio": 11
     },
     {
       "channel": "Lorie Ladd",
@@ -548,11 +548,11 @@
       "channel": "Pavlina Klemm",
       "channel_dir": "pavlina-klemm",
       "target": 20,
-      "youtube_audio": 6,
+      "youtube_audio": 7,
       "publisher_only_audio": 1,
-      "audio_total": 7,
+      "audio_total": 8,
       "with_saved_text": 2,
-      "remaining_audio": 13
+      "remaining_audio": 12
     },
     {
       "channel": "Pleiadian Council Whispers",
@@ -757,27 +757,27 @@
   ],
   "activity": {
     "schema_version": 1,
-    "generated_at": "2026-11-18T17:40:08.902964Z",
+    "generated_at": "2026-11-18T17:46:55.151817Z",
     "state": "running",
     "cohort_items": 453,
     "summary": {
-      "saved": 826,
-      "downloading": 1,
-      "processing": 0,
+      "saved": 836,
+      "downloading": 0,
+      "processing": 1,
       "awaiting_upload": 1,
-      "queued": 375,
-      "other_pending": 217
+      "queued": 361,
+      "other_pending": 221
     },
     "channels": [
       {
         "channel": "Aaron Abke",
         "channel_dir": "aaron-abke",
         "target": 20,
-        "saved": 9,
+        "saved": 10,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 0
       },
       {
@@ -795,11 +795,11 @@
         "channel": "Andrew Bayuk",
         "channel_dir": "andrew-bayuk",
         "target": 20,
-        "saved": 6,
+        "saved": 7,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 3
       },
       {
@@ -808,9 +808,9 @@
         "target": 20,
         "saved": 9,
         "downloading": 0,
-        "processing": 0,
+        "processing": 1,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 0
       },
       {
@@ -828,11 +828,11 @@
         "channel": "Ashley Cunningham",
         "channel_dir": "ashley-cunningham",
         "target": 20,
-        "saved": 7,
+        "saved": 8,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 2
       },
       {
@@ -916,8 +916,8 @@
         "channel": "Gosia Duszak (Cosmic Agency)",
         "channel_dir": "cosmic-agency-gosia",
         "target": 20,
-        "saved": 7,
-        "downloading": 1,
+        "saved": 8,
+        "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 11,
@@ -942,18 +942,18 @@
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
-        "other_pending": 0
+        "queued": 10,
+        "other_pending": 1
       },
       {
         "channel": "Debbie Solaris",
         "channel_dir": "debbie-solaris",
         "target": 20,
-        "saved": 7,
+        "saved": 8,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 2
       },
       {
@@ -1019,8 +1019,8 @@
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
-        "other_pending": 1
+        "queued": 10,
+        "other_pending": 2
       },
       {
         "channel": "Fernanda and Flavia (Lightworkers613)",
@@ -1037,10 +1037,10 @@
         "channel": "Gigi Young",
         "channel_dir": "gigi-young",
         "target": 20,
-        "saved": 7,
+        "saved": 8,
         "downloading": 0,
         "processing": 0,
-        "awaiting_upload": 1,
+        "awaiting_upload": 0,
         "queued": 11,
         "other_pending": 1
       },
@@ -1063,8 +1063,8 @@
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
-        "other_pending": 2
+        "queued": 10,
+        "other_pending": 3
       },
       {
         "channel": "Ivan Teller",
@@ -1114,11 +1114,11 @@
         "channel": "Kelly Kolodney",
         "channel_dir": "kelly-kolodney",
         "target": 20,
-        "saved": 8,
+        "saved": 9,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 1
       },
       {
@@ -1162,8 +1162,8 @@
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
-        "other_pending": 1
+        "queued": 10,
+        "other_pending": 2
       },
       {
         "channel": "Lee Carroll",
@@ -1191,11 +1191,11 @@
         "channel": "Leslie Muller",
         "channel_dir": "leslie-muller",
         "target": 14,
-        "saved": 6,
+        "saved": 7,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 5,
+        "queued": 4,
         "other_pending": 3
       },
       {
@@ -1213,11 +1213,11 @@
         "channel": "Lily Nova",
         "channel_dir": "lily-nova",
         "target": 20,
-        "saved": 8,
+        "saved": 9,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 1
       },
       {
@@ -1337,8 +1337,8 @@
         "saved": 8,
         "downloading": 0,
         "processing": 0,
-        "awaiting_upload": 0,
-        "queued": 11,
+        "awaiting_upload": 1,
+        "queued": 10,
         "other_pending": 1
       },
       {
@@ -1356,11 +1356,11 @@
         "channel": "Pavlina Klemm",
         "channel_dir": "pavlina-klemm",
         "target": 20,
-        "saved": 7,
+        "saved": 8,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
-        "queued": 11,
+        "queued": 10,
         "other_pending": 2
       },
       {
