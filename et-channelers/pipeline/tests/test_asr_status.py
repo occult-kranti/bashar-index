@@ -7,6 +7,17 @@ from pipeline import ingestion_status as status
 
 
 class ASRStatusTests(unittest.TestCase):
+    def test_stop_control_distinguishes_released_gpu_from_stopping_owner(self):
+        (self.root / 'asr').mkdir()
+        (self.root / 'asr/STOP_ASR').write_text('user requested pause', encoding='utf-8')
+        gpu = self.root / 'sync/gpu_lease.json'
+        gpu.write_text(json.dumps({'state': 'released', 'pid': 'PRIVATE'}), encoding='utf-8')
+        result = status.snapshot(self.root)
+        self.assertEqual(result['operation']['asr_last_reported_state'], 'paused')
+        self.assertNotIn('PRIVATE', json.dumps(result))
+        gpu.write_text(json.dumps({'state': 'active'}), encoding='utf-8')
+        self.assertEqual(status.snapshot(self.root)['operation']['asr_last_reported_state'], 'stopping')
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)

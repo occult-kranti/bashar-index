@@ -180,6 +180,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       let explanation = nativeReady ? 'The last owned native run is terminal and its allocation is released. The native lane is ready for a separately admitted batch; no worker is confirmed running.' : explanations[state];
       const snapshotAge = (Date.now() - new Date(data.generated_at).getTime()) / 60000;
       if (state === 'running') explanation = 'The owned native process was confirmed running when this snapshot was saved. ' + (data.native_lane?.asr_handoff_enabled === false ? 'This batch does not hand audio to ASR. ' : '') + 'This page does not poll the worker.';
+      if (data.native_lane?.kind === 'native_v4_source_hold') explanation = 'Native YouTube acquisition is held ' + (data.native_lane.reason === 'repeated_bound_403' ? 'after repeated HTTP 403 responses. ' : 'by its current source controls. ') + 'Saved recordings remain available. Further acquisition needs a reviewed source recovery; transcription is tracked separately.';
       if (snapshotAge >= 10) explanation += ' This checkpoint is ' + Math.floor(snapshotAge) + ' minutes old; present worker state needs a fresh snapshot.';
       if (supportedNative > 0) explanation += ' ' + number(supportedNative) + ' native-format recordings from the browser-assisted route have paired metadata verified on Drive.';
       put('cc-current-explanation', explanation);
@@ -200,7 +201,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       }
       put('cc-final-policy', data.operation.full_archive_requested ? 'Full archive follows the newest-50 tier.' : 'Final-round downloads are not enabled in this snapshot.');
       if (Number.isFinite(data.counts.asr_verified_videos)) {
-        const asrStates = {running:'GPU transcription was reported running.', complete:'The latest GPU batch reported completion.', stopped_error:'The GPU batch stopped for review.'};
+        const asrStates = {running:'GPU transcription was reported running.', complete:'The latest GPU batch reported completion.', stopped_error:'The GPU batch stopped for review.', paused:'GPU transcription is paused.', stopping:'A stop has been requested for GPU transcription.'};
         const reported = asrStates[data.operation.asr_last_reported_state];
         const textSummary = Number.isFinite(data.counts.text_available_videos)
           ? number(data.counts.text_available_videos) + ' audio items have saved text; ' + number(data.counts.text_missing_videos) + ' have no saved text. ' + number(data.counts.text_inventory_complete_videos) + ' meet text-inventory completion checks. '
@@ -264,7 +265,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       put('cc-eta-next-scope', recoveryScope);
       put('cc-eta-first-value', hours(first.planning_active_hours) + ' active h');
       let firstScope = number(first.items) + ' decisions remain from the ' + number(first.selected_items ?? first.items) + '-item frozen selection / ' + number(first.frames) + ' frames. ';
-      firstScope += first.state === 'running_admitted_cohort' ? number(first.current_cohort_items) + '-item cohort running at the checkpoint; ' + number(first.later_prepared_items) + ' later items remain prepared and disabled. ' : 'Campaign is prepared; running is not confirmed by this checkpoint. ';
+      firstScope += first.state === 'running_admitted_cohort' ? number(first.current_cohort_items) + '-item cohort running at the checkpoint; ' + number(first.later_prepared_items) + ' later items remain prepared and disabled. ' : first.state === 'held_native_source' ? 'Native acquisition is held after source refusals. This service-time scenario is not a scheduled finish; ' + number(first.later_prepared_items) + ' later candidates remain prepared. ' : 'Campaign is prepared; running is not confirmed by this checkpoint. ';
       put('cc-eta-first-scope', firstScope + 'This estimates a first pass, including holds and failures.');
       put('cc-eta-calendar', 'At 50% availability, the untouched first pass would take ' + hours(first.calendar_hours_at_half_availability) + ' calendar hours, plus admission delays.');
       put('cc-eta-evidence', number(service.first_pass_decisions) + ' decisions in ' + (service.elapsed_seconds / 60).toFixed(1) + ' minutes; ' + number(service.verified_native_pairs) + ' verified pairs (' + Math.round(service.immediate_success_fraction * 100) + '% immediate success). Includes startup, source requests, upload and backpressure. The range assumes 1–2× that service time; item mix may differ.');
@@ -285,7 +286,48 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       put('cc-eta-freshness', 'Estimate checkpoint unavailable.');
     }
   }
-  const loadCollection = () => { collectionStatus(); collectionEta(); };
+  async function collectionCoverage() {
+    const body = document.getElementById('cc-coverage-body');
+    if (!body) return;
+    const search = document.getElementById('cc-coverage-search'), filter = document.getElementById('cc-coverage-filter');
+    const headers = [...document.querySelectorAll('[data-coverage-key]')];
+    try {
+      const response = await fetch(BASE + 'channel_download_coverage.json', {cache:'no-cache'});
+      if (!response.ok) throw new Error('coverage unavailable');
+      const data = await response.json();
+      if (data.schema_version !== 1 || data.scope !== 'newest20_receipt_coverage' || !Array.isArray(data.channels)) throw new Error('unexpected coverage');
+      const numeric = ['target','youtube_audio','publisher_only_audio','audio_total','with_saved_text','remaining_audio'];
+      if (!data.channels.every(row => typeof row.channel === 'string' && numeric.every(key => Number.isInteger(row[key]) && row[key] >= 0) && row.target <= 20 && row.youtube_audio + row.publisher_only_audio === row.audio_total && row.audio_total + row.remaining_audio === row.target && row.with_saved_text <= row.audio_total)) throw new Error('invalid channel counts');
+      let key = 'channel', ascending = true;
+      const addCell = (tr, value, name = false) => { const cell = document.createElement('td'); cell.textContent = String(value); if (name) cell.className = 'cc-left cc-coverage-name'; tr.append(cell); };
+      function render() {
+        const query = search.value.trim().toLocaleLowerCase();
+        const rows = data.channels.filter(row => row.channel.toLocaleLowerCase().includes(query) && (filter.value === 'audio' ? row.remaining_audio > 0 : filter.value === 'text' ? row.audio_total > row.with_saved_text : true));
+        rows.sort((a,b) => (typeof a[key] === 'string' ? a[key].localeCompare(b[key]) : a[key] - b[key]) * (ascending ? 1 : -1));
+        body.replaceChildren();
+        for (const row of rows) {
+          const tr = document.createElement('tr');
+          addCell(tr, row.channel, true); addCell(tr, row.audio_total + ' / ' + row.target);
+          for (const field of ['youtube_audio','publisher_only_audio','with_saved_text','remaining_audio']) addCell(tr, row[field]);
+          body.append(tr);
+        }
+        if (!rows.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 6; td.className = 'cc-left'; td.textContent = 'No channels match these filters.'; tr.append(td); body.append(tr); }
+        for (const header of headers) header.setAttribute('aria-sort', header.dataset.coverageKey === key ? (ascending ? 'ascending' : 'descending') : 'none');
+        put('cc-coverage-shown', rows.length + ' of ' + data.channels.length + ' channels shown.');
+      }
+      search.addEventListener('input', render); filter.addEventListener('change', render);
+      for (const header of headers) header.querySelector('button').addEventListener('click', () => { const next = header.dataset.coverageKey; ascending = key === next ? !ascending : next === 'channel'; key = next; render(); });
+      const totals = data.summary;
+      put('cc-coverage-summary', number(totals.audio_available) + ' / ' + number(totals.latest20_target) + ' entries have saved audio: ' + number(totals.youtube_native_audio) + ' YouTube originals and ' + number(totals.publisher_only_audio) + ' additional publisher editions. ' + number(totals.audio_with_saved_text) + ' have an audio edition with saved captions or a transcript.');
+      put('cc-coverage-date', date(data.generated_at));
+      render();
+    } catch (_) {
+      body.replaceChildren(); const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 6; td.className = 'cc-left'; td.textContent = 'The channel coverage checkpoint could not be loaded.'; tr.append(td); body.append(tr);
+      put('cc-coverage-summary', 'Channel coverage is unavailable. Use the dated collection snapshot above.');
+      put('cc-coverage-date', 'unavailable'); put('cc-coverage-shown', ''); search.disabled = true; filter.disabled = true;
+    }
+  }
+  const loadCollection = () => { collectionStatus(); collectionEta(); collectionCoverage(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadCollection, {once:true}); else loadCollection();
 })();
 </script>

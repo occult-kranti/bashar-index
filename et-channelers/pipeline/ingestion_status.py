@@ -248,6 +248,51 @@ def _direct_native_batch(root, now):
     return {}
 
 
+def native_source_hold(root, now):
+    """Report the actual native hold separately from parked legacy controls."""
+    stop = root / 'sync/STOP_STOCK_WPC_BATCH_V4'
+    cooldown = read_object(root / 'sync/stock_wpc_batch_v4_source_cooldown.json')
+    until = source_deadline([cooldown])
+    native_until = cooldown.get('retry_not_before_epoch')
+    if (cooldown.get('error_class') in {'source_403', 'source_429', 'bot_check', 'protection_failure', 'access_challenge'} and
+            type(native_until) in (int, float) and 0 < native_until < 253402300799):
+        until = max(until, native_until)
+    http = read_object(root / 'sync/stock_wpc_batch_v4_http_state.json').get('state', {})
+    circuit = http.get('circuit_break') if isinstance(http, dict) else None
+    if not stop.exists() and until <= now and not circuit:
+        return {}
+    lease = read_object(root / 'sync/stock_wpc_batch_v4_lease.json')
+    result = {'state': 'paused', 'kind': 'native_v4_source_hold', 'workers': 2,
+              'process_confirmed': False, 'proof': 'current_native_stop_or_refusal',
+              'reason': 'repeated_bound_403' if isinstance(circuit, dict) and
+                  circuit.get('reason') == 'three_distinct_403_in_600s' else 'source_control_hold',
+              'retry_after': stamp(until) if until > now else None,
+              'automatic_resume': False}
+    candidates = [*(root / 'jobs').glob('native-campaign*/cohort*/live'),
+                  *(root / 'jobs').glob('native-campaign*/live')]
+    for live in sorted(candidates)[:64]:
+        state = read_object(live / 'series-state.json')
+        invoked = read_object(live / 'source-invocation.json')
+        count, frames = invoked.get('source_count'), state.get('frames')
+        if not (state.get('proposal_sha256') == invoked.get('series_proposal_sha256') == lease.get('series_proposal_sha256') and
+                state.get('authorization_sha256') == invoked.get('root_authorization_sha256') == lease.get('root_authorization_sha256') and
+                isinstance(state.get('proposal_sha256'), str) and re.fullmatch(r'[a-f0-9]{64}', state['proposal_sha256']) and
+                type(count) is int and 0 < count <= 1280 and isinstance(frames, dict)):
+            continue
+        done = [frame for frame in frames.values() if isinstance(frame, dict) and frame.get('phase') == 'drained']
+        if any(not isinstance(frame.get('outcomes'), dict) for frame in done):
+            continue
+        identities = [key for frame in done for key in frame.get('outcomes', {})]
+        if len(identities) != len(set(identities)) or len(identities) > count:
+            continue
+        result.update(source_count=count, completed_decisions=len(identities), completed_frames=len(done))
+        for key in ('cohort_index', 'planned_frames'):
+            if type(invoked.get(key)) is int and 0 < invoked[key] <= 64:
+                result[key] = invoked[key]
+        break
+    return result
+
+
 def active_native_series(root, now):
     """Do not let the parked legacy collector mask a separately owned executor."""
     lease = read_object(root / 'sync/stock_wpc_batch_v4_lease.json')
@@ -871,7 +916,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     legacy_operation = {'state': state, 'retry_after': stamp(until) if until else None,
                         'cooldown_provider': provider, 'workers': workers, 'full_archive_requested': archive_all}
     series = active_native_series(root, now)
-    native_lane = (direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
+    native_lane = (native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
         'state': 'running', 'workers': series['workers'], 'kind': 'native_v4',
         'process_confirmed': True, 'proof': 'owned_live_process'}
     if series.get('kind') == 'native_v4_campaign':
@@ -884,7 +929,19 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
             asr_state, asr_reported_at = 'running', series['asr_reported_at']
     elif native_lane:
         state, workers, until, provider = native_lane['state'], native_lane['workers'], None, None
+        if native_lane.get('kind') == 'native_v4_source_hold':
+            provider = 'youtube'
+            retry = native_lane.get('retry_after')
+            until = dt.datetime.fromisoformat(retry.replace('Z', '+00:00')).timestamp() if retry else None
         archive_all = False
+    asr_stop = root / 'asr/STOP_ASR'
+    if asr_stop.exists():
+        gpu = read_object(root / 'sync/gpu_lease.json')
+        asr_state = 'paused' if gpu.get('state') == 'released' else 'stopping'
+        try:
+            asr_reported_at = stamp(asr_stop.stat().st_mtime)
+        except OSError:
+            asr_reported_at = None
     local_bytes = 0
     for base, dirs, files in os.walk(root, followlinks=False):
         dirs[:] = [name for name in dirs if not (Path(base) / name).is_symlink()]

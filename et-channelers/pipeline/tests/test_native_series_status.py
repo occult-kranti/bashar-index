@@ -10,6 +10,36 @@ from pipeline import ingestion_status as status
 
 
 class NativeSeriesStatusTests(unittest.TestCase):
+    def test_actual_native_refusal_hold_replaces_legacy_state_without_claiming_a_worker(self):
+        self.put(self.root / 'sync/STOP_STOCK_WPC_BATCH_V4', {})
+        self.put(self.root / 'sync/stock_wpc_batch_v4_source_cooldown.json', {'error_class': 'source_403', 'retry_not_before_epoch': 1200})
+        self.put(self.root / 'sync/stock_wpc_batch_v4_http_state.json', {'state': {'circuit_break': {
+            'reason': 'three_distinct_403_in_600s', 'at_epoch': 999, 'event_ids': ['PRIVATE']}}})
+        public = status.snapshot(self.root, now=1000)
+        self.assertEqual(public['operation']['state'], 'paused')
+        self.assertEqual(public['operation']['cooldown_provider'], 'youtube')
+        self.assertEqual(public['operation']['retry_after'], status.stamp(1200))
+        self.assertEqual(public['native_lane']['reason'], 'repeated_bound_403')
+        self.assertFalse(public['native_lane']['process_confirmed'])
+        self.assertFalse(public['native_lane']['automatic_resume'])
+        self.assertNotIn('PRIVATE', json.dumps(public))
+
+    def test_held_campaign_keeps_only_bound_completed_frame_totals(self):
+        self.put(self.root / 'sync/STOP_STOCK_WPC_BATCH_V4', {})
+        live = self.root / 'jobs/native-campaign-test/cohort1/live'
+        live.mkdir(parents=True)
+        self.put(live / 'series-state.json', {'proposal_sha256': 'a' * 64, 'authorization_sha256': 'b' * 64,
+            'frames': {'0': {'phase': 'drained', 'outcomes': {'PRIVATE-A': {}, 'PRIVATE-B': {}}},
+                       '1': {'phase': 'dispatch_intent', 'outcomes': {'PRIVATE-C': {}}}}})
+        self.put(live / 'source-invocation.json', {'series_proposal_sha256': 'a' * 64,
+            'root_authorization_sha256': 'b' * 64, 'source_count': 600, 'cohort_index': 1, 'planned_frames': 30})
+        result = status.native_source_hold(self.root, 1000)
+        self.assertEqual(result['completed_decisions'], 2)
+        self.assertEqual(result['source_count'], 600)
+        self.assertNotIn('PRIVATE', json.dumps(result))
+        self.put(live / 'source-invocation.json', {'series_proposal_sha256': 'wrong'})
+        self.assertNotIn('completed_decisions', status.native_source_hold(self.root, 1000))
+
     def setUp(self):
         self.folder = tempfile.TemporaryDirectory()
         self.addCleanup(self.folder.cleanup)

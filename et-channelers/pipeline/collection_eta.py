@@ -484,8 +484,9 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
     if done == next_count:
         next_state = 'terminal_with_holds' if recovery['held_or_uncertain_decisions'] else 'complete'
     campaign_running = lane.get('kind') == 'native_v4_campaign' and lane.get('state') == 'running'
-    campaign_done = lane.get('completed_decisions', 0) if campaign_running else 0
-    cohort_items = lane.get('source_count') if campaign_running else None
+    campaign_held = lane.get('kind') == 'native_v4_source_hold'
+    campaign_done = lane.get('completed_decisions', 0) if campaign_running or campaign_held else 0
+    cohort_items = lane.get('source_count') if campaign_running or campaign_held else None
     if type(campaign_done) is not int or not 0 <= campaign_done <= untouched:
         raise ValueError('Invalid campaign progress')
     cohort_items = cohort_items if type(cohort_items) is int and 0 < cohort_items <= untouched else None
@@ -503,9 +504,9 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
                 scope='Previously held native audio; two independently admitted frames'),
             'untouched_first_pass': dict(scenario(untouched - campaign_done), frames=frames,
                 selected_items=untouched, completed_decisions=campaign_done,
-                current_cohort_items=cohort_items, current_cohort_index=lane.get('cohort_index') if campaign_running else None,
+                current_cohort_items=cohort_items, current_cohort_index=lane.get('cohort_index') if campaign_running or campaign_held else None,
                 later_prepared_items=untouched - cohort_items if cohort_items else untouched,
-                state='running_admitted_cohort' if campaign_running else 'prepared_campaign_disabled',
+                state='running_admitted_cohort' if campaign_running else 'held_native_source' if campaign_held else 'prepared_campaign_disabled',
                 scope='Decisions on the frozen untouched selection, including holds and failures'),
             'assumptions': [
                 'Latest completed 40-decision run is the end-to-end service baseline; startup and initial ASR staging wait are included.',
