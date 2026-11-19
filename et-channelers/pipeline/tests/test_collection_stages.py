@@ -45,7 +45,7 @@ class StageIndexTests(unittest.TestCase):
 
 @unittest.skipUnless(shutil.which("powershell.exe"), "PowerShell wrapper contract requires Windows PowerShell")
 class WrapperStageTests(unittest.TestCase):
-    def test_tier_barriers_and_no_automatic_final_download(self):
+    def test_explicit_full_run_obeys_tier_barriers_and_index_mode_only_builds_catalog(self):
         with tempfile.TemporaryDirectory() as folder:
             base = Path(folder)
             wrapper = Path(__file__).resolve().parents[1] / "start_drive_ingest.ps1"
@@ -55,9 +55,10 @@ class WrapperStageTests(unittest.TestCase):
             (base / wrapper.name).write_text(code, encoding="utf-8")
             (base / "drive_ingest.py").write_text('''import csv,json,sys
 from pathlib import Path
-def select_queue(path,newest): return list(csv.DictReader(Path(path).open()))
+def select_queue(path,newest=20,entire_queue=False): return list(csv.DictReader(Path(path).open()))
 def load_state(path): return json.loads(Path(path).read_text())
 def receipt_complete(record,row,remote): return record.get('complete',False)
+def terminal_unavailable(record): return record.get('status') == 'unavailable'
 if __name__ == '__main__':
  args=sys.argv[1:]; root=Path(args[args.index('--root')+1])
  with (root/'calls.jsonl').open('a') as out: out.write(json.dumps(args)+'\\n')
@@ -80,10 +81,15 @@ with (root/'calls.jsonl').open('a') as out: out.write(json.dumps(['INDEX'])+'\\n
                               ("queue_youtube_all_merged.csv", ["ABCDEFGHIJK", "LMNOPQRSTUV", "WXYZabcdefg"]),
                               ("queue_final_round.csv", ["WXYZabcdefg"])):
                 (private / "jobs" / name).write_text("video_id\n" + "\n".join(ids) + "\n")
-            for mode, complete, expected_count, expected_exit in (
-                    ("RunAll", set(), 1, 3), ("RunAll", {"ABCDEFGHIJK"}, 2, 3),
-                    ("RunAll", {"ABCDEFGHIJK", "LMNOPQRSTUV"}, 3, 0),
-                    ("RunFinal", {"ABCDEFGHIJK", "LMNOPQRSTUV"}, 1, 0)):
+            all_ids = {"ABCDEFGHIJK", "LMNOPQRSTUV", "WXYZabcdefg"}
+            for mode, complete, expected_calls, expected_exit in (
+                    ("Index", set(), ["index"], 0),
+                    ("Run", set(), ["20"], 0),
+                    ("RunAll", set(), ["index", "20"], 3),
+                    ("RunAll", {"ABCDEFGHIJK"}, ["index", "20", "50"], 3),
+                    ("RunAll", {"ABCDEFGHIJK", "LMNOPQRSTUV"}, ["index", "20", "50", "remaining"], 3),
+                    ("RunAll", all_ids, ["index", "20", "50", "remaining"], 0),
+                    ("RunFinal", all_ids, ["remaining"], 0)):
                 (private / "sync/drive_ingest_manifest.jsonl").write_text(
                     json.dumps({vid: {"complete": True} for vid in complete}))
                 log = private / "calls.jsonl"
@@ -93,15 +99,9 @@ with (root/'calls.jsonl').open('a') as out: out.write(json.dumps(['INDEX'])+'\\n
                                          "-ToolRoot", str(tools)], capture_output=True, text=True)
                 calls = [json.loads(line) for line in log.read_text().splitlines()]
                 self.assertEqual(result.returncode, expected_exit, result.stdout + result.stderr)
-                self.assertEqual(len(calls), expected_count)
-                if mode == "RunAll":
-                    self.assertTrue(all("--entire-queue" not in call for call in calls))
-                    if len(calls) > 1:
-                        self.assertEqual(calls[1][calls[1].index("--newest") + 1], "50")
-                    if len(calls) == 3:
-                        self.assertEqual(calls[-1], ["INDEX"])
-                else:
-                    self.assertIn("--entire-queue", calls[0])
+                stages = ["index" if call == ["INDEX"] else "remaining" if "--entire-queue" in call
+                          else call[call.index("--newest") + 1] for call in calls]
+                self.assertEqual(stages, expected_calls)
 
 
 if __name__ == "__main__":

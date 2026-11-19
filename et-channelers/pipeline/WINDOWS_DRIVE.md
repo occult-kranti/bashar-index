@@ -1,5 +1,7 @@
 # Windows: newest 20, then 50, then the full audio archive
 
+The November 19 run selects up to twenty public regular uploads from each creator's Videos tab. Use stable IDs to retain older entries, Shorts and completed streams. The current archive has a 23 GB project budget and a 12 GB physical free-space reserve. The launcher defaults to six source workers, three Drive upload transfers and twelve recordings per upload group. [Current selection and operating procedure](COLLECTION_PROCESS.md)
+
 This collection lane saves the native audio stream for each queued video, uploads it to Google Drive,
 checks the remote byte count and MD5 for the audio and its metadata sidecar, and then removes the
 verified local copies. It does not download
@@ -207,7 +209,7 @@ Drive at two simultaneous transfers; increasing one does not increase the other.
 | --- | ---: | --- |
 | `-DlWorkers` (`-Workers` alias) | 4 | 1–8 |
 | `-UploadTransfers` | 2 | 1–4 |
-| `-MaxLocalGb` | 17 decimal GB | 1–17 |
+| `-MaxLocalGb` | 18 decimal GB across managed roots | 1–18 |
 | `-UploadBatchItems` | 8 pairs | 1–16, no greater than `ReadyItems` |
 | `-UploadBatchSeconds` | 10 | 0–300; zero flushes immediately |
 | `-ReadyItems` | 16 pairs | 1–64 |
@@ -372,11 +374,12 @@ The provider process is local-session state, not an installed service. After a r
 its health and the private provenance before restarting the collector; do not assume this page
 establishes that either process is running. Keep credential and provider-token logs private.
 
-The wrapper requests four download workers, with at most one active item per channel, and a maximum
-private-root budget of **17 decimal GB**. Up to 1 GB is reserved for tools and repositories,
-and 2 GB remains as the owner's buffer within the 20 GB total allowance. The measured tools and
-repositories occupied about 0.66 GB, leaving about 2.34 GB total headroom at the private-root cap. Existing
-files, partial downloads, and reserved space for active downloads must fit the budget. The wrapper
+The standalone wrapper requests four download workers, with at most one active item per channel. Its default
+project budget is **18 decimal GB**. It includes the private directory, tools, the checkout, the browser cache
+and additional project directories saved in `PRIVATE_ROOT/sync/managed_storage_roots.json`. This file has
+`schema_version` 1 and a `managed_roots` array of absolute directory paths. The Python command also accepts
+repeatable `--managed-root` paths. Nested paths count once. Existing files, partial downloads and space
+reserved for active downloads must fit the budget. The wrapper
 sets no arbitrary per-item size or duration cutoff (`--max-item-mb 0`). An item that cannot currently
 fit the storage budget remains deferred, rather than being counted as completed or dropped from
 the index. Each download worker runs at up to 2 MiB/s using 1 MiB HTTP chunks, and metadata
@@ -384,8 +387,8 @@ request starts are spaced by at least 5 seconds across all workers. Available ch
 so one large channel does not occupy every worker. Upcoming recordings and isolated missing-format
 results stay pending while other channels continue, with one later revisit after useful audio work.
 Three missing-format outcomes without intervening audio progress stop new source work for review,
-so a broken player/runtime cannot churn through the entire queue. A 3 GB free-disk floor also protects space for
-other applications. Run this collector
+so a broken player/runtime cannot churn through the entire queue. Each admission preserves **12 GB of free
+disk space** after download and journal reservations. Run this collector
 alone in its private root; a separate application writing there is outside its storage guarantee.
 One separate upload coordinator overlaps acquisition. The default is two upload transfers, a
 16-pair queue and eight-pair batches; the owner-selected configuration uses four transfers, 64 queued
@@ -394,7 +397,7 @@ second and 32 MiB chunks, at most 128 MiB of chunk buffers across four transfers
 until Drive returns the expected size and MD5. This is a bounded local spool, not a Drive desktop
 sync folder and not a pipe that discards bytes before they can be verified.
 This is a rolling local limit across collection tiers; it does not limit the size of the Drive archive.
-The underlying Python command also rejects a configured ceiling above 20 GB.
+The Python command enforces the same 18 GB maximum and 12 GB minimum disk reserve.
 
 Remote metadata is read using [rclone lsjson](https://rclone.org/commands/rclone_lsjson/), whose
 `--stat --hash` result supplies the size, object identity, and available hashes. Upload failure,

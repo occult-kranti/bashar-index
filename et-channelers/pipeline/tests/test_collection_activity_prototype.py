@@ -62,7 +62,7 @@ class BoundPrototypeActivityTests(unittest.TestCase):
     def test_real_bound_prototype_partitions_saved_live_ready_and_queued(self):
         data=self.activity()
         self.assertEqual(('running',5),(data['state'],data['cohort_items']))
-        self.assertEqual({key:1 for key in coverage.ACTIVITY_FIELDS},data['summary'])
+        self.assertEqual(dict.fromkeys(coverage.ACTIVITY_FIELDS, 1) | {'waiting_for_source': 0}, data['summary'])
         self.assertEqual(6,sum(data['summary'].values()))
         self.assertNotIn(str(self.root),json.dumps(data))
         self.assertNotIn('process_creation_filetime',json.dumps(data))

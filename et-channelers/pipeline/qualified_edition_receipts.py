@@ -17,6 +17,19 @@ PROFILE_COMPONENT_BYTES=8131
 STREAM_CONTRACT='progressive_MP4_AAC_LC_HE_AAC_streaming_packet_preservation_v1'
 STREAM_COMPONENT_SHA='f903fddac2f02850d409a4511c897d47a04f976cf38a2ca8924b54d0c24a5f60'
 STREAM_COMPONENT_BYTES=18424
+CDN_TRANSPORT_CONTRACT='qualified18_one_checked_googlevideo_redirect_v1'
+CDN_FINAL_LENGTH_CONTRACT='qualified18_one_checked_googlevideo_redirect_v2'
+CDN_TRANSPORT_SHA='a59c8d872a0899be78d470f52f26c6d6ea99bb14cebc1030419b7d2fd5c69773'
+CDN_POLICY_SHA='4cff87c7539fea300852f6ae62cc623916702bcea961e5fcd2574e5b3913e1e1'
+CDN_FINAL_LENGTH_POLICY_SHA='ef405ed76d4d889e02fd32f8b42a5451bea6c94004ede6009989e1592dd657a2'
+CDN_ACTOR_SHA='319ab9e92c1cbe2b015d67dd31cc664a9e20c51fe9943bc14abdfd2bd38308f3'
+CDN_ACTOR_CAPABILITY_VERSION=6
+CDN_ACTOR_ARTIFACTS=((CDN_ACTOR_SHA,54801),
+ ('fa3aecb38f3547b8561470f746750f72ca8623a825e4aa0b52d467ac2f9074de',54801),
+ ('5cbd39d10752f27f99a99b44005b89b0de74672a48efa7fa0ecbfc316a211201',56232),
+ ('bcc11f9d275e95ab8897880467a8d9d35489e9e67e1c0fa62b941e6f9069a520',57064),
+ ('70662fce727f22671482fdcbf807627c880b3df0bb0c217c866d4cf2033c2445',57349))
+CDN_IDENTITY_FIELDS=['id','itag','clen','lmt','mime','dur','xtags','expire']
 SHA=re.compile(r'[0-9a-f]{64}\Z');MD5=re.compile(r'[0-9a-f]{32}\Z')
 FLAGS=('original_audio_track_identity_verified','origin_inferred','spoken_language_verified',
        'speaker_identity_verified','recording_edit_identity_verified',
@@ -44,6 +57,76 @@ def identity(v):
 def artifact_matches(value,expected_sha,expected_bytes):
  return (isinstance(value,dict) and value.get('sha256')==expected_sha and
          type(value.get('bytes')) is int and value['bytes']==expected_bytes)
+
+def selected_response_binding(http,selection,video,size):
+ """Only the reviewed actor may attest one checked HTTPS CDN redirect.
+
+ The exact pinned actor/policy checks both private URIs, their same-version
+ query identity and expiry before opening the follow. This pure reader sees
+ their hashes and the safe witness; it never reconstructs a private URI.
+ Receipts without this versioned contract retain literal single-GET equality.
+ """
+ need(isinstance(http,dict) and http.get('selected_video_id')==video and http.get('selected_format_id')=='18'
+      and digest(http.get('selected_url_sha256')) and
+      http.get('selected_url_sha256')==http.get('request_url_sha256'),'single_selected_response_binding')
+ if 'transport_contract' not in http:
+  need(http.get('request_url_sha256')==http.get('final_url_sha256'),'single_selected_response_binding')
+  return False
+ verified_policy=(
+      http.get('transport_contract')==CDN_TRANSPORT_CONTRACT and
+      artifact_matches(http.get('redirect_policy_artifact'),CDN_POLICY_SHA,6701)
+      or http.get('transport_contract')==CDN_FINAL_LENGTH_CONTRACT and
+      artifact_matches(http.get('redirect_policy_artifact'),CDN_FINAL_LENGTH_POLICY_SHA,7338))
+ need(verified_policy and
+      artifact_matches(http.get('transport_artifact'),CDN_TRANSPORT_SHA,12266) and
+      any(artifact_matches(http.get('source_actor_artifact'),sha,size) for sha,size in CDN_ACTOR_ARTIFACTS),
+      'pinned_single_CDN_redirect_transport')
+ need(selection.get('uri_sha256')==http['selected_url_sha256'] and digest(http.get('final_url_sha256')),
+      'selected_URI_hash_binding')
+ count=http.get('redirect_count');chain=http.get('redirect_chain')
+ need(type(count) is int and count in (0,1) and type(chain) is list and len(chain)==count and
+      type(http.get('media_requests')) is int and http['media_requests']==1+count and
+      type(http.get('retry_count')) is int and http['retry_count']==0,'one_original_one_follow_no_replay')
+ if not count:
+  need(http['final_url_sha256']==http['selected_url_sha256'],'literal_no_redirect_response_binding')
+  return True
+ row=chain[0]
+ fields={'schema_version','status','request_url_sha256','location_sha256','final_url_sha256',
+         'destination_hostname','retry_after_header_count','retry_after_present','same_selected_asset_version',
+         'identity_query_fields','declared_source_bytes','expires_at_epoch','identity_query_sha256',
+         'observed_at_epoch','observed_before_follow','maximum_redirects',
+         'observation_durable_before_follow','follow_only_after_approval',
+         'explicit_redirect_body_reads','redirect_body_writes'}
+ need(type(row) is dict and type(row.get('schema_version')) is int,'checked_redirect_proof_schema')
+ if row['schema_version']==2 and http['transport_contract']==CDN_FINAL_LENGTH_CONTRACT:
+  need(set(row)==fields|{'extent_basis'} and row['extent_basis']=='final_http_content_length' and
+       row['declared_source_bytes'] is None and type(http.get('content_length')) is int and
+       http['content_length']==size and positive(size,2_000_000_000),'checked_redirect_final_HTTP_extent')
+ else:
+  need(row['schema_version']==1 and set(row)==fields,'checked_redirect_proof_schema')
+  need(type(row.get('declared_source_bytes')) is int and row['declared_source_bytes']==size,
+       'checked_redirect_version_extent_expiry')
+ need(type(row.get('status')) is int and row['status'] in (301,302,303,307,308) and
+      row.get('request_url_sha256')==http['request_url_sha256'] and
+      row.get('final_url_sha256')==http['final_url_sha256'] and
+      row['final_url_sha256']!=row['request_url_sha256'] and
+      digest(row.get('location_sha256')) and digest(row.get('identity_query_sha256')),
+      'checked_redirect_asset_binding')
+ host=row.get('destination_hostname')
+ need(isinstance(host,str) and len(host)<=253 and
+      re.fullmatch(r'(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+googlevideo\.com',host),
+      'checked_HTTPS_Googlevideo_destination')
+ need(row.get('identity_query_fields')==CDN_IDENTITY_FIELDS and
+      row.get('same_selected_asset_version') is True and
+      finite(row.get('observed_at_epoch')) and type(row.get('expires_at_epoch')) is int and
+      row['expires_at_epoch']>row['observed_at_epoch'],'checked_redirect_version_extent_expiry')
+ need(type(row.get('retry_after_header_count')) is int and row['retry_after_header_count']==0 and
+      row.get('retry_after_present') is False and row.get('observed_before_follow') is True and
+      row.get('observation_durable_before_follow') is True and row.get('follow_only_after_approval') is True and
+      type(row.get('maximum_redirects')) is int and row['maximum_redirects']==1 and
+      all(type(row.get(k)) is int and row[k]==0 for k in ('explicit_redirect_body_reads','redirect_body_writes')),
+      'durable_redirect_approval_no_RetryAfter_or_body')
+ return True
 
 def quality_profiles(q):
  if q.get('quality_contract')==LEGACY_CONTRACT:return {'LC'}
@@ -146,11 +229,10 @@ def qualification(q,video,audio,variant):
       finite(select.get('duration_seconds')) and select.get('live_status') in {'not_live','was_live'} and
       select.get('has_drm') is False and select.get('is_drc') is False and digest(select.get('metadata_sha256')),
       'exact_selected_recording')
- need(isinstance(http,dict) and http.get('selected_video_id')==video and http.get('selected_format_id')=='18' and
-      digest(http.get('selected_url_sha256')) and
-      http.get('selected_url_sha256')==http.get('request_url_sha256')==http.get('final_url_sha256'),
-      'single_selected_response_binding')
  size=source['bytes']
+ cdn_transport=selected_response_binding(http,select,video,size)
+ if cdn_transport:need(artifact_matches(artifact,STREAM_COMPONENT_SHA,STREAM_COMPONENT_BYTES),
+                       'reviewed_CDN_actor_streaming_quality_required')
  for key in ('content_length','received_bytes','written_bytes','exact_on_write_limit'):
   need(type(http.get(key)) is int and http[key]==size,'full_observed_body_length')
  need(type(http.get('status')) is int and 'content_range' in http and
@@ -160,8 +242,8 @@ def qualification(q,video,audio,variant):
  need(http.get('body_sha256')==source['sha256'] and http.get('body_complete') is True and
       http.get('headers_checked_before_sink_write') is True and
       type(http.get('finished_count')) is int and http['finished_count']==1 and
-      type(http.get('media_requests')) is int and http['media_requests']==1 and
-      type(http.get('redirect_count')) is int and http['redirect_count']==0 and
+      type(http.get('media_requests')) is int and http['media_requests']==(1+http['redirect_count'] if cdn_transport else 1) and
+      type(http.get('redirect_count')) is int and (http['redirect_count'] in (0,1) if cdn_transport else http['redirect_count']==0) and
       type(http.get('retry_count')) is int and http['retry_count']==0,'whole_body_no_replay')
  quality(payload.get('AAC_preservation'),select,source,derived)
  return payload

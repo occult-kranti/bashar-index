@@ -39,7 +39,7 @@ class LimitsReview(unittest.TestCase):
     def test_default_buffer_admits_recording_larger_than_one_gigabyte(self):
         defaults = ingest.parser().parse_args(["run"])
         self.assertEqual(defaults.max_item_mb, 0)
-        budget = ingest.Budget(self.root, 19_000_000_000, 0, 0)
+        budget = ingest.Budget(self.root, 18_000_000_000, 0, 0)
         with patch.object(ingest.shutil, "disk_usage", return_value=SimpleNamespace(free=10**12)):
             budget.reserve_item("large", self.root / "large.part", 2_000_000_000,
                                 ingest.METADATA_HEADROOM)
@@ -57,7 +57,7 @@ class LimitsReview(unittest.TestCase):
         tool.assert_called_once()
 
     def test_parallel_reservations_include_each_metadata_allowance(self):
-        cap = 19_000_000_000
+        cap = 18_000_000_000
         per_audio = (cap - ingest.JOURNAL_RESERVE) // 4
         budget = ingest.Budget(self.root, cap, 0, 0)
         ready = threading.Barrier(4)

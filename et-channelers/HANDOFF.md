@@ -1,6 +1,14 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
-## Current acquisition handoff, November 19, 2026, 04:15 UTC
+## Windows collection as of November 19, 2026
+
+At 19:59 UTC, 1,478 of 1,976 selected public regular uploads had verified audio and provenance on Drive. The sample has 101 creators. The cumulative index also retains older regular entries, Shorts and streams. Use immutable recording IDs and the exact selection hash for comparisons. [Collection process, commands and issue history](pipeline/COLLECTION_PROCESS.md)
+
+The 19:54 UTC batch began with six source workers and a 4.8 GB reservation under its original 18 GB ceiling. The next compatible reservation can use the new 23 GB limit. Retain 12 GB physically free after all commitments. Independent publisher workers upload whole editions in groups and keep valid local files until remote verification. Cite a finish time only from the pace of verified files on one selection. [Windows setup](pipeline/WINDOWS_DRIVE.md)
+
+Keep GPU transcription paused during collection. After the last audio receipt, finalize the index, document the run and prepare the newest-fifty increment. Fill missing transcripts, run both rounds of expert analysis, and publish the dashboards together. Source and review files for the interview roster are available in the repository. [Interview crosswalk](research/interview-discovery-2026-11-19/episode-crosswalk.csv) · [Roadmap](ROADMAP.md)
+
+## Earlier acquisition handoff, November 19, 2026, 04:15 UTC
 
 Public `main` is `7c6a860`: [PR #75](https://github.com/occult-kranti/bashar-index/pull/75) merged the streaming PURE receipt reader and Pages passed. The receipt baseline remains **1,151 / 1,420 selected audio entries: 1,108 native + 37 publisher editions + six qualified YouTube editions**, with **136** carrying saved text and **269** missing audio. The 60 creator-level selection gaps remain open. ASR remains paused.
 

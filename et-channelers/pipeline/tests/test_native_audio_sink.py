@@ -386,6 +386,19 @@ class Fixtures(unittest.TestCase):
             self.assertEqual(d.copy_calls,1);self.assertFalse(metadata.exists());self.assertFalse((self.root/record['path']).exists())
             self.assertEqual(n.latest_receipts(self.root/'sync/drive_ingest_manifest.jsonl')[VIDEO]['status'],'deleted')
 
+    def test_pair_uses_one_bounded_readback_outside_the_coordinator_lock(self):
+        with self.coordinator() as coordinator:
+            sink=self.begin(coordinator);self.fill(sink);self.finish(sink)
+            drive=Drive();calls=[]
+            def read_pair(remote,paths,manifest):
+                self.assertFalse(coordinator.lock._is_owned())
+                self.assertEqual(paths,set(manifest.read_text('utf-8').splitlines()))
+                calls.append(len(paths))
+                return {name:drive.stat(remote+'/'+name) for name in paths}
+            drive.stat_batch=read_pair
+            result=sink.publish(drive)
+            self.assertEqual(calls,[2]);self.assertTrue(core.receipt_complete(result,coordinator.rows[VIDEO],coordinator.remote))
+
     def test_metadata_bad_drive_hash_preserves_both(self):
         with self.coordinator() as c:
             s=self.begin(c);self.fill(s);r=self.finish(s);d=Drive();d.bad_metadata=True

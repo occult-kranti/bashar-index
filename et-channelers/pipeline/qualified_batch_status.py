@@ -9,6 +9,11 @@ import math
 from pathlib import Path
 import re
 
+if __package__:
+    from . import host_capacity
+else:
+    import host_capacity
+
 PROFILE = re.compile(r'qualified_youtube_response18_parallel_batch(?:_recovery[1-9][0-9]*)?_v[1-9][0-9]*\Z')
 VIDEO = re.compile(r'[A-Za-z0-9_-]{11}\Z')
 SHA = re.compile(r'[0-9a-f]{64}\Z')
@@ -33,7 +38,7 @@ def read(root, now, *, object_reader, bound_reader, code_reader, alive, child_of
     """One current finite scope; malformed newer ownership never falls back live."""
     root = Path(root).resolve()
     paths = list((root / 'sync').glob('qualified_youtube_response18_parallel_batch*_lease.json'))
-    if not paths or len(paths) > 24:
+    if not paths:
         return {}
     objects = {}
     def small(path):
@@ -66,9 +71,13 @@ def _read(root, now, lease_path, obj, bound, code, alive, child_of, command):
     settings_hash, grant_hash = lease.get('settings_sha256'), lease.get('root_grant_sha256')
     if not all(isinstance(value, str) and SHA.fullmatch(value) for value in (settings_hash, grant_hash)):
         return {}
-    # The settings path is found only through the matching actual invocation.
-    homes = sorted((root / 'provisioning').glob('qualified-response18-parallel-batch*-v*'))
-    homes = [home for home in homes[:24] if obj(home / 'owner-runtime/invocation.json').get('root_grant_sha256') == grant_hash]
+    # Resolve the version directly. Each historical layout must bind the same actual invocation.
+    suffix = profile.removeprefix('qualified_youtube_response18_parallel_batch_').replace('_', '-')
+    layouts = [f'qualified-response18-parallel-batch-{suffix}', f'regular-public-intake-frame-{suffix}']
+    if suffix == 'v8':
+        layouts.append('regular-fresh-intake-v1')
+    homes = [root / 'provisioning' / name for name in layouts]
+    homes = [home for home in homes if obj(home / 'owner-runtime/invocation.json').get('root_grant_sha256') == grant_hash]
     if len(homes) != 1:
         return {}
     home = homes[0].resolve()
@@ -79,6 +88,9 @@ def _read(root, now, lease_path, obj, bound, code, alive, child_of, command):
     settings, grant = pinned(settings_path, settings_hash), pinned(grant_path, grant_hash)
     plan_hash = grant.get('plan_sha256'); scope = pinned(home / 'scope.json', plan_hash)
     ids = grant.get('allowed_video_ids')
+    workers, spool = grant.get('source_workers'), grant.get('spool_cap_bytes')
+    # Older grants used fixed two-worker, twenty-item defaults. New frames bind their limits explicitly.
+    max_items = grant.get('maximum_cohort_items', 20)
     if not (settings and scope and grant.get('enabled') is True and grant.get('owner') == 'root' and
             grant.get('source_authorized') is True and grant.get('drive_publication_allowed') is True and
             all(grant.get(key) is True for key in ('literal_language_tags_authorized', 'default_is_not_original_authorized',
@@ -89,12 +101,16 @@ def _read(root, now, lease_path, obj, bound, code, alive, child_of, command):
             grant.get('settings_sha256') == settings_hash and
             Path(settings.get('pipeline_directory', '')).resolve() == home and
             Path(settings.get('private_root', '')).resolve() == root and
-            isinstance(ids, list) and 1 <= len(ids) <= 20 and len(set(ids)) == len(ids) and
+            isinstance(ids, list) and type(max_items) is int and 1 <= len(ids) <= max_items and
+            max_items == settings.get('maximum_cohort_items', 20) and len(set(ids)) == len(ids) and
             all(isinstance(value, str) and VIDEO.fullmatch(value) for value in ids) and
-            ids == settings.get('allowed_video_ids') == scope.get('video_ids') == lease.get('allowed_video_ids') and
-            grant.get('source_workers') == lease.get('source_workers') == 2 and grant.get('publishers') == 1 and
+            ids == settings.get('allowed_video_ids') == scope.get('video_ids', scope.get('allowed_video_ids')) == lease.get('allowed_video_ids') and
+            scope.get('allowed_video_ids', ids) == ids and
+            type(workers) is int and 1 <= workers <= 6 and workers == settings.get('source_workers', 2) == lease.get('source_workers') and
+            grant.get('publishers') == settings.get('publishers', 1) == 1 and
             grant.get('maximum_source_bytes') == grant.get('maximum_derived_bytes') == 2_000_000_000 and
-            grant.get('spool_cap_bytes') == lease.get('spool_cap_bytes') == 5_000_000_000):
+            type(spool) is int and 0 < spool <= host_capacity.MAX_MANAGED_BYTES and
+            spool == settings.get('spool_cap_bytes', 5_000_000_000) == lease.get('spool_cap_bytes')):
         return {}
     pins = {Path(row.get('path', '')).name: row for row in settings.get('code_pins', [])
             if isinstance(row, dict) and Path(row.get('path', '')).parent.resolve() == home}
@@ -103,13 +119,14 @@ def _read(root, now, lease_path, obj, bound, code, alive, child_of, command):
     rows = obj(root / 'sync/analysis_resource_plan.json').get('reservations', [])
     matching = [row for row in rows if row.get('lease_id') == profile]
     if not (len(matching) == 1 and matching[0].get('root_grant_sha256') == grant_hash and
-            matching[0].get('max_bytes') == 5_000_000_000):
+            matching[0].get('max_bytes') == spool):
         return {}
     owner = home / 'owner-runtime'; invoked = obj(owner / 'invocation.json')
     launcher = invoked.get('identity'); started = invoked.get('started_at_epoch')
     if not (identity(launcher) and positive(started) and started <= now + 5 and
             invoked.get('settings_sha256') == settings_hash and invoked.get('plan_sha256') == plan_hash and
-            invoked.get('source_count') == len(ids) and invoked.get('owned_job_attached') is True and
+            invoked.get('source_count') == len(ids) and invoked.get('source_workers', 2) == workers and
+            invoked.get('owned_job_attached') is True and
             invoked.get('suspended_attach_before_resume') is True):
         return {}
     terminal, exited = obj(owner / 'terminal.json'), obj(owner / 'process-exit.json')
@@ -173,7 +190,16 @@ def _read(root, now, lease_path, obj, bound, code, alive, child_of, command):
                    {row.get('video_id') for row in outcomes if isinstance(row, dict)} != set(ids) or
                    any(row.get('state') not in {'verified', 'held', 'retained', 'pending', 'inflight'} for row in outcomes)):
         return {}
-    public = {'kind': 'qualified_youtube_batch', 'state': state, 'workers': 2 if state == 'running' else 0,
+    if closed:
+        for outcome in outcomes:
+            if outcome['state'] == 'verified':
+                # A published pair has left the spool. The receipt reader determines archive coverage.
+                stages.pop(outcome['video_id'], None)
+    cooldown = obj(root / 'sync' / (profile + '_source_cooldown.json'))
+    retry_at = cooldown.get('until_epoch')
+    local_deadline = (retry_at if provider_stop and cooldown.get('root_grant_sha256') == grant_hash and
+                      cooldown.get('scope') == 'google_provider' and positive(retry_at) else None)
+    public = {'kind': 'qualified_youtube_batch', 'state': state, 'workers': workers if state == 'running' else 0,
               'process_confirmed': process_confirmed, 'source_count': len(ids), 'attempted_items': attempted,
               'not_started_items': len(ids) - attempted, 'held_items': sum(value == 'held' for value in stages.values()),
               'unresolved_items': sum(value == 'unresolved' for value in stages.values()),
@@ -182,5 +208,7 @@ def _read(root, now, lease_path, obj, bound, code, alive, child_of, command):
               'owned_processes_closed': bool(closed), 'future_growth_released': bool(released),
               'started_at_epoch': started, 'finished_at_epoch': terminal.get('at_epoch') if closed else None,
               'reason': 'provider_hold' if provider_stop else 'administrative_review' if admin or state == 'paused' else None,
+              'local_provider_cooldown_until_epoch': local_deadline,
               'ETA_state': 'unmeasured', 'planning_active_hours': None, 'Native_count_increment': 0}
-    return {'public': public, 'video_stages': stages, 'scope_video_ids': ids}
+    deferred = [row['video_id'] for row in outcomes if row['state'] == 'pending'] if closed and local_deadline and now < local_deadline else []
+    return {'public': public, 'video_stages': stages, 'scope_video_ids': ids, 'deferred_video_ids': deferred}

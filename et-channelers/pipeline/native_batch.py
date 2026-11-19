@@ -20,11 +20,13 @@ import time
 
 try:
     from . import drive_ingest as storage, native_batch_worker as worker, native_http_policy as http_policy
+    from . import storage_inventory
     from .native_batch_job import OwnedJob
     from .gpu_asr import encoded
 except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import drive_ingest as storage
+    import storage_inventory
     import native_batch_worker as worker
     import native_http_policy as http_policy
     from native_batch_job import OwnedJob
@@ -33,8 +35,8 @@ except ImportError:
 MAX_SPOOL = 6_000_000_000
 MAX_ASSET = 2_000_000_000
 HEADROOM = 240_000_000
-MANAGED = 16_000_000_000
-FREE = 2_000_000_000
+MANAGED = storage.MAX_LOCAL_BYTES
+FREE = storage.MIN_FREE_BYTES
 WINDOWS = os.name == 'nt'
 SOURCE_FAILURES = {'source_403', 'source_429', 'bot_check', 'protection_failure', 'access_challenge'}
 need, read, write, digest = worker.need, worker.read, worker.write, worker.digest
@@ -95,20 +97,10 @@ def capacity_snapshot(root, spool, active_folders):
     root, spool = Path(root).resolve(), Path(spool).resolve()
     active = {Path(p).resolve() for p in active_folders}
     need(all(p.is_relative_to(spool) and p != spool for p in active), 'capacity_scope')
-    private_bytes = spool_bytes = 0
-    for folder, directories, files in os.walk(root):
-        base = Path(folder)
-        for name in list(directories):
-            path = base / name
-            need(not storage.is_link(path), 'storage_link')
-            if path in active: directories.remove(name)
-        for name in files:
-            path = base / name
-            need(not storage.is_link(path), 'storage_link')
-            try: size = path.stat().st_size
-            except FileNotFoundError: continue
-            private_bytes += size
-            if path.is_relative_to(spool): spool_bytes += size
+    try:
+        private_bytes, spool_bytes = storage_inventory.measure(root, spool=spool, excluded=active)
+    except storage_inventory.LinkedEntry as error:
+        raise worker.Held('storage_link') from error
     return {'inactive_private_bytes': private_bytes, 'inactive_spool_bytes': spool_bytes}
 
 

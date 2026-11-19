@@ -4438,9 +4438,9 @@ class TestYouTubeRobotsRule(LaneCase):
             parsed = next(i for i, stmt in enumerate(main.body) if "parse_args()" in ast.unparse(stmt))
             self.assertIn("youtube_gate(", ast.unparse(main.body[parsed + 1]), f"{name}: the gate must come first")
         # Python's own requests to YouTube: every step that builds a YouTube address and fetches it reads robots.txt
-        fetchers = sorted(p.name for p in PIPE.glob("*.py") if re.search(r"get_bytes\(|open_url\(", p.read_text(encoding="utf-8"))
-                          and "https://www.youtube.com/" in p.read_text(encoding="utf-8"))
-        self.assertEqual(fetchers, ["channel_about.py", "discover_sites.py", "host_channels.py"])
+        fetchers = sorted(p.name for p in PIPE.glob("*.py") if re.search(r"get_bytes\(|open_url\(", source := p.read_text(encoding="utf-8"))
+                          and ("https://www.youtube.com/" in source or "uploads_url(" in source))
+        self.assertEqual(fetchers, ["channel_about.py", "collect_channel_formats.py", "collect_uploads_catalog.py", "discover_sites.py", "host_channels.py", "resolve_channel_intake.py"])
         for name in fetchers:
             self.assertIn("robots.allowed(", (PIPE / name).read_text(encoding="utf-8"), name)
 

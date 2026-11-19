@@ -1,15 +1,50 @@
 # Batch pipeline: audio and transcripts for the tracked channels
 
+## Current Windows collection
+
+**Latest 20+ videos** takes the first 20 public regular uploads on each channel’s newest-first Videos tab. Date and duration fields provide descriptive metadata. Preserve previous selections, including Shorts and completed streams, when refreshing the index. [Collection roadmap](../ROADMAP.md)
+
+Run `collect_regular_videos.py fetch --root PRIVATE_ROOT --channels CHANNELS.json --out DATED_RUN`, followed by the same command with `index` in place of `fetch`. This reads each of the supplied channel pages once and caches it for offline parsing. `extend_regular_video_grid.py --root PRIVATE_ROOT --base DATED_RUN/fresh-videos.json --out DATED_RUN/fresh-videos-extended.json` follows the public Videos tab as long as it advances. It stops at 20 public regular uploads or a confirmed final page. A stalled or unavailable listing stays incomplete. `additive_video_selection.py --help` gives the inputs for combining this snapshot with earlier selections. Its `priority.csv` lists recording IDs, source formats, ranks and archive status.
+
+`collection_coverage.py --root PRIVATE_ROOT --selection SELECTION.json --out PRIVATE_ROOT/reports/coverage.json` joins receipts to the selected recording IDs. It also writes a creator table and saved-video CSV. Add `--activity-csv PATH` for a working table with one row per creator, mutually exclusive transfer states and the checkpoint time. Native YouTube, qualified YouTube and independent publisher editions are reported separately.
+
+For a consolidated dashboard build, pass the same `--selection` to `ingestion_status.py` and `dataset_timeline.py`. Give the timeline the matching `--coverage-csv PATH/downloaded_videos.csv`. That CSV uses a leading apostrophe for spreadsheet safety on IDs beginning with a hyphen. The timeline's CSV reader restores the original IDs before joining. Use `collection_eta.py --root PRIVATE_ROOT --coverage-checkpoint OLDER.json --coverage-checkpoint NEWER.json --out ETA.json` to estimate a finish time from verified receipts and elapsed wall time. The report lists the measured intervals, including intervals with zero receipts. Runs can share a pace estimate across an index update when the primary recording IDs, creators and ranks match.
+
+The Windows acquisition budget is 23 decimal GB of managed project files with 12 GB physically free after reservations. The portable launcher defaults to six source workers, three upload transfers, groups of twelve and 24 ready or in-flight recordings. Monitor physical memory and commit headroom before adding browsers. The November 19 expanded batch retained its original limits through the handoff. [Operating procedure and versioned checkpoint](COLLECTION_PROCESS.md)
+
+`publisher_description_links.py --root PRIVATE_ROOT --selection SELECTION.json --out PRIVATE_ROOT/reports/description-links.json` searches already archived creator descriptions for links. Check the publisher, recording and edit before accepting a match. The command makes zero network requests.
+
+`publisher_host_matches.py --root PRIVATE_ROOT --selection SELECTION.json --out PRIVATE_ROOT/reports/host-candidates.json` screens the cached interview-show feeds against recordings still missing audio. It retains episode-specific links, comparable durations and title or guest matches for review. It records both lengths even when a show links to a different edit.
+
+After collection, `corpus_caption_view.py --root PRIVATE_ROOT --video-id VIDEO_ID --track-id TRACK_ID --bundle CAPTION.zip` reads a locally staged copy of a verified English native-caption ZIP. The private view preserves offsets, the original cue identifier, start and optional end times, and a digest of the source. Its timed denominator measures the union of known display intervals. [Corpus and figure contracts](../research/analysis-plan-2026-11-16/README.md)
+
+`corpus_asr_view.py --root PRIVATE_ROOT --receipt RECEIPT.json --bundle ASR.zip --variant all` reads an existing ASR result and preserves its segment offsets and word times. To use a verified Drive receipt as `--receipt`, pass the matching audio and metadata receipt under `--edition-receipt EDITION.json`. The adapter checks the archived bundle manifest, provenance and both source objects. Early dated runs can also use their local worker receipt together with `--drive-receipt UPLOAD.json` and the matching edition receipt. Multilingual recordings keep the original transcript and English translation as separate text versions. An English alias of an English original shares its text identity.
+
+`corpus_publisher_view.py --root PRIVATE_ROOT --selection SELECTION.json --video-id VIDEO_ID --bundle CAPTIONS.zip --bundle-sha256 SHA256` imports English captions bundled with a verified independent publisher audio edition. It checks the recording, source audio hash and each ZIP member, then reconstructs the text and cue offsets. Times refer to the publisher audio. Separately archived captions awaiting an audio match remain companion sources.
+
+`corpus_concordance.py --view VIEW.json --out PRIVATE_ROOT/reports/candidates.jsonl` locates English search terms in an individual private text, preserving character spans and source cue IDs. It also writes 150-word windows with and without detector matches for checking retrieval quality.
+
+The November 19 selection including the later Elsa Short has SHA-256 `b7a87fe0ea9d65b09dcb3359cebe487123e710a0ada87288175454a2d033926f`. Both it and the initial index cover the same 1,439 public regular uploads from 74 creators. Their ordered primary membership digest is `3322682363fcda591540dac2586ffb096e1d06ff5957343e03a3cab70b9fa4d6`.
+
+After collection, run these commands from this directory's parent.
+
+```sh
+python -m pipeline.stage_archived_text --root PRIVATE_ROOT --selection SELECTION.json --selection-sha256 SHA256 --rclone RCLONE_PATH
+python -m pipeline.postrun_candidates --root PRIVATE_ROOT --selection SELECTION.json --selection-sha256 SHA256 --figures
+```
+
+The first command stages verified English YouTube captions, timed captions paired with a publisher edition, and ASR results for native recordings. It reuses local ZIPs, groups the remaining Drive reads, and records each verified text view before removing its temporary download. The inventory can be inspected during collection with `--inventory-only`. The second command checks every selected creator and audio receipt, then writes a private generation with an inventory of each primary English text, missing entries, a concordance, comparison tables, heatmaps and a co-mention network. Figure export uses Matplotlib from the Atlas analysis requirements. Later transcript arrivals create a new analysis generation. An optional `--families FILE.jsonl` accepts reviewed recording-family assignments with evidence hashes. The figures describe search-term matches and expose their observed denominators. Human review of a passage is required to describe a prediction, experiment, proposed healing method or attributed speaker as a research finding.
+
 Code to take a list of YouTube videos to private audio files and timestamped transcripts, in parallel, with every step resumable. It was built on 2026-11-11 for the plan in [`../ROADMAP.md`](../ROADMAP.md). Everything is standard-library Python except the two external tools it drives (yt-dlp and faster-whisper) and ffmpeg.
 
-**Current resource phase, November 17 22:27 UTC.** The closed 60-item series added 30 native audio/metadata pairs and 18 English ASR bundles. Aggregate coverage is 100 native pairs / 63 native ASR / 128 unique audio entries / 108 with saved text. The [series guide](NATIVE_SERIES.md) records two source workers, verified Drive archival, bounded local English-to-GPU handoff and complete lease release. The current `feat/native-upload-overlap` successor prepares source-slot refill during publication and safe label diagnostics; separate new admissions are required before execution. Unknown/foreign-language inputs retain their own review scope. Shared six-root storage plus growth reservations must fit 16 GB, within the owner's 20 GB allowance and 2 GB spare. Read [HANDOFF](../HANDOFF.md) before using historical launch commands below; real-time recording and scientific analysis remain deferred.
+**November 17 checkpoint.** The 60-item series added 30 native audio and metadata pairs and 18 English ASR bundles. Totals at 22:27 UTC were 100 native pairs, 63 native ASR bundles, 128 unique audio entries and 108 with saved text. The series used two source workers and a 16 GB working allowance. [Series guide](NATIVE_SERIES.md) · [Current handoff](../HANDOFF.md)
 
 **Windows audio collection, 2026-11-16.** The owner's current workflow is documented in
 [`WINDOWS_DRIVE.md`](WINDOWS_DRIVE.md): native audio and available video metadata go directly to Google Drive,
 with the newest 20 per channel first, then the newest 50. Remaining items are indexed for a separate final
 download round; `RunAll` stops after the 50-item phase and that indexing step. The PowerShell launcher uses four workers
-and a 19 GB private working-folder ceiling, leaving room for tools within the owner's 20 GB local limit;
-there is no project size cap on Drive or duration filter. New files are organized by their source tab under
+and now charges the managed roots against the current 18 GB allowance with 12 GB of physical disk reserved.
+Drive accepts the entire archive. Files of every duration are organized by their source tab under
 Videos, Shorts, Recorded streams, or Unclassified. Transcription and audio conversion are deferred. A real Windows pilot
 uploaded audio, verified its remote size and MD5, and deleted the local copy. This lane uses its own Drive
 receipts; it is separate from the older GitHub archive and Drive staging ledgers described below.

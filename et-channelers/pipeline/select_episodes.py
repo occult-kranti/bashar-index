@@ -46,7 +46,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import (ET_ROOT, ID_RE, add_root_arg, atomic_write_text, ensure_outside_git, host_id, host_of,  # noqa: E402
                     item_id, latest_by_key, layout, listed_videos, parse_duration, read_csv, read_jsonl, sha256_file,
                     stable_shard, utc_now, write_csv)
-from feeds import title_similarity, tokens  # noqa: E402
+from feeds import PROMO_SHARE, title_similarity, tokens  # noqa: E402
 from fetch_feeds import REGISTRY, read_registry  # noqa: E402
 from find_feeds import fold, load_targets  # noqa: E402
 
@@ -60,7 +60,6 @@ FIELDS = ["video_id", "url", "channel_dir", "title", "duration_s", "published", 
           "bytes_hint", "interview_type", "shard"]
 TRANSCRIPT_PREFERENCE = ("text/vtt", "application/x-subrip", "application/srt", "text/srt", "application/json",
                          "text/html", "text/plain")
-PROMO_SHARE = 0.2     # a video linked from more than this share of a feed's episodes is a promotion
 DEFAULTS = {"relation": "own,host,file,archive", "only": "", "min_seconds": 0, "max_seconds": 0, "since": "",
             "keep_trailers": False, "min_title": 0.72, "duration_tolerance": 0.12, "registry": REGISTRY,
             "accept": "verified,name-match"}

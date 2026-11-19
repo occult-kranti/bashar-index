@@ -175,6 +175,8 @@ def build(root=None):
     # 3. people added since, and channels the index does not have
     for row in rows_of(SOURCES / "extra_targets.csv"):
         entry = person(row["person_id"], row.get("name") or "", row.get("role") or "")
+        if entry["role"] == "context" and row.get("role") in {"medium", "channeler"}:
+            entry["role"] = row["role"]
         if not entry["origins"]:
             entry["origins"].add("added")
             entry["identity"] = "verified"

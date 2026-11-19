@@ -21,7 +21,7 @@ SHA = re.compile(r'[0-9a-f]{64}\Z')
 QUALITIES = ('exact', 'estimated', 'unknown')
 VIDEO_FIELDS = ('video_id', 'channel_dir', 'channel_name', 'title', 'url', 'listing_rank',
                 'upload_date', 'date_quality', 'original_estimated_date',
-                'estimate_differs_from_exact', 'saved_audio', 'exact_date_source_sha256')
+                'estimate_differs_from_exact', 'saved_audio', 'exact_date_source_sha256', 'tab')
 MONTH_FIELDS = ('month', 'record_count', 'exact_count', 'estimated_count', 'unknown_count',
                 'saved_audio_count')
 
@@ -52,7 +52,8 @@ def calendar_date(value, field):
         raise TimelineError(field + ' is not a valid calendar day') from None
 
 
-def exact_dates(overlay, selected_ids):
+def exact_dates(overlay, selected_ids=None):
+    """Validate saved metadata dates, optionally restricting them to a sample."""
     if overlay is None:
         return {}
     need(isinstance(overlay, dict) and overlay.get('schema_version') == 1 and
@@ -61,7 +62,9 @@ def exact_dates(overlay, selected_ids):
     for item in overlay['items']:
         need(isinstance(item, dict), 'invalid exact-date overlay item')
         video = item.get('video_id')
-        need(isinstance(video, str) and video in selected_ids, 'exact-date overlay ID is outside the selected sample')
+        need(isinstance(video, str) and VIDEO.fullmatch(video), 'invalid exact-date overlay video ID')
+        if selected_ids is not None:
+            need(video in selected_ids, 'exact-date overlay ID is outside the selected sample')
         date = calendar_date(item.get('upload_date'), 'exact upload_date')
         need(date is not None, 'exact-date overlay has no date')
         need(item.get('provenance') == 'saved_youtube_metadata', 'unsupported exact-date provenance')
@@ -74,9 +77,9 @@ def exact_dates(overlay, selected_ids):
     return result
 
 
-def build_timeline(rows, overlay=None, saved_audio_ids=None, *, generated_at=None):
+def build_timeline(rows, overlay=None, saved_audio_ids=None, *, generated_at=None, selection_metadata=None):
     """One row per selected video; every aggregate reconciles to that grain."""
-    need(isinstance(rows, list) and bool(rows), 'selected sample is empty')
+    need(isinstance(rows, list) and (bool(rows) or selection_metadata and selection_metadata['creators']), 'selected sample is empty')
     selected = {}; ranks = set(); names = {}; creator_sizes = Counter()
     for row in rows:
         need(isinstance(row, dict), 'invalid selected sample row')
@@ -102,8 +105,26 @@ def build_timeline(rows, overlay=None, saved_audio_ids=None, *, generated_at=Non
         estimate = calendar_date(row.get('upload_date_approx'), 'upload_date_approx')
         selected[video] = {'video_id': video, 'channel_dir': channel, 'channel_name': name,
                            'title': title, 'url': 'https://www.youtube.com/watch?v=' + video,
-                           'listing_rank': rank, 'original_estimated_date': estimate}
+                           'listing_rank': rank, 'original_estimated_date': estimate, 'tab': row.get('tab'),
+                           'original_estimate_provenance': 'queue_upload_date_approx' if estimate else None}
     overrides = exact_dates(overlay, set(selected))
+    if selection_metadata is not None:
+        for row in rows:
+            quality, date = row.get('selected_date_quality'), row.get('selected_publication_date')
+            need(quality in {'exact', 'estimated', 'unknown', None}, 'unsupported canonical selection date quality')
+            if quality == 'exact':
+                date = calendar_date(date, 'canonical exact publication_date')
+                digest = row.get('selected_date_source_sha256')
+                need(date and isinstance(digest, str) and SHA.fullmatch(digest), 'canonical exact date lacks evidence hash')
+                existing = overrides.get(row['video_id'])
+                need(existing is None or existing['upload_date'] == date, 'exact date overlay conflicts with canonical selection')
+                if existing is None:
+                    overrides[row['video_id']] = {'upload_date': date, 'provenance': {
+                        'kind': row.get('selected_date_basis') or 'canonical_selection_saved_metadata', 'source_sha256': digest,
+                        'selection_sha256': selection_metadata['sha256']}}
+            elif quality == 'estimated' and date and not selected[row['video_id']]['original_estimated_date']:
+                selected[row['video_id']]['original_estimated_date'] = calendar_date(date, 'canonical estimated publication_date')
+                selected[row['video_id']]['original_estimate_provenance'] = 'canonical_selection_estimated_publication_date'
     if saved_audio_ids is not None:
         saved_audio_ids = set(saved_audio_ids)
         need(saved_audio_ids <= set(selected), 'audio coverage contains IDs outside the selected sample')
@@ -113,11 +134,15 @@ def build_timeline(rows, overlay=None, saved_audio_ids=None, *, generated_at=Non
         date = exact['upload_date'] if exact else estimate
         records.append(dict(row, upload_date=date,
             date_quality='exact' if exact else 'estimated' if estimate else 'unknown',
-            original_estimate_provenance='queue_upload_date_approx' if estimate else None,
+            original_estimate_provenance=row['original_estimate_provenance'],
             exact_date_provenance=exact['provenance'] if exact else None,
             estimate_differs_from_exact=bool(exact and estimate and exact['upload_date'] != estimate),
             saved_audio=video in saved_audio_ids if saved_audio_ids is not None else None))
     by_creator = defaultdict(list); by_month = defaultdict(list)
+    if selection_metadata is not None:
+        for creator in selection_metadata['creators']:
+            by_creator[creator] = []
+            names.setdefault(creator, creator)
     for row in records:
         by_creator[row['channel_dir']].append(row)
         by_month[row['upload_date'][:7] if row['upload_date'] else 'unknown'].append(row)
@@ -149,13 +174,23 @@ def build_timeline(rows, overlay=None, saved_audio_ids=None, *, generated_at=Non
                if saved_audio_ids is not None else None}
     need(sum(row['record_count'] for row in creators) == len(records) ==
          sum(row['record_count'] for row in monthly) == sum(quality.values()), 'timeline totals do not reconcile')
-    return {'schema_version': 1, 'scope': 'selected_newest20_upload_timeline',
+    data = {'schema_version': 1, 'scope': 'selected_newest20_upload_timeline',
             'generated_at': generated_at or dt.datetime.now(dt.timezone.utc).isoformat(timespec='seconds').replace('+00:00', 'Z'),
             'scope_note': 'Selected up to 20 videos per creator, not each creator\'s complete production history.',
             'date_note': 'Queue dates are estimates. Exact overrides use saved YouTube upload-date metadata; upload dates are not recording dates.',
             'saved_audio_note': 'Saved audio reflects the supplied receipt-coverage snapshot, not a live download poll.'
             if saved_audio_ids is not None else 'Saved audio coverage was not supplied.',
             'summary': summary, 'creators': creators, 'monthly': monthly, 'records': records}
+    if selection_metadata is not None:
+        data.update(selection_basis=selection_metadata['basis'], selection_sha256=selection_metadata['sha256'],
+                    selection_source_shape=selection_metadata['shape'],
+                    scope_note='Canonical selected completed recordings across Videos, Shorts and recorded streams; underfilled and unobserved creator lists remain explicit.',
+                    date_note='Saved exact metadata dates retain their evidence hashes. Queue dates remain estimates. Relative labels do not establish calendar dates; upload dates are not recording dates.')
+        data['summary']['format_counts'] = {tab: sum(row['tab'] == tab for row in records)
+                                           for tab in ('videos', 'shorts', 'streams', 'unknown')}
+        for creator in creators:
+            creator.update(selection_metadata['creators'][creator['channel_dir']])
+    return data
 
 
 def load_audio_ids(path, selected_rows, *, content=None):
@@ -227,7 +262,8 @@ def write_outputs(data, out_dir, *, template_path=None, plotly_path=None):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--queue', type=Path, required=True)
+    parser.add_argument('--queue', type=Path, help='Legacy selected-video CSV, or optional name/date enrichment with --selection')
+    parser.add_argument('--selection', type=Path, help='Use creator and rank from a dated recording selection or Latest 20+ videos index')
     parser.add_argument('--exact-dates', type=Path)
     parser.add_argument('--coverage-csv', type=Path)
     parser.add_argument('--out-dir', type=Path, required=True)
@@ -236,17 +272,38 @@ def main(argv=None):
     parser.add_argument('--expected-videos', type=int)
     parser.add_argument('--expected-creators', type=int)
     args = parser.parse_args(argv)
+    need(args.queue is not None or args.selection is not None, '--queue or --selection is required')
     # Parse and hash the same saved bytes even if a later local refresh replaces a file.
-    queue_bytes = args.queue.read_bytes()
+    queue_bytes = args.queue.read_bytes() if args.queue else None
+    selection_bytes = args.selection.read_bytes() if args.selection else None
     overlay_bytes = args.exact_dates.read_bytes() if args.exact_dates else None
     coverage_bytes = args.coverage_csv.read_bytes() if args.coverage_csv else None
-    rows = list(csv.DictReader(io.StringIO(queue_bytes.decode('utf-8-sig'), newline='')))
+    rows = list(csv.DictReader(io.StringIO(queue_bytes.decode('utf-8-sig'), newline=''))) if queue_bytes is not None else []
+    selection = None
+    if selection_bytes is not None:
+        if __package__:
+            from .ingestion_status import selection_rows
+        else:
+            import sys
+            sys.path.insert(0, str(Path(__file__).resolve().parent))
+            from ingestion_status import selection_rows
+        selection = selection_rows(args.selection, content=selection_bytes)
+        enrich = {row['video_id']: row for row in rows}
+        rows = selection['rows']
+        for row in rows:
+            old = enrich.get(row['video_id'])
+            if old:
+                need(old.get('channel_dir') == row['channel_dir'], 'CSV enrichment creator mismatch')
+                for field in ('source_channel_name', 'channel_name', 'upload_date_approx'):
+                    if old.get(field) and (field != 'upload_date_approx' or not row.get(field)):
+                        row[field] = old[field]
     overlay = json.loads(overlay_bytes.decode('utf-8-sig')) if overlay_bytes is not None else None
     audio = load_audio_ids(args.coverage_csv, rows, content=coverage_bytes) if args.coverage_csv else None
-    data = build_timeline(rows, overlay, audio)
+    data = build_timeline(rows, overlay, audio, selection_metadata=selection)
     need(args.expected_videos is None or len(data['records']) == args.expected_videos, 'unexpected selected video count')
     need(args.expected_creators is None or len(data['creators']) == args.expected_creators, 'unexpected creator count')
-    data['source'] = {'selection_csv_sha256': hashlib.sha256(queue_bytes).hexdigest(),
+    data['source'] = {'selection_csv_sha256': hashlib.sha256(queue_bytes).hexdigest() if queue_bytes is not None else None,
+                      'selection_json_sha256': hashlib.sha256(selection_bytes).hexdigest() if selection_bytes is not None else None,
                       'exact_date_overlay_sha256': hashlib.sha256(overlay_bytes).hexdigest() if overlay_bytes is not None else None,
                       'coverage_csv_sha256': hashlib.sha256(coverage_bytes).hexdigest() if coverage_bytes is not None else None}
     write_outputs(data, args.out_dir, template_path=args.template, plotly_path=args.plotly_js)

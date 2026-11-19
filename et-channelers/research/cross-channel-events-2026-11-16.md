@@ -62,6 +62,23 @@ The [creator's podcast listing](https://cosmicconversations.buzzsprout.com/) sup
 
 No pair is marked as two independent accounts of the same event. Similar channeling vocabulary, entity labels, proximity in upload dates or dramatic titles cannot establish that. Search results concerning outside news events were not substituted for either creator's missing description.
 
+## Follow-up from the November 19 archive
+
+The FAA reported a telecommunications problem at about 3:30 p.m. Eastern on November 13, 2026, followed by a nationwide ground stop. Air traffic resumed at 8:15 p.m. The agency was still investigating the root cause when it published its November 15 account. Use this documented event as the reference for reviewing the recordings. [FAA account](https://www.faa.gov/newsroom/nationwide-ground-stop-questions-and-answers)
+
+Daniel Scranton's November 16 message explicitly identifies the US FAA and describes a grounding of more than four hours. The authority, country, duration and publication date make the November 13 event a strong match. Scranton attributes the interpretation involving spacecraft to the 9D Arcturian Council. This was commentary published after the ground stop. The creator links the message to recording `EmikdDLpHps`, outside his frozen newest 20. [Scranton's account](https://danielscranton.com/the-faa-shutdown-in-the-us-uaps-ufos-spaceships-%E2%88%9Ethe-9d-arcturian-council/)
+
+Two more recordings provide search leads for the transcript review. Rob Gauthier's title attributes discussion of technology outages to Aridif. Brad Johnson's stream mentions cyberattacks and blackouts. Record an aviation connection only if a dated passage identifies it. [Gauthier's recording](https://www.youtube.com/watch?v=mvs708zqkws) · [Johnson's stream](https://www.youtube.com/watch?v=vf2RcpGcvjA)
+
+Hayden Crawford and Sam the Illusionist both published on November 16. Crawford's description mentions flight disruptions, discussion of jellyfish-shaped UFOs and possible power outages. The third question in Sam's description asks about the grounding of flights. Flight disruption is therefore a documented subject in both descriptions. Neither description identifies an airport, airline, grounding order or occurrence time that would connect the two references to one event. Sam's other questions concern Robert Monroe's concept of *loosh* and a purported portal-like object in the United States. [Crawford's recording](https://www.youtube.com/watch?v=EliqxbbQoRw) · [Sam's recording](https://www.youtube.com/watch?v=bMWOuu_Zd-s)
+
+Daniel Scranton's November 18 publication attributes a discussion of jellyfish-shaped probes to Ashanti. That gives reviewers a separate comparison for the imagery in Crawford's recording. Retain the named speaker, the publisher's wording and the publication date with this candidate. Connecting it to a particular sighting requires a location, occurrence date or other identifying detail in the source passages. [Scranton's written message](https://danielscranton.com/get-excited-2027-is-coming-%e2%88%9eashanti-the-et-human-hybrid/) · [Scranton's recording](https://www.youtube.com/watch?v=P2wtgwcbEVA)
+
+| Comparison | Shared subject in the publisher's material | Evidence to seek during transcript review |
+| --- | --- | --- |
+| Crawford and Sam, November 16 | Flight disruptions or groundings | Named place, carrier, dates, source cited by each creator and whether each statement is a question or an assertion |
+| Crawford, November 16, and Scranton, November 18 | Jellyfish-shaped aerial objects | Description of the alleged object, location, date, source cited and the context of each interpretation |
+
 ## Future comparison work
 
 This is a future analysis work package, not an active transcription or interpretation job.
@@ -77,6 +94,19 @@ This is a future analysis work package, not an active transcription or interpret
 A minimal future comparison record should contain: pair ID; both item IDs; actual human speakers; claimed source labels and provenance; event ID or unresolved status; publication-date quality; event-date range; supporting source references/spans; statement type; work-family dependence; reviewer decision. This intake creates none of those as inferred transcript facts.
 
 ## Search and source audit
+
+### Additional comparison from the November 19 regular-video sweep
+
+The November 24 full Moon gives the study a named event and an independently dated reference. The U.S. Naval Observatory places full phase at 14:53 UTC that day. The study can use that time to compare when each creator published and how they interpreted the same calendar event. [U.S. Naval Observatory phase table](https://aa.usno.navy.mil/calculated/moon/phases?date=2026-11-01&format=p&nump=8&submit=Get+Data)
+
+| Source | Publication | What the available evidence establishes |
+| --- | --- | --- |
+| Laarkmaa | November 17, 15:13 UTC for the video | The video title specifies a thirteen-day period starting November 17. Pia’s companion post explicitly mentions the November 24 full Moon and describes it in terms of collective intentions. The recording still needs passage-level review. [Recording](https://www.youtube.com/watch?v=_3r6VOKP-VA) · [Pia’s written post](https://www.laarkmaa.com/post/13day-period-of-enlightening-energy) |
+| Aurora Ray | November 19, 15:00 UTC for the video | The published title explicitly names a supermoon and November 24. Review the recording for the person speaking, any attributed entity, and the precise forecast or interpretation. [Recording](https://www.youtube.com/watch?v=lRPrO06SHKI) |
+
+Record the astronomical date as information already available to both creators. A prediction comparison should evaluate any additional outcome each speaker specified, including its conditions and dates. The original Dreemtime–Sam comparison has its own recording IDs and review status.
+
+### November 16 intake
 
 Four Exa searches requested **20 result slots**, returned **20 entries**, and produced **17 distinct result URLs**:
 

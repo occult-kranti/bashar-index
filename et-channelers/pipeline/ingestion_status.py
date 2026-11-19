@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from collections import Counter, defaultdict
 import csv
 import datetime as dt
 import hashlib
@@ -14,16 +15,16 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlsplit
 
 if __package__:
-    from .drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
+    from .drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, MAX_LOCAL_BYTES, caption_receipt_complete,
                                caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from .chromium_capture_service import browser_receipt_complete
-    from . import qualified_edition_receipts, qualified_direct_audio_receipts, qualified_batch_status
+    from . import qualified_edition_receipts, qualified_direct_audio_receipts, qualified_batch_status, publisher_caption_batch
 else:  # -I deliberately removes the script directory from the default import path.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
-    from drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
+    from drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, MAX_LOCAL_BYTES, caption_receipt_complete,
                               caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from chromium_capture_service import browser_receipt_complete
-    import qualified_edition_receipts, qualified_direct_audio_receipts, qualified_batch_status
+    import qualified_edition_receipts, qualified_direct_audio_receipts, qualified_batch_status, publisher_caption_batch
 
 DEFAULT_REMOTE = "etdrive:04 Audio"
 
@@ -276,6 +277,65 @@ def qualified_batch_state(root, now):
         code_reader=private_code_pin, alive=owned_process_alive, child_of=owned_process_child_of,
         command=lambda identity, settings, program, grant: owned_native_batch_command(
             identity, settings, program, command_mode='qualified_batch', grant_path=grant))
+
+
+def rolling_native_state(root, now):
+    """Read the currently running native handoff once, ignoring completed workers and stale PID files."""
+    pattern = re.compile(r'native_rolling_handoff_([0-9]+)_lease\.json')
+    frames = [(int(match[1]), path) for path in (root/'sync').glob('native_rolling_handoff_*_lease.json')
+              if (match := pattern.fullmatch(path.name))]
+    if not frames:
+        return {}
+    number, path = max(frames)
+    lease = read_object(path)
+    ids = lease.get('allowed_video_ids')
+    if (lease.get('state') != 'active' or lease.get('profile') != f'native_rolling_handoff_{number}'
+            or lease.get('source_authorized') is not True or not isinstance(ids, list) or not ids
+            or any(not isinstance(i, str) or not re.fullmatch(r'[\w-]{11}', i, re.ASCII) for i in ids)
+            or len(set(ids)) != len(ids) or type(lease.get('expires_at_epoch')) not in (int, float)
+            or lease['expires_at_epoch'] <= now):
+        return {}
+    home = root/'provisioning'/f'native-rolling-handoff-{number}'
+    runtime = home/'runtime'
+    if (runtime/'owner-terminal.json').exists():
+        return {}
+    go = read_object(runtime/'GO')
+    def pinned(path, digest):
+        try:
+            return bound_json(root, {'path': str(path), 'bytes': path.stat().st_size, 'sha256': digest})
+        except OSError:
+            return {}
+    digest = lease.get('root_grant_sha256')
+    grant = pinned(home/'root-grant.ACTIVE.json', digest)
+    invocation = pinned(runtime/'invocation.json', go.get('invocation_sha256'))
+    identity = invocation.get('identity')
+    if (go.get('root_grant_sha256') != digest or invocation.get('root_grant_sha256') != digest
+            or grant.get('allowed_video_ids') != ids or grant.get('profile') != lease['profile']
+            or grant.get('enabled') is not True or grant.get('source_authorized') is not True
+            or not isinstance(identity, dict) or go.get('identity') != identity
+            or not all(invocation.get(k) is True for k in ('exact_handle_creation_verified', 'exact_command_verified', 'owned_job_attached'))
+            or not owned_process_alive(identity)):
+        return {}
+    stages = {}
+    for video in ids:
+        folder = runtime/'observations'/video
+        attempt = read_object(folder/'attempt.json')
+        if attempt.get('video_id') != video or attempt.get('root_grant_sha256') != digest:
+            stages[video] = 'queued'
+        elif (folder/'publication-receipt.json').exists():
+            stages[video] = 'processing'  # Only the canonical receipt ledger contributes to saved totals.
+        elif read_object(folder/'range-transfer.json').get('final_response_equal') is True:
+            stages[video] = 'awaiting_upload'
+        elif read_object(folder/'range-1.json').get('response_status') in (401, 403, 404, 410, 429):
+            stages[video] = 'waiting_for_source'
+        else:
+            wire = read_object(folder/'wire-1.json')
+            stages[video] = ('downloading' if wire.get('method') == 'GET' and
+                             pinned(folder/'attempt.json', wire.get('attempt_sha256')) == attempt else 'processing')
+    workers = lease.get('source_workers')
+    return {'public': {'state': 'running', 'kind': 'rolling_native_handoff', 'source_count': len(ids),
+                       'workers': min(workers, len(ids)) if type(workers) is int and workers > 0 else 1,
+                       'process_confirmed': True, 'proof': 'owned_live_process'}, 'video_stages': stages}
 
 
 def native_v5_lane(root, now):
@@ -715,6 +775,148 @@ def queue_ids(root, names):
     return set(), 0
 
 
+def selection_rows(path, *, content=None):
+    """One pinned canonical mixed snapshot, with strict owner/position joins."""
+    raw = Path(path).read_bytes() if content is None else content
+    value = json.loads(raw.decode('utf-8-sig'))
+    if not isinstance(value, dict) or value.get('schema_version', 1) != 1:
+        raise ValueError('Unsupported mixed selection schema')
+    scopes = {'all_requested_positions_observed', 'short_complete_displayed_list',
+              'incomplete_visible_positions', 'unobserved'}
+    groups, owners, seen, rows, positions = {}, {}, set(), [], defaultdict(set)
+    def creator(name, channel, scope=None):
+        if (not isinstance(name, str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]{0,119}', name)
+                or not isinstance(channel, str) or not re.fullmatch(r'UC[A-Za-z0-9_-]{22}', channel)
+                or scope is not None and scope not in scopes
+                or name in groups and groups[name]['channel_id'] != channel
+                or channel in owners and owners[channel] != name):
+            raise ValueError('Mixed selection creator identity mismatch')
+        owners[channel] = name
+        group = groups.setdefault(name, {'channel_id': channel, 'scope': None})
+        if scope is not None:
+            if group['scope'] not in (None, scope):
+                raise ValueError('Conflicting mixed selection availability')
+            group['scope'] = scope
+    def add(item, name, channel, rank):
+        video, tab = item.get('video_id'), item.get('tab')
+        if (not isinstance(video, str) or not re.fullmatch(r'[A-Za-z0-9_-]{11}', video) or video in seen
+                or type(rank) is not int or not 0 <= rank < 20 or rank in positions[name]
+                or tab not in {'videos', 'shorts', 'streams', 'unknown'}):
+            raise ValueError('Invalid mixed selection row, rank or format')
+        creator(name, channel)
+        seen.add(video); positions[name].add(rank)
+        rows.append({'video_id': video, 'channel_dir': name, 'expected_channel_id': channel,
+                     'listing_rank': rank, 'tab': tab, 'title': item.get('title', ''),
+                     'source_channel_name': item.get('source_channel_name') or item.get('channel_name') or name,
+                     'upload_date_approx': item.get('upload_date_approx'),
+                     'selected_publication_date': item.get('publication_date'),
+                     'selected_date_quality': item.get('date_quality', 'unknown'),
+                     'selected_date_basis': item.get('publication_date_basis'),
+                     'selected_date_source_sha256': item.get('exact_date_evidence_sha256')})
+    basis, archive = 'canonical_mixed_latest20', {}
+    if value.get('selection_kind') == 'additive_latest20plus_videos_v1':
+        selected_rows, channel_list = value.get('rows'), value.get('channels')
+        if (value.get('latest_regular_per_creator') != 20 or not isinstance(selected_rows, list)
+                or not isinstance(channel_list, list) or value.get('row_count') != len(selected_rows)):
+            raise ValueError('Invalid Latest 20+ selection counts')
+        declared = {}
+        for group in channel_list:
+            name, channel, count = group['channel_dir'], group['channel_id'], group['public_regular_count']
+            if name in declared or type(count) is not int or not 0 <= count <= 20:
+                raise ValueError('Invalid public regular creator count')
+            complete = group.get('public_listing_complete') is True
+            scope = ('all_requested_positions_observed' if count == 20 else 'short_complete_displayed_list'
+                     if complete else 'incomplete_visible_positions' if count else 'unobserved')
+            creator(name, channel, scope)
+            declared[name] = count
+        membership_keys = set()
+        for item in selected_rows:
+            name, video = item['channel_dir'], item['video_id']
+            if name not in declared or (name, video) in membership_keys:
+                raise ValueError('Duplicate recording or unknown creator in the archive union')
+            membership_keys.add((name, video))
+            if item.get('fresh_public_regular') is not True:
+                continue
+            members = [m for m in item['memberships'] if m.get('kind') == 'fresh_public_regular']
+            channel = groups[name]['channel_id']
+            if (len(members) != 1 or item.get('public_media_dispatch_excluded') is not False or
+                members[0].get('access_status') != 'public_listing' or members[0].get('tab') != 'videos' or
+                members[0].get('expected_channel_id') != channel or item.get('current_primary_channel_id') != channel):
+                raise ValueError('Public regular membership lacks its creator, format or access evidence')
+            member = members[0]
+            selected_item = {**item, 'tab': 'videos', 'title': member.get('title') or item.get('title', ''),
+                             'publication_date': member.get('publication_date'), 'date_quality': member.get('date_quality', 'unknown')}
+            reference = item.get('publication_date_evidence') or {}
+            if item.get('publication_date_quality') in ('instant', 'date'):
+                digest = reference.get('public_watch_sha256') or (reference.get('overlay') or {}).get('sha256')
+                date = item.get('publication_date')
+                try:
+                    day = dt.date.fromisoformat(date).isoformat() if isinstance(date, str) else None
+                except ValueError:
+                    day = None
+                bound = (reference.get('row_channel_dir'), reference.get('row_video_id')) == (name, video)
+                if day and bound and isinstance(digest, str) and re.fullmatch('[0-9a-f]{64}', digest):
+                    selected_item.update(publication_date=day, date_quality='exact', exact_date_evidence_sha256=digest)
+            add(selected_item, name, channel, member.get('listing_rank'))
+        if any(len(positions[name]) != count for name, count in declared.items()):
+            raise ValueError('Public regular membership differs from its creator totals')
+        shape, basis = value['selection_kind'], 'latest20plus_public_regular'
+        archive = {'label': 'Latest 20+ videos', 'total': len(membership_keys),
+                   'literal_latest20': sum(x.get('fresh_regular') is True for x in selected_rows),
+                   'literal_members_only': sum(x.get('fresh_regular') is True and x.get('public_media_dispatch_excluded') is True for x in selected_rows),
+                   'formats': dict(Counter(x['tab'] for x in selected_rows))}
+    elif value.get('per_channel') == 20 and isinstance(value.get('channels'), list):
+        for group in value['channels']:
+            if not isinstance(group, dict):
+                raise ValueError('Invalid mixed selection creator')
+            name, channel, items = group.get('channel_dir'), group.get('channel_id'), group.get('items')
+            if (name in groups or group.get('scope') not in scopes or not isinstance(items, list)
+                    or type(group.get('selected')) is not int or group['selected'] != len(items)):
+                raise ValueError('Invalid mixed selection creator count')
+            creator(name, channel, group.get('scope'))
+            previous = -1
+            for rank, item in enumerate(items):
+                position = item.get('source_position')
+                if (item.get('channel_dir') != name or item.get('channel_id') != channel
+                        or type(item.get('slot')) is not int or item.get('slot') != rank + 1
+                        or type(position) is not int or position <= previous):
+                    raise ValueError('Mixed selection row belongs to another creator/position')
+                previous = position
+                add(item, name, channel, rank)
+        shape = 'recording_selection_channels_v1'
+    elif value.get('target_limit') == 20 and isinstance(value.get('rows'), list):
+        if (value.get('schema_version') != 1 or type(value.get('row_count')) is not int
+                or value.get('row_count') != len(value['rows'])):
+            raise ValueError('Mixed roster row count mismatch')
+        for item in value.get('observations', []):
+            creator(item.get('channel_dir'), item.get('expected_channel_id'))
+        for item in value['rows']:
+            add(item, item.get('channel_dir'), item.get('expected_channel_id'), item.get('selected_position_after_visible_exclusions'))
+        for item in value.get('creator_coverage', []):
+            name, scope = item.get('creator'), item.get('scope')
+            if name not in groups or scope not in scopes:
+                raise ValueError('Mixed roster creator coverage mismatch')
+            creator(name, groups[name]['channel_id'], scope)
+        shape = 'completed_recording_roster_v1'
+    else:
+        raise ValueError('Expected canonical mixed latest20 selection JSON')
+    for name, group in groups.items():
+        count = len(positions[name])
+        if positions[name] != set(range(count)):
+            raise ValueError('Mixed selection ranks must be consecutive chosen positions')
+        scope = group['scope'] or ('all_requested_positions_observed' if count == 20 else 'incomplete_visible_positions')
+        if (count > 20 or scope == 'all_requested_positions_observed' and count != 20
+                or scope == 'unobserved' and count):
+            raise ValueError('Mixed selection availability/count conflict')
+        group.update(scope=scope, target=count, shortfall_to_20=20-count)
+    result = {'rows': rows, 'creators': groups, 'sha256': hashlib.sha256(raw).hexdigest(),
+              'shape': shape, 'basis': basis, 'format_counts': dict(Counter(row['tab'] for row in rows))}
+    if archive:
+        priority = sorted((r['channel_dir'], r['expected_channel_id'], r['listing_rank'], r['video_id']) for r in rows)
+        result.update(archive=archive, priority_scope_sha256=hashlib.sha256(json.dumps(priority, separators=(',', ':')).encode()).hexdigest())
+    return result
+
+
 def record_row(record):
     video_id, channel = record.get("video_id"), record.get("channel_dir")
     if not isinstance(video_id, str) or not re.fullmatch(r"[A-Za-z0-9_-]{11}", video_id):
@@ -747,9 +949,8 @@ def latest_records(path):
     return records
 
 
-def qualified_edition_coverage(root, targets, remote, target_rows=None):
-    """Count paired qualified audio without granting native or text coverage."""
-    root = Path(root)
+def selected_recording_owners(root, target_rows=None):
+    """Return a channel and source tab per video, rejecting conflicting selections."""
     if target_rows is None:
         for name in ('queue_newest20_enriched.csv', 'queue_newest20.csv'):
             path = root / 'jobs' / name
@@ -762,6 +963,13 @@ def qualified_edition_coverage(root, targets, remote, target_rows=None):
         ident = row.get('video_id')
         owner = (row.get('channel_dir'), row.get('tab'))
         owners[ident] = owner if ident not in owners or owners[ident] == owner else None
+    return owners
+
+
+def qualified_edition_coverage(root, targets, remote, target_rows=None):
+    """Count paired qualified audio without granting native or text coverage."""
+    root = Path(root)
+    owners = selected_recording_owners(root, target_rows)
     path = root / 'sync/progressive_audio_extracts_manifest.jsonl'
     accepted = set()
     if not path.is_file() or path.stat().st_size > 64_000_000:
@@ -820,8 +1028,9 @@ def asr_records(path, identity_key='run_id'):
     return records.values()
 
 
-def publisher_coverage(root, targets, remote):
+def publisher_coverage(root, targets, remote, target_rows=None):
     """Supplementary publisher editions never establish native/ASR completion."""
+    owners = selected_recording_owners(root, target_rows) if target_rows is not None else None
     def rows(name):
         path = root / 'sync' / name
         if path.is_file():
@@ -902,6 +1111,8 @@ def publisher_coverage(root, targets, remote):
                 row['video_id'] not in targets or not object_proof(audio, kind) or
                 not object_proof(provenance, provenance_kind)):
             continue
+        if owners is not None and (not owners.get(row['video_id']) or owners[row['video_id']][0] != row['channel_dir']):
+            continue
         parent = remote + '/' + row['channel_dir'] + '/Videos/' + row['video_id'] + '/PublisherVariants/' + audio['sha256']
         if audio.get('remote') == parent + '/publisher-audio.mp3' and provenance.get('remote') == parent + '/provenance.json':
             variants.add(row['video_id'])
@@ -975,9 +1186,10 @@ def browser_extension_status(root):
             'downloader_coexistence_verified': True, 'source_acceptance_verified': False}
 
 
-def publisher_timed_text_coverage(root, targets, remote):
+def publisher_timed_text_coverage(root, targets, remote, target_rows=None):
     """Count independently archived publisher text without inventing audio binding."""
     found = set()
+    owners = selected_recording_owners(root, target_rows)
     path = root / 'sync/publisher_caption_manifest.jsonl'
     for line in path.read_text(encoding='utf-8-sig').splitlines() if path.is_file() else []:
         try:
@@ -985,6 +1197,9 @@ def publisher_timed_text_coverage(root, targets, remote):
         except ValueError:
             continue
         if not isinstance(record, dict):
+            continue
+        if record.get('artifact_kind') == 'publisher_edition_caption_batch':
+            found.update(publisher_caption_batch.verified_videos(record, targets, remote, owners))
             continue
         if (record.get('schema_version') != 1 or record.get('status') != 'verified' or
                 record.get('artifact_kind') != 'publisher_provided_timed_text_batch' or
@@ -1036,18 +1251,118 @@ def publisher_timed_text_coverage(root, targets, remote):
     return found
 
 
-def publisher_mirror_coverage(root, targets, remote):
-    """Count verified publisher mirrors without promoting native YouTube progress."""
-    audio_ids, caption_ids, asr_ids, sources = set(), set(), set(), {}
+def publisher_object_proof(value):
+    return (isinstance(value, dict) and type(value.get('bytes')) is int and value['bytes'] > 0 and
+            isinstance(value.get('drive_id'), str) and bool(value['drive_id']) and
+            all(isinstance(value.get(key), str) and re.fullmatch(pattern, value[key])
+                for key, pattern in (('sha256', '[0-9a-f]{64}'), ('md5', '[0-9a-f]{32}'))))
+
+
+def companion_writings(root, targets, remote, target_rows=None):
+    """Publisher-written messages and session text can accompany only part of a video."""
+    path = root / 'sync/publisher_companion_manifest.jsonl'
+    owners = selected_recording_owners(root, target_rows)
+    messages, sessions = set(), set()
+    if not path.exists():
+        return messages, sessions
+    with path.open(encoding='utf-8-sig') as stream:
+        for line in stream:
+            try:
+                rec = json.loads(line)
+            except ValueError:
+                continue
+            if not isinstance(rec, dict):
+                continue
+            video, kind, bundle = rec.get('video_id'), rec.get('artifact_kind'), rec.get('bundle')
+            if not isinstance(video, str) or video not in targets or not owners.get(video) or not publisher_object_proof(bundle):
+                continue
+            creator, tab = owners[video]
+            folder = {'videos':'Videos', 'shorts':'Shorts', 'streams':'Streams'}.get(tab)
+            if (not folder or rec.get('schema_version') != 1 or rec.get('status') != 'verified' or creator != rec.get('channel_dir')
+                    or rec.get('language') != 'en' or any(rec.get(k) is not False for k in
+                        ('timed', 'youtube_caption', 'changes_full_asr_count', 'changes_selected_audio_count', 'changes_native_audio_count'))):
+                continue
+            parent = f"{remote}/{creator}/{folder}/{video}/PublisherText/{bundle['sha256']}/"
+            if (kind == 'exact_linked_publisher_written_message' and rec.get('full_video_text_verified') is False
+                    and type(rec.get('word_count')) is int and rec['word_count'] > 0
+                    and bundle.get('remote') == parent + 'published-message.en.zip'):
+                messages.add(video)
+            if (kind == 'publisher_session_transcript' and rec.get('full_video_speech_alignment_verified') is False
+                    and type(rec.get('session_number')) is int and rec['session_number'] > 0
+                    and rec.get('association_method') in {'publisher_embedded_exact_youtube_id', 'qualified_same_publisher_exact_title_date_and_named_source'}
+                    and re.fullmatch('[0-9a-f]{64}', str(rec.get('source_pdf_sha256', '')))
+                    and bundle.get('remote') == parent + 'publisher-session.en.zip'):
+                sessions.add(video)
+    return messages, sessions
+
+
+def publisher_episode_page_reference(record):
+    """Reviewed official paired-player evidence, distinct from an RSS YouTube link."""
+    binding = record.get('publisher_episode_binding')
+    if not isinstance(binding, dict):
+        return False
+    video = record.get('associated_youtube_id')
+    episode = binding.get('episode_number')
+    uuid = binding.get('art19_episode_uuid')
+    if (record.get('kind') != 'publisher_episode_page_exact_youtube_id' or
+            record.get('association_method') != 'publisher_episode_page_exact_youtube_id' or
+            record.get('exact_youtube_crossreference') is not True or
+            record.get('recording_equivalence_verified') is not False or
+            record.get('provider') != 'ART19' or record.get('channel_dir') != 'julie-ryan' or
+            binding.get('publisher_channel_id') != 'UCMYtR_CBJeC6MKbzuQ2dd6A' or
+            type(episode) is not int or episode <= 0 or
+            not isinstance(uuid, str) or not re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}', uuid) or
+            not re.fullmatch('[0-9a-f]{64}', str(binding.get('reviewed_pair_sha256', '')))):
+        return False
+    try:
+        enclosure = urlsplit(binding.get('rss_enclosure_url', ''))
+        return (binding.get('episode_page_url') == f'https://askjulieryan.com/podcast/{episode}/' and
+                binding.get('youtube_player_url') == 'https://www.youtube.com/embed/' + video and
+                record.get('original_youtube_link') == 'https://www.youtube.com/watch?v=' + video and
+                binding.get('art19_player_url') ==
+                    f'https://art19.com/shows/97147093-d307-4e02-8559-09ab2b7767ce/episodes/{uuid}/embed' and
+                binding.get('rss_feed_url') == 'https://rss.art19.com/ask-julie-ryan' and
+                enclosure.scheme == 'https' and enclosure.netloc == 'rss.art19.com' and
+                enclosure.path == f'/episodes/{uuid}.mp3' and not enclosure.fragment and
+                isinstance(binding.get('rss_guid'), str) and bool(binding['rss_guid']))
+    except (ValueError, TypeError):
+        return False
+
+
+def publisher_episode_transcript_reference(record, parent):
+    """Bind an untimed document and its English text to the same official episode."""
+    evidence = record.get('publisher_transcript_provenance')
+    document = record.get('publisher_transcript_document')
+    transcript = record.get('publisher_transcript')
+    if not isinstance(evidence, dict) or not publisher_object_proof(document):
+        return False
+    binding = record['publisher_episode_binding']
+    try:
+        source = urlsplit(evidence.get('source_url', ''))
+        return (evidence.get('episode_page_url') == binding['episode_page_url'] and
+                evidence.get('art19_episode_uuid') == binding['art19_episode_uuid'] and
+                evidence.get('associated_youtube_id') == record['associated_youtube_id'] and
+                evidence.get('declared_label') == 'Episode Transcript' and
+                evidence.get('language_verification') == 'english_document_lexical_check' and
+                evidence.get('source_document_sha256') == document['sha256'] and
+                source.scheme == 'https' and source.netloc == 'askjulieryan.com' and
+                source.path.startswith('/wp-content/uploads/') and source.path.endswith('.docx') and
+                not source.query and not source.fragment and
+                document.get('remote') == parent + '/publisher-transcript.source.docx' and
+                len({document['drive_id'], transcript['drive_id'], record['audio']['drive_id'],
+                     record['provenance']['drive_id']}) == 4)
+    except (ValueError, TypeError, KeyError):
+        return False
+
+
+def publisher_mirror_evidence(root, targets, remote, target_rows=None):
+    """Separate timed captions, ASR and transcripts attached to verified publisher editions."""
+    audio_ids, caption_ids, asr_ids, untimed_ids, sources = set(), set(), set(), set(), {}
     path = root / 'sync/publisher_mirror_manifest.jsonl'
     if not path.is_file():
-        return audio_ids, caption_ids, asr_ids
-
-    def object_proof(value):
-        return (isinstance(value, dict) and type(value.get('bytes')) is int and value['bytes'] > 0 and
-                isinstance(value.get('drive_id'), str) and bool(value['drive_id']) and
-                all(isinstance(value.get(key), str) and re.fullmatch(pattern, value[key])
-                    for key, pattern in (('sha256', '[0-9a-f]{64}'), ('md5', '[0-9a-f]{32}'))))
+        return audio_ids, caption_ids, asr_ids, untimed_ids
+    owners = selected_recording_owners(root, target_rows)
+    folders = {'videos': 'Videos', 'shorts': 'Shorts', 'streams': 'Streams'}
 
     def exact_reference(record):
         try:
@@ -1077,14 +1392,38 @@ def publisher_mirror_coverage(root, targets, remote):
         exact = (record.get('kind') == 'publisher_mirror_audio_variant' and
                  record.get('association_method') == 'publisher_rss_exact_youtube_id' and
                  record.get('exact_youtube_crossreference') is True and exact_reference(record))
-        if not (qualified or exact):
+        paired_page = publisher_episode_page_reference(record)
+        if not (qualified or exact or paired_page):
             continue
         row = record_row({'video_id': record.get('associated_youtube_id'), 'channel_dir': record.get('channel_dir')})
         audio, provenance = record.get('audio'), record.get('provenance')
-        if (not row or row['video_id'] not in targets or not object_proof(audio) or not object_proof(provenance) or
+        if (not row or row['video_id'] not in targets or not publisher_object_proof(audio) or not publisher_object_proof(provenance) or
                 audio['drive_id'] == provenance['drive_id'] or record.get('variant_id') != audio['sha256']):
             continue
-        parent = (remote + '/' + row['channel_dir'] + '/Videos/' + row['video_id'] +
+        owner = owners.get(row['video_id'])
+        if row['video_id'] in owners and (not owner or owner[0] != row['channel_dir']):
+            continue
+        selected_tab = owner[1] if owner and isinstance(owner[1], str) and owner[1] in folders else None
+        receipt_tab = record.get('source_tab', record.get('tab'))
+        if receipt_tab is not None and (
+                not isinstance(receipt_tab, str) or receipt_tab not in folders or
+                ('tab' in record and record['tab'] != receipt_tab) or
+                (selected_tab and selected_tab != receipt_tab)):
+            continue
+        tab_evidence = record.get('source_tab_evidence')
+        if tab_evidence is not None and (
+                not isinstance(tab_evidence, dict) or tab_evidence.get('tab') != receipt_tab or
+                tab_evidence.get('video_id') != row['video_id'] or
+                tab_evidence.get('channel_dir') != row['channel_dir'] or
+                not isinstance(tab_evidence.get('roster_sha256'), str) or
+                not re.fullmatch('[0-9a-f]{64}', tab_evidence['roster_sha256'])):
+            continue
+        if receipt_tab in ('shorts', 'streams') and not (selected_tab or tab_evidence):
+            continue
+        # Historical untyped receipts used Videos. A known selection or typed
+        # receipt binds both the audio and its provenance to the same category.
+        folder = folders[receipt_tab or selected_tab or 'videos']
+        parent = (remote + '/' + row['channel_dir'] + '/' + folder + '/' + row['video_id'] +
                   '/PublisherVariants/' + audio['sha256'])
         if (not isinstance(audio.get('remote'), str) or
                 not re.fullmatch(re.escape(parent) + r'/publisher-audio\.(?:aac|m4a|mp3|opus|ogg|webm|flac)', audio['remote']) or
@@ -1092,11 +1431,19 @@ def publisher_mirror_coverage(root, targets, remote):
             continue
         audio_ids.add(row['video_id'])
         sources[(row['video_id'], audio['sha256'])] = record
+        transcript = record.get('publisher_transcript')
+        if (publisher_object_proof(transcript) and transcript['drive_id'] not in {audio['drive_id'], provenance['drive_id']}
+                and transcript.get('timed') is False and transcript.get('language') == 'en'
+                and type(transcript.get('paragraphs')) is int and transcript['paragraphs'] > 0
+                and record.get('caption_state') == 'english_publisher_transcript_untimed'
+                and transcript.get('remote') == parent + '/publisher-transcript.en.txt'
+                and (not paired_page or publisher_episode_transcript_reference(record, parent))):
+            untimed_ids.add(row['video_id'])
         captions = record.get('caption_bundles')
         if not isinstance(captions, list):
             captions = [record.get('caption_bundle')]
         for caption in captions:
-            if (object_proof(caption) and caption.get('usable_timed_text') is True and
+            if (publisher_object_proof(caption) and caption.get('usable_timed_text') is True and
                     caption['drive_id'] not in {audio['drive_id'], provenance['drive_id']} and
                     isinstance(caption.get('language'), str) and re.fullmatch(r'en(?:[-_][A-Za-z0-9-]+)?', caption['language']) and
                     caption.get('remote') == parent + '/Captions/' + caption['sha256'] + '/captions.zip'):
@@ -1114,7 +1461,7 @@ def publisher_mirror_coverage(root, targets, remote):
             continue
         source = sources.get((video_id, variant_id))
         if (not source or record.get('schema_version') != 1 or record.get('status') != 'verified' or
-                record.get('artifact_kind') != 'publisher_variant_asr' or not object_proof(record) or
+                record.get('artifact_kind') != 'publisher_variant_asr' or not publisher_object_proof(record) or
                 record['drive_id'] in {source['audio']['drive_id'], source['provenance']['drive_id']} or
                 record.get('quality_state') != 'unreviewed_asr' or record.get('channel_dir') != source['channel_dir'] or
                 not re.fullmatch('[A-Za-z0-9_-]{1,120}', run_id) or
@@ -1123,7 +1470,7 @@ def publisher_mirror_coverage(root, targets, remote):
         same_source = True
         for key, source_key in (('source_audio', 'audio'), ('source_provenance', 'provenance')):
             value, expected = record.get(key), source[source_key]
-            if not object_proof(value) or any(value.get(field) != expected[field] for field in ('bytes', 'drive_id', 'remote', 'md5', 'sha256')):
+            if not publisher_object_proof(value) or any(value.get(field) != expected[field] for field in ('bytes', 'drive_id', 'remote', 'md5', 'sha256')):
                 same_source = False
         if not same_source:
             continue
@@ -1133,10 +1480,15 @@ def publisher_mirror_coverage(root, targets, remote):
         parent = source['audio']['remote'].rpartition('/')[0]
         if record.get('remote') == parent + '/ASR/' + run_id + '/' + run_id + '.zip':
             asr_ids.add(video_id)
-    return audio_ids, caption_ids, asr_ids
+    return audio_ids, caption_ids, asr_ids, untimed_ids
 
 
-def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
+def publisher_mirror_coverage(root, targets, remote, target_rows=None):
+    """Existing audio, timed-caption and ASR view used by collection workers."""
+    return publisher_mirror_evidence(root, targets, remote, target_rows)[:3]
+
+
+def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=(), selection=None):
     """Allowlisted public values only; no private strings are copied to the result."""
     now = dt.datetime.now(dt.timezone.utc).timestamp() if now is None else now
     latest = latest_records(root / "sync" / "drive_ingest_manifest.jsonl")
@@ -1185,13 +1537,23 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     unavailable = {key for key, rec in latest.items() if terminal_unavailable(rec)}
     audio = {key for key, rec in latest.items() if rec.get("bytes", 0) and rec.get("sha256")}
     twenty, channels = queue_ids(root, ("queue_newest20_enriched.csv", "queue_newest20.csv"))
+    selected = selection_rows(selection) if selection is not None else None
+    target_rows = selected['rows'] if selected is not None else None
+    if selected is not None:
+        twenty = {row['video_id'] for row in target_rows}
+        channels = len(selected['creators'])
+    chosen_native = ({row['video_id'] for row in target_rows
+                      if row['video_id'] in latest and latest[row['video_id']].get('channel_dir') == row['channel_dir']
+                      and proof(receipt_complete, latest[row['video_id']], row, remote)}
+                     if selected is not None else archived & twenty)
     fifty, _ = queue_ids(root, ("queue_newest50_enriched.csv", "queue_newest50.csv"))
     full, _ = queue_ids(root, ("queue_youtube_all_merged.csv", "queue_youtube_all.csv"))
     remaining, _ = queue_ids(root, ("queue_final_round.csv",))
-    publisher_texts, publisher_transcripts, publisher_variants, publisher_qualified, publisher_asr = publisher_coverage(root, twenty, remote)
-    mirror_audio, mirror_captions, mirror_asr = publisher_mirror_coverage(root, twenty, remote)
-    qualified_audio = qualified_edition_coverage(root, twenty, remote)
-    publisher_timed_text = publisher_timed_text_coverage(root, twenty, remote)
+    publisher_texts, publisher_transcripts, publisher_variants, publisher_qualified, publisher_asr = publisher_coverage(root, twenty, remote, target_rows=target_rows)
+    mirror_audio, mirror_captions, mirror_asr, mirror_transcripts = publisher_mirror_evidence(root, twenty, remote, target_rows=target_rows)
+    companion_messages, companion_sessions = companion_writings(root, twenty, remote, target_rows=target_rows)
+    qualified_audio = qualified_edition_coverage(root, twenty, remote, target_rows=target_rows)
+    publisher_timed_text = publisher_timed_text_coverage(root, twenty, remote, target_rows=target_rows)
     cooldown = read_object(root / "sync" / "drive_ingest_cooldown.json")
     # Support the runner's fixed filename, without exposing it in the export.
     if not cooldown:
@@ -1240,12 +1602,13 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     legacy_operation = {'state': state, 'retry_after': stamp(until) if until else None,
                         'cooldown_provider': provider, 'workers': workers, 'full_archive_requested': archive_all}
     series = active_native_series(root, now)
-    native_lane = (native_bulk_lane(root, now) or native_v5_lane(root, now) or native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
+    native_lane = (rolling_native_state(root, now).get('public') or native_bulk_lane(root, now) or native_v5_lane(root, now) or native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
         'state': 'running', 'workers': series['workers'], 'kind': 'native_v4',
         'process_confirmed': True, 'proof': 'owned_live_process'}
     qualified_state = qualified_batch_state(root, now)
     qualified_lane = dict(qualified_state.get('public', {}))
-    source_available = (archived & twenty) | publisher_variants | mirror_audio | qualified_audio
+    source_available = chosen_native | publisher_variants | mirror_audio | qualified_audio
+    selected_text = (text_available & chosen_native) | publisher_asr | mirror_captions | mirror_asr | mirror_transcripts
     qualified_awaiting = {video for video, stage in qualified_state.get('video_stages', {}).items()
                          if stage == 'awaiting_upload' and video not in source_available}
     if qualified_lane:
@@ -1268,6 +1631,9 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
         archive_all = False
     if qualified_lane and (qualified_lane['state'] == 'running' or state != 'running'):
         state, workers, until, provider = qualified_lane['state'], qualified_lane['workers'], None, None
+        deadline = qualified_lane.get('local_provider_cooldown_until_epoch')
+        if qualified_lane.get('reason') == 'provider_hold' and deadline and deadline > now:
+            state, until, provider = 'cooldown', deadline, 'youtube'
         archive_all = False
     asr_stop = root / 'asr/STOP_ASR'
     if asr_stop.exists():
@@ -1297,11 +1663,12 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
         storage['managed_bytes'] = sum(local_bytes if path == root.resolve() else tree_bytes(path) for path in included)
         plan = read_object(root / 'sync/analysis_resource_plan.json')
         managed_cap = plan.get('accounting_cap_bytes')
-        if type(managed_cap) is int and 1_000_000_000 <= managed_cap <= 18_000_000_000:
+        if type(managed_cap) is int and 1_000_000_000 <= managed_cap <= MAX_LOCAL_BYTES:
             storage['managed_ceiling_bytes'] = managed_cap
     resolved = archived | unavailable
-    complete20, complete50 = bool(twenty) and twenty <= resolved, bool(fifty) and fifty <= resolved
-    return {"schema_version": 1, "generated_at": stamp(now), "scope": "local_youtube_collection",
+    complete20 = bool(twenty) and twenty <= (source_available if selected is not None else resolved)
+    complete50 = bool(fifty) and fifty <= resolved
+    public = {"schema_version": 1, "generated_at": stamp(now), "scope": "local_youtube_collection",
             "operation": {"state": state, "retry_after": stamp(until) if until else None,
                           "asr_last_reported_state": asr_state, "asr_reported_at": asr_reported_at,
                           "workers": workers, "full_archive_requested": archive_all,
@@ -1327,18 +1694,21 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                        "publisher_mirror_audio_target_videos": len(mirror_audio),
                        "publisher_mirror_caption_target_videos": len(mirror_captions),
                        "publisher_mirror_asr_target_videos": len(mirror_asr),
+                       "publisher_mirror_untimed_transcript_target_videos": len(mirror_transcripts),
+                       "publisher_written_message_target_videos": len(companion_messages),
+                       "publisher_session_text_target_videos": len(companion_sessions),
                        "publisher_standalone_timed_text_target_videos": len(publisher_timed_text),
                        "qualified_youtube_audio_edition_target_videos": len(qualified_audio),
-                       "source_audio_available_target_videos": len((archived & twenty) | publisher_variants | mirror_audio | qualified_audio),
-                       "source_audio_with_text_target_videos": len((text_available & twenty) | publisher_asr | mirror_captions | mirror_asr),
+                       "source_audio_available_target_videos": len(source_available),
+                       "source_audio_with_text_target_videos": len(selected_text),
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),
                        "unavailable": len(unavailable),
                        "awaiting_upload": len((audio - verified) | qualified_awaiting), "channels": channels,
                        "indexed_total": len(full | twenty | fifty), "final_round_indexed": len(remaining)},
             "storage": storage, "browser_support": browser_extension_status(root),
-            "stages": [{"key": "newest20", "label": "Newest 20", "total": len(twenty),
-                        "verified": len(twenty & archived), "unavailable": len(twenty & unavailable),
+            "stages": [{"key": "newest20", "label": "Latest 20 mixed recordings" if selected is not None else "Newest 20", "total": len(twenty),
+                        "verified": len(source_available) if selected is not None else len(twenty & archived), "unavailable": len(twenty & unavailable),
                         "state": "complete" if complete20 else "in_progress"},
                        {"key": "newest50", "label": "Extend to 50", "total": len(fifty),
                         "verified": len(fifty & archived), "unavailable": len(fifty & unavailable),
@@ -1348,6 +1718,37 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                         "verified": len(remaining & archived), "unavailable": len(remaining & unavailable),
                         "state": ("complete" if remaining and remaining <= resolved else "in_progress" if complete50 else "waiting")
                                  if archive_all else "indexed" if remaining else "waiting"}]}
+    if selected is not None:
+        selected_unavailable = {row['video_id'] for row in target_rows if row['video_id'] in unavailable
+                                and latest[row['video_id']].get('channel_dir') == row['channel_dir']}
+        def counts(ids):
+            return {'total': len(ids), 'verified_audio': len(ids & source_available),
+                    'youtube_native': len(ids & chosen_native),
+                    'publisher_only': len(ids & (publisher_variants | mirror_audio) - chosen_native),
+                    'qualified_only': len(ids & qualified_audio - chosen_native - publisher_variants - mirror_audio),
+                    'unavailable': len(ids & selected_unavailable - source_available),
+                    'remaining_audio': len(ids - source_available)}
+        by_format = {tab: counts({row['video_id'] for row in target_rows if row['tab'] == tab})
+                     for tab in ('videos', 'shorts', 'streams', 'unknown')}
+        public['selection'] = {'basis': selected['basis'], 'source_shape': selected['shape'], 'sha256': selected['sha256'],
+            'label': 'Latest 20 regular uploads per channel' if selected.get('archive') else 'Canonical latest20 mixed-format completed-recording selection', 'creator_count': channels,
+            **counts(twenty), 'by_format': by_format,
+            'creators': [{'channel_dir': name, **info,
+                          **counts({row['video_id'] for row in target_rows if row['channel_dir'] == name})}
+                         for name, info in sorted(selected['creators'].items())],
+            'completion_requires_verified_chosen_audio': True,
+            'unavailable_is_not_audio_completion': True, 'historical_transfer_rate_reused': False}
+        public['counts']['latest20_target'] = len(twenty)
+        if selected.get('archive'):
+            public['selection'].update(archive=selected['archive'], priority_scope_sha256=selected['priority_scope_sha256'])
+            public['stages'][0]['label'] = 'Latest 20 regular uploads'
+        public['counts']['selected_native_pairs'] = len(chosen_native)
+        public['counts']['native_archive_inventory_scope'] = 'historical_all_saved_native_receipts'
+        public['stages'][0].update(unavailable=len(selected_unavailable - source_available), remaining=len(twenty - source_available),
+                                   selection_sha256=selected['sha256'], basis=selected['basis'])
+        for stage in public['stages'][1:]:
+            stage['basis'] = 'legacy_videos_queue'
+    return public
 
 
 def main(argv=None):
@@ -1355,10 +1756,11 @@ def main(argv=None):
     ap.add_argument("--root", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--remote", default=DEFAULT_REMOTE, help="Exact archive destination used by receipt proofs")
+    ap.add_argument("--selection", type=Path, help="Use a dated regular or mixed recording selection in place of the historical CSV queue")
     ap.add_argument("--managed-root", type=Path, action="append", default=[],
                     help="Additional project tool/repository roots to include in aggregate storage accounting")
     args = ap.parse_args(argv)
-    public = snapshot(args.root, remote=args.remote, managed_roots=args.managed_root)
+    public = snapshot(args.root, remote=args.remote, managed_roots=args.managed_root, selection=args.selection)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.out.with_suffix(args.out.suffix + ".tmp")
     temporary.write_text(json.dumps(public, indent=2) + "\n", encoding="utf-8")

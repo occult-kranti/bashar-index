@@ -27,8 +27,8 @@ except ImportError:
 PROFILE = 'native-series-v1'
 MAX_FRAMES = 3
 FRAME_SIZE = 20
-MANAGED = 16_000_000_000
-SPARE = 2_000_000_000
+MANAGED = storage.MAX_LOCAL_BYTES
+SPARE = storage.MIN_FREE_BYTES
 SPOOL = 6_000_000_000
 MIN_SPOOL = 5_500_000_000
 ASR = 1_000_000_000
@@ -233,8 +233,9 @@ def fresh_snapshot(snapshot, now, spool_bytes=SPOOL, asr_cap_bytes=ASR):
     for key in ('managed_bytes', 'other_growth_reservations_bytes', 'disk_free_bytes', 'asr_staging_bytes', 'asr_pairs'):
         need(type(snapshot.get(key)) is int and snapshot[key] >= 0, 'resource_evidence_missing')
     need(type(spool_bytes) is int and MIN_SPOOL <= spool_bytes <= SPOOL, 'settings_scope')
-    need(snapshot['managed_bytes'] + snapshot['other_growth_reservations_bytes'] + spool_bytes <= MANAGED and
-         snapshot['disk_free_bytes'] >= SPARE, 'resource_backpressure')
+    committed_growth = snapshot['other_growth_reservations_bytes'] + spool_bytes
+    need(snapshot['managed_bytes'] + committed_growth <= MANAGED and
+         snapshot['disk_free_bytes'] - committed_growth >= SPARE, 'resource_backpressure')
     need(type(asr_cap_bytes) is int and 0 < asr_cap_bytes <= ASR and snapshot.get('asr_cap_bytes') == asr_cap_bytes,
          'asr_capacity_binding')
     need(snapshot.get('asr_accepting') is True and snapshot['asr_staging_bytes'] < asr_cap_bytes and

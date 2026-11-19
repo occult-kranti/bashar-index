@@ -169,7 +169,7 @@ class OwnedAccountingTests(StageFixture):
         return budget
 
     def test_owned_writes_do_not_walk_tree_per_network_chunk(self):
-        with patch.object(ingest, 'tree_bytes', wraps=ingest.tree_bytes) as scan:
+        with patch.object(ingest.storage_inventory, 'measure', wraps=ingest.storage_inventory.measure) as scan:
             budget = self.budget()
             with open(self.root / 'audio.part', 'wb') as out:
                 for _ in range(200):

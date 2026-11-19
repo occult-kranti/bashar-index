@@ -223,7 +223,7 @@ class NativeBatchTests(unittest.TestCase):
         obj.cap = batch.MANAGED; obj.external = obj.others = 0; obj.budget = None
         obj.observe_pending_failures = Mock(); obj.http_review = {'review_sha256':'a'*64,'covered_event_ids':[],'allowed_video_ids':[ID]}
         obj.policy_envelope = Mock(return_value={'state':batch.http_policy.empty_state()})
-        with patch.object(batch.shutil, 'disk_usage', return_value=SimpleNamespace(free=10_000_000_000)):
+        with patch.object(batch.shutil, 'disk_usage', return_value=SimpleNamespace(free=batch.FREE)):
             obj.guard(source=True, video_id=ID)
             obj.stop_path.write_bytes(b'new scope stopped')
             with self.assertRaisesRegex(worker.Held, 'batch_source_stopped'): obj.guard(source=True, video_id=ID)

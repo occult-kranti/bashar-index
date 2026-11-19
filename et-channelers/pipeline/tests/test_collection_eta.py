@@ -12,6 +12,60 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import collection_eta as eta
 
 
+class MixedPaceTests(unittest.TestCase):
+    def test_public_regular_pace_uses_stable_recording_ranks_across_metadata_edits(self):
+        a, b = self.checkpoint(0, 5), self.checkpoint(15, 7)
+        for point in (a, b):
+            point.update(selection_basis='latest20plus_public_regular', priority_scope_sha256='d' * 64)
+        b['selection_sha256'] = 'f' * 64
+        result = eta.mixed_receipt_pace([a, b])
+        self.assertEqual((result['basis'], result['selection_sha256'], result['verified_per_wall_hour']),
+                         ('regular_verified_receipts', 'd' * 64, 8.0))
+        b['selection_basis'] = 'mixed_channel_uploads'
+        with self.assertRaisesRegex(ValueError, 'different recording selections'):
+            eta.mixed_receipt_pace([a, b])
+
+    def checkpoint(self, minute, count):
+        return {"generated_at": f"2026-11-19T10:{minute:02d}:00Z", "scope": "newest20_receipt_coverage",
+                "selection_basis": "mixed_channel_uploads", "selection_sha256": "1" * 64,
+                "summary": {"channels": 1, "latest20_target": 20, "audio_available": count, "remaining_audio": 20 - count},
+                "channels": [{"channel_dir": "creator", "target": 20, "audio_total": count}]}
+
+    def test_duplicate_snapshots_and_elapsed_idle_time(self):
+        first, last = self.checkpoint(0, 3), self.checkpoint(30, 9)
+        result = eta.mixed_receipt_pace([last, first, first])
+        self.assertEqual(result["checkpoints"], 2)
+        self.assertEqual(result["verified_per_wall_hour"], 12)
+        self.assertAlmostEqual(result["conditional_hours_at_observed_rate"], 11 / 12)
+        self.assertNotIn("creator", json.dumps(result))
+
+    def test_correction_restarts_baseline_and_completed_run_has_zero_hours(self):
+        rows = [self.checkpoint(0, 9), self.checkpoint(15, 7), self.checkpoint(45, 11)]
+        self.assertEqual(eta.mixed_receipt_pace(rows)["verified_per_wall_hour"], 8)
+        self.assertIsNotNone(eta.mixed_receipt_pace(rows)["last_receipt_correction_at"])
+        self.assertEqual(eta.mixed_receipt_pace([self.checkpoint(50, 20)])["conditional_hours_at_observed_rate"], 0)
+        self.assertIsNone(eta.mixed_receipt_pace([self.checkpoint(50, 4)])["conditional_hours_at_observed_rate"])
+
+    def test_interval_report_retains_a_pause_and_omits_withdrawn_receipts(self):
+        checkpoints = [self.checkpoint(0, 9), self.checkpoint(10, 7),
+                       self.checkpoint(20, 7), self.checkpoint(40, 13)]
+        result = eta.mixed_receipt_pace(checkpoints)
+        periods = result['checkpoint_intervals']
+        self.assertEqual([p['new_verified'] for p in periods], [0, 6])
+        self.assertEqual([p['verified_per_wall_hour'] for p in periods], [0, 18])
+        self.assertEqual(result['conditional_finish_at_utc'], '2026-11-19T11:15:00.000000Z')
+        self.assertIsNone(eta.mixed_receipt_pace(checkpoints[1:3])['conditional_finish_at_utc'])
+
+    def test_mixed_denominators_or_inconsistent_snapshot_are_rejected(self):
+        a, b = self.checkpoint(0, 3), self.checkpoint(15, 5)
+        b["selection_sha256"] = "2" * 64
+        with self.assertRaisesRegex(ValueError, "different recording selections"):
+            eta.mixed_receipt_pace([a, b])
+        b["summary"]["remaining_audio"] = 0
+        with self.assertRaisesRegex(ValueError, "totals disagree"):
+            eta.mixed_receipt_pace([b])
+
+
 def row(n=0, duration=100, channel="invented"):
     return {"video_id": f"{n:011d}", "channel_dir": channel, "tab": "videos", "duration_s": str(duration)}
 

@@ -135,6 +135,45 @@ class QualifiedBatchStatusTests(unittest.TestCase):
         (self.home / 'source_worker.py').write_text('# changed\n')
         self.assertEqual(self.read(), {})
 
+    def test_rolling_scope_with_four_workers_and_separate_local_cooldown(self):
+        old = self.home
+        self.home = old.with_name('regular-public-intake-frame-v10')
+        self.home.mkdir()
+        self.profile = 'qualified_youtube_response18_parallel_batch_v10'
+        ids = [f'{n:011d}' for n in range(96)]
+        settings = dict(self.settings, pipeline_directory=str(self.home), profile=self.profile,
+                        lease_id=self.profile, source_workers=4, publishers=1, maximum_cohort_items=len(ids),
+                        spool_cap_bytes=6_000_000_000, allowed_video_ids=ids)
+        for pin in settings['code_pins']:
+            src = Path(pin['path'])
+            dst = self.home / src.name
+            dst.write_bytes(src.read_bytes())
+            pin.update(self.pin(dst))
+        scope = self.write(self.home / 'scope.json', {'allowed_video_ids': ids})
+        settings_hash = self.write(self.home / 'settings.json', settings)['sha256']
+        grant = dict(self.grant, profile=self.profile, allowed_video_ids=ids, maximum_cohort_items=len(ids),
+                     settings_sha256=settings_hash, plan_sha256=scope['sha256'], source_workers=4,
+                     spool_cap_bytes=6_000_000_000)
+        grant_hash = self.write(self.home / 'root-grant.ACTIVE.json', grant)['sha256']
+        lease = dict(self.lease, profile=self.profile, lease_id=self.profile, settings_sha256=settings_hash,
+                     source_workers=4, spool_cap_bytes=6_000_000_000, root_grant_sha256=grant_hash,
+                     allowed_video_ids=ids, created_at_epoch=950)
+        self.write(self.root / 'sync' / (self.profile + '_lease.json'), lease)
+        self.row.update(lease_id=self.profile, max_bytes=6_000_000_000, root_grant_sha256=grant_hash)
+        self.resources()
+        self.write(self.home / 'owner-runtime/invocation.json', dict(self.invoked, root_grant_sha256=grant_hash,
+                   plan_sha256=scope['sha256'], settings_sha256=settings_hash, source_count=len(ids), source_workers=4))
+        self.write(self.home / 'runtime/source-invocation.json', {'parent_identity': self.base})
+        running = self.read()
+        self.assertEqual(running['public']['workers'], 4)
+        self.assertEqual(len(running['video_stages']), 96)
+        (self.root / 'sync' / ('STOP_' + self.profile.upper())).touch()
+        self.write(self.root / 'sync' / (self.profile + '_source_cooldown.json'),
+                   {'scope': 'google_provider', 'until_epoch': 1800, 'root_grant_sha256': grant_hash})
+        paused = self.read()['public']
+        self.assertEqual((paused['state'], paused['workers'], paused['local_provider_cooldown_until_epoch']),
+                         ('paused', 0, 1800))
+
     def test_malformed_matching_lease_fails_closed_instead_of_falling_back_live(self):
         newer = self.root / 'sync/qualified_youtube_response18_parallel_batch_v3_lease.json'
         for timestamp in ('unknown', None, float('inf'), True):
