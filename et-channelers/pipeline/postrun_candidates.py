@@ -17,18 +17,19 @@ import re
 from tempfile import TemporaryDirectory
 
 if __package__:
-    from . import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr
+    from . import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr, publisher_caption_batch
 else:
-    import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr
+    import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr, publisher_caption_batch
 
 
 # Use an English source track before ASR. A machine translation remains a distinct text version.
 PRIMARY_ORDER = ("published", "automatic_original", "publisher_english_caption", "standalone_publisher_caption", "publisher_untimed_transcript",
+                 "numbered_publisher_episode_transcript",
                  "original_asr", "english_audio_translation", "qualified_youtube_original_asr",
                  "qualified_youtube_english_audio_translation", "publisher_original_asr", "publisher_english_audio_translation")
 VIEWS = (("caption_views", "*/*.json", PRIMARY_ORDER[:2]),
          ("publisher_views", "*/*.json", ("publisher_english_caption",)),
-         ("publisher_transcript_views", "*/*.json", ("publisher_untimed_transcript",)),
+         ("publisher_transcript_views", "*/*.json", ("publisher_untimed_transcript", "numbered_publisher_episode_transcript")),
          ("asr_views", "*/*/english-*.json", ("original_asr", "english_audio_translation")),
          ("publisher_variant_views", "*/*.json", ("standalone_publisher_caption", "publisher_original_asr", "publisher_english_audio_translation")),
          ("edition_asr_views", "*/english-*.json", ("qualified_youtube_original_asr", "qualified_youtube_english_audio_translation",
@@ -88,7 +89,9 @@ def select_views(root, frame):
                         or not episode_comparison.digest(view.get("edition_receipt_sha256"))
                         or view.get("native_youtube_alignment_verified") is not False):
                     raise ValueError("Publisher text needs a verified source-edition receipt")
-                if ((kind == "standalone_publisher_caption" and view.get("language_evidence", {}).get("basis") != "publisher_labels_original_English_track")
+                evidence = view.get('language_evidence') or {}
+                if ((kind == "standalone_publisher_caption" and evidence.get('basis') != 'publisher_labels_original_English_track'
+                         and not publisher_caption_batch.confirmed_english_cues(evidence))
                         or not re.fullmatch(r"en(?:-[A-Z0-9]+)*", view.get("language") or "", re.I)):
                     continue
             if (view.get("video_id") != video or view.get("channel_dir") != target[video] or kind not in kinds
@@ -112,6 +115,18 @@ def select_views(root, frame):
                         or view.get("text_version_id") != digest(("untimed-publisher-v1|" + view["source_audio_sha256"] + "|"
                                + view["source_document_sha256"] + "|" + view["text_sha256"]).encode())):
                     raise ValueError("Publisher transcript needs verified untimed recording-edition provenance")
+            if kind == "numbered_publisher_episode_transcript":
+                source_id = view.get("source_edition_id")
+                if (not isinstance(source_id, str) or not re.fullmatch(r"publisher:[0-9a-f]{64}", source_id)
+                        or view.get("source_audio_sha256") is not None or view.get("native_youtube_alignment_verified") is not False
+                        or view.get("recording_equivalence_verified") is not False
+                        or view.get("recording_association_method") != "same_publisher_title_season_episode_duration"
+                        or view.get("source_document_sha256") != view["raw_sha256"] or view["bundle_sha256"] != view["text_sha256"]
+                        or view["raw_sha256"] != view["text_sha256"]
+                        or not all(episode_comparison.digest(view.get(key)) for key in ("edition_receipt_sha256", "source_metadata_sha256"))
+                        or view["text_version_id"] != digest((kind+"|"+source_id+"|"+view["text_sha256"]).encode())):
+                    raise ValueError("Unbound independently archived episode transcript")
+            if kind in ("publisher_untimed_transcript", "numbered_publisher_episode_transcript"):
                 corpus_concordance.validate_paragraph_view(view)
                 paragraph_evidence = {"evidence_granularity":"paragraph", "paragraph_count":view["paragraph_count"],
                     "source_document_sha256":view["source_document_sha256"], "edition_receipt_sha256":view["edition_receipt_sha256"],

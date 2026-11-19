@@ -1,6 +1,6 @@
 # ET channelers: YouTube crawl, index, dashboard and transcript pipeline
 
-**Latest 20+ videos** selects the newest twenty public, completed uploads on each creator's Videos tab, across every date and duration. The November 19 roster contains 101 channels and 1,976 eligible recordings. At 20:41 UTC, 1,562 had verified audio on Drive, including every available target for 67 creators. The cumulative index retains 2,697 recordings, including Shorts and streams. The working-file budget is 23 GB with 12 GB physically free after reservations. [Collection process](pipeline/COLLECTION_PROCESS.md) · [Roadmap](ROADMAP.md) · [Dashboard hub](../dashboards/)
+**Latest 20+ videos** selects the newest twenty public, completed uploads on each creator's Videos tab, across every date and duration. The November 19 roster contains 101 channels and 1,976 eligible recordings. At 21:45 UTC, 1,671 had verified audio on Drive, including every available target for 67 creators. The cumulative index retains 2,697 recordings, including Shorts and streams. The working-file budget is 23 GB with 12 GB physically free after reservations. [Collection process](pipeline/COLLECTION_PROCESS.md) · [Roadmap](ROADMAP.md) · [Dashboard hub](../dashboards/)
 
 ## Earlier acquisition checkpoints
 

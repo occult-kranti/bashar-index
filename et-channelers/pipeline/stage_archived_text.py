@@ -11,7 +11,8 @@ from tempfile import TemporaryDirectory
 from zipfile import BadZipFile
 
 from . import (collection_coverage, common, corpus_asr_view, corpus_caption_view, corpus_publisher_view, corpus_publisher_variant_view,
-               corpus_untimed_publisher_view, drive_ingest, gpu_asr, gpu_asr_editions, ingestion_status, postrun_candidates)
+               corpus_untimed_publisher_view, drive_ingest, gpu_asr, gpu_asr_editions, ingestion_status, postrun_candidates,
+               publisher_feed_text)
 
 
 def input_rows(root, frame, remote):
@@ -44,6 +45,7 @@ def input_rows(root, frame, remote):
             yield {"kind": "publisher_caption", "row": targets[video], "record": record, "proof": proof}
     yield from corpus_publisher_variant_view.input_rows(root, targets.values(), remote)
     yield from corpus_untimed_publisher_view.input_rows(root, targets.values(), remote, journal_records=publisher_records)
+    yield from publisher_feed_text.input_rows(root, targets.values(), remote)
     yield from gpu_asr_editions.input_rows(root, targets.values(), remote)
 
 
@@ -75,6 +77,9 @@ def text_views(root, job, path, remote):
         return {f"edition_asr_views/{video}/{name}-{view['text_version_id']}.json":view for name,view in views.items()}
     if job["kind"] == corpus_untimed_publisher_view.KIND:
         view = corpus_untimed_publisher_view.text_views(path, job, remote)["english"]
+        return {f"publisher_transcript_views/{video}/{view['text_version_id']}.json": view}
+    if job["kind"] == publisher_feed_text.KIND:
+        view = publisher_feed_text.text_view(path, job, remote)
         return {f"publisher_transcript_views/{video}/{view['text_version_id']}.json": view}
     if job["kind"] in (corpus_publisher_variant_view.ASR, corpus_publisher_variant_view.CAPTION):
         views = corpus_publisher_variant_view.text_views(path, job, remote)
@@ -149,7 +154,7 @@ def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMO
     report = {"selection_sha256": actual, "eligible_audio": len(frame), "archive_inputs": dict(Counter(j["kind"] for j in jobs)),
               "recordings_with_inputs": len({j["row"]["video_id"] for j in jobs}), "views_staged": 0, "held": []}
     report["untimed_publisher_inputs_by_creator"] = dict(Counter(j["row"]["channel_dir"] for j in jobs
-        if j["kind"] == corpus_untimed_publisher_view.KIND))
+        if j["kind"] in (corpus_untimed_publisher_view.KIND, publisher_feed_text.KIND)))
     if inventory_only or not jobs:
         return report
     analysis = drive_ingest.local_path(root, "analysis")
@@ -158,6 +163,7 @@ def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMO
     revision = [hashlib.sha256(Path(mod.__file__).read_bytes()).hexdigest()
                 for mod in (corpus_caption_view, corpus_asr_view, corpus_publisher_view, corpus_publisher_variant_view)]
     untimed_revision = hashlib.sha256(Path(corpus_untimed_publisher_view.__file__).read_bytes()).hexdigest()
+    feed_text_revision = hashlib.sha256(Path(publisher_feed_text.__file__).read_bytes()).hexdigest()
     edition_revision = hashlib.sha256(Path(gpu_asr_editions.__file__).read_bytes()).hexdigest()
     with gpu_asr.kernel_lock(analysis / ".archive-read.lock"):
         for start in range(0, len(jobs), 24):
@@ -167,6 +173,8 @@ def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMO
                 proof = job["proof"]
                 name = drive_ingest.remote_relative(remote, proof["remote"])
                 adapter_revision = untimed_revision if job["kind"] == corpus_untimed_publisher_view.KIND else revision
+                if job["kind"] == publisher_feed_text.KIND:
+                    adapter_revision = feed_text_revision
                 if job["kind"] == gpu_asr_editions.RESULT:
                     adapter_revision = edition_revision
                 key = gpu_asr.fingerprint([adapter_revision, job["kind"], job["row"]["video_id"], job["row"]["channel_dir"],

@@ -966,27 +966,36 @@ def selected_recording_owners(root, target_rows=None):
     return owners
 
 
-def qualified_edition_coverage(root, targets, remote, target_rows=None):
+def qualified_edition_coverage(root, targets, remote, target_rows=None, *, records=None):
     """Count paired qualified audio without granting native or text coverage."""
     root = Path(root)
     owners = selected_recording_owners(root, target_rows)
     path = root / 'sync/progressive_audio_extracts_manifest.jsonl'
     accepted = set()
-    if not path.is_file() or path.stat().st_size > 64_000_000:
-        return accepted
-    with path.open(encoding='utf-8-sig') as handle:
-        while line := handle.readline(2_000_001):
-            if len(line) > 2_000_000:
-                return set()  # incomplete inventory must never inflate counts
-            try:
-                record = json.loads(line)
-                reader = (qualified_direct_audio_receipts if isinstance(record, dict) and
-                          record.get('source_format_id') == '140' else qualified_edition_receipts)
-                edition = reader.validate(record, remote_base=remote)
-            except (qualified_edition_receipts.ReceiptHold, TypeError, ValueError, KeyError, OverflowError):
-                continue
-            if edition.video_id in targets and owners.get(edition.video_id) == (edition.channel_dir, record['tab']):
-                accepted.add(edition.video_id)
+    def accept(record):
+        try:
+            reader = (qualified_direct_audio_receipts if isinstance(record, dict) and
+                      record.get('source_format_id') == '140' else qualified_edition_receipts)
+            edition = reader.validate(record, remote_base=remote)
+        except (qualified_edition_receipts.ReceiptHold, TypeError, ValueError, KeyError, OverflowError):
+            return
+        if edition.video_id in targets and owners.get(edition.video_id) == (edition.channel_dir, record['tab']):
+            accepted.add(edition.video_id)
+    if records is not None:
+        for record in records:
+            accept(record)
+    else:
+        if not path.is_file() or path.stat().st_size > 64_000_000:
+            return accepted
+        with path.open(encoding='utf-8-sig') as handle:
+            while line := handle.readline(2_000_001):
+                if len(line) > 2_000_000:
+                    return set()  # incomplete inventory must never inflate counts
+                try:
+                    record = json.loads(line)
+                except (TypeError, ValueError):
+                    continue
+                accept(record)
     return accepted
 
 
@@ -1028,10 +1037,13 @@ def asr_records(path, identity_key='run_id'):
     return records.values()
 
 
-def publisher_coverage(root, targets, remote, target_rows=None):
+def publisher_coverage(root, targets, remote, target_rows=None, *, record_sets=None):
     """Supplementary publisher editions never establish native/ASR completion."""
     owners = selected_recording_owners(root, target_rows) if target_rows is not None else None
     def rows(name):
+        if record_sets is not None:
+            yield from record_sets.get(name, ())
+            return
         path = root / 'sync' / name
         if path.is_file():
             for line in path.read_text(encoding='utf-8-sig').splitlines():
@@ -1198,7 +1210,7 @@ def publisher_timed_text_coverage(root, targets, remote, target_rows=None):
             continue
         if not isinstance(record, dict):
             continue
-        if record.get('artifact_kind') == 'publisher_edition_caption_batch':
+        if record.get('artifact_kind') in ('publisher_edition_caption_batch', publisher_caption_batch.RSS_ENGLISH_BATCH):
             found.update(publisher_caption_batch.verified_videos(record, targets, remote, owners))
             continue
         if (record.get('schema_version') != 1 or record.get('status') != 'verified' or
@@ -1294,6 +1306,44 @@ def companion_writings(root, targets, remote, target_rows=None):
                     and bundle.get('remote') == parent + 'publisher-session.en.zip'):
                 sessions.add(video)
     return messages, sessions
+
+
+def riverside_transcript_reference(record):
+    """Bind a plain-text feed transcript to the publisher's episode and archived audio."""
+    source = record.get('publisher_rss_transcript_provenance')
+    text = record.get('publisher_transcript')
+    if not isinstance(source, dict) or not isinstance(text, dict):
+        return False
+    observed = source.get('observation')
+    if not isinstance(observed, dict) or not isinstance(observed.get('fingerprint'), dict):
+        return False
+    episode = source.get('episode_guid')
+    show = source.get('publisher_show_id')
+    uuid = r'[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}'
+    if not all(isinstance(value, str) and re.fullmatch(uuid, value) for value in (episode, show)):
+        return False
+    url = f'https://hosting-media.riverside.com/media/podcasts/{show}/episodes/{episode}/transcripts.txt'
+    length = text.get('bytes')
+    words = text.get('words')
+    common = text.get('english_common_words')
+    return (record.get('provider') == 'Riverside' and record.get('watch_page_id') == episode
+            and record.get('kind') == 'qualified_publisher_mirror_audio_variant'
+            and record.get('association_method') == 'publisher_owner_title_date_duration'
+            and record.get('exact_youtube_crossreference') is False and record.get('recording_equivalence_verified') is False
+            and isinstance(source.get('feed_url'), str)
+            and bool(re.fullmatch(r'https://api\.riverside\.fm/hosting/[A-Za-z0-9_-]+\.rss', source['feed_url']))
+            and source.get('feed_sha256') == record.get('accepted_api_sha256')
+            and bool(re.fullmatch('[a-f0-9]{64}', str(source.get('feed_sha256', ''))))
+            and source.get('source_audio_sha256') == record.get('variant_id')
+            and source.get('source_url') == text.get('source') == observed.get('source_url') == url
+            and source.get('mime_type') == 'text/plain' and str(source.get('show_language')).lower().split('-')[0] == 'en'
+            and observed.get('accepted') is True and observed.get('eof_observed') is True and observed.get('http_status') == 200
+            and type(length) is int and 0 < length <= 2_000_000 and observed.get('declared_http_bytes') in (None, length)
+            and all(observed['fingerprint'].get(key) == text.get(key) for key in ('bytes', 'sha256', 'md5'))
+            and type(words) is int and words > 0 and type(common) is int and max(1, .12 * words) <= common <= words
+            and text.get('language') == 'en' and text.get('timed') is False and text.get('usable_timed_text') is False
+            and text.get('audio_alignment_verified') is False and text.get('completeness') == 'complete_publisher_declared_document'
+            and text.get('language_verification') == 'english_show_and_document_lexical_check')
 
 
 def publisher_episode_page_reference(record):
@@ -1425,22 +1475,25 @@ def shared_publisher_audio_reference(record, anchor, remote, owners):
             len({audio['drive_id'], source_provenance['drive_id'], provenance['drive_id'], pointer['drive_id']}) == 4)
 
 
-def publisher_mirror_evidence(root, targets, remote, target_rows=None):
+def publisher_mirror_evidence(root, targets, remote, target_rows=None, *, source_records=None, source_asr_records=None):
     """Separate timed captions, ASR and transcripts attached to verified publisher editions."""
     audio_ids, caption_ids, asr_ids, untimed_ids, sources = set(), set(), set(), set(), {}
     path = root / 'sync/publisher_mirror_manifest.jsonl'
-    if not path.is_file():
+    if source_records is None and not path.is_file():
         return audio_ids, caption_ids, asr_ids, untimed_ids
     owners = selected_recording_owners(root, target_rows)
     folders = {'videos': 'Videos', 'shorts': 'Shorts', 'streams': 'Streams'}
     records = []
-    for line in path.read_text(encoding='utf-8-sig').splitlines():
-        try:
-            record = json.loads(line)
-        except ValueError:
-            continue
-        if isinstance(record, dict):
-            records.append(record)
+    if source_records is None:
+        for line in path.read_text(encoding='utf-8-sig').splitlines():
+            try:
+                record = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(record, dict):
+                records.append(record)
+    else:
+        records = list(source_records)
     # Validate the existing anchor with its normal receipt contract even when
     # only the other listing was requested. Aliases cannot anchor other aliases.
     anchor_ids = {r['canonical_associated_youtube_id'] for r in records
@@ -1525,6 +1578,7 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
                 and type(transcript.get('paragraphs')) is int and transcript['paragraphs'] > 0
                 and record.get('caption_state') == 'english_publisher_transcript_untimed'
                 and transcript.get('remote') == parent + '/publisher-transcript.en.txt'
+                and (record.get('provider') != 'Riverside' or riverside_transcript_reference(record))
                 and (not paired_page or publisher_episode_transcript_reference(record, parent))):
             untimed_ids.add(row['video_id'])
         captions = record.get('caption_bundles')
@@ -1545,11 +1599,16 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
         if anchor and shared_publisher_audio_reference(record, anchor, remote, owners):
             audio_ids.add(record['associated_youtube_id'])
     asr_path = root / 'sync/publisher_variant_asr_manifest.jsonl'
-    for line in asr_path.read_text(encoding='utf-8-sig').splitlines() if asr_path.is_file() else []:
-        try:
-            record = json.loads(line)
-        except ValueError:
-            continue
+    def asr_records():
+        if source_asr_records is not None:
+            yield from source_asr_records
+            return
+        for line in asr_path.read_text(encoding='utf-8-sig').splitlines() if asr_path.is_file() else []:
+            try:
+                yield json.loads(line)
+            except ValueError:
+                continue
+    for record in asr_records():
         if not isinstance(record, dict):
             continue
         video_id, variant_id, run_id = (record.get(key) for key in ('associated_youtube_id', 'variant_id', 'run_id'))

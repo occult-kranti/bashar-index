@@ -105,6 +105,11 @@ def _asr_source(record, edition, row, remote):
 def _caption_item(record, item, row, remote):
     video, creator = row['video_id'], row['channel_dir']
     bundle = record.get('proof',{})
+    if record.get('artifact_kind') == publisher_caption_batch.RSS_ENGLISH_BATCH:
+        need(publisher_caption_batch.verified_videos({**record,'items':[item]}, {video}, remote,
+                    {video:(creator,row['tab'])}) == {video} and all(not row.get(key) or row[key] == item['selected_channel_id']
+                    for key in ('expected_channel_id','channel_id')), 'unverified declared English RSS caption')
+        return item['source_url'], item['language']
     need(status.record_row(row) and row['tab'] in FOLDERS and record.get('schema_version') == 1 and record.get('status') == 'verified'
          and status.publisher_object_proof(bundle) and bundle['remote'] == f"{remote}/{creator}/PublisherCaptions/Batches/{bundle['sha256']}/publisher-captions.zip"
          and item.get('video_id') == video and item.get('channel_dir') == creator and item.get('tab') == row['tab']
@@ -291,6 +296,7 @@ def _caption_view(path, job, remote):
     url,track = _caption_item(record,item,row,remote)
     parts=_caption_parts(path,record['proof'])
     rumble=record['artifact_kind']=='publisher_edition_caption_batch'
+    rss_english=record['artifact_kind']==publisher_caption_batch.RSS_ENGLISH_BATCH
     if rumble:
         prefix = f"{row['video_id']}/{item['publisher_watch_id']}/{track}/"
     else:
@@ -302,7 +308,15 @@ def _caption_view(path, job, remote):
     need(_hash(raw)==item['source_sha256'] and len(raw)==item['source_bytes'],'original publisher VTT length or SHA mismatch')
     normalized=youtube_captions.normalize_caption(raw,'vtt')
     need(len(normalized['segments'])==item['segment_count'] and normalized['text'].strip(),'publisher VTT cue count mismatch')
-    if rumble:
+    if rss_english:
+        need(provenance==item and segments==normalized['segments']
+             and parts[prefix+'transcript.txt']==(normalized['text']+'\n').encode()
+             and publisher_caption_batch.cue_language_evidence(normalized['text'])==item['language_evidence']
+             and normalized['segments'][0]['start']==item['first_cue_start']
+             and normalized['segments'][-1]['end']==item['last_cue_end']
+             and all(0 <= cue['start'] < cue['end'] <= item['publisher_duration_s']+6 for cue in segments),
+             'published RSS caption cue content or language proof changed')
+    elif rumble:
         need(provenance==item and segments==normalized['segments'] and parts[prefix+'transcript.en.txt']==normalized['text'].encode()
              and len(normalized['text'].split())==item['word_count']
              and normalized['segments'][0]['start']==item['first_cue_start'] and normalized['segments'][-1]['end']==item['last_cue_end'],
@@ -316,10 +330,16 @@ def _caption_view(path, job, remote):
     raw_proof={'bytes':len(raw),'md5':hashlib.md5(raw).hexdigest(),'sha256':_hash(raw)}
     content=captions.text_content({'raw.vtt':raw,'segments.json':json.dumps(normalized).encode(),'transcript.txt':normalized['text'].encode()},
                                   'vtt',raw_proof,normalized['normalization_version'])
+    if rss_english:
+        language_evidence = {**item['language_evidence'], 'publisher_show_language':item['show_language'],
+                             'track_language_label':item['feed_track_language_label'],'translation_status':'not_declared'}
+    elif rumble:
+        language_evidence = {'basis':'publisher_labels_original_English_track','label':item['caption_label'],'track_key':track}
+    else:
+        language_evidence = {'basis':'publisher_rss_channel','track_language_verified':False,'translation_status':'not_declared','authorship':'not_declared'}
     return {'schema_version':SCHEMA,'video_id':row['video_id'],'channel_dir':row['channel_dir'],'source_kind':'standalone_publisher_caption',
             'track_id':track,'caption_kind':item['caption_kind'],'language':item['language'],
-            'language_evidence':({'basis':'publisher_labels_original_English_track','label':item['caption_label'],'track_key':track} if rumble else
-                {'basis':'publisher_rss_channel','track_language_verified':False,'translation_status':'not_declared','authorship':'not_declared'}),
+            'language_evidence':language_evidence,
             'source_edition_id':'publisher:'+_hash(url.encode()),'source_audio_sha256':None,'source_timebase':'publisher_caption_seconds',
             'text_version_id':_hash(f"standalone-publisher-caption-v{SCHEMA}|{url}|{item['source_sha256']}".encode()),
             'bundle_sha256':record['proof']['sha256'],'edition_receipt_sha256':_fingerprint(item),

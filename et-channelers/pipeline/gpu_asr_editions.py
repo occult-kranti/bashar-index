@@ -18,7 +18,7 @@ import re
 
 from . import (collection_coverage, common, corpus_asr_view, corpus_caption_view, corpus_publisher_variant_view,
                drive_ingest, gpu_asr as base, gpu_asr_multilingual as multi, ingestion_status as status,
-               postrun_candidates, qualified_direct_audio_receipts, qualified_edition_receipts)
+               postrun_candidates, publisher_caption_batch, qualified_direct_audio_receipts, qualified_edition_receipts)
 
 PROFILE = "postrun_verified_audio_editions_v1"
 RESULT = "verified_edition_asr"
@@ -211,7 +211,8 @@ def inventory(root, selection, expected, remote=status.DEFAULT_REMOTE):
     text = defaultdict(set)
     for job in stage_archived_text.input_rows(root, frame, remote):
         if job["kind"] == corpus_publisher_variant_view.CAPTION:
-            if job["item"].get("track_key") is None:  # RSS-channel language alone cannot establish an English track.
+            if (job["item"].get("track_key") is None and
+                    not publisher_caption_batch.confirmed_english_cues(job['item'].get('language_evidence'))):
                 continue
         text[job["row"]["video_id"]].add(job["kind"])
     records = []

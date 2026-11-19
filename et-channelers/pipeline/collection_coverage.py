@@ -15,10 +15,11 @@ import re
 import sys
 
 try:
-    from . import ingestion_status as status, drive_ingest as storage
+    from . import ingestion_status as status, drive_ingest as storage, publisher_feed_text
 except ImportError:
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import ingestion_status as status
+    import publisher_feed_text
     import drive_ingest as storage
 
 
@@ -136,6 +137,7 @@ def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE, selection=None):
         root, targets, remote, target_rows=rows)
     mirrors, mirror_captions, mirror_asr, mirror_transcripts = status.publisher_mirror_evidence(root, targets, remote, target_rows=rows)
     publisher_captions = status.publisher_timed_text_coverage(root, targets, remote, target_rows=rows)
+    feed_documents = {job['row']['video_id'] for job in publisher_feed_text.input_rows(root, rows, remote)}
     written_messages, publisher_sessions = status.companion_writings(root, targets, remote, target_rows=rows)
     publishers = variants | mirrors
     qualified = status.qualified_edition_coverage(root, targets, remote, target_rows=rows)
@@ -155,7 +157,8 @@ def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE, selection=None):
             'with_saved_text': len(ids & text), 'remaining_audio': len(ids - available)})
         if selection is not None:
             channels[-1].update(selection_scope=scopes[key], shortfall_to_20=20-len(items),
-                                with_publisher_companion_text=len(ids & (written_messages | publisher_sessions | publisher_articles | publisher_transcripts | publisher_captions)),
+                                with_publisher_companion_text=len(ids & (written_messages | publisher_sessions | publisher_articles | publisher_transcripts | publisher_captions | feed_documents)),
+                                with_independent_publisher_transcripts=len(ids & feed_documents),
                                 with_independent_publisher_captions=len(ids & publisher_captions))
     videos = []
     for row in rows:
@@ -169,6 +172,7 @@ def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE, selection=None):
             if selection is not None:
                 videos[-1]['tab'] = row['tab']
                 videos[-1]['independent_publisher_caption'] = video in publisher_captions
+                videos[-1]['independent_publisher_transcript'] = video in feed_documents
     at = dt.datetime.now(dt.timezone.utc) if now is None else now
     public = {'schema_version': 1, 'scope': 'newest20_receipt_coverage',
         'generated_at': at.isoformat().replace('+00:00', 'Z'),
@@ -191,6 +195,8 @@ def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE, selection=None):
                                  scope_by_creator=dict(Counter(scopes.values())),
                                  publisher_edition_untimed_transcripts=len(mirror_transcripts),
                                  independent_publisher_caption_videos=len(publisher_captions),
+                                 independent_publisher_transcript_videos=len(feed_documents),
+                                 audio_with_saved_text_or_independent_publisher_text=len(available & (text | publisher_captions | feed_documents)),
                                  audio_with_saved_text_or_independent_publisher_caption=len(available & (text | publisher_captions)),
                                  publisher_written_messages=len(written_messages), publisher_session_texts=len(publisher_sessions),
                                  publisher_articles=len(publisher_articles), publisher_declared_transcripts=len(publisher_transcripts),
@@ -247,10 +253,10 @@ def main(argv=None):
     outputs = {args.out: (json.dumps(public, ensure_ascii=False, indent=2) + '\n').encode('utf-8'),
         args.out.with_suffix('.csv'): csv_bytes(public['channels'],
             ('channel', 'channel_dir', 'target', 'youtube_audio', 'publisher_only_audio', 'qualified_youtube_only_audio', 'audio_total', 'with_saved_text', 'remaining_audio')
-            + (('selection_scope', 'shortfall_to_20', 'with_publisher_companion_text', 'with_independent_publisher_captions', *ACTIVITY_FIELDS[1:]) if args.selection else ())),
+            + (('selection_scope', 'shortfall_to_20', 'with_publisher_companion_text', 'with_independent_publisher_captions', 'with_independent_publisher_transcripts', *ACTIVITY_FIELDS[1:]) if args.selection else ())),
         args.out.parent / 'downloaded_videos.csv': csv_bytes(videos,
             ('channel', 'channel_dir', 'video_id', 'title', 'url', 'listing_rank', 'audio_source', 'saved_text', 'native_audio_bytes')
-            + (('tab', 'independent_publisher_caption') if args.selection else ()))}
+            + (('tab', 'independent_publisher_caption', 'independent_publisher_transcript') if args.selection else ()))}
     if args.activity_csv:
         outputs[args.activity_csv] = activity_csv(public)
     for path, data in outputs.items():
