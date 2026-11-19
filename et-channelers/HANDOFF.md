@@ -2,7 +2,7 @@
 
 ## Windows collection as of November 19, 2026
 
-At 21:45 UTC, 1,671 of 1,976 selected public regular uploads had verified audio and provenance on Drive. Of those, 183 had text saved with the recording or its published edition. Including separately archived publisher captions and transcripts brought text coverage to 216 recordings. Check each track's language and edition before assigning speech recognition. Use immutable recording IDs and the same selection hash for progress comparisons. [Collection process, commands and issue history](pipeline/COLLECTION_PROCESS.md)
+At 22:21 UTC, 1,731 of 1,976 selected public regular uploads had verified audio and provenance on Drive. Of those, 183 had text saved with the recording or its published edition. Including separately archived publisher captions and transcripts brought text coverage to 216 recordings. Check each track's language and edition before assigning speech recognition. Use immutable recording IDs and the same selection hash for progress comparisons. [Collection process, commands and issue history](pipeline/COLLECTION_PROCESS.md)
 
 The 23 GB cap took effect at 20:31 UTC after the preceding batch closed. At 20:36 UTC the next 96-item batch started with up to six source workers, two staggered browser starts, eight outstanding items, three Drive transfers and a 9 GB reservation. Retain 12 GB physically free after all commitments. Independent publisher workers upload whole editions in groups and keep valid local files until remote verification. Cite a finish time only from the pace of verified files on one selection. [Windows setup](pipeline/WINDOWS_DRIVE.md)
 

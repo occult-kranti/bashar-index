@@ -4,9 +4,10 @@
 
 | Branch | Purpose | Observed revision |
 | --- | --- | --- |
-| `main` at November 19, 21:05 UTC | Latest-50 queue preparation, publisher-edition ASR intake, corpus staging and operating instructions | [Merged PR #79](https://github.com/occult-kranti/bashar-index/pull/79) · [6fb3e43](https://github.com/occult-kranti/bashar-index/commit/6fb3e43ec3d3a5c16976dd945cf551e214d2c8b5) |
+| `main` at November 19, 22:13 UTC | Rolling download controls, reuse of completed source receipts and publisher-issued English text | [Merged PR #80](https://github.com/occult-kranti/bashar-index/pull/80) · [b0da985](https://github.com/occult-kranti/bashar-index/commit/b0da985b04ab00f618f9567f49ca24d5a692e080) |
 | `feat/publisher-editions-and-corpus-2026-11-19` | Retained branch for the next-fifty queue and edition-specific corpus preparation | [PR #79](https://github.com/occult-kranti/bashar-index/pull/79) |
-| `feat/rolling-intake-and-publisher-text-2026-11-19` | Rolling download controls and creator-issued English episode transcripts | [Branch](https://github.com/occult-kranti/bashar-index/tree/feat/rolling-intake-and-publisher-text-2026-11-19) |
+| `feat/rolling-intake-and-publisher-text-2026-11-19` | Retained release branch for the rolling collector and English publisher text | [PR #80](https://github.com/occult-kranti/bashar-index/pull/80) |
+| `feat/native-grouped-publication-and-study-2026-11-19` | Grouped native audio uploads, public podcast editions and post-collection study tools | [Branch](https://github.com/occult-kranti/bashar-index/tree/feat/native-grouped-publication-and-study-2026-11-19) |
 | `feat/predictions-round2-local-dashboard` | Retained prediction timeline and local dashboard work merged in PR #26 | [ef80343](https://github.com/occult-kranti/bashar-index/commit/ef80343c38a8d68cf50d2ee10e21280861d4fe3b) |
 | `feat/batch-media-transfers-2026-11-19` | Regular-video refresh, additive archive, verified coverage, publisher sources and post-run research tools | [Merged PR #78](https://github.com/occult-kranti/bashar-index/pull/78) |
 

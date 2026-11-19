@@ -181,6 +181,65 @@ def network_figure(plt, rows, label, min_families, min_creators):
     return fig
 
 
+def publication_figures(plt, periods, out, label):
+    """Export calendar coverage, matched-creator changes and quarter heatmaps."""
+    from matplotlib.colors import LinearSegmentedColormap
+    from matplotlib.ticker import PercentFormatter
+    import numpy as np
+
+    series = periods["series"]
+    if not series:
+        return []
+    write_csv(out / "publication-quarter-topics.csv", series, tuple(series[0]))
+    change_fields = ("previous_quarter", "publication_quarter", "topic", "matched_creators",
+                     "previous_assessed_episodes", "current_assessed_episodes",
+                     "mean_within_creator_change_percentage_points", "matched_channel_dirs")
+    write_csv(out / "matched-creator-quarter-changes.csv", periods["matched_quarter_changes"], change_fields)
+    cells = {(row["publication_quarter"], row["topic"]): row for row in series}
+    quarters = list(periods["quarters"])
+    if periods["undated_episodes"]:
+        quarters.append("undated")
+    topics = sorted({row["topic"] for row in series})
+    colors = LinearSegmentedColormap.from_list("period_share", ["#F0F7F4", "#73B7A5", "#194C53"])
+    colors = colors.with_extremes(bad="#D9DBDD")
+    stems = []
+    for start in range(0, len(quarters), 10):
+        window = quarters[start:start + 10]
+        for offset in range(0, len(topics), 8):
+            names = topics[offset:offset + 8]
+            values = np.array([[cells[q, topic]["creator_balanced_share"] for q in window] for topic in names],
+                              dtype=float)
+            fig, ax = plt.subplots(figsize=(max(8, 3.9 + len(window)), max(4.4, 2.6 + .58 * len(names))),
+                                   layout="constrained")
+            fig.suptitle("Topics by publication quarter", fontsize=17, fontweight="bold", color=INK)
+            ax.set_title("Each cell shows the mean topic share and the number of assessed / eligible creators.",
+                         fontsize=9, color=MUTED, pad=11)
+            im = ax.imshow(np.ma.masked_invalid(values), cmap=colors, vmin=0, vmax=1, aspect="auto")
+            ax.set_xticks(range(len(window)), window, rotation=30, ha="right")
+            ax.set_yticks(range(len(names)), [display_name(topic, 25) for topic in names])
+            for i, topic in enumerate(names):
+                for j, quarter in enumerate(window):
+                    row = cells[quarter, topic]
+                    share = row["creator_balanced_share"]
+                    color = "white" if share is not None and share >= .76 else INK
+                    estimate = "—" if share is None else f"{share:.0%}"
+                    ax.text(j, i - .13, estimate, ha="center", va="center", fontsize=10, weight="bold", color=color)
+                    ax.text(j, i + .22, f'{row["assessed_creators"]}/{row["eligible_creators"]}', ha="center",
+                            va="center", fontsize=8, color=color)
+            ax.set_xticks(np.arange(-.5, len(window), 1), minor=True)
+            ax.set_yticks(np.arange(-.5, len(names), 1), minor=True)
+            ax.grid(which="minor", color="white", linewidth=1)
+            ax.tick_params(which="minor", length=0)
+            fig.colorbar(im, ax=ax, format=PercentFormatter(xmax=1), label="Mean topic share")
+            footer = "Gray cells have no assessed creator. Each assessed recording family has equal weight within its creator."
+            fig.supxlabel((label + "\n" if label else "") + footer, fontsize=9, color=MUTED)
+            stem = f"publication-quarter-topics-{start // 10 + 1:02d}-{offset // 8 + 1:02d}"
+            save_figure(fig, out, stem)
+            plt.close(fig)
+            stems.append(stem)
+    return stems
+
+
 def render(result, out, label, min_families, min_creators, max_edges):
     import matplotlib
     matplotlib.use("Agg")
@@ -195,6 +254,8 @@ def render(result, out, label, min_families, min_creators, max_edges):
     creators, topics = sorted({k[0] for k in cells}), sorted({k[1] for k in cells})
     stems = []
     with matplotlib.rc_context({"svg.fonttype": "none", "svg.hashsalt": "episode-figures-v1", "font.family": "DejaVu Sans"}):
+        if "publication_periods" in result:
+            stems.extend(publication_figures(plt, result["publication_periods"], out, label))
         creator_pages = [creators[i:i + 18] for i in range(0, len(creators), 18)] or [[]]
         topic_pages = [topics[i:i + 8] for i in range(0, len(topics), 8)] or [[]]
         for i, creator_page in enumerate(creator_pages, 1):

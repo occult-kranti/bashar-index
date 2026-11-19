@@ -2,7 +2,7 @@
 
 ## Current collection and next phases
 
-The November 19 selection covers 1,976 public regular recordings on 101 channels. At 21:45 UTC, 1,671 recordings had verified Drive audio and metadata, with 305 outstanding. The active collector admits up to six source workers and publishes files in groups with up to three Drive transfers. Publisher downloads share the 23 GB working-file budget. All workers keep 12 GB physically free after reservations. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
+The November 19 selection covers 1,976 public regular recordings on 101 channels. At 22:21 UTC, 1,731 recordings had verified Drive audio and metadata, with 245 outstanding. The active collector admits up to six source workers and publishes files in groups with up to three Drive transfers. Publisher downloads share the 23 GB working-file budget. All workers keep 12 GB physically free after reservations. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
 
 | Stage | Completion condition |
 | --- | --- |

@@ -44,12 +44,14 @@ def public_url(value):
     return value
 
 
-def read_episodes(data, feed_url, *, directory=()):
+def read_episodes(data, feed_url, *, directory=(), include_unsized_enclosures=False):
     """Read explicit episode GUIDs, advertised downloadable editions and timed text.
 
     The Apple lookup is optional. Match an item's own podcastEpisode GUID plus
     title before accepting the directory's human-readable episode permalink.
-    A show number may be reused and cannot identify an episode.
+    A show number may be reused and cannot identify an episode. A caller
+    that supplies its own on-write size reservation can opt into enclosures
+    whose publisher omits the byte count or reports zero.
     """
     if not public_url(feed_url):
         raise ValueError("Invalid public feed address")
@@ -81,6 +83,8 @@ def read_episodes(data, feed_url, *, directory=()):
             length = node.get("length", "")
             if link and length.isascii() and length.isdecimal() and int(length) > 0:
                 enclosures.append({"url": link, "bytes": int(length), "mime_type": node.get("type")})
+            elif link and include_unsized_enclosures and length in {"", "0"}:
+                enclosures.append({"url": link, "bytes": None, "mime_type": node.get("type")})
         transcripts = []
         for node in item.findall(PODCAST + "transcript"):
             link = public_url(node.get("url"))
