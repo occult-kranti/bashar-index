@@ -14,6 +14,9 @@ LEGACY_CONTRACT='progressive_MP4_AAC_packet_preserving_streamcopy'
 PROFILE_CONTRACT='progressive_MP4_AAC_LC_HE_AAC_packet_preserving_streamcopy_v1'
 PROFILE_COMPONENT_SHA='5915a2b689de11fed5ea41956f084e55c967c22e6c63b925202e48611ec058a4'
 PROFILE_COMPONENT_BYTES=8131
+STREAM_CONTRACT='progressive_MP4_AAC_LC_HE_AAC_streaming_packet_preservation_v1'
+STREAM_COMPONENT_SHA='f903fddac2f02850d409a4511c897d47a04f976cf38a2ca8924b54d0c24a5f60'
+STREAM_COMPONENT_BYTES=18424
 SHA=re.compile(r'[0-9a-f]{64}\Z');MD5=re.compile(r'[0-9a-f]{32}\Z')
 FLAGS=('original_audio_track_identity_verified','origin_inferred','spoken_language_verified',
        'speaker_identity_verified','recording_edit_identity_verified',
@@ -44,6 +47,20 @@ def artifact_matches(value,expected_sha,expected_bytes):
 
 def quality_profiles(q):
  if q.get('quality_contract')==LEGACY_CONTRACT:return {'LC'}
+ if q.get('quality_contract')==STREAM_CONTRACT:
+  need(artifact_matches(q.get('quality_component_artifact'),STREAM_COMPONENT_SHA,STREAM_COMPONENT_BYTES) and
+       artifact_matches(q.get('base_verifier_artifact'),VERIFIER_SHA,10864) and
+       q.get('base_verifier_role')=='digest_compatibility_reference_only' and
+       q.get('base_verifier_execution_claimed') is False and
+       q.get('packet_summary_mode')=='incremental_ffprobe_JSON_one_packet_buffer_v1' and
+       q.get('packet_count_bound_basis')=='positive_packet_payload_sizes_sum_not_exceeding_actual_file_bytes' and
+       type(q.get('maximum_source_bytes')) is int and q['maximum_source_bytes']==2_000_000_000 and
+       positive(q.get('maximum_derived_bytes'),2_000_000_000) and
+       type(q.get('maximum_packet_record_bytes')) is int and q['maximum_packet_record_bytes']==65536 and
+       type(q.get('maximum_stderr_bytes')) is int and q['maximum_stderr_bytes']==1_000_000 and
+       q.get('fixed_packet_count_or_duration_cutoff') is False,
+       'pinned_streaming_preservation_component')
+  return {'LC','HE-AAC'}
  need(q.get('quality_contract')==PROFILE_CONTRACT and
       artifact_matches(q.get('quality_component_artifact'),PROFILE_COMPONENT_SHA,PROFILE_COMPONENT_BYTES) and
       artifact_matches(q.get('base_verifier_artifact'),VERIFIER_SHA,10864),
@@ -72,15 +89,19 @@ def quality(q,selection,source_file,derived_file):
       positive(a['channels'],8) and digest(a['extradata_sha256']),'AAC_configuration')
  before=q.get('source_AAC_packets');after=q.get('derived_AAC_packets')
  need(isinstance(before,dict) and isinstance(after,dict),'AAC_packet_summaries')
+ count_limit=min(source_file['bytes'],derived_file['bytes']) if q.get('quality_contract')==STREAM_CONTRACT else 200_000
  for key in ('packet_count','packet_payload_bytes','packet_sequence_sha256','skip_samples',
              'discard_padding','padding_sequence_sha256','packet_duration_samples_sha256'):
   need(key in before and key in after and before[key]==after[key],'AAC_packet_sequence_changed')
  need(before.get('algorithm')==after.get('algorithm')=='SHA256_of_ordered_size64be_and_packet_SHA256' and
-      positive(before['packet_count'],200_000) and positive(after['packet_count'],200_000) and
+      positive(before['packet_count'],count_limit) and positive(after['packet_count'],count_limit) and
       positive(before['packet_payload_bytes'],min(source_file['bytes'],derived_file['bytes'])) and
       positive(after['packet_payload_bytes'],min(source_file['bytes'],derived_file['bytes'])) and
       all(digest(before[k]) for k in ('packet_sequence_sha256','padding_sequence_sha256','packet_duration_samples_sha256')),
       'AAC_packet_summary_bound')
+ if q.get('quality_contract')==STREAM_CONTRACT:
+  need(before['packet_count']<=before['packet_payload_bytes'] and
+       after['packet_count']<=after['packet_payload_bytes'],'positive_payload_packet_count_bound')
  need(all(type(v[k]) is int and v[k]>=0 for v in (before,after) for k in ('skip_samples','discard_padding')),
       'AAC_padding_summary')
  tolerance=q.get('duration_tolerance_seconds')
@@ -104,13 +125,17 @@ def qualification(q,video,audio,variant):
   need(preservation.get('quality_contract')==LEGACY_CONTRACT,'verifier_contract_binding')
   source_limit,derived_limit=100_000_000,50_000_000
  else:
-  need(artifact_matches(artifact,PROFILE_COMPONENT_SHA,PROFILE_COMPONENT_BYTES) and
+  streaming=artifact_matches(artifact,STREAM_COMPONENT_SHA,STREAM_COMPONENT_BYTES)
+  need((streaming or artifact_matches(artifact,PROFILE_COMPONENT_SHA,PROFILE_COMPONENT_BYTES)) and
        artifact_matches(q.get('base_verifier_artifact'),VERIFIER_SHA,10864) and
-       preservation.get('quality_contract')==PROFILE_CONTRACT and
+       preservation.get('quality_contract')==(STREAM_CONTRACT if streaming else PROFILE_CONTRACT) and
        preservation.get('quality_component_artifact')==artifact and
        preservation.get('base_verifier_artifact')==q['base_verifier_artifact'],
        'pinned_AAC_verifier_artifact')
-  source_limit=derived_limit=32_000_000
+  if streaming:
+   quality_profiles(preservation)
+   source_limit=2_000_000_000;derived_limit=preservation['maximum_derived_bytes']
+  else:source_limit=derived_limit=32_000_000
  identity(payload)
  source=proof(payload.get('source_file'),source_limit)
  derived=proof(payload.get('derived_audio_file'),derived_limit)
@@ -163,7 +188,7 @@ def validate(record,*,remote_base):
       'no_native_count_promotion')
  audio=record.get('audio');metadata=record.get('metadata')
  need(isinstance(audio,dict) and isinstance(metadata,dict),'paired_audio_metadata_required')
- audio_local=proof(audio.get('local_proof'),50_000_000);meta_local=proof(metadata.get('local_proof'),2_000_000)
+ audio_local=proof(audio.get('local_proof'),2_000_000_000);meta_local=proof(metadata.get('local_proof'),2_000_000)
  qualification(record.get('qualification'),video,audio_local,variant)
  provenance=record.get('provenance')
  need(isinstance(provenance,dict) and type(provenance.get('schema_version')) is int and
