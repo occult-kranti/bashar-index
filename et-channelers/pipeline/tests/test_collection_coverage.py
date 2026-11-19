@@ -1,5 +1,6 @@
 """Current channel inventory: receipt boundaries, source joins and safe export."""
 import csv
+import datetime as dt
 import io
 import json
 from pathlib import Path
@@ -7,6 +8,7 @@ import tempfile
 import unittest
 import subprocess
 import sys
+from unittest.mock import patch
 from pipeline import collection_coverage as coverage
 from pipeline.tests.test_qualified_edition_receipts import receipt_fixture
 from pipeline.tests.test_qualified_direct_audio_receipts import fixture as direct_fixture, seal as seal_direct
@@ -223,6 +225,31 @@ class CoverageTests(unittest.TestCase):
         selection.write_text(json.dumps({'per_channel':20,'channels':groups}))
         with self.assertRaises(ValueError):
             coverage.coverage(self.root, selection=selection)
+
+    def test_closed_refusals_apply_only_to_uncovered_inactive_recordings(self):
+        at = dt.datetime(2026, 10, 1, tzinfo=dt.timezone.utc)
+        channel = 'UC' + 'd' * 22
+        videos = ['00000000001', '00000000002', '00000000003', '00000000004']
+        rows = [dict(self.queue[0], video_id=video, expected_channel_id=channel) for video in videos]
+        evidence = [{'at_epoch': at.timestamp() - 2, 'status': 403}]
+        states = [dict(row, disposition='current_source_refusal', current_source_refusals=evidence) for row in rows]
+        states[-1].update(disposition='local_or_administrative_hold', current_source_refusals=[])
+        source = self.root / 'closed.json'
+        closed = dict(kind='strict_primary_closed_disposition_snapshot', schema_version=1, at_epoch=at.timestamp()-1,
+                      primary_scope_count=len(rows), rows=states)
+        source.write_text(json.dumps(closed))
+        active = {'public': {'state': 'running'}, 'video_stages': {videos[1]: 'downloading'}}
+        with patch.object(coverage.status, 'rolling_native_state', return_value=active):
+            result = coverage.channel_activity(self.root, rows, {videos[0]}, at, dispositions=source)
+        self.assertEqual({k: v for k, v in result['summary'].items() if v},
+                         dict(saved=1, downloading=1, waiting_for_source=1, other_pending=1))
+        for invalid in (dict(closed, at_epoch=at.timestamp()+1), dict(closed, rows=states[:-1]),
+                        dict(closed, rows=[*states[:-1], states[0]]),
+                        dict(closed, rows=[dict(states[0], expected_channel_id='UC'+'z'*22), *states[1:]]),
+                        dict(closed, rows=[dict(states[0], current_source_refusals=[]), *states[1:]])):
+            source.write_text(json.dumps(invalid))
+            with self.assertRaises(ValueError):
+                coverage.read_closed_dispositions(source, rows, at)
 
     def test_untimed_transcript_must_belong_to_its_publisher_audio_edition(self):
         record = self.mirror()

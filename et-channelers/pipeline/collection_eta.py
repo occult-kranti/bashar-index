@@ -604,6 +604,25 @@ def mixed_receipt_pace(checkpoints):
             "last_receipt_correction_at": precise_stamp(first) if start else None}
 
 
+def fifty_outlook(forecast, checkpoints):
+    selection = forecast.get('selection_sha256')
+    if (not re.fullmatch(r'[0-9a-f]{64}', selection or '') or not checkpoints
+            or any(c.get('selection_basis') != 'latest20plus_public_regular' or c.get('selection_sha256') != selection
+                   for c in checkpoints)
+            or forecast.get('start_condition') != 'latest20_translations_and_both_analysis_rounds_complete'):
+        raise ValueError('Latest-50 forecast must belong to the same dated regular-20 study')
+    totals, rates = forecast['records'], forecast['rates']
+    additional = [totals[k] for k in ('pending_with_older_list', 'pending_at_ceiling')]
+    rate = rates['recordings_per_hour']
+    if (any(type(v) is not int or v < 0 for v in additional) or additional[1] < additional[0]
+            or type(rate) not in (int, float) or not positive(rate) or epoch(rates['last'][0]) is None
+            or totals['latest20'] != checkpoints[-1]['summary']['latest20_target']):
+        raise ValueError('Latest-50 forecast totals or measured throughput are invalid')
+    return {'selection_sha256': selection, 'start_condition': forecast['start_condition'],
+            'measured_at': rates['last'][0], 'additional_recordings': additional,
+            'download_hours_from_start': [round(v / rate, 1) for v in additional]}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, required=True)
@@ -613,6 +632,7 @@ def main(argv=None):
     ap.add_argument("--out", type=Path)
     ap.add_argument("--coverage-checkpoint", action="append", default=[], type=Path,
                     help="Dated collection_coverage JSON. Repeat for the same selection to measure verified arrivals per wall hour.")
+    ap.add_argument("--latest50-forecast", type=Path, help="Include the future download-time estimate from regular_fifty_forecast")
     ap.add_argument("--refresh-operational", action="store_true", help="Replace the current operational section, retaining dated historical assumptions")
     ap.add_argument("--service-live", type=Path, help="Terminal series JSON proof directory; no media is read")
     ap.add_argument("--service-direct", action="store_true", help="Calibrate from a bound completed download-only direct frame")
@@ -631,15 +651,21 @@ def main(argv=None):
     ap.add_argument("--availability", type=float, nargs="+", default=(1, .5, .25),
                     help="Assumed future available fractions, each greater than zero and at most one")
     args = ap.parse_args(argv)
+    if args.latest50_forecast and not args.coverage_checkpoint:
+        ap.error('Attaching a latest-50 forecast requires a dated regular coverage checkpoint')
     if args.coverage_checkpoint:
         paths = [path.resolve() for path in args.coverage_checkpoint]
-        if args.refresh_operational or (args.out and args.out.resolve() in paths):
+        if args.refresh_operational or (args.out and args.out.resolve() in paths) or (
+                args.out and args.latest50_forecast and args.out.resolve() == args.latest50_forecast.resolve()):
             ap.error("Use a distinct output for the mixed receipt estimate")
         try:
-            pace = mixed_receipt_pace([read_object(path) for path in paths])
+            checkpoints = [read_object(path) for path in paths]
+            pace = mixed_receipt_pace(checkpoints)
             key = 'regular_receipt_pace' if pace['basis'] == 'regular_verified_receipts' else 'mixed_receipt_pace'
             result = {"schema_version": 2, "scope": "collection_eta", "generated_at": pace["ended_at"],
                       "current": {"generated_at": pace["ended_at"], key: pace}}
+            if args.latest50_forecast:
+                result['current']['latest50'] = fifty_outlook(read_object(args.latest50_forecast), checkpoints)
             data = json.dumps(result, indent=2, allow_nan=False) + "\n"
             if args.out:
                 atomic_write_text(args.out, data)

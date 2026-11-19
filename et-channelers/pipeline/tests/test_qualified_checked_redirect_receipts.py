@@ -49,7 +49,7 @@ class CheckedRedirectReceiptTests(unittest.TestCase):
   invalid=deepcopy(record);invalid['qualification']['payload']['source_http']['transport_contract']=receipts.CDN_TRANSPORT_CONTRACT
   with self.assertRaises(receipts.ReceiptHold):self.validate(reseal(invalid))
  def test_capability_accepts_reviewed_actors_rejects_unused_and_foreign_actors(self):
-  self.assertEqual(receipts.CDN_ACTOR_CAPABILITY_VERSION,6)
+  self.assertEqual(receipts.CDN_ACTOR_CAPABILITY_VERSION,7)
   self.assertEqual(set(receipts.CDN_ACTOR_ARTIFACTS),{
     ('319ab9e92c1cbe2b015d67dd31cc664a9e20c51fe9943bc14abdfd2bd38308f3',54801),
     ('fa3aecb38f3547b8561470f746750f72ca8623a825e4aa0b52d467ac2f9074de',54801),
@@ -97,6 +97,16 @@ class CheckedRedirectReceiptTests(unittest.TestCase):
    with self.subTest(key=key),self.assertRaises(receipts.ReceiptHold):self.validate(reseal(invalid))
   invalid=deepcopy(self.record);http=invalid['qualification']['payload']['source_http'];http['redirect_chain']*=2
   with self.assertRaises(receipts.ReceiptHold):self.validate(reseal(invalid))
+ def test_both_idle_windows_keep_the_same_complete_response_requirements(self):
+  for sha,size in receipts.CDN_TRANSPORT_ARTIFACTS:
+   record=deepcopy(self.record);http=record['qualification']['payload']['source_http']
+   http['transport_artifact']={'bytes':size,'sha256':sha}
+   self.validate(reseal(record))
+   http['body_complete']=False
+   with self.assertRaises(receipts.ReceiptHold):self.validate(reseal(record))
+  record=deepcopy(self.record)
+  record['qualification']['payload']['source_http']['transport_artifact']={'bytes':12266,'sha256':'0'*64}
+  with self.assertRaises(receipts.ReceiptHold):self.validate(reseal(record))
  def test_cross_asset_foreign_host_expired_or_incomplete_version_witness_rejected(self):
   mutations=[('declared_source_bytes',2049),('same_selected_asset_version',False),
     ('request_url_sha256','d'*64),('final_url_sha256','e'*64),('identity_query_sha256','invalid'),

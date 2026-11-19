@@ -295,6 +295,14 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const regularPriority = statusSnapshot?.selection?.basis === 'latest20plus_public_regular';
       if (regularPriority || statusSnapshot?.selection?.basis === 'canonical_mixed_latest20') {
         const selected = statusSnapshot.selection;
+        const forecast = data.current.latest50;
+        const futureHours = forecast?.download_hours_from_start;
+        const showFifty = regularPriority && forecast?.selection_sha256 === selected.sha256
+          && forecast?.start_condition === 'latest20_translations_and_both_analysis_rounds_complete'
+          && Array.isArray(futureHours) && futureHours.length === 2 && futureHours.every(v => Number.isFinite(v) && v >= 0)
+          && futureHours[0] <= futureHours[1];
+        const fiftyNote = showFifty ? ' Latest 50 is estimated at ' + futureHours.map(v => Math.round(v)).join('–')
+          + ' download hours after latest-20+ translation and both analysis rounds finish.' : '';
         const pace = regularPriority ? data.current.regular_receipt_pace : data.current.mixed_receipt_pace;
         const scopeHash = selected.priority_scope_sha256 || selected.sha256;
         const aligned = typeof scopeHash === 'string' && pace?.selection_sha256 === scopeHash
@@ -311,7 +319,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
           put('cc-eta-coverage', number(selected.verified_audio) + ' / ' + number(selected.total) + ' selected recordings have verified audio.');
           put('cc-eta-date', date(statusSnapshot.generated_at));
           put('cc-eta-basis-date', date(aligned ? pace.ended_at : statusSnapshot.generated_at));
-          put('cc-eta-calendar', selected.remaining_audio === 0 ? 'The acquisition target was met by this checkpoint.' : 'A calendar finish depends on source availability.');
+          put('cc-eta-calendar', (selected.remaining_audio === 0 ? 'The acquisition target was met by this checkpoint.' : 'A calendar finish depends on source availability.') + fiftyNote);
           put('cc-eta-evidence', 'The coverage and pace use the same frozen recording selection.');
           put('cc-eta-freshness', 'Coverage measured ' + date(statusSnapshot.generated_at) + '.');
           return;
@@ -322,7 +330,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         put('cc-eta-first-scope', regularPriority ? 'A finish estimate needs recent Drive receipts for these public regular uploads.' : 'No representative finish estimate is established for the current mixed-format selection.');
         put('cc-eta-coverage', number(selected.verified_audio) + ' / ' + number(selected.total) + ' current chosen recordings have verified audio.');
         put('cc-eta-date', date(statusSnapshot.generated_at)); put('cc-eta-basis-date', date(data.current.measured_service?.ended_at));
-        put('cc-eta-calendar', 'No calendar finish is inferred from historical acquisition rates.');
+        put('cc-eta-calendar', 'A calendar finish depends on source availability.' + fiftyNote);
         put('cc-eta-evidence', 'The dated historical estimate was generated ' + date(data.current.generated_at) + '.');
         put('cc-eta-freshness', 'Current selection checkpoint ' + date(statusSnapshot.generated_at) + '.');
         return;

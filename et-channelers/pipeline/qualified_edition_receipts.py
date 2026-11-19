@@ -20,10 +20,11 @@ STREAM_COMPONENT_BYTES=18424
 CDN_TRANSPORT_CONTRACT='qualified18_one_checked_googlevideo_redirect_v1'
 CDN_FINAL_LENGTH_CONTRACT='qualified18_one_checked_googlevideo_redirect_v2'
 CDN_TRANSPORT_SHA='a59c8d872a0899be78d470f52f26c6d6ea99bb14cebc1030419b7d2fd5c69773'
+CDN_TRANSPORT_ARTIFACTS=((CDN_TRANSPORT_SHA,12266),('a06ab2b1430cb47ab4dfeea89350ad74d3cf83695e0b441d0356c4746282b504',12266))
 CDN_POLICY_SHA='4cff87c7539fea300852f6ae62cc623916702bcea961e5fcd2574e5b3913e1e1'
 CDN_FINAL_LENGTH_POLICY_SHA='ef405ed76d4d889e02fd32f8b42a5451bea6c94004ede6009989e1592dd657a2'
 CDN_ACTOR_SHA='319ab9e92c1cbe2b015d67dd31cc664a9e20c51fe9943bc14abdfd2bd38308f3'
-CDN_ACTOR_CAPABILITY_VERSION=6
+CDN_ACTOR_CAPABILITY_VERSION=7
 CDN_ACTOR_ARTIFACTS=((CDN_ACTOR_SHA,54801),
  ('fa3aecb38f3547b8561470f746750f72ca8623a825e4aa0b52d467ac2f9074de',54801),
  ('5cbd39d10752f27f99a99b44005b89b0de74672a48efa7fa0ecbfc316a211201',56232),
@@ -78,7 +79,7 @@ def selected_response_binding(http,selection,video,size):
       or http.get('transport_contract')==CDN_FINAL_LENGTH_CONTRACT and
       artifact_matches(http.get('redirect_policy_artifact'),CDN_FINAL_LENGTH_POLICY_SHA,7338))
  need(verified_policy and
-      artifact_matches(http.get('transport_artifact'),CDN_TRANSPORT_SHA,12266) and
+      any(artifact_matches(http.get('transport_artifact'),sha,size) for sha,size in CDN_TRANSPORT_ARTIFACTS) and
       any(artifact_matches(http.get('source_actor_artifact'),sha,size) for sha,size in CDN_ACTOR_ARTIFACTS),
       'pinned_single_CDN_redirect_transport')
  need(selection.get('uri_sha256')==http['selected_url_sha256'] and digest(http.get('final_url_sha256')),
