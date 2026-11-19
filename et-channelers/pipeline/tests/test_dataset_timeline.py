@@ -137,6 +137,18 @@ class TimelineTests(unittest.TestCase):
             path.write_text('video_id,channel_dir,audio_source\nabcdefghijk,creator,youtube_native\n', encoding='utf-8')
             with self.assertRaises(timeline.TimelineError): timeline.load_audio_ids(path, rows)
 
+    def test_qualified_audio_snapshot_counts_once_and_keeps_unknown_labels_rejected(self):
+        rows = [row()]
+        content = ("video_id,channel_dir,audio_source\n"
+                   "abcdefghijk,creator,youtube_track_unverified\n"
+                   "abcdefghijk,creator,youtube_native\n").encode()
+        ids = timeline.load_audio_ids(None, rows, content=content)
+        self.assertEqual({'abcdefghijk'}, ids)
+        data = timeline.build_timeline(rows, saved_audio_ids=ids)
+        self.assertEqual(1, data['summary']['saved_audio_count'])
+        with self.assertRaises(timeline.TimelineError):
+            timeline.load_audio_ids(None, rows, content=content.replace(b'youtube_track_unverified', b'unknown_label'))
+
     def test_html_embeds_safe_json_and_local_bundle_once(self):
         data = timeline.build_timeline([row(title='</script><img>__PLOTLY_JS__\u2028')])
         template = '<script>__PLOTLY_JS__</script><script>const DATA=__TIMELINE_DATA__;</script>'
