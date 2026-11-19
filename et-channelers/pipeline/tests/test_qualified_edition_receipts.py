@@ -21,6 +21,19 @@ def reseal(record):
     record['metadata']['remote_proof'].update(bytes=local['bytes'], md5=local['md5'])
     return record
 
+def profile_receipt(record, profile='HE-AAC'):
+    record = deepcopy(record)
+    qualification = record['qualification']
+    preservation = qualification['payload']['AAC_preservation']
+    component = {'sha256': receipts.PROFILE_COMPONENT_SHA, 'bytes': receipts.PROFILE_COMPONENT_BYTES}
+    base = {'sha256': receipts.VERIFIER_SHA, 'bytes': 10864}
+    qualification.update(verifier_artifact=component, base_verifier_artifact=base)
+    preservation.update(quality_contract=receipts.PROFILE_CONTRACT,
+                        quality_component_artifact=deepcopy(component), base_verifier_artifact=deepcopy(base))
+    for side in ('source_audio', 'derived_audio'):
+        preservation[side]['profile'] = profile
+    return reseal(record)
+
 
 class EditionReceiptTests(unittest.TestCase):
     def setUp(self):
@@ -36,6 +49,65 @@ class EditionReceiptTests(unittest.TestCase):
         self.assertEqual('abcdefghijk', edition.video_id)
         self.assertFalse(edition.native_promotion)
         self.assertFalse(edition.text_or_ASR_coverage)
+
+    def test_reviewed_profile_component_accepts_preserved_HE_AAC_and_LC(self):
+        for profile in ('HE-AAC', 'LC'):
+            with self.subTest(profile=profile):
+                edition = self.validate(profile_receipt(self.record, profile))
+                self.assertFalse(edition.native_promotion)
+                self.assertFalse(edition.text_or_ASR_coverage)
+
+    def test_HE_AAC_requires_new_component_base_pin_and_matching_contract(self):
+        record = profile_receipt(self.record)
+        cases = []
+        old = deepcopy(record)
+        old['qualification']['verifier_artifact'] = {'sha256': receipts.VERIFIER_SHA, 'bytes': 10864}
+        cases.append(old)
+        legacy_bound = deepcopy(old)
+        legacy_bound['qualification']['payload']['AAC_preservation']['quality_contract'] = receipts.LEGACY_CONTRACT
+        cases.append(legacy_bound)
+        unknown = deepcopy(record)
+        unknown['qualification']['verifier_artifact']['sha256'] = 'a' * 64
+        cases.append(unknown)
+        base = deepcopy(record)
+        base['qualification']['base_verifier_artifact']['sha256'] = 'b' * 64
+        cases.append(base)
+        nested = deepcopy(record)
+        nested['qualification']['payload']['AAC_preservation']['quality_component_artifact']['bytes'] += 1
+        cases.append(nested)
+        legacy = deepcopy(record)
+        legacy['qualification']['payload']['AAC_preservation']['quality_contract'] = receipts.LEGACY_CONTRACT
+        cases.append(legacy)
+        for i, invalid in enumerate(cases):
+            with self.subTest(case=i), self.assertRaises(receipts.ReceiptHold):
+                self.validate(reseal(invalid))
+
+    def test_profile_extension_retains_packet_configuration_and_identity_guards(self):
+        record = profile_receipt(self.record)
+        mutations = [
+            ('derived_audio', 'profile', 'LC'),
+            ('derived_audio', 'extradata_sha256', 'e' * 64),
+            ('derived_AAC_packets', 'packet_sequence_sha256', 'f' * 64),
+            ('derived_AAC_packets', 'skip_samples', 999),
+        ]
+        for side, key, value in mutations:
+            invalid = deepcopy(record)
+            invalid['qualification']['payload']['AAC_preservation'][side][key] = value
+            with self.subTest(key=key), self.assertRaises(receipts.ReceiptHold):
+                self.validate(reseal(invalid))
+        with self.assertRaises(receipts.ReceiptHold):
+            self.validate(profile_receipt(self.record, 'HE-AACv2'))
+
+    def test_profile_component_rejects_source_or_output_above_its_32MB_contract(self):
+        for field in ('source_file', 'derived_audio_file'):
+            record = profile_receipt(self.record)
+            qualification = record['qualification']
+            payload = qualification['payload']
+            payload[field]['bytes'] = 32_000_001
+            qualification['payload_sha256'] = receipts.sha(receipts.encoded(payload))
+            with self.subTest(field=field), self.assertRaisesRegex(receipts.ReceiptHold, 'file_fingerprint'):
+                receipts.qualification(qualification, record['video_id'], payload['derived_audio_file'],
+                                       payload['source_file']['sha256'])
 
     def test_detached_actual_file_fingerprints_fail_even_with_resealed_provenance(self):
         for key in ('private_muxed_source_file', 'derived_audio_file'):
