@@ -74,3 +74,39 @@ python -B -m unittest pipeline.tests.test_progress_observer `
   pipeline.tests.test_native_producer_drain pipeline.tests.test_native_handoff_queue
 python -B -m pipeline.native_producer_drain --help
 ```
+
+## Fresh receipt check in the normal download driver
+
+`drive_ingest.run` now creates an `ExactOwnerReceiptGate` inside its existing
+collector ownership. Immediately after a worker's rate-limit wait, and before
+its new metadata extraction, the worker checks the exact video/creator/tab
+against stable native, qualified and independent publisher audio journals.
+Parsed unchanged journals are cached. Changed journals stream one complete
+JSONL line at a time while hashing, without a collection-size or line-size
+ceiling. The owner's journal mutex protects brief snapshot/cache decisions;
+changed-file indexing and strict validation run outside that mutex, then
+revalidate their file identities. The same authoritative receipt readers accept
+only selected complete rows supplied through streaming byte offsets, including
+any required shared publisher anchor. A proven positive depends only on its
+audio journal; an unrelated sibling append cannot invalidate it. A complete external append race gets at most
+three local resamples. Malformed/unreadable snapshots hold.
+
+A verified edition returns only that item's `already_covered` result, without
+forging a native receipt or stopping siblings. Text companions do not satisfy
+the gate. Legacy blank native tabs require the original selected row's exact
+recording destination; conflicting tabs are rejected. Native `verified` rows
+remain nonterminal and follow existing verify/delete recovery. Live source,
+host capacity, provider, body and publication guards stay
+in the normal driver. The gate itself performs no network calls. The ordinary
+entry point and its existing bounded source/publication settings remain usable:
+
+The independent download-only local pilot keeps its legacy local recovery path;
+the Drive-edition gate is created for the normal archiving owner.
+
+```powershell
+python -B -m pipeline.drive_ingest run --root C:/private `
+  --queue C:/private/jobs/queue.csv --remote 'archive:Audio' --limit 96 `
+  --workers 6 --upload-transfers 3 --max-local-gb 23 --min-free-gb 12
+python -B -m unittest pipeline.tests.test_receipt_admission `
+  pipeline.tests.test_drive_ingest_parallel_review
+```

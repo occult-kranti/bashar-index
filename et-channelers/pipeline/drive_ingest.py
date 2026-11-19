@@ -50,8 +50,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 if __package__:
     from . import host_capacity, storage_inventory
+    from .receipt_admission import ExactOwnerReceiptGate
 else:
     import host_capacity, storage_inventory
+    from receipt_admission import ExactOwnerReceiptGate
 from common import (HARD_BLOCKS, ID_RE, RateLimiter, add_root_arg, classify_error,
                     direct_env, ensure_outside_git, read_csv, read_jsonl,
                     sha256_file, utc_now, youtube_gate)
@@ -1406,6 +1408,13 @@ def ingest_one(args, row, budget, limiter, stop, drive, state_path, prior=None, 
             limiter.wait()
             if stop.is_set():
                 return "stopped"
+            receipt_gate = getattr(args, "receipt_gate", None)
+            existing_audio = receipt_gate.verified_audio(row) if receipt_gate is not None else None
+            if existing_audio is not None:
+                # A newly published sibling edition skips only this selection.
+                # Do not forge a native receipt, stop the provider, or spend a
+                # Source attempt. Other pending workers keep their own guards.
+                return IngestResult(row, dict(rec, verified_existing_audio=existing_audio), status="already_covered")
             info = extract_audio(args, row)
             captured_at = utc_now()
             relative = f"audio/{row['channel_dir']}/{SOURCE_FOLDERS.get(row.get('tab', ''), 'Unclassified')}/{row['video_id']}.{info['ext']}"
@@ -1618,6 +1627,9 @@ def run(args, rows):
             raise IngestError("storage_limit", "Existing project files leave no storage budget")
         _ROOT_BUDGETS[root.resolve()] = budget
         state_path = root / "sync" / "drive_ingest_manifest.jsonl"
+        args.receipt_gate = (ExactOwnerReceiptGate(root, args.remote, receipt_lock=_JOURNAL_LOCK,
+                                                 selected_ids=(row['video_id'] for row in rows))
+                             if args.remote and not args.download_only else None)
         state = load_state(state_path)
         args.caption_state = load_state(root / "sync" / "drive_caption_manifest.jsonl")
         args.caption_control = CaptionControl(args.caption_state.values())

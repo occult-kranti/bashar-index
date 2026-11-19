@@ -966,27 +966,36 @@ def selected_recording_owners(root, target_rows=None):
     return owners
 
 
-def qualified_edition_coverage(root, targets, remote, target_rows=None):
+def qualified_edition_coverage(root, targets, remote, target_rows=None, *, records=None):
     """Count paired qualified audio without granting native or text coverage."""
     root = Path(root)
     owners = selected_recording_owners(root, target_rows)
     path = root / 'sync/progressive_audio_extracts_manifest.jsonl'
     accepted = set()
-    if not path.is_file() or path.stat().st_size > 64_000_000:
-        return accepted
-    with path.open(encoding='utf-8-sig') as handle:
-        while line := handle.readline(2_000_001):
-            if len(line) > 2_000_000:
-                return set()  # incomplete inventory must never inflate counts
-            try:
-                record = json.loads(line)
-                reader = (qualified_direct_audio_receipts if isinstance(record, dict) and
-                          record.get('source_format_id') == '140' else qualified_edition_receipts)
-                edition = reader.validate(record, remote_base=remote)
-            except (qualified_edition_receipts.ReceiptHold, TypeError, ValueError, KeyError, OverflowError):
-                continue
-            if edition.video_id in targets and owners.get(edition.video_id) == (edition.channel_dir, record['tab']):
-                accepted.add(edition.video_id)
+    def accept(record):
+        try:
+            reader = (qualified_direct_audio_receipts if isinstance(record, dict) and
+                      record.get('source_format_id') == '140' else qualified_edition_receipts)
+            edition = reader.validate(record, remote_base=remote)
+        except (qualified_edition_receipts.ReceiptHold, TypeError, ValueError, KeyError, OverflowError):
+            return
+        if edition.video_id in targets and owners.get(edition.video_id) == (edition.channel_dir, record['tab']):
+            accepted.add(edition.video_id)
+    if records is not None:
+        for record in records:
+            accept(record)
+    else:
+        if not path.is_file() or path.stat().st_size > 64_000_000:
+            return accepted
+        with path.open(encoding='utf-8-sig') as handle:
+            while line := handle.readline(2_000_001):
+                if len(line) > 2_000_000:
+                    return set()  # incomplete inventory must never inflate counts
+                try:
+                    record = json.loads(line)
+                except (TypeError, ValueError):
+                    continue
+                accept(record)
     return accepted
 
 
@@ -1028,10 +1037,13 @@ def asr_records(path, identity_key='run_id'):
     return records.values()
 
 
-def publisher_coverage(root, targets, remote, target_rows=None):
+def publisher_coverage(root, targets, remote, target_rows=None, *, record_sets=None):
     """Supplementary publisher editions never establish native/ASR completion."""
     owners = selected_recording_owners(root, target_rows) if target_rows is not None else None
     def rows(name):
+        if record_sets is not None:
+            yield from record_sets.get(name, ())
+            return
         path = root / 'sync' / name
         if path.is_file():
             for line in path.read_text(encoding='utf-8-sig').splitlines():
@@ -1463,22 +1475,25 @@ def shared_publisher_audio_reference(record, anchor, remote, owners):
             len({audio['drive_id'], source_provenance['drive_id'], provenance['drive_id'], pointer['drive_id']}) == 4)
 
 
-def publisher_mirror_evidence(root, targets, remote, target_rows=None):
+def publisher_mirror_evidence(root, targets, remote, target_rows=None, *, source_records=None, source_asr_records=None):
     """Separate timed captions, ASR and transcripts attached to verified publisher editions."""
     audio_ids, caption_ids, asr_ids, untimed_ids, sources = set(), set(), set(), set(), {}
     path = root / 'sync/publisher_mirror_manifest.jsonl'
-    if not path.is_file():
+    if source_records is None and not path.is_file():
         return audio_ids, caption_ids, asr_ids, untimed_ids
     owners = selected_recording_owners(root, target_rows)
     folders = {'videos': 'Videos', 'shorts': 'Shorts', 'streams': 'Streams'}
     records = []
-    for line in path.read_text(encoding='utf-8-sig').splitlines():
-        try:
-            record = json.loads(line)
-        except ValueError:
-            continue
-        if isinstance(record, dict):
-            records.append(record)
+    if source_records is None:
+        for line in path.read_text(encoding='utf-8-sig').splitlines():
+            try:
+                record = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(record, dict):
+                records.append(record)
+    else:
+        records = list(source_records)
     # Validate the existing anchor with its normal receipt contract even when
     # only the other listing was requested. Aliases cannot anchor other aliases.
     anchor_ids = {r['canonical_associated_youtube_id'] for r in records
@@ -1584,11 +1599,16 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
         if anchor and shared_publisher_audio_reference(record, anchor, remote, owners):
             audio_ids.add(record['associated_youtube_id'])
     asr_path = root / 'sync/publisher_variant_asr_manifest.jsonl'
-    for line in asr_path.read_text(encoding='utf-8-sig').splitlines() if asr_path.is_file() else []:
-        try:
-            record = json.loads(line)
-        except ValueError:
-            continue
+    def asr_records():
+        if source_asr_records is not None:
+            yield from source_asr_records
+            return
+        for line in asr_path.read_text(encoding='utf-8-sig').splitlines() if asr_path.is_file() else []:
+            try:
+                yield json.loads(line)
+            except ValueError:
+                continue
+    for record in asr_records():
         if not isinstance(record, dict):
             continue
         video_id, variant_id, run_id = (record.get(key) for key in ('associated_youtube_id', 'variant_id', 'run_id'))
