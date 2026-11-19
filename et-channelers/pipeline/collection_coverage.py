@@ -10,6 +10,7 @@ import datetime as dt
 import hashlib
 import io
 import json
+import math
 from pathlib import Path
 import re
 import sys
@@ -26,7 +27,34 @@ except ImportError:
 ACTIVITY_FIELDS = ('saved', 'downloading', 'processing', 'awaiting_upload', 'queued', 'waiting_for_source', 'other_pending')
 
 
-def channel_activity(root, rows, available, at):
+def read_closed_dispositions(path, rows, at):
+    """Attribute the last closed source refusals to this exact set of recordings."""
+    snapshot = json.loads(Path(path).read_bytes())
+    expected = {row['video_id']: (row['channel_dir'], row['expected_channel_id'], row['tab']) for row in rows}
+    clock = snapshot.get('at_epoch') if isinstance(snapshot, dict) else None
+    if (type(clock) not in (float, int) or not math.isfinite(clock) or not 0 < clock <= at.timestamp()
+            or snapshot.get('kind') != 'strict_primary_closed_disposition_snapshot'
+            or snapshot.get('schema_version') != 1 or snapshot.get('primary_scope_count') != len(expected)
+            or not isinstance(snapshot.get('rows'), list) or len(snapshot['rows']) != len(expected)):
+        raise ValueError('Closed source dispositions require a dated snapshot covering this entire selection')
+    seen = set()
+    for row in snapshot['rows']:
+        ident = row.get('video_id') if isinstance(row, dict) else None
+        if (not isinstance(ident, str) or ident not in expected or ident in seen
+                or (row.get('channel_dir'), row.get('expected_channel_id'), row.get('tab')) != expected[ident]):
+            raise ValueError('Closed source dispositions do not match the selected recording owners and formats')
+        seen.add(ident)
+        if row.get('disposition') == 'current_source_refusal':
+            refusals = row.get('current_source_refusals')
+            if not isinstance(refusals, list) or not any(
+                    isinstance(refusal, dict) and type(refusal.get('status')) is int and 400 <= refusal['status'] <= 599
+                    and type(refusal.get('at_epoch')) in (float, int) and 0 < refusal['at_epoch'] <= clock
+                    for refusal in refusals):
+                raise ValueError('Closed source refusal lacks a dated provider response')
+    return snapshot
+
+
+def channel_activity(root, rows, available, at, *, dispositions=None):
     """Partition missing entries using bound ownership and saved worker metadata."""
     by_video = {row['video_id']: row for row in rows}
     grouped = defaultdict(list)
@@ -37,6 +65,9 @@ def channel_activity(root, rows, available, at):
     qualified = status.qualified_batch_state(root, at.timestamp())
     qualified_stages = qualified.get('video_stages', {}) if lane.get('state') != 'running' else {}
     deferred = set(qualified.get('deferred_video_ids', ()))
+    if dispositions is not None:
+        closed = read_closed_dispositions(dispositions, rows, at)
+        deferred.update(r['video_id'] for r in closed['rows'] if r['disposition'] == 'current_source_refusal')
     namespace = lane.get('namespace', '')
     rolling_stages = rolling.get('video_stages', {})
     scope, attempts = set(rolling_stages), {}
@@ -95,8 +126,10 @@ def mixed_selection(path, names, *, parsed=None):
     return rows, {name: group['scope'] for name, group in selected['creators'].items()}, selected['sha256']
 
 
-def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE, selection=None):
+def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE, selection=None, dispositions=None):
     root = Path(root)
+    if dispositions is not None and selection is None:
+        raise ValueError('Closed source dispositions require a dated selection')
     legacy = root / 'jobs/queue_newest20_enriched.csv'
     rows = list(csv.DictReader(io.StringIO(legacy.read_text(encoding='utf-8-sig')))) if legacy.exists() else []
     scopes, selection_hash = {}, None
@@ -181,7 +214,7 @@ def coverage(root, *, now=None, remote=status.DEFAULT_REMOTE, selection=None):
             'qualified_youtube_audio': len(qualified), 'qualified_youtube_only_audio': len(qualified_only),
             'audio_available': len(available), 'native_asr': len(asr), 'native_caption_videos': len(caption_ids),
             'audio_with_saved_text': len(text), 'remaining_audio': len(targets - available)},
-        'channels': channels, 'activity': channel_activity(root, rows, available, at)}
+        'channels': channels, 'activity': channel_activity(root, rows, available, at, dispositions=dispositions)}
     if selection is not None:
         public.update(selection_basis='mixed_channel_uploads', selection_sha256=selection_hash)
         if selection_info.get('archive'):
@@ -244,11 +277,13 @@ def main(argv=None):
     parser.add_argument('--out', type=Path, required=True)
     parser.add_argument('--selection', type=Path, help='Dated recording selection or additive Latest 20+ videos index')
     parser.add_argument('--activity-csv', type=Path, help='Optional private operator table for this recording selection')
+    parser.add_argument('--dispositions', type=Path,
+                        help='Optional closed source outcomes for the same selection, used only for pending work states')
     args = parser.parse_args(argv)
     if args.activity_csv and (not args.selection or args.activity_csv.resolve() in {
             args.out.resolve(), args.out.with_suffix('.csv').resolve(), (args.out.parent / 'downloaded_videos.csv').resolve()}):
         parser.error('The operator table needs a dated selection and a distinct CSV path')
-    public, videos = coverage(args.root, selection=args.selection)
+    public, videos = coverage(args.root, selection=args.selection, dispositions=args.dispositions)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     outputs = {args.out: (json.dumps(public, ensure_ascii=False, indent=2) + '\n').encode('utf-8'),
         args.out.with_suffix('.csv'): csv_bytes(public['channels'],

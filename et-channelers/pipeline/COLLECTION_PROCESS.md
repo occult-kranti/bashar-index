@@ -30,6 +30,8 @@ The first production batch with six source workers and eight outstanding recordi
 
 The grouped batch finished retrieving audio in 77.6 seconds. About 153 seconds of its runtime had Drive work alone, close to the prior batch's 152 seconds. Three requested source files returned HTTP 403. These batches contain different recordings. Use the complete campaign's receipt rate for the completion estimate.
 
+A subsequent trial archived 15 audio and metadata pairs totaling 447.1 MB in 309.6 seconds. Its four-transfer group copied 194.6 MB at 2.23 MB/s. The closest three-transfer group had copied 187.9 MB at 2.27 MB/s. The host had sufficient memory for either configuration. The collector returned to three simultaneous Drive transfers after the trial.
+
 | Observation | Change |
 | --- | --- |
 | An earlier dashboard showed 1,108 native YouTube recordings from a different selection. | Join receipts by creator, video ID and edition against one saved selection. Show the observation time and count each recording once. |
@@ -59,6 +61,19 @@ python -m pipeline.stage_archived_text --root $archiveRoot --selection $selectio
 
 Use the change in verified recordings between checkpoints of the **same selection** to estimate remaining audio time. Include pauses, uploads and checks in elapsed time. Keep transcripts, source media and private worker journals in the owner's archive. The public dashboard, charts and exports receive a coordinated refresh after collection and analytical review. [Dashboard hub](../../dashboards/)
 
+## Unresolved downloads
+
+The November 19, 23:25 UTC register identified 27 recordings with a closed unsuccessful attempt and no verified audio. The media provider returned HTTP 403 for 23. Three accepted transfers ended early and one local browser failed to start. The remaining 140 outstanding recordings had no documented failure in the closed work through 23:22 UTC. A verified publisher recovery retires the recording from this list and preserves its publishing source in the collection inventory.
+
+The dated snapshot is available in three formats. [Interactive dashboard](../research/download-failures-2026-11-19/index.html) · [CSV](../research/download-failures-2026-11-19/failed-links.csv) · [Readable report](../research/download-failures-2026-11-19/failed-links.md)
+
+Use the coordinator’s latest closed disposition export for the same selected recording IDs, creator channels and formats. The failure report reads that export and local Drive receipt journals. A dated output folder keeps the HTML dashboard, Markdown report and CSV together. All three use ordinary public watch links. The CSV records the last attempt start and last provider refusal separately. The dashboard opens offline and filters by creator or reason. [Register generator](collection_failure_report.py) · [Dashboard renderer](collection_failure_dashboard.py)
+
+```powershell
+python -m pipeline.collection_failure_report --root $archiveRoot --selection $selectionFile --dispositions $closedDispositions --out $reportFolder
+python -m pipeline.collection_coverage --root $archiveRoot --selection $selectionFile --dispositions $closedDispositions --out $coverageFile --activity-csv $creatorsCsv
+```
+
 ## After the last audio receipt
 
 1. Reconcile the complete selection, archive the final recording index and creator table on Drive, then close the audio run in the README and handoff. Keep the 20-record cohort available as its own research sample. The portable catalog export retains earlier memberships, original upload days and the private recording references. [Metadata exporter](selection_catalog_export.py)
@@ -80,6 +95,10 @@ Plan for **22–28 hours of audio acquisition from the eventual start**. The Nov
 | All continuing channels reach 50 | 4,785 | 2,775 | 27.6 |
 
 The rate uses the change from 1,436 verified recordings at 19:23 UTC to 1,784 at 22:51 UTC on the same selection. Three non-overlapping intervals of roughly one hour produced 89.5, 97.9 and 110.2 recordings per hour. Applying the slowest and fastest of those to the two planning workloads gives about 20–31 hours. Later uploads, removed recordings, changes in running time and unavailable sources can shift the result. The prior study's translation and review time precedes that clock. The forecasting command uses only saved indexes and receipt journals and creates a private per-creator report. [Forecast code](regular_fifty_forecast.py)
+
+At 23:18 UTC, the entire latest-20+ selection represented 874.4 hours. The 214 recordings with confirmed English text accounted for 116.9 hours. Of the remaining 757.5 hours, an English-only worker previously processed 25.8 hours at 29.8 times real time, while a multilingual worker processed 4.65 hours at 8.35 times real time. If three quarters of the outstanding hours follow the faster English path, the resulting scenario is about 42 worker-hours. A half-and-half mix gives 58 hours. These are speech-processing scenarios. Input transfers, subsequently discovered captions, language mix, review and both analysis rounds also affect the start of the latest 50.
+
+For the coordinated dashboard release, pass the per-creator forecast to `pipeline.collection_eta` using `--latest50-forecast` alongside the usual `--coverage-checkpoint` arguments. The public output contains aggregate download hours and the study prerequisite.
 
 The archive's scheduling record binds this dependency to its exact latest-20 selection. Single-queue and multi-stage Windows launches check it before starting the latest-50 media phase. Planning remains available. At study completion, the research lead records the final corpus generation and two distinct panel reports using `python -m pipeline.study_schedule --root $archiveRoot finish --generation $generation --first-panel $firstReport --second-panel $secondReport`. Each spoken recording needs a primary English text, and a selected ASR translation needs its original-language transcript. A reviewed non-speech recording can be documented with `--non-speech`. The resulting receipt identifies the study artifacts that released the queue. [Schedule and release code](study_schedule.py)
 

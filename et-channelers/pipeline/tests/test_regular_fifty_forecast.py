@@ -1,9 +1,25 @@
 import unittest
 
-from pipeline import regular_fifty_forecast as forecast
+from pipeline import collection_eta, regular_fifty_forecast as forecast
 
 
 class ForecastTests(unittest.TestCase):
+    def test_public_eta_uses_only_a_matching_study_and_discloses_the_future_start(self):
+        sha = 'a' * 64
+        points = [{'selection_sha256': sha, 'selection_basis': 'latest20plus_public_regular', 'summary': {'latest20_target': 20}}]
+        source = {'selection_sha256': sha, 'start_condition': 'latest20_translations_and_both_analysis_rounds_complete',
+                  'records': {'pending_with_older_list': 28, 'pending_at_ceiling': 30, 'latest20': 20},
+                  'rates': {'recordings_per_hour': 10, 'last': ['2026-11-19T22:00:00Z', 20]},
+                  'by_creator': {'private_path': 'never expose'}}
+        result = collection_eta.fifty_outlook(source, points)
+        self.assertEqual(result['download_hours_from_start'], [2.8, 3.0])
+        self.assertNotIn('private_path', str(result))
+        for invalid in (dict(source, selection_sha256='b'*64), dict(source, start_condition='now'),
+                        dict(source, records=dict(source['records'], pending_at_ceiling=10)),
+                        dict(source, rates=dict(source['rates'], recordings_per_hour=0))):
+            with self.assertRaises(ValueError):
+                collection_eta.fifty_outlook(invalid, points)
+
     def data(self):
         def card(i, status="public_listing"):
             return {"video_id": str(i), "listing_rank": i, "channel_dir": "a", "observed_primary_channel_id": "owner",

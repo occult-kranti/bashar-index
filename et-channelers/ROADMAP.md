@@ -2,7 +2,7 @@
 
 ## Current collection and next phases
 
-The November 19 selection covers 1,976 public regular recordings on 101 channels. At 22:51 UTC, 1,784 had verified Drive audio and metadata, with 192 outstanding. The first native batch to reach six source workers and eight outstanding recordings verified 13 audio files and their metadata in 242 seconds. Publisher downloads share the 23 GB working-file budget and the 12 GB disk reserve. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
+The November 19 selection covers 1,976 public regular recordings on 101 channels. At 23:25 UTC, 1,809 had verified Drive audio and metadata. Of 167 outstanding recordings, 27 had documented unsuccessful attempts. Keep the dated failure report, CSV and offline dashboard together and refresh them when the run closes. A four-transfer Drive trial archived all 15 recordings in 310 seconds. Three transfers remain the default after the three- and four-transfer groups delivered comparable throughput. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
 
 | Stage | Completion condition |
 | --- | --- |
