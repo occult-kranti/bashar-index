@@ -98,6 +98,16 @@ def read_episodes(data, feed_url, *, directory=()):
     return result
 
 
+def numbered_episode_title(title):
+    """Return the displayed base title, season and episode for a hyphenated episode suffix."""
+    if not isinstance(title, str):
+        return None
+    match = re.fullmatch(r"(.+?)\s*\|\s*ep(?:isode)?\.?\s*([0-9]{1,3})-([0-9]{1,5})\s*", title, re.I)
+    if match:
+        return normalize_title(match[1]), int(match[2]), int(match[3])
+    return None
+
+
 def edition_matches(episodes, selection, *, maximum_duration_difference=2):
     """Accept one-to-one, same-host regular recordings with matching title and duration.
 
@@ -118,7 +128,16 @@ def edition_matches(episodes, selection, *, maximum_duration_difference=2):
         seconds = row.get("duration_s")
         if not isinstance(seconds, (int, float)) or seconds <= 0:
             continue
-        candidates = [ep for ep in source_by_title[normalize_title(row["title"])]
+        same_title = list(source_by_title[normalize_title(row["title"])])
+        numbered = numbered_episode_title(row["title"])
+        if numbered:
+            base, season, number = numbered
+            for ep in source_by_title[base]:
+                values = ep.get("season"), ep.get("episode_number")
+                if (all(isinstance(v, str) and re.fullmatch(r"[0-9]{1,5}", v) for v in values)
+                        and (int(values[0]), int(values[1])) == (season, number)):
+                    same_title.append(ep)
+        candidates = [ep for ep in same_title
                       if ep["duration_seconds"] and abs(seconds - ep["duration_seconds"]) <= maximum_duration_difference]
         if len(candidates) == 1:
             ep = candidates[0]

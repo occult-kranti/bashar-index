@@ -85,6 +85,9 @@ def _identity(record, row, remote):
               and text.get("usable_timed_text", False) is False and text.get("source_timecodes_alignment_verified", False) is False,
               "Unverified untimed DOCX extraction provenance")
         return document, source["source_url"], "paired_official_episode_page"
+    if record.get("provider") == "Riverside":
+        _need(status.riverside_transcript_reference(record), "Invalid publisher RSS transcript reference")
+        return text, text["source"], "publisher_declared_episode_text"
     url = urlsplit(text.get("source", ""))
     _need(record.get("kind") == "qualified_publisher_mirror_audio_variant"
           and method == "publisher_owner_title_date_duration" and record.get("exact_youtube_crossreference") is False
@@ -202,6 +205,11 @@ def text_views(path, job, remote=status.DEFAULT_REMOTE):
         text = raw.decode("utf-8")
         paragraphs = _plain_paragraphs(text)
         source_member = "publisher-transcript.en.txt"
+        if record.get("provider") == "Riverside":
+            words = re.findall(r"[a-z]+(?:'[a-z]+)?", text.lower())
+            _need(len(words) == text_proof["words"]
+                  and sum(word in ENGLISH_WORDS for word in words) == text_proof["english_common_words"],
+                  "Publisher RSS transcript language evidence changed")
     _need(len(paragraphs) == text_proof["paragraphs"], "Publisher transcript paragraph count changed")
     spans = []
     cursor = 0

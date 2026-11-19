@@ -1198,7 +1198,7 @@ def publisher_timed_text_coverage(root, targets, remote, target_rows=None):
             continue
         if not isinstance(record, dict):
             continue
-        if record.get('artifact_kind') == 'publisher_edition_caption_batch':
+        if record.get('artifact_kind') in ('publisher_edition_caption_batch', publisher_caption_batch.RSS_ENGLISH_BATCH):
             found.update(publisher_caption_batch.verified_videos(record, targets, remote, owners))
             continue
         if (record.get('schema_version') != 1 or record.get('status') != 'verified' or
@@ -1294,6 +1294,44 @@ def companion_writings(root, targets, remote, target_rows=None):
                     and bundle.get('remote') == parent + 'publisher-session.en.zip'):
                 sessions.add(video)
     return messages, sessions
+
+
+def riverside_transcript_reference(record):
+    """Bind a plain-text feed transcript to the publisher's episode and archived audio."""
+    source = record.get('publisher_rss_transcript_provenance')
+    text = record.get('publisher_transcript')
+    if not isinstance(source, dict) or not isinstance(text, dict):
+        return False
+    observed = source.get('observation')
+    if not isinstance(observed, dict) or not isinstance(observed.get('fingerprint'), dict):
+        return False
+    episode = source.get('episode_guid')
+    show = source.get('publisher_show_id')
+    uuid = r'[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}'
+    if not all(isinstance(value, str) and re.fullmatch(uuid, value) for value in (episode, show)):
+        return False
+    url = f'https://hosting-media.riverside.com/media/podcasts/{show}/episodes/{episode}/transcripts.txt'
+    length = text.get('bytes')
+    words = text.get('words')
+    common = text.get('english_common_words')
+    return (record.get('provider') == 'Riverside' and record.get('watch_page_id') == episode
+            and record.get('kind') == 'qualified_publisher_mirror_audio_variant'
+            and record.get('association_method') == 'publisher_owner_title_date_duration'
+            and record.get('exact_youtube_crossreference') is False and record.get('recording_equivalence_verified') is False
+            and isinstance(source.get('feed_url'), str)
+            and bool(re.fullmatch(r'https://api\.riverside\.fm/hosting/[A-Za-z0-9_-]+\.rss', source['feed_url']))
+            and source.get('feed_sha256') == record.get('accepted_api_sha256')
+            and bool(re.fullmatch('[a-f0-9]{64}', str(source.get('feed_sha256', ''))))
+            and source.get('source_audio_sha256') == record.get('variant_id')
+            and source.get('source_url') == text.get('source') == observed.get('source_url') == url
+            and source.get('mime_type') == 'text/plain' and str(source.get('show_language')).lower().split('-')[0] == 'en'
+            and observed.get('accepted') is True and observed.get('eof_observed') is True and observed.get('http_status') == 200
+            and type(length) is int and 0 < length <= 2_000_000 and observed.get('declared_http_bytes') in (None, length)
+            and all(observed['fingerprint'].get(key) == text.get(key) for key in ('bytes', 'sha256', 'md5'))
+            and type(words) is int and words > 0 and type(common) is int and max(1, .12 * words) <= common <= words
+            and text.get('language') == 'en' and text.get('timed') is False and text.get('usable_timed_text') is False
+            and text.get('audio_alignment_verified') is False and text.get('completeness') == 'complete_publisher_declared_document'
+            and text.get('language_verification') == 'english_show_and_document_lexical_check')
 
 
 def publisher_episode_page_reference(record):
@@ -1525,6 +1563,7 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
                 and type(transcript.get('paragraphs')) is int and transcript['paragraphs'] > 0
                 and record.get('caption_state') == 'english_publisher_transcript_untimed'
                 and transcript.get('remote') == parent + '/publisher-transcript.en.txt'
+                and (record.get('provider') != 'Riverside' or riverside_transcript_reference(record))
                 and (not paired_page or publisher_episode_transcript_reference(record, parent))):
             untimed_ids.add(row['video_id'])
         captions = record.get('caption_bundles')

@@ -35,6 +35,18 @@ class InterviewGuestDiscoveryTests(unittest.TestCase):
         self.assertEqual((row['show_language'],row['transcripts'][0]['language']), ('en',None))
         self.assertEqual(row['duration_seconds'],63)
 
+    def test_display_episode_suffix_requires_agreeing_publisher_numbers_and_duration(self):
+        episode = EPISODE.replace('<i:episode>', '<i:season>2</i:season><i:episode>')
+        eps = self.read(episode)
+        listing = dict(ROW, title='Two Voices & Angels | EP 2-012')
+        def matches(rows, item=listing):
+            return edition_matches(rows, {'channel_id':HOST, 'items':[item]})
+        self.assertEqual([m['episode']['guid'] for m in matches(eps)], [GUID])
+        self.assertEqual(matches(eps, dict(listing, title='Two Voices & Angels | EP2-013')), [])
+        self.assertEqual(matches(eps, dict(listing, duration_s=300)), [])
+        self.assertEqual(matches(self.read(EPISODE)), [])
+        self.assertEqual(matches(self.read(episode, episode.replace(GUID, 'another-guid'))), [])
+
     def test_shared_ordinal_allowed_duplicate_guid_rejected(self):
         a=self.read(EPISODE,EPISODE.replace(GUID,'another'))
         self.assertEqual(len(a),2)

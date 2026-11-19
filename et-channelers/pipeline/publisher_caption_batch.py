@@ -1,9 +1,82 @@
 """Validate timed captions archived separately from a selected recording's audio."""
 import datetime as dt
 from html import unescape
+import math
 import re
 import unicodedata
 from urllib.parse import urlsplit
+
+
+RSS_ENGLISH_BATCH = 'declared_rss_english_caption_batch'
+RSS_ENGLISH_BASIS = 'english_publisher_feed_plus_actual_common_words'
+ENGLISH_COMMON_WORDS = frozenset('the and you is it of to what that this with for we have are our your'.split())
+
+
+def cue_language_evidence(text):
+    words = re.findall(r'[a-z]+', text.casefold())
+    return {'basis': RSS_ENGLISH_BASIS, 'all_word_count': len(words),
+            'english_common_words': sum(word in ENGLISH_COMMON_WORDS for word in words),
+            'different_common_words': len(set(words) & ENGLISH_COMMON_WORDS)}
+
+
+def confirmed_english_cues(evidence):
+    if not isinstance(evidence, dict) or evidence.get('basis') != RSS_ENGLISH_BASIS:
+        return False
+    words, common, distinct = (evidence.get(key) for key in
+                              ('all_word_count', 'english_common_words', 'different_common_words'))
+    return (all(type(n) is int for n in (words, common, distinct)) and words > 25
+            and 9 <= distinct <= len(ENGLISH_COMMON_WORDS) and distinct <= common <= words and common / words > .1)
+
+
+def rss_edition(item):
+    """Validate the publisher's declared episode, recording association and independently measured language."""
+    if not isinstance(item, dict) or item.get('provider') != 'Buzzsprout':
+        return False
+    guid, show, video = item.get('episode_guid'), item.get('show_id'), item.get('video_id')
+    if not (isinstance(guid, str) and re.fullmatch(r'Buzzsprout-[0-9]+', guid)
+            and isinstance(show, str) and re.fullmatch(r'[0-9]+', show) and isinstance(video, str)
+            and re.fullmatch(r'[A-Za-z0-9_-]{11}', video)):
+        return False
+    url = f"https://www.buzzsprout.com/{show}/{guid.split('-')[1]}/transcript.vtt"
+    http = item.get('raw_http_proof') or {}
+    file = http.get('proof') if isinstance(http, dict) else None
+    if not (isinstance(http, dict) and isinstance(file, dict) and item.get('source_url') == http.get('origin_url') == url
+            and http.get('status') == 200 and http.get('observed_eof') is True
+            and file.get('bytes') == item.get('source_bytes') and file.get('sha256') == item.get('source_sha256')
+            and re.fullmatch(r'[a-f0-9]{32}', str(file.get('md5'))) and sha256_string(item.get('publisher_feed_sha256'))
+            and sha256_string(item.get('source_sha256')) and sha256_string(item.get('selection_sha256'))
+            and isinstance(item.get('show_name'), str) and item['show_name'].strip()
+            and re.fullmatch(r'en(?:-[a-z0-9]+)*', str(item.get('show_language','')), re.I)
+            and item.get('language') == 'en' and confirmed_english_cues(item.get('language_evidence'))
+            and item.get('declared_mime_type') == 'text/vtt' and item.get('source_format') == 'vtt'
+            and item.get('caption_kind') == 'publisher_provided_unspecified' and item.get('translation_status') == 'not_declared'
+            and item.get('source_timebase') == 'publisher_episode_seconds' and item.get('original_clock_retained') is True
+            and 'source_audio_sha256' in item and item['source_audio_sha256'] is None
+            and all(item.get(k) is False for k in ('native_youtube_caption','youtube_edit_equivalence_verified',
+                                                    'youtube_time_alignment_verified','speech_coverage_verified'))):
+        return False
+    extent, listed, delta, start, end = (item.get(k) for k in
+        ('publisher_duration_s', 'youtube_duration_s', 'difference_seconds', 'first_cue_start', 'last_cue_end'))
+    if not (all(type(x) in (int, float) and math.isfinite(x) for x in (extent, listed, delta, start, end)) and min(extent,listed) > 0
+            and delta == abs(extent-listed) and 0 <= start < end <= extent + 6
+            and type(item.get('segment_count')) is int and item['segment_count'] > 5
+            and type(item.get('source_bytes')) is int and 0 < item['source_bytes'] <= 750_000):
+        return False
+    refs = item.get('episode_youtube_references')
+    if not isinstance(refs, list) or not all(isinstance(i,str) and re.fullmatch(r'[A-Za-z0-9_-]{11}', i) for i in refs):
+        return False
+    if item.get('association_method') == 'publisher_episode_exact_youtube_reference':
+        return item.get('exact_youtube_crossreference') is True and video in refs
+    try:
+        published = dt.date.fromisoformat(item['publisher_date'])
+        youtube = dt.date.fromisoformat(item['youtube_publication_date'])
+    except (KeyError, ValueError, TypeError):
+        return False
+    return (item.get('association_method') == 'publisher_owner_title_date_duration'
+            and item.get('exact_youtube_crossreference') is False and video not in refs
+            and item.get('same_normalized_title') is True and bool(title_words(item.get('youtube_title')))
+            and title_words(item.get('youtube_title')) == title_words(item.get('episode_title'))
+            and abs((published-youtube).days) <= 2 and delta <= 8)
 
 
 def sha256_string(value):
@@ -66,7 +139,7 @@ def english_track(item):
 
 def verified_videos(record, targets, remote, owners):
     """Return associated target IDs with a verified independent publisher caption bundle."""
-    if (record.get('schema_version') != 1 or record.get('artifact_kind') != 'publisher_edition_caption_batch'
+    if (record.get('schema_version') != 1 or record.get('artifact_kind') not in ('publisher_edition_caption_batch', RSS_ENGLISH_BATCH)
             or record.get('status') != 'verified' or not isinstance(record.get('items'), list)
             or any(record.get(k) is not False for k in
                    ('changes_native_audio_count', 'changes_native_caption_count', 'changes_full_asr_count'))):
@@ -84,6 +157,12 @@ def verified_videos(record, targets, remote, owners):
         if not isinstance(item, dict):
             continue
         video, tab = item.get('video_id'), item.get('tab')
+        if record['artifact_kind'] == RSS_ENGLISH_BATCH:
+            if (isinstance(video, str) and video in targets and item.get('channel_dir') == creator
+                    and tab in ('videos','streams','shorts') and owners.get(video) == (creator, tab)
+                    and re.fullmatch(r'UC[A-Za-z0-9_-]{22}', str(item.get('selected_channel_id',''))) and rss_edition(item)):
+                found.add(video)
+            continue
         if (not isinstance(video, str) or video not in targets or tab not in ('videos', 'shorts', 'streams')
                 or item.get('channel_dir') != creator or owners.get(video) != (creator, tab)
                 or not isinstance(item.get('selected_channel_id'), str)

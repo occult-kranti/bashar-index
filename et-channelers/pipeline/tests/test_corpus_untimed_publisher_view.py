@@ -78,6 +78,42 @@ class UntimedPublisherTests(unittest.TestCase):
     def journal(self, record):
         (self.root/"sync/publisher_mirror_manifest.jsonl").write_text(json.dumps(record)+"\n", encoding="utf-8")
 
+    def test_feed_declared_plaintext_stays_bound_to_the_episode_and_audio_hash(self):
+        row, source, _, path = self.publish_fixture(office=False)
+        show = "3a7c5d4f-efce-4ba6-bc3e-af4ada4aae47"
+        url = f"https://hosting-media.riverside.com/media/podcasts/{show}/episodes/{UUID}/transcripts.txt"
+        raw = ("We have the data. " * 180).encode()
+        path.write_bytes(raw)
+        source.update(provider="Riverside", watch_page_id=UUID, accepted_api_sha256="e"*64)
+        text = source["publisher_transcript"]
+        text.update(**hashes(raw), source=url, timed=False, paragraphs=1, words=720, english_common_words=540,
+                    language_verification="english_show_and_document_lexical_check", usable_timed_text=False,
+                    completeness="complete_publisher_declared_document", audio_alignment_verified=False)
+        source["publisher_rss_transcript_provenance"] = {
+            "feed_url":"https://api.riverside.fm/hosting/example.rss", "feed_sha256":"e"*64,
+            "episode_guid":UUID, "publisher_show_id":show, "mime_type":"text/plain", "source_url":url,
+            "source_audio_sha256":source["variant_id"], "show_language":"en-US",
+            "observation":{"accepted":True, "eof_observed":True, "http_status":200, "source_url":url,
+                           "declared_http_bytes":len(raw), "fingerprint":hashes(raw)}}
+        for key, value in [("episode_guid", show), ("source_audio_sha256", "f"*64),
+                           ("feed_sha256", "b"*64), ("source_url", url.replace(show, UUID))]:
+            invalid = deepcopy(source)
+            invalid["publisher_rss_transcript_provenance"][key] = value
+            self.journal(invalid)
+            self.assertEqual(list(reader.input_rows(self.root, [row], REMOTE)), [])
+            audio, _, _, text_ids = reader.status.publisher_mirror_evidence(self.root, {VIDEO}, REMOTE, [row])
+            self.assertEqual(audio, {VIDEO})
+            self.assertEqual(text_ids, set())
+        self.journal(source)
+        (job,) = reader.input_rows(self.root, [row], REMOTE)
+        view = reader.text_views(path, job, REMOTE)["english"]
+        self.assertEqual(view["source_url"], url)
+        self.assertEqual(view["text"].encode(), raw)
+        self.assertEqual(view["association_evidence"], "publisher_declared_episode_text")
+        self.assertFalse(view["usable_timed_text"])
+        self.assertIsNone(view["segments"][0]["time_start"])
+        self.assertEqual(reader.status.publisher_mirror_evidence(self.root, {VIDEO}, REMOTE, [row])[3], {VIDEO})
+
     def test_docx_reproduces_distinct_verified_plaintext_and_xml_paragraph_positions(self):
         row, source, text, path = self.publish_fixture()
         self.journal(source)

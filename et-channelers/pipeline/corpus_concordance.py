@@ -79,7 +79,7 @@ class Concordance:
             raise ValueError("Expected a pinned nonempty English text view")
         if not segments:
             raise ValueError("The text view requires source segments")
-        paragraph_view = view.get("source_kind") == "publisher_untimed_transcript"
+        paragraph_view = view.get("source_kind") in ("publisher_untimed_transcript", "numbered_publisher_episode_transcript")
         if paragraph_view:
             validate_paragraph_view(view)
         starts, ends, previous = [], [], 0
