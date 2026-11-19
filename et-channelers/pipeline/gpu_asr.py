@@ -25,6 +25,11 @@ import threading
 import time
 import zipfile
 
+HERE = Path(__file__).resolve().parent
+if __name__ == "__main__" and str(HERE) not in sys.path:
+    # Isolated Python omits the script directory even for the worker's own imports.
+    sys.path.insert(0, str(HERE))
+
 if __package__:
     from . import host_capacity
 else:
@@ -37,7 +42,6 @@ MAX_RESULT_BYTES = 20_000_000
 SAMPLE_RATE = 16000
 WINDOW_SECONDS = 30
 FILES = {"segments.json", "transcript.txt", "telemetry.json", "provenance.json", "artifact_manifest.json"}
-HERE = Path(__file__).resolve().parent
 PROVENANCE_PATH = HERE / "gpu_asr_provenance.json"
 DEFAULT_LOCK = HERE / "requirements-gpu-asr-win-py312.lock"
 CONFIG = {"language": "en", "task": "transcribe", "beam_size": 5, "best_of": 1,
@@ -681,7 +685,4 @@ def main(argv=None):
 
 
 if __name__ == "__main__":
-    # -I removes the script directory; only the explicit CLI enables sibling helpers.
-    if str(HERE) not in sys.path:
-        sys.path.insert(0, str(HERE))
     raise SystemExit(main())

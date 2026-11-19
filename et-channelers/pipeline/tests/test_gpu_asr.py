@@ -298,10 +298,10 @@ class WorkerTests(unittest.TestCase):
             with self.assertRaisesRegex(asr.AsrError, "collector_not_parked"):
                 asr.inventory(self.settings, extra=1)
 
-    def test_managed_cap_cannot_exceed_eighteen_gb(self):
+    def test_managed_cap_cannot_exceed_the_project_ceiling(self):
         with self.assertRaisesRegex(asr.AsrError, "managed_cap"):
             asr.Settings(self.root, self.settings.model_dir, self.settings.model_receipt, "gpu", "owner", [self.root], self.lock,
-                         max_managed_bytes=18_000_000_001)
+                         max_managed_bytes=asr.MAX_MANAGED_BYTES + 1)
 
     def test_postrun_storage_honors_the_physical_reserve_after_existing_and_new_growth(self):
         write(self.root / "sync/analysis_resource_plan.json", {"collector_dispatch_allowed": False,

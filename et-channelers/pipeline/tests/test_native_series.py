@@ -158,9 +158,10 @@ class SeriesTests(unittest.TestCase):
         self.controller().run();self.assertEqual(9,len(self.runtime.calls))
 
     def test_stop_drive_or_asr_pressure_prevents_next_frame(self):
+        reserved = self.runtime.snapshot(None)['other_growth_reservations_bytes'] + series.SPOOL
         for change,code in [({'stop_present':True},'series_stopped'),({'drive_hold':True},'provider_hold'),
-                            ({'asr_pairs':3},'asr_backpressure'),({'managed_bytes':10_000_000_001},'resource_backpressure'),
-                            ({'disk_free_bytes':1_999_999_999},'resource_backpressure')]:
+                            ({'asr_pairs':3},'asr_backpressure'),({'managed_bytes':series.MANAGED-reserved+1},'resource_backpressure'),
+                            ({'disk_free_bytes':series.SPARE+reserved-1},'resource_backpressure')]:
             self.runtime.snapshot_change=change
             with self.subTest(code=code),self.assertRaisesRegex(series.Held,code):self.controller().run()
         self.assertEqual([],self.runtime.calls)

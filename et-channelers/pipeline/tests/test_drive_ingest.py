@@ -67,9 +67,10 @@ class BudgetTests(Fixture):
                 budget.write(out, b"x" * 6)
         self.assertEqual(path.stat().st_size, 0)
 
-    def test_never_allows_user_cap_over_twenty_decimal_gb(self):
+    def test_never_allows_user_cap_over_the_project_ceiling(self):
+        ingest.Budget(self.root, ingest.MAX_LOCAL_BYTES, 100, 0)
         with self.assertRaises(ValueError):
-            ingest.Budget(self.root, 20_000_000_001, 100, 0)
+            ingest.Budget(self.root, ingest.MAX_LOCAL_BYTES + 1, 100, 0)
 
     def test_second_process_lock_is_rejected(self):
         with ingest.exclusive_lock(self.root):

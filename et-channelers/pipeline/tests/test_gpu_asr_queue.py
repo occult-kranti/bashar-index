@@ -205,7 +205,9 @@ class QueueTests(unittest.TestCase):
              patch.object(queue.shutil, 'disk_usage', return_value=SimpleNamespace(free=14_000_000_000)):
             self.assertTrue(queue.room_for_inputs(self.root, 220_000_000, queue.MAX_INPUT_BYTES, queue.MIN_FREE_BYTES))
             self.assertFalse(queue.room_for_inputs(self.root, 1_100_000_000, queue.MAX_INPUT_BYTES, queue.MIN_FREE_BYTES))
-            self.assertFalse(queue.room_for_inputs(self.root, 7_200_000_000, queue.MAX_INPUT_BYTES, 0))
+            remaining = queue.MAX_LOCAL_BYTES - 11_000_000_000 - queue.RESERVE
+            self.assertTrue(queue.room_for_inputs(self.root, remaining, queue.MAX_INPUT_BYTES, 0))
+            self.assertFalse(queue.room_for_inputs(self.root, remaining + 1, queue.MAX_INPUT_BYTES, 0))
 
     def test_library_api_rejects_input_storage_inside_git_checkout(self):
         self.add();(self.root/'.git').mkdir()

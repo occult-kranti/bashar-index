@@ -91,8 +91,9 @@ class ChannelIntakeTests(unittest.TestCase):
     def test_staging_respects_private_cap_before_creating_backups(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            with mock.patch.object(intake, "tree_bytes", return_value=17_000_000_000):
-                with self.assertRaisesRegex(ValueError, "storage cap"):
+            with mock.patch.object(intake, "storage_usage", return_value=(100, intake.MAX_LOCAL_BYTES - 1_001_000)), \
+                 mock.patch.object(intake, "reserved_project_growth", return_value=1_000):
+                with self.assertRaisesRegex(ValueError, "managed project cap"):
                     intake.publish(root, {}, {"jobs/new.csv": b"x"}, {"person_id": "example"})
             self.assertFalse((root / "jobs/queue_backups").exists())
 
