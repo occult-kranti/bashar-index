@@ -1,6 +1,14 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
-## Current acquisition handoff, November 19, 00:52 UTC
+## Current acquisition handoff, November 19, 2026, 04:15 UTC
+
+Public `main` is `7c6a860`: [PR #75](https://github.com/occult-kranti/bashar-index/pull/75) merged the streaming PURE receipt reader and Pages passed. The receipt baseline remains **1,151 / 1,420 selected audio entries: 1,108 native + 37 publisher editions + six qualified YouTube editions**, with **136** carrying saved text and **269** missing audio. The 60 creator-level selection gaps remain open. ASR remains paused.
+
+The new 20-item qualified batch is closed after **five submitted attempts: four locally held terminal results, one missing final result and zero new paired archives**. The four recorded results held before observed request/browser/token/media activity; the missing result remains uncertain. Owned jobs are closed and the matching 5 GB reservation is released. Fifteen items were not submitted. At the saved November 19, 04:15 UTC checkpoint, the corrected 15-item continuation is terminal: 11 submissions produced five paired editions, two item-specific source holds, three unpublished native-route handoffs and one missing final result; four targets were not started. Its outer owned process is closed and the matching 5 GB future-growth allocation is released. Handoffs and partial work add no saved-audio count. Follow the dated activity pointer below.
+
+Separately, the owner's **ET Channelers Archive** on Google Drive contains **96 rich metadata items / 43 remote archive objects / 12,045,840 uploaded bytes**. Those metadata objects add zero audio or text coverage. Overall completion ETA is unknown, and the qualified route has no representative end-to-end ETA calibration. Follow the dated [activity/ETA dashboard](dashboard/collection/), [acquisition checkpoint](research/acquisition-checkpoint-2026-11-19.md) and [nine-interface directory](../README.md#public-interfaces); older sections below preserve their original observations.
+
+## Earlier acquisition handoff, November 19, 00:52 UTC
 
 Read the [current acquisition checkpoint](research/acquisition-checkpoint-2026-11-19.md) first. Public `main` includes PRs #69–71; the timeline reconciles 1,145 saved flags. Preserve the deliberately pinned primary acquisition checkout and every earlier actual attempt. A separate worktree carries public changes.
 

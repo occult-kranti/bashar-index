@@ -17,13 +17,13 @@ if __package__:
     from .drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
                                caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from .chromium_capture_service import browser_receipt_complete
-    from . import qualified_edition_receipts, qualified_direct_audio_receipts
+    from . import qualified_edition_receipts, qualified_direct_audio_receipts, qualified_batch_status
 else:  # -I deliberately removes the script directory from the default import path.
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     from drive_ingest import (CAPTION_POLICY, HARD_BLOCKS, caption_receipt_complete,
                               caption_track_verified, receipt_complete, terminal_unavailable, tree_bytes)
     from chromium_capture_service import browser_receipt_complete
-    import qualified_edition_receipts, qualified_direct_audio_receipts
+    import qualified_edition_receipts, qualified_direct_audio_receipts, qualified_batch_status
 
 DEFAULT_REMOTE = "etdrive:04 Audio"
 
@@ -101,7 +101,7 @@ def owned_process_child_of(child, parent):
         kernel.CloseHandle(handle)
 
 
-def owned_native_batch_command(identity, settings_path, coordinator_path=None, command_mode='direct'):
+def owned_native_batch_command(identity, settings_path, coordinator_path=None, command_mode='direct', grant_path=None):
     """Verify the live Windows command binds this code and exact settings file."""
     if os.name != 'nt' or not owned_process_alive(identity):
         return False
@@ -142,6 +142,11 @@ def owned_native_batch_command(identity, settings_path, coordinator_path=None, c
             args = [argv[i] for i in range(count.value)]
         finally:
             kernel.LocalFree(argv)
+        if command_mode == 'qualified_batch':
+            return (len(args) == 9 and args[1:3] == ['-I', '-B'] and
+                    Path(args[3]).resolve() == Path(coordinator_path).resolve() and
+                    args[4:6] == ['--run', '--settings'] and Path(args[6]).resolve() == settings_path.resolve() and
+                    args[7] == '--grant' and grant_path is not None and Path(args[8]).resolve() == grant_path.resolve())
         if len(args) == 6 and args[1] in {'-I', '-u'}:
             args.pop(1)
         program = coordinator_path or Path(__file__).with_name('native_batch.py')
@@ -264,6 +269,13 @@ def private_code_pin(root, pin):
                 path.stat().st_size == size and hashlib.sha256(path.read_bytes()).hexdigest() == pin['sha256'])
     except (OSError, ValueError, TypeError, KeyError):
         return False
+
+
+def qualified_batch_state(root, now):
+    return qualified_batch_status.read(root, now, object_reader=read_object, bound_reader=bound_json,
+        code_reader=private_code_pin, alive=owned_process_alive, child_of=owned_process_child_of,
+        command=lambda identity, settings, program, grant: owned_native_batch_command(
+            identity, settings, program, command_mode='qualified_batch', grant_path=grant))
 
 
 def native_v5_lane(root, now):
@@ -1231,6 +1243,14 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
     native_lane = (native_bulk_lane(root, now) or native_v5_lane(root, now) or native_source_hold(root, now) or direct_native_batch(root, now) or completed_native_lane(root, now)) if not series else {
         'state': 'running', 'workers': series['workers'], 'kind': 'native_v4',
         'process_confirmed': True, 'proof': 'owned_live_process'}
+    qualified_state = qualified_batch_state(root, now)
+    qualified_lane = dict(qualified_state.get('public', {}))
+    source_available = (archived & twenty) | publisher_variants | mirror_audio | qualified_audio
+    qualified_awaiting = {video for video, stage in qualified_state.get('video_stages', {}).items()
+                         if stage == 'awaiting_upload' and video not in source_available}
+    if qualified_lane:
+        qualified_lane['saved_audio_items'] = len(source_available & set(qualified_state.get('scope_video_ids', [])))
+        qualified_lane['awaiting_upload'] = len(qualified_awaiting)
     if series.get('kind') == 'native_v4_campaign':
         native_lane.update({key: value for key, value in series.items() if key not in
                            ('workers', 'asr_running', 'asr_reported_at')})
@@ -1245,6 +1265,9 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
             provider = 'youtube'
             retry = native_lane.get('retry_after')
             until = dt.datetime.fromisoformat(retry.replace('Z', '+00:00')).timestamp() if retry else None
+        archive_all = False
+    if qualified_lane and (qualified_lane['state'] == 'running' or state != 'running'):
+        state, workers, until, provider = qualified_lane['state'], qualified_lane['workers'], None, None
         archive_all = False
     asr_stop = root / 'asr/STOP_ASR'
     if asr_stop.exists():
@@ -1271,7 +1294,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
         for candidate in all_roots:
             if not any(candidate.is_relative_to(parent) for parent in included):
                 included.append(candidate)
-        storage['managed_bytes'] = sum(tree_bytes(path) for path in included)
+        storage['managed_bytes'] = sum(local_bytes if path == root.resolve() else tree_bytes(path) for path in included)
         plan = read_object(root / 'sync/analysis_resource_plan.json')
         managed_cap = plan.get('accounting_cap_bytes')
         if type(managed_cap) is int and 1_000_000_000 <= managed_cap <= 18_000_000_000:
@@ -1284,7 +1307,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                           "workers": workers, "full_archive_requested": archive_all,
                           "cooldown_provider": provider, "caption_state": caption_state,
                           "caption_retry_after": stamp(caption_until) if caption_until else None},
-            "legacy_operation": legacy_operation, "native_lane": native_lane,
+            "legacy_operation": legacy_operation, "native_lane": native_lane, "qualified_lane": qualified_lane,
             "counts": {"verified_pairs": len(verified), "audio_downloaded": len(audio),
                        "supported_native_verified_videos": len(supported_native),
                        "browser_recorded_videos": len(browser_verified), "audio_archived_videos": len(archived),
@@ -1311,7 +1334,7 @@ def snapshot(root, now=None, remote=DEFAULT_REMOTE, managed_roots=()):
                        "caption_verified_videos": len(caption_verified), "caption_verified_tracks": len(verified_tracks),
                        "caption_none_english": len(caption_none), "caption_pending_videos": len(caption_pending),
                        "unavailable": len(unavailable),
-                       "awaiting_upload": len(audio - verified), "channels": channels,
+                       "awaiting_upload": len((audio - verified) | qualified_awaiting), "channels": channels,
                        "indexed_total": len(full | twenty | fifty), "final_round_indexed": len(remaining)},
             "storage": storage, "browser_support": browser_extension_status(root),
             "stages": [{"key": "newest20", "label": "Newest 20", "total": len(twenty),

@@ -500,7 +500,7 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
     if type(campaign_done) is not int or not 0 <= campaign_done <= untouched:
         raise ValueError('Invalid campaign progress')
     cohort_items = cohort_items if type(cohort_items) is int and 0 < cohort_items <= untouched else None
-    return {'generated_at': stamp(now), 'status_snapshot_at': status.get('generated_at'),
+    result = {'generated_at': stamp(now), 'status_snapshot_at': status.get('generated_at'),
             'status': 'conditional_only', 'guaranteed_completion_date': None,
             'full_audio_and_text_completion_hours': None, 'newest20_items': twenty,
             'coverage': coverage, 'measured_service': service,
@@ -527,6 +527,15 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
                 'ASR is separate and may overlap acquisition. Language review, uncertain attempts, item quarantines and unavailable sources prevent a reliable all-audio-plus-text finish date.'],
             'historical_8_to_12_active_hours_superseded': True,
             'calibration': 'completed_download_only_frame' if service_direct else 'completed_joint_series'}
+    qualified = status.get('qualified_lane', {})
+    if qualified.get('kind') == 'qualified_youtube_batch':
+        result['qualified_batch'] = qualified
+        result['status'] = 'qualified_batch_eta_unmeasured'
+        result['historical_native_first_pass_scenario'] = result['untouched_first_pass']
+        result['untouched_first_pass'] = dict(result['untouched_first_pass'], planning_active_hours=None,
+            calendar_hours_at_half_availability=None, state='no_active_native_first_pass')
+        result['assumptions'].append('The separately qualified-edition batch has no representative end-to-end service calibration. Local startup failures do not establish a transfer rate or a provider refusal; its batch and full-goal finish dates remain unknown.')
+    return result
 
 
 def main(argv=None):

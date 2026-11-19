@@ -1,6 +1,12 @@
 # Branch register and development history
 
-## Current navigation, November 19, 00:52 UTC
+## Current navigation, November 19, 2026, 04:15 UTC
+
+Public `main` is `7c6a860`: [PR #75](https://github.com/occult-kranti/bashar-index/pull/75) merged the streaming PURE receipt reader and Pages passed. The current public checkpoint work is `automation/qualified20-activity-20261119`; historical branches and release rows below remain retained.
+
+Audio remains **1,151** (1,108 native, 37 publisher, six qualified), with **136** carrying saved text, **269** selected videos missing audio and **60** creator-level selection gaps. The 20-item qualified batch closed after five submitted attempts: four local holds and one missing final result, with no new pair. Its owned jobs are closed and 5 GB reservation released. At the saved November 19, 04:15 UTC checkpoint, the corrected 15-item continuation is terminal: 11 submissions produced five paired editions, two item-specific source holds, three unpublished native-route handoffs and one missing final result; four targets were not started. Its outer owned process is closed and the matching 5 GB future-growth allocation is released. Handoffs and partial work add no saved-audio count. Separately, 96 rich metadata items / 43 remote objects / 12,045,840 uploaded bytes add no audio coverage. ASR is paused; overall completion ETA is unknown and the qualified route has no representative end-to-end ETA calibration. See [current activity](et-channelers/dashboard/collection/), [all nine linked interfaces](README.md#public-interfaces) and the [handoff](et-channelers/HANDOFF.md).
+
+## Earlier navigation, November 19, 00:52 UTC
 
 Published `main` is [`2ec2585`](https://github.com/occult-kranti/bashar-index/commit/2ec258513f3e4b4911daead3fabf96e9d43302ee). The primary acquisition checkout remains deliberately pinned while private jobs reference its source bytes. Public updates use an isolated worktree. A branch pointer and an executing job have separate lifecycles.
 

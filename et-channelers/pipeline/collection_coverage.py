@@ -31,6 +31,8 @@ def channel_activity(root, rows, available, at):
     for row in rows:
         grouped[row['channel_dir']].append(row)
     lane = status.native_bulk_lane(root, at.timestamp())
+    qualified = status.qualified_batch_state(root, at.timestamp())
+    qualified_stages = qualified.get('video_stages', {}) if lane.get('state') != 'running' else {}
     namespace = lane.get('namespace', '')
     scope, attempts = set(), {}
     if re.fullmatch(r'stock_wpc_batch_v5_bulk(?:_recovery[0-9]+|_recovery6_prototype)?', namespace):
@@ -48,6 +50,9 @@ def channel_activity(root, rows, available, at):
         field = 'other_pending'
         if ident in available:
             field = 'saved'
+        elif ident in qualified_stages:
+            stage = qualified_stages[ident]
+            field = stage if stage in ACTIVITY_FIELDS else 'other_pending'
         elif ident in scope:
             if ident not in attempts:
                 field = 'queued'
@@ -67,7 +72,8 @@ def channel_activity(root, rows, available, at):
         channels.append(dict(channel=names.most_common(1)[0][0], channel_dir=slug, target=len(items),
             **{field: counters[slug][field] for field in ACTIVITY_FIELDS}))
     return {'schema_version': 1, 'generated_at': at.isoformat().replace('+00:00', 'Z'),
-        'state': lane.get('state', 'unconfirmed'), 'cohort_items': len(scope),
+        'state': qualified.get('public', {}).get('state', lane.get('state', 'unconfirmed')),
+        'cohort_items': qualified.get('public', {}).get('source_count', len(scope)) if qualified_stages else len(scope),
         'summary': {field: sum(row[field] for row in channels) for field in ACTIVITY_FIELDS},
         'channels': channels}
 
