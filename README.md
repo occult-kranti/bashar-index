@@ -2,7 +2,7 @@
 
 ## Start here
 
-The project archives audio and metadata from channeling creators and publishes source-backed research. The latest-20 selection holds **1,976 public regular uploads across 101 channels**. At 21:45 UTC on November 19, Drive held **1,671 verified recordings**. Sixty-seven creators had complete coverage, and 305 recordings remained. The Windows pipeline can run six source workers alongside grouped uploads under a 23 GB working-file allowance, while keeping 12 GB physically free. The larger catalog retains Shorts and streams. [Collection process and concurrency](et-channelers/pipeline/COLLECTION_PROCESS.md) · [Dashboard hub](dashboards/)
+The project archives audio and metadata from channeling creators and publishes source-backed research. The latest-20 selection holds **1,976 public regular uploads across 101 channels**. At 22:21 UTC on November 19, Drive held **1,731 verified recordings**. Sixty-seven creators had complete coverage, and 245 recordings remained. The Windows collector can run six source workers alongside three Drive transfers under a 23 GB working-file allowance, while keeping 12 GB physically free after reservations. The larger catalog retains Shorts and streams. [Collection process and concurrency](et-channelers/pipeline/COLLECTION_PROCESS.md) · [Dashboard hub](dashboards/)
 
 For data collection, start with the Windows handoff and the pipeline guide. For the study, start with the research plan, reviewed channeler–entity table and event register. Branch history records which work has reached the public site. [Handoff](et-channelers/HANDOFF.md) · [Pipeline](et-channelers/pipeline/README.md) · [Analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md) · [Source relationships](et-channelers/research/analysis-plan-2026-11-16/channeler-entity-table.md) · [Shared events](et-channelers/research/cross-channel-events-2026-11-16.md) · [Branches](BRANCHES.md)
 
@@ -68,7 +68,7 @@ The quantities and running-consumer observations in this section belong to the e
 
 The supported local YouTube lane saves **native audio plus sanitized metadata**, verifies the exact Drive objects and writes durable receipts before deleting local copies. It also saves available **English published captions and original English automatic captions**, including regional English variants; other languages and machine translations are excluded. Caption bundles retain raw response, timed segments, readable text and provenance. No picture download, audio re-encoding or ASR is part of this lane.
 
-The November 18 sample used the Videos tab for both the twenty- and fifty-recording cohorts. The November 19 selection uses the channel’s uploads order across formats for both stages. Each fifty includes the earlier twenty. The final stage indexes the remaining archive. All lengths qualify.
+The November 18 and current November 19 regular-video samples use each channel’s newest-first Videos tab. Each sweep accepts public uploads of every duration and date. The next sweep extends the target to fifty, reuses previously saved recordings and preserves both dated selections when new uploads change the order. Shorts and streams remain separately indexed in the cumulative catalog. [Selection and queue procedure](et-channelers/pipeline/COLLECTION_PROCESS.md)
 
 The [dated collection snapshot](et-channelers/plan/ingestion_status.json) reports acquisition and derived text separately. At this continuation checkpoint:
 

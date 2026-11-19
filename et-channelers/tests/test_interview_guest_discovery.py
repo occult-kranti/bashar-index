@@ -26,6 +26,17 @@ class InterviewGuestDiscoveryTests(unittest.TestCase):
     def read(self, *items, directory=()):
         return read_episodes((PREFIX + ''.join(items) + '</channel></rss>').encode(), FEED, directory=directory)
 
+    def test_unsized_enclosure_is_optional_and_keeps_unknown_bytes(self):
+        for length in (' length="0"', ''):
+            item = EPISODE.replace(' length="8700"', length)
+            data = (PREFIX + item + '</channel></rss>').encode()
+            self.assertEqual(read_episodes(data, FEED)[GUID]['enclosures'], [])
+            enclosure, = read_episodes(data, FEED, include_unsized_enclosures=True)[GUID]['enclosures']
+            self.assertEqual(enclosure, {'bytes': None, 'mime_type': 'audio/mpeg', 'url': 'https://example.org/audio.mp3'})
+        invalid = EPISODE.replace(' length="8700"', ' length="-1"')
+        data = (PREFIX + invalid + '</channel></rss>').encode()
+        self.assertEqual(read_episodes(data, FEED, include_unsized_enclosures=True)[GUID]['enclosures'], [])
+
     def test_directory_slug_and_publisher_language_are_not_identity(self):
         decoy = {'kind':'podcast-episode','episodeGuid':'wrong','trackName':'Two Voices & Angels',
                  'trackViewUrl':'https://podcasts.apple.com/episode-wrong'}

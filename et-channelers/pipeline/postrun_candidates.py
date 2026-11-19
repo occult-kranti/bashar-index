@@ -17,8 +17,10 @@ import re
 from tempfile import TemporaryDirectory
 
 if __package__:
+    from . import episode_periods
     from . import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr, publisher_caption_batch
 else:
+    import episode_periods
     import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr, publisher_caption_batch
 
 
@@ -203,7 +205,8 @@ def run(root, selection, expected, *, families=None, figures=False, out=None):
     engine = corpus_concordance.Concordance()
     topics = sorted({family for _, family, _ in engine.rules})
     methods = {name: digest(Path(module.__file__).read_bytes()) for name, module in (
-        ("concordance", corpus_concordance), ("comparison", episode_comparison), ("figures", episode_figures))}
+        ("concordance", corpus_concordance), ("comparison", episode_comparison), ("figures", episode_figures),
+        ("publication_periods", episode_periods))}
     methods.update(driver=digest(Path(__file__).read_bytes()), lexicon=engine.revision)
     method = digest(encoded(methods).encode())
     roster = [{"video_id": row["video_id"], "channel_dir": row["channel_dir"], "tab": row["tab"],
@@ -233,6 +236,7 @@ def run(root, selection, expected, *, families=None, figures=False, out=None):
                 comparison = episode_comparison.compare(frame, candidates(root, frame, choices, method, topics,
                                                                           engine, stream, counts), topics)
             comparison.update(assessment="unreviewed_english_lexicon_candidates", assessment_method_sha256=method)
+            comparison["publication_periods"] = episode_periods.summarize(frame, comparison["evidence"], topics)
             common.atomic_write_text(stage / "episode-comparison.json", encoded(comparison) + "\n")
             common.atomic_write_text(stage / "view-inventory.json", encoded(roster) + "\n")
             if figures:

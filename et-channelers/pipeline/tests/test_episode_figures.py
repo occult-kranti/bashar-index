@@ -92,6 +92,30 @@ class EpisodeFigureTests(unittest.TestCase):
                 self.assertEqual(len(list(csv.DictReader(f))), 24)
 
     @unittest.skipUnless(find_spec("matplotlib"), "Chart exports require the existing research plotting environment")
+    def test_published_quarter_files_include_denominators_and_missing_values(self):
+        from pipeline import episode_periods
+        from pipeline.tests.test_episode_periods import dated
+
+        audio = [dated("first", "Pine", "2025-12-19"), dated("second", "Pine", "2026-02-01"),
+                 dated("third", "Birch", "2026-01-20", exact=False)]
+        evidence = [observation("first", "topic", [("X", "topic")], assessed=["X"], creator="Pine"),
+                    observation("second", "quiet", [], assessed=["X"], creator="Pine")]
+        result = comparison.compare(audio, evidence, ["X"])
+        result["publication_periods"] = episode_periods.summarize(audio, result["evidence"], ["X"])
+        with TemporaryDirectory() as temporary:
+            out = Path(temporary)
+            figures.export(result, out)
+            with (out / "publication-quarter-topics.csv").open(encoding="utf-8-sig", newline="") as stream:
+                rows = {row["publication_quarter"]: row for row in csv.DictReader(stream)}
+            self.assertEqual(rows["undated"]["creator_balanced_share"], "")
+            self.assertEqual(rows["undated"]["eligible_creators"], "1")
+            self.assertEqual(rows["2026-Q1"]["creator_balanced_share"], "0.0")
+            with (out / "matched-creator-quarter-changes.csv").open(encoding="utf-8-sig", newline="") as stream:
+                self.assertEqual(next(csv.DictReader(stream))["mean_within_creator_change_percentage_points"], "-100.0")
+            chart = ElementTree.parse(out / "publication-quarter-topics-01-01.svg").getroot()
+            self.assertIn("undated", " ".join(chart.itertext()))
+
+    @unittest.skipUnless(find_spec("matplotlib"), "Chart exports require the existing research plotting environment")
     def test_empty_frame_exports_explanatory_figures(self):
         with TemporaryDirectory() as tmp:
             root = Path(tmp)

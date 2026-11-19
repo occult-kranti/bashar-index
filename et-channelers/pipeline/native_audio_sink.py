@@ -160,6 +160,22 @@ def inspect_audio(path, selected, executable):
 
 
 class Coordinator:
+    def publish_ready(self, sinks, drive, *, publisher_headroom_bytes, guard=None):
+        """Archive up to six completed Sinks, returning an individual receipt or hold for each.
+
+        Pass already validated Sinks from this coordinator and the available local
+        publisher-byte reservation. A single ready Sink uses the normal individual
+        publisher. A group shares one checksum upload and one Drive metadata read.
+        Each outcome carries its recording key, state and verified canonical receipt
+        when available. Keep the reservation for a cleanup-held item until its
+        remaining local files have been reconciled.
+        """
+        try:
+            from .native_publication_queue import publish_ready
+        except ImportError:
+            from native_publication_queue import publish_ready
+        return publish_ready(self,sinks,drive,headroom=publisher_headroom_bytes,additional_guard=guard)
+
     def __init__(self,root,*,owner,lease_id,queue_path,managed_roots,remote,ffprobe,
                  core,metadata_builder,probe=inspect_audio,disk_free=None,on_batch_abort=None):
         self.root=Path(root).resolve(); self.spool=self.root/'native_batch'; self.owner=owner; self.lease_id=lease_id
@@ -664,10 +680,13 @@ class Sink:
         return record
 
 
-    def publish(self,drive):
+    def publish(self,drive,*,group_evidence=None):
         with self.c.lock:
             self.c.guard();state=self.state();need(state['state'] in {'local_validated','verified_cleanup','publishing'},'not_validated')
-            need(self.job_id not in self.c.publishing,'upload_already_claimed')
+            if group_evidence is None:
+                need(self.job_id not in self.c.publishing,'upload_already_claimed')
+            else:
+                need(self.job_id in self.c.publishing and group_evidence.member.sink is self,'native_group_claim_binding')
             record=state['record'];audio=self.c.root/record['path'];metadata=self.c.root/record['metadata']['path']
             if not audio.exists() and (self.folder/'audio.part').exists():
                 need(digest(self.folder/'audio.part')=={k:record[k] for k in ('bytes','md5','sha256')},'promotion_recovery_hash')
@@ -678,21 +697,26 @@ class Sink:
             self.c.publishing.add(self.job_id);state['state']='publishing';atomic(self.folder/'state.json',state)
         # Uploads run separately from the source write lock; no raw transport details leave browser.
         try:
-            if not recovering:drive.copy_pair(audio,metadata,record['remote'],record['metadata']['remote'])
-            with self.c.lock:
-                self.c.guard()
-            if hasattr(drive, 'stat_batch') and hasattr(self.c.core, 'batch_manifest'):
-                relatives = [self.c.core.remote_relative(self.c.remote, obj['remote']) for obj in (record,record['metadata'])]
-                # Each sink owns its manifest even when another sink is uploading.
-                with self.c.core.batch_manifest(self.folder, relatives) as manifest:
-                    entries = drive.stat_batch(self.c.remote, set(relatives), manifest)
-                remote_proofs = {'audio':entries[relatives[0]], 'metadata':entries[relatives[1]]}
+            trusted=None
+            if group_evidence is None:
+                if not recovering:drive.copy_pair(audio,metadata,record['remote'],record['metadata']['remote'])
+                with self.c.lock:
+                    self.c.guard()
+                if hasattr(drive, 'stat_batch') and hasattr(self.c.core, 'batch_manifest'):
+                    relatives = [self.c.core.remote_relative(self.c.remote, obj['remote']) for obj in (record,record['metadata'])]
+                    # Each sink owns its manifest even when another sink is uploading.
+                    with self.c.core.batch_manifest(self.folder, relatives) as manifest:
+                        entries = drive.stat_batch(self.c.remote, set(relatives), manifest)
+                    remote_proofs = {'audio':entries[relatives[0]], 'metadata':entries[relatives[1]]}
+                else:
+                    remote_proofs = {'audio':drive.stat(record['remote']),'metadata':drive.stat(record['metadata']['remote'])}
             else:
-                remote_proofs = {'audio':drive.stat(record['remote']),'metadata':drive.stat(record['metadata']['remote'])}
+                remote_proofs,trusted=group_evidence.consume(self,record)
             with self.c.lock:
                 self.c.guard()
                 need(remote_proofs['audio'].get('ID') and remote_proofs['metadata'].get('ID') and remote_proofs['audio']['ID']!=remote_proofs['metadata']['ID'],'drive_pair_identity')
-                result=self.c.core.verify_and_delete(self.c.root,record,drive,complete,require_metadata=True,allow_missing=recovering,remote_proofs=remote_proofs)
+                options={'trusted':trusted} if trusted is not None else {}
+                result=self.c.core.verify_and_delete(self.c.root,record,drive,complete,require_metadata=True,allow_missing=recovering,remote_proofs=remote_proofs,**options)
                 need(self.c.core.receipt_complete(result,state['queue_row'],self.c.remote),'canonical_receipt_failed')
                 state.update(state='deleted',record=result);atomic(self.folder/'state.json',state)
                 self.c.live.pop(self.job_id,None)
