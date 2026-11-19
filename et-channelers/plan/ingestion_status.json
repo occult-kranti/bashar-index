@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-18T23:50:09Z",
+  "generated_at": "2026-11-19T01:50:55Z",
   "scope": "local_youtube_collection",
   "operation": {
     "state": "ready",
@@ -59,8 +59,8 @@
     "publisher_mirror_caption_target_videos": 17,
     "publisher_mirror_asr_target_videos": 11,
     "publisher_standalone_timed_text_target_videos": 3,
-    "qualified_youtube_audio_edition_target_videos": 0,
-    "source_audio_available_target_videos": 1145,
+    "qualified_youtube_audio_edition_target_videos": 1,
+    "source_audio_available_target_videos": 1146,
     "source_audio_with_text_target_videos": 136,
     "caption_verified_videos": 15,
     "caption_verified_tracks": 20,
@@ -73,9 +73,9 @@
     "final_round_indexed": 64145
   },
   "storage": {
-    "local_bytes": 7322029957,
+    "local_bytes": 7386891858,
     "ceiling_bytes": 17000000000,
-    "managed_bytes": 10329694415,
+    "managed_bytes": 10395884120,
     "managed_ceiling_bytes": 16000000000
   },
   "browser_support": {
