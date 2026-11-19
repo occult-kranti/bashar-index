@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-18T23:50:18.129167Z",
+  "generated_at": "2026-11-19T01:50:55.886166Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
     "youtube_native_audio": 1108,
     "publisher_only_audio": 37,
-    "qualified_youtube_audio": 0,
-    "qualified_youtube_only_audio": 0,
-    "audio_available": 1145,
+    "qualified_youtube_audio": 1,
+    "qualified_youtube_only_audio": 1,
+    "audio_available": 1146,
     "native_asr": 91,
     "native_caption_videos": 17,
     "audio_with_saved_text": 136,
-    "remaining_audio": 275
+    "remaining_audio": 274
   },
   "channels": [
     {
@@ -781,10 +781,10 @@
       "target": 20,
       "youtube_audio": 15,
       "publisher_only_audio": 0,
-      "qualified_youtube_only_audio": 0,
-      "audio_total": 15,
+      "qualified_youtube_only_audio": 1,
+      "audio_total": 16,
       "with_saved_text": 0,
-      "remaining_audio": 5
+      "remaining_audio": 4
     },
     {
       "channel": "Tracey Milne",
@@ -833,16 +833,16 @@
   ],
   "activity": {
     "schema_version": 1,
-    "generated_at": "2026-11-18T23:50:18.129167Z",
+    "generated_at": "2026-11-19T01:50:55.886166Z",
     "state": "ready",
     "cohort_items": 0,
     "summary": {
-      "saved": 1145,
+      "saved": 1146,
       "downloading": 0,
       "processing": 0,
       "awaiting_upload": 0,
       "queued": 0,
-      "other_pending": 275
+      "other_pending": 274
     },
     "channels": [
       {
@@ -1608,12 +1608,12 @@
         "channel": "Tolec",
         "channel_dir": "tolec",
         "target": 20,
-        "saved": 15,
+        "saved": 16,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 5
+        "other_pending": 4
       },
       {
         "channel": "Tracey Milne",
