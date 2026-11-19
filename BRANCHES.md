@@ -1,6 +1,18 @@
 # Branch register and development history
 
-## Current navigation, November 18, 22:29 UTC
+## Current navigation, November 19, 00:52 UTC
+
+Published `main` is [`2ec2585`](https://github.com/occult-kranti/bashar-index/commit/2ec258513f3e4b4911daead3fabf96e9d43302ee). The primary acquisition checkout remains deliberately pinned while private jobs reference its source bytes. Public updates use an isolated worktree. A branch pointer and an executing job have separate lifecycles.
+
+| Work | Branch / tested head | Integration |
+|---|---|---|
+| Qualified audio coverage and atomic download promotion | `feat/qualified-direct-audio-coverage-2026-11-18` / `6317873` | [PR #69](https://github.com/occult-kranti/bashar-index/pull/69), merged `a0ecbcc`; exact-head CI passed |
+| Terminal audio checkpoint | `automation/collection-checkpoint-20261118T235009Z` / `4ad069f` | [PR #70](https://github.com/occult-kranti/bashar-index/pull/70), merged `c008193`; CI and Pages passed |
+| Timeline saved flags and refresh | `fix/collection-timeline-refresh-2026-11-19` / `0e54b0b` | [PR #71](https://github.com/occult-kranti/bashar-index/pull/71), merged `2ec2585`; CI and Pages passed |
+
+Those branches are retained. The current [acquisition checkpoint](et-channelers/research/acquisition-checkpoint-2026-11-19.md) records 1,145 saved audio entries, the verified metadata supplement and the pending format-recovery work. Earlier inventories below retain their original audit dates.
+
+## Previous navigation, November 18, 22:29 UTC
 
 | Branch / release | Role and integration |
 |---|---|

@@ -1,6 +1,14 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
-## Current acquisition handoff, November 18, 22:29 UTC
+## Current acquisition handoff, November 19, 00:52 UTC
+
+Read the [current acquisition checkpoint](research/acquisition-checkpoint-2026-11-19.md) first. Public `main` includes PRs #69–71; the timeline reconciles 1,145 saved flags. Preserve the deliberately pinned primary acquisition checkout and every earlier actual attempt. A separate worktree carries public changes.
+
+The latest qualified audio-only attempt is terminal: browser startup and token generation succeeded, the processed formats contained an MP4 and storyboards, zero audio was saved, all owned jobs closed, and its 650 MB reservation was released. The whole provider state remains 886 outcomes / next sequence 887; retained metadata traffic and earlier unknowns remain part of the handoff. Prepare a new bounded MP4/stream-copy scope using response Content-Length while preserving the unknown metadata filesize. Cached audio-only declarations alone are insufficient scheduling evidence.
+
+The separate metadata uploader verified 16 records / 33 objects / 10,764,239 bytes and released its 64 MB reservation after clean owned-process exit. Its manifest contributes no audio or text coverage. Originals remain preserved. Preparation of compressed metadata bundles is source-free. ASR remains paused, and no older source actor should be restarted from this document.
+
+## Previous acquisition handoff, November 18, 22:29 UTC
 
 The latest finite native batch is **terminal: 14 attempts, 13 verified paired audio/metadata archives, one hold, 539.12 seconds**. All owned jobs and child audits closed; its matching lease and 4.8 GB future-growth reservation are released. The preceding Source6 cohort closed at 21:13 UTC after 253 attempts, 208 paired archives and 45 holds. Aggregate counts and job status come from the dated [collection dashboard](dashboard/collection/); a snapshot taken before a terminal can still show that past job as running. Preserve every real receipt, metadata file, partial input and complete HTTP ledger when preparing later work.
 
