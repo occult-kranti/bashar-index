@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-19T04:15:44Z",
+  "generated_at": "2026-11-19T05:00:32Z",
   "scope": "local_youtube_collection",
   "operation": {
     "state": "paused",
@@ -57,20 +57,20 @@
     "ETA_state": "unmeasured",
     "planning_active_hours": null,
     "Native_count_increment": 0,
-    "saved_audio_items": 5
+    "saved_audio_items": 6
   },
   "counts": {
-    "verified_pairs": 1108,
-    "audio_downloaded": 1108,
+    "verified_pairs": 1109,
+    "audio_downloaded": 1109,
     "supported_native_verified_videos": 154,
     "browser_recorded_videos": 0,
-    "audio_archived_videos": 1108,
+    "audio_archived_videos": 1109,
     "asr_verified_videos": 91,
     "text_artifact_videos": 106,
-    "text_pending_videos": 1002,
+    "text_pending_videos": 1003,
     "text_available_videos": 108,
     "text_inventory_complete_videos": 106,
-    "text_missing_videos": 1000,
+    "text_missing_videos": 1001,
     "caption_text_available_videos": 17,
     "caption_inventory_review_videos": 2,
     "publisher_text_target_videos": 16,
@@ -83,12 +83,12 @@
     "publisher_mirror_asr_target_videos": 11,
     "publisher_standalone_timed_text_target_videos": 3,
     "qualified_youtube_audio_edition_target_videos": 6,
-    "source_audio_available_target_videos": 1151,
+    "source_audio_available_target_videos": 1152,
     "source_audio_with_text_target_videos": 136,
     "caption_verified_videos": 15,
     "caption_verified_tracks": 20,
     "caption_none_english": 1,
-    "caption_pending_videos": 1092,
+    "caption_pending_videos": 1093,
     "unavailable": 0,
     "awaiting_upload": 0,
     "channels": 74,
@@ -96,9 +96,9 @@
     "final_round_indexed": 64145
   },
   "storage": {
-    "local_bytes": 7413424296,
+    "local_bytes": 7435048309,
     "ceiling_bytes": 17000000000,
-    "managed_bytes": 10429328858,
+    "managed_bytes": 10452465495,
     "managed_ceiling_bytes": 16000000000
   },
   "browser_support": {
@@ -117,7 +117,7 @@
       "key": "newest20",
       "label": "Newest 20",
       "total": 1420,
-      "verified": 1108,
+      "verified": 1109,
       "unavailable": 0,
       "state": "in_progress"
     },
@@ -125,7 +125,7 @@
       "key": "newest50",
       "label": "Extend to 50",
       "total": 3449,
-      "verified": 1108,
+      "verified": 1109,
       "unavailable": 0,
       "state": "waiting"
     },
@@ -137,5 +137,23 @@
       "unavailable": 0,
       "state": "indexed"
     }
-  ]
+  ],
+  "latest_bounded_attempt": {
+    "kind": "native_audio_handoff",
+    "state": "paused",
+    "attempted_items": 3,
+    "saved_native_pairs": 1,
+    "redirect_held_items": 1,
+    "interrupted_partial_items": 1,
+    "awaiting_upload": 0,
+    "process_confirmed": false,
+    "owned_processes_closed": true,
+    "future_growth_released": true,
+    "automatic_resume": false,
+    "redirect_response_status_recorded": false,
+    "redirects_followed": 0,
+    "retries": 0,
+    "recorded_at": "2026-11-19T05:00:59Z",
+    "ETA_state": "unknown"
+  }
 }

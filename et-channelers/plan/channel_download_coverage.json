@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
   "scope": "newest20_receipt_coverage",
-  "generated_at": "2026-11-19T04:15:44.003709Z",
+  "generated_at": "2026-11-19T05:00:32.708671Z",
   "summary": {
     "channels": 74,
     "latest20_target": 1420,
-    "youtube_native_audio": 1108,
+    "youtube_native_audio": 1109,
     "publisher_only_audio": 37,
     "qualified_youtube_audio": 6,
     "qualified_youtube_only_audio": 6,
-    "audio_available": 1151,
+    "audio_available": 1152,
     "native_asr": 91,
     "native_caption_videos": 17,
     "audio_with_saved_text": 136,
-    "remaining_audio": 269
+    "remaining_audio": 268
   },
   "channels": [
     {
@@ -130,12 +130,12 @@
       "channel": "Brad Johnson",
       "channel_dir": "brad-johnson",
       "target": 20,
-      "youtube_audio": 16,
+      "youtube_audio": 17,
       "publisher_only_audio": 0,
       "qualified_youtube_only_audio": 0,
-      "audio_total": 16,
+      "audio_total": 17,
       "with_saved_text": 2,
-      "remaining_audio": 4
+      "remaining_audio": 3
     },
     {
       "channel": "チャネラー純子 Channeler Junko",
@@ -833,16 +833,16 @@
   ],
   "activity": {
     "schema_version": 1,
-    "generated_at": "2026-11-19T04:15:44.003709Z",
+    "generated_at": "2026-11-19T05:00:32.708671Z",
     "state": "paused",
     "cohort_items": 15,
     "summary": {
-      "saved": 1151,
+      "saved": 1152,
       "downloading": 0,
       "processing": 0,
       "awaiting_upload": 0,
       "queued": 0,
-      "other_pending": 269
+      "other_pending": 268
     },
     "channels": [
       {
@@ -959,12 +959,12 @@
         "channel": "Brad Johnson",
         "channel_dir": "brad-johnson",
         "target": 20,
-        "saved": 16,
+        "saved": 17,
         "downloading": 0,
         "processing": 0,
         "awaiting_upload": 0,
         "queued": 0,
-        "other_pending": 4
+        "other_pending": 3
       },
       {
         "channel": "チャネラー純子 Channeler Junko",
