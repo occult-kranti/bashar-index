@@ -34,6 +34,22 @@ def profile_receipt(record, profile='HE-AAC'):
         preservation[side]['profile'] = profile
     return reseal(record)
 
+def streaming_receipt(record):
+    record = profile_receipt(record)
+    qualification = record['qualification']
+    preservation = qualification['payload']['AAC_preservation']
+    component = {'sha256': receipts.STREAM_COMPONENT_SHA, 'bytes': receipts.STREAM_COMPONENT_BYTES}
+    qualification['verifier_artifact'] = component
+    preservation.update(
+        quality_contract=receipts.STREAM_CONTRACT, quality_component_artifact=deepcopy(component),
+        base_verifier_role='digest_compatibility_reference_only', base_verifier_execution_claimed=False,
+        packet_summary_mode='incremental_ffprobe_JSON_one_packet_buffer_v1',
+        packet_count_bound_basis='positive_packet_payload_sizes_sum_not_exceeding_actual_file_bytes',
+        maximum_source_bytes=2_000_000_000, maximum_derived_bytes=2_000_000_000,
+        maximum_packet_record_bytes=65536, maximum_stderr_bytes=1_000_000,
+        fixed_packet_count_or_duration_cutoff=False)
+    return reseal(record)
+
 
 class EditionReceiptTests(unittest.TestCase):
     def setUp(self):
@@ -108,6 +124,60 @@ class EditionReceiptTests(unittest.TestCase):
             with self.subTest(field=field), self.assertRaisesRegex(receipts.ReceiptHold, 'file_fingerprint'):
                 receipts.qualification(qualification, record['video_id'], payload['derived_audio_file'],
                                        payload['source_file']['sha256'])
+
+    def test_streaming_component_has_separate_artifact_and_reference_role(self):
+        record = streaming_receipt(self.record)
+        self.assertFalse(self.validate(record).native_promotion)
+        for key, value in [('base_verifier_execution_claimed', True),
+                           ('base_verifier_role', 'executed'),
+                           ('fixed_packet_count_or_duration_cutoff', True),
+                           ('maximum_packet_record_bytes', 1_000_000)]:
+            invalid = deepcopy(record)
+            invalid['qualification']['payload']['AAC_preservation'][key] = value
+            with self.subTest(key=key), self.assertRaises(receipts.ReceiptHold):
+                self.validate(reseal(invalid))
+        invalid = deepcopy(record)
+        invalid['qualification']['verifier_artifact'] = {
+            'sha256': receipts.PROFILE_COMPONENT_SHA, 'bytes': receipts.PROFILE_COMPONENT_BYTES}
+        with self.assertRaises(receipts.ReceiptHold):
+            self.validate(reseal(invalid))
+
+    def test_streaming_packet_count_uses_payload_bytes_and_keeps_file_limits(self):
+        record = streaming_receipt(self.record)
+        qualification = record['qualification']
+        payload = qualification['payload']
+        preservation = payload['AAC_preservation']
+        payload['source_file']['bytes'] = 300_000_000
+        payload['derived_audio_file']['bytes'] = 100_000_000
+        preservation['private_muxed_source_file'] = deepcopy(payload['source_file'])
+        preservation['derived_audio_file'] = deepcopy(payload['derived_audio_file'])
+        payload['selection'].update(filesize=300_000_000, duration_seconds=9288.)
+        for key in ('content_length', 'received_bytes', 'written_bytes', 'exact_on_write_limit'):
+            payload['source_http'][key] = 300_000_000
+        for side in ('source_audio', 'derived_audio'):
+            preservation[side]['duration_seconds'] = 9288.
+        for side in ('source_AAC_packets', 'derived_AAC_packets'):
+            preservation[side].update(packet_count=200_001, packet_payload_bytes=40_000_000,
+                                      packet_duration_sum_seconds=9288.)
+        def validate_payload():
+            qualification['payload_sha256'] = receipts.sha(receipts.encoded(payload))
+            return receipts.qualification(qualification, record['video_id'], payload['derived_audio_file'],
+                                          payload['source_file']['sha256'])
+        self.assertEqual(200_001, validate_payload()['AAC_preservation']['source_AAC_packets']['packet_count'])
+        record['audio']['local_proof'] = deepcopy(payload['derived_audio_file'])
+        record['audio']['remote_proof'].update(bytes=100_000_000,
+                                              md5=payload['derived_audio_file']['md5'])
+        record['provenance']['audio'] = deepcopy(payload['derived_audio_file'])
+        self.assertFalse(self.validate(reseal(record)).native_promotion)
+        for side in ('source_AAC_packets', 'derived_AAC_packets'):
+            preservation[side]['packet_count'] = 40_000_001
+        with self.assertRaisesRegex(receipts.ReceiptHold, 'positive_payload_packet_count_bound'):
+            validate_payload()
+        for side in ('source_AAC_packets', 'derived_AAC_packets'):
+            preservation[side]['packet_count'] = 200_001
+        preservation['maximum_derived_bytes'] = 99_999_999
+        with self.assertRaisesRegex(receipts.ReceiptHold, 'file_fingerprint'):
+            validate_payload()
 
     def test_detached_actual_file_fingerprints_fail_even_with_resealed_provenance(self):
         for key in ('private_muxed_source_file', 'derived_audio_file'):

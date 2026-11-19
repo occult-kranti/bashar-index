@@ -16,6 +16,12 @@ The legacy combined-MP4 receipt remains bound to its AAC-LC verifier. A separate
 
 The new receipt branch permits at most 32 MB each for the source and extracted file. It requires identical AAC profile, sample rate, channels and codec extradata; identical ordered packet payload hashes, sizes, counts, padding and timing; matching duration; and the same complete HTTP and paired Drive proofs. Native identity and transcript flags remain unverified. Supporting this metadata contract establishes no actual HE-AAC archive until a real extraction and paired receipt pass it.
 
+## Streaming packet summaries for larger recordings
+
+A third metadata contract binds the separate bounded-memory preservation component, SHA-256 `f903fddac2f02850d409a4511c897d47a04f976cf38a2ca8924b54d0c24a5f60` (18,424 bytes). It consumes ffprobe JSON one packet at a time and preserves the same ordered packet, configuration, padding, timing and duration requirements. The legacy verifier is identified as a digest-compatibility reference, with execution explicitly false.
+
+Only this new artifact permits source and extracted files up to 2 GB each, with a stricter output permit supplied by the caller. Packet count must fit the positive packet payload and actual file bytes; it has no fixed 200,000-packet cutoff. The older artifact branches retain their original limits. These are byte and resource bounds; the receipt reader adds no recording-duration filter. Whole-body HTTP observations, canonical provenance, observed Drive MD5/size/distinct IDs and all identity qualifiers remain required. Supporting this receipt contract establishes no new archive by itself.
+
 ## Unchanged audio-only editions
 
 A separate pure reader, `qualified_direct_audio_receipts.py`, validates exact HTTPS format-140 AAC/M4A editions under `AudioEditions/<video>/<source-sha256>/audio.m4a` plus canonical `provenance.json`. The archived audio must have exactly the source file's bytes, MD5 and SHA-256 before and after the existing strict container probe. The selected full response, exact byte count and whole 200/full-extent 206 proof must agree. The existing pinned probe must show one AAC audio stream, zero video streams, positive packets, clean strict extent and a duration matching the selected recording. Original-track/language flags remain unverified. This branch uses the unchanged file and its container proof; the combined-MP4 branch retains its separate AAC packet-preserving remux proof.
