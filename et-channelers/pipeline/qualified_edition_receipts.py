@@ -10,6 +10,10 @@ import hashlib,json,math,re
 KIND='qualified_youtube_audio_edition'
 ENCODING='canonical-json-utf8-sorted-compact-no-newline-v1'
 VERIFIER_SHA='519b5dd2232fa77be1c998763256da320be07b0b8021e71e9cd6978d35e528ec'
+LEGACY_CONTRACT='progressive_MP4_AAC_packet_preserving_streamcopy'
+PROFILE_CONTRACT='progressive_MP4_AAC_LC_HE_AAC_packet_preserving_streamcopy_v1'
+PROFILE_COMPONENT_SHA='5915a2b689de11fed5ea41956f084e55c967c22e6c63b925202e48611ec058a4'
+PROFILE_COMPONENT_BYTES=8131
 SHA=re.compile(r'[0-9a-f]{64}\Z');MD5=re.compile(r'[0-9a-f]{32}\Z')
 FLAGS=('original_audio_track_identity_verified','origin_inferred','spoken_language_verified',
        'speaker_identity_verified','recording_edit_identity_verified',
@@ -34,14 +38,26 @@ def identity(v):
       v.get('translation_status')=='unknown' and 'native_quality_state' in v and
       v['native_quality_state'] is None,'explicit_qualified_identity_required')
 
+def artifact_matches(value,expected_sha,expected_bytes):
+ return (isinstance(value,dict) and value.get('sha256')==expected_sha and
+         type(value.get('bytes')) is int and value['bytes']==expected_bytes)
+
+def quality_profiles(q):
+ if q.get('quality_contract')==LEGACY_CONTRACT:return {'LC'}
+ need(q.get('quality_contract')==PROFILE_CONTRACT and
+      artifact_matches(q.get('quality_component_artifact'),PROFILE_COMPONENT_SHA,PROFILE_COMPONENT_BYTES) and
+      artifact_matches(q.get('base_verifier_artifact'),VERIFIER_SHA,10864),
+      'pinned_profile_preservation_component')
+ return {'LC','HE-AAC'}
+
 def quality(q,selection,source_file,derived_file):
  need(isinstance(q,dict) and type(q.get('schema_version')) is int and q['schema_version']==1 and
-      q.get('quality_contract')=='progressive_MP4_AAC_packet_preserving_streamcopy' and
       q.get('AAC_packet_payload_preserved') is True and q.get('audio_reencode_requested') is False and
       q.get('original_audio_track_identity_verified') is False and
       q.get('spoken_language_verified') is False and q.get('GPU_requested') is False and
       q.get('remuxed_container') is True and q.get('full_speech_coverage_claimed') is False and
       q.get('native_canonical_promotion') is False,'AAC_verifier_result')
+ profiles=quality_profiles(q)
  need(q.get('private_muxed_source_file')==source_file and q.get('derived_audio_file')==derived_file and
       q.get('raw_muxed_source_and_packet_proofs_private') is True and
       q.get('cleanup_performed') is False and q.get('Drive_publication_performed') is False,
@@ -52,7 +68,7 @@ def quality(q,selection,source_file,derived_file):
       'source_and_derived_stream_topology')
  for key in ('codec','profile','sample_rate','channels','extradata_sha256'):
   need(key in a and key in b and a[key]==b[key],'AAC_configuration_changed')
- need(a['codec']=='aac' and a['profile']=='LC' and positive(a['sample_rate'],384000) and
+ need(a['codec']=='aac' and a['profile'] in profiles and positive(a['sample_rate'],384000) and
       positive(a['channels'],8) and digest(a['extradata_sha256']),'AAC_configuration')
  before=q.get('source_AAC_packets');after=q.get('derived_AAC_packets')
  need(isinstance(before,dict) and isinstance(after,dict),'AAC_packet_summaries')
@@ -82,12 +98,22 @@ def qualification(q,video,audio,variant):
  payload=q.get('payload');need(isinstance(payload,dict) and sha(encoded(payload))==q['payload_sha256'],
                              'qualification_payload_hash')
  artifact=q.get('verifier_artifact')
- need(isinstance(artifact,dict) and artifact.get('sha256')==VERIFIER_SHA and
-      type(artifact.get('bytes')) is int and artifact['bytes']==10864,
-      'pinned_AAC_verifier_artifact')
+ preservation=payload.get('AAC_preservation')
+ need(isinstance(preservation,dict),'AAC_verifier_result')
+ if artifact_matches(artifact,VERIFIER_SHA,10864):
+  need(preservation.get('quality_contract')==LEGACY_CONTRACT,'verifier_contract_binding')
+  source_limit,derived_limit=100_000_000,50_000_000
+ else:
+  need(artifact_matches(artifact,PROFILE_COMPONENT_SHA,PROFILE_COMPONENT_BYTES) and
+       artifact_matches(q.get('base_verifier_artifact'),VERIFIER_SHA,10864) and
+       preservation.get('quality_contract')==PROFILE_CONTRACT and
+       preservation.get('quality_component_artifact')==artifact and
+       preservation.get('base_verifier_artifact')==q['base_verifier_artifact'],
+       'pinned_AAC_verifier_artifact')
+  source_limit=derived_limit=32_000_000
  identity(payload)
- source=proof(payload.get('source_file'),100_000_000)
- derived=proof(payload.get('derived_audio_file'),50_000_000)
+ source=proof(payload.get('source_file'),source_limit)
+ derived=proof(payload.get('derived_audio_file'),derived_limit)
  need(source['sha256']==variant and derived==audio,'qualification_file_binding')
  select=payload.get('selection');http=payload.get('source_http')
  need(isinstance(select,dict) and select.get('video_id')==video and select.get('format_id')=='18' and
