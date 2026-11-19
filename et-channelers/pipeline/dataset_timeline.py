@@ -170,7 +170,8 @@ def load_audio_ids(path, selected_rows, *, content=None):
             video = video[1:]  # Existing spreadsheet-safe downloaded-video export.
         need(video in selected, 'audio snapshot ID is outside the selected sample')
         need(not row.get('channel_dir') or row['channel_dir'] == selected[video], 'audio snapshot creator mismatch')
-        need(row.get('audio_source') in {'youtube_native', 'publisher_edition'}, 'unverified audio snapshot source')
+        need(row.get('audio_source') in {'youtube_native', 'publisher_edition', 'youtube_track_unverified'},
+             'unsupported audio snapshot source label')
         found.add(video)
     return found
 
