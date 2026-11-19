@@ -1,6 +1,6 @@
 """Run the first, private text-analysis pass once every selected recording has verified audio.
 
-Use corpus_caption_view and corpus_asr_view to stage verified English source views.
+Use stage_archived_text to prepare verified English source views.
 The optional family file contains reviewed video_id, recording_family_id and evidence hashes.
 The revisioned result retains one primary English view per selected video, all missing
 entries, source-addressable candidates, detector-negative windows and comparison tables.
@@ -23,10 +23,11 @@ else:
 
 
 # Use an English source track before ASR. A machine translation remains a distinct text version.
-PRIMARY_ORDER = ("published", "automatic_original", "publisher_english_caption", "standalone_publisher_caption",
+PRIMARY_ORDER = ("published", "automatic_original", "publisher_english_caption", "standalone_publisher_caption", "publisher_untimed_transcript",
                  "original_asr", "english_audio_translation", "publisher_original_asr", "publisher_english_audio_translation")
 VIEWS = (("caption_views", "*/*.json", PRIMARY_ORDER[:2]),
          ("publisher_views", "*/*.json", ("publisher_english_caption",)),
+         ("publisher_transcript_views", "*/*.json", ("publisher_untimed_transcript",)),
          ("asr_views", "*/*/english-*.json", ("original_asr", "english_audio_translation")),
          ("publisher_variant_views", "*/*.json", ("standalone_publisher_caption", "publisher_original_asr", "publisher_english_audio_translation")))
 
@@ -87,6 +88,22 @@ def select_views(root, frame):
             if kind == "publisher_english_caption" and (not episode_comparison.digest(view.get("edition_receipt_sha256"))
                     or not episode_comparison.digest(view.get("source_audio_sha256"))):
                 raise ValueError("Publisher caption needs verified recording-edition provenance")
+            paragraph_evidence = {}
+            if kind == "publisher_untimed_transcript":
+                if (not all(episode_comparison.digest(view.get(k)) for k in
+                            ("source_audio_sha256", "edition_receipt_sha256", "source_metadata_sha256", "source_document_sha256"))
+                        or view.get("source_edition_id") != "sha256:" + view["source_audio_sha256"]
+                        or view.get("bundle_sha256") != view["source_document_sha256"] or view["raw_sha256"] != view["bundle_sha256"]
+                        or view.get("recording_equivalence_verified") is not False or view.get("native_youtube_alignment_verified") is not False
+                        or view.get("recording_association_method") not in ("publisher_episode_page_exact_youtube_id",
+                                                                          "publisher_owner_title_date_duration")
+                        or view.get("text_version_id") != digest(("untimed-publisher-v1|" + view["source_audio_sha256"] + "|"
+                               + view["source_document_sha256"] + "|" + view["text_sha256"]).encode())):
+                    raise ValueError("Publisher transcript needs verified untimed recording-edition provenance")
+                corpus_concordance.validate_paragraph_view(view)
+                paragraph_evidence = {"evidence_granularity":"paragraph", "paragraph_count":view["paragraph_count"],
+                    "source_document_sha256":view["source_document_sha256"], "edition_receipt_sha256":view["edition_receipt_sha256"],
+                    "recording_association_method":view["recording_association_method"]}
             rank = (PRIMARY_ORDER.index(kind), kind == "publisher_english_caption" and view.get("caption_kind") != "published",
                     view["language"].lower() != "en", view["language"].lower(),
                     view["text_version_id"], relative.as_posix())
@@ -94,7 +111,7 @@ def select_views(root, frame):
                 "file_sha256": digest(raw), "text_version_id": view["text_version_id"], "source_kind": kind,
                 "language": view["language"], "source_edition_id": view.get("source_edition_id"),
                 "caption_kind": view.get("caption_kind"), "source_timebase": view.get("source_timebase"),
-                "bundle_sha256": view["bundle_sha256"]}))
+                "bundle_sha256": view["bundle_sha256"], **paragraph_evidence}))
     return {video: [item for _, item in sorted(options, key=lambda x: x[0])]
             for video, options in sorted(candidates.items())}
 

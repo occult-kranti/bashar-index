@@ -1,4 +1,4 @@
-"""Batch-stage verified English captions and native-recording ASR results for the private corpus."""
+"""Batch-stage verified caption tracks, publisher transcripts, and existing ASR results for the private corpus."""
 from __future__ import annotations
 
 import argparse
@@ -11,7 +11,7 @@ from tempfile import TemporaryDirectory
 from zipfile import BadZipFile
 
 from . import (collection_coverage, common, corpus_asr_view, corpus_caption_view, corpus_publisher_view, corpus_publisher_variant_view,
-               drive_ingest, gpu_asr, ingestion_status, postrun_candidates)
+               corpus_untimed_publisher_view, drive_ingest, gpu_asr, ingestion_status, postrun_candidates)
 
 
 def input_rows(root, frame, remote):
@@ -32,7 +32,8 @@ def input_rows(root, frame, remote):
         if (video in targets and targets[video]["channel_dir"] == record.get("channel_dir")
                 and ingestion_status.asr_receipt_complete(record, edition, remote)):
             yield {"kind": "native_asr", "row": targets[video], "record": record, "proof": record, "edition": edition}
-    for record in common.read_jsonl(root / "sync/publisher_mirror_manifest.jsonl"):
+    publisher_records = common.read_jsonl(root / "sync/publisher_mirror_manifest.jsonl")
+    for record in publisher_records:
         video = record.get("associated_youtube_id")
         if video not in targets:
             continue
@@ -41,11 +42,14 @@ def input_rows(root, frame, remote):
                 continue
             proof = corpus_publisher_view.verified_track(record, targets[video], track["sha256"], remote)
             yield {"kind": "publisher_caption", "row": targets[video], "record": record, "proof": proof}
-    yield from corpus_publisher_variant_view.input_rows(root, frame, remote)
+    yield from corpus_publisher_variant_view.input_rows(root, targets.values(), remote)
+    yield from corpus_untimed_publisher_view.input_rows(root, targets.values(), remote, journal_records=publisher_records)
 
 
 def existing_bundle(root, job):
     row, proof = job["row"], job["proof"]
+    if job["kind"] == corpus_untimed_publisher_view.KIND:
+        return corpus_untimed_publisher_view.local_bundle(root, job)
     if job["kind"] in (corpus_publisher_variant_view.ASR, corpus_publisher_variant_view.CAPTION):
         return corpus_publisher_variant_view.local_bundle(root, job)
     if job["kind"] == "native_asr":
@@ -63,6 +67,9 @@ def existing_bundle(root, job):
 def text_views(root, job, path, remote):
     record, row, proof = job["record"], job["row"], job["proof"]
     video = row["video_id"]
+    if job["kind"] == corpus_untimed_publisher_view.KIND:
+        view = corpus_untimed_publisher_view.text_views(path, job, remote)["english"]
+        return {f"publisher_transcript_views/{video}/{view['text_version_id']}.json": view}
     if job["kind"] in (corpus_publisher_variant_view.ASR, corpus_publisher_variant_view.CAPTION):
         views = corpus_publisher_variant_view.text_views(path, job, remote)
         return {f"publisher_variant_views/{video}/{name}-{v['text_version_id']}.json": v for name, v in views.items()}
@@ -135,6 +142,8 @@ def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMO
     jobs = list(input_rows(root, frame, remote))
     report = {"selection_sha256": actual, "eligible_audio": len(frame), "archive_inputs": dict(Counter(j["kind"] for j in jobs)),
               "recordings_with_inputs": len({j["row"]["video_id"] for j in jobs}), "views_staged": 0, "held": []}
+    report["untimed_publisher_inputs_by_creator"] = dict(Counter(j["row"]["channel_dir"] for j in jobs
+        if j["kind"] == corpus_untimed_publisher_view.KIND))
     if inventory_only or not jobs:
         return report
     analysis = drive_ingest.local_path(root, "analysis")
@@ -142,6 +151,7 @@ def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMO
     cache.mkdir(parents=True, exist_ok=True)
     revision = [hashlib.sha256(Path(mod.__file__).read_bytes()).hexdigest()
                 for mod in (corpus_caption_view, corpus_asr_view, corpus_publisher_view, corpus_publisher_variant_view)]
+    untimed_revision = hashlib.sha256(Path(corpus_untimed_publisher_view.__file__).read_bytes()).hexdigest()
     with gpu_asr.kernel_lock(analysis / ".archive-read.lock"):
         for start in range(0, len(jobs), 24):
             batch = jobs[start:start+24]
@@ -149,7 +159,8 @@ def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMO
             for job in batch:
                 proof = job["proof"]
                 name = drive_ingest.remote_relative(remote, proof["remote"])
-                key = gpu_asr.fingerprint([revision, job["kind"], job["row"]["video_id"], job["row"]["channel_dir"],
+                adapter_revision = untimed_revision if job["kind"] == corpus_untimed_publisher_view.KIND else revision
+                key = gpu_asr.fingerprint([adapter_revision, job["kind"], job["row"]["video_id"], job["row"]["channel_dir"],
                     job["row"]["tab"], job["record"], job.get("edition"), job.get("track_id"), job.get("item"), proof["sha256"]])
                 marker = drive_ingest.local_path(analysis, "text_stage_receipts/" + key + ".json")
                 completed = prior_views(analysis, marker, key)

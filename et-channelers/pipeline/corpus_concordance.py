@@ -19,6 +19,37 @@ except ImportError:
 LEXICON = Path(__file__).resolve().parents[1] / "research/analysis-plan-2026-11-16/search-lexicon.json"
 
 
+def validate_paragraph_view(view):
+    """Verify the source paragraph addresses and enforce the untimed evidence boundary."""
+    segments = view.get("segments")
+    if (not isinstance(segments, list) or not segments or type(view.get("paragraph_count")) is not int
+            or len(segments) != view["paragraph_count"] or view.get("source_timebase") is not None
+            or view.get("source_timecodes_alignment_verified") is not False or view.get("usable_timed_text") is not False):
+        raise ValueError("Untimed publisher text requires source paragraphs without aligned timestamps")
+    previous, member = -1, None
+    for index, row in enumerate(segments):
+        if not isinstance(row, dict):
+            raise ValueError("Expected a source paragraph record")
+        ordinal = row.get("source_paragraph_index")
+        source = row.get("source_member")
+        if (type(row.get("paragraph_index")) is not int or row["paragraph_index"] != index
+                or type(ordinal) is not int or ordinal <= previous
+                or source not in ("word/document.xml", "publisher-transcript.en.txt")
+                or (member is not None and source != member)
+                or row.get("source_segment_id") != f"{source}:paragraph:{ordinal}"
+                or ("time_start" not in row or row["time_start"] is not None)
+                or ("time_end" not in row or row["time_end"] is not None)):
+            raise ValueError("Publisher paragraph has an invalid source address or media timestamp")
+        previous, member = ordinal, source
+
+
+def paragraph_mapping(segments, first, last):
+    return [{"source_segment_id": s["source_segment_id"], "source_member": s["source_member"],
+             "source_paragraph_index": s["source_paragraph_index"], "paragraph_index": s["paragraph_index"],
+             "normalized_paragraph_start": max(first, s["char_start"]) - s["char_start"],
+             "normalized_paragraph_end": min(last, s["char_end"]) - s["char_start"]} for s in segments]
+
+
 class Concordance:
     def __init__(self):
         source = LEXICON.read_text(encoding="utf-8")
@@ -48,6 +79,9 @@ class Concordance:
             raise ValueError("Expected a pinned nonempty English text view")
         if not segments:
             raise ValueError("The text view requires source segments")
+        paragraph_view = view.get("source_kind") == "publisher_untimed_transcript"
+        if paragraph_view:
+            validate_paragraph_view(view)
         starts, ends, previous = [], [], 0
         for row in segments:
             start, end = row["char_start"], row["char_end"]
@@ -66,6 +100,11 @@ class Concordance:
                 "language_provenance": view["language"], "source_kind": view["source_kind"],
                 "work_family_id": work_family_id, "leakage_group_id": leakage_group_id,
                 "speaker_attribution_id_or_null": None}
+        if paragraph_view:
+            base.update(evidence_granularity="paragraph", source_timebase=None,
+                        source_document_sha256=view["source_document_sha256"], source_edition_id=view["source_edition_id"],
+                        edition_receipt_sha256=view["edition_receipt_sha256"],
+                        recording_association_method=view["recording_association_method"])
         for rule, category, match in self.matches(text):
             first, last = match.span()
             anchor = max(0, bisect_right(words, first) - 1) // self.anchor_words
@@ -73,9 +112,12 @@ class Concordance:
             touched = segments[bisect_right(ends, first):bisect_left(starts, last)]
             if not touched:
                 raise ValueError("A match lacks a source cue")
-            mapping = [{"source_segment_id": s["source_segment_id"],
-                        "normalized_cue_start": max(first, s["char_start"]) - s["char_start"],
-                        "normalized_cue_end": min(last, s["char_end"]) - s["char_start"]} for s in touched]
+            if paragraph_view:
+                mapping = paragraph_mapping(touched, first, last)
+            else:
+                mapping = [{"source_segment_id": s["source_segment_id"],
+                            "normalized_cue_start": max(first, s["char_start"]) - s["char_start"],
+                            "normalized_cue_end": min(last, s["char_end"]) - s["char_start"]} for s in touched]
             times_start, times_end = [s["time_start"] for s in touched], [s["time_end"] for s in touched]
             yield {**base, "record_type": "candidate", "rule_id": rule, "candidate_family": category,
                    "anchor_window_id": anchor, "start_codepoint": first, "end_codepoint": last,
@@ -87,9 +129,15 @@ class Concordance:
         for i in range(0, len(words), self.anchor_words):
             stop = min(i + self.anchor_words, len(words))
             index = i // self.anchor_words
-            yield {**base, "record_type": "anchor", "anchor_window_id": index,
-                   "start_codepoint": words[i], "end_codepoint": words[stop] if stop < len(words) else len(text),
-                   "word_count": stop-i, "has_detector_match": index in hit_anchors}
+            last = words[stop] if stop < len(words) else len(text)
+            item = {**base, "record_type": "anchor", "anchor_window_id": index, "start_codepoint": words[i],
+                    "end_codepoint": last, "word_count": stop-i, "has_detector_match": index in hit_anchors}
+            if paragraph_view:
+                touched = segments[bisect_right(ends, words[i]):bisect_left(starts, last)]
+                mapping = paragraph_mapping(touched, words[i], last)
+                item.update(raw_segment_ids=[s["source_segment_id"] for s in touched], raw_offset_mapping=mapping,
+                            source_time_start_or_null=None, source_time_end_or_null=None)
+            yield item
 
 
 def main(argv=None):
