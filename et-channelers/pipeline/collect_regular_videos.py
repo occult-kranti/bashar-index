@@ -83,14 +83,16 @@ def main(argv=None):
     parser.add_argument('--channels', required=True, type=Path)
     parser.add_argument('--out', required=True, type=Path)
     parser.add_argument('--workers', type=int, default=3)
-    parser.add_argument('--index-name', default='fresh-videos.json', help='versioned JSON filename for a reparse')
+    parser.add_argument('--index-name', help='versioned JSON filename for a reparse')
+    parser.add_argument('--per-channel', type=int, choices=(20, 50), default=20, help='number of public Videos-tab uploads in the index')
     args = parser.parse_args(argv)
     channels = manifest(args.channels)
     if args.command == 'fetch':
         print(json.dumps(refresh(args.root, channels, args.out, args.workers)), flush=True)
     else:
         from regular_video_index import assemble
-        print(json.dumps(assemble(channels, args.out, args.index_name)), flush=True)
+        name = args.index_name or ('fresh-videos.json' if args.per_channel == 20 else 'fresh-videos-50.json')
+        print(json.dumps(assemble(channels, args.out, name, per_channel=args.per_channel)), flush=True)
 
 
 if __name__ == '__main__':

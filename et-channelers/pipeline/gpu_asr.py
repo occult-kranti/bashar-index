@@ -159,7 +159,10 @@ class Settings:
 
     def __post_init__(self):
         self.root = Path(self.root).resolve()
-        from common import ensure_outside_git
+        if __package__:
+            from .common import ensure_outside_git
+        else:
+            from common import ensure_outside_git
         try:
             ensure_outside_git(self.root)
         except SystemExit:

@@ -4,9 +4,9 @@
 
 | Branch | Purpose | Observed revision |
 | --- | --- | --- |
-| `main` | Published archive and dashboards through PR #76 | [607eb8a](https://github.com/occult-kranti/bashar-index/commit/607eb8a9a65d2c2a9cd0a088cd0ce7968dc21e3a) |
+| `main` | Collection code, creator evidence and documentation merged in PR #78 | [7957b21](https://github.com/occult-kranti/bashar-index/commit/7957b21855ed71e7e255be2075df3d4d1a16c159) |
 | `feat/predictions-round2-local-dashboard` | Retained prediction timeline and local dashboard work merged in PR #26 | [ef80343](https://github.com/occult-kranti/bashar-index/commit/ef80343c38a8d68cf50d2ee10e21280861d4fe3b) |
-| `feat/batch-media-transfers-2026-11-19` | Regular-video refresh, additive archive, verified coverage, publisher sources and post-run research tools | [Current release branch](https://github.com/occult-kranti/bashar-index/tree/feat/batch-media-transfers-2026-11-19) |
+| `feat/batch-media-transfers-2026-11-19` | Regular-video refresh, additive archive, verified coverage, publisher sources and post-run research tools | [Merged PR #78](https://github.com/occult-kranti/bashar-index/pull/78) |
 
 The acquisition workers keep the versions recorded when they started. The release branch carries collection code, the expanded roster and the updated storage and concurrency settings. Generated public dashboards stay on their previous dated snapshot through the collection run. [Collection process](et-channelers/pipeline/COLLECTION_PROCESS.md)
 

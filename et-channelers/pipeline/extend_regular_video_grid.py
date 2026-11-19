@@ -174,11 +174,14 @@ def main(argv=None):
     ap.add_argument('--browser-channel', default='chrome', help='installed Playwright browser channel')
     args = ap.parse_args(argv)
     root = ensure_outside_git(args.root)
-    folder = ensure_outside_git(args.out.parent)/'continuation'
+    base = json.loads(args.base.read_bytes())
+    limit = base['per_channel']
+    if limit not in (20, 50):
+        raise ValueError('Expected a supported public-video index')
+    folder = ensure_outside_git(args.out.parent)/('continuation' if limit == 20 else 'continuation-50')
     if not folder.is_relative_to(root) or args.out.resolve() == args.base.resolve():
         raise ValueError('A distinct private output is required')
     folder.mkdir(parents=True, exist_ok=True)
-    base = json.loads(args.base.read_bytes())
     groups = [g for g in base['channels'] if not g['public_listing_complete'] and
               g.get('can_extend', g['listing_complete'])]
     missing = [g for g in groups if not (folder/(g['creator']+'.json')).exists()]
@@ -232,11 +235,12 @@ def main(argv=None):
     base['index_revision'] = 3
     base['summary'].update(priority_regular_videos=sum(len(g['items']) for g in base['channels']),
                            completed_channel_listings=sum(g['listing_complete'] for g in base['channels']),
-                           member_only_in_literal_latest20=sum(r['access_status'] == 'members_only' for g in base['channels'] for r in g['items']),
                            states=dict(Counter(g['state'] for g in base['channels'])),
                            public_regular_targets=sum(len(g['public_items']) for g in base['channels']),
                            completed_public_channel_listings=sum(g['public_listing_complete'] for g in base['channels']),
                            observed_regular_videos=sum(len(g['observed_items']) for g in base['channels']))
+    base['summary'][f'member_only_in_literal_latest{limit}'] = sum(
+        row['access_status'] == 'members_only' for group in base['channels'] for row in group['items'])
     write_json(args.out, base)
     print(json.dumps(base['summary']))
 

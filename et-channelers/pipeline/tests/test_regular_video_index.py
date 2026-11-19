@@ -35,13 +35,17 @@ def dropdown(selected):
                                  for name in ('Latest', 'Popular', 'Oldest')]}}}
 
 
-def group(cards, *, chosen='Latest', extra=(), limit=20):
+def page_bytes(cards, *, chosen='Latest', extra=()):
     grid = {'header': dropdown(chosen) if chosen else {}, 'contents': [{'richItemRenderer': {'content': c}} for c in cards] + list(extra)}
     tab = {'selected': True, 'endpoint': {'commandMetadata': {'webCommandMetadata': {'url': '/@example/videos'}}},
            'content': {'richGridRenderer': grid}}
     value = {'metadata': {'channelMetadataRenderer': {'externalId': CHANNEL}},
              'contents': {'twoColumnBrowseResultsRenderer': {'tabs': [{'tabRenderer': tab}]}}}
-    raw = ('<script>var ytInitialData = ' + json.dumps(value) + ';</script>').encode()
+    return ('<script>var ytInitialData = ' + json.dumps(value) + ';</script>').encode()
+
+
+def group(cards, *, chosen='Latest', extra=(), limit=20):
+    raw = page_bytes(cards, chosen=chosen, extra=extra)
     return index_channel('example', CHANNEL, raw, '2026-11-19T01:00:00Z',
                          {'wire_sha256': hashlib.sha256(raw).hexdigest()}, limit)
 

@@ -2,9 +2,9 @@
 
 ## Windows collection as of November 19, 2026
 
-At 19:59 UTC, 1,478 of 1,976 selected public regular uploads had verified audio and provenance on Drive. The sample has 101 creators. The cumulative index also retains older regular entries, Shorts and streams. Use immutable recording IDs and the exact selection hash for comparisons. [Collection process, commands and issue history](pipeline/COLLECTION_PROCESS.md)
+At 20:41 UTC, 1,562 of 1,976 selected public regular uploads had verified audio and provenance on Drive. The sample has 101 creators. The cumulative index also retains older regular entries, Shorts and streams. Use immutable recording IDs and the exact selection hash for comparisons. [Collection process, commands and issue history](pipeline/COLLECTION_PROCESS.md)
 
-The 19:54 UTC batch began with six source workers and a 4.8 GB reservation under its original 18 GB ceiling. The next compatible reservation can use the new 23 GB limit. Retain 12 GB physically free after all commitments. Independent publisher workers upload whole editions in groups and keep valid local files until remote verification. Cite a finish time only from the pace of verified files on one selection. [Windows setup](pipeline/WINDOWS_DRIVE.md)
+The 23 GB cap took effect at 20:31 UTC after the preceding batch closed. At 20:36 UTC the next 96-item batch started with up to six source workers, two staggered browser starts, eight outstanding items, three Drive transfers and a 9 GB reservation. Retain 12 GB physically free after all commitments. Independent publisher workers upload whole editions in groups and keep valid local files until remote verification. Cite a finish time only from the pace of verified files on one selection. [Windows setup](pipeline/WINDOWS_DRIVE.md)
 
 Keep GPU transcription paused during collection. After the last audio receipt, finalize the index, document the run and prepare the newest-fifty increment. Fill missing transcripts, run both rounds of expert analysis, and publish the dashboards together. Source and review files for the interview roster are available in the repository. [Interview crosswalk](research/interview-discovery-2026-11-19/episode-crosswalk.csv) · [Roadmap](ROADMAP.md)
 
