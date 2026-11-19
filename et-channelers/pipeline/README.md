@@ -4,6 +4,8 @@
 
 **Latest 20+ videos** takes the first 20 public regular uploads on each channel’s newest-first Videos tab. Date and duration fields provide descriptive metadata. Preserve previous selections, including Shorts and completed streams, when refreshing the index. [Collection roadmap](../ROADMAP.md)
 
+The next 50 starts after the latest-20+ translations and both analysis rounds finish. The planning estimate is 22–28 hours of collection. The operating guide records the per-channel evidence, range of measured rates and release procedure. [Latest-50 forecast](COLLECTION_PROCESS.md#latest-50-forecast)
+
 Run `collect_regular_videos.py fetch --root PRIVATE_ROOT --channels CHANNELS.json --out DATED_RUN`, followed by the same command with `index` in place of `fetch`. This reads each of the supplied channel pages once and caches it for offline parsing. `extend_regular_video_grid.py --root PRIVATE_ROOT --base DATED_RUN/fresh-videos.json --out DATED_RUN/fresh-videos-extended.json` follows the public Videos tab as long as it advances. It stops at 20 public regular uploads or a confirmed final page. A stalled or unavailable listing stays incomplete. `additive_video_selection.py --help` gives the inputs for combining this snapshot with earlier selections. Its `priority.csv` lists recording IDs, source formats, ranks and archive status.
 
 `collection_coverage.py --root PRIVATE_ROOT --selection SELECTION.json --out PRIVATE_ROOT/reports/coverage.json` joins receipts to the selected recording IDs. It also writes a creator table and saved-video CSV. Add `--activity-csv PATH` for a working table with one row per creator, mutually exclusive transfer states and the checkpoint time. Native YouTube, qualified YouTube and independent publisher editions are reported separately.

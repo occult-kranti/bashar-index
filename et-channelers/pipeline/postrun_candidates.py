@@ -17,10 +17,11 @@ import re
 from tempfile import TemporaryDirectory
 
 if __package__:
-    from . import episode_periods
+    from . import episode_periods, episode_upload_calendar
     from . import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr, publisher_caption_batch
 else:
     import episode_periods
+    import episode_upload_calendar
     import collection_coverage, common, corpus_concordance, episode_comparison, episode_figures, gpu_asr, publisher_caption_batch
 
 
@@ -186,7 +187,7 @@ def candidates(root, frame, choices, method, topics, engine, output, counts):
         yield {"view": view, "assessed_topics": topics, "assessment_method_sha256": method, "matches": matches}
 
 
-def run(root, selection, expected, *, families=None, figures=False, out=None):
+def run(root, selection, expected, *, families=None, figures=False, out=None, upload_catalog=None, upload_catalog_sha256=None):
     root = common.ensure_outside_git(root)
     if not episode_comparison.digest(expected):
         raise ValueError("Pin the intended collection with its exact SHA-256")
@@ -196,6 +197,14 @@ def run(root, selection, expected, *, families=None, figures=False, out=None):
     if selection_hash != expected:
         raise ValueError("The selected recording file changed")
     complete_frame(snapshot, saved, frame, scopes, expected)
+    if (upload_catalog is None) != (upload_catalog_sha256 is None):
+        raise ValueError("Supply the completed metadata catalog and its receipt SHA-256 together")
+    upload_days = None
+    if upload_catalog is not None:
+        catalog = common.ensure_outside_git(upload_catalog)
+        if not catalog.is_relative_to(root):
+            raise ValueError("The metadata catalog must belong to the private archive")
+        upload_days, date_coverage = episode_upload_calendar.read_catalog(catalog, upload_catalog_sha256, frame, expected)
     if families:
         families = common.ensure_outside_git(families)
         if not families.is_relative_to(root):
@@ -208,6 +217,9 @@ def run(root, selection, expected, *, families=None, figures=False, out=None):
         ("concordance", corpus_concordance), ("comparison", episode_comparison), ("figures", episode_figures),
         ("publication_periods", episode_periods))}
     methods.update(driver=digest(Path(__file__).read_bytes()), lexicon=engine.revision)
+    if upload_days is not None:
+        methods.update(upload_catalog=upload_catalog_sha256,
+                       upload_calendar=digest(Path(episode_upload_calendar.__file__).read_bytes()))
     method = digest(encoded(methods).encode())
     roster = [{"video_id": row["video_id"], "channel_dir": row["channel_dir"], "tab": row["tab"],
                "selected_primary": choices[row["video_id"]][0] if row["video_id"] in choices else None,
@@ -237,6 +249,10 @@ def run(root, selection, expected, *, families=None, figures=False, out=None):
                                                                           engine, stream, counts), topics)
             comparison.update(assessment="unreviewed_english_lexicon_candidates", assessment_method_sha256=method)
             comparison["publication_periods"] = episode_periods.summarize(frame, comparison["evidence"], topics)
+            if upload_days is not None:
+                periods = episode_periods.summarize(frame, comparison["evidence"], topics, upload_days=upload_days)
+                periods.update(catalog_sha256=upload_catalog_sha256, date_coverage=date_coverage)
+                comparison["upload_periods"] = periods
             common.atomic_write_text(stage / "episode-comparison.json", encoded(comparison) + "\n")
             common.atomic_write_text(stage / "view-inventory.json", encoded(roster) + "\n")
             if figures:
@@ -260,9 +276,12 @@ def main(argv=None):
     parser.add_argument("--families", type=Path, help="Private JSONL of reviewed recording-family assignments")
     parser.add_argument("--out", type=Path, help="Private parent for immutable output generations")
     parser.add_argument("--figures", action="store_true", help="Include SVG, PNG and CSV figure exports")
+    parser.add_argument("--upload-catalog", type=Path, help="Completed private metadata ZIP for separate upload-date comparisons")
+    parser.add_argument("--upload-catalog-sha256", help="SHA-256 from that catalog's verified receipt")
     args = parser.parse_args(argv)
     result = run(args.root, args.selection, args.selection_sha256, families=args.families,
-                 figures=args.figures, out=args.out)
+                 figures=args.figures, out=args.out, upload_catalog=args.upload_catalog,
+                 upload_catalog_sha256=args.upload_catalog_sha256)
     print(result)
 
 

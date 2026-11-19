@@ -2,11 +2,14 @@
 
 ## Start here
 
-The project archives audio and metadata from channeling creators and publishes source-backed research. The latest-20 selection holds **1,976 public regular uploads across 101 channels**. At 22:21 UTC on November 19, Drive held **1,731 verified recordings**. Sixty-seven creators had complete coverage, and 245 recordings remained. The Windows collector can run six source workers alongside three Drive transfers under a 23 GB working-file allowance, while keeping 12 GB physically free after reservations. The larger catalog retains Shorts and streams. [Collection process and concurrency](et-channelers/pipeline/COLLECTION_PROCESS.md) · [Dashboard hub](dashboards/)
+The project archives audio and metadata from channeling creators and publishes source-backed research. The latest-20 selection contains **1,976 public regular uploads across 101 channels**. At 22:51 UTC on November 19, Drive held **1,784 verified recordings**. Sixty-seven creators had complete coverage, and 192 recordings remained. The active Windows collector reached six source workers and eight outstanding recordings, with three Drive file transfers, a 23 GB working-file allowance and a 12 GB disk reserve. The larger catalog retains Shorts and streams. [Collection process and concurrency](et-channelers/pipeline/COLLECTION_PROCESS.md) · [Dashboard hub](dashboards/)
 
 For data collection, start with the Windows handoff and the pipeline guide. For the study, start with the research plan, reviewed channeler–entity table and event register. Branch history records which work has reached the public site. [Handoff](et-channelers/HANDOFF.md) · [Pipeline](et-channelers/pipeline/README.md) · [Analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md) · [Source relationships](et-channelers/research/analysis-plan-2026-11-16/channeler-entity-table.md) · [Shared events](et-channelers/research/cross-channel-events-2026-11-16.md) · [Branches](BRANCHES.md)
 
-## Earlier receipt checkpoints
+**Latest-50 audio is scheduled after latest-20+ translation and both analysis rounds.** Allow about **22–28 hours from its eventual start** at the measured 100.6 verified recordings per hour. Channel growth, source availability and transfer rates can change that estimate. The Windows archive stores the dependency so a restart preserves the order. [Forecast and release conditions](et-channelers/pipeline/COLLECTION_PROCESS.md#latest-50-forecast)
+
+<details>
+<summary>Earlier receipt checkpoints for the 74-channel collection</summary>
 
 **Receipt checkpoint, 19 November 2026, 04:15 UTC:** public `main` is `7c6a860`; [PR #75](https://github.com/occult-kranti/bashar-index/pull/75) merged the streaming PURE receipt reader and Pages passed. Audio remains **1,151 / 1,420 selected videos: 1,108 native + 37 publisher editions + six qualified YouTube editions**. Saved-text coverage is **136**, **269** selected videos still lack audio, and the creator-level selection gap remains **60**. ASR remains paused.
 
@@ -29,6 +32,8 @@ Audio coverage also distinguishes [qualified YouTube editions](et-channelers/res
 **Start here:** [all dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [branch inventory and history](BRANCHES.md) · [collection handoff](et-channelers/HANDOFF.md) · [future transcription/analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md).
 
 Historical repository guide checkpoint: **18 November 2026, 00:05:09 UTC**. [PR #38](https://github.com/occult-kranti/bashar-index/pull/38) merged as `f1e4f11`; its exact head passed 1,356 Python tests with 47 skips and all 86 Node tests. Pages deployed and seven public routes returned 200. Branch `feat/native-upload-overlap` is retained; continuation is `feat/decoded-native-audio-formats`. **128 native audio/metadata pairs and 77 native-source ASR bundles** are Drive-verified. Including qualified publisher editions, latest-20 coverage is **156 audio entries / 122 with an audio edition and saved text**. The admitted 40-target continuation and separate 42-input English consumer are running at this dated snapshot. A strict decoded-DRC policy recovered one complete native AAC file without re-encoding. Accuracy and publisher-edition equivalence remain unreviewed; scientific corpus analysis is deferred.
+
+</details>
 
 ## The three research lanes
 

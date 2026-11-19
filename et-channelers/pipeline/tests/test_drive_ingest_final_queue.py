@@ -1,4 +1,5 @@
 """Offline Windows launcher regression: build and launch the same final queue."""
+import json
 import shutil
 import subprocess
 import sys
@@ -39,12 +40,35 @@ class FinalQueueTests(unittest.TestCase):
         for path in (self.tools / 'rclone.exe', self.tools / 'venv' / 'Scripts' / 'yt-dlp.exe'):
             path.touch()
 
-    def launch(self, mode, final_queue=None):
+    def launch(self, mode, final_queue=None, *options):
         command = ['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(self.wrapper),
                    '-Mode', mode, '-PrivateRoot', str(self.private), '-ToolRoot', str(self.tools)]
         if final_queue is not None:
             command.extend(['-FinalQueue', str(final_queue)])
-        return subprocess.run(command, capture_output=True, text=True, timeout=20)
+        return subprocess.run(command + list(options), capture_output=True, text=True, timeout=20)
+
+    def test_single_queue_passes_requested_ranks_and_parallel_limits_to_collector(self):
+        pending = self.private / 'prepared-50.csv'
+        pending.write_text('video_id,channel_dir,tab,listing_rank\nabcdefghijk,alice,videos,49\n')
+        pipeline = Path(__file__).resolve().parents[1]
+        probe = self.base / 'drive_ingest.py'
+        probe.write_text(
+            "import json,sys\nfrom pathlib import Path\n"
+            f"sys.path.insert(0, {str(pipeline)!r})\n"
+            "from drive_ingest import parser, select_queue\n"
+            "args=parser().parse_args()\n"
+            "rows=select_queue(args.queue,args.newest,args.entire_queue)\n"
+            "print(json.dumps([args.command,[r['listing_rank'] for r in rows],args.workers,"
+            "args.upload_transfers,args.max_local_gb,args.min_free_gb]))\n",
+            encoding='utf-8')
+        for mode in ('Plan', 'Run'):
+            with self.subTest(mode=mode):
+                result = self.launch(mode, None, '-Queue', str(pending), '-Newest', '50')
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(json.loads(result.stdout), [mode.lower(), [49], 6, 3, 23, 12])
+        default = self.launch('Plan', None, '-Queue', str(pending))
+        self.assertEqual(default.returncode, 0, default.stdout + default.stderr)
+        self.assertEqual(json.loads(default.stdout)[1], [])
 
     def assert_rejected_before_build_or_collection(self, mode):
         result = self.launch(mode, self.custom)
