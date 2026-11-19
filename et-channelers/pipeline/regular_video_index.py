@@ -183,10 +183,15 @@ def index_channel(creator, channel, raw, observed_at, evidence, limit=20):
             'observed_items': entries, 'excluded': excluded, 'primary_grid_entries': len(primary)}
 
 
-def assemble(channels, folder, index_name='fresh-videos.json'):
+def assemble(channels, folder, index_name='fresh-videos.json', *, per_channel=20):
     folder = Path(folder)
     if not re.fullmatch(r'[A-Za-z0-9_-]+\.json', index_name):
         raise ValueError('Expected a JSON filename in the private run directory')
+    if per_channel not in (20, 50):
+        raise ValueError('Choose a 20- or 50-recording cohort')
+    destination = folder/index_name
+    if destination.exists() and json.loads(destination.read_bytes()).get('per_channel') != per_channel:
+        raise ValueError('Use a distinct filename for each cohort size')
     result = []
     for creator, channel in channels:
         where = folder/creator
@@ -204,7 +209,7 @@ def assemble(channels, folder, index_name='fresh-videos.json'):
                 raw = source.read(MAX_BYTES + 1)
             if len(raw) > MAX_BYTES:
                 raise ValueError('Archive exceeds listing page limit')
-            result.append(index_channel(creator, channel, raw, when, mark))
+            result.append(index_channel(creator, channel, raw, when, mark, limit=per_channel))
         except (OSError, ValueError, KeyError) as exc:
             result.append({**base, 'state': 'unavailable', 'reason': str(exc)[:200]})
     summary = {'channels': len(result), 'states': dict(Counter(g['state'] for g in result)),
@@ -212,9 +217,9 @@ def assemble(channels, folder, index_name='fresh-videos.json'):
                'priority_regular_videos': sum(len(g['items']) for g in result),
                'public_regular_targets': sum(len(g['public_items']) for g in result),
                'completed_public_channel_listings': sum(g['public_listing_complete'] for g in result),
-               'member_only_in_literal_latest20': sum(i.get('access_status') == 'members_only' for g in result for i in g['items']),
+               f'member_only_in_literal_latest{per_channel}': sum(i.get('access_status') == 'members_only' for g in result for i in g['items']),
                'observed_regular_videos': sum(len(g['observed_items']) for g in result)}
     stamp = max((g.get('observed_at', '') for g in result), default='') or utc_now()
-    write_json(folder/index_name, {'schema_version': 1, 'index_revision': 2, 'label': 'Latest 20+ videos', 'per_channel': 20,
+    write_json(destination, {'schema_version': 1, 'index_revision': 2, 'label': f'Latest {per_channel}+ videos', 'per_channel': per_channel,
                'observed_at': stamp, 'summary': summary, 'channels': result})
     return summary
