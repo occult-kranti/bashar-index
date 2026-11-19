@@ -190,12 +190,16 @@ def publication_figures(plt, periods, out, label):
     series = periods["series"]
     if not series:
         return []
-    write_csv(out / "publication-quarter-topics.csv", series, tuple(series[0]))
-    change_fields = ("previous_quarter", "publication_quarter", "topic", "matched_creators",
+    basis = "upload" if periods["date_basis"] == "observed_upload_day" else "publication"
+    quarter_field = basis + "_quarter"
+    topic_file = f"{basis}-quarter-topics"
+    changes_file = "matched-creator-upload-quarter-changes" if basis == "upload" else "matched-creator-quarter-changes"
+    write_csv(out / (topic_file + ".csv"), series, tuple(series[0]))
+    change_fields = ("previous_quarter", quarter_field, "topic", "matched_creators",
                      "previous_assessed_episodes", "current_assessed_episodes",
                      "mean_within_creator_change_percentage_points", "matched_channel_dirs")
-    write_csv(out / "matched-creator-quarter-changes.csv", periods["matched_quarter_changes"], change_fields)
-    cells = {(row["publication_quarter"], row["topic"]): row for row in series}
+    write_csv(out / (changes_file + ".csv"), periods["matched_quarter_changes"], change_fields)
+    cells = {(row[quarter_field], row["topic"]): row for row in series}
     quarters = list(periods["quarters"])
     if periods["undated_episodes"]:
         quarters.append("undated")
@@ -211,7 +215,7 @@ def publication_figures(plt, periods, out, label):
                               dtype=float)
             fig, ax = plt.subplots(figsize=(max(8, 3.9 + len(window)), max(4.4, 2.6 + .58 * len(names))),
                                    layout="constrained")
-            fig.suptitle("Topics by publication quarter", fontsize=17, fontweight="bold", color=INK)
+            fig.suptitle("Topics by " + basis + " quarter", fontsize=17, fontweight="bold", color=INK)
             ax.set_title("Each cell shows the mean topic share and the number of assessed / eligible creators.",
                          fontsize=9, color=MUTED, pad=11)
             im = ax.imshow(np.ma.masked_invalid(values), cmap=colors, vmin=0, vmax=1, aspect="auto")
@@ -233,7 +237,7 @@ def publication_figures(plt, periods, out, label):
             fig.colorbar(im, ax=ax, format=PercentFormatter(xmax=1), label="Mean topic share")
             footer = "Gray cells have no assessed creator. Each assessed recording family has equal weight within its creator."
             fig.supxlabel((label + "\n" if label else "") + footer, fontsize=9, color=MUTED)
-            stem = f"publication-quarter-topics-{start // 10 + 1:02d}-{offset // 8 + 1:02d}"
+            stem = f"{topic_file}-{start // 10 + 1:02d}-{offset // 8 + 1:02d}"
             save_figure(fig, out, stem)
             plt.close(fig)
             stems.append(stem)
@@ -256,6 +260,8 @@ def render(result, out, label, min_families, min_creators, max_edges):
     with matplotlib.rc_context({"svg.fonttype": "none", "svg.hashsalt": "episode-figures-v1", "font.family": "DejaVu Sans"}):
         if "publication_periods" in result:
             stems.extend(publication_figures(plt, result["publication_periods"], out, label))
+        if "upload_periods" in result:
+            stems.extend(publication_figures(plt, result["upload_periods"], out, label))
         creator_pages = [creators[i:i + 18] for i in range(0, len(creators), 18)] or [[]]
         topic_pages = [topics[i:i + 8] for i in range(0, len(topics), 8)] or [[]]
         for i, creator_page in enumerate(creator_pages, 1):

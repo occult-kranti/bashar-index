@@ -17,6 +17,12 @@ def publication_quarter(row):
     if (row.get("selected_date_quality") != "exact" or not isinstance(value, str)
             or not episode_comparison.digest(row.get("selected_date_source_sha256"))):
         return None
+    return quarter_for_day(value)
+
+
+def quarter_for_day(value):
+    if not isinstance(value, str):
+        return None
     try:
         day = date.fromisoformat(value)
     except ValueError:
@@ -30,14 +36,20 @@ def period_name(quarter):
     return "undated" if quarter is None else f"{quarter // 4:04d}-Q{quarter % 4 + 1}"
 
 
-def summarize(rows, evidence, topics):
+def summarize(rows, evidence, topics, *, upload_days=None):
     """Give creators equal weight and compare adjacent quarters using shared creators."""
     rows = list(rows)
     topics = sorted(topics)
     frame = episode_comparison.primary_frame(rows)
+    if upload_days is not None and upload_days.keys() != frame.keys():
+        raise ValueError("Upload quarters need the full recording denominator")
+    basis = "publication" if upload_days is None else "upload"
+    quarter_field = basis + "_quarter"
     selected = defaultdict(lambda: defaultdict(list))
     for row in rows:
-        selected[publication_quarter(row)][row["channel_dir"]].append(row["video_id"])
+        video = row["video_id"]
+        quarter = publication_quarter(row) if upload_days is None else quarter_for_day(upload_days[video])
+        selected[quarter][row["channel_dir"]].append(video)
     observations = {}
     for proof in evidence:
         video = proof["video_id"]
@@ -59,7 +71,7 @@ def summarize(rows, evidence, topics):
             assessed_episodes = sum(x["assessed_episodes"] for x in assessed.values())
             positives = sum(x["positive_episodes"] for x in assessed.values())
             series.append({
-                "publication_quarter": period_name(quarter), "topic": topic,
+                quarter_field: period_name(quarter), "topic": topic,
                 "eligible_episodes": eligible_episodes, "assessed_episodes": assessed_episodes,
                 "positive_episodes": positives, "eligible_creators": len(cells), "assessed_creators": len(assessed),
                 "episode_share": positives / assessed_episodes if assessed_episodes else None,
@@ -75,15 +87,15 @@ def summarize(rows, evidence, topics):
             changes = [assessed[c]["family_balanced_observed_share"] - previous[c]["family_balanced_observed_share"]
                        for c in shared]
             comparisons.append({
-                "previous_quarter": period_name(quarter - 1), "publication_quarter": period_name(quarter),
+                "previous_quarter": period_name(quarter - 1), quarter_field: period_name(quarter),
                 "topic": topic, "matched_creators": len(shared),
                 "previous_assessed_episodes": sum(previous[c]["assessed_episodes"] for c in shared),
                 "current_assessed_episodes": sum(assessed[c]["assessed_episodes"] for c in shared),
                 "mean_within_creator_change_percentage_points": 100 * fmean(changes) if changes else None,
                 "matched_channel_dirs": shared
             })
-    return {"schema_version": 1, "date_basis": "pinned_publication_day",
+    return {"schema_version": 1, "date_basis": "pinned_publication_day" if upload_days is None else "observed_upload_day",
             "eligible_episodes": len(frame),
-            "episodes_with_exact_publication_dates": sum(len(ids) for q in dated for ids in selected[q].values()),
+            f"episodes_with_exact_{basis}_dates": sum(len(ids) for q in dated for ids in selected[q].values()),
             "undated_episodes": sum(len(ids) for ids in selected.get(None, {}).values()),
             "quarters": [period_name(q) for q in dated], "series": series, "matched_quarter_changes": comparisons}

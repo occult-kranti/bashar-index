@@ -81,6 +81,23 @@ class PostrunTests(unittest.TestCase):
             with self.subTest(scope=label), self.assertRaisesRegex(ValueError, "complete public listings"):
                 study.complete_frame(self.snapshot, self.saved, frame, {"example": label}, self.pin)
 
+    def test_adding_an_upload_calendar_creates_a_separate_frozen_generation(self):
+        old = self.execute()
+        catalog = self.root / "catalog.zip"
+        pin = fingerprint("archived catalog")
+        with self.assertRaisesRegex(ValueError, "together"):
+            self.execute(upload_catalog=catalog)
+        dates = {self.video: "2026-09-01", self.other: None}
+        with patch.object(study.episode_upload_calendar, "read_catalog", return_value=(dates, {"upload_day_only": 1})) as read:
+            new = self.execute(upload_catalog=catalog, upload_catalog_sha256=pin)
+        self.assertEqual(read.call_args.args[:2], (catalog, pin))
+        self.assertNotEqual(old, new)
+        comparison = json.loads((new / "episode-comparison.json").read_bytes())
+        self.assertEqual(comparison["upload_periods"]["catalog_sha256"], pin)
+        self.assertEqual(comparison["upload_periods"]["quarters"], ["2026-Q3"])
+        self.assertFalse(comparison["publication_periods"]["quarters"])
+        self.assertNotIn("upload_periods", json.loads((old / "episode-comparison.json").read_bytes()))
+
     def test_malformed_or_unknown_family_membership_cannot_silently_change_estimates(self):
         file = self.root / "family.jsonl"
         file.write_text('{"wrong":true}\ninvalid', encoding="utf-8")

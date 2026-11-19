@@ -202,25 +202,27 @@ PowerShell process:
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Plan
 ```
 
-Download and upload concurrency are separate. The defaults keep acquisition at four workers and
-Drive at two simultaneous transfers; increasing one does not increase the other.
+The launcher runs six download workers and three simultaneous Drive transfers by default.
+Downloads and uploads have separate limits.
 
 | Launcher option | Default | Allowed |
 | --- | ---: | --- |
-| `-DlWorkers` (`-Workers` alias) | 4 | 1–8 |
-| `-UploadTransfers` | 2 | 1–4 |
-| `-MaxLocalGb` | 18 decimal GB across managed roots | 1–18 |
-| `-UploadBatchItems` | 8 pairs | 1–16, no greater than `ReadyItems` |
+| `-DlWorkers` (`-Workers` alias) | 6 | 1–8 |
+| `-UploadTransfers` | 3 | 1–4 |
+| `-MaxLocalGb` | 23 decimal GB across managed roots | 1–23 |
+| `-UploadBatchItems` | 12 pairs | 1–16, up to `ReadyItems` |
 | `-UploadBatchSeconds` | 10 | 0–300; zero flushes immediately |
-| `-ReadyItems` | 16 pairs | 1–64 |
+| `-ReadyItems` | 24 pairs | 1–64 |
+| `-Newest` | 20 | 20 or 50 for a single queue in Plan or Run mode |
 | `-RateMiB` | 2 per download worker | Positive; launcher maximum 100 |
 | `-MinInterval` | 5 seconds | 0–3600 between metadata request starts |
 
-The owner-selected configuration runs eight downloads alongside four Drive transfers, with
-12-pair batches and at most 64 queued/in-flight pairs under the shared storage budget:
+After latest-20+ translation and both analysis rounds, run a prepared public-50 queue by passing its pending CSV and rank limit together.
+This includes the recording at rank 50. The archive's scheduling receipt permits the media run when the earlier study is complete. Previewing the queue reads local files. [Forecast and schedule](COLLECTION_PROCESS.md#latest-50-forecast)
 
 ```powershell
-& .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode RunAll -DlWorkers 8 -UploadTransfers 4 -UploadBatchItems 12 -ReadyItems 64 -MaxLocalGb 17
+& .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Plan -Newest 50 -Queue $pendingCsv
+& .\et-channelers\pipeline\start_drive_ingest.ps1 -Mode Run -Newest 50 -Queue $pendingCsv
 ```
 
 The installed yt-dlp version is pinned to official nightly `2026.11.15.232800` after a November
@@ -374,8 +376,8 @@ The provider process is local-session state, not an installed service. After a r
 its health and the private provenance before restarting the collector; do not assume this page
 establishes that either process is running. Keep credential and provider-token logs private.
 
-The standalone wrapper requests four download workers, with at most one active item per channel. Its default
-project budget is **18 decimal GB**. It includes the private directory, tools, the checkout, the browser cache
+The standalone wrapper requests six download workers, with at most one active item per channel. Its default
+project budget is **23 decimal GB**. It includes the private directory, tools, the checkout, the browser cache
 and additional project directories saved in `PRIVATE_ROOT/sync/managed_storage_roots.json`. This file has
 `schema_version` 1 and a `managed_roots` array of absolute directory paths. The Python command also accepts
 repeatable `--managed-root` paths. Nested paths count once. Existing files, partial downloads and space
@@ -390,14 +392,13 @@ Three missing-format outcomes without intervening audio progress stop new source
 so a broken player/runtime cannot churn through the entire queue. Each admission preserves **12 GB of free
 disk space** after download and journal reservations. Run this collector
 alone in its private root; a separate application writing there is outside its storage guarantee.
-One separate upload coordinator overlaps acquisition. The default is two upload transfers, a
-16-pair queue and eight-pair batches; the owner-selected configuration uses four transfers, 64 queued
-or in-flight pairs and 12-pair batches, flushing after ten seconds. Rclone uses 2 API requests per
-second and 32 MiB chunks, at most 128 MiB of chunk buffers across four transfers. Each local file remains
+One upload coordinator overlaps acquisition with three Drive transfers, a limit of 24 outstanding
+pairs and batches of twelve. The ten-second timer flushes smaller groups. Rclone uses two API
+requests per second and 32 MiB chunks, up to 96 MiB of chunk buffers at the default concurrency. Each local file remains
 until Drive returns the expected size and MD5. This is a bounded local spool, not a Drive desktop
 sync folder and not a pipe that discards bytes before they can be verified.
 This is a rolling local limit across collection tiers; it does not limit the size of the Drive archive.
-The Python command enforces the same 18 GB maximum and 12 GB minimum disk reserve.
+The Python command enforces the same 23 GB maximum and 12 GB minimum disk reserve.
 
 Remote metadata is read using [rclone lsjson](https://rclone.org/commands/rclone_lsjson/), whose
 `--stat --hash` result supplies the size, object identity, and available hashes. Upload failure,

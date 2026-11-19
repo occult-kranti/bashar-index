@@ -102,6 +102,8 @@ class EpisodeFigureTests(unittest.TestCase):
                     observation("second", "quiet", [], assessed=["X"], creator="Pine")]
         result = comparison.compare(audio, evidence, ["X"])
         result["publication_periods"] = episode_periods.summarize(audio, result["evidence"], ["X"])
+        dates = {"first": "2025-12-17", "second": None, "third": "2026-04-01"}
+        result["upload_periods"] = episode_periods.summarize(audio, result["evidence"], ["X"], upload_days=dates)
         with TemporaryDirectory() as temporary:
             out = Path(temporary)
             figures.export(result, out)
@@ -114,6 +116,13 @@ class EpisodeFigureTests(unittest.TestCase):
                 self.assertEqual(next(csv.DictReader(stream))["mean_within_creator_change_percentage_points"], "-100.0")
             chart = ElementTree.parse(out / "publication-quarter-topics-01-01.svg").getroot()
             self.assertIn("undated", " ".join(chart.itertext()))
+            with (out / "upload-quarter-topics.csv").open(encoding="utf-8-sig", newline="") as stream:
+                uploads = {row["upload_quarter"]: row for row in csv.DictReader(stream)}
+            self.assertEqual(set(uploads), {"2025-Q4", "2026-Q2", "undated"})
+            self.assertEqual(uploads["2026-Q2"]["creator_balanced_share"], "")
+            self.assertTrue((out / "matched-creator-upload-quarter-changes.csv").is_file())
+            uploaded = ElementTree.parse(out / "upload-quarter-topics-01-01.svg").getroot()
+            self.assertIn("Topics by upload quarter", " ".join(uploaded.itertext()))
 
     @unittest.skipUnless(find_spec("matplotlib"), "Chart exports require the existing research plotting environment")
     def test_empty_frame_exports_explanatory_figures(self):

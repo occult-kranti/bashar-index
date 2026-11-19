@@ -2,15 +2,15 @@
 
 ## Current collection and next phases
 
-The November 19 selection covers 1,976 public regular recordings on 101 channels. At 22:21 UTC, 1,731 recordings had verified Drive audio and metadata, with 245 outstanding. The active collector admits up to six source workers and publishes files in groups with up to three Drive transfers. Publisher downloads share the 23 GB working-file budget. All workers keep 12 GB physically free after reservations. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
+The November 19 selection covers 1,976 public regular recordings on 101 channels. At 22:51 UTC, 1,784 had verified Drive audio and metadata, with 192 outstanding. The first native batch to reach six source workers and eight outstanding recordings verified 13 audio files and their metadata in 242 seconds. Publisher downloads share the 23 GB working-file budget and the 12 GB disk reserve. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
 
 | Stage | Completion condition |
 | --- | --- |
 | Finish the current twenty | Verify every selected creator/video pair, retain the five exhausted channel lists and save the final index and coverage counts. |
-| Prepare the next fifty | Extend each public Videos listing to 50 or its natural end, reuse the completed twenty, and queue only missing IDs. Index deeper history separately. |
 | Fill transcript gaps | Prefer English published or original automatic captions and verified publisher transcripts. Produce an original transcript and English translation for non-English audio that needs speech recognition. |
-| First research panel | Compare creator-normalized TF-IDF, embeddings and clusters, topic distribution, shared events, entity attributions, prediction dates and documented experimental proposals. |
+| First research panel | Compare creator-balanced TF–IDF, reviewed entity groups, cross-creator passage embeddings, topic distribution, shared events, prediction dates and documented experiments. Compare trends separately by publication quarter and observed upload quarter. [Lexical comparisons](pipeline/CORPUS_GROUP_LEXICAL.md) · [Passage retrieval](pipeline/CORPUS_SEMANTIC_RETRIEVAL.md) |
 | Second research panel and dashboards | Revisit the strongest and weakest findings with independent source checks. Publish denominator-labelled plots, heatmaps, networks and tables from the reviewed cohort. |
+| Release the next fifty | After translations and both panel reports are complete, refresh the regular Videos listings, reuse verified recordings and download the additional files. The November 19 estimate is 22–28 hours from that start. Index deeper history separately. [Forecast and assumptions](pipeline/COLLECTION_PROCESS.md#latest-50-forecast) |
 
 Begin the shared-event review with the Dreemtime Academy and Sam the Illusionist leads. Match independently dated accounts before relating their interpretations. [Event register](research/cross-channel-events-2026-11-16.md) · [Detailed research design](research/analysis-plan-2026-11-16/README.md)
 

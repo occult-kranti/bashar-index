@@ -15,6 +15,8 @@ param(
     [string]$PrivateRoot = (Join-Path $env:USERPROFILE 'et-channelers-private'),
     [string]$ToolRoot = (Join-Path $env:USERPROFILE 'et-channelers-tools'),
     [string]$Queue = '',
+    [ValidateSet(20, 50)]
+    [int]$Newest = 20,
     [string]$FullQueue = '',
     [string]$FiftyQueue = '',
     [string]$FinalQueue = '',
@@ -48,6 +50,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+if ($Newest -ne 20 -and $Mode -notin @('Plan', 'Run')) {
+    throw 'Select Plan or Run to apply -Newest to a single queue. RunAll selects its own collection stages.'
+}
 if ($UploadBatchItems -gt $ReadyItems) {
     throw 'UploadBatchItems cannot exceed ReadyItems.'
 }
@@ -74,11 +79,11 @@ if (-not (Test-Path -LiteralPath $EtRunner -PathType Leaf)) {
     throw "Collector missing: $EtRunner. Update this checkout before running."
 }
 if (-not $Queue) {
-    $EtEnrichedQueue = Join-Path $PrivateRoot 'jobs\queue_newest20_enriched.csv'
+    $EtEnrichedQueue = Join-Path $EtJobs "queue_newest${Newest}_enriched.csv"
     $Queue = if (Test-Path -LiteralPath $EtEnrichedQueue -PathType Leaf) {
         $EtEnrichedQueue
     } else {
-        Join-Path $PrivateRoot 'jobs\queue_newest20.csv'
+        Join-Path $EtJobs "queue_newest${Newest}.csv"
     }
 }
 if (-not $FullQueue) {
@@ -103,7 +108,7 @@ if ($Mode -eq 'RunFinal' -and -not (Test-Path -LiteralPath $FinalQueue -PathType
     throw 'Final-round index missing. Run -Mode Index to prepare it.'
 }
 if ($Mode -ne 'Status' -and -not (Test-Path -LiteralPath $Queue -PathType Leaf)) {
-    throw "Queue missing: $Queue. Restore the newest-20 queue or pass -Queue."
+    throw "Queue missing: $Queue. Restore the selected queue or pass -Queue."
 }
 if ($Mode -in @('Run', 'RunAll', 'RunFinal')) {
     foreach ($EtTool in @($EtYtdlp, $EtRclone)) {
@@ -122,7 +127,7 @@ $EtArguments = @(
     '--root', $PrivateRoot,
     '--queue', $Queue,
     '--remote', $Remote,
-    '--newest', '20',
+    '--newest', [string]$Newest,
     '--workers', [string]$DlWorkers,
     '--upload-transfers', [string]$UploadTransfers,
     '--upload-batch-items', [string]$UploadBatchItems,
@@ -221,6 +226,7 @@ try {
         if ($EtExitCode -eq 0) {
             $EtFinalArguments = @($EtArguments)
             $EtFinalArguments[[Array]::IndexOf($EtFinalArguments, '--queue') + 1] = $FinalQueue
+            $EtFinalArguments[[Array]::IndexOf($EtFinalArguments, '--newest') + 1] = '50'
             $EtFinalArguments += '--entire-queue'
             Invoke-EtPython -Arguments $EtFinalArguments
             if ($EtExitCode -eq 0 -and $Limit -eq 0) {
@@ -253,6 +259,7 @@ try {
             if ($EtExitCode -eq 0) {
                 $EtFinalArguments = @($EtArguments)
                 $EtFinalArguments[[Array]::IndexOf($EtFinalArguments, '--queue') + 1] = $FinalQueue
+                $EtFinalArguments[[Array]::IndexOf($EtFinalArguments, '--newest') + 1] = '50'
                 $EtFinalArguments += '--entire-queue'
                 Invoke-EtPython -Arguments $EtFinalArguments
                 if ($EtExitCode -eq 0) {

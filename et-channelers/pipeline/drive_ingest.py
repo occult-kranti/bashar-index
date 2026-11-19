@@ -49,10 +49,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 if __package__:
-    from . import host_capacity, storage_inventory
+    from . import host_capacity, storage_inventory, study_schedule
     from .receipt_admission import ExactOwnerReceiptGate
 else:
-    import host_capacity, storage_inventory
+    import host_capacity, storage_inventory, study_schedule
     from receipt_admission import ExactOwnerReceiptGate
 from common import (HARD_BLOCKS, ID_RE, RateLimiter, add_root_arg, classify_error,
                     direct_env, ensure_outside_git, read_csv, read_jsonl,
@@ -1925,6 +1925,8 @@ def main(argv=None):
             ap.error("download-only is a bounded pilot: use --limit N, without --all")
         if not args.download_only and (not args.remote or not re.match(r"^[A-Za-z0-9_-]+:", args.remote)):
             ap.error("run requires a configured rclone --remote NAME:path")
+        if args.newest == 50 or args.entire_queue and args.queue.name == "queue_final_round.csv":
+            study_schedule.require_completed_study(args.root)
         youtube_gate("Drive ingestion")
         return run(args, rows)
     except (IngestError, ValueError, OSError) as exc:
