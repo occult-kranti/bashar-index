@@ -1355,6 +1355,76 @@ def publisher_episode_transcript_reference(record, parent):
         return False
 
 
+def publisher_receipt_digest(record):
+    """Stable association identity; shared files retain distinct listing receipts."""
+    return hashlib.sha256(json.dumps(record, sort_keys=True, separators=(',', ':'),
+        ensure_ascii=True, allow_nan=False).encode('utf-8')).hexdigest()
+
+
+def shared_publisher_audio_reference(record, anchor, remote, owners):
+    """One verified publisher file, with a separate qualified listing association."""
+    row = record_row({'video_id': record.get('associated_youtube_id'), 'channel_dir': record.get('channel_dir')})
+    if (not row or record.get('kind') != 'shared_publisher_audio_association' or
+            record.get('schema_version') != 1 or record.get('status') != 'verified' or
+            record.get('association_method') != 'publisher_owner_title_date_duration' or
+            record.get('exact_youtube_crossreference') is not False or
+            record.get('publisher_source_reused') is not True or
+            record.get('recording_equivalence_verified') is not False or
+            record.get('youtube_edit_equivalence_verified') is not False or
+            not all(record.get(k) is False for k in ('native_youtube_bytes', 'changes_native_audio_count',
+                'changes_native_asr_count', 'changes_native_caption_count', 'human_verified')) or
+            record.get('source_tab') != 'videos' or record.get('caption_bundles') != [] or
+            record.get('publisher_transcript') is not None):
+        return False
+    owner = owners.get(row['video_id'])
+    if row['video_id'] in owners and (not owner or owner != (row['channel_dir'], 'videos')):
+        return False
+    evidence = record.get('source_tab_evidence')
+    if (not isinstance(evidence, dict) or evidence.get('video_id') != row['video_id'] or
+            evidence.get('channel_dir') != row['channel_dir'] or evidence.get('tab') != 'videos' or
+            not re.fullmatch('[0-9a-f]{64}', str(evidence.get('roster_sha256', '')))):
+        return False
+    audio, provenance, pointer = (record.get(k) for k in ('audio', 'provenance', 'audio_reference'))
+    source_provenance = record.get('canonical_provenance')
+    if not all(publisher_object_proof(a) for a in (audio, provenance, pointer, source_provenance)):
+        return False
+    fields = ('remote', 'drive_id', 'bytes', 'md5', 'sha256')
+    if (record.get('canonical_associated_youtube_id') != anchor.get('associated_youtube_id') or
+            row['video_id'] == anchor.get('associated_youtube_id') or
+            anchor.get('channel_dir') != row['channel_dir'] or anchor.get('source_tab', 'videos') != 'videos' or
+            record.get('provider') != anchor.get('provider') or
+            record.get('canonical_receipt_sha256') != publisher_receipt_digest(anchor) or
+            any(audio[k] != anchor['audio'][k] or source_provenance[k] != anchor['provenance'][k] for k in fields) or
+            record.get('variant_id') != audio['sha256'] or
+            not re.fullmatch('[0-9a-f]{64}', str(record.get('accepted_api_sha256', ''))) or
+            record['accepted_api_sha256'] != anchor.get('accepted_api_sha256') or
+            not isinstance(record.get('source_episode_guid'), str) or not 0 < len(record['source_episode_guid']) <= 512):
+        return False
+    payload = record.get('canonical_provenance_payload')
+    if not isinstance(payload, dict) or record.get('canonical_provenance_encoding') != 'sorted_compact_utf8_json_newline_v1':
+        return False
+    try:
+        raw = (json.dumps(payload, sort_keys=True, ensure_ascii=False, allow_nan=False,
+                          separators=(',', ':')) + '\n').encode('utf-8')
+    except (ValueError, TypeError):
+        return False
+    source = payload.get('qualified_source')
+    if (len(raw) > 1_000_000 or len(raw) != source_provenance['bytes'] or
+            hashlib.sha256(raw).hexdigest() != source_provenance['sha256'] or
+            hashlib.md5(raw).hexdigest() != source_provenance['md5'] or
+            not isinstance(source, dict) or source.get('guid') != record['source_episode_guid'] or
+            payload.get('creator') != row['channel_dir'] or payload.get('feed_sha256') != record['accepted_api_sha256'] or
+            payload.get('audio') != {k: audio[k] for k in ('bytes', 'md5', 'sha256')}):
+        return False
+    parent = f"{remote}/{row['channel_dir']}/Videos/{row['video_id']}/PublisherVariants/{audio['sha256']}"
+    return (provenance['remote'] == parent + '/provenance.json' and
+            pointer['remote'] == parent + '/publisher-audio.ref.json' and
+            pointer.get('points_to_drive_id') == audio['drive_id'] and
+            pointer.get('source_audio_sha256') == audio['sha256'] and
+            pointer.get('source_audio_bytes') == audio['bytes'] and
+            len({audio['drive_id'], source_provenance['drive_id'], provenance['drive_id'], pointer['drive_id']}) == 4)
+
+
 def publisher_mirror_evidence(root, targets, remote, target_rows=None):
     """Separate timed captions, ASR and transcripts attached to verified publisher editions."""
     audio_ids, caption_ids, asr_ids, untimed_ids, sources = set(), set(), set(), set(), {}
@@ -1363,6 +1433,21 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
         return audio_ids, caption_ids, asr_ids, untimed_ids
     owners = selected_recording_owners(root, target_rows)
     folders = {'videos': 'Videos', 'shorts': 'Shorts', 'streams': 'Streams'}
+    records = []
+    for line in path.read_text(encoding='utf-8-sig').splitlines():
+        try:
+            record = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(record, dict):
+            records.append(record)
+    # Validate the existing anchor with its normal receipt contract even when
+    # only the other listing was requested. Aliases cannot anchor other aliases.
+    anchor_ids = {r['canonical_associated_youtube_id'] for r in records
+        if r.get('kind') == 'shared_publisher_audio_association' and
+        isinstance(r.get('canonical_associated_youtube_id'), str)}
+    validation_targets = set(targets) | anchor_ids
+    source_receipts = {}
 
     def exact_reference(record):
         try:
@@ -1376,11 +1461,7 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
         except (ValueError, TypeError, AttributeError):
             return False
 
-    for line in path.read_text(encoding='utf-8-sig').splitlines():
-        try:
-            record = json.loads(line)
-        except ValueError:
-            continue
+    for record in records:
         if (not isinstance(record, dict) or record.get('schema_version') != 1 or
                 record.get('status') != 'verified' or
                 not all(record.get(key) is False for key in ('native_youtube_bytes', 'changes_native_audio_count',
@@ -1397,7 +1478,7 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
             continue
         row = record_row({'video_id': record.get('associated_youtube_id'), 'channel_dir': record.get('channel_dir')})
         audio, provenance = record.get('audio'), record.get('provenance')
-        if (not row or row['video_id'] not in targets or not publisher_object_proof(audio) or not publisher_object_proof(provenance) or
+        if (not row or row['video_id'] not in validation_targets or not publisher_object_proof(audio) or not publisher_object_proof(provenance) or
                 audio['drive_id'] == provenance['drive_id'] or record.get('variant_id') != audio['sha256']):
             continue
         owner = owners.get(row['video_id'])
@@ -1429,8 +1510,15 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
                 not re.fullmatch(re.escape(parent) + r'/publisher-audio\.(?:aac|m4a|mp3|opus|ogg|webm|flac)', audio['remote']) or
                 provenance.get('remote') != parent + '/provenance.json'):
             continue
-        audio_ids.add(row['video_id'])
+        if row['video_id'] in anchor_ids:
+            try:
+                source_receipts[publisher_receipt_digest(record)] = record
+            except (ValueError, TypeError):
+                pass
         sources[(row['video_id'], audio['sha256'])] = record
+        if row['video_id'] not in targets:
+            continue
+        audio_ids.add(row['video_id'])
         transcript = record.get('publisher_transcript')
         if (publisher_object_proof(transcript) and transcript['drive_id'] not in {audio['drive_id'], provenance['drive_id']}
                 and transcript.get('timed') is False and transcript.get('language') == 'en'
@@ -1448,6 +1536,14 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
                     isinstance(caption.get('language'), str) and re.fullmatch(r'en(?:[-_][A-Za-z0-9-]+)?', caption['language']) and
                     caption.get('remote') == parent + '/Captions/' + caption['sha256'] + '/captions.zip'):
                 caption_ids.add(row['video_id'])
+    for record in records:
+        if (not isinstance(record.get('associated_youtube_id'), str) or
+                record['associated_youtube_id'] not in targets or record.get('kind') != 'shared_publisher_audio_association' or
+                not isinstance(record.get('canonical_receipt_sha256'), str)):
+            continue
+        anchor = source_receipts.get(record.get('canonical_receipt_sha256'))
+        if anchor and shared_publisher_audio_reference(record, anchor, remote, owners):
+            audio_ids.add(record['associated_youtube_id'])
     asr_path = root / 'sync/publisher_variant_asr_manifest.jsonl'
     for line in asr_path.read_text(encoding='utf-8-sig').splitlines() if asr_path.is_file() else []:
         try:
@@ -1459,7 +1555,7 @@ def publisher_mirror_evidence(root, targets, remote, target_rows=None):
         video_id, variant_id, run_id = (record.get(key) for key in ('associated_youtube_id', 'variant_id', 'run_id'))
         if not all(isinstance(value, str) for value in (video_id, variant_id, run_id)):
             continue
-        source = sources.get((video_id, variant_id))
+        source = sources.get((video_id, variant_id)) if video_id in targets else None
         if (not source or record.get('schema_version') != 1 or record.get('status') != 'verified' or
                 record.get('artifact_kind') != 'publisher_variant_asr' or not publisher_object_proof(record) or
                 record['drive_id'] in {source['audio']['drive_id'], source['provenance']['drive_id']} or

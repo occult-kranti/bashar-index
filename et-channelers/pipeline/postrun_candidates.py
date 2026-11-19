@@ -24,12 +24,15 @@ else:
 
 # Use an English source track before ASR. A machine translation remains a distinct text version.
 PRIMARY_ORDER = ("published", "automatic_original", "publisher_english_caption", "standalone_publisher_caption", "publisher_untimed_transcript",
-                 "original_asr", "english_audio_translation", "publisher_original_asr", "publisher_english_audio_translation")
+                 "original_asr", "english_audio_translation", "qualified_youtube_original_asr",
+                 "qualified_youtube_english_audio_translation", "publisher_original_asr", "publisher_english_audio_translation")
 VIEWS = (("caption_views", "*/*.json", PRIMARY_ORDER[:2]),
          ("publisher_views", "*/*.json", ("publisher_english_caption",)),
          ("publisher_transcript_views", "*/*.json", ("publisher_untimed_transcript",)),
          ("asr_views", "*/*/english-*.json", ("original_asr", "english_audio_translation")),
-         ("publisher_variant_views", "*/*.json", ("standalone_publisher_caption", "publisher_original_asr", "publisher_english_audio_translation")))
+         ("publisher_variant_views", "*/*.json", ("standalone_publisher_caption", "publisher_original_asr", "publisher_english_audio_translation")),
+         ("edition_asr_views", "*/english-*.json", ("qualified_youtube_original_asr", "qualified_youtube_english_audio_translation",
+             "publisher_original_asr", "publisher_english_audio_translation")))
 
 
 def encoded(value):
@@ -71,6 +74,15 @@ def select_views(root, frame):
             raw = path.read_bytes()
             view = json.loads(raw)
             kind = view.get("source_kind")
+            if directory == "edition_asr_views":
+                timebase = "qualified_youtube_audio_seconds" if kind in (
+                    "qualified_youtube_original_asr", "qualified_youtube_english_audio_translation") else "publisher_audio_seconds"
+                if (view.get("source_timebase") != timebase or view.get("native_youtube_alignment_verified") is not False
+                    or view.get("recording_equivalence_verified") is not False or view.get("variant") != "english"
+                    or not all(episode_comparison.digest(view.get(k)) for k in ("source_audio_sha256", "edition_receipt_sha256",
+                               "associated_source_key", "inference_source_key", "artifact_manifest_sha256"))
+                    or view.get("source_edition_id") != "sha256:" + view["source_audio_sha256"]):
+                    raise ValueError("Edition ASR needs its verified audio object, listing association and original timebase")
             if directory == "publisher_variant_views":
                 if (view.get("video_id") != video or view.get("channel_dir") != target[video] or kind not in kinds
                         or not episode_comparison.digest(view.get("edition_receipt_sha256"))
