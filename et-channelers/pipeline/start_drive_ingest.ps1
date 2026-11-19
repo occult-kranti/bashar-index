@@ -24,17 +24,17 @@ param(
 
     [Alias('Workers')]
     [ValidateRange(1, 8)]
-    [int]$DlWorkers = 4,
+    [int]$DlWorkers = 6,
     [ValidateRange(1, 4)]
-    [int]$UploadTransfers = 2,
-    [ValidateRange(1, 17)]
-    [double]$MaxLocalGb = 17,
+    [int]$UploadTransfers = 3,
+    [ValidateRange(1, 23)]
+    [double]$MaxLocalGb = 23,
     [ValidateRange(1, 16)]
-    [int]$UploadBatchItems = 8,
+    [int]$UploadBatchItems = 12,
     [ValidateRange(0, 300)]
     [double]$UploadBatchSeconds = 10,
     [ValidateRange(1, 64)]
-    [int]$ReadyItems = 16,
+    [int]$ReadyItems = 24,
     [ValidateRange(0.01, 100)]
     [double]$RateMiB = 2,
     [ValidateRange(0, 3600)]
@@ -130,7 +130,9 @@ $EtArguments = @(
     '--ready-items', [string]$ReadyItems,
     '--max-local-gb', $MaxLocalGb.ToString([Globalization.CultureInfo]::InvariantCulture),
     '--max-item-mb', '0',
-    '--min-free-gb', '3',
+    '--min-free-gb', '12',
+    '--managed-root', $ToolRoot,
+    '--managed-root', (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)),
     '--rate-mib', $RateMiB.ToString([Globalization.CultureInfo]::InvariantCulture),
     '--http-chunk-mib', '1',
     '--min-interval', $MinInterval.ToString([Globalization.CultureInfo]::InvariantCulture),
@@ -138,6 +140,9 @@ $EtArguments = @(
     '--youtube-client', $YoutubeClient,
     '--rclone', $EtRclone
 )
+if ($env:LOCALAPPDATA) {
+    $EtArguments += @('--managed-root', (Join-Path $env:LOCALAPPDATA 'ms-playwright'))
+}
 if ($BrowserAudio) { $EtArguments += '--browser-audio' }
 if ($RcloneConfig) {
     $EtArguments += @('--rclone-config', $RcloneConfig)

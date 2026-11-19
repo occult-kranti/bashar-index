@@ -15,6 +15,7 @@ import io
 import json
 import math
 from pathlib import Path
+import re
 import sys
 import time
 
@@ -22,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from drive_ingest import (CAPTION_POLICY, caption_receipt_complete, receipt_complete,
                           terminal_unavailable)
 from ingestion_status import bound_json, proof, read_object, record_row, source_deadline, stamp
+from common import atomic_write_text
 
 MIB = 1024 ** 2
 DEFAULT_REMOTE = "etdrive:04 Audio"
@@ -538,6 +540,70 @@ def operational_estimate(root, live, next_selection, campaign_selection, status,
     return result
 
 
+def mixed_receipt_pace(checkpoints):
+    """Measure verified arrivals against the same creator, rank and recording selection."""
+    points, selection, ownership, basis = {}, None, None, None
+    for checkpoint in checkpoints:
+        current_basis = checkpoint.get('selection_basis')
+        digest = checkpoint.get('priority_scope_sha256', checkpoint.get('selection_sha256'))
+        tick = epoch(checkpoint.get("generated_at"))
+        if (checkpoint.get("scope") != "newest20_receipt_coverage" or current_basis not in ('mixed_channel_uploads', 'latest20plus_public_regular')
+                or not re.fullmatch(r"[0-9a-f]{64}", digest or "") or tick is None or tick <= 0):
+            raise ValueError("Expected a dated audio-receipt checkpoint with a recognized selection")
+        summary = checkpoint["summary"]
+        rows = checkpoint["channels"]
+        scope = {}
+        saved = 0
+        for row in rows:
+            creator, target, count = row["channel_dir"], row["target"], row["audio_total"]
+            if (not isinstance(creator, str) or not creator or creator in scope or type(target) is not int
+                    or type(count) is not int or not 0 <= count <= target <= 20):
+                raise ValueError("Invalid creator totals in mixed checkpoint")
+            scope[creator] = target
+            saved += count
+        total = sum(scope.values())
+        if (not scope or summary.get("channels") != len(scope) or summary.get("latest20_target") != total
+                or saved != summary.get("audio_available") or total - saved != summary.get("remaining_audio")):
+            raise ValueError("Mixed receipt totals disagree with creator rows")
+        if selection is not None and (digest != selection or ownership != scope or basis != current_basis):
+            raise ValueError("Mixing different recording selections would distort the measured rate")
+        selection, ownership, basis = digest, scope, current_basis
+        if tick in points and saved != points[tick]:
+            raise ValueError("Conflicting saved counts at the same time")
+        points[tick] = saved
+    if not points:
+        raise ValueError("No dated recording checkpoints")
+    history = sorted(points.items())
+    total = sum(ownership.values())
+    # A withdrawn receipt is an inventory correction. Measure new progress
+    # only after the most recent correction; preserve its time for audit.
+    start = 0
+    for index in range(1, len(history)):
+        if history[index][1] < history[index - 1][1]:
+            start = index
+    first, initial = history[start]
+    last, saved = history[-1]
+    seconds, delta, remaining = last - first, saved - initial, total - saved
+    rate = delta * 3600 / seconds if seconds > 0 else None
+    hours = remaining / rate if rate else None
+    if remaining == 0:
+        hours = 0.0
+    intervals = []
+    for (begin, previous), (end, current) in zip(history[start:], history[start+1:]):
+        elapsed = end - begin
+        intervals.append({"started_at": precise_stamp(begin), "ended_at": precise_stamp(end),
+                          "wall_seconds": elapsed, "new_verified": current - previous,
+                          "verified_per_wall_hour": (current - previous) * 3600 / elapsed})
+    rate_basis = 'regular_verified_receipts' if basis == 'latest20plus_public_regular' else 'mixed_verified_receipts'
+    return {"basis": rate_basis, "selection_sha256": selection, "total": total, "saved": saved,
+            "remaining": remaining, "checkpoints": len(history) - start, "started_at": precise_stamp(first),
+            "ended_at": precise_stamp(last), "wall_seconds": seconds, "new_verified": delta,
+            "verified_per_wall_hour": rate, "conditional_hours_at_observed_rate": hours,
+            "conditional_finish_at_utc": precise_stamp(last + 3600 * hours) if hours is not None else None,
+            "checkpoint_intervals": intervals,
+            "last_receipt_correction_at": precise_stamp(first) if start else None}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--root", type=Path, required=True)
@@ -545,6 +611,8 @@ def main(argv=None):
     ap.add_argument("--queue", type=Path)
     ap.add_argument("--progress-log", type=Path, action="append", default=[])
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--coverage-checkpoint", action="append", default=[], type=Path,
+                    help="Dated collection_coverage JSON. Repeat for the same selection to measure verified arrivals per wall hour.")
     ap.add_argument("--refresh-operational", action="store_true", help="Replace the current operational section, retaining dated historical assumptions")
     ap.add_argument("--service-live", type=Path, help="Terminal series JSON proof directory; no media is read")
     ap.add_argument("--service-direct", action="store_true", help="Calibrate from a bound completed download-only direct frame")
@@ -563,6 +631,23 @@ def main(argv=None):
     ap.add_argument("--availability", type=float, nargs="+", default=(1, .5, .25),
                     help="Assumed future available fractions, each greater than zero and at most one")
     args = ap.parse_args(argv)
+    if args.coverage_checkpoint:
+        paths = [path.resolve() for path in args.coverage_checkpoint]
+        if args.refresh_operational or (args.out and args.out.resolve() in paths):
+            ap.error("Use a distinct output for the mixed receipt estimate")
+        try:
+            pace = mixed_receipt_pace([read_object(path) for path in paths])
+            key = 'regular_receipt_pace' if pace['basis'] == 'regular_verified_receipts' else 'mixed_receipt_pace'
+            result = {"schema_version": 2, "scope": "collection_eta", "generated_at": pace["ended_at"],
+                      "current": {"generated_at": pace["ended_at"], key: pace}}
+            data = json.dumps(result, indent=2, allow_nan=False) + "\n"
+            if args.out:
+                atomic_write_text(args.out, data)
+            else:
+                print(data, end="")
+        except (OSError, TypeError, ValueError, KeyError) as error:
+            ap.exit(2, f"Mixed receipt input error: {error}\n")
+        return 0
     if args.refresh_operational:
         if not all((args.out, args.service_live, args.next_selection, args.campaign_selection, args.status_snapshot)):
             ap.error('Operational refresh requires output, terminal service, both selections and aggregate status')

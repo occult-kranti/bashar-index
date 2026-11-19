@@ -15,6 +15,8 @@ from unittest.mock import patch
 from urllib.error import HTTPError
 
 from pipeline import publisher_mirror as m
+from pipeline import rumble_public_source
+from pipeline.tests.test_rumble_public_source import ACCOUNT, CDN, WATCH, source_fixture
 
 
 AUDIO = b"invented-audio-fixture" * 100
@@ -120,7 +122,33 @@ class MirrorTests(unittest.TestCase):
         return {"duration_seconds": selected["durationMs"] / 1000, "codec": "aac", "method": "offline_fixture"}
 
     def batch(self):
-        return m.MirrorBatch(self.settings, self.drive, opener=self.transport, probe=self.probe, disk_free=lambda: 10_000_000_000)
+        return m.MirrorBatch(self.settings, self.drive, opener=self.transport, probe=self.probe,
+                             disk_free=lambda: m.DISK_FLOOR + 10_000_000_000)
+
+    def test_public_rumble_descriptors_feed_verified_audio_and_captions(self):
+        descriptor = rumble_public_source.published_descriptors(*source_fixture(len(AUDIO)), ACCOUNT, WATCH)
+        metadata = self.root / 'accepted-publisher-edition.json'
+        self.put(metadata, descriptor)
+        pin = m.sha(metadata.read_bytes())
+        self.item.update(provider=descriptor['provider'], watch_page_id=descriptor['watch_page_id'],
+                         declared_embed_id=descriptor['declared_embed_id'], allowed_hosts=['hugh.cdn.rumble.cloud'],
+                         accepted_metadata={'path': metadata.name, 'sha256': pin})
+        self.item['audio'].update(url_pointer=['audio', '192', 'url'],
+                                  metadata_declared_bytes=descriptor['audio']['192']['bytes'],
+                                  duration_seconds=descriptor['duration_seconds'])
+        self.item['captions'][0]['url_pointer'] = ['captions', 'en-auto', 'url']
+        self.put(self.plan, {'schema_version': 1, 'items': [self.item]})
+        self.bind()
+
+        result = self.batch().run()
+        self.assertEqual((result['verified'], self.probes, self.drive.copies, self.drive.stats), (1, 1, 1, 1))
+        self.assertCountEqual(self.transport.calls, [CDN + '/audio.aac', CDN + '/auto.vtt'])
+        record = json.loads((self.root / 'sync/publisher_mirror_manifest.jsonl').read_text())
+        self.assertTrue(m.complete_receipt(record, m.load_items(self.root, self.plan)[1][0], self.settings.remote))
+        self.assertEqual(record['accepted_api_sha256'], pin)
+        self.assertEqual(record['audio']['sha256'], m.sha(AUDIO))
+        self.assertEqual(len(self.drive.objects), 3)
+        self.assertNotIn('viewer_id', metadata.read_text())
 
     def test_full_batch_verifies_three_objects_before_cleanup_and_skips_existing(self):
         result = self.batch().run()

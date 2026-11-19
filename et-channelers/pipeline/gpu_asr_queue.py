@@ -22,11 +22,11 @@ import uuid
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from archive_catalog import read_receipts
 from common import ID_RE, ensure_outside_git, utc_now
-from drive_ingest import (Rclone, IngestError, caption_receipt_complete, caption_track_verified,
-                          exclusive_lock, hash_file, journal, local_path, receipt_complete,
-                          tree_bytes, verify_remote)
+from drive_ingest import (MAX_LOCAL_BYTES, MIN_FREE_BYTES, Rclone, IngestError, caption_receipt_complete,
+                          caption_track_verified, exclusive_lock, hash_file, journal, local_path, managed_roots,
+                          receipt_complete, reserved_project_growth, storage_usage, tree_bytes, verify_remote)
 
-MAX_INPUT_BYTES = 200_000_000
+MAX_INPUT_BYTES = MAX_LOCAL_BYTES
 RESERVE = 128_000
 TRANSFER_HEADROOM = 1_048_576  # rclone hard cutoff accounts a final buffered read
 PROOF_KEYS = ('remote', 'drive_id', 'bytes', 'md5', 'sha256')
@@ -138,7 +138,16 @@ def metadata_language_evidence(root, record, audio):
 def build_plan(root, queue_path, remote, model_repository, model_revision, *, language_evidence=None, evidence_only=False):
     root, queue_path = Path(root), Path(queue_path)
     raw = queue_path.read_bytes()
-    rows = list(csv.DictReader(io.StringIO(raw.decode('utf-8-sig'))))
+    content = raw.decode('utf-8-sig')
+    mixed = content.lstrip().startswith('{')
+    if mixed:
+        from ingestion_status import selection_rows
+        selected = selection_rows(queue_path, content=raw)
+        rows, scope = selected['rows'], selected['basis']
+    else:
+        rows = list(csv.DictReader(io.StringIO(content)))
+        scope = 'newest20_videos_snapshot'
+    tabs = {'videos', 'shorts', 'streams', 'unknown'} if mixed else {'videos'}
     seen, ranks, channels = set(), set(), collections.Counter()
     for row in rows:
         video_id = row.get('video_id', '')
@@ -147,8 +156,8 @@ def build_plan(root, queue_path, remote, model_repository, model_revision, *, la
         except ValueError as exc:
             raise ValueError('A strict newest20 listing rank is required') from exc
         key = (row.get('channel_dir'), rank)
-        if not ID_RE.fullmatch(video_id) or video_id in seen or row.get('tab') != 'videos' or not 0 <= rank < 20 or key in ranks:
-            raise ValueError('Queue must contain unique newest20 Videos IDs and per-channel ranks')
+        if not ID_RE.fullmatch(video_id) or video_id in seen or row.get('tab') not in tabs or not 0 <= rank < 20 or key in ranks:
+            raise ValueError('Queue must contain unique newest20 IDs, permitted formats and per-channel ranks')
         seen.add(video_id)
         ranks.add(key)
         channels[row.get('channel_dir')] += 1
@@ -158,6 +167,8 @@ def build_plan(root, queue_path, remote, model_repository, model_revision, *, la
     captions, caption_sha, caption_warnings = read_receipts(root/'sync/drive_caption_manifest.jsonl')
     completed, _, _ = read_receipts(root/'sync/asr_manifest.jsonl')
     sources = {'queue_sha256': sha(raw), 'audio_journal_sha256': audio_sha, 'caption_journal_sha256': caption_sha}
+    if mixed:
+        sources['selection_sha256'] = sources['queue_sha256']
     evidence = {}
     if language_evidence:
         evidence_raw = safe_asr(root, language_evidence, 'jobs').read_bytes()
@@ -175,9 +186,12 @@ def build_plan(root, queue_path, remote, model_repository, model_revision, *, la
     for row in rows:
         video_id = row['video_id']
         rec, cap = audio.get(video_id, {}), captions.get(video_id, {})
-        if not receipt_complete(rec, rec, remote) or not valid_proof(rec) or not valid_proof(rec.get('metadata')):
+        if (rec.get('channel_dir') != row['channel_dir'] or not receipt_complete(rec, rec, remote)
+                or not valid_proof(rec) or not valid_proof(rec.get('metadata'))):
             counts['audio_not_verified'] += 1
             continue
+        if cap.get('channel_dir') not in (None, row['channel_dir']):
+            cap = {}
         tracks = cap.get('tracks', [])
         proven = [track for track in tracks if caption_track_verified(track, rec, remote)]
         complete = caption_receipt_complete(cap, rec, remote)
@@ -199,7 +213,7 @@ def build_plan(root, queue_path, remote, model_repository, model_revision, *, la
         job_id = 'asr-' + sha(encoded({'video_id':video_id,'audio_sha256':rec['sha256'],
                                      'task':'transcribe-original-speech-v1'}))[:24]
         job = {'schema_version':1,'job_id':job_id,'video_id':video_id,'decision':decision,
-          'scope':'newest20_videos_snapshot','source':{key:row.get(key) for key in SOURCE_KEYS},
+          'scope':scope,'source':{key:row.get(key) for key in SOURCE_KEYS},
           'duration_seconds':rec.get('duration_s') or row.get('duration_s'),
           'audio':proof(rec),'metadata':proof(rec['metadata']),
           'caption':{'state':state,'receipt_status':cap.get('status','unknown'),
@@ -221,7 +235,7 @@ def build_plan(root, queue_path, remote, model_repository, model_revision, *, la
             job['decision'] = 'asr_result_already_verified'
         counts[job['decision']] += 1
         jobs.append(job)
-    return {'schema_version':1,'scope':'newest20_verified_language_evidence' if evidence_only else 'newest20_videos_snapshot','queue_items':len(rows),
+    return {'schema_version':1,'scope':'newest20_verified_language_evidence' if evidence_only else scope,'queue_items':len(rows),
             'counts':dict(counts),'jobs':jobs,'input_sources':sources,
             'parse_warnings':{'audio':audio_warnings,'captions':caption_warnings}}
 
@@ -288,7 +302,8 @@ def pull_verified(drive, expected, destination, available_bytes):
                 '--checkers','1','--multi-thread-streams','0','--buffer-size','1M','--bwlimit','2M',
                 '--max-transfer',str(expected['bytes']+TRANSFER_HEADROOM)+'B','--cutoff-mode','hard',
                 '--retries','1','--low-level-retries','1','--contimeout','15s','--timeout','60s',
-                '--tpslimit','2','--tpslimit-burst','1'],600,'reserved ASR input download')
+                '--tpslimit','2','--tpslimit-burst','1'],max(600, 180 + expected['bytes']//(2*1024*1024)),
+                'reserved ASR input download')
         actual = hash_file(part)
         if any(actual[key] != expected[key] for key in ('bytes','md5','sha256')):
             raise IngestError('local_changed', 'Downloaded input differs from the archived proof; retained')
@@ -299,12 +314,20 @@ def pull_verified(drive, expected, destination, available_bytes):
             'source_drive_id_rechecked':True,'verified_at':utc_now()}
 
 
+def room_for_inputs(root, required, max_input_bytes, min_free_bytes):
+    if tree_bytes(root/'asr') + required + RESERVE > max_input_bytes:
+        return False
+    _, used = storage_usage(root, managed_roots(root))
+    growth = required + RESERVE + reserved_project_growth(root)
+    return used + growth <= MAX_LOCAL_BYTES and shutil.disk_usage(root).free - growth >= min_free_bytes
+
+
 def prepare_inputs(root, queue_path, remote, drive, *, model_repository, model_revision,
-                   max_ready=3, max_input_bytes=MAX_INPUT_BYTES, min_free_bytes=3_000_000_000,
+                   max_ready=3, max_input_bytes=MAX_INPUT_BYTES, min_free_bytes=MIN_FREE_BYTES,
                    language_evidence=None, evidence_only=False, frame_id=None):
     root = ensure_outside_git(root)
     if not 1 <= max_ready <= 3 or not 0 < max_input_bytes <= MAX_INPUT_BYTES:
-        raise ValueError('At most 3 active inputs and 200 MB are allowed')
+        raise ValueError('At most three active inputs may share the project storage ceiling')
     with queue_lock(root):
         if frame_id:
             primary_ready = local_path(root,'asr/jobs/ready.json')
@@ -318,7 +341,7 @@ def prepare_inputs(root, queue_path, remote, drive, *, model_repository, model_r
         folder = frame_folder(root, frame_id)
         snapshot = folder/f'queue-{digest}.json'
         if not snapshot.exists():
-            if tree_bytes(root/'asr') + len(encoded(plan)) + RESERVE > max_input_bytes:
+            if not room_for_inputs(root, len(encoded(plan)), max_input_bytes, min_free_bytes):
                 raise IngestError('storage_limit', 'Queue snapshot exceeds the ASR reservation')
             atomic(snapshot, plan)
         existing = {item['video_id']:item for item in leases(root)}
@@ -329,7 +352,7 @@ def prepare_inputs(root, queue_path, remote, drive, *, model_repository, model_r
             if sum(item.get('status') == 'active' for item in existing.values()) >= max_ready:
                 break
             required = job['audio']['bytes'] + job['metadata']['bytes'] + TRANSFER_HEADROOM
-            if tree_bytes(root/'asr') + required + RESERVE > max_input_bytes or shutil.disk_usage(root).free < required + min_free_bytes:
+            if not room_for_inputs(root, required, max_input_bytes, min_free_bytes):
                 break
             video_id = job['video_id']
             extension = Path(job['audio']['remote']).suffix
@@ -455,7 +478,8 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command',choices=['plan','prepare','release'])
     parser.add_argument('--root',type=Path,required=True)
-    parser.add_argument('--queue',type=Path)
+    parser.add_argument('--queue', '--selection', dest='queue', type=Path,
+                        help='canonical mixed latest-20 selection JSON or legacy Videos-only queue CSV')
     parser.add_argument('--remote',required=True)
     parser.add_argument('--rclone',default='rclone')
     parser.add_argument('--rclone-config',type=Path)
@@ -479,9 +503,9 @@ def main(argv=None):
                             language_evidence=args.language_evidence,evidence_only=args.evidence_only)
         if args.frame_id:
             snapshot = frame_folder(args.root,args.frame_id)/f'queue-{sha(encoded(result))}.json'
-            if tree_bytes(args.root/'asr') + len(encoded(result)) + RESERVE > args.max_input_bytes:
-                raise IngestError('storage_limit', 'Named frame plan exceeds the ASR reservation')
             if not snapshot.exists():
+                if not room_for_inputs(args.root, len(encoded(result)), args.max_input_bytes, MIN_FREE_BYTES):
+                    raise IngestError('storage_limit', 'Named frame plan exceeds the ASR reservation')
                 atomic(snapshot,result)
             atomic(frame_folder(args.root,args.frame_id)/'plan.json',{'schema_version':1,
                 'state':'planned_waiting_separate_resource_lease','queue_snapshot':str(snapshot),

@@ -1,6 +1,16 @@
 # Branch register and development history
 
-## Current navigation, November 19, 2026, 04:15 UTC
+## November 19 Latest 20+ videos collection
+
+| Branch | Purpose | Observed revision |
+| --- | --- | --- |
+| `main` | Published archive and dashboards through PR #76 | [607eb8a](https://github.com/occult-kranti/bashar-index/commit/607eb8a9a65d2c2a9cd0a088cd0ce7968dc21e3a) |
+| `feat/predictions-round2-local-dashboard` | Retained prediction timeline and local dashboard work merged in PR #26 | [ef80343](https://github.com/occult-kranti/bashar-index/commit/ef80343c38a8d68cf50d2ee10e21280861d4fe3b) |
+| `feat/batch-media-transfers-2026-11-19` | Regular-video refresh, additive archive, verified coverage, publisher sources and post-run research tools | [Current release branch](https://github.com/occult-kranti/bashar-index/tree/feat/batch-media-transfers-2026-11-19) |
+
+The acquisition workers keep the versions recorded when they started. The release branch carries collection code, the expanded roster and the updated storage and concurrency settings. Generated public dashboards stay on their previous dated snapshot through the collection run. [Collection process](et-channelers/pipeline/COLLECTION_PROCESS.md)
+
+## Earlier navigation, November 19, 2026, 04:15 UTC
 
 Public `main` is `7c6a860`: [PR #75](https://github.com/occult-kranti/bashar-index/pull/75) merged the streaming PURE receipt reader and Pages passed. The current public checkpoint work is `automation/qualified20-activity-20261119`; historical branches and release rows below remain retained.
 

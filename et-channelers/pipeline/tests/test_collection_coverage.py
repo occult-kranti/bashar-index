@@ -44,6 +44,15 @@ class CoverageTests(unittest.TestCase):
             writer.writerows(self.queue)
         return coverage.coverage(self.root)
 
+    def test_right_video_under_another_creator_cannot_complete_the_recording(self):
+        self.queue[0]['channel_dir'] = 'different-creator'
+        self.journal('drive_ingest_manifest.jsonl', [self.audio])
+        self.journal('asr_manifest.jsonl', [self.asr])
+        public, saved = self.run_coverage()
+        self.assertEqual(saved, [])
+        self.assertEqual(public['summary']['remaining_audio'], 1)
+        self.assertEqual(public['summary']['native_asr'], 0)
+
     def mirror(self):
         digest = '1' * 64
         parent = 'etdrive:04 Audio/example/Videos/abcdefghijk/PublisherVariants/' + digest
@@ -187,6 +196,48 @@ class CoverageTests(unittest.TestCase):
         for path in (out, out.with_suffix('.csv'), out.parent / 'downloaded_videos.csv'):
             self.assertTrue(path.is_file())
             self.assertNotIn('PRIVATE', path.read_text(encoding='utf-8-sig'))
+
+    def test_mixed_selection_preserves_formats_empty_creators_and_written_excerpts(self):
+        video = self.queue[0]['video_id']
+        channel = 'UC' + 'd' * 22
+        groups = [{'channel_dir':'example','channel_id':channel,'selected':1,'scope':'short_complete_displayed_list',
+                   'items':[{'channel_dir':'example','channel_id':channel,'video_id':video,'slot':1,'source_position':2,'tab':'shorts','title':'Example short'}]},
+                  {'channel_dir':'unseen','channel_id':'UC'+'e'*22,'selected':0,'scope':'unobserved','items':[]}]
+        selection = self.root / 'selection.json'
+        selection.write_text(json.dumps({'per_channel':20,'channels':groups}))
+        message = {'video_id':video,'channel_dir':'example','status':'verified','schema_version':1,'language':'en','timed':False,
+                   'artifact_kind':'exact_linked_publisher_written_message','youtube_caption':False,'changes_full_asr_count':False,
+                   'changes_selected_audio_count':False,'changes_native_audio_count':False,'full_video_text_verified':False,'word_count':45,
+                   'bundle':{'bytes':150,'md5':'a'*32,'sha256':'c'*64,'drive_id':'PRIVATE TEXT',
+                             'remote':'etdrive:04 Audio/example/Shorts/'+video+'/PublisherText/'+'c'*64+'/published-message.en.zip'}}
+        self.journal('publisher_companion_manifest.jsonl', [message])
+        public, saved = coverage.coverage(self.root, selection=selection)
+        self.assertEqual(saved, [])
+        self.assertEqual(public['summary']['channels'], 2)
+        self.assertEqual(public['summary']['selected_by_format'], {'shorts':1})
+        self.assertEqual(public['summary']['selection_shortfall'], 39)
+        self.assertEqual(public['summary']['publisher_written_messages'], 1)
+        self.assertEqual(public['summary']['audio_with_saved_text'], 0)
+        self.assertEqual(public['channels'][1]['selection_scope'], 'unobserved')
+        groups[0]['items'][0]['channel_id'] = groups[1]['channel_id']
+        selection.write_text(json.dumps({'per_channel':20,'channels':groups}))
+        with self.assertRaises(ValueError):
+            coverage.coverage(self.root, selection=selection)
+
+    def test_untimed_transcript_must_belong_to_its_publisher_audio_edition(self):
+        record = self.mirror()
+        record.pop('caption_bundle')
+        parent = record['audio']['remote'].rpartition('/')[0]
+        record['caption_state'] = 'english_publisher_transcript_untimed'
+        record['publisher_transcript'] = {'remote':parent+'/publisher-transcript.en.txt','drive_id':'PRIVATE TEXT','md5':'f'*32,
+                                          'sha256':'d'*64,'bytes':320,'language':'en','timed':False,'paragraphs':5}
+        self.journal('publisher_mirror_manifest.jsonl',[record])
+        public, saved = self.run_coverage()
+        self.assertTrue(saved[0]['saved_text'])
+        self.assertEqual(public['summary']['native_caption_videos'], 0)
+        record['publisher_transcript']['remote'] = record['publisher_transcript']['remote'].replace('1'*64, '0'*64)
+        self.journal('publisher_mirror_manifest.jsonl',[record])
+        self.assertFalse(self.run_coverage()[1][0]['saved_text'])
 
 
 if __name__ == '__main__':

@@ -8,12 +8,12 @@ param(
     [string]$Remote = 'etdrive:04 Audio',
     [string]$RcloneConfig = '',
     [switch]$SkipCatalogCheckpoint,
-    [ValidateRange(1,8)][int]$DlWorkers = 4,
-    [ValidateRange(1,4)][int]$UploadTransfers = 2,
-    [ValidateRange(1,17)][double]$MaxLocalGb = 17,
-    [ValidateRange(1,16)][int]$UploadBatchItems = 8,
+    [ValidateRange(1,8)][int]$DlWorkers = 6,
+    [ValidateRange(1,4)][int]$UploadTransfers = 3,
+    [ValidateRange(1,23)][double]$MaxLocalGb = 23,
+    [ValidateRange(1,16)][int]$UploadBatchItems = 12,
     [ValidateRange(0,300)][double]$UploadBatchSeconds = 10,
-    [ValidateRange(1,64)][int]$ReadyItems = 16,
+    [ValidateRange(1,64)][int]$ReadyItems = 24,
     [ValidateRange(0.01,100)][double]$RateMiB = 2,
     [ValidateRange(0,3600)][double]$MinInterval = 5,
     [ValidateSet('default','mweb')][string]$YoutubeClient = 'default',
@@ -121,7 +121,8 @@ function Write-ResumeState([string]$State, [double]$Until = 0, [int]$Code = 0) {
         cooldown_provider=$EtCooldownProvider;source_until_epoch=$EtSourceUntil;
         await_caption_backfill=$EtAwaitCaptionBackfill;caption_until_epoch=$EtCaptionUntil;
         caption_pending_videos=$EtCaptionPending;
-        private_root_ceiling_bytes=[long]($MaxLocalGb * 1000000000)}
+        private_root_ceiling_bytes=[long]($MaxLocalGb * 1000000000);
+        managed_project_ceiling_bytes=[long]($MaxLocalGb * 1000000000);physical_free_floor_bytes=12000000000}
     $EtBytes = [Text.UTF8Encoding]::new($false).GetBytes(($EtRecord | ConvertTo-Json) + [Environment]::NewLine)
     $EtTemporary = $EtStatePath + '.tmp'
     $EtStream = [IO.File]::Open($EtTemporary, [IO.FileMode]::Create, [IO.FileAccess]::Write, [IO.FileShare]::None)

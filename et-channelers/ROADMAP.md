@@ -1,5 +1,21 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
+## Current collection and next phases
+
+The November 19 selection covers 1,976 public regular recordings on 101 channels. At 19:59 UTC, 1,478 recordings had a verified Drive audio and metadata pair and 498 were outstanding. Source workers and publisher feeds run alongside grouped Drive transfers. The updated launcher defaults to six source workers and three upload transfers. It caps managed files at 23 GB and also keeps 12 GB physically free after reservations. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
+
+| Stage | Completion condition |
+| --- | --- |
+| Finish the current twenty | Verify every selected creator/video pair, retain the five exhausted channel lists and save the final index and coverage counts. |
+| Prepare the next fifty | Extend each public Videos listing to 50 or its natural end, reuse the completed twenty, and queue only missing IDs. Index deeper history separately. |
+| Fill transcript gaps | Prefer English published or original automatic captions and verified publisher transcripts. Produce an original transcript and English translation for non-English audio that needs speech recognition. |
+| First research panel | Compare creator-normalized TF-IDF, embeddings and clusters, topic distribution, shared events, entity attributions, prediction dates and documented experimental proposals. |
+| Second research panel and dashboards | Revisit the strongest and weakest findings with independent source checks. Publish denominator-labelled plots, heatmaps, networks and tables from the reviewed cohort. |
+
+Begin the shared-event review with the Dreemtime Academy and Sam the Illusionist leads. Match independently dated accounts before relating their interpretations. [Event register](research/cross-channel-events-2026-11-16.md) · [Detailed research design](research/analysis-plan-2026-11-16/README.md)
+
+## Earlier acquisition checkpoints
+
 **Receipt checkpoint, November 19, 2026, 04:15 UTC:** **1,151 selected audio entries** are saved: 1,108 native, 37 publisher and six qualified YouTube editions; 136 have saved text and 269 selected entries still lack audio. The five-creator selection gap remains 60, and ASR remains paused. Public `main` is `7c6a860` after merged [PR #75](https://github.com/occult-kranti/bashar-index/pull/75); Pages passed.
 
 The new 20-item qualified batch closed after five submitted attempts: four local holds and one missing final result, with zero new saved pairs, owned closure and 5 GB reservation release. At the saved November 19, 04:15 UTC checkpoint, the corrected 15-item continuation is terminal: 11 submissions produced five paired editions, two item-specific source holds, three unpublished native-route handoffs and one missing final result; four targets were not started. Its outer owned process is closed and the matching 5 GB future-growth allocation is released. Handoffs and partial work add no saved-audio count. Preserve current holds and verify actual metadata, complete transport, audio preservation and paired archive receipts before counting new coverage. Separately, 96 rich metadata items / 43 remote objects / 12,045,840 uploaded bytes add no audio or text coverage. Overall completion ETA remains unknown; the qualified route has no representative end-to-end ETA calibration. Use [dated activity and ETA](dashboard/collection/) and the [nine-interface directory](../README.md#public-interfaces). Earlier plans below retain their historical scope.

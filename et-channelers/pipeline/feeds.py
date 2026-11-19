@@ -21,10 +21,14 @@ import xml.etree.ElementTree as ET
 import zlib
 from email.utils import parsedate_to_datetime
 
-from common import host_of, item_id, retry_after_seconds, youtube_disallowed, youtube_override
+if __package__:
+    from .common import host_of, item_id, retry_after_seconds, youtube_disallowed, youtube_override
+else:
+    from common import host_of, item_id, retry_after_seconds, youtube_disallowed, youtube_override
 
 # A plain, honest client name. No project, account or contact details are sent to third parties.
 USER_AGENT = "podcast-feed-reader/1.0 (python-urllib)"
+PROMO_SHARE = 0.2  # Repeated show-note video links above this share are usually channel promotions.
 NS = {
     "itunes": "http://www.itunes.com/dtds/podcast-1.0.dtd",
     "podcast": "https://podcastindex.org/namespace/1.0",

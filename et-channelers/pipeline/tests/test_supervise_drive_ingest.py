@@ -98,7 +98,8 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(len(self.calls()), 1)
         self.assertEqual(self.state()["state"], "stages_complete")
         self.assertEqual(self.state()["attempts"], 1)
-        self.assertEqual(self.state()["private_root_ceiling_bytes"], 17_000_000_000)
+        self.assertEqual(self.state()["managed_project_ceiling_bytes"], 23_000_000_000)
+        self.assertEqual(self.state()["physical_free_floor_bytes"], 12_000_000_000)
         self.assertFalse((self.sync / "drive_ingest_resume_state.json.tmp").exists())
 
     def test_quota_budget_survives_restart_and_preserves_backoff(self):
@@ -393,7 +394,7 @@ class SupervisorTests(unittest.TestCase):
         self.assertEqual(self.state()['youtube_client'], 'mweb')
         self.assertTrue(self.state()['browser_audio'])
         self.assertEqual(self.state()['private_root_ceiling_bytes'], 16_000_000_000)
-        rejected = self.run_supervisor('-MaxLocalGb', '18')
+        rejected = self.run_supervisor('-MaxLocalGb', '24')
         self.assertNotEqual(rejected.returncode, 0)
         self.assertEqual(self.state()['private_root_ceiling_bytes'], 16_000_000_000)
 

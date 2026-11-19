@@ -87,9 +87,9 @@ def admission_lease(s):
               r.get('lease_id') == s.lease_id and r.get('owner') == s.owner]
     need(plan.get('collector_dispatch_allowed') is False and len(active) == 1 and
          type(active[0].get('max_bytes')) is int and active[0]['max_bytes'] >= s.cap_bytes and
-         type(plan.get('accounting_cap_bytes')) is int and 0 < plan['accounting_cap_bytes'] <= 16_000_000_000,
+         type(plan.get('accounting_cap_bytes')) is int and 0 < plan['accounting_cap_bytes'] <= storage.MAX_LOCAL_BYTES,
          'handoff_reservation')
-    need(shutil.disk_usage(s.root).free >= 2_000_000_000, 'handoff_disk_reserve')
+    need(shutil.disk_usage(s.root).free >= storage.MIN_FREE_BYTES, 'handoff_disk_reserve')
     # The owner still performs the six-root/global-growth admission. This helper
     # only enforces its nested staging allowance, never expands that allowance.
     return dt.datetime.fromtimestamp(expiry, dt.timezone.utc).isoformat()

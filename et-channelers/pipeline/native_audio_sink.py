@@ -19,12 +19,17 @@ import sys
 import threading
 import time
 
+if __package__:
+    from . import host_capacity
+else:
+    import host_capacity
+
 MAX_CHUNK = 1_048_576
 MAX_CONTROL = 1_048_576
 CONTROL_RESERVE = 2 * MAX_CONTROL
 MAX_SPOOL = 8_000_000_000
-MAX_MANAGED = 16_000_000_000
-DISK_FLOOR = 2_000_000_000
+MAX_MANAGED = host_capacity.MAX_MANAGED_BYTES
+DISK_FLOOR = host_capacity.MIN_DISK_SPARE
 BINDING_FIELDS = {'videoId','itag','lastModified','xtags','mimeType','codec','contentLength',
                   'durationMs','language','originalBasis','trackId','noDRM','audioOnly','transportKind'}
 MIME_EXT = {'audio/webm':'webm','audio/mp4':'m4a','audio/ogg':'ogg'}
@@ -676,8 +681,17 @@ class Sink:
             if not recovering:drive.copy_pair(audio,metadata,record['remote'],record['metadata']['remote'])
             with self.c.lock:
                 self.c.guard()
-                remote_proofs={'audio':drive.stat(record['remote']),'metadata':drive.stat(record['metadata']['remote'])}
-                need(remote_proofs['audio'].get('ID') and remote_proofs['audio'].get('ID')!=remote_proofs['metadata'].get('ID'),'drive_pair_identity')
+            if hasattr(drive, 'stat_batch') and hasattr(self.c.core, 'batch_manifest'):
+                relatives = [self.c.core.remote_relative(self.c.remote, obj['remote']) for obj in (record,record['metadata'])]
+                # Each sink owns its manifest even when another sink is uploading.
+                with self.c.core.batch_manifest(self.folder, relatives) as manifest:
+                    entries = drive.stat_batch(self.c.remote, set(relatives), manifest)
+                remote_proofs = {'audio':entries[relatives[0]], 'metadata':entries[relatives[1]]}
+            else:
+                remote_proofs = {'audio':drive.stat(record['remote']),'metadata':drive.stat(record['metadata']['remote'])}
+            with self.c.lock:
+                self.c.guard()
+                need(remote_proofs['audio'].get('ID') and remote_proofs['metadata'].get('ID') and remote_proofs['audio']['ID']!=remote_proofs['metadata']['ID'],'drive_pair_identity')
                 result=self.c.core.verify_and_delete(self.c.root,record,drive,complete,require_metadata=True,allow_missing=recovering,remote_proofs=remote_proofs)
                 need(self.c.core.receipt_complete(result,state['queue_row'],self.c.remote),'canonical_receipt_failed')
                 state.update(state='deleted',record=result);atomic(self.folder/'state.json',state)

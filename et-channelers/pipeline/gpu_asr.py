@@ -18,15 +18,21 @@ import math
 import os
 from pathlib import Path
 import re
+import shutil
 import statistics
 import sys
 import threading
 import time
 import zipfile
 
+if __package__:
+    from . import host_capacity
+else:
+    import host_capacity
+
 SCHEMA = 1
 WORKER_VERSION = "gpu-asr-v1"
-MAX_MANAGED_BYTES = 16_000_000_000
+MAX_MANAGED_BYTES = host_capacity.MAX_MANAGED_BYTES
 MAX_RESULT_BYTES = 20_000_000
 SAMPLE_RATE = 16000
 WINDOW_SECONDS = 30
@@ -175,20 +181,16 @@ def gpu_lease(settings):
 
 
 def inventory(settings, extra=3 * MAX_RESULT_BYTES):
+    if __package__:
+        from . import host_capacity, storage_inventory
+    else:
+        import host_capacity
+        import storage_inventory
     roots = sorted({Path(p).resolve() for p in settings.managed_roots}, key=lambda p: len(p.parts))
     roots = [p for i, p in enumerate(roots) if not any(p.is_relative_to(q) for q in roots[:i])]
     for required in [settings.root, settings.model_dir, Path(sys.prefix).resolve(), HERE.parent.parent]:
         require(any(required.is_relative_to(p) for p in roots), "incomplete_storage_inventory")
-    totals = []
-    for root in roots:
-        require(root.is_dir(), "managed_root_missing")
-        total = 0
-        for directory, folders, files in os.walk(root, followlinks=False):
-            for name in folders + files:
-                item = Path(directory) / name
-                require(not item.is_symlink() and not bool(getattr(item, "is_junction", lambda: False)()), "unaccounted_storage_link")
-            total += sum((Path(directory) / name).stat().st_size for name in files)
-        totals.append(total)
+    require(all(root.is_dir() for root in roots), "managed_root_missing")
     plan = read_json(settings.root / "sync/analysis_resource_plan.json")
     require(plan.get("collector_dispatch_allowed") is False and (settings.root / "sync/STOP_DRIVE_INGEST").is_file(), "collector_not_parked")
     require(0 < plan.get("accounting_cap_bytes", 0) <= MAX_MANAGED_BYTES, "resource_plan_cap")
@@ -196,9 +198,17 @@ def inventory(settings, extra=3 * MAX_RESULT_BYTES):
     # deliberately conservative while other owners may stage rolling inputs.
     require(all(isinstance(r.get("max_bytes"), int) and r["max_bytes"] >= 0 for r in plan.get("reservations", [])), "resource_reservation")
     headroom = sum(r["max_bytes"] for r in plan.get("reservations", []) if r.get("state") == "active")
-    require(sum(totals) + extra + headroom <= min(settings.max_managed_bytes, plan["accounting_cap_bytes"]), "managed_storage_admission")
-    return {"managed_bytes": sum(totals), "active_reservation_headroom_bytes": headroom,
-            "result_headroom_bytes": extra, "cap_bytes": settings.max_managed_bytes}
+    try:
+        _, managed = storage_inventory.project_usage(settings.root, roots)
+    except storage_inventory.LinkedEntry as error:
+        raise AsrError("unaccounted_storage_link") from error
+    cap = min(settings.max_managed_bytes, plan["accounting_cap_bytes"])
+    require(managed + extra + headroom <= cap, "managed_storage_admission")
+    free = shutil.disk_usage(settings.root).free
+    require(host_capacity.disk_headroom(free, headroom, extra) >= 0, "physical_disk_reserve")
+    return {"managed_bytes": managed, "active_reservation_headroom_bytes": headroom,
+            "result_headroom_bytes": extra, "cap_bytes": cap, "physical_free_bytes": free,
+            "physical_free_floor_bytes": host_capacity.MIN_DISK_SPARE}
 
 
 def model_proof(settings):
@@ -641,7 +651,7 @@ def parser():
     run.add_argument("--gpu-owner", required=True)
     run.add_argument("--managed-root", type=Path, action="append", required=True)
     run.add_argument("--environment-lock", type=Path, default=DEFAULT_LOCK)
-    run.add_argument("--max-managed-gb", type=float, default=16)
+    run.add_argument("--max-managed-gb", type=float, default=MAX_MANAGED_BYTES / 1e9)
     run.add_argument("--output-root", type=Path)
     inputs = run.add_mutually_exclusive_group(required=True)
     inputs.add_argument("--admission", type=Path, action="append")

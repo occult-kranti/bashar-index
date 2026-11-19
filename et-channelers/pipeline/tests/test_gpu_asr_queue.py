@@ -6,6 +6,8 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
+from types import SimpleNamespace
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import gpu_asr_queue as queue
@@ -176,6 +178,34 @@ class QueueTests(unittest.TestCase):
         self.add(20)
         with self.assertRaises(ValueError):self.prepare()
         self.assertEqual(self.drive.downloads,[])
+
+    def test_mixed_selection_includes_short_and_stream_and_matches_owner(self):
+        for i in range(3):
+            self.add(i)
+        groups = []
+        for name, channel, indices in [('test-channel', 'UC' + 'A'*22, [0, 1]),
+                                       ('other-creator', 'UC' + 'B'*22, [2])]:
+            items = [{'channel_dir': name, 'channel_id': channel, 'video_id': self.rows[i]['video_id'],
+                      'tab': 'shorts' if i == 0 else 'streams', 'slot': rank + 1, 'source_position': rank}
+                     for rank, i in enumerate(indices)]
+            groups.append({'channel_dir': name, 'channel_id': channel, 'scope': 'short_complete_displayed_list',
+                           'selected': len(items), 'items': items})
+        selection = self.root/'jobs/selected.json'
+        queue.atomic(selection, {'schema_version': 1, 'per_channel': 20, 'channels': groups})
+        plan = queue.build_plan(self.root, selection, REMOTE, 'example/model', 'a'*40)
+        self.assertEqual(plan['scope'], 'canonical_mixed_latest20')
+        self.assertEqual(plan['input_sources']['selection_sha256'], queue.sha(selection.read_bytes()))
+        self.assertEqual([job['source']['tab'] for job in plan['jobs']], ['shorts', 'streams'])
+        self.assertEqual(plan['counts']['audio_not_verified'], 1)
+        self.assertEqual(self.plan()['scope'], 'newest20_videos_snapshot')
+
+    def test_space_for_long_recordings_includes_shared_reservations_and_disk_floor(self):
+        with patch.object(queue, 'storage_usage', return_value=(100, 10_000_000_000)), \
+             patch.object(queue, 'reserved_project_growth', return_value=1_000_000_000), \
+             patch.object(queue.shutil, 'disk_usage', return_value=SimpleNamespace(free=14_000_000_000)):
+            self.assertTrue(queue.room_for_inputs(self.root, 220_000_000, queue.MAX_INPUT_BYTES, queue.MIN_FREE_BYTES))
+            self.assertFalse(queue.room_for_inputs(self.root, 1_100_000_000, queue.MAX_INPUT_BYTES, queue.MIN_FREE_BYTES))
+            self.assertFalse(queue.room_for_inputs(self.root, 7_200_000_000, queue.MAX_INPUT_BYTES, 0))
 
     def test_library_api_rejects_input_storage_inside_git_checkout(self):
         self.add();(self.root/'.git').mkdir()

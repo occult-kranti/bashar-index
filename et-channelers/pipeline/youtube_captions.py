@@ -272,11 +272,13 @@ def _timestamp(value):
     return seconds + minutes * 60 + (int(parts[0]) * 3600 if len(parts) == 3 else 0)
 
 
-def normalize_caption(rawbytes, ext):
+def normalize_caption(rawbytes, ext, *, source_indices=None):
     """Retain provider cue order and timing; raw bytes remain the primary source.
 
     Missing JSON3 duration stays null. Rolling ASR repetitions are preserved in
     timed segments; text is a cue rendering rather than an inferred transcript.
+    An optional list receives the original JSON3 event or VTT block index for
+    each retained cue. This leaves the stored normalization format unchanged.
     """
     try:
         raw = rawbytes.decode("utf-8-sig")
@@ -290,7 +292,7 @@ def normalize_caption(rawbytes, ext):
             raise CaptionError("caption_response") from None
         if not isinstance(data, dict) or not isinstance(data.get("events"), list):
             raise CaptionError("caption_response")
-        for event in data["events"]:
+        for source_index, event in enumerate(data["events"]):
             if not isinstance(event, dict):
                 raise CaptionError("caption_response")
             parts = event.get("segs", [])
@@ -305,11 +307,13 @@ def normalize_caption(rawbytes, ext):
             start = _number(event.get("tStartMs"))
             end = start + _number(event["dDurationMs"]) if "dDurationMs" in event else None
             segments.append({"start": start, "end": end, "text": text})
+            if source_indices is not None:
+                source_indices.append(source_index)
     elif ext == "vtt":
         raw = raw.replace("\r\n", "\n").replace("\r", "\n")
         if not re.match(r"^WEBVTT(?:[ \t].*)?(?:\n|$)", raw):
             raise CaptionError("caption_response")
-        for block in re.split(r"\n[ \t]*\n", raw)[1:]:
+        for source_index, block in enumerate(re.split(r"\n[ \t]*\n", raw)[1:], start=1):
             lines = block.strip().splitlines()
             if not lines or re.match(r"^(NOTE(?:\s|$)|STYLE$|REGION$)", lines[0]):
                 continue
@@ -325,6 +329,8 @@ def normalize_caption(rawbytes, ext):
             text = _clean_text(html.unescape(re.sub(r"<[^>]*>", "", "\n".join(lines[index + 1:]))))
             if text:
                 segments.append({"start": start, "end": end, "text": text})
+                if source_indices is not None:
+                    source_indices.append(source_index)
     else:
         raise CaptionError("unsupported_caption_format")
     if not segments or not any(segment["text"].strip() for segment in segments):

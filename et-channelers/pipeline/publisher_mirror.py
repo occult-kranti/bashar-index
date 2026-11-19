@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextlib import contextmanager
 from dataclasses import dataclass
 import hashlib
 import ipaddress
@@ -36,8 +37,8 @@ except ImportError:
     import media_metadata
     from youtube_captions import normalize_caption
 
-MAX_MANAGED = 16_000_000_000
-DISK_FLOOR = 2_000_000_000
+MAX_MANAGED = storage.MAX_LOCAL_BYTES
+DISK_FLOOR = storage.MIN_FREE_BYTES
 CONTROL = 4 * 1024 * 1024
 KIND = "qualified_publisher_mirror_audio_variant"
 EXACT_KIND = "publisher_mirror_audio_variant"
@@ -293,6 +294,94 @@ class Settings:
     ffprobe: str
     spool_cap_bytes: int
     workers: int = 2
+
+
+def publisher_stage_projection(staged_actual_bytes, remaining_requested_bytes, *, lease_limit_bytes=None):
+    """Project one whole publisher spool, including files retained after failed local processing."""
+    values = (staged_actual_bytes, remaining_requested_bytes)
+    need(all(type(value) is int and value >= 0 for value in values), "invalid_publisher_staging_bytes")
+    total = sum(values)
+    if lease_limit_bytes is not None:
+        need(type(lease_limit_bytes) is int and lease_limit_bytes >= 0, "invalid_publisher_lease_limit")
+        need(total <= lease_limit_bytes, "spool_storage_deferred")
+    return total
+
+
+class PublisherStagingWindow:
+    """Reserve growth before starting a whole group. Completed and failed bodies stay in usage."""
+    def __init__(self, lease_limit_bytes, measure_staged, *, physical_free=None, minimum_free_bytes=0):
+        self.limit = publisher_stage_projection(lease_limit_bytes, 0)
+        self.minimum_free = publisher_stage_projection(minimum_free_bytes, 0)
+        self.measure_staged = measure_staged
+        self.physical_free = physical_free
+        self._pending = 0
+        self._lock = threading.Lock()
+
+    @contextmanager
+    def admit_group(self, requested_bytes):
+        with self._lock:
+            staged = self.measure_staged()
+            pending = publisher_stage_projection(self._pending, requested_bytes)
+            projected = publisher_stage_projection(staged, pending, lease_limit_bytes=self.limit)
+            if self.physical_free is not None:
+                need(self.physical_free() - pending >= self.minimum_free, "disk_buffer")
+            self._pending = pending
+        try:
+            yield projected
+        finally:
+            with self._lock:
+                self._pending -= requested_bytes
+
+
+def publisher_capacity_projection(*, inactive_managed_bytes, staged_actual_bytes, remaining_requested_bytes,
+                                  other_reserved_bytes, other_unspent_bytes, journal_growth_bytes,
+                                  free_bytes, managed_limit_bytes, minimum_free_bytes):
+    """Inactive usage excludes fully reserved spools; current physical free already reflects every staged file."""
+    envelope = publisher_stage_projection(staged_actual_bytes, remaining_requested_bytes)
+    values = (inactive_managed_bytes, other_reserved_bytes, other_unspent_bytes, journal_growth_bytes,
+              free_bytes, managed_limit_bytes, minimum_free_bytes)
+    need(all(type(value) is int and value >= 0 for value in values)
+         and other_unspent_bytes <= other_reserved_bytes, "invalid_publisher_capacity")
+    managed = inactive_managed_bytes + other_reserved_bytes + journal_growth_bytes + envelope
+    free_after = free_bytes - other_unspent_bytes - journal_growth_bytes - remaining_requested_bytes
+    need(managed <= managed_limit_bytes, "managed_storage_deferred")
+    need(free_after >= minimum_free_bytes, "disk_buffer")
+    return {"publisher_envelope_bytes": envelope, "projected_managed_bytes": managed,
+            "projected_physical_free_bytes": free_after}
+
+
+def publish_verified_group(drive, files, remote, manifest, objects, *, transfers=3, copy=True):
+    """Publish immutable files and bind all remote IDs in a single grouped readback before returning proof."""
+    need(isinstance(objects, dict) and objects and type(transfers) is int and 1 <= transfers <= 4
+         and type(copy) is bool and isinstance(remote, str) and remote.rstrip("/")
+         and not any(char in remote for char in "\r\n"), "publisher_upload_scope")
+    for name, proof in objects.items():
+        need(isinstance(name, str) and not re.search(r"[\\:\x00-\x1f]", name)
+             and all(piece not in ("", ".", "..") for piece in name.split("/"))
+             and isinstance(proof, dict) and type(proof.get("bytes")) is int and proof["bytes"] > 0
+             and HASH.fullmatch(str(proof.get("sha256", "")))
+             and re.fullmatch(r"[0-9a-f]{32}", str(proof.get("md5", ""))), "invalid_publisher_upload_artifact")
+    # The same manifest drives copy and listing. Check its small control file once.
+    with Path(manifest).open("rb") as stream:
+        manifest_bytes = stream.read(CONTROL + 1)
+    need(len(manifest_bytes) <= CONTROL, "publisher_upload_manifest")
+    listed = manifest_bytes.decode("utf-8").splitlines()
+    need(len(listed) == len(objects) and set(listed) == set(objects), "publisher_upload_manifest")
+    if copy:
+        drive.copy_batch(files, remote, manifest, transfers=min(transfers, len(objects)))
+    observed = drive.stat_batch(remote, set(objects), manifest)
+    need(isinstance(observed, dict) and set(observed) == set(objects), "publisher_upload_missing_objects")
+    confirmed = {}
+    ids = set()
+    for path, proof in objects.items():
+        entry = observed[path]
+        storage.verify_remote(entry, proof)
+        drive_id = entry.get("ID")
+        need(isinstance(drive_id, str) and drive_id, "drive_id_missing")
+        need(drive_id not in ids, "drive_id_duplicate")
+        ids.add(drive_id)
+        confirmed[path] = {**proof, "remote": remote.rstrip("/") + "/" + path, "drive_id": drive_id}
+    return confirmed
 
 
 def complete_receipt(record, item, remote):
@@ -635,15 +724,10 @@ class MirrorBatch:
             with manifest.open("xb") as out:
                 self.write(out, ("\n".join(lines) + "\n").encode())
                 os.fsync(out.fileno())
-        if not state.get("verified_receipt"):
-            self.drive.copy_batch(self.files, self.s.remote, manifest, transfers=2)
-        observed = self.drive.stat_batch(self.s.remote, set(lines), manifest)
-        proofs = {}
-        for artifact, relative in zip(artifacts, lines):
-            value = observed[relative]
-            storage.verify_remote(value, artifact["proof"])
-            need(value.get("ID"), "drive_id_missing")
-            proofs[artifact["kind"]] = {**artifact["proof"], "remote": self.s.remote.rstrip("/") + "/" + relative, "drive_id": value["ID"]}
+        confirmed = publish_verified_group(self.drive, self.files, self.s.remote, manifest,
+                                           {path: artifact["proof"] for path, artifact in zip(lines, artifacts)},
+                                           transfers=2, copy=not bool(state.get("verified_receipt")))
+        proofs = {artifact["kind"]: confirmed[path] for path, artifact in zip(lines, artifacts)}
         record = {k: item[k] for k in ("provider", "watch_page_id", "associated_youtube_id", "channel_dir", "association_method", "association_qualification", "exact_youtube_crossreference", "human_verified")}
         caps = [{**proofs[a["kind"]], **a["caption"]} for a in artifacts if a.get("caption")]
         record.update(schema_version=1, kind=kind_for(item), status="verified", verified_at=storage.utc_now(), item_id=item["item_id"],
@@ -708,7 +792,8 @@ class MirrorBatch:
                     reserved_path = self.owned(state["downloads"]["audio"]["relative"])
                 existing = reserved_path.stat().st_size if reserved_path.exists() else 0
                 additional = max(0, cap + headroom - existing)
-                need(native.tree_bytes(self.spool) + self.budget._outstanding() + additional <= self.s.spool_cap_bytes, "spool_storage_deferred")
+                publisher_stage_projection(native.tree_bytes(self.spool), self.budget._outstanding() + additional,
+                                           lease_limit_bytes=self.s.spool_cap_bytes)
                 self.budget.reserve_item(key, reserved_path, cap, headroom)
             if not state.get("artifacts"):
                 audio = self.download(item, state, state_path, "audio", item["audio"], audio_path)

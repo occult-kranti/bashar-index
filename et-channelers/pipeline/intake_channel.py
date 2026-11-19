@@ -21,7 +21,7 @@ from urllib.parse import urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import ID_RE, atomic_write_text, ensure_outside_git, utc_now
-from drive_ingest import exclusive_lock, tree_bytes
+from drive_ingest import MAX_LOCAL_BYTES, MIN_FREE_BYTES, exclusive_lock, managed_roots, reserved_project_growth, storage_usage
 from prepare_all_queue import EXTRA_FIELDS
 from prepare_collection_stages import grouped_index, validate_tier
 from select_jobs import FIELDS
@@ -255,9 +255,11 @@ def publish(root, before, after, summary):
     output_bytes = sum(len(v) for v in after.values())
     extra_bytes = previous_bytes + output_bytes + max(0, output_bytes - previous_bytes) \
         + max(map(len, after.values()), default=0) + 1_000_000
-    if tree_bytes(root) + extra_bytes > 17_000_000_000:
-        raise ValueError("Intake staging would exceed the 17 GB private storage cap")
-    if shutil.disk_usage(root).free < extra_bytes + 3_000_000_000:
+    _, used = storage_usage(root, managed_roots(root))
+    outstanding = reserved_project_growth(root)
+    if used + outstanding + extra_bytes > MAX_LOCAL_BYTES:
+        raise ValueError("Intake staging would exceed the managed project cap")
+    if shutil.disk_usage(root).free - outstanding - extra_bytes < MIN_FREE_BYTES:
         raise ValueError("Insufficient disk headroom for intake staging")
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     backup = root / "jobs" / "queue_backups" / f"{summary['person_id']}_{stamp}"

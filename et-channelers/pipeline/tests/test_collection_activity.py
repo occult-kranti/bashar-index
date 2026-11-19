@@ -1,5 +1,6 @@
 """Creator activity partitions never promote progress to a saved receipt."""
 import datetime as dt
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -42,7 +43,7 @@ class ActivityTests(unittest.TestCase):
 
     def test_saved_transfer_processing_upload_queue_and_other_are_disjoint(self):
         data = self.activity()
-        self.assertEqual(data['summary'], {key: 1 for key in coverage.ACTIVITY_FIELDS})
+        self.assertEqual(data['summary'], dict.fromkeys(coverage.ACTIVITY_FIELDS, 1) | {'waiting_for_source': 0})
         self.assertEqual(sum(data['summary'].values()), len(self.rows))
         self.assertNotIn(str(self.root), json.dumps(data))
         self.assertNotIn('process_creation_filetime', json.dumps(data))
@@ -74,5 +75,44 @@ class ActivityTests(unittest.TestCase):
         with patch.object(coverage.status, 'native_bulk_lane', return_value={}), \
              patch.object(coverage.status, 'qualified_batch_state', return_value=qualified):
             data = coverage.channel_activity(self.root, self.rows, {self.ids[0]}, dt.datetime.now(dt.timezone.utc))
-        self.assertEqual(data['summary'], {key: 1 for key in coverage.ACTIVITY_FIELDS})
+        self.assertEqual(data['summary'], dict.fromkeys(coverage.ACTIVITY_FIELDS, 1) | {'waiting_for_source': 0})
         self.assertEqual(data['state'], 'running'); self.assertEqual(data['cohort_items'], 5)
+
+    def test_rolling_native_handoff_uses_live_owner_and_publication_receipts(self):
+        now = dt.datetime.now(dt.timezone.utc)
+        frame = self.root/'provisioning/native-rolling-handoff-8'
+        runtime = frame/'runtime'
+        grant_path = frame/'root-grant.ACTIVE.json'
+        ids = self.ids[:5]
+        profile = 'native_rolling_handoff_8'
+        def digest(path):
+            return hashlib.sha256(path.read_bytes()).hexdigest()
+        self.write(grant_path, {'enabled': True, 'source_authorized': True, 'profile': profile,
+                                'allowed_video_ids': ids})
+        grant = digest(grant_path)
+        identity = {'pid': 111, 'process_creation_filetime': '123'}
+        self.write(self.root/'sync'/f'{profile}_lease.json', {'state': 'active', 'profile': profile,
+                   'source_authorized': True, 'expires_at_epoch': now.timestamp()+90, 'source_workers': 6,
+                   'allowed_video_ids': ids, 'root_grant_sha256': grant})
+        invoked = runtime/'invocation.json'
+        self.write(invoked, {'identity': identity, 'root_grant_sha256': grant, 'exact_handle_creation_verified': True,
+                             'exact_command_verified': True, 'owned_job_attached': True})
+        self.write(runtime/'GO', {'identity': identity, 'root_grant_sha256': grant, 'invocation_sha256': digest(invoked)})
+        for ident in ids[:4]:
+            folder = runtime/'observations'/ident
+            self.write(folder/'attempt.json', {'video_id': ident, 'root_grant_sha256': grant})
+            if ident in ids[:2]:
+                self.write(folder/'wire-1.json', {'attempt_sha256': digest(folder/'attempt.json'), 'method': 'GET'})
+        self.write(runtime/'observations'/ids[3]/'range-transfer.json', {'final_response_equal': True})
+        with patch.object(coverage.status, 'owned_process_alive', return_value=True):
+            data = coverage.channel_activity(self.root, self.rows, {ids[0]}, now)
+            self.assertEqual(data['state'], 'running')
+            self.assertEqual(data['summary'], dict.fromkeys(coverage.ACTIVITY_FIELDS, 1) | {'waiting_for_source': 0})
+            self.assertNotIn(str(self.root), json.dumps(data))
+            self.write(runtime/'observations'/ids[1]/'range-1.json', {'response_status': 403})
+            self.assertEqual(coverage.status.rolling_native_state(self.root, now.timestamp())['video_stages'][ids[1]], 'waiting_for_source')
+            self.write(runtime/'owner-terminal.json', {'status': 'terminal'})
+            self.assertEqual(coverage.status.rolling_native_state(self.root, now.timestamp()), {})
+        (runtime/'owner-terminal.json').unlink()
+        with patch.object(coverage.status, 'owned_process_alive', return_value=False):
+            self.assertEqual(coverage.status.rolling_native_state(self.root, now.timestamp()), {})

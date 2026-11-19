@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Bounded native YouTube audio -> Google Drive, without transcoding or ASR.
 
-Use an exclusively owned private --root outside Git. Every byte written by the
-streaming downloader is admitted under a shared 20 GB ceiling. A 64 MB reserve
+Use an exclusively owned private --root outside Git. The Windows archive uses
+an 18 GB project ceiling and keeps 12 GB of physical disk free. A 64 MiB reserve
 covers journals; existing files, incomplete downloads and active reservations
 count too. Other applications writing into the root are outside this guarantee.
 
@@ -44,14 +44,20 @@ import urllib.parse
 import urllib.request
 import zipfile
 from dataclasses import dataclass, field
+from functools import lru_cache
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+if __package__:
+    from . import host_capacity, storage_inventory
+else:
+    import host_capacity, storage_inventory
 from common import (HARD_BLOCKS, ID_RE, RateLimiter, add_root_arg, classify_error,
                     direct_env, ensure_outside_git, read_csv, read_jsonl,
                     sha256_file, utc_now, youtube_gate)
 
-MAX_LOCAL_BYTES = 20_000_000_000  # decimal GB, matching the user's ceiling
+MAX_LOCAL_BYTES = host_capacity.MAX_MANAGED_BYTES
+MIN_FREE_BYTES = host_capacity.MIN_DISK_SPARE
 JOURNAL_RESERVE = 64 * 1024 * 1024
 METADATA_HEADROOM = 4 * 1024 * 1024
 CHUNK = 1024 * 1024
@@ -210,19 +216,64 @@ def is_link(path):
 
 def tree_bytes(root):
     """Count all regular files, including partials; reject linked subtrees."""
-    if not root.exists():
+    try:
+        return storage_inventory.measure(root)[0]
+    except storage_inventory.LinkedEntry as error:
+        raise IngestError("unsafe_path", "The private root contains a link or junction") from error
+
+
+def managed_roots(root, additional=()):
+    """Load the archive's saved accounting roots alongside caller-supplied tools and checkouts."""
+    path = root / "sync" / "managed_storage_roots.json"
+    try:
+        config = json.loads(path.read_bytes())
+    except FileNotFoundError:
+        return list(additional)
+    except (ValueError, UnicodeError) as error:
+        raise IngestError("storage_config", "The managed storage roots file is unreadable") from error
+    if not isinstance(config, dict) or config.get("schema_version") != 1:
+        raise IngestError("storage_config", "Unsupported managed storage roots file")
+    paths = config.get("managed_roots")
+    if not isinstance(paths, list) or not all(isinstance(item, str) and Path(item).is_absolute() for item in paths):
+        raise IngestError("storage_config", "Managed storage roots must be absolute directory paths")
+    return [*paths, *additional]
+
+
+def storage_usage(root, other_roots):
+    try:
+        return storage_inventory.project_usage(root, other_roots)
+    except storage_inventory.LinkedEntry as error:
+        raise IngestError("unsafe_path", "A managed storage root contains a link or junction") from error
+
+
+def reserved_project_growth(root):
+    """Charge active reservations owned by the other archive processes."""
+    path = root / "sync" / "analysis_resource_plan.json"
+    try:
+        info = path.stat()
+        return _reservation_bytes(path, (info.st_ino, info.st_mtime_ns, info.st_size))
+    except FileNotFoundError:
         return 0
+
+
+@lru_cache(maxsize=8)
+def _reservation_bytes(path, version):
+    """State writers replace the shared ledger atomically. Parse once per version."""
+    try:
+        ledger = json.loads(path.read_bytes())
+    except (ValueError, UnicodeError) as error:
+        raise IngestError("storage_config", "The shared storage reservation file is unreadable") from error
+    if not isinstance(ledger, dict) or not isinstance(ledger.get("reservations"), list):
+        raise IngestError("storage_config", "Invalid shared storage reservations")
     total = 0
-    for base, dirs, files in os.walk(root, followlinks=False):
-        for name in dirs + files:
-            path = Path(base) / name
-            if is_link(path):
-                raise IngestError("unsafe_path", "The private root contains a link or junction")
-        for name in files:
-            try:
-                total += (Path(base) / name).stat().st_size
-            except FileNotFoundError:  # another worker just completed its verified cleanup
-                pass
+    for row in ledger["reservations"]:
+        if not isinstance(row, dict):
+            raise IngestError("storage_config", "Invalid shared storage reservation")
+        if row.get("state") == "active":
+            amount = row.get("max_bytes")
+            if type(amount) is not int or amount < 0:
+                raise IngestError("storage_config", "Invalid active storage reservation size")
+            total += amount
     return total
 
 
@@ -271,7 +322,7 @@ def exclusive_lock(root):
 
 
 class Budget:
-    def __init__(self, root, cap, file_cap, min_free, reserve=JOURNAL_RESERVE, cached=False):
+    def __init__(self, root, cap, file_cap, min_free, reserve=JOURNAL_RESERVE, cached=False, other_roots=()):
         if not 0 < cap <= MAX_LOCAL_BYTES or file_cap < 0 or reserve >= cap:
             raise ValueError("invalid storage budget")
         self.root, self.cap = root, cap
@@ -281,16 +332,17 @@ class Budget:
         self.lock = threading.RLock()
         self.active = {}
         self.cached = cached
-        self._used = tree_bytes(root) if cached else 0
+        self.other_roots = tuple(other_roots)
+        self._used = storage_usage(root, self.other_roots)[1] if cached else 0
         self._reconciled_at = time.monotonic()
 
     def usage(self, reconcile=False):
         """Cached only for the exclusively owned run; all its writes share this lock."""
         with self.lock:
             if not self.cached:
-                return tree_bytes(self.root)
+                return storage_usage(self.root, self.other_roots)[1]
             if reconcile or time.monotonic() - self._reconciled_at >= 12:
-                self._used = tree_bytes(self.root)
+                self._used = storage_usage(self.root, self.other_roots)[1]
                 self._reconciled_at = time.monotonic()
             return self._used
 
@@ -316,12 +368,12 @@ class Budget:
             if audio_bytes <= 0 or audio_bytes > self.file_cap:
                 raise IngestError("deferred_storage", f"Item needs {audio_bytes} audio bytes; retained in queue until a buffer can hold it")
             amount = audio_bytes + metadata_headroom
-            outstanding = self._outstanding(omit=key)
+            outstanding = self._outstanding(omit=key) + reserved_project_growth(self.root)
             already = part.stat().st_size if part.exists() else 0
             additional = max(0, amount - already)
             if used + outstanding + additional > self.cap - self.reserve:
                 raise IngestError("deferred_storage", f"Item needs a {amount}-byte reservation; local buffer is currently unavailable")
-            if shutil.disk_usage(self.root).free - outstanding - additional < self.min_free:
+            if shutil.disk_usage(self.root).free - outstanding - additional - self.reserve < self.min_free:
                 raise IngestError("deferred_storage", f"Item needs {amount} bytes while preserving the free-disk floor")
             self.active[key] = {"path": part, "bytes": amount, "metadata_headroom": metadata_headroom}
 
@@ -345,7 +397,8 @@ class Budget:
 
     def pressure(self):
         with self.lock:
-            return (self.usage() + self._outstanding()) / (self.cap - self.reserve)
+            committed = self._outstanding() + reserved_project_growth(self.root)
+            return (self.usage() + committed) / (self.cap - self.reserve)
 
     def write(self, out, data):
         # The check and write share one lock: two workers cannot spend the same bytes.
@@ -802,29 +855,13 @@ class Rclone:
                       "--checkers", "2", "--buffer-size", "1M", "--drive-chunk-size", self.UPLOAD_CHUNK,
                       *self.RETRY_FLAGS], 3600, "bounded audio/metadata upload")
 
-    def stat_batch(self, remote, paths, manifest):
+    def stat_batch(self, remote, paths, manifest, *, allow_missing=False):
         """One process, direct lookups of named objects; never recurse over Drive."""
-        result = self.execute(["lsjson", remote, "--recursive", "--files-only", "--hash-type", "MD5",
-                               "--no-modtime", "--no-mimetype", "--files-from-raw", str(manifest),
-                               "--no-traverse", "--checkers", "2", *self.RETRY_FLAGS], 600,
-                              "bounded batch metadata read")
         try:
-            entries = json.loads(result.stdout)
-            if not isinstance(entries, list):
-                raise ValueError
-            found, ids = {}, set()
-            for entry in entries:
-                path, identity = entry.get("Path"), entry.get("ID")
-                if path not in paths or path in found or (identity and identity in ids):
-                    raise ValueError
-                found[path] = entry
-                if identity:
-                    ids.add(identity)
-            if set(found) != set(paths):
-                raise ValueError
-            return found
-        except (ValueError, AttributeError, TypeError) as exc:
-            raise IngestError("drive_verify", "Batch metadata is missing, ambiguous, or invalid; local pairs retained") from exc
+            from .drive_batch_stat import read_batch
+        except ImportError:
+            from drive_batch_stat import read_batch
+        return read_batch(self, remote, paths, manifest, allow_missing=allow_missing, error=IngestError)
 
     def failure(self, result, operation):
         """Report useful categories/exit codes without exposing raw URLs or auth errors."""
@@ -1574,9 +1611,11 @@ def run(args, rows):
         return 75
     root.mkdir(parents=True, exist_ok=True)
     with exclusive_lock(root):
-        if tree_bytes(root) > args.max_local_bytes - JOURNAL_RESERVE:
-            raise IngestError("storage_limit", "Existing private files leave no storage budget")
-        budget = Budget(root, args.max_local_bytes, args.max_item_bytes, args.min_free_bytes, cached=True)
+        other_roots = managed_roots(root, getattr(args, "managed_root", ()))
+        budget = Budget(root, args.max_local_bytes, args.max_item_bytes, args.min_free_bytes,
+                        cached=True, other_roots=other_roots)
+        if budget.usage() > args.max_local_bytes - JOURNAL_RESERVE:
+            raise IngestError("storage_limit", "Existing project files leave no storage budget")
         _ROOT_BUDGETS[root.resolve()] = budget
         state_path = root / "sync" / "drive_ingest_manifest.jsonl"
         state = load_state(state_path)
@@ -1795,21 +1834,23 @@ def parser():
     ap.add_argument("--remote", help="rclone remote pointing to existing 04 Audio folder, e.g. etdrive:")
     ap.add_argument("--newest", type=int, default=20)
     ap.add_argument("--entire-queue", action="store_true", help="explicit second phase: every queue row, including Shorts/past streams and legacy rows")
-    ap.add_argument("--workers", type=int, choices=range(1, 9), default=4, help="bounded source download workers")
-    ap.add_argument("--upload-transfers", type=int, choices=range(1, 5), default=2)
-    ap.add_argument("--upload-batch-items", type=int, choices=range(1, 17), default=8)
+    ap.add_argument("--workers", type=int, choices=range(1, 9), default=6, help="bounded source download workers")
+    ap.add_argument("--upload-transfers", type=int, choices=range(1, 5), default=3)
+    ap.add_argument("--upload-batch-items", type=int, choices=range(1, 17), default=12)
     ap.add_argument("--upload-batch-seconds", type=float, default=10.0)
-    ap.add_argument("--ready-items", type=int, choices=range(1, 65), default=16,
+    ap.add_argument("--ready-items", type=int, choices=range(1, 65), default=24,
                     help="maximum combined downloading, ready, and uploading pairs")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--download-only", action="store_true", help="bounded local pilot; requires --limit")
     ap.add_argument("--captions", action=argparse.BooleanOptionalAction, dest="collect_captions", default=True,
                     help="collect English published and original automatic captions; excludes translations")
-    ap.add_argument("--max-local-gb", type=float, default=17.0)
+    ap.add_argument("--managed-root", type=Path, action="append", default=[],
+                    help="additional project directory charged to the shared storage cap; repeat as needed")
+    ap.add_argument("--max-local-gb", type=float, default=MAX_LOCAL_BYTES / 1e9)
     ap.add_argument("--max-item-mb", type=float, default=0.0,
                     help="optional explicit item cap; default 0 uses only the overall local-buffer limit")
-    ap.add_argument("--min-free-gb", type=float, default=3.0)
+    ap.add_argument("--min-free-gb", type=float, default=MIN_FREE_BYTES / 1e9)
     ap.add_argument("--rate-mib", type=float, default=2.0, help="per-worker download rate; default 2 MiB/s")
     ap.add_argument("--http-chunk-mib", type=float, default=1.0,
                     help="bounded HTTP ranges; default 1 MiB, 0 uses one full response")
@@ -1833,8 +1874,9 @@ def main(argv=None):
     args.root = ensure_outside_git(args.root)
     if args.browser_audio and (args.workers > 4 or args.max_local_gb > 16):
         ap.error("Experimental browser audio requires <=4 workers and <=16 GB private storage, reserving extra browser scratch headroom")
-    if not 0 < args.max_local_gb <= 20 or args.max_item_mb < 0 or args.min_free_gb < 0:
-        ap.error("local cap must be positive and <= 20 GB; optional item cap/free floor cannot be negative")
+    if (not 0 < args.max_local_gb <= MAX_LOCAL_BYTES / 1e9 or not math.isfinite(args.max_item_mb)
+            or args.max_item_mb < 0 or not math.isfinite(args.min_free_gb) or args.min_free_gb < MIN_FREE_BYTES / 1e9):
+        ap.error("project storage must be positive and at most 18 GB, the disk reserve at least 12 GB, and the optional item cap nonnegative")
     if args.rate_mib <= 0 or args.min_interval < 0 or args.limit < 0 or args.http_chunk_mib < 0:
         ap.error("rate must be positive; interval and limit cannot be negative")
     if not 0 <= args.upload_batch_seconds <= 300 or args.upload_batch_items > args.ready_items:
@@ -1849,15 +1891,19 @@ def main(argv=None):
     try:
         if args.command == "status":
             state = load_state(args.root / "sync" / "drive_ingest_manifest.jsonl")
+            private, total = storage_usage(args.root, managed_roots(args.root, args.managed_root))
             print(json.dumps({"states": collections.Counter(r.get("status") for r in state.values()),
-                              "local_bytes": tree_bytes(args.root), "max_local_bytes": args.max_local_bytes}))
+                              "local_bytes": private, "managed_bytes": total, "max_local_bytes": args.max_local_bytes,
+                              "min_free_bytes": args.min_free_bytes}))
             return 0
         if not args.queue:
             ap.error("plan/run requires --queue")
         rows = select_queue(args.queue, args.newest, args.entire_queue)
         if args.command == "plan":
+            private, total = storage_usage(args.root, managed_roots(args.root, args.managed_root))
             print(json.dumps({"videos": len(rows), "channels": len({r["channel_dir"] for r in rows}),
-                              "queue_sha256": sha256_file(args.queue), "local_bytes": tree_bytes(args.root),
+                              "queue_sha256": sha256_file(args.queue), "local_bytes": private, "managed_bytes": total,
+                              "min_free_bytes": args.min_free_bytes,
                               "max_local_bytes": args.max_local_bytes, "native_audio": True,
                               "transcription": False, "remote": args.remote}, indent=2))
             return 0

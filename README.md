@@ -1,5 +1,13 @@
 # Bashar Index, Channeling Atlas and ET-channeler archive
 
+## Start here
+
+The project archives audio and metadata from channeling creators and publishes source-backed research. The latest-20 selection holds **1,976 public regular uploads across 101 channels**. At 19:59 UTC on November 19, Drive had verified **1,478 recordings**, and 64 creators had complete coverage. Shorts and streams remain in the larger catalog. The current Windows pipeline supports parallel collection and grouped uploads with a 23 GB managed allowance and 12 GB of physical disk kept free. [Collection process and concurrency](et-channelers/pipeline/COLLECTION_PROCESS.md) · [Dashboard hub](dashboards/)
+
+For data collection, start with the Windows handoff and the pipeline guide. For the study, start with the research plan, reviewed channeler–entity table and event register. Branch history records which work has reached the public site. [Handoff](et-channelers/HANDOFF.md) · [Pipeline](et-channelers/pipeline/README.md) · [Analysis plan](et-channelers/research/analysis-plan-2026-11-16/README.md) · [Source relationships](et-channelers/research/analysis-plan-2026-11-16/channeler-entity-table.md) · [Shared events](et-channelers/research/cross-channel-events-2026-11-16.md) · [Branches](BRANCHES.md)
+
+## Earlier receipt checkpoints
+
 **Receipt checkpoint, 19 November 2026, 04:15 UTC:** public `main` is `7c6a860`; [PR #75](https://github.com/occult-kranti/bashar-index/pull/75) merged the streaming PURE receipt reader and Pages passed. Audio remains **1,151 / 1,420 selected videos: 1,108 native + 37 publisher editions + six qualified YouTube editions**. Saved-text coverage is **136**, **269** selected videos still lack audio, and the creator-level selection gap remains **60**. ASR remains paused.
 
 The new 20-item qualified batch closed after **five submitted attempts: four local holds and one missing final result, with zero new saved pairs**. Owned jobs are closed and its 5 GB reservation is released. At the saved November 19, 04:15 UTC checkpoint, the corrected 15-item continuation is terminal: 11 submissions produced five paired editions, two item-specific source holds, three unpublished native-route handoffs and one missing final result; four targets were not started. Its outer owned process is closed and the matching 5 GB future-growth allocation is released. Handoffs and partial work add no saved-audio count. Separately, **96 rich metadata items / 43 remote archive objects / 12,045,840 uploaded bytes** add zero audio or text coverage in the owner's **ET Channelers Archive** on Google Drive. Overall completion ETA is unknown, and the qualified route has no representative end-to-end ETA calibration. Use the dated [activity and ETA dashboard](et-channelers/dashboard/collection/) and [acquisition checkpoint](et-channelers/research/acquisition-checkpoint-2026-11-19.md) for subsequent updates.
@@ -60,7 +68,7 @@ The quantities and running-consumer observations in this section belong to the e
 
 The supported local YouTube lane saves **native audio plus sanitized metadata**, verifies the exact Drive objects and writes durable receipts before deleting local copies. It also saves available **English published captions and original English automatic captions**, including regional English variants; other languages and machine translations are excluded. Caption bundles retain raw response, timed segments, readable text and provenance. No picture download, audio re-encoding or ASR is part of this lane.
 
-The requested order is **newest 20 per channel → extend to newest 50 → all indexed remainder**. The first two cohorts use the Videos tab; the remaining archive includes Videos, Shorts, recorded streams and legacy unknown-tab items. There is no duration filter. Newest-50 counts include newest-20 items and must not be added to them.
+The November 18 sample used the Videos tab for both the twenty- and fifty-recording cohorts. The November 19 selection uses the channel’s uploads order across formats for both stages. Each fifty includes the earlier twenty. The final stage indexes the remaining archive. All lengths qualify.
 
 The [dated collection snapshot](et-channelers/plan/ingestion_status.json) reports acquisition and derived text separately. At this continuation checkpoint:
 

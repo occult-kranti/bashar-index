@@ -13,8 +13,11 @@ import drive_ingest as ingest
 
 
 class TransferLimitTests(unittest.TestCase):
-    def test_default_private_cap_preserves_project_storage_reserve(self):
-        self.assertEqual(ingest.parser().parse_args(['plan']).max_local_gb, 17.0)
+    def test_default_project_cap_and_physical_reserve(self):
+        args = ingest.parser().parse_args(['plan'])
+        self.assertEqual((args.max_local_gb, args.min_free_gb), (23.0, 12.0))
+        self.assertEqual((args.workers, args.upload_transfers, args.upload_batch_items, args.ready_items),
+                         (6, 3, 12, 24))
 
     def test_cli_accepts_requested_parallel_configuration(self):
         args = ingest.parser().parse_args(['run', '--workers', '8', '--upload-transfers', '4',
