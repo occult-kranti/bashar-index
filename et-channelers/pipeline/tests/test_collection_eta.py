@@ -27,6 +27,21 @@ def receipt(item, size=10000):
 
 
 class CollectionEtaTests(unittest.TestCase):
+    def test_qualified_batch_does_not_reuse_historical_native_rate_as_finish_estimate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); live = self.operational_fixture(root)
+            status = {'scope': 'local_youtube_collection', 'generated_at': '2026-11-19T03:00:00Z',
+                'counts': {'source_audio_available_target_videos': 1147},
+                'stages': [{'key': 'newest20', 'total': 1420}],
+                'qualified_lane': {'kind': 'qualified_youtube_batch', 'state': 'running', 'source_count': 15,
+                                   'saved_audio_items': 1, 'planning_active_hours': None}}
+            result = eta.operational_estimate(root, live, root / 'next.json', root / 'campaign.json', status)
+            self.assertEqual(result['status'], 'qualified_batch_eta_unmeasured')
+            self.assertEqual(result['qualified_batch']['saved_audio_items'], 1)
+            self.assertIsNone(result['untouched_first_pass']['planning_active_hours'])
+            self.assertIsNotNone(result['historical_native_first_pass_scenario']['planning_active_hours'])
+            self.assertIsNone(result['guaranteed_completion_date']); self.assertIsNone(result['full_audio_and_text_completion_hours'])
+
     def operational_fixture(self, root):
         live = root / 'live'; live.mkdir()
         (root / 'sync').mkdir()

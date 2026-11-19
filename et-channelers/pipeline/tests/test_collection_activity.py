@@ -66,3 +66,13 @@ class ActivityTests(unittest.TestCase):
         self.assertEqual(data['cohort_items'], 0)
         self.assertEqual(data['summary']['queued'], 0)
         self.assertEqual(data['summary']['other_pending'], 5)
+
+    def test_qualified_batch_stages_partition_targets_but_saved_receipt_wins(self):
+        qualified = {'public': {'state': 'running', 'source_count': 5}, 'video_stages': {
+            self.ids[0]: 'downloading', self.ids[1]: 'downloading', self.ids[2]: 'processing',
+            self.ids[3]: 'awaiting_upload', self.ids[4]: 'queued', self.ids[5]: 'unresolved'}}
+        with patch.object(coverage.status, 'native_bulk_lane', return_value={}), \
+             patch.object(coverage.status, 'qualified_batch_state', return_value=qualified):
+            data = coverage.channel_activity(self.root, self.rows, {self.ids[0]}, dt.datetime.now(dt.timezone.utc))
+        self.assertEqual(data['summary'], {key: 1 for key in coverage.ACTIVITY_FIELDS})
+        self.assertEqual(data['state'], 'running'); self.assertEqual(data['cohort_items'], 5)

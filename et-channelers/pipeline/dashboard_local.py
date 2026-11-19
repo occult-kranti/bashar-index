@@ -183,6 +183,19 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       if (data.native_lane?.kind === 'native_v4_source_hold') explanation = 'Native YouTube acquisition is held ' + (data.native_lane.reason === 'repeated_bound_403' ? 'after repeated HTTP 403 responses. ' : 'by its current source controls. ') + 'Saved recordings remain available. Further acquisition needs a reviewed source recovery; transcription is tracked separately.';
       if (data.native_lane?.kind === 'native_v5_source_hold') explanation = data.native_lane.reason === 'worker_startup' ? 'The native batch is paused after a local worker startup failure. This is an administrative pause; no new completed audio is credited. Saved recordings remain available while the startup fix is prepared.' : 'The native batch is held by its current source controls. Saved recordings remain available; no automatic retry is scheduled.';
       if (data.native_lane?.kind === 'native_v5_bulk' && data.native_lane.reason === 'worker_diagnostics_missing') explanation = 'A download worker ended without saving its final diagnostics. The batch is paused for a reviewed continuation. Completed audio and metadata remain verified on Drive; this diagnostic failure does not establish a new source rate limit.';
+      const qualified = data.qualified_lane;
+      if (qualified?.kind === 'qualified_youtube_batch' && (qualified.state === 'running' || state !== 'running')) {
+        explanation = qualified.state === 'running'
+          ? 'The bounded YouTube-edition batch was confirmed running at this saved checkpoint. Original track and spoken language remain unverified; this page does not poll the worker.'
+          : qualified.reason === 'provider_hold'
+          ? 'The YouTube-edition batch is held by its source controls. Saved recordings remain available; no automatic retry is scheduled.'
+          : qualified.state === 'paused'
+          ? 'The YouTube-edition batch is paused for administrative review. This does not establish a new source rate limit.'
+          : qualified.owned_processes_closed
+          ? 'The bounded YouTube-edition batch is terminal; its owned process is closed. Further acquisition requires a separately admitted batch.'
+          : 'Current YouTube-edition ownership is unconfirmed; no worker is assumed running.';
+        explanation += ' ' + number(qualified.saved_audio_items) + ' of its ' + number(qualified.source_count) + ' targets have saved audio, ' + number(qualified.held_items) + ' are held or require another route, and ' + number(qualified.unresolved_items) + (qualified.unresolved_items === 1 ? ' item needs' : ' items need') + ' final audit review.';
+      }
       if (snapshotAge >= 10) explanation += ' This checkpoint is ' + Math.floor(snapshotAge) + ' minutes old; present worker state needs a fresh snapshot.';
       if (supportedNative > 0) explanation += ' ' + number(supportedNative) + ' native-format recordings from the browser-assisted route have paired metadata verified on Drive.';
       put('cc-current-explanation', explanation);
@@ -278,6 +291,17 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const generated = new Date(current.status_snapshot_at).getTime();
       const age = Number.isFinite(generated) ? Math.max(0, (Date.now() - generated) / 3600000) : null;
       put('cc-eta-freshness', age === null ? 'Coverage checkpoint date unavailable.' : 'Coverage checkpoint ' + date(current.status_snapshot_at) + (age >= 1 ? ' · ' + Math.floor(age) + ' hours old; refresh before using it as current queue state.' : '.'));
+      if (current.qualified_batch?.kind === 'qualified_youtube_batch') {
+        const batch = current.qualified_batch;
+        put('cc-eta-next-label', 'Current bounded edition batch');
+        put('cc-eta-next-value', 'Unmeasured');
+        put('cc-eta-next-scope', number(batch.source_count) + ' selected targets; ' + number(batch.attempted_items) + ' attempts recorded and ' + number(batch.saved_audio_items) + ' targets with saved audio. ' + (batch.state === 'running' ? 'Owned process confirmed at this checkpoint.' : 'Running is not confirmed; held and unresolved items need separate review.'));
+        put('cc-eta-first-value', 'Unknown');
+        put('cc-eta-first-label', 'Remaining selected audio');
+        put('cc-eta-first-scope', number(current.newest20_items - c.source_audio_available_target_videos) + ' selected entries still need audio. There is no measured finish estimate for this remaining mix of sources and holds.');
+        put('cc-eta-calendar', 'No batch or all-audio-plus-text finish date is inferred from the historical native service rate.');
+        put('cc-eta-evidence', 'The qualified-edition route has no representative completed-batch timing calibration. Startup failures are not a transfer-rate measurement. Earlier native measurements remain dated historical context.');
+      }
     } catch (_) {
       put('cc-eta-next-value', 'Unavailable'); put('cc-eta-first-value', 'Unavailable');
       put('cc-eta-next-scope', 'No current recovery estimate is available.');
