@@ -1,23 +1,23 @@
 {
   "schema_version": 2,
   "scope": "collection_eta",
-  "generated_at": "2026-11-19T04:15:44Z",
+  "generated_at": "2026-11-19T05:00:32Z",
   "current": {
-    "generated_at": "2026-11-19T04:15:44Z",
-    "status_snapshot_at": "2026-11-19T04:15:44Z",
+    "generated_at": "2026-11-19T05:00:32Z",
+    "status_snapshot_at": "2026-11-19T05:00:32Z",
     "status": "qualified_batch_eta_unmeasured",
     "guaranteed_completion_date": null,
     "full_audio_and_text_completion_hours": null,
     "newest20_items": 1420,
     "coverage": {
-      "verified_pairs": 1108,
+      "verified_pairs": 1109,
       "asr_verified_videos": 91,
-      "source_audio_available_target_videos": 1151,
+      "source_audio_available_target_videos": 1152,
       "qualified_youtube_audio_edition_target_videos": 6,
       "source_audio_with_text_target_videos": 136,
       "text_available_videos": 108,
       "text_inventory_complete_videos": 106,
-      "text_missing_videos": 1000,
+      "text_missing_videos": 1001,
       "caption_verified_videos": 15,
       "caption_verified_tracks": 20,
       "caption_text_available_videos": 17,
@@ -102,7 +102,8 @@
       "Active hours assume similar source availability, successful-file lengths, Drive service and storage backpressure. Admission waits and downtime add calendar time.",
       "Only a separately admitted cohort may run. Later prepared cohorts remain disabled; a scenario does not authorize or schedule them.",
       "ASR is separate and may overlap acquisition. Language review, uncertain attempts, item quarantines and unavailable sources prevent a reliable all-audio-plus-text finish date.",
-      "The separately qualified-edition batch has no representative end-to-end service calibration. Local startup failures do not establish a transfer rate or a provider refusal; its batch and full-goal finish dates remain unknown."
+      "The separately qualified-edition batch has no representative end-to-end service calibration. Local startup failures do not establish a transfer rate or a provider refusal; its batch and full-goal finish dates remain unknown.",
+      "The latest three-item native follow-up is closed: one paired archive, one unfollowed redirect held for review and one locally interrupted partial. The redirect response status was not retained. No acquisition is active, and the held items have no completion estimate."
     ],
     "historical_8_to_12_active_hours_superseded": true,
     "calibration": "completed_download_only_frame",
@@ -127,7 +128,7 @@
       "ETA_state": "unmeasured",
       "planning_active_hours": null,
       "Native_count_increment": 0,
-      "saved_audio_items": 5
+      "saved_audio_items": 6
     },
     "historical_native_first_pass_scenario": {
       "items": 14,
@@ -154,6 +155,24 @@
       "later_prepared_items": 14,
       "state": "prepared_campaign_disabled",
       "scope": "Decisions on the frozen untouched selection, including holds and failures"
+    },
+    "latest_bounded_attempt": {
+      "kind": "native_audio_handoff",
+      "state": "paused",
+      "attempted_items": 3,
+      "saved_native_pairs": 1,
+      "redirect_held_items": 1,
+      "interrupted_partial_items": 1,
+      "awaiting_upload": 0,
+      "process_confirmed": false,
+      "owned_processes_closed": true,
+      "future_growth_released": true,
+      "automatic_resume": false,
+      "redirect_response_status_recorded": false,
+      "redirects_followed": 0,
+      "retries": 0,
+      "recorded_at": "2026-11-19T05:00:59Z",
+      "ETA_state": "unknown"
     }
   },
   "historical_assumptions": {
