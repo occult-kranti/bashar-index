@@ -41,6 +41,15 @@ class SchedulingTests(unittest.TestCase):
                 patch.object(study.collection_coverage, "coverage", return_value=(self.state, self.frame)):
             return schedule.finish(self.root, folder, self.first, self.second, **kwargs)
 
+    def primary(self, filename="caption.json", **overrides):
+        path = self.root / filename
+        text = "Fixture evidence from the selected recording."
+        view = dict(self.frame[0], source_kind="published", language="en-GB", text=text, text_sha256=study.digest(text.encode()))
+        view.update(overrides)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(view), encoding="utf-8")
+        return dict(source_kind=view["source_kind"], path=filename, file_sha256=schedule.pin(self.root, path)["sha256"])
+
     def test_cohort_gate_precedes_network_and_permits_metadata_plans(self):
         queue = self.root / "pending.csv"
         with queue.open("w", newline="") as stream:
@@ -57,7 +66,7 @@ class SchedulingTests(unittest.TestCase):
     def test_both_distinct_completed_reports_and_full_text_needed_before_release(self):
         with self.assertRaisesRegex(ValueError, "usable English"):
             self.finish(self.generation(None))
-        primary = {"source_kind": "published"}
+        primary = self.primary()
         folder = self.generation(primary)
         self.second.write_bytes(self.first.read_bytes())
         with self.assertRaisesRegex(ValueError, "distinct"):
@@ -73,7 +82,8 @@ class SchedulingTests(unittest.TestCase):
         base = self.root / "text"
         base.mkdir()
         view = {"video_id": "v", "channel_dir": "example", "run_id": "run", "source_edition_id": "edition",
-                "original_language": "ja", "language": "en", "variant": "english"}
+                "original_language": "ja", "language": "en", "variant": "english", "source_kind":"publisher_english_audio_translation",
+                "text":"Hello", "text_sha256":study.digest(b"Hello")}
         english = base / "english-t.json"
         english.write_text(json.dumps(view))
         primary = dict(source_kind="publisher_english_audio_translation", path="text/english-t.json",
@@ -85,9 +95,23 @@ class SchedulingTests(unittest.TestCase):
         (base / "original-t.json").write_text(json.dumps(original))
         self.assertEqual(self.finish(folder)["translated_primary_texts"], 1)
 
+    def test_all_primary_views_must_still_bind_to_the_selected_recording_and_text(self):
+        primary = self.primary()
+        folder = self.generation(primary)
+        (self.root / primary["path"]).write_text("changed")
+        with self.assertRaisesRegex(ValueError, "changed after analysis"):
+            self.finish(folder)
+        (self.root / primary["path"]).unlink()
+        with self.assertRaisesRegex(ValueError, "missing"):
+            self.finish(folder)
+        for change in ({"video_id":"different"}, {"language":"es"}, {"text_sha256":"0"*64}, {"text":""}):
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError, "mismatch"):
+                self.finish(self.generation(self.primary(**change)))
+
     def test_no_speech_exception_requires_matching_review_evidence(self):
         reason = self.root / "speech-review.json"
-        reason.write_text('{"reviewed_audio":"fixture","finding":"no_spoken_content"}')
+        reason.write_text(json.dumps({"finding":"no_spoken_content", "source":{"video_id":"v","channel_dir":"example",
+            "selection_sha256":self.sha,"audio":{"sha256":"a"*64,"drive_id":"fixture-audio"}}}))
         reviews = self.root / "reviews.json"
         reviews.write_text(json.dumps({"selection_sha256": self.sha, "recordings": [
             {"video_id": "v", "finding": "no_spoken_content", "evidence": schedule.pin(self.root, reason)}]}))

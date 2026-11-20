@@ -2,6 +2,8 @@
 
 ## Windows collection as of November 19, 2026
 
+The Windows tasks for local CUDA speech work and text-only API research are registered. The speech task admits work after complete Drive receipt coverage and the exit of the collection owner. The research coordinator waits for that same audio milestone before its methods review, then waits for complete verified text before the two analytical rounds. Its private $100 allowance is shared across every funded job. [Startup, recovery and budget status](pipeline/PROJECT_RESEARCH_AGENTS.md)
+
 At 23:25 UTC, 1,809 of 1,976 selected public regular uploads had verified audio and provenance on Drive. The register listed 23 provider refusals, three incomplete transfers and one local browser startup failure. Another 140 recordings were pending without a documented failure in the closed batches. Of the verified recordings, 183 had text saved with the recording or its published edition. Including separately archived publisher captions and transcripts brought text coverage to 216, of which 214 had confirmed English text. Use immutable recording IDs and the same selection hash for progress comparisons. [Failure report and export commands](pipeline/COLLECTION_PROCESS.md#unresolved-downloads)
 
 The 23 GB cap took effect at 20:31 UTC after the preceding batch closed. At 20:36 UTC the next 96-item batch started with up to six source workers, two staggered browser starts, eight outstanding items, three Drive transfers and a 9 GB reservation. Retain 12 GB physically free after all commitments. Independent publisher workers upload whole editions in groups and keep valid local files until remote verification. Cite a finish time only from the pace of verified files on one selection. [Windows setup](pipeline/WINDOWS_DRIVE.md)
