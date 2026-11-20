@@ -94,3 +94,17 @@ class ArchiveStagingTests(unittest.TestCase):
             self.execute()
         self.assertFalse((self.root / "analysis").exists())
         self.assertFalse(self.drive.lookups)
+
+    def test_owner_authorized_outstanding_recording_lets_the_archived_ones_stage_and_nothing_looser(self):
+        absent = self.frame[1]["video_id"]
+        self.coverage["summary"].update(remaining_audio=1, audio_available=1)
+        self.patch(staging.collection_coverage, "coverage", return_value=(self.coverage, self.frame[:1]))
+        self.patch(staging, "input_rows", return_value=self.inputs[:1])
+        self.patch(staging, "text_views", side_effect=lambda root, job, path, remote:
+                   {f"caption_views/{job['row']['video_id']}/version.json": {"text": "sample"}})
+        for unlisted in (None, frozenset({"another0001"}), frozenset({absent, "another0001"})):
+            with self.subTest(outstanding=unlisted), self.assertRaises(ValueError):
+                self.execute(outstanding=unlisted)
+        self.assertFalse(self.drive.lookups)
+        self.assertEqual(self.execute(outstanding=frozenset({absent}))["views_staged"], 1)
+        self.assertEqual(len(self.drive.copies), 1)

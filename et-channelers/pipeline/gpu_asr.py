@@ -41,6 +41,8 @@ MAX_MANAGED_BYTES = host_capacity.MAX_MANAGED_BYTES
 MAX_RESULT_BYTES = 20_000_000
 SAMPLE_RATE = 16000
 WINDOW_SECONDS = 30
+MAX_UNDECODABLE_PACKETS = 20    # packets the decoder may reject in one recording before it goes to source review
+MAX_ROLLING_TARGET = 0.80
 FILES = {"segments.json", "transcript.txt", "telemetry.json", "provenance.json", "artifact_manifest.json"}
 PROVENANCE_PATH = HERE / "gpu_asr_provenance.json"
 DEFAULT_LOCK = HERE / "requirements-gpu-asr-win-py312.lock"
@@ -156,6 +158,7 @@ class Settings:
     environment_lock: Path = DEFAULT_LOCK
     max_managed_bytes: int = MAX_MANAGED_BYTES
     output_root: Path | None = None
+    model_workers: int = 1      # concurrent recognitions on the one loaded model; the lease sets it
 
     def __post_init__(self):
         self.root = Path(self.root).resolve()
@@ -174,15 +177,42 @@ class Settings:
         require(0 < self.max_managed_bytes <= MAX_MANAGED_BYTES, "managed_cap")
 
 
+def english_binding(lease):
+    """The one extra model a lease may admit: a pinned English-only model named in full.
+
+    A lease with ``additional_models_allowed`` true must carry this block. The worker that
+    loads the model rehashes its files against the receipt before use. ``parallel_windows``
+    (1 to 4, default 1) is how many 30-second windows that model may recognize at once.
+    """
+    value = lease.get("english_model")
+    if (isinstance(value, dict) and isinstance(value.get("repository"), str) and value["repository"]
+            and re.fullmatch(r"[a-f0-9]{40}", str(value.get("revision", "")))
+            and re.fullmatch(r"[a-f0-9]{64}", str(value.get("model_sha256", "")))
+            and isinstance(value.get("model_dir"), str) and value["model_dir"]
+            and isinstance(value.get("model_receipt"), str) and value["model_receipt"]
+            and type(value.get("parallel_windows", 1)) is int and 1 <= value.get("parallel_windows", 1) <= 4):
+        return value
+    return None
+
+
 def gpu_lease(settings):
     lease = read_json(settings.root / "sync/gpu_lease.json")
     require(lease.get("schema_version") == 1 and lease.get("state") == "active", "gpu_lease_inactive")
     require(lease.get("lease_id") == settings.gpu_lease_id and lease.get("owner") == settings.gpu_owner, "gpu_lease_owner")
     require(lease.get("exclusive_owner") is True and lease.get("device_index") == 0, "gpu_lease_not_exclusive")
-    require(lease.get("cpu_fallback_allowed") is False and lease.get("additional_models_allowed") is False, "gpu_lease_policy")
+    extra = lease.get("additional_models_allowed")
+    require(lease.get("cpu_fallback_allowed") is False
+            and (extra is False and "english_model" not in lease or extra is True and english_binding(lease) is not None),
+            "gpu_lease_policy")
+    # How many 30-second windows the lease's own model may recognize at once (default one).
+    require(type(lease.get("parallel_windows", 1)) is int and 1 <= lease.get("parallel_windows", 1) <= 4, "gpu_lease_policy")
+    # Optional: wait between steps while the card is at or above this temperature (hard stop stays at 85).
+    require(lease.get("soft_temperature_c") is None or type(lease["soft_temperature_c"]) is int and 60 <= lease["soft_temperature_c"] <= 84,
+            "gpu_lease_policy")
     require(unexpired(lease.get("expires_at")), "gpu_lease_expired")
     require(isinstance(lease.get("max_vram_bytes"), int) and 0 < lease["max_vram_bytes"] <= 6_500_000_000, "vram_policy")
-    require(0 < lease.get("rolling_utilization_target", 0) <= 0.70, "gpu_target")
+    # The owner raised the ceiling from 0.70 to 0.80 on 2026-11-20; a lease may still ask for less.
+    require(0 < lease.get("rolling_utilization_target", 0) <= MAX_ROLLING_TARGET, "gpu_target")
     require(not (settings.root / "asr/STOP_ASR").exists(), "stop_requested")
     return lease
 
@@ -370,8 +400,10 @@ class CudaRuntime:
         self.np, self.av, self.nvml = numpy, av, pynvml
         pynvml.nvmlInit()
         self.handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+        workers = getattr(settings, "model_workers", 1)
+        require(type(workers) is int and 1 <= workers <= 4, "model_workers")
         self.model = WhisperModel(str(settings.model_dir), device="cuda", device_index=0,
-                                  compute_type="int8_float16", cpu_threads=2, num_workers=1, local_files_only=True)
+                                  compute_type="int8_float16", cpu_threads=2, num_workers=workers, local_files_only=True)
         require(self.model.model.device == "cuda" and self.model.model.compute_type == "int8_float16", "cpu_fallback_forbidden")
 
     def sample(self):
@@ -383,28 +415,53 @@ class CudaRuntime:
         """Stream decoded frames; never allocate a full recording PCM array."""
         maximum = int((expected_duration + 2) * SAMPLE_RATE)
         target = WINDOW_SECONDS * SAMPLE_RATE
-        buffer = self.np.empty(0, dtype=self.np.float32)
-        total = 0
+        # Frames of the window being filled are joined once per window. Joining the growing
+        # buffer after every frame gave the same samples but copied about a gigabyte per window.
+        parts, held, total = [], 0, 0
+
+        def joined():
+            if not parts:
+                return self.np.empty(0, dtype=self.np.float32)
+            return parts[0] if len(parts) == 1 else self.np.concatenate(parts)
+
+        self.undecodable_packets = skipped = 0
         with self.av.open(str(path)) as container:
             require(len(container.streams.audio) == 1, "audio_stream_count")
             resampler = self.av.AudioResampler(format="fltp", layout="mono", rate=SAMPLE_RATE)
             def decoded():
-                for frame in container.decode(audio=0):
-                    require(frame.sample_rate > 0 and frame.samples / frame.sample_rate <= WINDOW_SECONDS, "oversized_decode_frame")
-                    yield from resampler.resample(frame)
+                nonlocal skipped
+                # The frames of container.decode(audio=0), taken packet by packet. A packet the decoder
+                # rejects (a tag or one damaged frame spliced into a publisher's MP3) is passed over,
+                # as players do, instead of ending the recording. More damage than a few packets
+                # stops here, and lost time beyond two seconds fails the duration check below.
+                for packet in container.demux(container.streams.audio[0]):
+                    try:
+                        frames = packet.decode()
+                    except self.av.error.InvalidDataError:
+                        skipped += 1
+                        require(skipped <= MAX_UNDECODABLE_PACKETS, "undecodable_audio")
+                        self.undecodable_packets = skipped
+                        continue
+                    for frame in frames:
+                        require(frame.sample_rate > 0 and frame.samples / frame.sample_rate <= WINDOW_SECONDS, "oversized_decode_frame")
+                        yield from resampler.resample(frame)
                 yield from resampler.resample(None)
             for frame in decoded():
                 values = frame.to_ndarray().reshape(-1)
                 require(self.np.isfinite(values).all(), "nonfinite_audio")
-                require(total + len(buffer) + len(values) <= maximum, "decoded_duration_limit")
-                buffer = self.np.concatenate((buffer, values))
-                while len(buffer) >= target:
+                require(total + held + len(values) <= maximum, "decoded_duration_limit")
+                if len(values):
+                    parts.append(values.astype(self.np.float32, copy=False))
+                    held += len(values)
+                while held >= target:
+                    buffer = joined()
                     yield total / SAMPLE_RATE, buffer[:target]
                     total += target
-                    buffer = buffer[target:]
-            if len(buffer):
-                yield total / SAMPLE_RATE, buffer
-                total += len(buffer)
+                    rest = buffer[target:]
+                    parts, held = ([rest] if len(rest) else []), len(rest)
+            if held:
+                yield total / SAMPLE_RATE, joined()
+                total += held
         require(abs(total / SAMPLE_RATE - expected_duration) <= 2, "decoded_duration_mismatch")
 
     def transcribe(self, audio):

@@ -1,0 +1,225 @@
+% findings-text.tex : draft paragraphs for the findings and for what is not yet known, with notes to the writer as comments.
+% \input after numbers.tex, or copy paragraphs from it. Every number is a macro; sources are in numbers.tex.
+% Labels used: tab:cohort, tab:descriptives, tab:variance, tab:artefacts, tab:kinds (tables.tex);
+%              fig:distributions, fig:pace, fig:variance, fig:running, fig:calendar (figures.tex).
+%
+% ===========================================================================
+% A. READ THIS FIRST
+% ===========================================================================
+% A1. The snapshot. Unless a line says otherwise, a number is "as of the snapshot of 20 November 2026, about 13:00 UTC:
+%     1,213 finished transcripts (1,211 distinct audio files) of the 1,729 audio files in the run". State this with every
+%     provisional number (\SnapDate, \SnapLines, \SnapAudio, \NRunAudio).
+% A2. Three other bases occur: the reading pass on 1,201 finished transcripts (artefact counts, term families; \ArtBase),
+%     a pilot on 1,253 finished transcripts (window-level variance, position curves, pauses; \VpLedger), and a panel
+%     member's count on 1,289 finished files (which recognizer model each file used; \ModelCountBase).
+% A3. Nothing was computed on transcript text for these files. Numbers come from the snapshot's JSON and CSV files, from two
+%     private notes, from public project documents, or from counts of the run ledger. The few numbers computed here
+%     ("computed by build_findings.py" in numbers.tex) use only descriptives-per-recording.csv and descriptives-per-creator.csv.
+% A4. Creators appear only as counts. Coded ids (C01 to C101, a seeded shuffle, no key file written) occur in one file,
+%     fig2_creator_pace.csv. No creator, channel or being is named in this folder. The recognizer's inserted phrase is
+%     described as "a two-word thanks phrase" and is not quoted.
+% A5. Hold-out. 23 creators are reserved: those with at most 3 finished transcripts at the snapshot AND at least 10 recordings
+%     still outstanding in the run (366 outstanding recordings; 18 of the 23, with 286 outstanding, had no non-English
+%     transcript). "At most 3 finished transcripts" alone describes 30 creators; the other 7 have most of their recordings
+%     held in other text kinds. Figures 1, 2 and 4 and the filled marks of figure 3 use only the 71 creators with five or more
+%     finished transcripts, so no hold-out creator enters them. The source numbers of tables 2 and 3 were computed before the
+%     hold-out was declared and include 37 audio files of creators with one to three transcripts, 32 of them from hold-out
+%     creators (\LowCountInSnapshot, \HoldoutInSnapshot); the captions say so.
+% A6. All findings are exploratory. Give estimates and intervals without significance marks (catalogue rule R2). No p-value
+%     exists for anything here.
+%
+% ===========================================================================
+% B. TABLES: what each shows, source, and the caveat sentence to keep
+% ===========================================================================
+% Table 1 (tab:cohort): selection, archive, run scope, snapshot, one ledger count at build time.
+%   Sources: pre-analysis checkpoint, failed-links table, progress table, descriptives-summary.json, per-creator CSV, ledger.
+%   Caveat: "The snapshot rows describe the 1,213 transcripts finished on 20 November 2026 at about 13:00 UTC; the run was
+%   still going, and the unfinished part is not a random remainder." (518 selected recordings were not yet in the ledger,
+%   393 of them in 27 creators.)
+% Table 2 (tab:descriptives): quartiles over recordings (seven measures) and over the 71 creators (three measures).
+%   Source: descriptives-summary.json, quantiles_min_p5_q1_median_q3_p95_max and creator_medians_quantiles; the words row
+%   is recomputed over the 1,213 recording rows and reproduces the audit's 965 / 2,114 / 4,621.
+%   Caveat: "No transcript was checked by a person, so word counts and pace carry unmeasured recognition error."
+%   Second caveat: the rows include 37 files from creators with fewer than five transcripts; without them the medians are
+%   the same to the precision shown.
+% Table 3 (tab:variance): top, ICC(1) per measure with creators, recordings, effective n; bottom, three-level split (pilot).
+%   Source: descriptives-summary.json icc_between_creators; senior-analyst-pilot.json variance_partition_3_level.
+%   The ICC is the one-way analysis-of-variance estimator for unbalanced groups, not a fitted mixed model.
+%   Caveat: the bottom panel is "from a pilot on 1,253 transcripts ... whose code was not reviewed".
+% Table 4 (tab:artefacts): three patterned artefacts and three file-level flags.
+%   Source: transcript-reading-notes.md sections 0 and 2.4 (1,201 transcripts; 1,188 English); summary quality_flags.
+%   Caveat: "Recognizer artefacts found by pattern rules, with no audio played and no human reference. ... Counts come from
+%   unreviewed code and are provisional; the rules have not been checked against listening."
+% Table 5 (tab:kinds): top, kinds among the 34 read recordings with 300 words or more; bottom, five term families.
+%   Source: transcript-reading-notes.md section 0 items 1 and 2 (also catalogue section 2.3).
+%   Caveat: "The 42 read recordings (39 creators) were chosen by stratum for contrast, not at random, and one reader assigned
+%   the kinds, so the counts do not estimate corpus shares." Bottom: "crude regular expressions ...; the lists were not
+%   validated and misrecognized words lower the counts."
+%   \TermGod, \TermStarseed and \TermDisclosure exist only in the private notes: use them only if the owner agrees.
+%   The private notes also give shares for named groups of beings; those were left out on purpose.
+%
+% ===========================================================================
+% C. FIGURES: what each shows and the caveat sentence to keep (captions are in figures.tex)
+% ===========================================================================
+% Figure 1 (fig1_distributions.pdf): histograms of recording length (log axis), pace, share of running time without speech
+%   (log count axis). 1,174 distinct audio files of the 71 creators; 1,117 in the pace panel. Lines are the quartiles of the
+%   plotted data (fig1_quartiles.csv): length 8.3 / 17.3 / 36.0 minutes; pace 134 / 148 / 163; share 0.020 / 0.052 / 0.136.
+%   Caveat: "No transcript was checked by a person, and recognizer artefacts had not been removed."
+% Figure 2 (fig2_creator_pace.pdf): median pace per creator, ranked, 95% percentile interval from 2,000 resamples of that
+%   creator's recordings. 70 creators (one of the 71 has fewer than five English recordings with a minute of speech); one
+%   has five to seven recordings (hollow mark). Medians 104 to 189; median of creator medians 148; 42 of 70 intervals
+%   exclude it. That 42 describes spread; it is not 42 tests.
+%   Caveat: "Values are raw, not shrunken. The intervals are not rank intervals and their coverage has not been audited, so
+%   the figure does not single out any creator." (Rule R4 allows "extreme" only on a rank interval, not yet computed.)
+% Figure 3 (fig3_variance_between_creators.pdf): ICC(1) for seven measures. Filled circles: recomputed on the creators with
+%   five or more transcripts (70 or 71 creators, 1,004 to 1,117 recordings), 95% percentile intervals from 2,000 resamples of
+%   creators. Open diamonds: source values over all creators with two or more recordings (72 to 79). The two differ by 0.014
+%   at most. Creators only were resampled: resampling recordings inside a creator shrinks the within-creator variance and
+%   biases the ICC upward.
+%   Caveat: "The interval procedure has not been through the planned coverage audit." The intervals for share without
+%   speech, log-probability and repeated five-word share are wide: say that these three are poorly determined.
+% Figure 4 (fig4_speech_along_running_time.pdf): mean share of each tenth of the running time covered by speech segments.
+%   Filled: creators weighted equally (71 creators, 1,174 files), pointwise 95% band from 2,000 two-stage resamples.
+%   Open: all 1,211 files pooled (summary timeline_profile_by_tenth.mean_speech_coverage).
+%   Caveat: "Speech segments are the output of the recognizer's voice detector and were not validated; the band is
+%   pointwise, not simultaneous."
+% Optional figure (figA_calendar_window.pdf): one line per creator (all 101), oldest to newest selected recording, time
+%   before the listing date on a log axis. Listing dates only, no transcript.
+%   Caveat: "397 of the 1,976 dates are intervals estimated from a displayed age, and the line uses the interval ends.
+%   Dates are upload dates, not dates of speaking."
+%
+% ===========================================================================
+% D. DRAFT TEXT: eight findings (adapt freely; keep the bases and the caveats)
+% ===========================================================================
+
+% Finding 1. Source: descriptives-summary.json icc_between_creators; senior-analyst-pilot.json variance_partition_3_level.
+\paragraph{Recordings of one creator resemble each other.}
+At the snapshot of \SnapDate{} (\SnapLines{} finished transcripts of \NRunAudio{} audio files; provisional), the creator accounts for \IccMinPct\% to \IccMaxPct\% of the variance of seven recording-level measures (Table~\ref{tab:variance}, Figure~\ref{fig:variance}): lexical variety \IccMattr, pace \IccPace, share of time without speech \IccNonSp, mean log-probability \IccLogp, length \IccLen, question share \IccQuest{} and repeated five-word share \IccRep. For pace, the \IccPaceRecordings{} recordings carry the information of about \NeffPace{} independent ones. Restricted to the \SnapCreatorsFivePlus{} creators with five or more transcripts, the estimate for pace is \IccPaceSeen{} with a 95\% bootstrap interval of \IccPaceSeenLo{} to \IccPaceSeenHi; the intervals for share without speech (\IccNonSpSeenLo{} to \IccNonSpSeenHi) and for log-probability (\IccLogpSeenLo{} to \IccLogpSeenHi) are wide, so those two shares are poorly determined. In a pilot on \VpLedger{} transcripts, the variance of articulation rate splits into \VpArtCreator{} between creators, \VpArtRecording{} between recordings of one creator and \VpArtWithin{} within a recording. Creator medians of pace run from \CrPaceMin{} to \CrPaceMax{} words per minute of speech (Figure~\ref{fig:pace}). The unit of inference is therefore the creator, of which there are about one hundred.
+
+% Finding 2. Source: descriptives-summary.json quantiles and length_bands_minutes; words from the per-recording CSV.
+\paragraph{The recordings differ widely in form.}
+The median recording lasts \LenMed{} minutes (quartiles \LenQi{} and \LenQiii; maximum \LenMax) and holds \WordsMed{} words; \NLenUpToFive{} recordings are five minutes or shorter and \NLenOverSixty{} are longer than an hour. The median pace of English recordings is \PaceMed{} words per minute of speech (quartiles \PaceQi{} and \PaceQiii; Table~\ref{tab:descriptives}, Figure~\ref{fig:distributions}).
+
+% Finding 3. Source: descriptives-summary.json nonspeech_hours, quality_flags, quiet stretches, timeline_profile_by_tenth;
+% the top-five share is recomputed from the per-recording CSV and agrees with the audit (44%).
+\paragraph{About one eighth of the audio holds no speech.}
+Of \SnapHours{} audio hours, \SnapNonSpeechHours{} (\SnapNonSpeechPct\%) hold no speech according to the recognizer's voice detector, and five creators hold \NonSpTopFivePct\% of that time. \NHalfNonSpeech{} recordings are at least half without speech and \NUnderFiftyWords{} hold fewer than 50 words. Stretches of 30 seconds or more without speech total \QuietHours{} hours in \NQuietRecordings{} recordings. Speech is thinner at the ends of a recording: it covers \CovFirst{} of the first tenth of the running time, \CovMiddle{} in the middle and \CovLast{} of the last tenth (Figure~\ref{fig:running}).
+
+% Finding 4. Source: descriptives-summary.json spearman_recording_level_english, spearman_creator_medians, by_source_type,
+% quantiles.share_segments_logprob_below_minus1; senior-analyst-pilot.json within_recording_logprob_vs_segment_pace
+% (that pilot covers 89 creators, more than the 71).
+\paragraph{Recognizer confidence follows delivery.}
+Across \RhoN{} English recordings the mean segment log-probability rises with pace (Spearman \RhoLogpPace) and falls with the share of time without speech (\RhoLogpNonSp); it is unrelated to length (\RhoLogpLen). Across the \SnapCreatorsFivePlus{} creator medians the correlation with pace is \RhoCreatorLogpPace. Inside a recording the picture differs: in a pilot on \RhoWithinRecordings{} recordings the correlation between segment log-probability and segment pace has a median of \RhoWithinMed{} and is positive in \RhoWithinPositivePct\% of recordings. The share of segments below the recognizer's stock cut-off of \StockLogpCutoff{} is \ShareBelowCutoffMed{} at the median and \ShareBelowCutoffPninetyfive{} at the 95th percentile, so the cut-off flags almost nothing. We treat log-probability as a covariate and not as a quality score until it has been calibrated against hand transcripts.
+
+% Finding 5. Source: transcript-reading-notes.md sections 0 and 2.4 (reading pass, 1,201 transcripts, 1,188 English).
+% Do not quote the phrase. No audio was played: "invented" means it does not fit the context and matches a known pattern.
+\paragraph{Recognizer artefacts are frequent and tied to the decoding window.}
+In \ArtEnglishBase{} English transcripts a two-word thanks phrase stands alone as a segment \ThanksSegments{} times, in \ThanksTranscripts{} transcripts (\ThanksPct\%). \ThanksLateWindowPct\% of these segments start 27 to 30 seconds into a \WindowSeconds-second decoding window and \ThanksEmbeddedPct\% sit in running speech with under a second of gap on both sides; their median log-probability is \ThanksLogp{} against \OtherShortLogp{} for other short segments. A further \IsoSegments{} isolated segments of at most three words sit in silence or music in \IsoTranscripts{} transcripts (\IsoPct\%), \IsoGridPct\% of them starting exactly on a multiple of 30 seconds (Table~\ref{tab:artefacts}). In the reading sample a single name was spelt in \SpellingsMin{} to \SpellingsMax{} ways inside one recording. These counts come from pattern rules that have not been checked against listening.
+
+% Finding 6. Source: transcript-reading-notes.md 0.1 and 0.5; question share from descriptives-summary.json.
+\paragraph{A recording filed under a channeler is often not channelled speech.}
+Of \ReadLongN{} read recordings with 300 words or more, \KindChannelled{} hold a channelled voice or a relayed message; the others are interviews or podcasts without channelling (\KindInterview), guided meditations (\KindMeditation), talks in the creator's own voice (\KindOwnVoice), a hypnosis session and an event advertisement (Table~\ref{tab:kinds}). Only \ReadAudienceQA{} of the \ReadN{} read recordings hold audience questions and answers, so the share of segments that end in a question mark (median \QuestMed) does not measure audience questions. The sample was chosen for contrast and coded by one reader: it shows that these kinds exist, not how common they are.
+
+% Finding 7. Source: transcript-reading-notes.md 0.2 (also catalogue 2.3). Crude patterns: an order of magnitude.
+\paragraph{Extraterrestrial vocabulary is a minority register.}
+Among \TermBase{} English transcripts of 150 words or more, \TermSoul\% contain a soul term, \TermFrequency\% a frequency or vibration term, \TermBreath\% a breath term and \TermAscension\% an ascension term, against \TermExtraterrestrial\% with any extraterrestrial or alien word. The patterns are crude and unvalidated.
+
+% Finding 8. Source: descriptives-summary.json selected_span_days_quantiles, selected_span_bands, selected_by_year_bin,
+% date_method_of_all_selected; plan-and-data-audit.md section 4.
+\paragraph{The newest \NPerCreator{} recordings are a quota, not a period.}
+The window covered by a creator's newest \NPerCreator{} recordings spans \SpanMin{} to \SpanMax{} days (median \SpanMed; quartiles \SpanQi{} and \SpanQiii): \NSpanWithinMonth{} creators fit inside 30 days and \NSpanOverTwoYears{} need more than two years (Figure~\ref{fig:calendar}). \PctDatedCaptureYear\% of the \NSelected{} selected recordings are dated in the year of capture and \PctDatedYearBefore\% in the year before. \NExactDates{} dates are exact days and \NEstimatedDates{} are intervals estimated from a displayed age (median width \EstimatedDateMedianWidth{} days). Order within a creator is not time across creators, and upload date is not the date of speaking, so the cohort supports no trend claim.
+
+% Two design facts rather than findings.
+% Source: descriptives-summary.json languages, creators_by_language; catalogue 2.1 for the model counts (1,289 files).
+\paragraph{Language and recognizer model.}
+At the snapshot, \SnapNonEnglish{} audio files from \SnapNonEnglishCreators{} creators are in a language other than English (Japanese \SnapJapanese, Spanish \SnapSpanish, Portuguese \SnapPortuguese, Czech \SnapCzech), so a language here means one or two creators. English speech was transcribed by a distilled English model and other languages by the full multilingual model (\NModelDistilEnglish{} and \NModelFull{} files among the \ModelCountBase{} finished when the count was made). No comparison crosses the two models until both have been run on the same audio.
+
+% Three pilot numbers, available if the text needs them (1,253 transcripts, unreviewed code):
+%   pace in the last tenth of a recording is \PosPaceLast times the recording mean (interval \PosPaceLastLo to \PosPaceLastHi;
+%   \PosCreators creators, \PosRecordings recordings; this pilot included creators outside the 71);
+%   \GapShareFifthSecond % of inter-word gaps are 0.2 s or longer and \GapShareTwoSeconds % are 2 s or longer;
+%   the raw type-token ratio correlates \TtrRhoLength with log length, types in the first 1,000 words \TypesRhoLength
+%   (the reason for the length rule R9).
+% Do NOT use the pilot's word-list curves (pronouns, sales terms): rule R7 forbids a word list before two people measured it.
+
+% ===========================================================================
+% E. DRAFT TEXT: what is not yet known
+% ===========================================================================
+\paragraph{What is not yet known.}
+\begin{itemize}
+\item \emph{Recognition error.} No word error rate has been measured on any stratum and no reference transcript exists. All \SnapLines{} transcripts are unreviewed, and no recording has a language confirmed by a person. Word time stamps and the split into speech and non-speech are model output.
+\item \emph{Speakers.} Speaker separation has not been run. Host, guest, audience, the creator's own voice and a channelled voice are one stream, and no number is per channelled word.
+\item \emph{Experiments.} The \NExperiments{} experiments and \NRules{} rules are a design. What exists is a descriptive pass, three pattern passes, one reading by one reader and pilots whose code was not reviewed.
+\item \emph{Registration.} No registry of hypotheses is frozen, no confirmatory test has been made and no p-value is reported. The \NHoldout{} hold-out creators have not been analysed.
+\item \emph{Comparison.} No corpus of non-channelling speech has been collected, so nothing here can be called distinctive of channelling. The replication wave has not been collected either.
+\item \emph{Bridge.} The two recognizer models have not been run on the same audio.
+\item \emph{Completeness.} The snapshot covers \SnapPctAudio\% of the audio files and \SnapPctHours\% of the hours of the run, and the remainder is not random: of \SnapNotInLedger{} recordings then outstanding, \SnapNotInLedgerConcentrated{} belong to \SnapNotInLedgerCreators{} creators. \SnapHeld{} recordings were held for a decision. \NOtherText{} recordings held as other kinds of text and \NFailed{} without audio are outside the run.
+\item \emph{Artefacts.} No artefact filter has been applied to any number reported here, and the precision and recall of the removal rules are unmeasured.
+\item \emph{Kinds of recording.} The kinds rest on one reader and a purposive sample; there are no segment-level labels and no second coder.
+\item \emph{Intervals.} The coverage audit by simulation has not been run; the intervals shown are plain percentile bootstrap intervals.
+\end{itemize}
+
+% Also not known, for the limitations or ethics text:
+%   - Calendar: upload date is not the date of speaking; \NNoDateRow selected recordings have no row in the published date table.
+%   - Outside metadata (view, like and comment counts) was not opened.
+%   - Numbers quoted from the literature in the catalogue came from machine extraction and were not checked against the PDFs.
+%   - The source documents record no ethics review decision; ANALYSIS_PLAN.md 10.2 says when one is needed.
+%   - The replication wave's capture date (\ReplicationDate) is proposed, not yet confirmed by the owner.
+%   - Held recordings: \SnapHeld at the snapshot, \ProgHeld at the last row of the progress table (\ProgStamp).
+
+% ===========================================================================
+% F. SETUP FACTS AND WHERE THEY ARE STATED
+% ===========================================================================
+% - Selection: newest 20 public regular uploads per creator, listing of 19 November 2026; 101 creators chosen by the project,
+%   not drawn from a frame; shorts and streams excluded; 96 creators have 20 and five have 17, 14, 14, 9 and 2.
+%   (pre-analysis-checkpoint.md; plan-and-data-audit.md section 4.)
+% - Archive: 1,946 of 1,976 with a verified audio edition (1,304 original-track, 464 other verified platform editions,
+%   178 matched publisher editions); 1,945 distinct audio files; hashes recorded at acquisition, identities re-read from
+%   storage metadata. Downloads paused on 20 November 2026 at 01:45 UTC with 30 outstanding: 29 refused by the provider
+%   (HTTP 403), 1 failed at metadata lookup; 21 creators. (pre-analysis-checkpoint.md; failed-links.md. The failed-links
+%   file names creators and titles: use counts only.)
+% - Run: 1,731 recordings, 1,729 distinct audio files, 746.3 hours. 1,976 = 1,731 in the run + 214 held as other text
+%   + 30 without audio + 1 with a language review status. (per-creator CSV; partial-cohort-asr-progress.md.)
+% - Recognizer: a multilingual model decides the language from ten-second probes; speech accepted as English goes to a
+%   distilled English model; other languages stay on the full model, which also writes an English view by its translate
+%   task. 30-second non-overlapping windows; beam size 5, temperature 0, no conditioning on previous text, voice detector
+%   with 500 ms minimum silence, word time stamps. One decoding configuration on every ledger line (\NDecodingConfigs).
+%   (GPU_ASR_SETUP.md; ledger field text_variants.original.config.) Cite radford2022robust and gandhi2023distilwhisper
+%   for the model families; exact revisions are in the setup document.
+% - Language decisions at the snapshot: \LangBasisCreator by the creator's established language, \LangBasisProbes by
+%   agreement across probes, \LangBasisMetadata by metadata and model agreement, \LangBasisSingleProbe by a single strong
+%   probe; \LangFallbackRule under the fallback rule. (descriptives-summary.json language_bases, language_policy.)
+% - Ledger at build time: \NowStamp, \NowLines lines, \NowAudio distinct audio files (\NowPctAudio %), \NowHours hours,
+%   \NowCreatorsAny creators, \NowNonEnglish non-English files from \NowNonEnglishCreators creators. Counts only; they
+%   change at each build (findings/build-record.json).
+%
+% ===========================================================================
+% G. DISAGREEMENTS BETWEEN THE SOURCES
+% ===========================================================================
+% - Other text kinds: total 214 recordings from 68 creators. The audit's breakdown (91, 60, 31, 16, 13, 5) sums to 216; the
+%   catalogue gives 91, 60, 31, 16 and "smaller kinds for the rest". Use the total and the four main kinds only.
+% - One model or two: the audit says one engine and one configuration; the catalogue corrects it (one set of decoding
+%   settings, two models). Follow the catalogue. The model split has no machine-readable field in the snapshot files and has
+%   to be recounted from each result's provenance record at close.
+% - Languages at the reading pass: the reading notes count 3 Czech files among 1,201; the summary counts 2 among 1,211.
+%   Use the summary.
+% - Hold-out size: see A5. "366 recordings" is the outstanding count; the 23 creators have 454 selected recordings.
+% - Effective n for question share: the audit prints "about 231"; the formula gives 231.6, printed here as 232.
+% - Words per recording are quartiles over the 1,213 recording rows; every other row of table 2 is over 1,211 audio files.
+% - ICC of pace: the reading notes give 0.57 (70 creators, another pass); the summary gives 0.58 (75 creators with two or
+%   more recordings); the recomputation here on the 71 creators gives 0.57. Print the summary's value in the table.
+% - Creator medians of pace: the summary (table 2) uses every recording with a pace value; figure 2 requires a minute of
+%   speech and distinct audio. The two ranges agree to within one word per minute.
+%
+% ===========================================================================
+% H. TO REGENERATE WHEN THE RUN CLOSES
+% ===========================================================================
+% 1. Re-run the panel's descriptives.py on the closed ledger (rewrites the three descriptives files).
+% 2. Re-run the pilot and the reading passes if their numbers are kept. Their bases and counts (artefact, reading and term
+%    macros) are literals in work/build_findings.py and must be edited by hand.
+% 3. Run work/build_findings.py: it rewrites numbers.tex, the five figure PDFs, their CSV files and build-record.json. It
+%    stops if the per-recording file no longer reproduces the summary's ICCs, quartiles or shares.
+% 4. Decide first whether the hold-out is still held. If the registry is not frozen, replace the script's rule for "seen"
+%    creators (five or more transcripts) by a fixed list of the 71, or files of hold-out creators will enter the figures.
+% 5. Check every caption: the snapshot wording, and the sentence about files from creators with fewer than five transcripts.
+% 6. Before any source upload, strip the comments of numbers.tex: they name internal file paths (no person or creator).

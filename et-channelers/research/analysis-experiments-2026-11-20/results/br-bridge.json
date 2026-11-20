@@ -1,0 +1,512 @@
+{
+ "experiment": "BR (a)",
+ "pairs": 36,
+ "planned": 36,
+ "plan_sha256": "fac7ed62502663b1d36ffdffab520f4151326d936101f2bc24cdc313655bd415",
+ "code_sha256": {
+  "br_bridge.py": "77262c2fff13b856dcabcc657dd8d06883a7e84535dd44b4b57c65339126a867",
+  "artefact_filter.py": "72bccae081dbbcbaa3923e1354f330498fcb20739cf1d88083f8ccba0b73e0f1"
+ },
+ "difference": "larger multilingual model minus English-only model, same audio",
+ "margin_in_between_creator_sd": 0.2,
+ "rule": "bridge-safe if the 90% interval of the mean difference lies inside the margin on both sides",
+ "between_creator_sd_from": {
+  "group": "creators seen before the registry was frozen",
+  "creators_with_three_or_more_recordings": 68,
+  "recordings": 1112
+ },
+ "word_disagreement": {
+  "definition": "word edits (substitution, deletion, insertion) needed to turn the English-only transcript into the larger model's, over the larger model's word count, after the artefact filter and lower-casing; neither transcript is a human reference",
+  "mean": 0.059205053324924234,
+  "median": 0.03509827517047734,
+  "quartiles": [
+   0.026528776978417268,
+   0.04805779499528845
+  ],
+  "smallest": 0.013157894736842105,
+  "largest": 0.5857106791214339
+ },
+ "speech_seconds_equal_in_all_pairs": true,
+ "measures": [
+  {
+   "measure": "pace",
+   "label": "Words per minute of speech",
+   "mean_english_only": 147.45952702863883,
+   "mean_larger": 147.09981165763742,
+   "pairs": 36,
+   "mean_difference": -0.3597153710013876,
+   "sd_of_differences": 4.152948781774408,
+   "interval_90": [
+    -1.529185747949061,
+    0.8097550059462857
+   ],
+   "limits_of_agreement": [
+    -8.499494983279227,
+    7.7800642412764525
+   ],
+   "between_creator_sd": 16.80925669801793,
+   "in_sd_units": {
+    "mean": -0.021399838045414798,
+    "interval_90": [
+     -0.09097283570720742,
+     0.04817315961637782
+    ]
+   },
+   "bridge_safe": true,
+   "correlation_of_difference_with_level": 0.3938498389729131
+  },
+  {
+   "measure": "word_seconds",
+   "label": "Mean length of a word (seconds)",
+   "mean_english_only": 0.35001145114757587,
+   "mean_larger": 0.3780823418816646,
+   "pairs": 36,
+   "mean_difference": 0.028070890734088774,
+   "sd_of_differences": 0.016377824170073725,
+   "interval_90": [
+    0.023458895447796013,
+    0.03268288602038154
+   ],
+   "limits_of_agreement": [
+    -0.004029644639255727,
+    0.06017142610743327
+   ],
+   "between_creator_sd": 0.04329160682506056,
+   "in_sd_units": {
+    "mean": 0.6484141567561117,
+    "interval_90": [
+     0.5418809133740948,
+     0.7549474001381288
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": 0.21351319675086192
+  },
+  {
+   "measure": "long_pauses",
+   "label": "Pauses of one second or more, per minute of speech",
+   "mean_english_only": 3.6455633010917348,
+   "mean_larger": 2.5748846507455108,
+   "pairs": 36,
+   "mean_difference": -1.0706786503462242,
+   "sd_of_differences": 0.8379037262910982,
+   "interval_90": [
+    -1.3066323396697974,
+    -0.8347249610226509
+   ],
+   "limits_of_agreement": [
+    -2.712969953876777,
+    0.5716126531843282
+   ],
+   "between_creator_sd": 2.496959129144523,
+   "in_sd_units": {
+    "mean": -0.4287930218197231,
+    "interval_90": [
+     -0.5232894381084481,
+     -0.334296605530998
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": -0.43047311509685515
+  },
+  {
+   "measure": "short_pauses",
+   "label": "Pauses of 0.3 to 1 second, per minute of speech",
+   "mean_english_only": 8.945498347564113,
+   "mean_larger": 4.4909379303066315,
+   "pairs": 36,
+   "mean_difference": -4.454560417257483,
+   "sd_of_differences": 2.5917608292370327,
+   "interval_90": [
+    -5.184400266770631,
+    -3.7247205677443342
+   ],
+   "limits_of_agreement": [
+    -9.534411642562066,
+    0.6252908080471009
+   ],
+   "between_creator_sd": 1.786094680363044,
+   "in_sd_units": {
+    "mean": -2.4940225544773713,
+    "interval_90": [
+     -2.902645824865702,
+     -2.0853992840890396
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": -0.3686332930607408
+  },
+  {
+   "measure": "pause_share",
+   "label": "Share of the running time inside pauses of 0.3 seconds or more",
+   "mean_english_only": 0.20079203054820452,
+   "mean_larger": 0.1425494394487283,
+   "pairs": 36,
+   "mean_difference": -0.05824259109947621,
+   "sd_of_differences": 0.03819897024796089,
+   "interval_90": [
+    -0.068999421121302,
+    -0.04748576107765042
+   ],
+   "limits_of_agreement": [
+    -0.13311257278547955,
+    0.01662739058652713
+   ],
+   "between_creator_sd": 0.08963250588944376,
+   "in_sd_units": {
+    "mean": -0.6497931807386363,
+    "interval_90": [
+     -0.7698035487974484,
+     -0.5297828126798242
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": 0.2777344238804651
+  },
+  {
+   "measure": "first_singular",
+   "label": "First-person singular per 1,000 words",
+   "mean_english_only": 32.57366668972387,
+   "mean_larger": 32.248367401981405,
+   "pairs": 36,
+   "mean_difference": -0.3252992877424734,
+   "sd_of_differences": 1.1631274410036567,
+   "interval_90": [
+    -0.6528359751291031,
+    0.0022373996441563127
+   ],
+   "limits_of_agreement": [
+    -2.605029072109641,
+    1.954430496624694
+   ],
+   "between_creator_sd": 14.043262427376598,
+   "in_sd_units": {
+    "mean": -0.023164082379342255,
+    "interval_90": [
+     -0.04648748668660024,
+     0.00015932192791573988
+    ]
+   },
+   "bridge_safe": true,
+   "correlation_of_difference_with_level": -0.3250546669994871
+  },
+  {
+   "measure": "first_plural",
+   "label": "First-person plural per 1,000 words",
+   "mean_english_only": 13.882037501007147,
+   "mean_larger": 13.978114363029253,
+   "pairs": 36,
+   "mean_difference": 0.09607686202210533,
+   "sd_of_differences": 0.8164969455130687,
+   "interval_90": [
+    -0.13384867783437482,
+    0.3260024018785855
+   ],
+   "limits_of_agreement": [
+    -1.5042571511835094,
+    1.69641087522772
+   ],
+   "between_creator_sd": 8.466921751299969,
+   "in_sd_units": {
+    "mean": 0.011347318995519731,
+    "interval_90": [
+     -0.015808422678977085,
+     0.03850306067001655
+    ]
+   },
+   "bridge_safe": true,
+   "correlation_of_difference_with_level": 0.02010817652733916
+  },
+  {
+   "measure": "second_person",
+   "label": "Second person per 1,000 words",
+   "mean_english_only": 45.907053856146526,
+   "mean_larger": 46.4272062717698,
+   "pairs": 36,
+   "mean_difference": 0.5201524156232706,
+   "sd_of_differences": 1.6387335513409245,
+   "interval_90": [
+    0.05868504756566634,
+    0.9816197836808749
+   ],
+   "limits_of_agreement": [
+    -2.6917653450049412,
+    3.732070176251483
+   ],
+   "between_creator_sd": 18.04569787216429,
+   "in_sd_units": {
+    "mean": 0.028824178444526224,
+    "interval_90": [
+     0.0032520242764447886,
+     0.05439633261260765
+    ]
+   },
+   "bridge_safe": true,
+   "correlation_of_difference_with_level": -0.041014113212906204
+  },
+  {
+   "measure": "contractions",
+   "label": "Contracted forms per 1,000 words",
+   "mean_english_only": 16.70017351047012,
+   "mean_larger": 16.644565032524426,
+   "pairs": 36,
+   "mean_difference": -0.055608477945692826,
+   "sd_of_differences": 0.5918305412837686,
+   "interval_90": [
+    -0.22226795837120206,
+    0.11105100247981642
+   ],
+   "limits_of_agreement": [
+    -1.2155963388618793,
+    1.1043793829704935
+   ],
+   "between_creator_sd": 7.834773039784716,
+   "in_sd_units": {
+    "mean": -0.007097650137829753,
+    "interval_90": [
+     -0.028369418902440796,
+     0.014174118626781291
+    ]
+   },
+   "bridge_safe": true,
+   "correlation_of_difference_with_level": -0.010425734497834875
+  },
+  {
+   "measure": "fillers",
+   "label": "Filled pauses (um, uh) per 1,000 words",
+   "mean_english_only": 0.6215850179281519,
+   "mean_larger": 2.8092707133465336,
+   "pairs": 36,
+   "mean_difference": 2.187685695418381,
+   "sd_of_differences": 3.703597976014564,
+   "interval_90": [
+    1.14475250537268,
+    3.2306188854640823
+   ],
+   "limits_of_agreement": [
+    -5.071366337570165,
+    9.446737728406926
+   ],
+   "between_creator_sd": 1.2338423526308988,
+   "in_sd_units": {
+    "mean": 1.7730674350362672,
+    "interval_90": [
+     0.927794789125001,
+     2.618340080947533
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": 0.9007300607085644
+  },
+  {
+   "measure": "variety",
+   "label": "Share of distinct words in a moving window of 100 words",
+   "mean_english_only": 0.6479838915206853,
+   "mean_larger": 0.6459718668409707,
+   "pairs": 36,
+   "mean_difference": -0.0020120246797144664,
+   "sd_of_differences": 0.0033520313352690526,
+   "interval_90": [
+    -0.002955956703726232,
+    -0.001068092655702701
+   ],
+   "limits_of_agreement": [
+    -0.008582006096841809,
+    0.004557956737412877
+   ],
+   "between_creator_sd": 0.03333989784220174,
+   "in_sd_units": {
+    "mean": -0.06034885557350568,
+    "interval_90": [
+     -0.08866124058678349,
+     -0.032036470560227875
+    ]
+   },
+   "bridge_safe": true,
+   "correlation_of_difference_with_level": -0.20268736544956903
+  },
+  {
+   "measure": "word_letters",
+   "label": "Mean length of a word (letters)",
+   "mean_english_only": 4.3100537807918196,
+   "mean_larger": 4.321956671333781,
+   "pairs": 36,
+   "mean_difference": 0.011902890541961635,
+   "sd_of_differences": 0.050994510933224706,
+   "interval_90": [
+    -0.0024571637368344407,
+    0.026262944820757708
+   ],
+   "limits_of_agreement": [
+    -0.08804635088715879,
+    0.11185213197108207
+   ],
+   "between_creator_sd": 0.2022108653294989,
+   "in_sd_units": {
+    "mean": 0.05886375355036483,
+    "interval_90": [
+     -0.01215149212101208,
+     0.12987899922174173
+    ]
+   },
+   "bridge_safe": true,
+   "correlation_of_difference_with_level": -0.18052332088672612
+  },
+  {
+   "measure": "segment_words",
+   "label": "Words per recognizer segment",
+   "mean_english_only": 12.388867543601888,
+   "mean_larger": 13.324512551665634,
+   "pairs": 36,
+   "mean_difference": 0.9356450080637454,
+   "sd_of_differences": 1.3853023684599695,
+   "interval_90": [
+    0.545543861105418,
+    1.3257461550220728
+   ],
+   "limits_of_agreement": [
+    -1.7795476341177947,
+    3.6508376502452853
+   ],
+   "between_creator_sd": 1.0798610133849633,
+   "in_sd_units": {
+    "mean": 0.8664494749475636,
+    "interval_90": [
+     0.5051982193480071,
+     1.22770073054712
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": -0.21576635584070564
+  },
+  {
+   "measure": "word_probability",
+   "label": "Mean probability the recognizer gives its words",
+   "mean_english_only": 0.9644866413106112,
+   "mean_larger": 0.9610332857501969,
+   "pairs": 36,
+   "mean_difference": -0.0034533555604143234,
+   "sd_of_differences": 0.018732795774267133,
+   "interval_90": [
+    -0.008728510850447948,
+    0.0018217997296193014
+   ],
+   "limits_of_agreement": [
+    -0.04016963527797791,
+    0.03326292415714926
+   ],
+   "between_creator_sd": 0.014887414214631472,
+   "in_sd_units": {
+    "mean": -0.23196476638772753,
+    "interval_90": [
+     -0.5863013364583822,
+     0.12237180368292713
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": -0.8194916216027021
+  },
+  {
+   "measure": "thanks_inserted",
+   "label": "Inserted thanks phrase, per hour",
+   "mean_english_only": 2.2888373380218967,
+   "mean_larger": 1.3427233375099898,
+   "pairs": 36,
+   "mean_difference": -0.9461140005119071,
+   "sd_of_differences": 3.5030024616187965,
+   "interval_90": [
+    -1.93255949370376,
+    0.04033149267994596
+   ],
+   "limits_of_agreement": [
+    -7.811998825284748,
+    5.919770824260933
+   ],
+   "between_creator_sd": 1.761541348005687,
+   "in_sd_units": {
+    "mean": -0.5370944040473654,
+    "interval_90": [
+     -1.097084377776139,
+     0.022895569681408212
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": 0.006947513185195839
+  },
+  {
+   "measure": "isolated_short",
+   "label": "Isolated short segments, per hour",
+   "mean_english_only": 0.44268804378500604,
+   "mean_larger": 0.2427372310899063,
+   "pairs": 36,
+   "mean_difference": -0.1999508126950998,
+   "sd_of_differences": 1.5915081044790294,
+   "interval_90": [
+    -0.6481194949163944,
+    0.2482178695261949
+   ],
+   "limits_of_agreement": [
+    -3.3193066974739973,
+    2.9194050720837974
+   ],
+   "between_creator_sd": 1.017987103895946,
+   "in_sd_units": {
+    "mean": -0.19641782487210943,
+    "interval_90": [
+     -0.6366676870816649,
+     0.24383203733744607
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": -0.531230734198375
+  },
+  {
+   "measure": "looped_words",
+   "label": "Words removed as loops, per 1,000 words",
+   "mean_english_only": 3.458881276454574,
+   "mean_larger": 2.839947632307053,
+   "pairs": 36,
+   "mean_difference": -0.6189336441475212,
+   "sd_of_differences": 2.596594423604374,
+   "interval_90": [
+    -1.3501346338345128,
+    0.11226734553947049
+   ],
+   "limits_of_agreement": [
+    -5.708258714412094,
+    4.470391426117051
+   ],
+   "between_creator_sd": 3.2439370478595113,
+   "in_sd_units": {
+    "mean": -0.1907970577159998,
+    "interval_90": [
+     -0.4162024767790699,
+     0.034608361347070314
+    ]
+   },
+   "bridge_safe": false,
+   "correlation_of_difference_with_level": -0.9772547218442915
+  }
+ ],
+ "bridge_safe": [
+  "pace",
+  "first_singular",
+  "first_plural",
+  "second_person",
+  "contractions",
+  "variety",
+  "word_letters"
+ ],
+ "not_bridge_safe": [
+  "word_seconds",
+  "long_pauses",
+  "short_pauses",
+  "pause_share",
+  "fillers",
+  "segment_words",
+  "word_probability",
+  "thanks_inserted",
+  "isolated_short",
+  "looped_words"
+ ]
+}

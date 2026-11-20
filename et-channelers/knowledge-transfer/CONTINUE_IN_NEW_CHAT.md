@@ -1,45 +1,44 @@
 # Continue in a new chat
 
-Copy the prompt below into a new chat with repository access. The November 20 checkpoint records the owner’s download pause and preserves the 30 outstanding links. [Checkpoint](pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ)
+Copy the prompt below into a new chat with repository access. It reflects the evening of 20 November 2026:
+downloads closed, transcription finished, analysis under way. [Analysis handoff](analysis-handoff-2026-11-20.md) ·
+[Collection checkpoint](pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ)
 
 ```text
-Continue the Bashar Index / ET Channelers project as research lead. Use the current main branch of https://github.com/occult-kranti/bashar-index and the Windows checkout at %USERPROFILE%\github\bashar-index. Read et-channelers/knowledge-transfer/README.md, operations.md in that folder, and evidence/2026-11-20-close/README.md before starting a job. The root README, et-channelers/HANDOFF.md, et-channelers/ROADMAP.md and BRANCHES.md are the project map. Compare the current checkout with origin/main and preserve other worktrees and live jobs.
+Continue the Bashar Index / ET Channelers project as research lead. Repository: https://github.com/occult-kranti/bashar-index, Windows checkout %USERPROFILE%\github\bashar-index. The analysis work is on the branch feat/partial-cohort-asr-2026-11-20 (worktree %USERPROFILE%\et-channelers-tools\partial-cohort-asr-20261120); unless the owner has merged it, read it there. Start with et-channelers/knowledge-transfer/analysis-handoff-2026-11-20.md on that branch, then et-channelers/ROADMAP.md phases 7d to 7g, et-channelers/research/analysis-experiments-2026-11-20/registry.md and results/README.md. Compare checkouts with their remotes and preserve other worktrees and live jobs.
 
-The frozen latest-20+ selection is the newest 20 public completed uploads on each creator’s Videos tab, or every eligible upload when the list ends earlier. There is no age or duration cutoff. Shorts and streams stay classified in the cumulative 2,697-recording index and do not fill a regular-video slot. The current selection is 1,976 recordings on 101 channels, SHA-256 adb76d392fa9eded77e03fb41687a630fb82a17fb3de21af504092710b08fd01. Keep new discoveries additive and distinguish them from this frozen cohort.
+The cohort is the newest 20 public completed uploads on each creator's Videos tab, frozen at 1,976 recordings on 101 channels (selection SHA-256 adb76d392fa9eded77e03fb41687a630fb82a17fb3de21af504092710b08fd01). Drive holds 1,946. The owner closed the download goal on 20 November: the 30 outstanding recordings are final failures; do not retry them or reopen downloads unless the owner asks. The collector's stop marker and the disabled download tasks stay as they are.
 
-At 01:16:52 UTC on November 20, 2026, Drive had 1,946 verified audio/provenance pairs: 1,304 original-track YouTube, 464 other YouTube audio editions and 178 independently matched publisher editions. Eighty channels were complete. The ordinary queue and its recovery jobs exited normally. Twenty-nine selected recordings returned HTTP 403; one Joy and Matt Kahn recording, ZGBoJRDGkvA, stopped during metadata retrieval with no selected-media HTTP status. The final 30 are itemized in evidence/2026-11-20-close/failed-links/failed-links.csv. source-recovery.csv in the same close folder records the 34 investigated cases, including four recoveries. A listing, chapter, written message, browser playback, incomplete file or unverified candidate does not establish a saved audio edition.
+The local speech-to-text run finished at 19:56 UTC on 20 November: 1,697 audio files, 742.9 hours, 5.83 million words, seven languages. Its GPU lease was released and the earlier lease and pause marker restored. A bridge of 36 recordings through both recognizer models showed that word-based measures can be compared across the models and pause, timing and filler measures cannot.
 
-The owner paused all remaining media downloads at 01:45 UTC on November 20. Read pre-analysis-checkpoint.md in this folder. Preserve the Windows collector stop marker and the disabled wake-up tasks until the owner asks to resume. The existing analysis gate requires full audio coverage. Opening this handoff or publishing a backup does not release that gate. Read-only checks of receipt counts, task states, storage and research spending are in operations.md.
+A registry of ten hypotheses (H1 to H10) was frozen before the 23 hold-out creators were analysed. H3 was tested and then dropped by the owner; it keeps its row in the results table. Labels for the other hypotheses come from language models through the OpenAI API, reported as model-coded and not validated by a person. The owner's budget for this is 110 USD in total: about 45 for labelling and 48 for the second round of experiments, with hard caps in the private ledger code. The key is the owner's own file %USERPROFILE%\Downloads\gpttoken.txt, read in place; never copy, print or commit it. Every request goes through llm\openai_client.py and llm\runner.py in the private run folder %USERPROFILE%\et-channelers-private\provisioning\claude-cohort-asr-20261120-v1; check the ledger before and after any run. This is separate from the project's older $100 research-dispatcher budget.
 
-If the owner later resumes collection, reconcile the exact outstanding IDs against the current receipts first. Match any newly available creator-issued edition by creator, recording identity, date, duration and edition. Preserve the original timestamps and source outcomes. Report measured progress and keep unavailable recordings visible.
+Hold-out rule: until the labelling procedure is frozen by hash and the hashes are committed in registry.md, open transcripts and titles only of the 71 seen creators in llm\creator-sets.json. Privacy: no transcript text, creator names, video ids or titles in public outputs; creators appear as codes. The creator is the unit of inference; a creator's newest 20 recordings can span days or years, so change over time is described per channel and never called a trend; languages other than English are described, not tested.
 
-The private archive is %USERPROFILE%\et-channelers-private and tools are in %USERPROFILE%\et-channelers-tools. Use the configured etdrive: rclone remote. The working limit is 23 decimal GB of managed files with 12 GB physically free after reservations. The measured operating setup is six source workers, two staggered browser launches, eight outstanding recordings and three Drive transfers. Batch uploads; verify remote object IDs, byte sizes and MD5 for each audio/metadata pair, then retire the verified working copy. Store audio, transcripts and private provenance on Drive. Put code, public evidence, reports and docs in Git. Use the existing authenticated clients and private key-file configuration.
-
-Keep the registered local CUDA speech, text-research and numerical-analysis tasks in their dependency order. The late-receipt check runs under the existing ETChannelers-Latest20-Local-ASR-1976 Windows task. Once every audio pair verifies and the source owner closes, use available English published captions, original English automatic captions and correctly matched publisher transcripts first. Transcribe gaps in the isolated local CUDA environment, target 70% rolling GPU use, and preserve both the original transcript and English translation for non-English speech. Review the individually documented silent recording and language cases using their audio-bound evidence. Keep the budget for project API text agents only: $100 total, $0 charged or reserved at this checkpoint. Local transcription and translation use no paid API. The built-in chat agents and the separately funded project dispatcher have different billing.
-
-Assign independent owners to acquisition and provenance, local speech and language, quantitative analysis, and source review. Once the verified corpus is frozen, calculate creator-balanced word and regular-expression searches, TF–IDF, cluster sensitivity, passage embeddings, changes over time, and comparisons by channeler and attributed source. Review shared events, differing interpretations, predictions with dated statements, and explicitly proposed experiments, measurements, frequencies or healing hypotheses. Keep each candidate tied to its edition, quoted span or timecode, date evidence and denominator. A second expert panel should challenge the matches and conclusions. Publish meaningful plots, heatmaps, networks, tables and reproducible results, then update the dashboards together. The day-level recording timeline and dated failed-link dashboard already exist.
-
-Only after translation and both analytical reviews finish, refresh the Videos listings and admit latest-50 acquisition. Its provisional estimate is 22–28 download hours from its actual start, with a 20–31-hour sensitivity range. Index deeper history afterward. Report verified counts, remaining issues, actual running jobs, storage and spend. Test changes, push them to GitHub and link the exact artifacts.
+Next work, in order: finish and test the revised labelling code; run pilot round 2 and its single-factor experiments on seen creators; get the owner's decisions listed in the handoff; freeze 1; label seen creators; freeze 2; label hold-out creators and run the reliability checks; test H1, H2, H4, H5, H6 and H9 under amendment A5; update the results table, both dashboards and the paper. Then carry out the second-round panel's programme (private panel-second-round-2026-11-20\programme.md): regular expressions, topics compared across every channel, distributions, metadata joined to the recordings, change by week and by month, correlations, and date comparisons kept apart for confirmed and estimated publication dates, then its language-model experiments. Report measured numbers, spend and anything not done. Codex shares this machine and archive: do not stop processes or scheduled tasks you did not start. Test changes, push them to GitHub and link the exact artifacts.
 ```
 
 ## First local checks
 
-These commands inspect the current Windows checkout, tasks and research spending. The [operator guide](operations.md) includes the current recording-coverage command and Drive probe.
+These commands change nothing. They show the checkout, the scheduled tasks, the labelling ledger and the
+state of the labelling pipeline. The [operator guide](operations.md) has the collection-side checks.
 
 ```powershell
 $repo = Join-Path $env:USERPROFILE 'github/bashar-index'
-$archiveRoot = Join-Path $env:USERPROFILE 'et-channelers-private'
-$python = Join-Path $env:USERPROFILE 'et-channelers-tools/venv/Scripts/python.exe'
+$work = Join-Path $env:USERPROFILE 'et-channelers-tools/partial-cohort-asr-20261120'
+$llm  = Join-Path $env:USERPROFILE 'et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm'
 git -C $repo status --short --branch
-git -C $repo rev-parse HEAD
-Get-ScheduledTask -TaskName 'ETChannelers-Latest20-*' | Select-Object TaskName, State
-Get-ScheduledTask -TaskName 'ET-Postrun-Local-Numerical-*' | Select-Object TaskName, State
-Push-Location (Join-Path $repo 'et-channelers')
+git -C $work status --short --branch
+git -C $work log --oneline -5
+Get-ScheduledTask -TaskName 'ETChannelers-*' | Select-Object TaskName, State
+Push-Location $llm
 try {
-    & $python -B -m pipeline.research_agent_schedule --root $archiveRoot status
+    python -I openai_client.py --spend
+    python -I runner.py --reservations
+    python -I produce.py status
 } finally {
     Pop-Location
 }
 ```
 
-[Knowledge-transfer index](README.md) · [Current receipt totals](evidence/2026-11-20-close/checkpoint.json) · [All creators](evidence/2026-11-20-close/creator-status.csv) · [Publisher investigations](evidence/2026-11-20-close/source-recovery.csv) · [Daily timeline](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/timeline.html?date=2026-11-16) · [All dashboards](https://occult-kranti.github.io/bashar-index/dashboards/)
+[Analysis handoff](analysis-handoff-2026-11-20.md) · [Knowledge-transfer index](README.md) · [Findings dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/) · [All dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [Collection close](evidence/2026-11-20-close/)

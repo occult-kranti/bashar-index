@@ -142,14 +142,19 @@ def prior_views(root, marker, key):
     return len(files)
 
 
-def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMOTE, *, inventory_only=False):
+def stage(root, selection, expected, drive, remote=ingestion_status.DEFAULT_REMOTE, *, inventory_only=False, outstanding=None):
+    """Stage every verified text view. ``outstanding`` is the owner's exact list of selected recordings
+    that have no archived audio yet (see gpu_asr_editions.authorized_outstanding); the others are staged."""
     root, selection = common.ensure_outside_git(root), common.ensure_outside_git(selection)
     frame, scopes, actual = collection_coverage.mixed_selection(selection, {})
     if actual != expected:
         raise ValueError("Recording selection changed")
     if not inventory_only:
         snapshot, saved = collection_coverage.coverage(root, selection=selection, remote=remote)
-        postrun_candidates.complete_frame(snapshot, saved, frame, scopes, expected)
+        if outstanding is None:
+            postrun_candidates.complete_frame(snapshot, saved, frame, scopes, expected)
+        else:
+            gpu_asr_editions.partial_frame(snapshot, saved, frame, scopes, expected, outstanding)
     jobs = list(input_rows(root, frame, remote))
     report = {"selection_sha256": actual, "eligible_audio": len(frame), "archive_inputs": dict(Counter(j["kind"] for j in jobs)),
               "recordings_with_inputs": len({j["row"]["video_id"] for j in jobs}), "views_staged": 0, "held": []}
@@ -241,9 +246,20 @@ def main(argv=None):
     parser.add_argument("--remote", default=ingestion_status.DEFAULT_REMOTE)
     parser.add_argument("--rclone", default="rclone")
     parser.add_argument("--inventory-only", action="store_true", help="Read existing receipt journals and report eligible inputs")
+    parser.add_argument("--authorized-outstanding", type=Path,
+                        help="owner's dated list of selected recordings that have no archived audio yet")
+    parser.add_argument("--authorized-outstanding-sha256")
     args = parser.parse_args(argv)
+    if bool(args.authorized_outstanding) != bool(args.authorized_outstanding_sha256):
+        raise ValueError("Supply both the outstanding-recording authorization path and digest")
+    outstanding = None
+    if args.authorized_outstanding:
+        frame = collection_coverage.mixed_selection(common.ensure_outside_git(args.selection), {})[0]
+        outstanding = gpu_asr_editions.authorized_outstanding(common.ensure_outside_git(args.root), args.authorized_outstanding,
+                                                              args.authorized_outstanding_sha256, args.selection_sha256, frame)
     drive = drive_ingest.Rclone(args.rclone, cooldown_path=args.root / "sync/drive_ingest_cooldown.json")
-    result = stage(args.root, args.selection, args.selection_sha256, drive, args.remote, inventory_only=args.inventory_only)
+    result = stage(args.root, args.selection, args.selection_sha256, drive, args.remote, inventory_only=args.inventory_only,
+                   outstanding=outstanding)
     print(json.dumps(result, ensure_ascii=False))
 
 

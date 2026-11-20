@@ -1,5 +1,21 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
+## November 20, evening: transcripts done, analysis under way
+
+The owner closed the download goal on 20 November: 1,946 of 1,976 selected recordings are archived and the 30
+outstanding ones are final failures. The local speech-to-text run finished at 19:56 UTC. The details, the rules
+and the order of the next work are in the [analysis handoff](knowledge-transfer/analysis-handoff-2026-11-20.md).
+
+| Stage | State and next action |
+| --- | --- |
+| Audio, closed | 1,946 verified recordings; 30 final failures, not retried. The collector's stop marker stays. |
+| Transcription, done | 1,697 of 1,729 audio files, 742.9 hours, 5.83 million words; English 1,616, six other languages 81. 12.6% of the audio holds no speech. [Progress table](knowledge-transfer/partial-cohort-asr-progress.md) · [Run report](research/transcription-run-2026-11-20/README.md) |
+| Recognizer bridge, done | 36 recordings through both models: 7 of 17 measures agree, 6 differ (pauses, word timing, fillers), 4 not settled. [Result](research/analysis-experiments-2026-11-20/results/README.md) |
+| Registry, frozen | Ten hypotheses and thirteen exploratory questions, amendments A1 to A7. H3 tested and dropped by the owner. [Registry](research/analysis-experiments-2026-11-20/registry.md) |
+| Model-coded labels, piloting | Voice and ask instruments piloted once on seen creators and being revised; forecast, sentence and title instruments being built. Phase 7f. |
+| Second round, planning | An expert panel deliberates on flaws, further analyses and language-model experiments, with the owner's additions. Phase 7g. |
+| Paper and dashboards, updated | 17-page draft; findings dashboard with a tests-and-checks tab. [Dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/) · [Draft](paper/cohort-draft-2026-11-20/) |
+
 ## November 20 pre-analysis checkpoint
 
 The project owner paused the remaining downloads at 01:45 UTC. The Windows collector has a persistent stop marker and all 15 previously enabled download wake-ups are disabled. Preserve the frozen selection of 1,976 across 101 channels. The pause has no scheduled end date. [Checkpoint and backup contents](knowledge-transfer/pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [Handoff for another chat](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
@@ -561,6 +577,143 @@ everything below, and replaces the earlier per-channel caps.
 * **Done when** every channel with at least 20 recordings in the main corpus has its per-year table, its
   last-N comparison and its timeline; the combined timeline exists; and the audit sample's agreement figures
   are in the methods note.
+
+### Phase 7d: languages compared, with plots (added 2026-11-20, at the owner's request)
+
+To do once the transcription of the archived latest-20 recordings is finished. Most creators speak English;
+the run has so far also found Japanese, Spanish, Portuguese and Czech creators. Every recording in another
+language has two timed texts: the original, and a machine translation into English. Each result also states how
+its language was decided and how many seconds hold no speech.
+
+* **Topics by language.** Fit one vocabulary and one set of topics on the English texts (English originals,
+  and the English translations of the others), so that every language is measured with the same ruler. Plot
+  topic shares by language and by creator (shares of words, not of recordings): a heat map of topics against
+  languages, and small panels per creator. As a check on the translation, also fit topics on the original
+  texts within each language and say where the two pictures disagree.
+* **Distributions by language.** One plot each, with the languages side by side: recording length, words per
+  minute, share of the recording without speech (music, meditation, silence) and its longest quiet stretch,
+  recordings and hours per creator, and upload dates.
+* **Wording by language.** The terms that set each language group apart in the English texts (log-odds with
+  a prior, as in Phase 7a), and the named beings, star systems and places of Phase 7c counted by language.
+* **Everything else already planned, split by language.** The per-year tables, the last-N comparisons and
+  the prediction and warning counts of Phase 7c each get a version with language as a filter.
+* **A plot of transcript quality by language** (the recognizer's mean log-probability per recording), shown
+  beside the others, so that a difference in transcript quality is not read as a difference in content.
+* **Small groups.** Only a handful of creators speak each language other than English. Every plot states the
+  number of creators, recordings and hours behind each language; a language with one or two creators is
+  described as those creators, not as the language, and no significance test is run on it.
+* **What it needs.** The finished run's ledger (language decision and non-speech seconds per recording) and
+  the staged text views of both texts.
+* **What it gives.** Figures of numbers only, a language filter and a languages page in the dashboard, and
+  the table behind every plot as a CSV. No transcript text; quotes within the 30-word limit.
+* **Done when** every language in the corpus has its topic, distribution and wording plots with the counts
+  on them, and a second reader has re-drawn them from the saved tables.
+* **Status on 20 November, evening.** The run found seven languages: English 1,616 audio files, Japanese 30,
+  Spanish 19, Portuguese 18, German 8, Czech 5, Finnish 1. The distributions by language (length, share without
+  speech, how the language was decided) are in the [run report](research/transcription-run-2026-11-20/README.md)
+  and the dashboard's languages tab. Topics and wording by language are not done; they join the second round
+  (Phase 7g). The bridge settles which measures may be read across languages: word-based ones yes; pauses,
+  word timing and filled pauses no, because English and the other languages went through different models.
+
+### Phase 7e: experiments from ICWSM and related methods, designed by an analyst panel (added 2026-11-20, at the owner's request)
+
+A panel led by a senior mathematical data analyst studied how ICWSM and related papers do statistics and data
+analysis, read 42 transcripts and the first numbers from the run, and designed 28 further experiments with
+their plots, heat maps, graphs and tables. The catalogue is
+[`research/analysis-experiments-2026-11-20/`](research/analysis-experiments-2026-11-20/README.md); the summary
+and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section 13.
+
+* **Done on 2026-11-20.** The two literature digests, the audit of the plan against the data, the catalogue
+  (40 experiments proposed, 22 kept, 17 merged, 1 dropped, 6 added by the challenger) and its sixteen rules.
+* **To do the day the transcripts are complete** (stored fields only, no labels): the coverage ledger, the
+  artefact filter, the variance partition, shrunken creator values with rank intervals, position curves over
+  a recording's running time, rhythm of speech and silence, lexical diversity and formulaicity, and the first
+  stages of the content axis and of the language case panel (Phase 7d uses the same figures).
+* **To do on the frozen corpus:** the coverage and power simulation, creator similarity with its stability
+  checks, and the registered contrasts on the creators no pilot has seen.
+* **Waits for hand-work:** the hand-reference study comes first; delivery-state segmentation, the forecast
+  ledger, grounds for belief, the ask ladder and name-based content columns all depend on it.
+* **Approved by the owner on 2026-11-20** (details in ANALYSIS_PLAN 13.7):
+  * the bridge between the two recognizer models: 36 English recordings transcribed again by the larger
+    model on the GPU as soon as the transcription run ends, kept apart from the run's results;
+  * the replication wave: what each creator uploads after the listing of 19 November 2026, collected on one
+    later date (proposed: 20 February 2027), up to 20 per creator;
+  * the comparison set: about 20 creators who make no channelling claim, in three strata (sermons, wellness
+    talks, interviews), newest 20 each, collected once the selection rule and roster are written and frozen.
+* **Proposed on 2026-11-20, frozen the same day** (ANALYSIS_PLAN section 14): what is new in the project, stated as
+  what literature searches did not return, and ten candidate hypotheses for the registry, each a contrast
+  inside a recording or a creator with a direction, a smallest effect and a result that would refute it.
+  Thirteen further questions stay exploratory.
+* **Decided by the owner on 2026-11-20:** the ten hypotheses and the thirteen exploratory questions are
+  registered and frozen (`research/analysis-experiments-2026-11-20/registry.md`); labels are made by a language
+  model through the ChatGPT API within 110 USD; hypotheses with uninformative findings leave the headline
+  claims afterwards.
+* **Done on 20 November, after the run.** The bridge (BR, part a): 36 recordings through both models, none
+  failed; 7 of 17 measures agree within the margin, 6 differ, 4 are not settled. The registered test of H3 on
+  the 17 English hold-out creators: supported by its rule, fragile (the interval over creators includes zero,
+  the seen creators show nothing), and dropped by the owner; it keeps its row. Amendments A5 (a hypothesis is
+  supported only if its 90% interval over creators also excludes zero), A6 (H3 dropped) and A7 (the second
+  round belongs to the panel). [Results](research/analysis-experiments-2026-11-20/results/README.md)
+* **Still waits for the owner:** an owner for the hand-work, the
+  capture date of the replication wave, the roster of the comparison set, the pass over the 214
+  recordings held in other text kinds, and whether H8 keeps its place now that H3 is dropped.
+* **Done when** every experiment marked high value has its figures and tables with intervals and counts, or a
+  written reason why its gate failed, and the pilot numbers in the catalogue have been recomputed on the
+  finished run.
+
+### Phase 7f: model-coded labels and the registered tests (added 2026-11-20, at the owner's request)
+
+The owner replaced the two human markers of the plan by language models through the OpenAI API, within
+110 USD in total (registry amendments A1 and A3). The labels feed H1, H2, H4, H5, H6 and H9.
+
+* **Instruments.** Voice spans (the creator's own voice, a being voiced in the first person, a relayed
+  voice, other speakers, other material), asks (requests to buy, enrol, give, subscribe or move off the
+  platform), forecasts with five checkability parts and a separate commitment code, sentence codes (claims
+  about the world against practice and feeling), and title codes. Each sends windows of text with timing
+  hidden to a small model, with a middle model as second reader; every cue is a quotation that code checks
+  against the text.
+* **Done on 20 November.** A literature study and two protocols; a critic's plan with 27 required changes,
+  a budget of 34.5 USD at planning values and a stop rule at 45 USD; pilot round 1 of the voice and ask
+  instruments on 32 recordings of seen creators (the two models agree on 79% of words, kappa 0.74; the ask
+  finder found 48 of 49 reference asks); a reading of every large disagreement, which led to eight prompt
+  changes; a code review with 32 findings; a request runner that keeps up to 64 requests in flight under a
+  rate limiter, with a ledger that reserves the worst case before anything is sent.
+* **Next.** Pilot round 2 with the revised prompts and its single-factor experiments, on seen creators only;
+  the owner's decisions listed in the [handoff](knowledge-transfer/analysis-handoff-2026-11-20.md); freeze 1
+  (prompts, schemas, models, settings and code by hash, committed in the registry); labels for seen creators;
+  freeze 2 (constants from seen labels); labels for the hold-out; reliability checks on the hold-out; then the
+  tests of H1, H2, H4, H5, H6 and H9 under amendment A5.
+* **Wording.** Every result is *model-coded*: no person has validated a label, and agreement between two
+  models of one vendor is reliability, not validity. A small human sample (about four hours) is designed and
+  would change what H1, H4 and H6 may claim; nobody has been named to code it.
+* **Done when** each of the six hypotheses has its row in the results table, with estimate, interval, verdict
+  under A5 and the reliability of its labels, or the reason it was not run; and the dashboards and the paper
+  show them.
+
+### Phase 7g: the second round, led by an expert panel (added 2026-11-20, at the owner's request)
+
+The owner gave the panel control of the second round and of the second budget (48 USD in the ledger's
+experiments phase), to find flaws, improvements, further meaningful analyses and language-model experiments on
+the collected data (registry amendment A7). Everything it adds is exploratory.
+
+* **The owner's additions, in order received:** analyses by regular expression; further topic analysis;
+  comparisons and distributions; all metadata joined to the recordings that have it; change by week and by
+  month; correlations; the topics discussed compared across every channel; and every date-based analysis made
+  twice and kept apart, once for recordings whose publication date is confirmed to the day (including
+  recordings of different channels published on the same date) and once for recordings whose date is only
+  estimated. Two rounds of deliberation for each expert.
+* **Panel.** A statistician, a computational linguist, a computational social scientist, a measurement
+  methodologist for model labels and a skeptic. Each writes a memo with flaws and proposals, then answers the
+  other four; a chair merges them into one costed programme. Started 20 November, 21:40 UTC.
+* **Limits the panel works under.** Seen creators only until freeze 1; the creator is the unit; a creator's
+  newest 20 recordings can cover days or years, so change by week or month is described inside each channel's
+  span and is not a trend of the field; measures of pauses and fillers stay inside one recognizer model;
+  languages other than English are described.
+* **Next.** Read the programme; run its analyses without a language model first (they cost nothing); run its
+  language-model experiments through the ledger within the experiments cap; publish figures, heat maps and
+  tables in the dashboards and the paper.
+* **Done when** every item of the programme has its outputs or a written reason why not, and every item of the
+  owner's list above is covered or explicitly left out with a reason.
 
 ### Phase 7b: the cycle runs itself, with a team of agents (added 2026-11-14, at the owner's request)
 

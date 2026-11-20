@@ -1,0 +1,137 @@
+{
+ "hypothesis": "H3",
+ "group": "seen",
+ "code_sha256": {
+  "h3_position.py": "d1cc2b2e2b2e6ff22d4d648457c1004b526ae9e28b36293269d5df2748460d6e",
+  "artefact_filter.py": "72bccae081dbbcbaa3923e1354f330498fcb20739cf1d88083f8ccba0b73e0f1"
+ },
+ "procedure": {
+  "recordings": "English, transcribed by the English-only model in the run of 2026-11-20, not publisher-feed audio; one audio file counted once",
+  "trim_seconds_each_end": 180,
+  "minimum_after_trim": {
+   "seconds": 600,
+   "words": 800
+  },
+  "bins": 10,
+  "minimum_words_per_bin": 50,
+  "edges": [
+   1,
+   10
+  ],
+  "middle": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8
+  ],
+  "rate": "first-person singular tokens over all tokens, tokens taken from the recognizer's word list after the artefact filter",
+  "U": "ln((f_edges + 0.5) / (w_edges + 1)) - ln((f_middle + 0.5) / (w_middle + 1)); the half count keeps a zero finite",
+  "estimand": "mean over creators of each creator's mean U (creators weighted equally)",
+  "reference": "each recording's ten bins shifted circularly by an independent random offset from 0 to 9; one-sided p = (b + 1) / (m + 1)",
+  "draws": 9999,
+  "bootstrap": "creators resampled, then recordings within each drawn creator; percentile interval",
+  "bootstrap_draws": 9999,
+  "seed": 20261120,
+  "smallest_effect_of_interest": 0.1,
+  "alpha_first_holm_step_of_ten": 0.005,
+  "first_person_singular": [
+   "i",
+   "i'd",
+   "i'll",
+   "i'm",
+   "i've",
+   "me",
+   "mine",
+   "my",
+   "myself"
+  ],
+  "artefact_filter": "artefact-filter-v1",
+  "verdict": "supported if p is at most 0.005 and U is at least 0.10; refuted if U is negative or its 90% interval lies inside -0.10 to 0.10; otherwise undetermined"
+ },
+ "eligible": {
+  "creators": 61,
+  "recordings": 558,
+  "excluded": {
+   "other_creator": 404,
+   "not_english_model": 9,
+   "publisher_audio": 98,
+   "duplicate_audio": 2,
+   "too_short": 592,
+   "too_few_words": 16,
+   "thin_bin": 20
+  }
+ },
+ "artefact_filter_removed": {
+  "thanks_inserted": 1374,
+  "isolated_short": 186,
+  "stock_text": 126,
+  "repeated_segment": 13,
+  "looped_words": 4094
+ },
+ "registered_trimmed_filtered": {
+  "creators": 61,
+  "recordings": 558,
+  "U": 0.0194,
+  "interval_90": [
+   -0.129,
+   0.1648
+  ],
+  "interval_95": [
+   -0.1584,
+   0.1923
+  ],
+  "p_one_sided": 0.1225,
+  "draws": 9999,
+  "creators_with_positive_U": 36,
+  "between_creator_sd": 0.6572,
+  "first_person_per_1000_words": {
+   "edges": 29.2,
+   "middle": 28.8
+  }
+ },
+ "trimmed_without_filter": {
+  "creators": 61,
+  "recordings": 558,
+  "U": 0.0191,
+  "interval_90": [
+   -0.126,
+   0.1561
+  ],
+  "interval_95": [
+   -0.1517,
+   0.183
+  ],
+  "p_one_sided": 0.134,
+  "draws": 999,
+  "creators_with_positive_U": 36,
+  "between_creator_sd": 0.6573,
+  "first_person_per_1000_words": {
+   "edges": 29.1,
+   "middle": 28.7
+  }
+ },
+ "untrimmed_filtered_reported_not_tested": {
+  "creators": 64,
+  "recordings": 746,
+  "U": 0.427,
+  "interval_90": [
+   0.2484,
+   0.6077
+  ],
+  "interval_95": [
+   0.214,
+   0.643
+  ],
+  "p_one_sided": 0.001,
+  "draws": 999,
+  "creators_with_positive_U": 52,
+  "between_creator_sd": 0.874,
+  "first_person_per_1000_words": {
+   "edges": 31.8,
+   "middle": 26.7
+  }
+ },
+ "verdict": "undetermined"
+}

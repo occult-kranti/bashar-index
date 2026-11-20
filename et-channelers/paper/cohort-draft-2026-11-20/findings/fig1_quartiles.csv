@@ -1,0 +1,4 @@
+panel,measure,n,q1,median,q3,min,max
+a,"Recording length (minutes, log scale)",1174,8.281,17.35,35.96,0.301,540
+b,Pace (words per minute of speech),1117,133.7,148,163.3,88.5,233.7
+c,Share of running time without speech,1174,0.02032,0.0516,0.1363,0,0.9998

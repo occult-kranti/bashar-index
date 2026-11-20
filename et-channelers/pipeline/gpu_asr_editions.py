@@ -7,15 +7,19 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict, deque
+from concurrent.futures import ThreadPoolExecutor
 from contextlib import contextmanager
 from copy import deepcopy
+from dataclasses import is_dataclass, replace
 import hashlib
 import json
 import math
 import os
 from pathlib import Path
 import re
+import threading
 import time
+from types import SimpleNamespace
 import zipfile
 
 from . import (collection_coverage, common, corpus_asr_view, corpus_caption_view, corpus_publisher_variant_view, gpu_asr_batch as batch,
@@ -31,8 +35,20 @@ EXTRACT = "qualified_youtube_audio_extract"
 DIRECT = "qualified_youtube_direct_audio"
 NATIVE = "native_youtube_audio"
 ALL_SOURCES = "native_qualified_and_publisher"
+OUTSTANDING_KIND = "owner_authorized_outstanding_recordings"
+# Holds that only say "the probe windows held no clear speech" (music, meditation, silence).
+FALLBACK_REASONS = {"no_reliable_speech", "language_confidence_insufficient",
+                    "insufficient_independent_sensitive_speech_evidence"}
+DETECTOR_BASES = {"metadata_and_model_agreement", "model_agreement_across_speech_probes"}
+# Owner policy of 2026-11-20: a creator whose detected recordings are all English is taken as English.
+CHANNEL_POLICY = "owner_2026-11-20_channel_language"
+MIN_CREATOR_VOTES = 2
+# A transcript made without probes whose mean log-probability is below this goes to the detector after
+# all. English results of this run: median -0.12, 2nd percentile -0.40, lowest -0.61 (158 recordings).
+DOUBT_LOG_PROBABILITY = -0.5
 SOURCE_ORDER = (NATIVE, DIRECT, EXTRACT, PUBLISHER)
 SOURCE_REVIEW_ERRORS = {"audio_stream_count", "decoded_duration_mismatch", "decoded_duration_limit", "no_complete_transcript",
+                        "undecodable_audio",
                         "word_text_alignment", "segment_text_alignment", "segment_time", "word_time", "segment_order"}
 KIND_ORIGINAL = {NATIVE: "original_asr", DIRECT: "qualified_youtube_original_asr", EXTRACT: "qualified_youtube_original_asr",
                  PUBLISHER: "publisher_original_asr"}
@@ -307,7 +323,46 @@ def result_remote(item, run_id):
     return parent + f"/ASR/{run_id}/{run_id}.zip"
 
 
-def grouped_sources(plan, current, *, reviews=None):
+def authorized_outstanding(root, path, expected, selection, frame):
+    """Read the owner's dated list of selected recordings that still have no archived audio.
+
+    The list permits speech recognition for every other selected recording. It is exact:
+    a listed recording that has since been archived, or a missing one that is not listed,
+    stops the run so that a fresh list and proposal are made.
+    """
+    path = base.within(common.ensure_outside_git(path), root)
+    raw = path.read_bytes()
+    need(hashlib.sha256(raw).hexdigest() == expected, "Outstanding-recording authorization changed")
+    document = json.loads(raw)
+    listed = document.get("outstanding_video_ids")
+    need(document.get("schema_version") == 1 and document.get("kind") == OUTSTANDING_KIND
+         and document.get("selection_sha256") == selection and document.get("authorized_by") == "owner"
+         and isinstance(document.get("instruction_utc"), str) and document["instruction_utc"]
+         and isinstance(listed, list) and listed and all(isinstance(video, str) for video in listed)
+         and len(set(listed)) == len(listed), "Invalid outstanding-recording authorization")
+    need(set(listed) <= {row["video_id"] for row in frame}, "Authorization names a recording outside the selection")
+    return frozenset(listed)
+
+
+def partial_frame(snapshot, saved, frame, scopes, expected, outstanding):
+    """The complete-frame checks, except that exactly the authorized recordings lack audio."""
+    summary = snapshot["summary"]
+    wanted = {(r["channel_dir"], r["video_id"]) for r in frame}
+    actual = {(r["channel_dir"], r["video_id"]) for r in saved}
+    by_creator = Counter(c for c, _ in wanted)
+    missing = {video for _, video in wanted - actual}
+    if (snapshot.get("selection_sha256") != expected or not scopes or not wanted or not outstanding
+            or len(wanted) != len(frame) or len(actual) != len(saved) or not actual <= wanted
+            or missing != set(outstanding)
+            or summary["latest20_target"] != len(wanted) or summary["audio_available"] != len(actual)
+            or summary["channels"] != len(scopes) or summary["remaining_audio"] != len(missing)
+            or any(not (scope == "all_requested_positions_observed" and by_creator[c] == 20
+                        or scope == "short_complete_displayed_list" and by_creator[c] < 20)
+                   for c, scope in scopes.items()) or not set(by_creator) <= scopes.keys()):
+        raise ValueError("The recordings without audio differ from the owner's authorized outstanding list")
+
+
+def grouped_sources(plan, current, *, reviews=None, outstanding=frozenset()):
     """Keep one inference per exact audio object content; retain each selected recording's proof."""
     fresh = {row["video_id"]: row for row in current["rows"]}
     groups = defaultdict(list)
@@ -315,7 +370,10 @@ def grouped_sources(plan, current, *, reviews=None):
         actual = fresh.get(row["video_id"])
         need(actual is not None, "Video outside the pinned selection")
         if plan.get("source_scope") == ALL_SOURCES:
-            need(actual["status"] != "audio_missing", "Saved recording lacks a typed ASR source")
+            need(actual["status"] != "audio_missing" or row["video_id"] in outstanding,
+                 "Saved recording lacks a typed ASR source")
+            need(actual["status"] == "audio_missing" or row["video_id"] not in outstanding,
+                 "An authorized outstanding recording now has audio; generate a fresh authorization and inventory")
             need(row["selected_source"] is not None or actual["status"] != "edition_asr_eligible",
                  "Newly ready audio is missing from this proposal; generate a fresh inventory")
         source = row["selected_source"]
@@ -355,6 +413,116 @@ def staged_pair(root, origin, remote, drive):
     return files
 
 
+class Staging:
+    """Fetch the next few inputs while the recognizer works on the current one.
+
+    ``staged_pair`` still checks every file against its receipt, here and again when the
+    input is taken. A fetch that fails ahead of time is simply tried again in turn.
+    """
+
+    def __init__(self, root, remote, drive, depth, workers=2):
+        self.root, self.remote, self.drive, self.depth = root, remote, drive, depth
+        self.pool = ThreadPoolExecutor(max_workers=workers, thread_name_prefix="stage")
+        self.waiting = {}
+
+    def ahead(self, origins, admit):
+        for origin in origins:
+            if len(self.waiting) >= self.depth:
+                break
+            key = origin["audio"]["sha256"]
+            if key not in self.waiting:
+                admit(sum(origin[name]["bytes"] for name in ("audio", "metadata")))
+                self.waiting[key] = self.pool.submit(staged_pair, self.root, origin, self.remote, self.drive)
+
+    def take(self, origin):
+        future = self.waiting.pop(origin["audio"]["sha256"], None)
+        if future is not None:
+            try:
+                return future.result()
+            except Exception:
+                pass
+        return staged_pair(self.root, origin, self.remote, self.drive)
+
+    def close(self):
+        for future in self.waiting.values():
+            future.cancel()
+        self.pool.shutdown(wait=True)
+
+
+class Publications:
+    """Upload, verify and journal finished results on one background thread, in order.
+
+    A failure surfaces in the main loop at the next collection. The local result stays on
+    disk, so the next run publishes it without another fetch or inference.
+    """
+
+    def __init__(self, backlog=3):
+        self.pool = ThreadPoolExecutor(max_workers=1, thread_name_prefix="publish")
+        self.pending = deque()
+        self.backlog = backlog
+
+    def submit(self, work, run_id):
+        self.pending.append((self.pool.submit(work), run_id))
+
+    def collect(self, results, *, wait):
+        while self.pending and (wait or self.pending[0][0].done() or len(self.pending) > self.backlog):
+            future, run_id = self.pending.popleft()
+            recorded = future.result()
+            results.append({"state":"verified","video_ids":[x["video_id"] for x in recorded],"run_id":run_id})
+
+    def close(self):
+        self.pool.shutdown(wait=True)
+
+
+class Lookahead:
+    """Recognize the next few 30-second windows concurrently; hand results back strictly in order.
+
+    The source clock is still decoded once, in order, on the caller's thread. Each window is
+    recognized exactly as it would be alone (same model, same settings, no shared context),
+    so only the waiting changes. ``skip`` names windows a checkpoint already holds.
+    """
+
+    def __init__(self, windows, engine, config, workers, skip=None):
+        self.source, self.config, self.depth = windows, config, 2 * workers
+        self.runtime = SimpleNamespace(model=engine, windows=windows)
+        self.skip = skip or (lambda index: False)
+        self.pool = ThreadPoolExecutor(max_workers=workers, thread_name_prefix="window")
+        self.pending = deque()
+        self.current = None
+
+    def _recognize(self, audio):
+        iterator, info = self.runtime.model.transcribe(audio, **self.config)
+        return list(iterator), info
+
+    def windows(self, path, duration):
+        source = enumerate(self.source(path, duration))
+        finished = False
+        while True:
+            while not finished and len(self.pending) < self.depth:
+                try:
+                    index, (start, audio) = next(source)
+                except StopIteration:
+                    finished = True
+                    break
+                self.pending.append((start, audio, None if self.skip(index) else self.pool.submit(self._recognize, audio)))
+            if not self.pending:
+                return
+            start, audio, self.current = self.pending.popleft()
+            yield start, audio
+
+    def transcribe(self, audio):
+        need(self.current is not None, "Window was not submitted for recognition")
+        segments, info = self.current.result()
+        return iter(segments), info
+
+    def close(self):
+        for _, _, future in self.pending:
+            if future is not None:
+                future.cancel()
+        self.pending.clear()
+        self.pool.shutdown(wait=True)
+
+
 @contextmanager
 def offline_model_environment(root):
     temporary = root / "asr/tmp"
@@ -373,13 +541,91 @@ def offline_model_environment(root):
                 os.environ[key] = value
 
 
+def english_model(settings, lease):
+    """Verify the lease's pinned English-only model. Returns (proof, directory), or None without one."""
+    binding = base.english_binding(lease) if lease.get("additional_models_allowed") is True else None
+    if binding is None:
+        return None
+    directory = base.within(binding["model_dir"], settings.root)
+    receipt = base.within(binding["model_receipt"], settings.root)
+    pinned = base.model_proof(SimpleNamespace(model_dir=directory, model_receipt=receipt,
+                                              environment_lock=settings.environment_lock))
+    need(all(binding[k] == pinned[k] for k in ("repository","revision","model_sha256")),
+         "GPU lease binds a different English model")
+    return pinned, directory, binding.get("parallel_windows", 1)
+
+
+def load_english(directory, workers=1):
+    """The same CUDA settings as the multilingual model; no CPU path."""
+    from faster_whisper import WhisperModel
+    engine = WhisperModel(str(directory), device="cuda", device_index=0, compute_type="int8_float16",
+                          cpu_threads=2, num_workers=workers, local_files_only=True)
+    need(engine.model.device == "cuda" and engine.model.compute_type == "int8_float16", "CUDA model required")
+    return engine
+
+
+def fallback_language(decision, channel_choice):
+    """Owner policy of 2026-11-20 for a recording whose probe windows held no clear speech.
+
+    Many recordings open with music or contain long meditations, so three probes can miss the
+    talking. Rather than hold the recording: one strong probe with no rival decides; otherwise
+    ``channel_choice`` (the creator's established language, or the stated default) decides.
+    Two plausible languages, or any other kind of hold, still go to a person.
+    """
+    if decision.get("reason") not in FALLBACK_REASONS:
+        return None
+    probes = [p for p in decision.get("probes") or [] if isinstance(p, dict) and p.get("language")]
+    strong = {p["language"] for p in probes if (p.get("probability") or 0) >= multi.MIN_PROBABILITY}
+    plausible = {p["language"] for p in probes if (p.get("probability") or 0) >= .5}
+    if len(plausible) > 1:
+        return None
+    if len(strong) == 1:
+        return next(iter(strong)), "single_strong_probe"
+    return channel_choice
+
+
+def quiet_spans(document, duration, least=30.0):
+    """Stretches of at least ``least`` seconds with no recognized speech: music, meditation or silence."""
+    spans, cursor = [], 0.0
+    for item in document["segments"]:
+        if item["start"] - cursor >= least:
+            spans.append([round(cursor, 1), round(item["start"], 1)])
+        cursor = max(cursor, item["end"])
+    if duration - cursor >= least:
+        spans.append([round(cursor, 1), round(duration, 1)])
+    return spans
+
+
+def transcript_confidence(document):
+    """Speech-time-weighted mean of the recognizer's log-probability per segment; None if it reported none."""
+    weight = total = 0.0
+    for item in document["segments"]:
+        value = item.get("avg_logprob")
+        if type(value) in (int, float) and math.isfinite(value):
+            span = max(.01, item["end"] - item["start"])
+            weight, total = weight + span, total + span * value
+    return total / weight if weight else None
+
+
 def infer(settings, origin, audio_path, runtime, model, proposal, selection, guard, *, checkpoint_path=None,
-          capacity_check=None, worker_sha=None, metadata_path=None, rolling_history=None, review=None):
-    """Transcribe original speech, translate non-English speech; both use the inference edition's clock."""
+          capacity_check=None, worker_sha=None, metadata_path=None, rolling_history=None, review=None, english=None,
+          parallel_windows=1, language_fallback=None, prior_decision=None, channel_language=None):
+    """Transcribe original speech, translate non-English speech; both use the inference edition's clock.
+
+    ``english`` is ``(proof, engine)`` or ``(proof, engine, parallel_windows)`` for the lease's
+    English-only model. The multilingual model still decides the language. Speech it accepts as
+    English is then transcribed by the English model, and the result names that model with the
+    deciding model beside it.
+
+    ``channel_language`` (``{"language", "votes"}``) is the language of a creator whose detected
+    recordings all agree. Such a recording is transcribed without probes unless its metadata
+    names another language; a transcript that reads poorly sends it to the detector after all.
+    """
     need(runtime.model.model.device == "cuda" and runtime.model.model.compute_type == "int8_float16", "CUDA model required")
     lease = base.gpu_lease(settings)
     monitor = multi.Monitor(runtime, guard, lease["rolling_utilization_target"] * 100, lease["max_vram_bytes"],
-                            rolling_history=rolling_history)
+                            rolling_history=rolling_history,
+                            **({"soft_temperature": lease["soft_temperature_c"]} if lease.get("soft_temperature_c") else {}))
     job = {"duration_seconds":origin["duration_seconds"], "declared_audio_language":"und", "metadata_content_flags":{}}
     if metadata_path is not None and origin["source_type"] == NATIVE and origin["metadata"]["bytes"] <= base.MAX_RESULT_BYTES:
         metadata = base.read_json(metadata_path)
@@ -398,37 +644,101 @@ def infer(settings, origin, audio_path, runtime, model, proposal, selection, gua
             checkpoint = batch.WindowStore(checkpoint_path, binding, capacity_check,
                                            max_bytes=3 * batch.paired_limit(origin["duration_seconds"]))
         decision=checkpoint.load('language',0) if checkpoint is not None else None
+        if decision is None and prior_decision is not None:
+            decision = prior_decision          # the detector's saved answer for this same audio
         if decision is None:
             if any(job["metadata_content_flags"].get(key) for key in multi.METADATA_HOLD_FLAGS):
                 decision = multi.decide_language(job, [])
             elif review is not None:
                 need(gpu_asr_review.matches(review, origin), "Mismatched individual speech-review edition")
                 decision = gpu_asr_review.scan_language(runtime, audio_path, job, monitor.guard)
+            elif (channel_language is not None and multi.language_code(job["declared_audio_language"])
+                  in ("und", "mul", "zxx", channel_language["language"])):
+                decision = {"status":"accepted", "language":channel_language["language"],
+                            "basis":"creator_established_language", "policy":CHANNEL_POLICY,
+                            "creator_detector_votes":channel_language["votes"], "detector_decision":None}
             else:
                 decision = multi.detect_language(runtime, audio_path, job, monitor.guard)
             if checkpoint is not None:
                 checkpoint.save('language',0,decision)
+        if decision["status"] != "accepted" and language_fallback is not None:
+            choice = fallback_language(decision, language_fallback.get("channel"))
+            if choice is not None:
+                decision = {"status":"accepted", "language":choice[0], "basis":choice[1],
+                            "policy":"owner_2026-11-20_language_fallback", "detector_decision":decision}
         if decision["status"] != "accepted":
             return {"status":"language_review", "decision":decision, "audio_identity":audio_identity(origin)}
-        language = decision["language"]
-        configs = {"original": {**base.CONFIG, "language":language, "task":"transcribe"}}
-        if language != "en":
-            configs["english"] = {**base.CONFIG, "language":language, "task":"translate"}
-        if review is not None and decision.get("only_sensitive_strong_probes"):
-            for config in configs.values():
-                config["vad_parameters"] = {**config["vad_parameters"], "threshold": .35}
-        variants, metrics = {}, {}
-        for key, config in configs.items():
-            monitor.guard()
-            task=multi.TaskRuntime(runtime,config)
-            if checkpoint is not None:
-                task=batch.CheckpointedTask(task,checkpoint,key)
-            segments, transcript, voiced = base.collect_segments(task, audio_path,
-                                                                origin["duration_seconds"], monitor.guard)
-            segments.update(language=language if key == "original" else "en", character_offset_unit="unicode_code_points",
-                            text_kind="original_asr" if key == "original" else "english_audio_translation")
-            variants[key] = (segments, transcript, config)
-            metrics[key] = {"duration_after_vad_seconds":voiced, "segments":len(segments["segments"])}
+        def recognize(decision):
+            language = decision["language"]
+            fast = english is not None and language == "en"
+            text_model = english[0] if fast else model
+            streams = (english[2] if len(english) > 2 else 1) if fast else parallel_windows
+            configs = {"original": {**base.CONFIG, "language":language, "task":"transcribe"}}
+            if language != "en":
+                configs["english"] = {**base.CONFIG, "language":language, "task":"translate"}
+            if review is not None and decision.get("only_sensitive_strong_probes"):
+                for config in configs.values():
+                    config["vad_parameters"] = {**config["vad_parameters"], "threshold": .35}
+            variants, metrics = {}, {}
+            for key, config in configs.items():
+                monitor.guard()
+                # Decoding the source clock belongs to the runtime; only the recognizer differs.
+                # Windows from one model, or one language, are never resumed with another.
+                saved_as=key+"@"+(text_model["model_sha256"][:16] if fast else language)
+                ahead=None
+                if streams > 1:
+                    held=(lambda index,name=saved_as:checkpoint.load(name,index) is not None) if checkpoint is not None else None
+                    task=ahead=Lookahead(runtime.windows,english[1] if fast else runtime.model,config,streams,held)
+                else:
+                    task=multi.TaskRuntime(SimpleNamespace(windows=runtime.windows,model=english[1]) if fast else runtime,config)
+                if checkpoint is not None:
+                    task=batch.CheckpointedTask(task,checkpoint,saved_as)
+                try:
+                    segments, transcript, voiced = base.collect_segments(task, audio_path,
+                                                                        origin["duration_seconds"], monitor.guard)
+                finally:
+                    if ahead is not None:
+                        ahead.close()
+                segments.update(language=language if key == "original" else "en", character_offset_unit="unicode_code_points",
+                                text_kind="original_asr" if key == "original" else "english_audio_translation")
+                variants[key] = (segments, transcript, config)
+                quiet = quiet_spans(segments, origin["duration_seconds"])
+                metrics[key] = {"duration_after_vad_seconds":voiced, "segments":len(segments["segments"]),
+                                "non_speech_seconds":round(max(0.0, origin["duration_seconds"] - voiced), 1),
+                                "quiet_stretches_of_30s_or_more":len(quiet),
+                                "quiet_seconds_in_those_stretches":round(sum(b - a for a, b in quiet), 1),
+                                "quiet_stretches":quiet[:200]}
+                if getattr(runtime, "undecodable_packets", 0):
+                    # Packets the decoder rejected and passed over (see CudaRuntime.windows).
+                    metrics[key]["undecodable_packets_skipped"] = runtime.undecodable_packets
+            return fast, text_model, streams, configs, variants, metrics
+
+        fast, text_model, streams, configs, variants, metrics = recognize(decision)
+        if decision.get("policy") == CHANNEL_POLICY and decision.get("detector_decision") is None:
+            confidence = transcript_confidence(variants["original"][0])
+            if confidence is not None and confidence < DOUBT_LOG_PROBABILITY:
+                # No probes were run and the transcript reads poorly: the detector looks at this one after all.
+                second = checkpoint.load('language-recheck',0) if checkpoint is not None else None
+                if second is None:
+                    second = multi.detect_language(runtime, audio_path, job, monitor.guard)
+                    if checkpoint is not None:
+                        checkpoint.save('language-recheck',0,second)
+                doubt = {"transcript_log_probability":round(confidence, 3), "doubt_below":DOUBT_LOG_PROBABILITY}
+                if second["status"] != "accepted":
+                    # Unclear probes: one strong probe in another language decides, as for any held recording;
+                    # two plausible languages or a conflict with the metadata wait for a person.
+                    choice = fallback_language(second, (decision["language"], decision["basis"]))
+                    if choice is None:
+                        return {"status":"language_review", "audio_identity":audio_identity(origin),
+                                "decision":{**second, "replaced_creator_language":decision["language"], **doubt}}
+                    if choice[0] != decision["language"]:
+                        second = {"status":"accepted", "language":choice[0], "basis":choice[1],
+                                  "policy":"owner_2026-11-20_language_fallback", "detector_decision":second}
+                if second["status"] == "accepted" and second["language"] != decision["language"]:
+                    decision = {**second, "replaced_creator_language":decision["language"], **doubt}
+                    fast, text_model, streams, configs, variants, metrics = recognize(decision)
+                else:
+                    decision = {**decision, "detector_decision":second, **doubt}
     finally:
         try:
             telemetry = monitor.finish()
@@ -437,8 +747,10 @@ def infer(settings, origin, audio_path, runtime, model, proposal, selection, gua
     guard()
     identity = {"output_contract":multi.CONTRACT, "profile":PROFILE, "source_audio":origin["audio"],
             "source_metadata":origin["metadata"], "source_key":origin["source_key"], "source_timebase":origin["source_timebase"],
-            "selection_sha256":selection, "model":model, "proposal_sha256":proposal, "worker_sha256":worker,
+            "selection_sha256":selection, "model":text_model, "proposal_sha256":proposal, "worker_sha256":worker,
             "environment_lock_sha256":environment, "configs":configs}
+    if fast:
+        identity["language_decision_model"] = model
     if review is not None:
         identity["individual_speech_review_sha256"] = review["source_review_sha256"]
     run_id = "asr-" + base.fingerprint(identity)[:24]
@@ -449,13 +761,16 @@ def infer(settings, origin, audio_path, runtime, model, proposal, selection, gua
             "language_decision":decision, "started_at":start, "finished_at":base.now(),
             "source_admission_sha256":digest([selection,proposal,origin]),
             "compute":{"device":"cuda:0", "compute_type":"int8_float16", "cpu_asr_fallback":False,
-                       "model_workers":1, "batch_size":1, "gpu_lease_id":settings.gpu_lease_id},
+                       "model_workers":streams, "batch_size":1, "gpu_lease_id":settings.gpu_lease_id,
+                       "models_loaded":1 if english is None else 2,
+                       "text_model_role":"english_only" if fast else "multilingual"},
             "metrics":{"audio_seconds":origin["duration_seconds"], "tasks":metrics}, "dependencies":runtime.dependencies,
             "quality":{"accuracy_claimed":False,"human_reviewed":False,"speech_coverage_validated":False,
                        "translation_semantics_human_verified":False,"word_times_are_model_estimates":True,
                        "native_youtube_alignment_verified":False}}
-    return multi.write_pair(settings, admission, run_id, variants, telemetry, provenance,
-                           max_bytes=batch.paired_limit(origin['duration_seconds']),capacity_check=capacity_check)
+    receipt = multi.write_pair(settings, admission, run_id, variants, telemetry, provenance,
+                               max_bytes=batch.paired_limit(origin['duration_seconds']),capacity_check=capacity_check)
+    return {**receipt, "language_decision":decision}
 
 
 def worker_digest():
@@ -542,7 +857,8 @@ def recover_local_result(settings, origin, selection, proposal):
                 need(not destination.exists(), "Completed result appeared during recovery")
                 path.rename(destination)
                 path = destination
-            return {"run_id":p["run_id"], "bundle":{"path":str(path), **verified["bundle"]}}
+            return {"run_id":p["run_id"], "language_decision":p.get("language_decision") or {},
+                    "bundle":{"path":str(path), **verified["bundle"]}}
     return None
 
 
@@ -559,8 +875,23 @@ def release_staged(root, origin, remote, checkpoint=None):
 
 
 def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, runtime_factory=multi.Runtime,
-        lease_maintenance=None, reviews=None, review_sha256=None):
-    """Run only after complete selected audio, held collector, bound plan, and explicit active GPU lease."""
+        lease_maintenance=None, reviews=None, review_sha256=None, outstanding=None, prefetch=0,
+        background_publish=False, english_loader=load_english, drive_slots=2, language_fallback=False,
+        english_first=False, channel_language=False):
+    """Run only after complete selected audio, held collector, bound plan, and explicit active GPU lease.
+
+    With ``outstanding`` (the owner's exact list from ``authorized_outstanding``) every other
+    selected recording is processed and the listed ones stay pending for a later run.
+    ``prefetch`` inputs are fetched ahead and ``background_publish`` uploads results while the
+    next recording is recognized; both leave every per-file check in place. ``drive_slots`` is how
+    many Drive calls may run at once (each still paced by its own request limit).
+    ``language_fallback`` applies the owner's policy for recordings whose probes held no clear
+    speech (see ``fallback_language``): the creator's established language decides at once, and a
+    last sweep uses English for creators with no detected language at all.
+    ``channel_language`` transcribes a creator whose detected recordings are all English (at least
+    two, and no published recording in another language) without probing each recording; ``english_first`` does those creators first, then the
+    creators not yet known, and last the creators detected mostly in another language.
+    """
     root = settings.root
     frame, scopes, actual = collection_coverage.mixed_selection(Path(selection), {})
     need(actual == expected, "Frozen recording selection changed")
@@ -574,7 +905,10 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
          [r["video_id"] for r in frame] == [r["video_id"] for r in plan["rows"]], "Invalid frozen ASR proposal")
     remote = plan["remote"]
     snapshot, saved = collection_coverage.coverage(root, selection=selection, remote=remote)
-    postrun_candidates.complete_frame(snapshot,saved,frame,scopes,expected)
+    if outstanding is None:
+        postrun_candidates.complete_frame(snapshot,saved,frame,scopes,expected)
+    else:
+        partial_frame(snapshot,saved,frame,scopes,expected,outstanding)
     def guard():
         if lease_maintenance is not None:
             lease_maintenance()
@@ -595,7 +929,7 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
         inputs=catalogue_inputs(root,frame,remote)
         current = inventory(root, selection, expected, remote, include_native=unified,inputs=inputs,
                             reviews=reviews, review_sha256=review_sha256)
-        groups = grouped_sources(plan, current, reviews=reviews)
+        groups = grouped_sources(plan, current, reviews=reviews, outstanding=outstanding or frozenset())
         prior_results = {audio_identity(j["edition"]):j for j in input_rows(root,frame,remote,sources=inputs[1],records=inputs[2])}
         journal_index=batch.PublicationIndex() if unified else None
         worker=worker_digest() if unified else None
@@ -606,9 +940,76 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
                 checkpoint=drive_ingest.local_path(root,'asr/jobs/edition-'+origin['audio']['sha256']+'/windows.sqlite')
                 release_staged(root,origin,remote,checkpoint)
         model = None
+        english_pin = english = None
+        need(type(prefetch) is int and 0 <= prefetch <= 16 and type(drive_slots) is int and 2 <= drive_slots <= 8,
+             "Invalid prefetch depth or Drive concurrency")
+        usual_slots = drive_ingest._DRIVE_CALLS
+        if drive_slots != 2:
+            drive_ingest._DRIVE_CALLS = threading.BoundedSemaphore(drive_slots)
+        staging = Staging(root, remote, drive, prefetch, max(2, drive_slots - 2)) if prefetch else None
+        publications = Publications() if background_publish else None
+
+        def admit(amount):
+            if budget is None:
+                base.inventory(settings, extra=amount)
+            else:
+                budget.admit(amount)
+
+        # A creator's language is established by at least two detector decisions, four in five agreeing.
+        votes = defaultdict(Counter)       # detector decisions
+        taken = defaultdict(Counter)       # transcribed on the creator's language without probes: no vote, but part of the ratio
+        spoken = defaultdict(Counter)      # every published language, whatever decided it
+
+        def tally(channel, decision):
+            if decision.get("status") != "accepted" or not decision.get("language"):
+                return
+            spoken[channel][decision["language"]] += 1
+            if decision.get("basis") in DETECTOR_BASES:
+                votes[channel][decision["language"]] += 1
+            elif decision.get("policy") == CHANNEL_POLICY:
+                taken[channel][decision["language"]] += 1
+
+        for known in prior_results.values():
+            tally(known["record"]["inference_source"]["channel_dir"], known["record"].get("language_decision") or {})
+
+        def channel_choice(channel, last_sweep):
+            if votes[channel]:
+                cast = votes[channel] + taken[channel]
+                language, count = cast.most_common(1)[0]
+                decided = votes[channel][language] >= MIN_CREATOR_VOTES and count >= .8 * sum(cast.values())
+                return (language, "creator_established_language") if decided else None
+            return ("en", "owner_default_english") if last_sweep else None
+
+        def english_creator(channel):
+            cast = votes[channel]
+            return cast["en"] >= MIN_CREATOR_VOTES and set(cast) == {"en"} and set(spoken[channel]) == {"en"}
+
+        if english_first:
+            def tier(group):
+                cast = votes[group[0]["channel_dir"]]
+                if english_creator(group[0]["channel_dir"]):
+                    return 0
+                return 2 if cast and cast.most_common(1)[0][0] != "en" else 1
+            groups = sorted(groups, key=tier)       # stable: the proposal's order holds within each tier
+
+        def needs_input(candidates):
+            """A coming recording whose audio will be read: nothing saved, held or individually reviewed."""
+            first = candidates[0]
+            name = "edition-" + first["audio"]["sha256"]
+            saved = drive_ingest.local_path(settings.output_root, name)
+            return (not gpu_asr_review.matches((reviews or {}).get(first["video_id"]), first)
+                    and audio_identity(first) not in prior_results
+                    and not drive_ingest.local_path(root, "asr/jobs/" + name + "/language-review.json").is_file()
+                    and not (saved.is_dir() and any(saved.glob("asr-*/*.zip*"))))
+
         try:
-            for associations in groups:
-                if limit is not None and len(results) >= limit:
+            sweeps = [(False, position, group) for position, group in enumerate(groups)]
+            if language_fallback:
+                sweeps += [(True, position, group) for position, group in enumerate(groups)]
+            for last_sweep, position, associations in sweeps:
+                if publications is not None:
+                    publications.collect(results, wait=False)
+                if limit is not None and len(results) + (len(publications.pending) if publications else 0) >= limit:
                     break
                 origin = associations[0]
                 review = (reviews or {}).get(origin["video_id"])
@@ -620,9 +1021,18 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
                 language_hold = pending.with_name("language-review.json")
                 previous = base.read_json(language_hold) if language_hold.is_file() else {}
                 same_review = previous.get("individual_speech_review_sha256") == (review or {}).get("source_review_sha256")
-                if (previous.get("proposal_sha256") == proposal or same_review and
-                        previous.get("status") in ("language_review", "source_review") and previous.get("source") == origin):
-                    continue
+                held = (previous.get("proposal_sha256") == proposal or same_review and
+                        previous.get("status") in ("language_review", "source_review") and previous.get("source") == origin)
+                policy = {"channel": channel_choice(origin["channel_dir"], last_sweep)} if language_fallback else None
+                prior_decision = None
+                if held:
+                    # A recording held for unclear probes is taken up again once the policy can name its language.
+                    if (policy is None or previous.get("status") != "language_review" or previous.get("source") != origin
+                            or fallback_language(previous.get("decision") or {}, policy["channel"]) is None):
+                        continue
+                    prior_decision = previous["decision"]
+                elif last_sweep:
+                    continue                      # the last sweep is only for recordings still held
                 guard()
                 existing = None
                 known = prior_results.get(audio_identity(origin))
@@ -647,14 +1057,30 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
                             model = multi.model_proof(settings)
                             need(all(lease.get("model",{}).get(k) == model[k] for k in
                                      ("repository","revision","model_sha256")), "GPU lease binds a different offline model")
+                            english_pin = english_model(settings, lease)
                         input_bytes=sum(origin[k]['bytes'] for k in ('audio','metadata'))
                         if budget is None:base.inventory(settings,extra=input_bytes+3*base.MAX_RESULT_BYTES)
                         else:budget.admit(input_bytes+5*batch.paired_limit(origin['duration_seconds']))
-                        paths = (gpu_asr_review.retained_pair(root, review) if review else None) or staged_pair(root, origin, remote, drive)
+                        if staging is not None:
+                            staging.ahead([g[0] for g in groups[position+1:position+1+4*prefetch] if needs_input(g)], admit)
+                        paths = (gpu_asr_review.retained_pair(root, review) if review else None) or (
+                            staging.take(origin) if staging is not None else staged_pair(root, origin, remote, drive))
                         if runtime is None:
-                            runtime = runtime_factory(settings,lease)
+                            streams = lease.get("parallel_windows", 1)
+                            runtime = runtime_factory(replace(settings, model_workers=streams)
+                                                      if streams > 1 and is_dataclass(settings) else settings, lease)
+                            if english_pin is not None:
+                                english = (english_pin[0], english_loader(english_pin[1], english_pin[2]), english_pin[2])
                         options = ({"checkpoint_path": checkpoint, "capacity_check": budget.physical, "worker_sha": worker,
                                     "metadata_path": paths["metadata"], "rolling_history": rolling_history, "review": review} if unified else {})
+                        if english is not None:
+                            options["english"] = english
+                        if lease.get("parallel_windows", 1) > 1 and is_dataclass(settings):
+                            options["parallel_windows"] = lease["parallel_windows"]
+                        if policy is not None:
+                            options.update(language_fallback=policy, prior_decision=prior_decision)
+                        if channel_language and prior_decision is None and english_creator(origin["channel_dir"]):
+                            options["channel_language"] = {"language":"en", "votes":votes[origin["channel_dir"]]["en"]}
                         try:
                             local = infer(settings, origin, paths["audio"], runtime, model, proposal, expected, guard, **options)
                         except base.AsrError as error:
@@ -669,13 +1095,33 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
                                 release_staged(root,origin,remote,checkpoint)
                             results.append({"video_ids":[x["video_id"] for x in associations], "state":local["status"]})
                             continue
+                tally(origin["channel_dir"], local.get("language_decision") or {})
+                if prior_decision is not None and language_hold.is_file():
+                    language_hold.replace(language_hold.with_name("language-review.resolved-by-policy.json"))
                 guard()
-                recorded = publish(settings,local,associations,drive,existing_remote=existing,journal_index=journal_index)
-                release_staged(root,recorded[0]['inference_source'],remote,checkpoint)
-                results.append({"state":"verified","video_ids":[x["video_id"] for x in recorded],"run_id":local["run_id"]})
+
+                def finish(local=local, associations=associations, existing=existing, checkpoint=checkpoint):
+                    recorded = publish(settings,local,associations,drive,existing_remote=existing,journal_index=journal_index)
+                    release_staged(root,recorded[0]['inference_source'],remote,checkpoint)
+                    return recorded
+
+                if publications is None:
+                    recorded = finish()
+                    results.append({"state":"verified","video_ids":[x["video_id"] for x in recorded],"run_id":local["run_id"]})
+                else:
+                    publications.submit(finish, local["run_id"])
+            if publications is not None:
+                publications.collect(results, wait=True)
         finally:
-            if runtime is not None:
-                runtime.close()
+            try:
+                if staging is not None:
+                    staging.close()
+                if publications is not None:
+                    publications.close()
+            finally:
+                drive_ingest._DRIVE_CALLS = usual_slots
+                if runtime is not None:
+                    runtime.close()
     return results
 
 
@@ -750,9 +1196,23 @@ def main(argv=None):
     execute.add_argument("--rclone",default="rclone")
     execute.add_argument("--rclone-config",type=Path)
     execute.add_argument("--limit",type=int,help="stop after this many newly verified or newly reviewed audio groups; default drains the proposal")
+    execute.add_argument("--authorized-outstanding",type=Path,
+                         help="owner's dated list of selected recordings that have no archived audio yet; all others are processed")
+    execute.add_argument("--authorized-outstanding-sha256")
+    execute.add_argument("--prefetch",type=int,default=0,help="fetch this many coming inputs while the current one is recognized (0 to 16)")
+    execute.add_argument("--drive-slots",type=int,default=2,help="Drive calls that may run at once (2 to 8)")
+    execute.add_argument("--background-publish",action="store_true",help="upload and verify results while the next recording is recognized")
+    execute.add_argument("--language-fallback",action="store_true",
+                         help="for unclear probes use one strong probe, else the creator's established language, else English in a last sweep")
+    execute.add_argument("--channel-language",action="store_true",
+                         help="transcribe creators whose detected recordings are all English without probing each recording")
+    execute.add_argument("--english-first",action="store_true",
+                         help="do creators established as English first, then unknown creators, then other languages")
     args = parser.parse_args(argv)
     root = common.ensure_outside_git(args.root)
     need(bool(args.speech_review) == bool(args.speech_review_sha256), "Supply both speech-review path and digest")
+    need(bool(getattr(args,"authorized_outstanding",None)) == bool(getattr(args,"authorized_outstanding_sha256",None)),
+         "Supply both the outstanding-recording authorization path and digest")
     reviews = (gpu_asr_review.read_plan(root,args.speech_review,args.speech_review_sha256,args.selection_sha256)
                if args.speech_review else None)
     if args.action == "inventory":
@@ -773,8 +1233,16 @@ def main(argv=None):
     settings = base.Settings(root,args.model_dir,args.model_receipt,args.gpu_lease_id,args.gpu_owner,
                              drive_ingest.managed_roots(root,args.managed_root),args.environment_lock)
     drive = drive_ingest.Rclone(args.rclone,args.rclone_config,root/"sync/drive_cooldown.json")
+    outstanding = None
+    if args.authorized_outstanding:
+        frame = collection_coverage.mixed_selection(Path(args.selection), {})[0]
+        outstanding = authorized_outstanding(root,args.authorized_outstanding,args.authorized_outstanding_sha256,
+                                             args.selection_sha256,frame)
     result = run(settings,args.selection,args.selection_sha256,args.plan,args.plan_sha256,drive,limit=args.limit,
-                 reviews=reviews,review_sha256=args.speech_review_sha256)
+                 reviews=reviews,review_sha256=args.speech_review_sha256,outstanding=outstanding,
+                 prefetch=args.prefetch,background_publish=args.background_publish,drive_slots=args.drive_slots,
+                 language_fallback=args.language_fallback,english_first=args.english_first,
+                 channel_language=args.channel_language)
     print(json.dumps(result))
     return 0
 
