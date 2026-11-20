@@ -1,5 +1,30 @@
 # Leased GPU caption fallback
 
+## Complete a frozen collection
+
+Run the following commands from the `et-channelers` directory. The inventory reads local receipts and writes an immutable proposal. It accepts native YouTube audio, qualified YouTube audio and independently published editions. It checks existing English text and previous language decisions, then groups identical verified audio bytes across listings.
+
+For an individually reviewed set of inconclusive language decisions, pass the same `--speech-review PATH --speech-review-sha256 SHA256` to both commands. Each entry binds the original hold, the archived audio and the metadata object. The local worker examines consecutive ten-second intervals through the end of each admitted recording. It keeps inconclusive speech or language evidence available for individual review.
+
+```powershell
+& $asrPython -m pipeline.gpu_asr_editions inventory `
+  --root $privateRoot --selection $selection --selection-sha256 $selectionSha --plan $proposal
+```
+
+Use the printed proposal digest for the GPU lease. Once every selected recording has a verified audio pair, the collector has parked, and the GPU lease is active, the same proposal can be run or resumed. Supply each managed project root with a separate `--managed-root` argument.
+
+```powershell
+& $asrPython -m pipeline.gpu_asr_editions run `
+  --root $privateRoot --selection $selection --selection-sha256 $selectionSha `
+  --plan $proposal --plan-sha256 $proposalSha --gpu-lease-id $leaseId --gpu-owner $leaseOwner `
+  --model-dir "$privateRoot/models/large-v3" `
+  --model-receipt "$privateRoot/provisioning/asr/multilingual-model-receipt.json" `
+  --managed-root $privateRoot --managed-root $toolsRoot --managed-root $repositoryRoot `
+  --rclone $rclone
+```
+
+One CUDA model serves the batch. The 30-second utilization window carries across recordings. Each completed speech window is checkpointed against its audio, model and task. A restart decodes the source clock again and reuses those results. Non-English speech produces separately identified original and English views. English speech reuses its original text for the English view. Drive verification precedes local input cleanup. The append-only `sync/edition_asr_manifest.jsonl` records each video association and its edition clock. An optional `--limit N` bounds a single execution. An active pause, an incomplete collection or a mismatched lease holds execution.
+
 `gpu_asr.py` transcribes admitted, already archived English audio with one local
 CUDA model. It does not acquire YouTube media, replace captions, infer speakers,
 or delete source files. Imports are inert; inference requires the explicit `run`

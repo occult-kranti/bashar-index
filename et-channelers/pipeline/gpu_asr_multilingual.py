@@ -148,8 +148,9 @@ class Runtime(base.CudaRuntime):
 
 
 class Monitor:
-    def __init__(self, runtime, lease_guard, target=70, max_vram=6_500_000_000):
+    def __init__(self, runtime, lease_guard, target=70, max_vram=6_500_000_000, *, rolling_history=None):
         self.runtime, self.lease_guard, self.target, self.max_vram = runtime, lease_guard, target, max_vram
+        self.rolling_history = rolling_history
         self.samples, self.window = deque(maxlen=3600), deque()
         self.lock, self.done, self.ready = threading.RLock(), threading.Event(), threading.Event()
         self.error, self.last_error, self.errors, self.fallbacks = None, None, 0, 0
@@ -159,7 +160,8 @@ class Monitor:
         row = dict(row)
         require(all(math.isfinite(float(row[k])) for k in ["gpu_percent", "vram_bytes", "temperature_c"]), "telemetry_invalid")
         require(0 <= row["gpu_percent"] <= 100 and row["vram_bytes"] >= 0 and 0 < row["temperature_c"] < 120, "telemetry_invalid")
-        row["elapsed_s"] = time.monotonic() - self.start
+        current = time.monotonic()
+        row["elapsed_s"] = current - self.start
         with self.lock:
             if self.samples:
                 self.max_gap = max(self.max_gap, row["elapsed_s"] - self.samples[-1]["elapsed_s"])
@@ -167,14 +169,23 @@ class Monitor:
             self.window.append(row)
             while self.window and row["elapsed_s"] - self.window[0]["elapsed_s"] > 30:
                 self.window.popleft()
+            if self.rolling_history is not None:
+                self.rolling_history.append((current, row["gpu_percent"]))
+                while current - self.rolling_history[0][0] > 30:
+                    self.rolling_history.popleft()
             self.count += 1
             self.total += row["gpu_percent"]
             self.peak_gpu = max(self.peak_gpu, row["gpu_percent"])
             self.peak_vram = max(self.peak_vram, row["vram_bytes"])
             self.peak_temp = max(self.peak_temp, row["temperature_c"])
-            self.peak_rolling = max(self.peak_rolling, statistics.mean(x["gpu_percent"] for x in self.window))
+            self.peak_rolling = max(self.peak_rolling, self.rolling_mean())
             self.error = None
         self.ready.set()
+
+    def rolling_mean(self):
+        if self.rolling_history is not None:
+            return statistics.mean(percent for _, percent in self.rolling_history)
+        return statistics.mean(x["gpu_percent"] for x in self.window)
 
     def loop(self):
         while not self.done.is_set():
@@ -215,7 +226,7 @@ class Monitor:
                 last = self.samples[-1]
                 require(last["vram_bytes"] <= self.max_vram, "vram_limit")
                 require(last["temperature_c"] < 85, "temperature_limit")
-                average = statistics.mean(x["gpu_percent"] for x in self.window)
+                average = self.rolling_mean()
             if average <= max(1, self.target - 10):
                 return
             time.sleep(1)
@@ -300,14 +311,16 @@ def validate_text(segments, text, language, duration):
             require(all(math.isfinite(float(word[k])) for k in ["start", "end", "probability"]) and 0 <= word["start"] <= word["end"] <= duration + .5 and 0 <= word["probability"] <= 1, "variant_word_timestamp")
 
 
-def verify_pair(path, expected=None):
+def verify_pair(path, expected=None, *, max_bytes=None):
+    limit=base.MAX_RESULT_BYTES if max_bytes is None else max_bytes
+    require(type(limit) is int and 0 < limit <= 256_000_000, "paired_size_budget")
     proof = base.hashes(path)
-    require(0 < proof["bytes"] <= base.MAX_RESULT_BYTES, "bundle_size")
+    require(0 < proof["bytes"] <= limit, "bundle_size")
     if expected:
         require(all(proof[k] == expected.get(k) for k in ["bytes", "md5", "sha256"]), "bundle_hash")
     with zipfile.ZipFile(path) as archive:
         require(all(not item.is_dir() and ((item.external_attr >> 16) & 0o170000) != 0o120000 for item in archive.infolist()), "bundle_link_or_directory")
-        require(sum(x.file_size for x in archive.infolist()) <= base.MAX_RESULT_BYTES and archive.testzip() is None, "bundle_crc_or_expansion")
+        require(sum(x.file_size for x in archive.infolist()) <= limit and archive.testzip() is None, "bundle_crc_or_expansion")
         provenance = json.loads(archive.read("provenance.json"))
         require(provenance.get("output_contract") == CONTRACT and provenance.get("quality_state") == "unreviewed_asr" and provenance.get("compute", {}).get("cpu_asr_fallback") is False, "paired_contract")
         variants = provenance.get("text_variants", {})
@@ -353,7 +366,9 @@ def verify_pair(path, expected=None):
         return {"bundle": proof, "provenance": provenance, "artifact_manifest_sha256": hashlib.sha256(manifest_bytes).hexdigest()}
 
 
-def write_pair(settings, admission, run_id, variants, telemetry, provenance):
+def write_pair(settings, admission, run_id, variants, telemetry, provenance, *, max_bytes=None, capacity_check=None):
+    limit=base.MAX_RESULT_BYTES//2 if max_bytes is None else max_bytes
+    require(type(limit) is int and 0 < limit <= 256_000_000, "paired_size_budget")
     members, descriptors = {}, {}
     for key, (segments, text, config) in variants.items():
         language = segments["language"]
@@ -368,8 +383,11 @@ def write_pair(settings, admission, run_id, variants, telemetry, provenance):
     members["provenance.json"], members["telemetry.json"] = base.encoded(provenance), base.encoded(telemetry)
     manifest = {"schema_version": SCHEMA, "run_id": run_id, "files": [{"file": k, "bytes": len(v), "sha256": hashlib.sha256(v).hexdigest()} for k, v in sorted(members.items())]}
     members["artifact_manifest.json"] = base.encoded(manifest)
-    require(sum(map(len, members.values())) <= base.MAX_RESULT_BYTES // 2, "paired_result_size")
-    base.inventory(settings)
+    require(sum(map(len, members.values())) <= limit, "paired_result_size")
+    if capacity_check is None:
+        base.inventory(settings)
+    else:
+        capacity_check(sum(map(len,members.values())))
     directory = settings.output_root / admission["video_id"] / run_id
     directory.mkdir(parents=True, exist_ok=True)
     destination = directory / (run_id + ".zip")
@@ -381,7 +399,7 @@ def write_pair(settings, admission, run_id, variants, telemetry, provenance):
     with temporary.open("r+b") as handle:
         handle.flush()
         os.fsync(handle.fileno())
-    verified = verify_pair(temporary)
+    verified = verify_pair(temporary,max_bytes=max_bytes)
     os.replace(temporary, destination)
     receipt = {"schema_version": SCHEMA, "status": "local_transcription_complete_unreviewed", "output_contract": CONTRACT, "private_root": str(settings.root), "run_id": run_id, "video_id": admission["video_id"], "job_id": admission["job_id"], "source_lease_id": admission["source_lease_id"], "source_audio": admission["job"]["audio"], "source_metadata": admission["job"]["metadata"], "model": provenance["model"], "bundle": {"path": str(destination), **verified["bundle"]}, "artifact_manifest_sha256": verified["artifact_manifest_sha256"], "drive_upload": "pending"}
     base.atomic_json(directory / "receipt.json", receipt)
