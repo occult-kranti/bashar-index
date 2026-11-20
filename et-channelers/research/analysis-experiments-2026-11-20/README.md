@@ -1,5 +1,11 @@
 # Further analysis experiments: catalogue of the analysis panel, 2026-11-20
 
+**Status, 20 November 2026, evening.** The transcription run has finished (1,697 audio files). The registry of
+hypotheses is [frozen](registry.md); H3 was tested and dropped by the owner; the bridge between the two
+recognizer models (BR, part a) has run. Both results are in [`results/`](results/README.md). The numbers in
+section 2 below still come from the snapshot of 1,213 transcripts and have not yet been recomputed on the
+finished run. What runs next is in the [analysis handoff](../../knowledge-transfer/analysis-handoff-2026-11-20.md).
+
 This catalogue adds 28 experiments to the analysis plan for the cohort of 101 creators (newest 20 recordings each). It was written by a panel of four roles: a senior mathematical data analyst (lead), a computational social scientist, a visual exploration specialist and a challenger who reviewed every proposal. Two literature studies (ICWSM; related venues), an audit of the plan against the data, and a reading of 42 transcripts came first.
 
 How to read it:

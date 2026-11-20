@@ -1929,6 +1929,24 @@ hold-out without new human labels.
 5. The proposed smallest effects (those of H7 and H9 are placeholders), the word groups of H5, the capture
    date of the wave and the almanac list, all fixed at the freeze and not moved afterwards.
 
+### 14.5 What happened after the proposal (20 November, evening)
+
+* **Decision 1:** the owner registered all ten; the registry was frozen at 19:47 UTC with amendments that
+  follow from the owner's instructions ([`registry.md`](research/analysis-experiments-2026-11-20/registry.md)).
+* **Decision 2:** the owner replaced the two human markers by language models through the OpenAI API, within
+  110 USD (amendment A1). Results on those labels are called model-coded. The instruments, their pilot and the
+  order of work are in [ROADMAP phase 7f](ROADMAP.md) and the
+  [analysis handoff](knowledge-transfer/analysis-handoff-2026-11-20.md).
+* **H3** was tested on the hold-out the same evening, passed its registered rule with an interval over
+  creators that includes zero, and was dropped by the owner (amendment A6). Its row stays in the
+  [results table](research/analysis-experiments-2026-11-20/results/README.md); it counts as run for the Holm
+  correction. Amendment A5 makes the verdict stricter for the hypotheses not yet run.
+* **Decision 4** is open, and so is whether H8 keeps its place now that H3 is dropped. Decisions 3 and 5 are
+  unchanged.
+* **The bridge** of 13.7 has run: 7 of 17 measures agree across the two recognizer models, 6 differ (pauses,
+  word timing, filled pauses), 4 are not settled.
+* **The second round** belongs to an expert panel with the second budget (amendment A7, ROADMAP phase 7g).
+
 ## Appendix A. Checks made for this plan
 
 **Fresh counts.**

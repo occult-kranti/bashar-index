@@ -1,6 +1,8 @@
 # Collection knowledge transfer
 
-**The project owner paused the remaining 30 downloads at 01:45 UTC on November 20.** The frozen selection, receipt totals and failures remain available for inspection. See the backup inventory and handoff for the next chat. [Pre-analysis checkpoint](pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [Copy-ready handoff](CONTINUE_IN_NEW_CHAT.md)
+**Analysis under way, 20 November 2026, evening.** Downloads are closed: the owner declared the 30 outstanding recordings final failures. The local speech-to-text run finished at 19:56 UTC with 1,697 audio files (742.9 hours, 5.83 million words, seven languages). A registry of ten hypotheses is frozen; one (H3) was tested and dropped by the owner. The two recognizer models were compared on 36 recordings. Language-model labelling for the other hypotheses is being piloted on already-seen creators, and an expert panel is planning the second round. [Analysis handoff](analysis-handoff-2026-11-20.md) · [Copy-ready prompt](CONTINUE_IN_NEW_CHAT.md) · [Transcription progress](partial-cohort-asr-progress.md) · [Findings dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/)
+
+**Earlier, 01:45 UTC on November 20: the project owner paused the remaining 30 downloads.** The frozen selection, receipt totals and failures remain available for inspection. [Pre-analysis checkpoint](pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ)
 
 Start here to operate the latest-20+ audio archive or reproduce a result from it. The archive selects up to twenty public, completed recordings from each channel’s **Videos** tab, newest first. A short recording on that tab qualifies. YouTube Shorts and streams keep their own classifications in the cumulative index. Publication date and running time have no cutoff.
 
@@ -36,6 +38,7 @@ A recording counts once when the private archive has the matching creator/video 
 | Which channels, people and attributed sources are documented? | [Channeler and source table](../research/analysis-plan-2026-11-16/channeler-entity-table.md), [primary-source relationships](../research/analysis-plan-2026-11-16/discovery-relationships.csv) and [interview guest review](../research/interview-discovery-2026-11-19/verified-guest-channels.csv) |
 | How do I study dates, shared events, predictions, healing or proposed experiments? | [Research plan](../research/analysis-plan-2026-11-16/README.md), [date evidence](../research/recording-dates-2026-11-19.md) and [shared-event register](../research/cross-channel-events-2026-11-16.md) |
 | Where do the next fifty and deeper index fit? | [Phases and dependencies](../ROADMAP.md) and [queue preparation and timing](../pipeline/COLLECTION_PROCESS.md#latest-50-forecast) |
+| Where does the analysis of the transcripts stand, and what runs next? | [Analysis handoff](analysis-handoff-2026-11-20.md), [registry of hypotheses](../research/analysis-experiments-2026-11-20/registry.md), [results so far](../research/analysis-experiments-2026-11-20/results/README.md) and [run report](../research/transcription-run-2026-11-20/README.md) |
 
 ## Dashboards and archive
 
