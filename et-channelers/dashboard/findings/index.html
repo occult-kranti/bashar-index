@@ -1,0 +1,744 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Channelled speech: findings and experiments · Channeling research</title>
+<meta name="description" content="Counts, time without speech, languages, registered hypotheses and designed experiments for 1,697 transcribed recordings of 101 creators. Numbers only.">
+<link rel="stylesheet" href="../../../assets/research-nav.css">
+<script defer src="../../../assets/research-nav.js" data-page="findings"></script>
+<style>
+:root { color-scheme: light; --color-bg: #f5f2eb; --color-panel: #fffdf8; --color-fg: #17211e; --color-fg-muted: #56635c; --color-border-line: #d1d8cd;
+  --color-ok: #1f554b; --color-warn: #a64c30; --color-bad: #a64c30; --series-1: #1f554b;
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif; --font-serif: Georgia, "Times New Roman", serif;
+  --ui-font-size-caption: 12.5px; --ui-font-size-body: 15px; --ui-font-size-heading: 19px; --ui-font-size-title: clamp(28px, 4vw, 40px); --ui-font-weight-medium: 650;
+  --ui-gap-xs: 4px; --ui-gap-sm: 8px; --ui-gap-md: 14px; --ui-gap-lg: 24px; --ui-pad-xs: 4px; --ui-pad-sm: 8px; --ui-pad-md: 12px; --ui-pad-lg: 18px; --ui-radius: 6px;
+  --ui-text-secondary: #56635c; --ui-chart-grid: #e2e5db; --ui-chart-axis: #8f9c93; --ui-chart-muted: #8f9c93;
+  --ui-surface-popover: #fffdf8; --ui-border: #d1d8cd; --ui-shadow-popover: 0 4px 14px rgba(23, 33, 30, .14); }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--color-bg); color: var(--color-fg); font-family: var(--font-sans); font-size: 15px; line-height: 1.5; }
+main { max-width: 1320px; margin: 0 auto; padding: 34px clamp(16px, 4vw, 60px) 60px; }
+a { color: var(--color-ok); text-underline-offset: 3px; }
+a:focus-visible, summary:focus-visible, select:focus-visible { outline: 3px solid #a85b2b; outline-offset: 3px; }
+.dash-select { font: inherit; font-size: var(--ui-font-size-caption); color: var(--color-fg); background-color: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--ui-radius); padding: 3px 8px; }
+details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); }
+.cs-files { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; font-size: var(--ui-font-size-caption); }
+
+/* Layout: a short summary on top, then six sections switched by tabs. Marks use the first series colour; heat maps mix it with the page ground. */
+.cs-page [hidden] { display: none !important; }
+.cs-page, .cs-section { grid-template-columns: minmax(0, 1fr); }
+.cs-page > *, .cs-section > *, .cs-grid > * { min-width: 0; }
+.cs-page { display: grid; gap: var(--ui-gap-lg); color: var(--color-fg); font-family: var(--font-sans); }
+.cs-page h1 { font-family: var(--font-serif); font-weight: 400; font-size: var(--ui-font-size-title); margin: 0; text-wrap: balance; }
+.cs-page h2 { font-size: var(--ui-font-size-heading); font-weight: var(--ui-font-weight-medium); margin: 0; text-wrap: balance; }
+.cs-page h3 { font-size: var(--ui-font-size-body); font-weight: var(--ui-font-weight-medium); margin: 0; }
+.cs-page p { margin: 0; max-width: 72ch; line-height: 1.5; }
+.cs-lede { font-size: var(--ui-font-size-body); }
+.cs-note { color: var(--color-fg-muted); font-size: var(--ui-font-size-caption); }
+.cs-num { font-variant-numeric: tabular-nums; }
+.cs-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--ui-gap-md); }
+.cs-tile { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--ui-radius); padding: var(--ui-pad-lg); display: grid; gap: var(--ui-gap-xs); min-width: 0; }
+.cs-tile-value { font-family: var(--font-serif); font-weight: 400; font-size: 1.9rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.cs-tile-label { color: var(--color-fg-muted); font-size: var(--ui-font-size-caption); }
+.cs-tabs { display: flex; flex-wrap: wrap; gap: var(--ui-gap-xs); border-bottom: 1px solid var(--color-border-line); padding-bottom: var(--ui-pad-xs); }
+.cs-tab { font: inherit; font-size: var(--ui-font-size-body); color: var(--color-fg-muted); background: none; border: 1px solid transparent; border-radius: var(--ui-radius); padding: var(--ui-pad-xs) var(--ui-pad-md); cursor: pointer; }
+.cs-tab:hover { color: var(--color-fg); }
+.cs-tab:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 1px; }
+.cs-tab[aria-selected="true"] { color: var(--color-fg); background: var(--color-panel); border-color: var(--color-border-line); }
+.cs-section { display: grid; gap: var(--ui-gap-lg); }
+.cs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: var(--ui-gap-lg); }
+.cs-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--ui-radius); padding: var(--ui-pad-lg); display: grid; gap: var(--ui-gap-sm); min-width: 0; align-content: start; }
+.cs-chart { position: relative; min-height: 180px; min-width: 0; }
+.cs-chart svg { display: block; overflow: visible; }
+.cs-chart text { fill: var(--ui-text-secondary); font-size: var(--ui-font-size-caption); font-family: var(--font-sans); font-variant-numeric: tabular-nums; }
+.cs-chart text.cs-val { fill: var(--color-fg); }
+.cs-chart .cs-gridline { stroke: var(--ui-chart-grid); stroke-width: 1; }
+.cs-chart .cs-axisline { stroke: var(--ui-chart-axis); stroke-width: 1; }
+.cs-tip { position: absolute; z-index: 2; pointer-events: none; background: var(--ui-surface-popover); border: 1px solid var(--ui-border); box-shadow: var(--ui-shadow-popover); border-radius: var(--ui-radius); padding: var(--ui-pad-xs) var(--ui-pad-sm); font-size: var(--ui-font-size-caption); color: var(--color-fg); max-width: 240px; }
+.cs-scroll { overflow-x: auto; min-width: 0; }
+.cs-tall { max-height: 520px; overflow-y: auto; }
+.cs-table { border-collapse: collapse; width: 100%; font-size: var(--ui-font-size-caption); }
+.cs-table th { text-align: left; font-weight: var(--ui-font-weight-medium); color: var(--color-fg-muted); border-bottom: 1px solid var(--color-border-line); padding: var(--ui-pad-xs) var(--ui-pad-sm); position: sticky; top: 0; background: var(--color-panel); }
+.cs-table td { border-bottom: 1px solid var(--color-border-line); padding: var(--ui-pad-xs) var(--ui-pad-sm); vertical-align: top; }
+.cs-table td.cs-r, .cs-table th.cs-r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cs-chip { display: inline-block; border: 1px solid var(--color-border-line); border-radius: 999px; padding: 0 var(--ui-pad-sm); white-space: nowrap; }
+.cs-chip[data-tone="ok"] { border-color: var(--color-ok); color: var(--color-ok); }
+.cs-chip[data-tone="warn"] { border-color: var(--color-warn); }
+.cs-row { display: flex; flex-wrap: wrap; gap: var(--ui-gap-sm); align-items: center; }
+.cs-meter { height: 10px; border-radius: 999px; background: var(--color-border-line); overflow: hidden; }
+.cs-meter > span { display: block; height: 100%; min-width: 2px; }
+.cs-legend { display: flex; align-items: center; gap: var(--ui-gap-sm); color: var(--color-fg-muted); font-size: var(--ui-font-size-caption); }
+.cs-ramp { width: 120px; height: 10px; border-radius: 2px; border: 1px solid var(--color-border-line); }
+@media print { .cs-tabs { display: none; } .cs-section { break-before: page; } .cs-tall { max-height: none; } }
+
+</style>
+</head>
+<body>
+<main id="dash-root">
+<div class="cs-page">
+  <header class="cs-section">
+    <h1 id="page-title">Channelled speech: findings and experiments</h1>
+    <p class="cs-lede" id="takeaway">
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="files" data-row="0">—</b> audio files,
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="hours" data-row="0" data-digits="1">—</b> hours, are transcribed.
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="percent_without_speech" data-row="0" data-digits="1" data-suffix="%">—</b> of that time holds no speech.
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="hypotheses" data-row="0">—</b> hypotheses are registered and
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed; none has been tested yet.
+    </p>
+    <p class="cs-note">Creators appear as codes. Counts and times only; no transcript text. The run finished on 20 November 2026.</p>
+  </header>
+
+  <div class="cs-tiles" id="tiles">
+    <div class="cs-tile"><span class="cs-tile-value" data-draw="fig" data-source="headline" data-field="hours" data-row="0" data-digits="1">—</span><span class="cs-tile-label">hours of audio transcribed</span></div>
+    <div class="cs-tile"><span class="cs-tile-value" data-draw="fig" data-source="headline" data-field="files" data-row="0">—</span><span class="cs-tile-label">audio files transcribed, of <span class="cs-num" data-draw="fig" data-source="headline" data-field="files_in_run" data-row="0">—</span> in the run</span></div>
+    <div class="cs-tile"><span class="cs-tile-value" data-draw="fig" data-source="headline" data-field="percent_without_speech" data-row="0" data-digits="1" data-suffix="%">—</span><span class="cs-tile-label">of the time is music, meditation or silence</span></div>
+    <div class="cs-tile"><span class="cs-tile-value" data-draw="fig" data-source="headline" data-field="words_millions" data-row="0" data-digits="2" data-suffix=" M">—</span><span class="cs-tile-label">words transcribed</span></div>
+    <div class="cs-tile"><span class="cs-tile-value" data-draw="fig" data-source="headline" data-field="languages" data-row="0">—</span><span class="cs-tile-label">languages found</span></div>
+    <div class="cs-tile"><span class="cs-tile-value" data-draw="fig" data-source="headline" data-field="not_transcribed" data-row="0">—</span><span class="cs-tile-label">recordings not transcribed</span></div>
+  </div>
+
+  <nav class="cs-tabs" id="tabs" aria-label="Sections">
+    <button class="cs-tab" type="button" data-tab="overview" aria-selected="true">Overview</button>
+    <button class="cs-tab" type="button" data-tab="silence" aria-selected="false">Music and silence</button>
+    <button class="cs-tab" type="button" data-tab="languages" aria-selected="false">Languages</button>
+    <button class="cs-tab" type="button" data-tab="creators" aria-selected="false">Creators</button>
+    <button class="cs-tab" type="button" data-tab="experiments" aria-selected="false">Hypotheses and experiments</button>
+    <button class="cs-tab" type="button" data-tab="findings" aria-selected="false">First findings</button>
+  </nav>
+
+  <section class="cs-section" id="overview">
+    <div class="cs-grid">
+      <div class="cs-card" id="card-progress">
+        <h2>Hours transcribed over the day</h2>
+        <p class="cs-note">Cumulative hours of audio, 20 November 2026, times in UTC. The flat step near 07:30 is a 19-minute stop on a damaged file; the slow last stretch is the other-language channels.</p>
+        <div class="cs-chart" data-draw="chart-progress" data-source="progress"></div>
+      </div>
+      <div class="cs-card" id="card-outcome">
+        <h2>What happened to the selected recordings</h2>
+        <p class="cs-note">Every one of the 1,976 selected recordings, by outcome.</p>
+        <div class="cs-chart" data-draw="chart-outcome" data-source="outcome"></div>
+      </div>
+    </div>
+    <div class="cs-grid">
+      <div class="cs-card" id="card-status">
+        <h2>Where each piece of work stands</h2>
+        <div class="cs-scroll">
+          <table class="cs-table" data-source="status" data-row-key="workstream">
+            <thead><tr><th data-field="workstream">Work</th><th data-field="state">State</th><th data-field="detail">Detail</th></tr></thead>
+            <tbody data-draw="rows-status"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="cs-card" id="card-budget">
+        <h2>Labelling budget</h2>
+        <p>Spent <b class="cs-num" data-draw="fig" data-source="budget" data-field="usd" data-where="item=Spent so far" data-prefix="$" data-digits="2">—</b>
+          of the owner's limit of <b class="cs-num" data-draw="fig" data-source="budget" data-field="usd" data-where="item=Owner's limit" data-prefix="$">—</b>.</p>
+        <div class="cs-meter" data-draw="meter-budget" data-source="budget" role="img" aria-label="Share of the labelling budget spent"></div>
+        <p class="cs-note">Labels for the hypotheses are made by a language model. They are not checked by a person, and every result that rests on them will say so.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" id="silence" hidden>
+    <p><b class="cs-num" data-draw="fig" data-source="headline" data-field="hours_without_speech" data-row="0" data-digits="1">—</b> hours hold no speech. The five creators with the most such time hold
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="top5_percent" data-row="0" data-suffix="%">—</b> of it, and
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="half_silent" data-row="0">—</b> recordings are at least half without speech.
+      "Without speech" is what the voice detector removed: music, meditation and silence cannot be told apart.</p>
+    <div class="cs-grid">
+      <div class="cs-card" id="card-hist">
+        <h2>Share of each recording without speech</h2>
+        <p class="cs-note">Recordings per 5-point band. The vertical scale is logarithmic.</p>
+        <div class="cs-chart" data-draw="chart-hist" data-source="recordings"></div>
+      </div>
+      <div class="cs-card" id="card-top">
+        <h2>Creators with the most time without speech</h2>
+        <p class="cs-note">Hours without speech, with the share of that creator's transcribed time.</p>
+        <div class="cs-chart" data-draw="chart-top" data-source="creators"></div>
+      </div>
+      <div class="cs-card" id="card-scatter">
+        <h2>Recording length against share without speech</h2>
+        <p class="cs-note">One dot per audio file. Length is on a logarithmic scale.</p>
+        <div class="cs-chart" data-draw="chart-scatter" data-source="recordings"></div>
+      </div>
+      <div class="cs-card" id="card-quiet">
+        <h2>Longest stretch without speech</h2>
+        <p class="cs-note">How many recordings have a quiet stretch at least this long. Stretches of 30 seconds or more.</p>
+        <div class="cs-chart" data-draw="chart-quiet" data-source="recordings"></div>
+      </div>
+    </div>
+    <div class="cs-grid">
+      <div class="cs-card" id="card-heat-position">
+        <h2>Where in a recording the speech is missing</h2>
+        <p class="cs-note">Rows are creators with three or more transcripts, from least to most time without speech. Columns are tenths of the running time.</p>
+        <div class="cs-legend"><span>0%</span><span class="cs-ramp" data-draw="ramp"></span><span>100% not covered by speech</span></div>
+        <div class="cs-chart" data-draw="heat-position" data-source="position"></div>
+      </div>
+      <div class="cs-card" id="card-heat-newest">
+        <h2>Each creator's newest 20 recordings</h2>
+        <p class="cs-note">Share of each recording without speech. Column 1 is the newest. Grey cells were not in this run or were not transcribed.</p>
+        <div class="cs-legend"><span>0%</span><span class="cs-ramp" data-draw="ramp"></span><span>100% without speech</span></div>
+        <div class="cs-chart" data-draw="heat-newest" data-source="newest20"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" id="languages" hidden>
+    <div class="cs-grid">
+      <div class="cs-card" id="card-languages">
+        <h2>Languages</h2>
+        <div class="cs-scroll">
+          <table class="cs-table" data-source="languages" data-row-key="language">
+            <thead><tr><th data-field="language">Language</th><th class="cs-r" data-field="audio_files">Audio files</th><th class="cs-r" data-field="hours">Hours</th><th class="cs-r" data-field="creators">Creators</th><th class="cs-r" data-field="hours_without_speech">Hours without speech</th></tr></thead>
+            <tbody data-draw="rows-languages"></tbody>
+          </table>
+        </div>
+        <p class="cs-note">English recordings were transcribed by a smaller English model and the others by a larger multilingual one. Until both have been run on the same audio, compare inside one language only.</p>
+      </div>
+      <div class="cs-card" id="card-other-languages">
+        <h2>Languages other than English</h2>
+        <p class="cs-note">Audio files per language. English is left out so the others can be read.</p>
+        <div class="cs-chart" data-draw="chart-languages" data-source="languages"></div>
+      </div>
+      <div class="cs-card" id="card-basis">
+        <h2>How the language of each recording was decided</h2>
+        <p class="cs-note">The creator rule applies once two or more of a creator's recordings were detected as English and none as another language.</p>
+        <div class="cs-chart" data-draw="chart-basis" data-source="language_basis"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" id="creators" hidden>
+    <div class="cs-card" id="card-creators">
+      <div class="cs-row">
+        <h2>One row per creator</h2>
+        <label class="cs-note" for="creator-sort">Sort by</label>
+        <select class="dash-select" id="creator-sort" aria-label="Sort creators by">
+          <option value="hours_without_speech">Hours without speech</option>
+          <option value="share_without_speech">Share without speech</option>
+          <option value="hours">Hours transcribed</option>
+          <option value="median_minutes">Median recording length</option>
+          <option value="creator_code">Code</option>
+        </select>
+      </div>
+      <p class="cs-note">Speaking pace is shown only for creators that had already been looked at before the hypotheses were frozen; the others stay unread until the labelling procedure is fixed.</p>
+      <div class="cs-scroll cs-tall">
+        <table class="cs-table" data-source="creators" data-row-key="creator_code">
+          <thead><tr><th data-field="creator_code">Creator</th><th class="cs-r" data-field="selected">Selected</th><th class="cs-r" data-field="transcribed">Transcribed</th><th class="cs-r" data-field="hours">Hours</th><th class="cs-r" data-field="hours_without_speech">Hours without speech</th><th class="cs-r" data-field="share_without_speech">Share without speech</th><th class="cs-r" data-field="median_minutes">Median minutes</th><th class="cs-r" data-field="median_pace">Words per minute</th><th data-field="languages">Languages</th></tr></thead>
+          <tbody data-draw="rows-creators"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" id="experiments" hidden>
+    <div class="cs-card" id="card-hypotheses">
+      <h2>The ten registered hypotheses</h2>
+      <p class="cs-note">Frozen on 20 November 2026 before any hold-out creator was analysed. None has been tested. Each is a contrast inside one recording or one creator.</p>
+      <div class="cs-scroll">
+        <table class="cs-table" data-source="hypotheses" data-row-key="id">
+          <thead><tr><th data-field="id">Id</th><th data-field="hypothesis">Hypothesis</th><th data-field="experiment">Experiment</th><th data-field="confirmed_on">Confirmed on</th><th data-field="status">Status</th></tr></thead>
+          <tbody data-draw="rows-hypotheses"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cs-card" id="card-experiments">
+      <div class="cs-row">
+        <h2>The experiment catalogue</h2>
+        <label class="cs-note" for="experiment-group">Group</label>
+        <select class="dash-select" id="experiment-group" aria-label="Show experiments of group">
+          <option value="">All groups</option>
+          <option>Measurement base</option>
+          <option>Inside a recording</option>
+          <option>Content</option>
+          <option>Calendar, events, language</option>
+          <option>Extending the sample</option>
+          <option>Internal checking</option>
+        </select>
+      </div>
+      <p class="cs-note">Designed by an analyst panel from the practice of ICWSM papers and related work. All are designed and none has been run.</p>
+      <div class="cs-scroll cs-tall">
+        <table class="cs-table" data-source="experiments" data-row-key="id">
+          <thead><tr><th data-field="id">Id</th><th data-field="experiment">Experiment</th><th data-field="group">Group</th><th data-field="value">Value</th><th data-field="cost">Cost</th><th data-field="figures">Figures it yields</th><th data-field="status">Status</th></tr></thead>
+          <tbody data-draw="rows-experiments"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" id="findings" hidden>
+    <p>These first findings come from a snapshot of 1,213 finished transcripts taken while the run was still going. They are provisional: no transcript was checked by a person, and they will be recomputed on the finished run.</p>
+    <div class="cs-grid">
+      <div class="cs-card" id="card-variance">
+        <h2>How much of each measure belongs to the creator</h2>
+        <p class="cs-note">Share of the variation between recordings that lies between creators, with a 95% interval. A high share means recordings of one creator resemble each other, so the creator is the unit to compare.</p>
+        <div class="cs-chart" data-draw="chart-variance" data-source="variance"></div>
+      </div>
+      <div class="cs-card" id="card-kinds">
+        <h2>What 34 read recordings turned out to be</h2>
+        <p class="cs-note">Chosen for contrast, not at random, and read by one reader: the kinds exist, but these counts are not rates.</p>
+        <div class="cs-chart" data-draw="chart-kinds" data-source="kinds"></div>
+      </div>
+      <div class="cs-card" id="card-terms">
+        <h2>Vocabulary families in English transcripts</h2>
+        <p class="cs-note">Share of transcripts that contain at least one term of the family. Crude word patterns, not validated.</p>
+        <div class="cs-chart" data-draw="chart-terms" data-source="terms"></div>
+      </div>
+      <div class="cs-card" id="card-artefacts">
+        <h2>Text the recognizer invents</h2>
+        <p class="cs-note">Share of transcripts with each artefact. Both are removed by rule before anything is counted.</p>
+        <div class="cs-chart" data-draw="chart-artefacts" data-source="artefacts"></div>
+      </div>
+    </div>
+  </section>
+
+  <details id="notes">
+    <summary>How to read this page</summary>
+    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover three days or fifteen years, so nothing here is a trend. Languages other than English come from a handful of creators each. Figures on the first five tabs describe the finished run; the last tab describes an earlier snapshot. The hypotheses will be tested with labels made by a language model, which no person has checked.</p>
+  </details>
+
+  <details id="data">
+    <summary>The data behind this page</summary>
+    <p class="cs-note">Every figure, chart and table is drawn from these files. They hold counts and measures of time only. Built 2026-11-20.</p>
+    <ul class="cs-files">
+        <li><a href="data/summary.csv">Run summary</a> <span class="cs-note">(15 rows)</span></li>
+        <li><a href="data/outcome.csv">Selected recordings by outcome</a> <span class="cs-note">(7 rows)</span></li>
+        <li><a href="data/languages.csv">Languages</a> <span class="cs-note">(7 rows)</span></li>
+        <li><a href="data/language_basis.csv">How language was decided</a> <span class="cs-note">(4 rows)</span></li>
+        <li><a href="data/creators.csv">Creators (coded)</a> <span class="cs-note">(101 rows)</span></li>
+        <li><a href="data/recordings.csv">Recordings: length, share without speech, language</a> <span class="cs-note">(1,697 rows)</span></li>
+        <li><a href="data/progress.csv">Hours transcribed over the day</a> <span class="cs-note">(170 rows)</span></li>
+        <li><a href="data/position.csv">Speech by position in the recording</a> <span class="cs-note">(980 rows)</span></li>
+        <li><a href="data/newest20.csv">Newest 20 recordings per creator</a> <span class="cs-note">(2,000 rows)</span></li>
+        <li><a href="data/experiments.csv">Experiment catalogue</a> <span class="cs-note">(28 rows)</span></li>
+        <li><a href="data/hypotheses.csv">Registered hypotheses</a> <span class="cs-note">(10 rows)</span></li>
+        <li><a href="data/variance.csv">Variation between creators</a> <span class="cs-note">(7 rows)</span></li>
+        <li><a href="data/kinds.csv">Kinds of 34 read recordings</a> <span class="cs-note">(5 rows)</span></li>
+        <li><a href="data/terms.csv">Vocabulary families</a> <span class="cs-note">(5 rows)</span></li>
+        <li><a href="data/artefacts.csv">Recognizer artefacts</a> <span class="cs-note">(2 rows)</span></li>
+        <li><a href="data/status.csv">Work status</a> <span class="cs-note">(8 rows)</span></li>
+        <li><a href="data/budget.csv">Labelling budget</a> <span class="cs-note">(4 rows)</span></li>
+    </ul>
+  </details>
+  <details id="methods">
+    <summary>Methods and documents</summary>
+    <ul class="cs-files">
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/transcription-run-2026-11-20/README.md">Transcription run report, with the static figures</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/analysis-experiments-2026-11-20/README.md">Experiment catalogue: 28 experiments and 16 rules</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/analysis-experiments-2026-11-20/hypotheses.md">The ten hypotheses, with estimands and prior work</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/analysis-experiments-2026-11-20/registry.md">Registry freeze of 20 November 2026</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/paper/cohort-draft-2026-11-20/main.pdf">Paper draft (preliminary)</a></li>
+    </ul>
+  </details>
+</div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+
+// A small stand-in for the hosted dashboard's data layer: loads the CSV files beside the page and runs the drawings.
+const dash = (() => {
+  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "recordings", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget"];
+  const state = {}, calcs = {}, draws = {};
+  const api = {
+    colors: ['var(--series-1)'],
+    data(id) {
+      if (calcs[id]) {
+        const inputs = calcs[id].inputs.map((name) => api.data(name));
+        if (inputs.some((input) => input.status !== 'ok')) return { status: inputs.some((input) => input.status === 'error') ? 'error' : 'loading', data: null };
+        if (!calcs[id].value) calcs[id].value = calcs[id].fn(...inputs.map((input) => input.data));
+        return { status: 'ok', data: calcs[id].value };
+      }
+      return state[id] || { status: 'loading', data: [] };
+    },
+    calc(id, definition) { calcs[id] = definition; },
+    draw(name, fn) { if (fn) draws[name] = fn; run(name); },
+    setLink(name) { history.replaceState(null, '', '#' + name); },
+  };
+  function run(only) {
+    document.querySelectorAll('[data-draw]').forEach((el) => {
+      const name = el.dataset.draw;
+      if ((only && name !== only) || !draws[name] || el.closest('[hidden]')) return;
+      try { draws[name](el); } catch (error) { el.textContent = 'This part did not load.'; console.error(error); }
+    });
+  }
+  const blank = (row) => { for (const key of Object.keys(row)) if (row[key] === '') row[key] = null; return row; };
+  Promise.all(ids.map((id) => d3.csv('data/' + id + '.csv', blank)
+    .then((rows) => { state[id] = { status: 'ok', data: rows, columns: rows.columns }; })
+    .catch(() => { state[id] = { status: 'error', data: [] }; })))
+    .then(() => {
+      run();
+      const watcher = new MutationObserver(() => run());
+      document.querySelectorAll('section.cs-section').forEach((section) => watcher.observe(section, { attributes: true, attributeFilter: ['hidden'] }));
+      let timer = null;
+      window.addEventListener('resize', () => { clearTimeout(timer); timer = setTimeout(() => run(), 160); });
+    });
+  return api;
+})();
+
+
+const fmt = (value, digits) => d3.format(',.' + (digits || 0) + 'f')(value);
+const colour = () => dash.colors[0];
+const mix = (share) => 'color-mix(in oklab, ' + dash.colors[0] + ' ' + Math.round(Math.max(0, Math.min(1, share)) * 100) + '%, var(--color-bg))';
+
+dash.calc('headline', {
+  title: 'Headline figures',
+  description: 'The figures printed at the top of the page, taken from the run summary and counted from the lists.',
+  inputs: ['summary', 'languages', 'hypotheses', 'experiments', 'creators'],
+  fn: (summary, languages, hypotheses, experiments, creators) => {
+    const get = (measure) => Number((summary.find((row) => row.measure === measure) || {}).value);
+    const quiet = creators.map((row) => Number(row.hours_without_speech) || 0).sort((a, b) => b - a);
+    const total = quiet.reduce((sum, value) => sum + value, 0);
+    const top = quiet.slice(0, 5).reduce((sum, value) => sum + value, 0);
+    return [{
+      files: get('Audio files transcribed'), files_in_run: get('Audio files in the run'), hours: get('Hours transcribed'),
+      hours_without_speech: get('Hours without speech'), percent_without_speech: Math.round(get('Share of hours without speech') * 1000) / 10,
+      not_transcribed: get('Recordings not transcribed'), words_millions: Math.round(get('Words transcribed') / 10000) / 100,
+      half_silent: get('Recordings at least half without speech'), languages: languages.length, hypotheses: hypotheses.length,
+      experiments: experiments.length, top5_percent: total ? Math.round(top / total * 100) : 0,
+    }];
+  },
+});
+
+function need(el, ids) {
+  const out = [];
+  for (const id of ids) {
+    const source = dash.data(id);
+    if (source.status !== 'ok') {
+      el.replaceChildren(document.createTextNode(source.status === 'error' ? 'This part did not load.' : '—'));
+      return null;
+    }
+    out.push(source.data);
+  }
+  return out;
+}
+function canvas(el, height, label) {
+  const width = Math.max(260, el.clientWidth);
+  el.replaceChildren();
+  const svg = d3.select(el).append('svg').attr('viewBox', '0 0 ' + width + ' ' + height).attr('width', '100%').attr('role', 'img').attr('aria-label', label);
+  const tip = document.createElement('div');
+  tip.className = 'cs-tip';
+  tip.hidden = true;
+  el.appendChild(tip);
+  const show = (event, text) => {
+    tip.textContent = text;
+    tip.hidden = false;
+    const box = el.getBoundingClientRect();
+    tip.style.left = Math.max(0, Math.min(event.clientX - box.left + 12, box.width - tip.offsetWidth - 4)) + 'px';
+    tip.style.top = (event.clientY - box.top + 14) + 'px';
+  };
+  return { svg, width, show, hide: () => { tip.hidden = true; } };
+}
+function bars(el, items, label) {
+  const longest = d3.max(items, (d) => d.label.length) * 6.4 + 12;
+  const narrow = el.clientWidth < 520 || longest > el.clientWidth * 0.46;   // long labels go above their bars
+  const row = narrow ? 42 : 28;
+  const { svg, width } = canvas(el, items.length * row + 6, label);
+  const labelWidth = narrow ? 0 : Math.min(width * 0.46, d3.max(items, (d) => d.label.length) * 6.4 + 12);
+  const valueWidth = d3.max(items, (d) => d.text.length) * 6.6 + 12;
+  const x = d3.scaleLinear().domain([0, d3.max(items, (d) => d.value) || 1]).range([0, Math.max(30, width - labelWidth - valueWidth)]);
+  const g = svg.selectAll('g').data(items).join('g').attr('transform', (d, i) => 'translate(0,' + (3 + i * row) + ')');
+  g.append('text').attr('x', narrow ? 0 : labelWidth - 8).attr('y', narrow ? 11 : row / 2).attr('dy', narrow ? 0 : '0.35em')
+    .attr('text-anchor', narrow ? 'start' : 'end').text((d) => d.label);
+  g.append('rect').attr('x', labelWidth).attr('y', narrow ? 18 : 6).attr('height', narrow ? 14 : row - 12).attr('rx', 2)
+    .attr('width', (d) => Math.max(1, x(d.value))).style('fill', colour());
+  g.append('text').attr('class', 'cs-val').attr('x', (d) => labelWidth + Math.max(1, x(d.value)) + 6).attr('y', narrow ? 25 : row / 2).attr('dy', '0.35em').text((d) => d.text);
+}
+function rows(el, data, columns, key) {
+  el.replaceChildren(...data.map((row) => {
+    const tr = document.createElement('tr');
+    for (const column of columns) {
+      const td = document.createElement('td');
+      const value = column.text ? column.text(row) : row[column.field];
+      if (column.right) td.className = 'cs-r';
+      if (column.chip) {
+        const chip = document.createElement('span');
+        chip.className = 'cs-chip';
+        chip.dataset.tone = column.chip(row);
+        chip.textContent = value;
+        td.appendChild(chip);
+      } else {
+        td.textContent = value === null || value === undefined || value === '' ? '' : value;
+      }
+      tr.appendChild(td);
+    }
+    return tr;
+  }));
+}
+const number = (digits, suffix) => (field) => ({ field, right: true, text: (row) => row[field] === null || row[field] === '' || row[field] === undefined ? '' : fmt(Number(row[field]) * (suffix === '%' ? 100 : 1), digits) + (suffix || '') });
+
+dash.draw('fig', (el) => {
+  const source = dash.data(el.dataset.source);
+  if (source.status !== 'ok') { el.textContent = '—'; return; }
+  let row = source.data[Number(el.dataset.row) || 0];
+  if (el.dataset.where) {
+    const [column, value] = el.dataset.where.split('=').map(decodeURIComponent);
+    row = source.data.find((candidate) => String(candidate[column]) === value);
+  }
+  const value = row ? Number(row[el.dataset.field]) : NaN;
+  el.textContent = Number.isFinite(value) ? (el.dataset.prefix || '') + fmt(value, Number(el.dataset.digits) || 0) + (el.dataset.suffix || '') : '—';
+});
+
+dash.draw('chart-progress', (el) => {
+  const got = need(el, ['progress']);
+  if (!got) return;
+  const points = got[0].map((row) => ({ at: new Date(row.time_utc), hours: Number(row.hours_transcribed) })).filter((p) => Number.isFinite(p.hours));
+  const height = 260, margin = { top: 12, right: 54, bottom: 26, left: 40 };
+  const { svg, width, show, hide } = canvas(el, height, 'Line chart of cumulative hours of audio transcribed over the day');
+  const x = d3.scaleUtc().domain(d3.extent(points, (p) => p.at)).range([margin.left, width - margin.right]);
+  const y = d3.scaleLinear().domain([0, d3.max(points, (p) => p.hours)]).nice().range([height - margin.bottom, margin.top]);
+  svg.append('g').selectAll('line').data(y.ticks(5)).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
+  svg.append('g').selectAll('text').data(y.ticks(5)).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => fmt(d));
+  svg.append('g').selectAll('text').data(x.ticks(Math.max(3, Math.floor(width / 90)))).join('text').attr('x', x).attr('y', height - 8).attr('text-anchor', 'middle').text(d3.utcFormat('%H:%M'));
+  svg.append('path').datum(points).attr('fill', 'none').style('stroke', colour()).attr('stroke-width', 2).attr('d', d3.line().x((p) => x(p.at)).y((p) => y(p.hours)));
+  const last = points[points.length - 1];
+  svg.append('circle').attr('cx', x(last.at)).attr('cy', y(last.hours)).attr('r', 3.5).style('fill', colour());
+  svg.append('text').attr('class', 'cs-val').attr('x', x(last.at) + 7).attr('y', y(last.hours)).attr('dy', '0.35em').text(fmt(last.hours) + ' h');
+  const cursor = svg.append('line').attr('class', 'cs-axisline').attr('y1', margin.top).attr('y2', height - margin.bottom).attr('visibility', 'hidden');
+  const bisect = d3.bisector((p) => p.at).center;
+  svg.append('rect').attr('x', margin.left).attr('y', margin.top).attr('width', width - margin.left - margin.right).attr('height', height - margin.top - margin.bottom)
+    .attr('fill', 'transparent')
+    .on('pointermove', (event) => {
+      const point = points[bisect(points, x.invert(d3.pointer(event)[0]))];
+      cursor.attr('x1', x(point.at)).attr('x2', x(point.at)).attr('visibility', 'visible');
+      show(event, d3.utcFormat('%H:%M')(point.at) + ' UTC: ' + fmt(point.hours, 1) + ' hours');
+    })
+    .on('pointerleave', () => { cursor.attr('visibility', 'hidden'); hide(); });
+});
+
+dash.draw('chart-outcome', (el) => {
+  const got = need(el, ['outcome']);
+  if (!got) return;
+  const total = d3.sum(got[0], (row) => Number(row.recordings));
+  bars(el, got[0].map((row) => ({ label: row.outcome, value: Number(row.recordings), text: fmt(Number(row.recordings)) + ' (' + fmt(Number(row.recordings) / total * 100, 1) + '%)' })),
+    'Bar chart of the selected recordings by outcome');
+});
+
+dash.draw('rows-status', (el) => {
+  const got = need(el, ['status']);
+  if (!got) return;
+  const tone = (row) => (row.state === 'Done' || row.state === 'Frozen' ? 'ok' : row.state === 'Waits' ? 'warn' : 'plain');
+  rows(el, got[0], [{ field: 'workstream' }, { field: 'state', chip: tone }, { field: 'detail' }], 'workstream');
+});
+
+dash.draw('meter-budget', (el) => {
+  const got = need(el, ['budget']);
+  if (!got) return;
+  const amount = (item) => Number((got[0].find((row) => row.item === item) || {}).usd) || 0;
+  const bar = document.createElement('span');
+  bar.style.width = Math.min(100, amount('Spent so far') / (amount("Owner's limit") || 1) * 100) + '%';
+  bar.style.background = colour();
+  el.replaceChildren(bar);
+});
+
+dash.draw('chart-hist', (el) => {
+  const got = need(el, ['recordings']);
+  if (!got) return;
+  const shares = got[0].map((row) => Number(row.share_without_speech) * 100).filter(Number.isFinite);
+  const bins = d3.bin().domain([0, 100]).thresholds(d3.range(0, 100, 5))(shares.map((value) => Math.min(value, 99.999)));
+  const height = 250, margin = { top: 12, right: 10, bottom: 34, left: 40 };
+  const { svg, width, show, hide } = canvas(el, height, 'Histogram of the share of each recording without speech');
+  const x = d3.scaleLinear().domain([0, 100]).range([margin.left, width - margin.right]);
+  const y = d3.scaleLog().domain([0.7, d3.max(bins, (b) => b.length)]).range([height - margin.bottom, margin.top]);
+  const ticks = [1, 10, 100, 1000].filter((t) => t <= d3.max(bins, (b) => b.length));
+  svg.append('g').selectAll('line').data(ticks).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
+  svg.append('g').selectAll('text').data(ticks).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => fmt(d));
+  svg.append('g').selectAll('text').data([0, 20, 40, 60, 80, 100]).join('text').attr('x', x).attr('y', height - 16).attr('text-anchor', 'middle').text((d) => d + '%');
+  svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 2).attr('text-anchor', 'middle').text('Share of the running time without speech');
+  svg.append('g').selectAll('rect').data(bins.filter((b) => b.length)).join('rect').attr('x', (b) => x(b.x0) + 1).attr('width', (b) => Math.max(1, x(b.x1) - x(b.x0) - 2))
+    .attr('y', (b) => y(b.length)).attr('height', (b) => y(0.7) - y(b.length)).attr('rx', 2).style('fill', colour())
+    .on('pointermove', (event, b) => show(event, b.x0 + '% to ' + b.x1 + '%: ' + fmt(b.length) + ' recordings')).on('pointerleave', hide);
+});
+
+dash.draw('chart-top', (el) => {
+  const got = need(el, ['creators']);
+  if (!got) return;
+  const top = got[0].filter((row) => Number(row.hours_without_speech) > 0).sort((a, b) => Number(b.hours_without_speech) - Number(a.hours_without_speech)).slice(0, 12);
+  bars(el, top.map((row) => ({ label: row.creator_code, value: Number(row.hours_without_speech),
+    text: fmt(Number(row.hours_without_speech), 1) + ' h (' + fmt(Number(row.share_without_speech) * 100) + '% of ' + fmt(Number(row.hours), 1) + ' h)' })),
+    'Bar chart of the twelve creators with the most hours without speech');
+});
+
+dash.draw('chart-scatter', (el) => {
+  const got = need(el, ['recordings']);
+  if (!got) return;
+  const points = got[0].map((row) => ({ code: row.creator_code, minutes: Number(row.minutes), share: Number(row.share_without_speech) * 100, language: row.language })).filter((p) => p.minutes > 0);
+  const height = 270, margin = { top: 12, right: 12, bottom: 34, left: 40 };
+  const { svg, width, show, hide } = canvas(el, height, 'Scatter plot of recording length against share without speech');
+  const x = d3.scaleLog().domain([d3.min(points, (p) => p.minutes), d3.max(points, (p) => p.minutes)]).range([margin.left, width - margin.right]);
+  const y = d3.scaleLinear().domain([0, 100]).range([height - margin.bottom, margin.top]);
+  svg.append('g').selectAll('line').data([0, 25, 50, 75, 100]).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
+  svg.append('g').selectAll('text').data([0, 25, 50, 75, 100]).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => d + '%');
+  const marks = [1, 5, 20, 60, 240].filter((t) => t >= x.domain()[0] && t <= x.domain()[1]);
+  svg.append('g').selectAll('text').data(marks).join('text').attr('x', x).attr('y', height - 16).attr('text-anchor', 'middle').text((d) => d);
+  svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 2).attr('text-anchor', 'middle').text('Recording length in minutes');
+  svg.append('g').selectAll('circle').data(points).join('circle').attr('cx', (p) => x(p.minutes)).attr('cy', (p) => y(p.share)).attr('r', 2.6).style('fill', colour()).attr('fill-opacity', 0.38)
+    .on('pointermove', (event, p) => show(event, p.code + ', ' + p.language + ': ' + fmt(p.minutes, 1) + ' min, ' + fmt(p.share) + '% without speech')).on('pointerleave', hide);
+});
+
+dash.draw('chart-quiet', (el) => {
+  const got = need(el, ['recordings']);
+  if (!got) return;
+  const longest = got[0].map((row) => Number(row.longest_quiet_minutes)).filter((value) => value >= 0.5).sort(d3.ascending);
+  const points = longest.map((value, index) => ({ minutes: value, count: longest.length - index }));
+  const height = 250, margin = { top: 12, right: 12, bottom: 34, left: 40 };
+  const { svg, width, show, hide } = canvas(el, height, 'Step chart of how many recordings have a quiet stretch at least a given length');
+  const x = d3.scaleLog().domain([0.5, d3.max(longest)]).range([margin.left, width - margin.right]);
+  const y = d3.scaleLinear().domain([0, longest.length]).nice().range([height - margin.bottom, margin.top]);
+  svg.append('g').selectAll('line').data(y.ticks(5)).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
+  svg.append('g').selectAll('text').data(y.ticks(5)).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => fmt(d));
+  svg.append('g').selectAll('text').data([0.5, 1, 2, 5, 10, 20, 60].filter((t) => t <= d3.max(longest))).join('text').attr('x', x).attr('y', height - 16).attr('text-anchor', 'middle').text((d) => d);
+  svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 2).attr('text-anchor', 'middle').text('Longest quiet stretch in minutes');
+  svg.append('path').datum(points).attr('fill', 'none').style('stroke', colour()).attr('stroke-width', 2).attr('d', d3.line().curve(d3.curveStepAfter).x((p) => x(p.minutes)).y((p) => y(p.count)));
+  const two = points.find((p) => p.minutes >= 2);
+  if (two) {
+    svg.append('circle').attr('cx', x(2)).attr('cy', y(two.count)).attr('r', 3.5).style('fill', colour());
+    svg.append('text').attr('class', 'cs-val').attr('x', x(2) + 8).attr('y', y(two.count) - 8).text(fmt(two.count) + ' with 2 minutes or more');
+  }
+  const bisect = d3.bisector((p) => p.minutes).left;
+  svg.append('rect').attr('x', margin.left).attr('y', margin.top).attr('width', width - margin.left - margin.right).attr('height', height - margin.top - margin.bottom).attr('fill', 'transparent')
+    .on('pointermove', (event) => {
+      const minutes = x.invert(d3.pointer(event)[0]);
+      const point = points[Math.min(points.length - 1, bisect(points, minutes))];
+      show(event, fmt(point.count) + ' recordings have a quiet stretch of ' + fmt(minutes, 1) + ' minutes or more');
+    }).on('pointerleave', hide);
+});
+
+function heat(el, data, column, value, columnLabel, label, describe) {
+  const orders = Array.from(new Set(data.map((row) => Number(row.creator_order)))).sort(d3.ascending);
+  const columns = Array.from(new Set(data.map((row) => Number(row[column])))).sort(d3.ascending);
+  const cell = 5, margin = { top: 4, right: 4, bottom: 30, left: 38 };
+  const height = orders.length * cell + margin.top + margin.bottom;
+  const { svg, width, show, hide } = canvas(el, height, label);
+  const x = d3.scaleBand().domain(columns).range([margin.left, width - margin.right]).paddingInner(0.04);
+  const y = (order) => margin.top + (order - orders[0]) * cell;
+  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (row) => x(Number(row[column]))).attr('y', (row) => y(Number(row.creator_order)))
+    .attr('width', x.bandwidth()).attr('height', cell).style('fill', (row) => (row[value] === null || row[value] === '' ? 'var(--color-border-line)' : mix(Number(row[value]))))
+    .on('pointermove', (event, row) => show(event, describe(row))).on('pointerleave', hide);
+  const codes = new Map(data.map((row) => [Number(row.creator_order), row.creator_code]));
+  svg.append('g').selectAll('text').data(orders.filter((order, index) => index % 10 === 0)).join('text').attr('x', margin.left - 5).attr('y', (order) => y(order) + cell / 2)
+    .attr('dy', '0.35em').attr('text-anchor', 'end').text((order) => codes.get(order));
+  svg.append('g').selectAll('text').data(columns.filter((c, index) => columns.length <= 10 || index % 2 === 0)).join('text').attr('x', (c) => x(c) + x.bandwidth() / 2).attr('y', height - 16)
+    .attr('text-anchor', 'middle').text(columnLabel);
+}
+dash.draw('ramp', (el) => { el.style.background = 'linear-gradient(to right, ' + mix(0) + ', ' + mix(1) + ')'; });
+dash.draw('heat-position', (el) => {
+  const got = need(el, ['position']);
+  if (!got) return;
+  heat(el, got[0], 'tenth', 'share_not_covered', (c) => (c * 10) + '%', 'Heat map of the share of each tenth of the running time not covered by speech, by creator',
+    (row) => row.creator_code + ', ' + ((row.tenth - 1) * 10) + '% to ' + (row.tenth * 10) + '% of the running time: ' + fmt(Number(row.share_not_covered) * 100) + '% not covered by speech');
+});
+dash.draw('heat-newest', (el) => {
+  const got = need(el, ['newest20']);
+  if (!got) return;
+  heat(el, got[0], 'position_newest_first', 'share_without_speech', (c) => c, 'Heat map of the share without speech of each creator’s newest 20 recordings',
+    (row) => row.creator_code + ', recording ' + row.position_newest_first + ': ' + (row.share_without_speech === null || row.share_without_speech === '' ? 'not in this run or not transcribed' : fmt(Number(row.share_without_speech) * 100) + '% without speech'));
+});
+
+dash.draw('rows-languages', (el) => {
+  const got = need(el, ['languages']);
+  if (!got) return;
+  rows(el, got[0], [{ field: 'language' }, number(0)('audio_files'), number(1)('hours'), number(0)('creators'), number(1)('hours_without_speech')], 'language');
+});
+dash.draw('chart-languages', (el) => {
+  const got = need(el, ['languages']);
+  if (!got) return;
+  bars(el, got[0].filter((row) => row.language !== 'English').map((row) => ({ label: row.language, value: Number(row.audio_files),
+    text: fmt(Number(row.audio_files)) + ' files, ' + fmt(Number(row.hours), 1) + ' h' })), 'Bar chart of audio files per language other than English');
+});
+dash.draw('chart-basis', (el) => {
+  const got = need(el, ['language_basis']);
+  if (!got) return;
+  bars(el, got[0].map((row) => ({ label: row.basis, value: Number(row.audio_files), text: fmt(Number(row.audio_files)) + ' (' + fmt(Number(row.share) * 100) + '%)' })),
+    'Bar chart of audio files by how their language was decided');
+});
+
+dash.draw('rows-creators', (el) => {
+  const got = need(el, ['creators']);
+  if (!got) return;
+  const select = document.querySelector('#creator-sort');
+  const key = select ? select.value : 'hours_without_speech';
+  const sorted = got[0].slice().sort((a, b) => (key === 'creator_code' ? d3.ascending(a.creator_code, b.creator_code) : d3.descending(Number(a[key]) || 0, Number(b[key]) || 0)));
+  rows(el, sorted, [{ field: 'creator_code' }, number(0)('selected'), number(0)('transcribed'), number(1)('hours'), number(1)('hours_without_speech'),
+    number(0, '%')('share_without_speech'), number(1)('median_minutes'), number(0)('median_pace'), { field: 'languages' }], 'creator_code');
+});
+dash.draw('rows-hypotheses', (el) => {
+  const got = need(el, ['hypotheses']);
+  if (!got) return;
+  rows(el, got[0], [{ field: 'id' }, { field: 'hypothesis' }, { field: 'experiment' }, { field: 'confirmed_on' },
+    { field: 'status', chip: (row) => (row.status.startsWith('Ready') ? 'ok' : 'warn') }], 'id');
+});
+dash.draw('rows-experiments', (el) => {
+  const got = need(el, ['experiments']);
+  if (!got) return;
+  const select = document.querySelector('#experiment-group');
+  const group = select ? select.value : '';
+  rows(el, got[0].filter((row) => !group || row.group === group), [{ field: 'id' }, { field: 'experiment' }, { field: 'group' }, { field: 'value' }, { field: 'cost' }, { field: 'figures' },
+    { field: 'status', chip: () => 'plain' }], 'id');
+});
+
+dash.draw('chart-variance', (el) => {
+  const got = need(el, ['variance']);
+  if (!got) return;
+  const items = got[0].map((row) => ({ label: row.measure, value: Number(row.share_between_creators), low: Number(row.low), high: Number(row.high), creators: row.creators }));
+  const narrow = el.clientWidth < 520, row = narrow ? 44 : 30, margin = { top: 6, bottom: 26 };
+  const height = items.length * row + margin.top + margin.bottom;
+  const { svg, width, show, hide } = canvas(el, height, 'Dot plot of the share of variance between creators for seven measures, with 95% intervals');
+  const left = narrow ? 4 : Math.min(width * 0.46, d3.max(items, (d) => d.label.length) * 6.4 + 12);
+  const x = d3.scaleLinear().domain([0, 1]).range([left, width - 44]);
+  svg.append('g').selectAll('line').data([0, 0.25, 0.5, 0.75, 1]).join('line').attr('class', 'cs-gridline').attr('x1', x).attr('x2', x).attr('y1', margin.top).attr('y2', height - margin.bottom);
+  svg.append('g').selectAll('text').data([0, 0.25, 0.5, 0.75, 1]).join('text').attr('x', x).attr('y', height - 8).attr('text-anchor', 'middle').text((d) => fmt(d * 100) + '%');
+  const g = svg.selectAll('g.cs-item').data(items).join('g').attr('class', 'cs-item').attr('transform', (d, i) => 'translate(0,' + (margin.top + i * row) + ')');
+  g.append('text').attr('x', narrow ? left : left - 8).attr('y', narrow ? 12 : row / 2).attr('dy', narrow ? 0 : '0.35em').attr('text-anchor', narrow ? 'start' : 'end').text((d) => d.label);
+  const mid = narrow ? 28 : row / 2;
+  g.append('line').attr('x1', (d) => x(d.low)).attr('x2', (d) => x(d.high)).attr('y1', mid).attr('y2', mid).attr('stroke-width', 2).style('stroke', 'var(--ui-chart-muted)');
+  g.append('circle').attr('cx', (d) => x(d.value)).attr('cy', mid).attr('r', 4.5).style('fill', colour());
+  g.append('text').attr('class', 'cs-val').attr('x', (d) => x(d.high) + 6).attr('y', mid).attr('dy', '0.35em').text((d) => fmt(d.value * 100) + '%');
+  g.append('rect').attr('x', left).attr('y', 0).attr('width', width - left).attr('height', row).attr('fill', 'transparent')
+    .on('pointermove', (event, d) => show(event, d.label + ': ' + fmt(d.value * 100) + '% between creators (95% interval ' + fmt(d.low * 100) + '% to ' + fmt(d.high * 100) + '%), ' + d.creators + ' creators'))
+    .on('pointerleave', hide);
+});
+dash.draw('chart-kinds', (el) => {
+  const got = need(el, ['kinds']);
+  if (!got) return;
+  bars(el, got[0].map((row) => ({ label: row.kind, value: Number(row.recordings), text: fmt(Number(row.recordings)) })), 'Bar chart of 34 read recordings by kind');
+});
+dash.draw('chart-terms', (el) => {
+  const got = need(el, ['terms']);
+  if (!got) return;
+  bars(el, got[0].map((row) => ({ label: row.term_family, value: Number(row.percent_of_english_transcripts), text: fmt(Number(row.percent_of_english_transcripts)) + '%' })),
+    'Bar chart of the share of English transcripts containing each vocabulary family');
+});
+dash.draw('chart-artefacts', (el) => {
+  const got = need(el, ['artefacts']);
+  if (!got) return;
+  bars(el, got[0].map((row) => ({ label: row.artefact, value: Number(row.percent_of_transcripts), text: fmt(Number(row.percent_of_transcripts)) + '%' })),
+    'Bar chart of the share of transcripts with each recognizer artefact');
+});
+
+// Tabs: sections are stored in the page; the script only shows one and remembers it in the link.
+function open(name, link) {
+  const sections = document.querySelectorAll('#dash-root .cs-page > section.cs-section');
+  if (!Array.from(sections).some((section) => section.id === name)) return;
+  sections.forEach((section) => { section.hidden = section.id !== name; });
+  document.querySelectorAll('#dash-root .cs-tab').forEach((tab) => { tab.setAttribute('aria-selected', String(tab.dataset.tab === name)); });
+  if (link) dash.setLink(name);
+}
+document.querySelectorAll('#dash-root .cs-tab').forEach((tab) => { tab.addEventListener('click', () => open(tab.dataset.tab, true)); });
+document.querySelectorAll('#creator-sort').forEach((select) => { select.addEventListener('change', () => dash.draw('rows-creators')); });
+document.querySelectorAll('#experiment-group').forEach((select) => { select.addEventListener('change', () => dash.draw('rows-experiments')); });
+if (location.hash.length > 1) open(location.hash.slice(1), false);
+let shown = null;
+window.addEventListener('beforeprint', () => {
+  const sections = document.querySelectorAll('#dash-root .cs-page > section.cs-section');
+  if (shown === null) shown = Array.from(sections).filter((section) => !section.hidden).map((section) => section.id);
+  sections.forEach((section) => { section.hidden = false; });
+});
+window.addEventListener('afterprint', () => {
+  if (shown === null) return;
+  const keep = shown;
+  shown = null;
+  document.querySelectorAll('#dash-root .cs-page > section.cs-section').forEach((section) => { section.hidden = !keep.includes(section.id); });
+});
+
+</script>
+</body>
+</html>
