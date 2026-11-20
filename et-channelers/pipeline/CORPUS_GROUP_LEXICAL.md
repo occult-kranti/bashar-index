@@ -78,6 +78,18 @@ prevents competing ASR. Private immutable outputs appear under
 must fit the shared 23 GB project limit and leave 12 GB disk spare. The output
 does not publish terms or text.
 
+## Review the effect of the similarity threshold
+
+The second panel can use the same saved GPU cosine scores to examine which groups become connected when the threshold changes. Run this export in the plotting environment after the lexical generation exists.
+
+```powershell
+python -m pipeline.lexical_cluster_figures --generation $lexicalGeneration --out $privateFigures --thresholds .25 .35 .45 .55 .65 .75 .85 .95
+```
+
+The PNG and SVG plot the share of assessed groups in the largest connected component across the chosen thresholds. Separate lines represent creators and reviewed claimed sources. A line needs at least one eligible pair. Connections can pass through an intermediate group. A flat curve over several thresholds describes this sample and its shared vocabulary.
+
+The export includes every within-kind pair in a CSV, with text coverage for both groups and counts of shared texts and recording families. Pairs sharing either are excluded from the graph. A second CSV gives eligible groups, eligible comparisons, edges, isolated groups and components at every threshold. An absent cosine remains missing. The panel can trace a change in the curve back to the affected recording groups. [Figure exporter](lexical_cluster_figures.py)
+
 Fixture QA only:
 
 ```powershell
