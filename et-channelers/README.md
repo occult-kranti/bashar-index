@@ -36,7 +36,7 @@ Work on the extraterrestrial-channeler thread of the Bashar Index: research note
 | **Handoff (start here when resuming)** | [`HANDOFF.md`](HANDOFF.md): where everything is, how to set up a new Codespace, what was paused and how to start it again. |
 | Dashboard hub | <https://occult-kranti.github.io/bashar-index/dashboards/>: all current public interfaces. |
 | Collection dashboard | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/>: current acquisition snapshot and dated historical archive, backed by [`plan/`](plan/). The earlier claude.ai artifact is historical. |
-| Selected-video upload timeline | [`dashboard/collection/timeline.html`](dashboard/collection/timeline.html): the full 1,420-video / 74-creator sample, with exact, estimated and unknown date evidence, filters and CSV/JSON exports. |
+| Selected-video publication timeline | The [timeline](dashboard/collection/timeline.html) covers 1,976 regular uploads across 101 channels. Filter by creator, recording or date source, and compare monthly and annual distributions. |
 | Prediction timelines | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html>: filterable candidate statements; candidates are not verified predictions. |
 | Channeler YouTube index | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/>. Page source: [`dashboard/index.html`](dashboard/index.html). |
 | Channeler/entity directory | <https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/#/entities>: reviewed relationships and source links, with uncertain attribution kept explicit. |
@@ -63,9 +63,9 @@ The channel table's **in progress** value is downloading + processing + awaiting
 | Queued | Selected by the confirmed running cohort, with no attempt folder yet. |
 | Other pending | All other unsaved entries, including held, uncertain, unconfirmed or separately scheduled cases; no retry permission is implied. |
 
-The [upload-date timeline](dashboard/collection/timeline.html) reconciles **1,420 videos / 74 creators: 581 exact dates, 838 estimates and one unknown**. Exact dates come from matching saved YouTube metadata; all 1,419 original index estimates remain available, including the 577 that differ from an exact override. Upload dates are not recording dates. These capped newest-20 windows differ across creators and do not measure total channel production or a common observation period.
+The publication timeline covers all 1,976 regular recordings in the November 19 selection. Watch-page publication fields supply 49 dates, extractor availability timestamps supply 1,530 and observed channel listing ages give 397 estimated intervals. Nineteen intervals cross a year boundary and 282 cross a month boundary. Each creator contributes a different observation span. [Timeline](dashboard/collection/timeline.html) · [Evidence methods and figure](research/recording-dates-2026-11-19.md)
 
-Download the [video-level date CSV](dashboard/collection/dataset_timeline_videos.csv), [monthly distribution CSV](dashboard/collection/dataset_timeline_monthly.csv) or [complete timeline JSON](dashboard/collection/dataset_timeline.json). The standalone HTML embeds its data and local Plotly renderer. `pipeline/dataset_timeline.py` uses local saved inputs only, validates membership/calendar dates/conflicts, and strips private cache paths. Saved-audio flags reflect the supplied receipt snapshot. The creator activity CSV, static [channel counts CSV](plan/channel_download_coverage.csv) and [saved-video CSV](plan/downloaded_videos.csv) serve different grains.
+The recording-level export retains date fields, interval endpoints, observation times, public source links and evidence checksums. The earlier 1,420-video selection remains available for historical comparisons. [Current recording dates](dashboard/collection/recording-dates.csv) · [Current monthly distribution](dashboard/collection/dates-by-month.csv) · [Current annual distribution](dashboard/collection/dates-by-year.csv) · [Earlier selection](dashboard/collection/dataset_timeline.json)
 
 ## At a glance
 
