@@ -48,6 +48,12 @@ cost of every request, and the code refuses work that would pass a cap.
 **A4. What cannot run yet.** H7 and H10 need the replication wave (later uploads). H8 needs the comparison set.
 They stay registered and unrun. H1 to H6 and H9 can run once their labels exist; H3 needs no labels.
 
+**A5. Stricter verdict, added 2026-11-20 after H3 was tested.** H3 passed its registered shift test on the
+hold-out while its interval over creators included zero and the larger seen sample showed nothing. For every
+hypothesis not yet run, "supported" therefore also requires the 90% interval over creators to exclude zero.
+H3's own verdict is reported as registered, with this weakness stated beside it in
+[`results/README.md`](results/README.md).
+
 ## Procedure freeze
 
 One entry per hypothesis, written before that hypothesis touches a hold-out transcript. For the hypotheses
@@ -63,3 +69,4 @@ that need labels the entry will also hold the hashes of the codebooks and prompt
 | Seen creators, exploratory | trimmed U 0.019 (90% interval -0.129 to 0.165; 61 creators, 558 recordings; 36 creators positive). Untrimmed U 0.427 (0.248 to 0.608; 64 creators). File [`results/h3-seen-exploratory.json`](results/h3-seen-exploratory.json) |
 | Hold-out, counted before the test | 17 creators and 169 recordings are eligible. With the between-creator spread seen above (SD 0.66) the standard error is about 0.16: the test can detect a U of about 0.54 at the registered threshold with 80% power, and a 90% interval will be about 0.26 wide on each side. So it cannot return "negligible", and it can support H3 only if the effect is several times the smallest effect of interest |
 | Interval procedure | percentile bootstrap over creators, then recordings; its coverage has not been audited (the coverage audit CA has not run) |
+| Result, run 2026-11-20 20:39 UTC with the code above | U 0.169 on 17 creators and 169 recordings; 90% interval -0.130 to 0.495; shift p 0.0007; 9 of 17 creators positive. Supported by the registered rule, and fragile: see [`results/README.md`](results/README.md) |
