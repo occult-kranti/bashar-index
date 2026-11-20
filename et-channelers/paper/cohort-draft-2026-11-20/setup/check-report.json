@@ -1,0 +1,135 @@
+{
+ "bib_entries": 70,
+ "citations_used": 70,
+ "citations_missing": [],
+ "bib_entries_not_cited": [],
+ "number_macros_used": 333,
+ "capitalised_macros_undefined": [],
+ "literal_numerals": {
+  "0": 2,
+  "00": 1,
+  "1": 9,
+  "13": 1,
+  "150": 1,
+  "2": 4,
+  "256": 1,
+  "27": 1,
+  "3": 1,
+  "30": 3,
+  "300": 1,
+  "4": 1,
+  "403": 1,
+  "5": 2,
+  "50": 1,
+  "500": 1,
+  "6": 1,
+  "95": 5
+ },
+ "literal_numeral_contexts": {
+  "0": [
+   "length; parts of a whole as log-ratios. \\\\ R10 & The newest \\NPerCreator{} a",
+   "ts and word lists before any text is read (R10).   first publishes a feasibi"
+  ],
+  "00": [
+   "e they describe the \\snap, taken at about 13:00 UTC while the run was still g"
+  ],
+  "1": [
+   "ption{The experiments of the catalogue, part 1 of 2. None has been run. ``Th",
+   "has a stated reference distribution, $p = (b+1)/(m+1)$, and a check that a p",
+   "stated reference distribution, $p = (b+1)/(m+1)$, and a check that a planted"
+  ],
+  "13": [
+   "wise they describe the \\snap, taken at about 13:00 UTC while the run was stil"
+  ],
+  "150": [
+   "r.} Among \\TermBase{} English transcripts of 150 words or more, \\TermSoul\\% co"
+  ],
+  "2": [
+   "{The experiments of the catalogue, part 1 of 2. None has been run. ``Three l",
+   "ts few creators: description, no tests. \\\\ R12 & Topics, clusters and axes n",
+   "ption{The experiments of the catalogue, part 2 of 2. None has been run.}   \\"
+  ],
+  "256": [
+   "er, byte count and MD5 digest of each; a SHA-256 digest is recorded at acquisi"
+  ],
+  "27": [
+   "hanksLateWindowPct\\% of these segments start 27 to 30 seconds into a \\WindowS"
+  ],
+  "3": [
+   "e; ``no stable structure'' is a result. \\\\ R13 & Nothing is called distincti"
+  ],
+  "30": [
+   "rds{} hold fewer than 50 words. Stretches of 30 seconds or more without speec",
+   "ateWindowPct\\% of these segments start 27 to 30 seconds into a \\WindowSeconds",
+   "ii): \\NSpanWithinMonth{} creators fit inside 30 days and \\NSpanOverTwoYears{}"
+  ],
+  "300": [
+   " and not at random. Of the \\ReadLongN{} with 300 words or more, \\KindChannelle"
+  ],
+  "4": [
+   "nnelling until a comparison set exists. \\\\ R14 & Every figure shows an inter"
+  ],
+  "403": [
+   "sed \\NFailedForbidden{} media requests (HTTP 403), and \\NFailedMetadata{} reco"
+  ],
+  "5": [
+   "napshot, and has a data file behind it. \\\\ R15 & Public outputs hold numbers",
+   "ers, coded identifiers and derived labels (R15), and rankings on selling, fo"
+  ],
+  "50": [
+   "eech and \\NUnderFiftyWords{} hold fewer than 50 words. Stretches of 30 second"
+  ],
+  "500": [
+   " is the moving-average type-token ratio over 500-word windows). For pace, the "
+  ],
+  "6": [
+   " labels; claims are reported as claims. \\\\ R16 & Cited numbers are re-checke"
+  ],
+  "95": [
+   "e estimate for pace is \\IccPaceSeen{} with a 95\\% bootstrap interval of \\IccP",
+   "to \\IccSeenRecordingsMax{} recordings), with 95\\% percentile intervals from \\",
+   "an and \\ShareBelowCutoffPninetyfive{} at the 95th percentile. We treat log-pr"
+  ]
+ },
+ "privacy_names_checked": 230,
+ "privacy": {
+  "main.tex": {
+   "banned_words": [],
+   "creator_names_found": 0
+  },
+  "README.md": {
+   "banned_words": [],
+   "creator_names_found": 0
+  },
+  "setup/setup-numbers.tex": {
+   "banned_words": [],
+   "creator_names_found": 0
+  },
+  "floats/tab_artefacts.tex": {
+   "banned_words": [],
+   "creator_names_found": 0
+  },
+  "floats/tab_cohort.tex": {
+   "banned_words": [],
+   "creator_names_found": 0
+  },
+  "floats/tab_descriptives.tex": {
+   "banned_words": [],
+   "creator_names_found": 0
+  },
+  "floats/tab_kinds.tex": {
+   "banned_words": [],
+   "creator_names_found": 0
+  },
+  "floats/tab_variance.tex": {
+   "banned_words": [],
+   "creator_names_found": 0
+  }
+ },
+ "quoted_spans_in_main": [
+  "channelled speech",
+  "Three levels",
+  "no stable structure",
+  "no difference"
+ ]
+}

@@ -1,0 +1,85 @@
+% setup-numbers.tex : numbers stated in the data, transcription and experimental-setup sections that are not in
+% findings/numbers.tex. Written by hand for main.tex on 2026-11-20; each macro names its source file and place.
+% Paths are relative to the project worktree unless marked (private) or (computed).
+% These are design parameters and collection facts, not results. They change only if the source documents change.
+% Strip these comments before any source upload: they name internal file paths (no person or creator).
+
+% ---- Collection and verification ----
+\newcommand{\NVerifiedObjects}{3{,}892}% knowledge-transfer/pre-analysis-checkpoint.md : 'all 3,892 required audio and provenance objects'
+\newcommand{\FailedMaxPerCreator}{3}% (private) plan-and-data-audit.md 4 Recordings per creator : 'at most 3 per creator'
+\newcommand{\NPublisherCreatorsSnap}{12}% (private) plan-and-data-audit.md 3.10 : publisher editions come from 12 creators at the snapshot
+
+% ---- Recordings held for a decision at the snapshot ----
+\newcommand{\HeldNoSpeech}{11}% (private) plan-and-data-audit.md 3.1 : held, no reliable speech
+\newcommand{\HeldIncomplete}{8}% (private) plan-and-data-audit.md 3.1 : held, no complete transcript
+\newcommand{\HeldLanguage}{2}% (private) plan-and-data-audit.md 3.1 : held, language confidence insufficient
+\newcommand{\HeldAlignment}{2}% (private) plan-and-data-audit.md 3.1 : held, word-text alignment
+
+% ---- Transcription worker (pipeline/GPU_ASR_SETUP.md) ----
+\newcommand{\SampleRateKhz}{16}% pipeline/GPU_ASR_SETUP.md : '30-second, non-overlapping 16 kHz windows'
+\newcommand{\ParallelWindowsMax}{four}% pipeline/GPU_ASR_SETUP.md : lease parallel_windows, 1 to 4
+\newcommand{\DistilSpeedup}{six}% pipeline/GPU_ASR_SETUP.md : English-only model 'about six times faster on the reference GPU'
+\newcommand{\UtilTarget}{0.80}% pipeline/GPU_ASR_SETUP.md : rolling_utilization_target up to 0.80
+\newcommand{\HardStopCelsius}{85}% pipeline/GPU_ASR_SETUP.md : 'the hard stop at 85 C is unchanged'
+\newcommand{\VramCeilingGb}{6.5}% pipeline/GPU_ASR_SETUP.md : 'The VRAM ceiling cannot exceed 6.5 GB'
+\newcommand{\DurationToleranceSeconds}{two}% pipeline/GPU_ASR_SETUP.md : 'final duration must agree within two seconds'
+\newcommand{\PacketLimit}{20}% pipeline/GPU_ASR_SETUP.md : 'more than 20 in one recording'
+\newcommand{\PacketSecondsLimit}{two}% pipeline/GPU_ASR_SETUP.md : 'or more than two seconds lost'
+\newcommand{\SecondLookLogp}{\ensuremath{-}0.5}% pipeline/GPU_ASR_SETUP.md --channel-language : detector runs again when the mean log-probability is below -0.5
+\newcommand{\CreatorRuleMinDecisions}{two}% pipeline/GPU_ASR_SETUP.md --channel-language : 'all English (at least two)'
+\newcommand{\QuietStretchSeconds}{30}% pipeline/GPU_ASR_SETUP.md : 'stretches of 30 seconds or more with no recognized speech'
+
+% ---- Throughput (computed from the public progress table by work2/throughput.py; saved in setup/throughput.json) ----
+\newcommand{\ThroughputFirstRow}{06:09}% knowledge-transfer/partial-cohort-asr-progress.md : first row, time (UTC)
+\newcommand{\ThroughputLastRow}{16:18}% knowledge-transfer/partial-cohort-asr-progress.md : last row, time (UTC)
+\newcommand{\ThroughputWallHours}{10.15}% (computed) setup/throughput.json : wall_hours
+\newcommand{\ThroughputAudioHours}{595.3}% (computed) setup/throughput.json : audio_hours_between (710.1 - 114.8)
+\newcommand{\ThroughputRate}{58.7}% (computed) setup/throughput.json : audio_hours_per_wall_hour
+\newcommand{\EnglishSpeedMin}{56.0}% knowledge-transfer/partial-cohort-asr-progress.md : column 'English speed', smallest value
+\newcommand{\EnglishSpeedMax}{72.3}% knowledge-transfer/partial-cohort-asr-progress.md : column 'English speed', largest value
+\newcommand{\ProgNonSpeechHours}{87.5}% knowledge-transfer/partial-cohort-asr-progress.md : last row, 'Without speech (hours)'
+\newcommand{\ProgNonSpeechPct}{12.3}% (computed) setup/throughput.json : last_row_nonspeech_pct (87.5 / 710.1)
+
+% ---- Experiment catalogue: design parameters (research/analysis-experiments-2026-11-20/README.md) ----
+\newcommand{\VpMeasures}{20}% README.md 4.1 VP : 'Twenty measures fixed in advance'
+\newcommand{\VpWindowWords}{100}% README.md 4.1 VP : window of 100 consecutive words for timing measures
+\newcommand{\VpWindowWordsRates}{200}% README.md 4.1 VP : 200 words for word rates
+\newcommand{\VpWindowCap}{40}% README.md 4.1 VP : at most 40 evenly spaced windows per recording
+\newcommand{\NResamples}{2{,}000}% README.md 4.1 VP, PO : 2,000 bootstrap resamples
+\newcommand{\RankDraws}{4{,}000}% README.md 4.1 EB : 4,000 draws of creator values for rank intervals
+\newcommand{\CaStudies}{1{,}000}% README.md 4.1 CA : 1,000 simulated studies per scenario
+\newcommand{\HrExcerpts}{54}% README.md 4.1 HR sample (a) : 54 five-minute audio excerpts
+\newcommand{\HrExcerptHours}{4.5}% README.md 4.1 HR sample (a) : 4.5 hours
+\newcommand{\HrDoublePct}{20}% README.md 4.1 HR sample (a) : two transcribers on 20% of them
+\newcommand{\HrBoundaryRecordings}{60}% README.md 4.1 HR sample (c) : 60 recordings from at least 30 creators
+\newcommand{\HrMinCreators}{30}% README.md 4.1 HR samples (a) and (c) : at least 30 creators
+\newcommand{\HrNameCreators}{20}% README.md 4.1 HR sample (d) : 20 creators
+\newcommand{\HrNameRecordings}{10}% README.md 4.1 HR sample (d) : 10 recordings each
+\newcommand{\HrNameHours}{10}% README.md 4.1 HR sample (d) : about 10 hours of listening
+\newcommand{\SpRecordings}{40}% README.md 4.1 SP : 40 recordings from at least 20 creators
+\newcommand{\BridgeMinutesMin}{5}% ANALYSIS_PLAN.md 13.7 : bridge recordings 5 to 60 minutes long
+\newcommand{\BridgeMinutesMax}{60}% ANALYSIS_PLAN.md 13.7 : bridge recordings 5 to 60 minutes long
+\newcommand{\PoBins}{20}% README.md 4.2 PO : 20 equal bins of running time
+\newcommand{\PoShiftDraws}{999}% README.md 4.2 PO : circular-shift null, 999 draws
+\newcommand{\PoMaxContrasts}{four}% README.md 4.2 PO and 7 Step 0 : at most 4 registered position contrasts
+\newcommand{\LxTokens}{1{,}000}% README.md 4.2 LX : random 1,000-token subsample
+\newcommand{\SgBoundaryGate}{0.70}% README.md 4.2 SG : gate, boundary F1 at least 0.70
+\newcommand{\SgKappaGate}{0.60}% README.md 4.2 SG : gate, kappa at least 0.60
+\newcommand{\PermConfirmatory}{9{,}999}% README.md 4.3 SM, SV; 4.4 SY and ANALYSIS_PLAN.md 3.6 : 9,999 permutations
+\newcommand{\SvSmallestShare}{0.05}% README.md 4.3 SV : smallest share of interest (proposed)
+\newcommand{\EvEvents}{20}% README.md 4.4 EV : 20 dated events and 20 placebo word lists
+\newcommand{\EvGate}{eight}% README.md 4.4 EV : continues only if 8 or more events pass the gate
+\newcommand{\LgMeasures}{eight}% README.md 4.4 LG : eight language-free measures
+\newcommand{\SyNearDays}{3}% README.md 4.4 SY : pairs 3 days or less apart
+\newcommand{\SyFarDaysMin}{14}% README.md 4.4 SY : pairs 14 to 60 days apart
+\newcommand{\SyFarDaysMax}{60}% README.md 4.4 SY : pairs 14 to 60 days apart
+\newcommand{\SlEarlierCreators}{15}% README.md 4.5 SL : 'earlier 20' sample for about 15 creators
+\newcommand{\SlCommonWindowDays}{120}% README.md 4.5 SL : common window of 120 days
+\newcommand{\MinSeeds}{five}% README.md 3 R12 : at least 5 seeds
+\newcommand{\ModelRuns}{five}% README.md 3 R7 : consistency over 5 model runs
+\newcommand{\SolidMarkMin}{eight}% README.md 3 R14 : solid marks need 8 or more recordings, hollow marks 5 to 7
+\newcommand{\RatePerWords}{1{,}000}% README.md 3 R9 : rates per 1,000 words
+
+% ---- Literature study ----
+\newcommand{\NIcwsmSearches}{four}% research/analysis-experiments-2026-11-20/README.md 1 : 'Four searches found no ICWSM paper on channelling, prophecy or failed predictions'
+\newcommand{\NIcwsmNoArxiv}{nine}% references-report.md (beside main.tex) : 'ICWSM papers for which no arXiv version was found', nine rows

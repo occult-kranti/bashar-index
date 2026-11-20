@@ -1,0 +1,171 @@
+% tables.tex : five tables, ready to \input after numbers.tex. Needs \usepackage{booktabs} and \usepackage{array}.
+% Every number is a macro from numbers.tex; the source of each macro is given there.
+% All five fit one column (3.3 in) of a two-column letter page at \small; checked with a local harness, not with the conference style file.
+% Captions are proposals; keep the caveat sentence in each. Labels: tab:cohort, tab:descriptives, tab:variance, tab:artefacts, tab:kinds.
+% Table 3 refers to Figure~\ref{fig:variance}: give figure 3 that label.
+% Snapshot = 2026-11-20 about 13:00 UTC, 1,213 finished transcripts (1,211 distinct audio files) of 1,729. PROVISIONAL.
+
+% ---------------------------------------------------------------------------
+% Table 1. Cohort and run.
+% ---------------------------------------------------------------------------
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.71\columnwidth}r@{}}
+\toprule
+Quantity & Count \\
+\midrule
+Creators & \NCreators \\
+Selected recordings (newest \NPerCreator{} per creator) & \NSelected \\
+\quad creators with \NPerCreator{} / with fewer & \NCreatorsFullTwenty{} / \NCreatorsFewerThanTwenty \\
+Archived with verified audio & \NArchived \\
+\quad not downloadable (\NFailedCreators{} creators) & \NFailed \\
+Held as other text kinds, outside the run & \NOtherText \\
+Speech-to-text run: recordings & \NRunRecordings \\
+\quad distinct audio files & \NRunAudio \\
+\quad audio hours & \RunHours \\
+\midrule
+\multicolumn{2}{@{}l}{\emph{Snapshot of \SnapDate{} (provisional)}} \\
+Finished audio files (share of the run) & \SnapAudio{} (\SnapPctAudio\%) \\
+Audio hours / speech hours & \SnapHours{} / \SnapSpeechHours \\
+Words (millions) & \SnapWordsMillions \\
+Creators with a transcript / with five or more & \SnapCreatorsAny{} / \SnapCreatorsFivePlus \\
+Recordings held for a decision & \SnapHeld \\
+English / other-language audio files & \SnapEnglish{} / \SnapNonEnglish \\
+Creators reserved as hold-out & \NHoldout \\
+Transcripts checked by a person & \NHumanReviewed \\
+\midrule
+Finished audio files, \NowStamp & \NowAudio{} (\NowPctAudio\%) \\
+\bottomrule
+\end{tabular}
+\caption{Cohort and transcription run. The snapshot rows describe the \SnapLines{} transcripts finished on \SnapDate{} at about 13:00 UTC; the run was still going, and the unfinished part is not a random remainder. Other-language files come from \SnapNonEnglishCreators{} creators. The last row is a count from the run ledger when the tables were built.}
+\label{tab:cohort}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% Table 2. Descriptive quartiles.
+% ---------------------------------------------------------------------------
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.40\columnwidth}rrrr@{}}
+\toprule
+Measure & $n$ & Q1 & Median & Q3 \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Recordings}} \\
+Length (minutes) & \LenN & \LenQi & \LenMed & \LenQiii \\
+Words & \WordsN & \WordsQi & \WordsMed & \WordsQiii \\
+Pace (words per minute of speech) & \PaceN & \PaceQi & \PaceMed & \PaceQiii \\
+Share of time without speech & \NonSpN & \NonSpQi & \NonSpMed & \NonSpQiii \\
+Mean segment log-probability & \LogpN & \LogpQi & \LogpMed & \LogpQiii \\
+Share of segments ending in a question mark & \QuestN & \QuestQi & \QuestMed & \QuestQiii \\
+Lexical variety (MATTR-500) & \MattrN & \MattrQi & \MattrMed & \MattrQiii \\
+\midrule
+\multicolumn{5}{@{}l}{\emph{Creators with five or more transcripts}} \\
+Median length (minutes) & \SnapCreatorsFivePlus & \CrLenQi & \CrLenMed & \CrLenQiii \\
+Median pace & \SnapCreatorsFivePlus & \CrPaceQi & \CrPaceMed & \CrPaceQiii \\
+Share of time without speech & \SnapCreatorsFivePlus & \CrNonSpQi & \CrNonSpMed & \CrNonSpQiii \\
+\bottomrule
+\end{tabular}
+\caption{Descriptive quartiles at the snapshot of \SnapDate{} (\SnapAudio{} distinct audio files; provisional). Pace is for English recordings with at least one minute of speech; lexical variety is for English recordings of 500 words or more; words are counted over the \WordsN{} recording rows. No transcript was checked by a person, so word counts and pace carry unmeasured recognition error. The recording rows include \LowCountInSnapshot{} files from creators with fewer than five transcripts; without them the medians are \SeenLenMed{} minutes, \SeenPaceMed{} words per minute and \SeenNonSpMed.}
+\label{tab:descriptives}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% Table 3. Share of variance between creators.
+% ---------------------------------------------------------------------------
+\begin{table}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.46\columnwidth}rrrr@{}}
+\toprule
+Measure (recording level) & Cr. & Rec. & ICC & $n_{\mathrm{eff}}$ \\
+\midrule
+Lexical variety (MATTR-500) & \IccMattrCreators & \IccMattrRecordings & \IccMattr & \NeffMattr \\
+Pace & \IccPaceCreators & \IccPaceRecordings & \IccPace & \NeffPace \\
+Share of time without speech & \IccNonSpCreators & \IccNonSpRecordings & \IccNonSp & \NeffNonSp \\
+Mean segment log-probability & \IccLogpCreators & \IccLogpRecordings & \IccLogp & \NeffLogp \\
+Length (log minutes) & \IccLenCreators & \IccLenRecordings & \IccLen & \NeffLen \\
+Share of segments ending in a question mark & \IccQuestCreators & \IccQuestRecordings & \IccQuest & \NeffQuest \\
+Repeated five-word share & \IccRepCreators & \IccRepRecordings & \IccRep & \NeffRep \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.6em}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.46\columnwidth}rrr@{}}
+\toprule
+Measure (window level, pilot) & Creator & Rec. & Within \\
+\midrule
+Articulation rate (log) & \VpArtCreator & \VpArtRecording & \VpArtWithin \\
+Pause-time share & \VpPauseCreator & \VpPauseRecording & \VpPauseWithin \\
+Segment log-probability & \VpSegCreator & \VpSegRecording & \VpSegWithin \\
+\bottomrule
+\end{tabular}
+\caption{Share of variance between creators. Top: one-way intraclass correlation, ICC(1), over creators (Cr.) with two or more recordings (Rec.) that hold at least one minute of speech, at the snapshot of \SnapDate{} (\SnapLines{} transcripts; provisional). $n_{\mathrm{eff}}$ is the number of recordings divided by the design effect $1 + (\bar{m} - 1)\,\mathrm{ICC}$, where $\bar{m}$ is the mean number of recordings per creator. Bottom: shares of variance between creators, between recordings of one creator and within a recording, from a pilot on \VpLedger{} transcripts (\VpCreators{} creators, \VpRecordings{} recordings, \VpArtWindows{} windows; \VpSegWindows{} for log-probability) whose code was not reviewed. Intervals for the top panel are in Figure~\ref{fig:variance}.}
+\label{tab:variance}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% Table 4. Recognizer artefacts.
+% ---------------------------------------------------------------------------
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.52\columnwidth}rr@{}}
+\toprule
+Artefact & Segments & Transcripts \\
+\midrule
+Inserted two-word thanks phrase & \ThanksSegments & \ThanksTranscripts{} (\ThanksPct\%) \\
+\quad starting 27 to 30\,s into a decoding window & \ThanksLateWindow{} (\ThanksLateWindowPct\%) & \\
+\quad with under 1\,s of gap on both sides & \ThanksEmbedded{} (\ThanksEmbeddedPct\%) & \\
+Isolated segment of at most three words, 5\,s of silence on both sides & \IsoSegments & \IsoTranscripts{} (\IsoPct\%) \\
+\quad starting on a multiple of 30\,s & \IsoGridPct\% & \\
+Segment with compression ratio above 2.4 & \LoopSegments & \LoopTranscripts{} (\LoopPct\%) \\
+\midrule
+Stored non-speech value of zero & & \ZeroNonSpeech{} of \ArtBase \\
+Fewer than 50 words & & \NUnderFiftyWords{} of \SnapAudio \\
+At least half of the running time without speech & & \NHalfNonSpeech{} of \SnapAudio \\
+\bottomrule
+\end{tabular}
+\caption{Recognizer artefacts found by pattern rules, with no audio played and no human reference. Rows above the rule: \ArtEnglishBase{} English transcripts (\ArtSegmentBase{} segments) among the \ArtBase{} finished when the reading pass ran on \SnapDate; percentages in the last column are of those transcripts. The last two rows are from the snapshot of \SnapLines{} transcripts. Counts come from unreviewed code and are provisional; the rules have not been checked against listening.}
+\label{tab:artefacts}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% Table 5. What the read recordings are; term families.
+% ---------------------------------------------------------------------------
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.78\columnwidth}r@{}}
+\toprule
+Kind of recording (read sample, 300 words or more) & $n$ \\
+\midrule
+Channelled voice or relayed message & \KindChannelled \\
+Interview or podcast without channelling & \KindInterview \\
+Guided meditation & \KindMeditation \\
+Talk in the creator's own voice & \KindOwnVoice \\
+Hypnosis session with a client & \KindHypnosis \\
+Event advertisement & \KindAdvert \\
+\midrule
+Total & \ReadLongN \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.6em}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.78\columnwidth}r@{}}
+\toprule
+Term family present in the transcript & Share \\
+\midrule
+Soul & \TermSoul\% \\
+Frequency or vibration & \TermFrequency\% \\
+Breath & \TermBreath\% \\
+Ascension & \TermAscension\% \\
+Any extraterrestrial or alien word & \TermExtraterrestrial\% \\
+\bottomrule
+\end{tabular}
+\caption{Top: kinds of recording among the \ReadLongN{} read recordings with 300 words or more. The \ReadN{} read recordings (\ReadCreators{} creators) were chosen by stratum for contrast, not at random, and one reader assigned the kinds, so the counts do not estimate corpus shares. Bottom: share of \TermBase{} English transcripts of 150 words or more that contain a term family, from crude regular expressions over the \ArtBase{} transcripts finished on \SnapDate; the lists were not validated and misrecognized words lower the counts. Both panels are provisional.}
+\label{tab:kinds}
+\end{table}

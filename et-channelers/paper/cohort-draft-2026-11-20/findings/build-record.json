@@ -1,0 +1,20 @@
+{
+ "built_utc": "2026-11-20T17:15:27.701395+00:00",
+ "ledger_lines": 1643,
+ "ledger_distinct_audio": 1641,
+ "ledger_hours": 724.5,
+ "ledger_languages": {
+  "en": 1616,
+  "es": 6,
+  "pt": 5,
+  "ja": 9,
+  "cs": 4,
+  "fi": 1
+ },
+ "ledger_creators": 100,
+ "ledger_last_written_utc": "2026-11-20T17:15:21.160047+00:00",
+ "holdout_creators": 23,
+ "macros": 425,
+ "seed": 20261120,
+ "bootstrap": 2000
+}

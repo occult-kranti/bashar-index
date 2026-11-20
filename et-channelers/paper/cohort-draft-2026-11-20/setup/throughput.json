@@ -1,0 +1,18 @@
+{
+ "source": "et-channelers/knowledge-transfer/partial-cohort-asr-progress.md",
+ "rows": 15,
+ "first_row": "2026-11-20 06:09:00",
+ "last_row": "2026-11-20 16:18:00",
+ "wall_hours": 10.15,
+ "audio_hours_between": 595.3,
+ "files_between": 1316,
+ "audio_hours_per_wall_hour": 58.7,
+ "files_per_wall_hour": 130.0,
+ "english_speed_min": 56.0,
+ "english_speed_max": 72.3,
+ "english_speed_median": 59.6,
+ "last_row_nonspeech_hours": 87.5,
+ "last_row_hours": 710.1,
+ "last_row_held": 35,
+ "last_row_nonspeech_pct": 12.3
+}

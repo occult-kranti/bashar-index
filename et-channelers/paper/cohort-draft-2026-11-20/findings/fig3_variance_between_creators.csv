@@ -1,0 +1,8 @@
+measure,icc_seen_creators,ci95_low,ci95_high,creators_seen,recordings_seen,icc_source_all_creators,creators_source,recordings_source,design_effect_source,effective_n_source
+Lexical variety (MATTR-500),0.610,0.492,0.704,70,1004,0.612,72,1009,8.96,113
+Pace (words per speech minute),0.573,0.460,0.654,71,1117,0.580,75,1127,9.14,123
+Share of time without speech,0.497,0.264,0.704,71,1117,0.507,79,1138,7.80,146
+Recording length (log minutes),0.432,0.320,0.536,71,1117,0.422,79,1138,6.66,171
+Mean segment log-probability,0.409,0.133,0.651,71,1117,0.423,79,1138,6.67,171
+Share of segments ending in ?,0.291,0.223,0.364,71,1117,0.292,79,1138,4.91,232
+Repeated five-word share,0.237,0.126,0.456,70,1106,0.236,72,1112,4.41,252
