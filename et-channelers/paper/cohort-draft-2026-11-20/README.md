@@ -4,6 +4,8 @@ This folder holds an anonymous draft for ICWSM in the AAAI two-column format. It
 
 **In this repository.** The folder holds the paper, its references, its numbers, tables and figures. The scripts that generated them (`work/`, `work2/`) and the downloaded e-print (`style-source/`) are kept in the project's private archive, not here, so the rows for them below describe the private copy. `build.sh` here needs only `pdflatex` and `bibtex`; the tables in `floats/` are already split. The draft is anonymous, but this repository is not: decide where the draft lives before a double-blind submission.
 
+**Added later on 2026-11-20.** A paragraph "What is new" in the introduction and a subsection "Hypotheses" with a table of ten candidate hypotheses (Section 5.7), from the project's hypotheses text; twelve references were added to `refs.bib` (`refs-hypotheses.bib` holds all references of that text). The paper is now 16 pages. Two sentences about the 2019 laboratory study of trance voice were corrected: its abstract reports voice differences and no reading time, so the paper no longer says it reports slower reading. The candidate registry is a proposal: not frozen, nothing tested.
+
 ## What is here
 
 | Path | What it is |

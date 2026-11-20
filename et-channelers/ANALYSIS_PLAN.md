@@ -1863,6 +1863,69 @@ contrasts need the frozen corpus and a free machine. Everything that depends on 
   "earlier 20" sample of the selection-sensitivity experiment (SL stage 2), the registry of hypotheses, and
   the owner of the hand-work. They stay open in 13.5.
 
+## 14. What is new, and ten candidate hypotheses (proposal of 2026-11-20)
+
+Added at the owner's request for novelty and for interesting, meaningful hypotheses with their experiments.
+The full text, with every estimand, smallest effect, refuting result and prior work, is
+[`research/analysis-experiments-2026-11-20/hypotheses.md`](research/analysis-experiments-2026-11-20/hypotheses.md).
+**It is a proposal.** The registry of section 13 (rule R2) is frozen only when the owner approves it, and that
+must happen before any transcript of the 23 hold-out creators is analysed. Nothing here has been tested.
+
+### 14.1 How it was made
+
+Two proposers, one working from social theory and one from speech and computation, wrote 24 hypotheses against
+the 28 experiments and 16 rules. A skeptic re-checked the novelty of each with its own literature searches
+(147 keyword searches) and judged whether the answer would change what a reader believes and whether this
+corpus can decide it. Ten went to the candidate registry with changes, thirteen stay exploratory, one was a
+duplicate. Novelty is stated as "not found in N searches", never as a first.
+
+### 14.2 What is new
+
+1. A spoken corpus of channelled content across many speakers. The nearest work found has thirteen speakers in
+   a laboratory, or three in interviews.
+2. Inside ordinary recordings, the voice a creator presents as a being's compared with the same creator's own
+   voice; and a controlled test of whether wording follows the named source or the human speaker.
+3. A ledger of dated forecasts fixed before the dates pass, so that what is said afterwards is observed and
+   not reconstructed. Published work on failed prophecy starts after the failure.
+4. Two questions from the sociology of religion put as tests: which voice makes the ask to buy or enrol, and
+   whether creators with no common organisation keep common calendar time.
+5. Documentation of where the speech recognizer invents text inside its decoding window, and a hold-out of
+   whole speakers applied to a speech corpus (an established design, newly applied).
+
+Wordings that did not survive the skeptic: any "first"; verification of the archive as a contribution (it is
+standard preservation practice); "design fixed before reading" (42 transcripts had been read first).
+
+### 14.3 The ten candidates
+
+| Id | Hypothesis, with its direction | Experiment | Waits for | Confirmed on |
+|---|---|---|---|---|
+| H1 | The voice a creator presents as a being's is slower than the creator's own voice in the same recording | SG, RH | span labels | hold-out and wave |
+| H2 | The more checkable a statement about the future, the less firmly it is worded, within a creator | FL | forecast labels | hold-out and wave |
+| H3 | First-person singular is denser at the edges of a recording than in its middle, after three minutes are cut from each end | PO | the freeze and the artefact filter only | hold-out creators |
+| H4 | Fewer words are contracted when a being is voiced in the first person than in the creator's own voice | SG | span labels | hold-out and wave |
+| H5 | Claims about the world are relatively denser in a creator's channelled recordings, vocabulary of practice in the same creator's own talks | CX, GB | word groups, title labels | hold-out and wave |
+| H6 | Asks to buy or enrol are rarer in the claimed voice than in the creator's own voice | AK | ask and span labels | hold-out and wave |
+| H7 | Recordings by different creators uploaded within three days of each other are more alike in weeks with an almanac-listed date | SY | replication wave, frozen date lists | replication wave |
+| H8 | The edge-against-middle contrast of H3 is larger in channelled recordings than in sermons and wellness talks | CS, PO | comparison set | comparison set |
+| H9 | Creators who name the same family of beings share subject vocabulary more than a way of speaking | SV | name list, family labels | hold-out, then wave |
+| H10 | A dated forecast whose date has passed is returned to less often than a comparable undated one (runs only if enough dates mature) | FL, RW | hashed ledger, replication wave | replication wave |
+
+Each is a contrast inside a recording or inside a creator, because only such contrasts have power with 18
+English hold-out creators, and each was kept only if both outcomes are informative. Only H3 can run on the
+hold-out without new human labels.
+
+### 14.4 Decisions for the owner
+
+1. Approve, change or cut the ten, and set the freeze date.
+2. The span-label protocol for H1, H4 and H6: two people mark, from the wording alone and with timing hidden,
+   where a creator presents a being's voice. Who does it and for how many recordings.
+3. Check the full text of the 2019 laboratory study of trance voice: its abstract reports voice differences
+   and no reading time, so H1 is called a field test and not a replication.
+4. The comparison set for H8: about 40 creators give a verdict at a margin of half a standard deviation; 20
+   creators only at about 0.8.
+5. The proposed smallest effects (those of H7 and H9 are placeholders), the word groups of H5, the capture
+   date of the wave and the almanac list, all fixed at the freeze and not moved afterwards.
+
 ## Appendix A. Checks made for this plan
 
 **Fresh counts.**

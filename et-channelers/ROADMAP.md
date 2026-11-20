@@ -618,7 +618,11 @@ and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section
     later date (proposed: 20 February 2027), up to 20 per creator;
   * the comparison set: about 20 creators who make no channelling claim, in three strata (sermons, wellness
     talks, interviews), newest 20 each, collected once the selection rule and roster are written and frozen.
-* **Still waits for the owner:** the registry of at most ten hypotheses, an owner for the hand-work, the
+* **Proposed on 2026-11-20, not frozen** (ANALYSIS_PLAN section 14): what is new in the project, stated as
+  what literature searches did not return, and ten candidate hypotheses for the registry, each a contrast
+  inside a recording or a creator with a direction, a smallest effect and a result that would refute it.
+  Thirteen further questions stay exploratory.
+* **Still waits for the owner:** approval of the ten candidate hypotheses and the freeze date, an owner for the hand-work, the
   capture date of the replication wave, the roster of the comparison set, and the pass over the 214
   recordings held in other text kinds.
 * **Done when** every experiment marked high value has its figures and tables with intervals and counts, or a
