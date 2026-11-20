@@ -1,5 +1,7 @@
 # Reading and reproducing the attempt evidence
 
+The [01:16 UTC close of eligible work](2026-11-20-close/) is the most recent snapshot. It includes 1,946 verified recordings, 2,913 attempt observations, a 30-recording failure register and publisher follow-up. The 00:51 UTC snapshot below preserves the preceding state.
+
 The November 20 directory is a dated export. Its two units are a **selected recording** and a **retained evidence record**. A recording can have several attempt markers and one accepted audio edition. A single marker can describe a stage that made zero network requests. The number of rows in the attempt register therefore cannot be used as the number of HTTP requests or downloads.
 
 | File | Unit and interpretation |

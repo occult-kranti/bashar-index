@@ -17,6 +17,7 @@ CATEGORIES = {
     'provider_refusal': 'Provider refusal',
     'local_failure': 'Local failure',
     'transfer_failure': 'Incomplete transfer',
+    'metadata_failure': 'Metadata lookup failure',
     'needs_review': 'Needs review',
 }
 SCOPE = 'latest20plus_public_regular'

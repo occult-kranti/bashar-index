@@ -2,6 +2,8 @@
 
 ## Read the current state
 
+The November 20 ordinary queue and its two supported recovery cases have finished. The [last recording and creator totals](evidence/2026-11-20-close/) give the precise starting point for a follow-up. The dated work area described below remains available for reconciling newly verified receipts.
+
 Run the following from the repository’s `et-channelers` directory. On the configured Windows host, the private workspace and installed tools live alongside the checkout under the operator’s profile. Progress queries read saved receipts and selection membership. They can run while a download is active. [Coverage reader](../pipeline/collection_coverage.py) · [Failure definitions](../pipeline/COLLECTION_PROCESS.md#unresolved-downloads)
 
 ```powershell

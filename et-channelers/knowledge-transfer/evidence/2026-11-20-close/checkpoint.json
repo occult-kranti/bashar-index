@@ -1,0 +1,41 @@
+{
+  "as_of_utc": "2026-11-20T01:16:52Z",
+  "attempt_evidence_records": 2913,
+  "clock_basis_counts": {
+    "file_modified_time": 621,
+    "recorded_event_time": 2292
+  },
+  "complete_creators": 80,
+  "distinct_current_videos_with_attempt_evidence": 1777,
+  "inventory": {
+    "duplicate_or_already_bound_marker_paths": 1094,
+    "retained_marker_paths": 3214
+  },
+  "scope_counts": {
+    "current_regular": 2352,
+    "outside_or_unbound": 245,
+    "retained_index": 316
+  },
+  "selected_creators": 101,
+  "selected_recordings": 1976,
+  "selection_dispositions": {
+    "current_source_refusal": 29,
+    "local_or_administrative_hold": 1,
+    "verified_audio_receipt": 1946
+  },
+  "selection_sha256": "adb76d392fa9eded77e03fb41687a630fb82a17fb3de21af504092710b08fd01",
+  "snapshot_sha256": "2b533151c6e6da44599ff67e87a88a346f8530a66ba7078caad433bc61b05e08",
+  "verified_audio": 1946,
+  "work_area_counts": {
+    "Archive publication": 2,
+    "Browser observation": 1,
+    "Caption retrieval": 2,
+    "Channel discovery and indexing": 182,
+    "Local speech and language": 52,
+    "Native YouTube audio": 1643,
+    "Ordinary public acquisition": 609,
+    "Other retained project evidence": 10,
+    "Publisher and podcast": 42,
+    "Qualified YouTube edition": 370
+  }
+}

@@ -2,9 +2,11 @@
 
 ## Windows handoff for November 20, 2026
 
+The [new-chat prompt](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md) summarizes the current collection, open issues and operating instructions in one copyable block.
+
 Read the [knowledge-transfer folder](knowledge-transfer/) first. It brings together the operating instructions, every reviewed research stream, measured batch history, branch inventory and receipt-derived creator and recording tables. The dated source and Drive findings are in the [attempt register](knowledge-transfer/evidence/2026-11-20/attempt-history.csv).
 
-At 00:51 UTC, 1,918 of 1,976 regular recordings were verified. The next ordinary batch took the 26 eligible rows after closing the previous native batch. Twenty-eight current source refusals and four local or administrative holds remained separately recorded. The machine’s active owner and the current receipt journals take precedence over these saved counts. [Per-creator checkpoint](knowledge-transfer/evidence/2026-11-20/creator-status.csv) · [Read-only status commands and recovery](knowledge-transfer/operations.md)
+At 01:16 UTC, the final eligible worker had exited and returned its storage reservation. The archive held 1,946 of 1,976 recordings, including the verified Toni Ghazi recovery and Dallisa Hocking’s publisher edition. Thirty remain across 21 channels. Twenty-nine selected files returned HTTP 403 and one provider failed during metadata retrieval. The complete-audio signal remains pending. [Final per-creator checkpoint](knowledge-transfer/evidence/2026-11-20-close/creator-status.csv) · [Remaining links](knowledge-transfer/evidence/2026-11-20-close/failed-links/) · [Read-only status and recovery commands](knowledge-transfer/operations.md)
 
 The local CUDA and text-only research tasks are registered. Full audio coverage and actual source-owner closure release local speech work. Preserve paired original and English text for non-English speech. The sparse exception for one recording with verified digital silence has its own audio-bound evidence. The latest fifty follow translation and both numerical and independent review stages. [Local speech worker](pipeline/GPU_ASR_SETUP.md) · [Paid panel schedule](pipeline/PROJECT_RESEARCH_AGENTS.md) · [Study sequence and estimate](ROADMAP.md)
 

@@ -2,6 +2,8 @@
 
 ## November 20 knowledge transfer
 
+[PR #88](https://github.com/occult-kranti/bashar-index/pull/88) released the numerical-analysis worker. [PR #89](https://github.com/occult-kranti/bashar-index/pull/89) published the operating handoff, attempt register and 145 reviewed Atlas relationships. Its full check ran 1,952 Python tests with 52 skips and passed 86 Node tests.
+
 The [pull-request register](et-channelers/knowledge-transfer/release-history.csv) records all 87 pull requests through the daily calendar release, including closed and unmerged proposals, with their branch names and merge revisions. The [branch-head inventory](et-channelers/knowledge-transfer/branch-heads.csv) records the 88 remote branches observed after that release. Historical links in the [research index](et-channelers/knowledge-transfer/research-index.md) point to the revisions that supplied the evidence.
 
 | Release | Result |

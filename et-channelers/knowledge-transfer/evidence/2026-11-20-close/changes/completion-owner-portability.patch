@@ -1,0 +1,12 @@
+--- frozen-v1/completion_only.py
++++ version-v1p1/completion_only.py
+@@ -102,7 +102,8 @@
+     for name in ('run_pipeline.py', 'rolling_loop.py', 'completion_signal.py'):
+         path = home/name
+         need(path in proofs and pin(path) == proofs[path], 'approved_completion_owner_code_required')
+-    need(pin(home/'completion_signal.py') == contract['completion_emitter'], 'approved_pure_emitter_required')
++    actual_emitter = pin(home/'completion_signal.py')
++    need(all(actual_emitter[k] == contract['completion_emitter'][k] for k in ('bytes', 'sha256')), 'approved_pure_emitter_required')
+     authority = config['original_authority']
+     need(authority == contract['Root_master'], 'exact_completion_Root_master_required')
+     permission = checked(authority)
