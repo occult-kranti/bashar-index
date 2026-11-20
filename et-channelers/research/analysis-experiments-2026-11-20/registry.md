@@ -50,9 +50,16 @@ They stay registered and unrun. H1 to H6 and H9 can run once their labels exist;
 
 ## Procedure freeze
 
-To be filled before the hold-out is labelled: the hashes of the codebooks, the prompts, the labelling code and
-the analysis code, the model identifiers, and the date.
+One entry per hypothesis, written before that hypothesis touches a hold-out transcript. For the hypotheses
+that need labels the entry will also hold the hashes of the codebooks and prompts and the model identifiers.
+
+### H3, frozen 2026-11-20 20:38 UTC (needs no labels)
 
 | Item | Value |
 |---|---|
-| Status | not yet frozen |
+| Analysis code | [`code/h3_position.py`](code/h3_position.py), SHA-256 `d1cc2b2e2b2e6ff22d4d648457c1004b526ae9e28b36293269d5df2748460d6e` |
+| Artefact filter | [`code/artefact_filter.py`](code/artefact_filter.py), version 1, SHA-256 `72bccae081dbbcbaa3923e1354f330498fcb20739cf1d88083f8ccba0b73e0f1`; its precision and recall are not measured |
+| Choices the text left open | all in the `PROCEDURE` block of the code: all ten bins need 50 words; a half count keeps a zero rate finite; first-person singular is the nine forms listed there; 9,999 shift draws and 9,999 bootstrap draws with seed 20261120; the verdict rule |
+| Seen creators, exploratory | trimmed U 0.019 (90% interval -0.129 to 0.165; 61 creators, 558 recordings; 36 creators positive). Untrimmed U 0.427 (0.248 to 0.608; 64 creators). File [`results/h3-seen-exploratory.json`](results/h3-seen-exploratory.json) |
+| Hold-out, counted before the test | 17 creators and 169 recordings are eligible. With the between-creator spread seen above (SD 0.66) the standard error is about 0.16: the test can detect a U of about 0.54 at the registered threshold with 80% power, and a 90% interval will be about 0.26 wide on each side. So it cannot return "negligible", and it can support H3 only if the effect is several times the smallest effect of interest |
+| Interval procedure | percentile bootstrap over creators, then recordings; its coverage has not been audited (the coverage audit CA has not run) |
