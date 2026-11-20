@@ -94,8 +94,28 @@ def finish(root, generation, first_panel, second_panel, non_speech=None):
         "first_panel_report": first_panel, "second_panel_report": second_panel}.items()}
     if evidence["first_panel_report"]["sha256"] == evidence["second_panel_report"]["sha256"]:
         raise ValueError("Record the distinct first-panel and second-panel findings")
-    manifest = json.loads((root / evidence["generation"]["path"]).read_bytes())
-    roster = json.loads((root / evidence["view_inventory"]["path"]).read_bytes())
+    english, translated, reviews = validate_generation(root, generation, expected, frame, non_speech)
+    receipt = {"schema_version": 1, "state": "completed_study", "selection": selected, "selected_audio": len(frame),
+               "english_texts": english, "translated_primary_texts": translated,
+               "non_speech_reviews": reviews, "evidence": evidence}
+    write_once(root / RELEASE, receipt)
+    require_completed_study(root)
+    return receipt
+
+
+def validate_generation(root, generation, expected, frame, non_speech=None):
+    """Verify English views, paired translations and individual exceptions before corpus interpretation."""
+    if __package__:
+        from . import postrun_candidates as study
+    else:
+        import postrun_candidates as study
+
+    root = Path(root).resolve()
+    generation = Path(generation).resolve()
+    if not generation.is_relative_to(root):
+        raise ValueError("Text analysis must use a generation inside the private archive")
+    manifest = json.loads((generation / "manifest.json").read_bytes())
+    roster = json.loads((generation / "view-inventory.json").read_bytes())
     pairs = {(r["channel_dir"], r["video_id"]) for r in frame}
     revisions = {study.digest(study.encoded([expected, study.digest(study.encoded(manifest["methods"]).encode()),
                                             roster, figures]).encode()) for figures in (False, True)}
@@ -119,20 +139,40 @@ def finish(root, generation, first_panel, second_panel, non_speech=None):
             reviews[video] = pin(root, root / row["evidence"]["path"])
             if reviews[video] != row["evidence"]:
                 raise ValueError("The reviewed non-speech evidence changed")
+            reviewed = json.loads((root / reviews[video]["path"]).read_bytes())
+            source = reviewed.get("source") or {}
+            audio = source.get("audio") or {}
+            if (reviewed.get("finding") != "no_spoken_content" or source.get("video_id") != video
+                    or (source.get("channel_dir"), video) not in pairs or source.get("selection_sha256") != expected
+                    or not study.episode_comparison.digest(audio.get("sha256")) or not audio.get("drive_id")):
+                raise ValueError("Non-speech evidence must identify the selected recording and its archived audio")
     if missing != reviews.keys():
         raise ValueError("Spoken recordings still need usable English text")
     translated = 0
     for row in roster:
         chosen = row["selected_primary"]
-        if chosen is None or not chosen["source_kind"].endswith("english_audio_translation"):
+        if chosen is None:
             continue
-        path = root / chosen["path"]
-        if pin(root, path)["sha256"] != chosen["file_sha256"]:
-            raise ValueError("The selected English translation changed")
-        english = json.loads(path.read_bytes())
+        path = (root / chosen["path"]).resolve()
+        if not path.is_relative_to(root) or not path.is_file():
+            raise ValueError("A selected English text is missing from the private archive")
+        raw = path.read_bytes()
+        if study.digest(raw) != chosen["file_sha256"]:
+            raise ValueError("The selected English text changed after analysis")
+        english = json.loads(raw)
+        text = english.get("text")
+        if (english.get("video_id") != row["video_id"] or english.get("channel_dir") != row["channel_dir"]
+                or english.get("source_kind") != chosen["source_kind"] or chosen["source_kind"] not in study.PRIMARY_ORDER
+                or str(english.get("language", "")).lower().replace("_", "-").split("-")[0] != "en"
+                or not isinstance(text, str) or not text.strip() or english.get("text_sha256") != study.digest(text.encode())):
+            raise ValueError("Selected English text has a recording, language or content mismatch")
+        if not chosen["source_kind"].endswith("english_audio_translation"):
+            continue
         if not english.get("original_language") or not english.get("run_id") or not english.get("source_edition_id"):
             raise ValueError("English translation lacks original-language or edition evidence")
         for candidate in path.parent.glob("original-*.json"):
+            if not candidate.resolve().is_relative_to(root):
+                raise ValueError("A paired original-language view is outside the private archive")
             original = json.loads(candidate.read_bytes())
             if (all(original.get(k) == english.get(k) for k in ("video_id", "channel_dir", "run_id", "source_edition_id"))
                     and original.get("variant") == "original" and original.get("language") == english["original_language"]
@@ -141,12 +181,7 @@ def finish(root, generation, first_panel, second_panel, non_speech=None):
         else:
             raise ValueError("An English translation still needs its matching original-language transcript")
         translated += 1
-    receipt = {"schema_version": 1, "state": "completed_study", "selection": selected, "selected_audio": len(pairs),
-               "english_texts": len(pairs) - len(missing), "translated_primary_texts": translated,
-               "non_speech_reviews": reviews, "evidence": evidence}
-    write_once(root / RELEASE, receipt)
-    require_completed_study(root)
-    return receipt
+    return len(pairs) - len(missing), translated, reviews
 
 
 def main():

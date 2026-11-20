@@ -2,6 +2,8 @@
 
 **Latest 20+ videos** selects the newest twenty public, completed uploads on each creator's Videos tab, across every date and duration. The November 19 roster contains 101 channels and 1,976 eligible recordings. At 22:21 UTC, 1,731 had verified audio on Drive, including every available target for 67 creators. The cumulative index retains 2,697 recordings, including Shorts and streams. The working-file budget is 23 GB with 12 GB physically free after reservations. [Collection process](pipeline/COLLECTION_PROCESS.md) · [Roadmap](ROADMAP.md) · [Dashboard hub](../dashboards/)
 
+The local speech worker and the project-funded research panels have separate responsibilities. Once Drive holds every selected recording, the local GPU fills caption gaps and produces paired translations where needed. The API-backed panels use one $100 allowance for study design, analysis and replication review. [Operating instructions and spending controls](pipeline/PROJECT_RESEARCH_AGENTS.md)
+
 ## Earlier acquisition checkpoints
 
 **November 19, 2026, 04:15 UTC.** Public `main` was `7c6a860` when [PR #75](https://github.com/occult-kranti/bashar-index/pull/75) merged the streaming PURE receipt reader and Pages passed. The earlier queue held **1,151 / 1,420** saved recordings, including **1,108 native, 37 publisher editions and six qualified YouTube editions**. At that checkpoint, 136 had saved text, 269 selected videos lacked audio, and 60 creator-level selection slots remained open. ASR was paused.

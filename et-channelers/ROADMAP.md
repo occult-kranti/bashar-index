@@ -2,6 +2,8 @@
 
 ## Current collection and next phases
 
+Local CUDA owns speech recognition and translation. After complete audio verification, two project-funded research agents review the study design and source quality. Two further pairs analyze and challenge the evidence after the frozen text collection is ready. All six draw from one $100 project allowance. [Research roles, cost limits and handoff](pipeline/PROJECT_RESEARCH_AGENTS.md)
+
 The November 19 selection covers 1,976 public regular recordings on 101 channels. At 23:25 UTC, 1,809 had verified Drive audio and metadata. Of 167 outstanding recordings, 27 had documented unsuccessful attempts. Keep the dated failure report, CSV and offline dashboard together and refresh them when the run closes. A four-transfer Drive trial archived all 15 recordings in 310 seconds. Three transfers remain the default after the three- and four-transfer groups delivered comparable throughput. [Collection process and issues resolved](pipeline/COLLECTION_PROCESS.md)
 
 | Stage | Completion condition |
