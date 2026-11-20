@@ -1,6 +1,6 @@
 # Research dashboards
 
-The public [directory](https://occult-kranti.github.io/bashar-index/dashboards/) links all seven maintained repository dashboards, including the [selected-video upload timeline](../et-channelers/dashboard/collection/timeline.html). Shared navigation lives in `assets/research-nav.{css,js}`. Links resolve from the asset URL so they work locally and beneath the GitHub Pages project prefix. A separately hosted copy can set the script's `data-root` to the public project URL.
+The public [directory](https://occult-kranti.github.io/bashar-index/dashboards/) links all eight maintained repository dashboards, including the [selected-video upload timeline](../et-channelers/dashboard/collection/timeline.html). Shared navigation lives in `assets/research-nav.{css,js}`. Links resolve from the asset URL so they work locally and beneath the GitHub Pages project prefix. A separately hosted copy can set the script's `data-root` to the public project URL.
 
 ## Daily edition and operating data
 
