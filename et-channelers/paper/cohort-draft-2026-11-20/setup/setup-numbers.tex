@@ -103,3 +103,19 @@
 \newcommand{\HThreeSeenHi}{0.165}% results/h3-seen-exploratory.json : interval_90 upper (0.1648)
 \newcommand{\HThreeSeenP}{0.12}% results/h3-seen-exploratory.json : p_one_sided (0.1225)
 \newcommand{\HThreeSeenUntrimmed}{0.427}% results/h3-seen-exploratory.json : untrimmed_filtered_reported_not_tested.U
+
+% ---- Bridge between the two recognizer models (research/analysis-experiments-2026-11-20/results/br-bridge.json) ----
+\newcommand{\BridgePairs}{36}% br-bridge.json : pairs
+\newcommand{\BridgeMeasures}{17}% br-bridge.json : measures
+\newcommand{\BridgeSpreadCreators}{68}% br-bridge.json : between_creator_sd_from.creators_with_three_or_more_recordings
+\newcommand{\BridgeAgree}{Seven}% br-bridge.json : measures with bridge_safe true
+\newcommand{\BridgeDiffer}{Six}% br-bridge.json : measures whose 90% interval lies wholly outside the margin
+\newcommand{\BridgeOpen}{Four}% br-bridge.json : the remaining measures
+\newcommand{\BridgeWordMs}{28}% br-bridge.json : word_seconds mean_difference, in milliseconds
+\newcommand{\BridgeShortPauseSd}{\ensuremath{-}2.5}% br-bridge.json : short_pauses in_sd_units.mean
+\newcommand{\BridgeFillerSmall}{0.6}% br-bridge.json : fillers mean_english_only
+\newcommand{\BridgeFillerLarge}{2.8}% br-bridge.json : fillers mean_larger
+\newcommand{\BridgeFillerRatio}{4.5}% computed : fillers mean_larger / mean_english_only
+\newcommand{\BridgeDisagreeMedian}{3.5}% br-bridge.json : word_disagreement.median
+\newcommand{\BridgeDisagreeLow}{2.7}% br-bridge.json : word_disagreement.quartiles[0]
+\newcommand{\BridgeDisagreeHigh}{4.8}% br-bridge.json : word_disagreement.quartiles[1]

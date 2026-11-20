@@ -78,6 +78,12 @@ The owner added the same day: the panel is also to consider, and where worthwhil
 regular expression (pattern counts over the transcripts), further topic analysis, comparisons, distributions, and analysis of all recording metadata joined to the transcripts for the
 recordings that have it; and the panel deliberates in two rounds, each expert first proposing and then answering
 the others.
+A further addition the same evening: change from week to week, correlations, and the topics discussed compared
+across every channel. Rule R3 of the catalogue still holds: a creator's newest 20 recordings can cover three days
+or many years, so weekly change is described inside the weeks covered and is not a trend of the field.
+Then: change by month as well as by week; and every analysis that uses dates is made twice and kept apart, once
+on recordings whose publication date is confirmed to the day (including recordings of different channels published
+on the same date), and once on recordings whose date is only estimated.
 
 ## Procedure freeze
 
