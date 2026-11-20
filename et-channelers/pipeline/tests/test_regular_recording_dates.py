@@ -54,3 +54,27 @@ class RecordingDateTests(unittest.TestCase):
             path.write_text(json.dumps(meta))
             self.assertEqual(dates.supplement(evidence, frame, tmp), {"matched_job_sidecars": 1})
             self.assertIn("2026-11-14", evidence["abcdefghijk"]["upload"])
+
+    def test_daily_bounds_include_leap_day_and_zero_count_days(self):
+        def observation(kind, lo, hi):
+            return {"date_method": kind, "date_min": lo, "date_max": hi,
+                    "exact_day": lo if kind in ("publication", "availability", "upload") else None}
+        rows = [observation("publication", "2024-02-29", "2024-02-29"),
+                observation("relative", "2024-02-29", "2024-02-29"),
+                observation("relative", "2024-02-28", "2024-03-01"),
+                observation("relative", "2024-02-28", "2024-02-29"),
+                observation("availability", "2024-03-03", "2024-03-03"),
+                observation("unknown", None, None)]
+        daily = dates.daily_counts(rows)
+        self.assertEqual([r["date"] for r in daily],
+                         ["2024-02-28", "2024-02-29", "2024-03-01", "2024-03-02", "2024-03-03"])
+        self.assertEqual([r["assigned_total"] for r in daily], [0, 2, 0, 0, 1])
+        self.assertEqual([r["relative_possible_extra"] for r in daily], [2, 2, 1, 0, 0])
+        self.assertEqual([r["possible_total"] for r in daily], [2, 4, 1, 0, 1])
+        self.assertEqual((daily[1]["relative_single_day"], daily[1]["publication"]), (1, 1))
+        self.assertEqual(dates.daily_counts([observation("unknown", None, None)]), [])
+
+    def test_daily_metadata_cannot_span_two_days(self):
+        with self.assertRaisesRegex(ValueError, "one UTC day"):
+            dates.daily_counts([{"date_method":"upload", "date_min":"2026-11-19", "date_max":"2026-11-20",
+                                 "exact_day":"2026-11-19"}])

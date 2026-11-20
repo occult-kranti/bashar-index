@@ -9,6 +9,24 @@ The frozen selection contains 1,976 regular uploads from 101 YouTube channels. *
 | Upload-day fallback | 0 | Extractor upload_date is used when it is the strongest available date |
 | Relative listing age | 397 | An inclusive date window inferred from the label on the creator's Videos tab and the UTC time at which that listing was saved |
 
+## Daily distribution
+
+**1,587 recordings can be assigned to an individual UTC date.** They span 577 dates. Metadata dates account for 1,579 of those recordings. For eight others, the entire listing-age estimate falls on a single UTC date. The other 389 recordings have windows spanning several dates. The daily export includes all 6,724 calendar days from June 23, 2008 through November 19, 2026, including zero-count days. [Daily CSV](../dashboard/collection/dates-by-day.csv) · [Daily chart for the latest 30 days](../dashboard/collection/recording-dates-daily.png)
+
+The daily view opens on October 21 through November 19, 2026. Within that window, 378 recordings have an assignable day. A day's lower count includes metadata dates and single-day estimates. Its upper count adds the multi-day intervals that intersect that date. An interval can overlap several dates, so a range total must count distinct recordings. [Interactive day view and recording evidence](../dashboard/collection/timeline.html)
+
+| UTC date | Metadata dates | Single-day estimates | Assigned | Additional intervals that overlap |
+|---|---:|---:|---:|---:|
+| November 13, 2026 | 12 | 0 | 12 | 20 |
+| November 14, 2026 | 10 | 0 | 10 | 13 |
+| November 15, 2026 | 12 | 0 | 12 | 17 |
+| November 16, 2026 | 23 | 0 | 23 | 17 |
+| November 17, 2026 | 12 | 0 | 12 | 15 |
+| November 18, 2026 | 11 | 2 | 13 | 13 |
+| November 19, 2026 | 11 | 6 | 17 | 6 |
+
+## How the source dates were derived
+
 The channel and video IDs must match across the frozen selection and saved metadata. Each row retains its publication, availability and upload fields separately, the visible age label, observation clock, public source link and source checksum. A conflicting date at the strongest available evidence level stays unresolved. These dates can differ from the date of the session described in a recording. [Recording-level CSV](../dashboard/collection/recording-dates.csv) · [Machine-readable evidence](../dashboard/collection/recording-dates.json)
 
 For a listing of *n* units ago, the estimated interval runs from *n + 1* units before observation to *n* units before observation. Weeks use seven days, months use 365.2425/12 days and years use 365.2425 days. Labels expressed in days or longer receive one day of padding on each side for display rounding. The upper bound is capped at the observation time. In the 1,579 recordings with both a metadata date and a visible age label, all 1,579 metadata dates fell inside the derived window. This measures agreement on the observed overlap. It cannot establish the exact publication day of the remaining 397.

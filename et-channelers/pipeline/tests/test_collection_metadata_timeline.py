@@ -56,7 +56,7 @@ class MetadataTimelineTests(unittest.TestCase):
         links=[a['href'] for tag,a in doc.tags if tag=='a']
         self.assertIn('recording-dates.csv',links)
         self.assertEqual(sum(u.startswith('https://www.youtube.com/watch?v=') for u in links),14)
-        self.assertIn('no midpoint',html);self.assertIn('2 of 3 date-stamped comparisons',html)
+        self.assertIn('no midpoint',html.lower());self.assertIn('2 of 3 date-stamped comparisons',html)
         self.assertTrue(any(tag=='ol' and a.get('class')=='bin-list' for tag,a in doc.tags))
 
     def test_unknown_only_does_not_fabricate_a_calendar_bin(self):
@@ -101,7 +101,7 @@ class MetadataTimelineTests(unittest.TestCase):
         self.assertTrue(all(a.get('scope')=='col' for tag,a in doc.tags if tag=='th'))
         self.assertTrue(any(tag=='noscript' for tag,_ in doc.tags))
         self.assertFalse(any(tag in ('iframe','link') or tag=='script' and 'src' in a for tag,a in doc.tags))
-        for forbidden in ('fetch(','new Date(','innerHTML','Plotly'):
+        for forbidden in ('fetch(','new Date()','Date.now(','innerHTML','Plotly'):
             self.assertNotIn(forbidden,html)
         self.assertIn('repeating-linear-gradient',html)
 
@@ -113,6 +113,50 @@ class MetadataTimelineTests(unittest.TestCase):
             self.assertEqual(json.loads(output.getvalue())['records'],7)
             self.assertIn('Publication metadata timeline',target.read_text(encoding='utf8'))
             self.assertEqual(source.read_bytes(),original);self.assertFalse((target.parent/'recording-dates.csv').exists())
+
+    def test_daily_counts_separate_single_day_and_nonadditive_possible_intervals(self):
+        report=fixture();rows=timeline._validated(report)['records']
+        direct=deepcopy(rows[0]);direct.update(exact_day='2026-11-18',date_min='2026-11-18',date_max='2026-11-18')
+        single=deepcopy(rows[3]);single.update(date_min='2026-11-19',date_max='2026-11-19')
+        multi=deepcopy(rows[4]);multi.update(date_min='2026-11-18',date_max='2026-11-20')
+        result=timeline.day_window([direct,single,multi,rows[-1]],'2026-11-17','2026-11-19')
+        self.assertEqual((result['assigned'],result['possible_unique'],result['unknown']),(2,1,1))
+        self.assertEqual([x['assigned_total'] for x in result['days']],[0,1,1])
+        self.assertEqual([x['relative_possible_extra'] for x in result['days']],[0,1,1])
+        self.assertEqual([x['possible_total'] for x in result['days']],[0,2,2])
+        self.assertEqual(sum(x['relative_possible_extra'] for x in result['days']),2)
+        self.assertEqual(result['intersecting_unique'],3)
+
+    def test_daily_default_static_zoom_and_download_contract(self):
+        html=timeline.render(fixture());doc=Markup(html)
+        inputs={a['id']:a for tag,a in doc.tags if tag=='input'}
+        self.assertEqual(inputs['date-from']['value'],'2026-10-21')
+        self.assertEqual(inputs['date-to']['value'],'2026-11-19')
+        self.assertEqual(sum(tag=='button' and 'data-day' in a for tag,a in doc.tags),30)
+        self.assertTrue(any(tag=='option' and a.get('value')=='day' and 'selected' in a for tag,a in doc.tags))
+        self.assertIn('dates-by-day.csv',[a.get('href') for tag,a in doc.tags if tag=='a'])
+        self.assertIn('not additive across days',html)
+        self.assertIn('possible daily counts must not be summed as distinct recordings',html)
+        self.assertIn('recent 30 UTC days',html)
+        self.assertIn('All-year overview',html)
+        self.assertTrue({'date-from','date-to'}<={a['for'] for tag,a in doc.tags if tag=='label'})
+
+    def test_daily_leap_days_zeroes_and_old_metadata_without_redundant_bounds(self):
+        rows=timeline._validated(fixture())['records']
+        result=timeline.day_window([rows[1]],'2024-02-08','2024-03-01')
+        self.assertEqual(len(result['days']),23)
+        self.assertEqual(sum(x['availability'] for x in result['days']),1)
+        self.assertIn('2024-02-29',[x['date'] for x in result['days']])
+        old=timeline.day_window([rows[0]],'1985-03-04','1985-03-04')
+        self.assertEqual(old['days'][0]['publication'],1)
+        self.assertEqual(old['assigned'],1)
+
+    def test_unknown_daily_dates_never_gain_assigned_or_possible_counts(self):
+        rows=timeline._validated(fixture())['records'][-1:]
+        result=timeline.day_window(rows,'2026-11-18','2026-11-19')
+        self.assertEqual((result['assigned'],result['possible_unique'],result['unknown']),(0,0,1))
+        self.assertTrue(all(x['possible_total']==0 for x in result['days']))
+        with self.assertRaises(ValueError):timeline.day_window(rows,'2026-11-19','2026-11-18')
 
 
 if __name__=='__main__':unittest.main()
