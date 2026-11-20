@@ -4,6 +4,8 @@
 
 The project owner paused the remaining downloads at 01:45 UTC. The Windows collector has a persistent stop marker and all 15 previously enabled download wake-ups are disabled. Preserve the frozen selection of 1,976 across 101 channels. The pause has no scheduled end date. [Checkpoint and backup contents](knowledge-transfer/pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [Handoff for another chat](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
 
+The 01:56 UTC Drive check matched all required objects for the 1,946 archived recordings. The 30 gaps remain visible for any later decision about the study cohort. [Drive verification](knowledge-transfer/evidence/2026-11-20-close/drive-verification.json)
+
 | Stage | Evidence and next action |
 | --- | --- |
 | Audio, paused | Drive has 1,946 verified recordings. All selected audio is accounted for on 80 channels. The other 21 have 30 outstanding links, comprising 29 media refusals and one metadata failure. Resume acquisition only on the owner’s instruction. [Recording ledger and failure register](knowledge-transfer/evidence/2026-11-20-close/) |
