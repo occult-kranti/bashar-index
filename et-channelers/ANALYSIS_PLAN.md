@@ -1868,8 +1868,11 @@ contrasts need the frozen corpus and a free machine. Everything that depends on 
 Added at the owner's request for novelty and for interesting, meaningful hypotheses with their experiments.
 The full text, with every estimand, smallest effect, refuting result and prior work, is
 [`research/analysis-experiments-2026-11-20/hypotheses.md`](research/analysis-experiments-2026-11-20/hypotheses.md).
-**It is a proposal.** The registry of section 13 (rule R2) is frozen only when the owner approves it, and that
-must happen before any transcript of the 23 hold-out creators is analysed. Nothing here has been tested.
+**Frozen on 2026-11-20 at the owner's instruction** ("add the ten, add all"): see
+[`registry.md`](research/analysis-experiments-2026-11-20/registry.md) for the hash, the hold-out, and the owner's
+amendments: labels come from a language model through the ChatGPT API instead of two human markers, hypotheses
+with uninformative findings are removed from the headline claims while every result stays in the results
+table, and the labelling budget is 110 USD. Nothing has been tested yet.
 
 ### 14.1 How it was made
 

@@ -622,7 +622,11 @@ and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section
   what literature searches did not return, and ten candidate hypotheses for the registry, each a contrast
   inside a recording or a creator with a direction, a smallest effect and a result that would refute it.
   Thirteen further questions stay exploratory.
-* **Still waits for the owner:** approval of the ten candidate hypotheses and the freeze date, an owner for the hand-work, the
+* **Decided by the owner on 2026-11-20:** the ten hypotheses and the thirteen exploratory questions are
+  registered and frozen (`research/analysis-experiments-2026-11-20/registry.md`); labels are made by a language
+  model through the ChatGPT API within 110 USD; hypotheses with uninformative findings leave the headline
+  claims afterwards.
+* **Still waits for the owner:** an owner for the hand-work, the
   capture date of the replication wave, the roster of the comparison set, and the pass over the 214
   recordings held in other text kinds.
 * **Done when** every experiment marked high value has its figures and tables with intervals and counts, or a
