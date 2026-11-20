@@ -201,6 +201,48 @@ def period_counts(records, period):
     return [{period:k, **{m:v[m] for m in METHOD}, "total":sum(v.values())} for k,v in sorted(counts.items())]
 
 
+DAY_FIELDS = ("date", "publication", "availability", "upload", "relative_single_day", "assigned_total",
+              "relative_possible_extra", "possible_total")
+
+
+def daily_counts(records):
+    """Counts for each UTC calendar date. Multi-day estimates contribute only to that day's upper bound."""
+    assigned = defaultdict(Counter)
+    interval_changes = Counter()
+    limits = []
+    for row in records:
+        kind = row["date_method"]
+        if kind == "unknown":
+            continue
+        lo = date.fromisoformat(row["date_min"])
+        hi = date.fromisoformat(row["date_max"])
+        if hi < lo or kind not in METHOD:
+            raise ValueError("Invalid date evidence for the daily distribution")
+        limits.extend((lo, hi))
+        if kind == "relative" and lo != hi:
+            interval_changes[lo] += 1
+            interval_changes[hi + timedelta(days=1)] -= 1
+        elif kind == "relative":
+            assigned[lo]["relative_single_day"] += 1
+        else:
+            if lo != hi or row.get("exact_day") != lo.isoformat():
+                raise ValueError("A metadata date must identify one UTC day")
+            assigned[lo][kind] += 1
+    if not limits:
+        return []
+    start, end = min(limits), max(limits)
+    days = []
+    possible = 0
+    for offset in range((end - start).days + 1):
+        day = start + timedelta(days=offset)
+        possible += interval_changes[day]
+        counts = assigned.get(day, {})
+        total = sum(counts.values())
+        days.append({"date": day.isoformat(), **{key: counts.get(key, 0) for key in DAY_FIELDS[1:5]},
+                     "assigned_total": total, "relative_possible_extra": possible, "possible_total": total + possible})
+    return days
+
+
 def write(result,out):
     out.mkdir(parents=True,exist_ok=True)
     common.atomic_write_text(out/"recording-dates.json", dataset_timeline.safe_json(result)+"\n")
@@ -209,6 +251,8 @@ def write(result,out):
         counts = period_counts(result["records"],period)
         common.atomic_write_text(out/("dates-by-"+period+".csv"),
             dataset_timeline.csv_bytes(counts,(period,*METHOD,"total")).decode("utf-8"))
+    common.atomic_write_text(out/"dates-by-day.csv", dataset_timeline.csv_bytes(
+        daily_counts(result["records"]), DAY_FIELDS).decode("utf-8"))
 
 
 def main(argv=None):

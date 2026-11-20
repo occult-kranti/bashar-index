@@ -36,7 +36,7 @@ Work on the extraterrestrial-channeler thread of the Bashar Index: research note
 | **Handoff (start here when resuming)** | [`HANDOFF.md`](HANDOFF.md): where everything is, how to set up a new Codespace, what was paused and how to start it again. |
 | Dashboard hub | <https://occult-kranti.github.io/bashar-index/dashboards/>: all current public interfaces. |
 | Collection dashboard | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/>: current acquisition snapshot and dated historical archive, backed by [`plan/`](plan/). The earlier claude.ai artifact is historical. |
-| Selected-video publication timeline | The [timeline](dashboard/collection/timeline.html) covers 1,976 regular uploads across 101 channels. Filter by creator, recording or date source, and compare monthly and annual distributions. |
+| Selected-video publication timeline | The [timeline](dashboard/collection/timeline.html) opens on daily counts for the latest 30 days. Zoom to specific dates or months, filter creators and inspect each recording's source. [Daily counts CSV](dashboard/collection/dates-by-day.csv) |
 | Prediction timelines | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/predictions.html>: filterable candidate statements; candidates are not verified predictions. |
 | Channeler YouTube index | <https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/>. Page source: [`dashboard/index.html`](dashboard/index.html). |
 | Channeler/entity directory | <https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/#/entities>: reviewed relationships and source links, with uncertain attribution kept explicit. |
