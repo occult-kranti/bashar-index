@@ -65,6 +65,14 @@ class FailureReportTests(unittest.TestCase):
         self.assertEqual(values[0]["Video URL"], row["url"])
         self.assertEqual(f.md_cell("<i>A|[B]</i>"), r"&lt;i&gt;A\|\[B\]&lt;/i&gt;")
 
+    def test_metadata_provider_failure_has_no_selected_media_http_status(self):
+        row = {"disposition": "local_or_administrative_hold", "closed_attempt_history": [
+            dict(self.attempt, error_class="wpc_provider_attempt_failed", source_response={})]}
+        actual = f.failed_outcome(row)
+        self.assertEqual(actual["category"], "metadata_failure")
+        self.assertIsNone(actual["http_status"])
+        self.assertIn("creator", actual["next_step"])
+
     def test_missing_audio_but_no_previous_failure_still_writes_a_header(self):
         result = dict(failures=[], selected=2, verified=0, remaining=2, other_pending=2, creators=1,
                       generated_at="2026-11-20T00:00:00Z", closed_at="2026-11-19T23:00:00Z")

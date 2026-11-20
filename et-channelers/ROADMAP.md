@@ -4,7 +4,7 @@
 
 | Stage | Evidence and next action |
 | --- | --- |
-| Audio, in progress at 00:51 UTC | 1,918 of 1,976 recordings verified, 70 of 101 channels complete. Finish eligible work, reconcile the four local holds and review official publisher alternatives for 28 source refusals. Preserve every outstanding identity. [Recording ledger](knowledge-transfer/evidence/2026-11-20/recording-status.csv) |
+| Audio, eligible queue closed at 01:16 UTC | 1,946 of 1,976 recordings verified, 80 of 101 channels complete. Preserve the 29 source refusals and one metadata failure. Register any verified newly available publisher edition against its exact recording. Full completion remains undated. [Recording ledger and failure register](knowledge-transfer/evidence/2026-11-20-close/) |
 | Calendar, published | Individual days and arbitrary date ranges are available over 6,724 days. There are 1,587 day-assignable recordings and 389 wider estimates. [Interactive timeline](dashboard/collection/timeline.html?date=2026-11-16) · [Daily CSV](dashboard/collection/dates-by-day.csv) |
 | Transcript and translation, scheduled | Stage usable English captions and publisher transcripts. Run the local CUDA batch on remaining speech after completion. Keep original-language transcripts and English translations together. [ASR operating guide](pipeline/GPU_ASR_SETUP.md) |
 | Quantitative and independent review, planned | Freeze the text corpus and calculate creator-balanced term scores, clustering sensitivity and cross-creator passage retrieval. Evaluate common events, prediction timing and speaker-proposed experiments with a second independent panel. [Research plan and hypotheses](research/analysis-plan-2026-11-16/) |

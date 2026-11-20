@@ -1,8 +1,14 @@
 # Collection knowledge transfer
 
+To transfer this work to another chat, use the [copy-ready handoff prompt](CONTINUE_IN_NEW_CHAT.md). It includes the current state, operating constraints and first commands.
+
 Start here to operate the latest-20+ audio archive or reproduce a result from it. The archive selects up to twenty public, completed recordings from each channel’s **Videos** tab, newest first. A short recording on that tab qualifies. YouTube Shorts and streams keep their own classifications in the cumulative index. Publication date and running time have no cutoff.
 
 ## Where the collection stands
+
+At **01:16 UTC on November 20** the acquisition queue finished all eligible work. Drive held **1,946 of 1,976 selected recordings** across **80 fully covered channels**. Twenty-one channels still had missing recordings. The final register gives each of their 30 links, the reason, and the publisher follow-up. Local speech, analysis and the latest fifty retain their existing dependencies. [Collection close](evidence/2026-11-20-close/) · [Creator table](evidence/2026-11-20-close/creator-status.csv) · [Recording table](evidence/2026-11-20-close/recording-status.csv) · [Failure dashboard](evidence/2026-11-20-close/failed-links/index.html)
+
+## Earlier checkpoint after the first native follow-on
 
 The **00:51 UTC, November 20, 2026** receipt checkpoint contains **1,918 of 1,976 recordings (97.1%)**, with all available selections archived for **70 of 101 channels**. The source listing ended with fewer than twenty eligible recordings for five channels. Ninety-six channels supplied twenty each. The cumulative catalog contains 2,697 entries. These counts describe one frozen selection, so a later channel upload can change the membership of a future sweep. [Creator table](evidence/2026-11-20/creator-status.csv) · [Every recording](evidence/2026-11-20/recording-status.csv) · [Checkpoint](evidence/2026-11-20/checkpoint.json)
 

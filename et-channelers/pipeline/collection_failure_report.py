@@ -20,7 +20,8 @@ COLUMNS = {
     "last_refusal_utc": "Last provider refusal (UTC)", "next_step": "Next step",
 }
 LABELS = {"provider_refusal": "Provider refusal", "local_failure": "Local worker failure",
-          "transfer_failure": "Incomplete transfer", "needs_review": "Needs review"}
+          "transfer_failure": "Incomplete transfer", "metadata_failure": "Metadata lookup failure",
+          "needs_review": "Needs review"}
 PENDING_CODES = {"native_route_pending", "provider_policy_dispatch_held", "source_dispatch_held",
                  "target_already_archived", "target_already_covered", "dispatch_held"}
 LOCAL_STATES = {"local_or_administrative_hold", "ordinary_ready_scoped_local_recovery"}
@@ -77,9 +78,14 @@ def failed_outcome(row):
             category, reason = "local_failure", "The local worker could not acquire its processing slot."
         elif cause == "qualified_downloader_failed":
             category, reason = "transfer_failure", "The download worker stopped before it verified a complete file."
+        elif cause == "wpc_provider_attempt_failed" and status is None:
+            category = "metadata_failure"
+            reason = "The metadata provider failed. The attempt supplied no HTTP status for the selected recording."
         else:
             category, reason = "needs_review", "The recorded attempt ended without a verified complete audio file."
         next_step = RECOVER if state == "ordinary_ready_scoped_local_recovery" else "Review the attempt and retry when eligible."
+        if category == "metadata_failure":
+            next_step = "Check the creator’s independent editions or resume when the metadata provider becomes available."
     # Handoffs can describe the same attempt more than once. Do not count queue entries as new requests.
     unique = set()
     for a in attempts:
@@ -163,11 +169,13 @@ def md_cell(value):
 
 def markdown(result):
     rows = result["failures"]
+    pending = result["other_pending"]
+    unclassified = (f" Another {pending} remained in the queue without a documented failure in the closed work covered here."
+                    if pending else "")
     lines = ["# Latest 20+ recordings with unresolved download failures", "",
              f"At {result['generated_at']}, {result['verified']:,} of {result['selected']:,} selected recordings across "
              f"{result['creators']} creators had verified audio. **{len(rows)} recordings had an unsuccessful attempt "
-             f"and still needed audio.** Another {result['other_pending']} remained in the queue without a documented failure "
-             "in the closed work covered here.", "",
+             f"and still needed audio.**{unclassified}", "",
              f"The attempt history closes at {result['closed_at']}. Newer Drive receipts take precedence. "
              "The rank is the recording’s position among the creator’s selected public Videos-tab uploads, newest first.", "",
              "[Search and filter the dashboard](index.html) · [Download the CSV](failed-links.csv)", ""]
