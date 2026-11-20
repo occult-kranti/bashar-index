@@ -1,6 +1,10 @@
 # Collecting the latest 20+ recordings
 
-## Current run
+## November 20 operating handoff
+
+The [operator guide](../knowledge-transfer/operations.md) gives the current Windows status commands and the conditions for each downstream worker. At 00:51 UTC the collector had verified 1,918 of 1,976 recordings. The [production history](../knowledge-transfer/production-history.md) records the measured transfer trials and local scheduler fixes. The [attempt evidence](../knowledge-transfer/evidence/README.md) provides recording-level outcomes and explains where historical evidence runs out.
+
+## November 19 run
 
 The November 19, 2026 selection contains **1,976 public regular uploads from 101 channels**. At 22:51 UTC, 67 channels had all their selected recordings on Drive. The saved audio comprised 1,240 native YouTube recordings, 368 YouTube editions with unverified source-track identity and 176 independently matched publisher editions. That gives **1,784 saved and 192 outstanding**. [Collection dashboard](../dashboard/collection/) · [Guest-channel evidence](../research/interview-discovery-2026-11-19/verified-guest-channels.csv)
 

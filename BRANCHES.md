@@ -1,5 +1,17 @@
 # Branch register and development history
 
+## November 20 knowledge transfer
+
+The [pull-request register](et-channelers/knowledge-transfer/release-history.csv) records all 87 pull requests through the daily calendar release, including closed and unmerged proposals, with their branch names and merge revisions. The [branch-head inventory](et-channelers/knowledge-transfer/branch-heads.csv) records the 88 remote branches observed after that release. Historical links in the [research index](et-channelers/knowledge-transfer/research-index.md) point to the revisions that supplied the evidence.
+
+| Release | Result |
+| --- | --- |
+| [#83](https://github.com/occult-kranti/bashar-index/pull/83) | Failed-link report, CSV and filterable dashboard. |
+| [#84](https://github.com/occult-kranti/bashar-index/pull/84) | Date provenance across all 1,976 regular recordings. |
+| [#85](https://github.com/occult-kranti/bashar-index/pull/85) | Scheduled text research agents and one project spending ledger. |
+| [#86](https://github.com/occult-kranti/bashar-index/pull/86) | Resumable CUDA transcription, bilingual outputs and individually reviewed language decisions. |
+| [#87](https://github.com/occult-kranti/bashar-index/pull/87) | Single-day timeline, date-range navigation, downloadable daily counts and figures. |
+
 ## November 19 Latest 20+ videos collection
 
 | Branch | Purpose | Observed revision |

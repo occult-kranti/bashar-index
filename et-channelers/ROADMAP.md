@@ -1,6 +1,18 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
-## Current collection and next phases
+## November 20 handoff and release order
+
+| Stage | Evidence and next action |
+| --- | --- |
+| Audio, in progress at 00:51 UTC | 1,918 of 1,976 recordings verified, 70 of 101 channels complete. Finish eligible work, reconcile the four local holds and review official publisher alternatives for 28 source refusals. Preserve every outstanding identity. [Recording ledger](knowledge-transfer/evidence/2026-11-20/recording-status.csv) |
+| Calendar, published | Individual days and arbitrary date ranges are available over 6,724 days. There are 1,587 day-assignable recordings and 389 wider estimates. [Interactive timeline](dashboard/collection/timeline.html?date=2026-11-16) · [Daily CSV](dashboard/collection/dates-by-day.csv) |
+| Transcript and translation, scheduled | Stage usable English captions and publisher transcripts. Run the local CUDA batch on remaining speech after completion. Keep original-language transcripts and English translations together. [ASR operating guide](pipeline/GPU_ASR_SETUP.md) |
+| Quantitative and independent review, planned | Freeze the text corpus and calculate creator-balanced term scores, clustering sensitivity and cross-creator passage retrieval. Evaluate common events, prediction timing and speaker-proposed experiments with a second independent panel. [Research plan and hypotheses](research/analysis-plan-2026-11-16/) |
+| Fifty and deeper indexing, deferred | After the two analytical rounds and translation, refresh the roster before scheduling latest 50. The acquisition estimate is 22–28 hours from its eventual start. Then index the remaining public history. [Forecast assumptions](pipeline/COLLECTION_PROCESS.md#latest-50-forecast) |
+
+The [knowledge-transfer guide](knowledge-transfer/) links the code, historical experiments, outstanding work, all dashboard routes and a reproducible dated export. Keep successive observations separately dated when updating research or throughput claims.
+
+## November 19 collection and next phases
 
 Local CUDA owns speech recognition and translation. After complete audio verification, two project-funded research agents review the study design and source quality. Two further pairs analyze and challenge the evidence after the frozen text collection is ready. All six draw from one $100 project allowance. [Research roles, cost limits and handoff](pipeline/PROJECT_RESEARCH_AGENTS.md)
 

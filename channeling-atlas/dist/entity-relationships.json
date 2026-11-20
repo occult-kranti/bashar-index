@@ -28,6 +28,32 @@
     },
     {
       "aliases": [
+        "Alpar"
+      ],
+      "categories": [
+        "blue_avian_as_described"
+      ],
+      "comparisonFamilies": [
+        "alpar-rachel-chamness"
+      ],
+      "id": "alpar-rachel-chamness",
+      "name": "Alpar"
+    },
+    {
+      "aliases": [
+        "AnaOmbre"
+      ],
+      "categories": [
+        "named_entity_type_unspecified"
+      ],
+      "comparisonFamilies": [
+        "anaombre-rachel-chamness"
+      ],
+      "id": "anaombre-rachel-chamness",
+      "name": "AnaOmbre"
+    },
+    {
+      "aliases": [
         "Andromeda cosmic race"
       ],
       "categories": [
@@ -41,6 +67,19 @@
     },
     {
       "aliases": [
+        "Archangel Ezekiel"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-ezekiel"
+      ],
+      "id": "archangel-ezekiel",
+      "name": "Archangel Ezekiel"
+    },
+    {
+      "aliases": [
         "Archangel Gabriel"
       ],
       "categories": [
@@ -51,6 +90,19 @@
       ],
       "id": "archangel-gabriel",
       "name": "Archangel Gabriel"
+    },
+    {
+      "aliases": [
+        "Archangel Jophial"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-jophial"
+      ],
+      "id": "archangel-jophial",
+      "name": "Archangel Jophial"
     },
     {
       "aliases": [
@@ -91,6 +143,19 @@
       ],
       "id": "archangel-raphael",
       "name": "Archangel Raphael"
+    },
+    {
+      "aliases": [
+        "Archangel Raziel"
+      ],
+      "categories": [
+        "archangel"
+      ],
+      "comparisonFamilies": [
+        "archangel-raziel"
+      ],
+      "id": "archangel-raziel",
+      "name": "Archangel Raziel"
     },
     {
       "aliases": [
@@ -172,6 +237,19 @@
     },
     {
       "aliases": [
+        "Ashanti"
+      ],
+      "categories": [
+        "et_human_hybrid_as_described"
+      ],
+      "comparisonFamilies": [
+        "ashanti-daniel-scranton"
+      ],
+      "id": "ashanti-daniel-scranton",
+      "name": "Ashanti"
+    },
+    {
+      "aliases": [
         "Bashar"
       ],
       "categories": [
@@ -195,6 +273,19 @@
       ],
       "id": "cosmic-christ-alexis-cartwright",
       "name": "Cosmic Christ"
+    },
+    {
+      "aliases": [
+        "Council of 8"
+      ],
+      "categories": [
+        "angelic_collective"
+      ],
+      "comparisonFamilies": [
+        "council-of-eight"
+      ],
+      "id": "council-of-eight-mich-carpenter",
+      "name": "Council of 8"
     },
     {
       "aliases": [
@@ -260,6 +351,19 @@
       ],
       "id": "antonis-pia-orleane",
       "name": "Dr. Antonis"
+    },
+    {
+      "aliases": [
+        "Elan"
+      ],
+      "categories": [
+        "et_being"
+      ],
+      "comparisonFamilies": [
+        "elan-essassani"
+      ],
+      "id": "elan-essassani",
+      "name": "Elan"
     },
     {
       "aliases": [
@@ -367,6 +471,19 @@
       ],
       "id": "john-telstar",
       "name": "John"
+    },
+    {
+      "aliases": [
+        "Jonah"
+      ],
+      "categories": [
+        "named_entity_type_unspecified"
+      ],
+      "comparisonFamilies": [
+        "jonah"
+      ],
+      "id": "jonah-joy-kingsborough",
+      "name": "Jonah"
     },
     {
       "aliases": [
@@ -581,10 +698,24 @@
     },
     {
       "aliases": [
+        "Memory Keepers"
+      ],
+      "categories": [
+        "collective"
+      ],
+      "comparisonFamilies": [
+        "memory-keepers-randi-botnick"
+      ],
+      "id": "memory-keepers-randi-botnick",
+      "name": "Memory Keepers"
+    },
+    {
+      "aliases": [
         "Merlin"
       ],
       "categories": [
-        "legendary_teacher"
+        "legendary_teacher",
+        "named_figure"
       ],
       "comparisonFamilies": [
         "merlin"
@@ -643,6 +774,19 @@
       ],
       "id": "moses",
       "name": "Moses"
+    },
+    {
+      "aliases": [
+        "Mother Ethzra"
+      ],
+      "categories": [
+        "named_spirit_guide"
+      ],
+      "comparisonFamilies": [
+        "mother-ethzra-rachel-chamness"
+      ],
+      "id": "mother-ethzra-rachel-chamness",
+      "name": "Mother Ethzra"
     },
     {
       "aliases": [
@@ -711,6 +855,19 @@
     },
     {
       "aliases": [
+        "Pleiadian beings"
+      ],
+      "categories": [
+        "pleiadian_collective"
+      ],
+      "comparisonFamilies": [
+        "pleiadian"
+      ],
+      "id": "pleiadians-mich-carpenter",
+      "name": "Pleiadian beings"
+    },
+    {
+      "aliases": [
         "Pleiadian codes"
       ],
       "categories": [
@@ -747,6 +904,19 @@
       ],
       "id": "pleiadian-councils-solara",
       "name": "Pleiadian star collective"
+    },
+    {
+      "aliases": [
+        "Praying-Mantis Beings"
+      ],
+      "categories": [
+        "et_collective"
+      ],
+      "comparisonFamilies": [
+        "mantis"
+      ],
+      "id": "praying-mantis-collective-toni-ghazi",
+      "name": "Praying-Mantis Beings"
     },
     {
       "aliases": [
@@ -1037,6 +1207,32 @@
     },
     {
       "aliases": [
+        "The Guides"
+      ],
+      "categories": [
+        "collective"
+      ],
+      "comparisonFamilies": [
+        "the-guides"
+      ],
+      "id": "the-guides-paul-selig",
+      "name": "The Guides"
+    },
+    {
+      "aliases": [
+        "The Guides"
+      ],
+      "categories": [
+        "multidimensional_collective"
+      ],
+      "comparisonFamilies": [
+        "the-guides"
+      ],
+      "id": "the-guides-speaking-from-source",
+      "name": "The Guides"
+    },
+    {
+      "aliases": [
         "The Hathors"
       ],
       "categories": [
@@ -1115,6 +1311,19 @@
     },
     {
       "aliases": [
+        "THEO"
+      ],
+      "categories": [
+        "angelic_collective"
+      ],
+      "comparisonFamilies": [
+        "theo"
+      ],
+      "id": "theo-sheila-gillette",
+      "name": "THEO"
+    },
+    {
+      "aliases": [
         "Thoth"
       ],
       "categories": [
@@ -1154,6 +1363,19 @@
     },
     {
       "aliases": [
+        "Vera Light"
+      ],
+      "categories": [
+        "pleiadian_collective"
+      ],
+      "comparisonFamilies": [
+        "vera-light-caitlin-de-leon"
+      ],
+      "id": "vera-light-caitlin-de-leon",
+      "name": "Vera Light"
+    },
+    {
+      "aliases": [
         "Vollanda / The Voice"
       ],
       "categories": [
@@ -1180,17 +1402,31 @@
     }
   ],
   "meta": {
-    "editionDate": "2026-11-17",
-    "labelCount": 90,
-    "peopleCount": 31,
-    "relationshipCount": 119,
+    "editionDate": "2026-11-19",
+    "labelCount": 107,
+    "peopleCount": 44,
+    "relationshipCount": 145,
     "scope": "Dated primary-source relationship extension; historical Atlas and analysis denominators are unchanged.",
     "source": "discovery-relationships.csv",
     "sourceCanonicalization": "utf8-lf-v1",
-    "sourceSha256": "319297345c3fd650302f572acf67e4ed07a02aded293da513feef47bd6e04d59",
+    "sourceSha256": "2928f81e947b9c658814ec55e71a72972a9c6340b41a3cfab0c75fdc82527fc2",
     "unit": "One human–claimed source–predicate–supporting page relationship. Labels compare claims, not verified external identities."
   },
   "people": [
+    {
+      "channels": [
+        {
+          "basis": "The channel and speakingfromsource.com identify a jointly operated channel. The Videos page confirmed its canonical ID and handle on 2026-11-19.",
+          "evidenceUrl": "https://www.speakingfromsource.com/",
+          "url": "https://www.youtube.com/channel/UCWJ7lVdVyroHxZ--N-x7-eQ"
+        }
+      ],
+      "collectionIds": [
+        "thomas-and-aj"
+      ],
+      "id": "aj-cavanagh",
+      "name": "AJ Cavanagh"
+    },
     {
       "channels": [
         {
@@ -1248,6 +1484,20 @@
     {
       "channels": [
         {
+          "basis": "The project links its official Elan Interactions YouTube channel. Its Videos tab identifies the catalogued channel.",
+          "evidenceUrl": "https://www.elaninteractions.com/about.html",
+          "url": "https://www.youtube.com/channel/UCosW0AVeoCJRvTX27KmG5uA"
+        }
+      ],
+      "collectionIds": [
+        "andrew-bayuk"
+      ],
+      "id": "andrew-bayuk",
+      "name": "Andrew"
+    },
+    {
+      "channels": [
+        {
           "basis": "first_party_site_channel_link",
           "evidenceUrl": "https://www.andrealuizari.com/post/light-codes-your-dna",
           "url": "https://www.youtube.com/channel/UCtgPv-Yylk3ynNzb5oBKVRA"
@@ -1270,6 +1520,12 @@
       ],
       "id": "anjie-hipple",
       "name": "Anjie Hipple"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "april-lindevald",
+      "name": "April Lindevald"
     },
     {
       "channels": [],
@@ -1304,6 +1560,12 @@
       "collectionIds": [],
       "id": "bonnie-vent",
       "name": "Bonnie Vent"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "caitlin-de-leon",
+      "name": "Caitlin de León"
     },
     {
       "channels": [
@@ -1383,6 +1645,20 @@
       "collectionIds": [],
       "id": "joan-walker",
       "name": "Joan Walker"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Shared channel co-credited in Natalie Namaste's interview SQMJB_HJq88. Joy Kingsborough credits Jonah in her own work at joyandjonah.com/mindshift. Canonical channel verified on 2026-11-19.",
+          "evidenceUrl": "https://www.youtube.com/channel/UCCSHO9-qpkqu-hjuh2q4uPw",
+          "url": "https://www.youtube.com/channel/UCCSHO9-qpkqu-hjuh2q4uPw"
+        }
+      ],
+      "collectionIds": [
+        "joy-and-matt-kahn"
+      ],
+      "id": "joy-kingsborough",
+      "name": "Joy Kingsborough"
     },
     {
       "channels": [
@@ -1476,6 +1752,53 @@
     {
       "channels": [
         {
+          "basis": "The submitted handle and the public Videos page identified Mich Carpenter and this canonical channel ID on 2026-11-19.",
+          "evidenceUrl": "https://www.youtube.com/@Michmedium",
+          "url": "https://www.youtube.com/channel/UCJFHEuvzOlA83MIePvvOtUg"
+        },
+        {
+          "basis": "The submitted handle and the public Videos page identified Mich Carpenter and this canonical channel ID on 2026-11-19.",
+          "evidenceUrl": "https://www.youtube.com/channel/UCJFHEuvzOlA83MIePvvOtUg",
+          "url": "https://www.youtube.com/channel/UCJFHEuvzOlA83MIePvvOtUg"
+        }
+      ],
+      "collectionIds": [
+        "mich-medium"
+      ],
+      "id": "mich-carpenter",
+      "name": "Mich Carpenter"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Her home page links the Psychic Medium Channel at @MichelleRobinsonMedium. The collection registry and its public Videos tab identify the same channel.",
+          "evidenceUrl": "https://www.michellerobinsonmedium.com/",
+          "url": "https://www.youtube.com/channel/UCH-hyX-_JxweSbM7pOrv29Q"
+        }
+      ],
+      "collectionIds": [
+        "michelle-robinson"
+      ],
+      "id": "michelle-robinson",
+      "name": "Michelle Robinson"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Awakening guest. The creator's Videos page confirmed this handle and canonical channel on 2026-11-19. Source for the guest attribution or practice is https://paulselig.com/",
+          "evidenceUrl": "https://www.youtube.com/channel/UCBVD69mrsA_Vfx4dhu1aX6Q",
+          "url": "https://www.youtube.com/channel/UCBVD69mrsA_Vfx4dhu1aX6Q"
+        }
+      ],
+      "collectionIds": [
+        "paul-selig"
+      ],
+      "id": "paul-selig",
+      "name": "Paul Selig"
+    },
+    {
+      "channels": [
+        {
           "basis": "site_handle_matches_existing_canonical",
           "evidenceUrl": "https://www.laarkmaa.com/",
           "url": "https://www.youtube.com/channel/UCwB7FHwwaHYML6uFqulHMtg"
@@ -1486,6 +1809,26 @@
       ],
       "id": "pia-orleane",
       "name": "Pia Orleane"
+    },
+    {
+      "channels": [
+        {
+          "basis": "The creator identifies the podcast and links the Sound Waves Heal channel.",
+          "evidenceUrl": "https://www.soundwavesheal.com/podcast/",
+          "url": "https://www.youtube.com/channel/UCEvL0e2XVRQ0tgmiu_imNwQ"
+        }
+      ],
+      "collectionIds": [
+        "rachel-chamness"
+      ],
+      "id": "rachel-chamness",
+      "name": "Rachel Chamness"
+    },
+    {
+      "channels": [],
+      "collectionIds": [],
+      "id": "randi-botnick",
+      "name": "Randi Botnick"
     },
     {
       "channels": [],
@@ -1533,6 +1876,20 @@
     {
       "channels": [
         {
+          "basis": "Awakening guest. The creator's Videos page confirmed this handle and canonical channel on 2026-11-19. Source for the guest attribution or practice is https://www.asktheo.com/about-theo-2",
+          "evidenceUrl": "https://www.youtube.com/channel/UCInoTdo2w9YTb99b5Wzm8fA",
+          "url": "https://www.youtube.com/channel/UCInoTdo2w9YTb99b5Wzm8fA"
+        }
+      ],
+      "collectionIds": [
+        "sheila-gillette"
+      ],
+      "id": "sheila-gillette",
+      "name": "Sheila Gillette"
+    },
+    {
+      "channels": [
+        {
           "basis": "Explicit own-channel anchor identifies Solara; other canonical channel belongs to testimonial author Mindy Mekemson.",
           "evidenceUrl": "https://www.solara.org.uk/",
           "url": "https://www.youtube.com/channel/UC3wjMuxPWEXqeg1-uAgXuFg"
@@ -1541,13 +1898,43 @@
       "collectionIds": [],
       "id": "solara-an-ra",
       "name": "Solara An-Ra"
+    },
+    {
+      "channels": [
+        {
+          "basis": "The channel and speakingfromsource.com identify a jointly operated channel. The Videos page confirmed its canonical ID and handle on 2026-11-19.",
+          "evidenceUrl": "https://www.speakingfromsource.com/",
+          "url": "https://www.youtube.com/channel/UCWJ7lVdVyroHxZ--N-x7-eQ"
+        }
+      ],
+      "collectionIds": [
+        "thomas-and-aj"
+      ],
+      "id": "thomas-workman",
+      "name": "Thomas Workman"
+    },
+    {
+      "channels": [
+        {
+          "basis": "Awakening guest. The creator's Videos page confirmed this handle and canonical channel on 2026-11-19. Source for the guest attribution or practice is https://tonighazi.com/about/",
+          "evidenceUrl": "https://www.youtube.com/channel/UCnKMZQzSrfwPNJzGxTwsTcQ",
+          "url": "https://www.youtube.com/channel/UCnKMZQzSrfwPNJzGxTwsTcQ"
+        }
+      ],
+      "collectionIds": [
+        "toni-ghazi"
+      ],
+      "id": "toni-ghazi",
+      "name": "Toni Ghazi"
     }
   ],
   "predicates": {
+    "attributes_written_message": "Attributes a published written message to",
     "claims_channeling": "Claims channeling",
     "claims_channeling_codes": "Attributes channeled codes to",
     "claims_channeling_light_language": "Attributes light language to",
     "claims_series_channeling": "Claims channeling in an event series",
+    "publisher_credits_episode": "Publisher credits an episode to",
     "reports_contact_with": "Reports contact with",
     "reports_guidance_from": "Reports guidance from",
     "reports_guide_association": "Names as a guide"
@@ -1639,6 +2026,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "creators-daniel-scranton",
+      "entityLabel": "The Creators",
+      "evidence": {
+        "qualification": "The quoted message is available in English. Spoken introductions and other portions require audio alignment.",
+        "section": "Creator-published message with a link to recording B2fihBKwOUw",
+        "summary": "Scranton publishes the written message under the name The Creators and links the corresponding recording.",
+        "url": "https://danielscranton.com/one-minute-will-change-everything-in-your-life-%e2%88%9ethe-creators/"
+      },
+      "id": "claim-107cfdd3ad4c096b",
+      "personId": "daniel-scranton",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:22:51Z",
       "entityId": "king-solomon",
       "entityLabel": "King Solomon",
@@ -1669,6 +2073,23 @@
       "personId": "roxanne-swainhart",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "saint-germain",
+      "entityLabel": "St. Germain",
+      "evidence": {
+        "qualification": "The quoted message is available in English. Spoken introductions and other portions require audio alignment.",
+        "section": "Creator-published message with a link to recording ZU66EOZrwME",
+        "summary": "Scranton publishes the written message under the name St. Germain and links the corresponding recording.",
+        "url": "https://danielscranton.com/the-joke-humans-are-playing-on-themselves-%e2%88%9est-germain/"
+      },
+      "id": "claim-131c1a6f79f50559",
+      "personId": "daniel-scranton",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
       "reviewState": "parent_primary_source_reviewed",
       "role": "channeler"
     },
@@ -1809,6 +2230,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "vera-light-caitlin-de-leon",
+      "entityLabel": "Vera Light",
+      "evidence": {
+        "qualification": "Guest, joint episode. Transcript and performance alignment await review.",
+        "section": "5D Channels & Chats, episode 143",
+        "summary": "The episode credits guest Caitlin de León with trance channeling the Pleiadian collective Vera Light.",
+        "url": "https://b8495db6-d376-420b-88ad-ba75cf4d3f1d.libsyn.com/e143-is-telepathy-getting-stronger-pleiadian-channeling-on-lightworkers-dreams-5d-with-caitlin"
+      },
+      "id": "claim-22a0439bde45fd40",
+      "personId": "caitlin-de-leon",
+      "predicate": "Publisher credits an episode to",
+      "relationshipType": "publisher_credits_episode",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-16T23:59:04Z",
       "entityId": "archangel-metatron",
       "entityLabel": "Archangel Metatron",
@@ -1873,6 +2311,23 @@
       "personId": "ayako-sekino",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "archangel-ezekiel",
+      "entityLabel": "Archangel Ezekiel",
+      "evidence": {
+        "qualification": "Written attribution. A spoken passage requires separate recording-level review.",
+        "section": "The New Pontiff",
+        "summary": "Robinson identifies Ezekiel in the heading and closing credit. A separate heading uses the spelling Ezeiel and has no resolved identity link.",
+        "url": "https://www.michellerobinsonmedium.com/angel-channelings"
+      },
+      "id": "claim-2dbdbeab08b7731f",
+      "personId": "michelle-robinson",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
       "reviewState": "parent_primary_source_reviewed",
       "role": "channeler"
     },
@@ -1979,6 +2434,40 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "council-of-eight-mich-carpenter",
+      "entityLabel": "Council of 8",
+      "evidence": {
+        "qualification": "",
+        "section": "Council of 8",
+        "summary": "Carpenter describes channeling the Council of 8 and describes its members as angelic beings and ascended masters.",
+        "url": "https://www.michcarpenter.com/"
+      },
+      "id": "claim-3bcb68e357cae337",
+      "personId": "mich-carpenter",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "merlin",
+      "entityLabel": "Merlin",
+      "evidence": {
+        "qualification": "Guest. The publisher identifies the person and the claimed speaker. Transcript and performance alignment await review.",
+        "section": "5D Channels & Chats, episode 137",
+        "summary": "Rachel introduces the first installment as a conversation with Merlin through guest April Lindevald.",
+        "url": "https://www.soundwavesheal.com/podcast/"
+      },
+      "id": "claim-3c04e698cef66f97",
+      "personId": "april-lindevald",
+      "predicate": "Publisher credits an episode to",
+      "relationshipType": "publisher_credits_episode",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:06:42Z",
       "entityId": "arcturian-councils-solara",
       "entityLabel": "Arcturian star collective",
@@ -2058,6 +2547,23 @@
       },
       "id": "claim-432b984f84de4f2f",
       "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "elan-essassani",
+      "entityLabel": "Elan",
+      "evidence": {
+        "qualification": "The publisher requests the first-name credit Andrew. Episode 116 is listed as a full Elan session.",
+        "section": "About Elan Interactions and Sharing This Information",
+        "summary": "Elan Interactions credits the channeling of Elan to Andrew and describes those recordings as a distinct series.",
+        "url": "https://www.elaninteractions.com/about.html"
+      },
+      "id": "claim-43fa6216bf4c576c",
+      "personId": "andrew-bayuk",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",
@@ -2268,6 +2774,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "pleiadians-mich-carpenter",
+      "entityLabel": "Pleiadian beings",
+      "evidence": {
+        "qualification": "Interview attribution. Passage-level attribution requires a timestamp.",
+        "section": "Seeking Center episode 241",
+        "summary": "The hosts identify the Pleiadians among the sources Carpenter discusses in her own interview.",
+        "url": "https://seeking.buzzsprout.com/1245392/episodes/19490857-beyond-mediumship-spirit-pleiadians-telepathic-communication-mich-carpenter-episode-241"
+      },
+      "id": "claim-5fe9be6e1d41d0c5",
+      "personId": "mich-carpenter",
+      "predicate": "Publisher credits an episode to",
+      "relationshipType": "publisher_credits_episode",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-16T23:59:04Z",
       "entityId": "buddha",
       "entityLabel": "The Buddha",
@@ -2302,6 +2825,40 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "archangel-raziel",
+      "entityLabel": "Archangel Raziel",
+      "evidence": {
+        "qualification": "Written attribution. A spoken passage requires separate recording-level review.",
+        "section": "Trump and such Leadership",
+        "summary": "Robinson dates this written message May 16, 2025 and attributes it to Raziel.",
+        "url": "https://www.michellerobinsonmedium.com/angel-channelings"
+      },
+      "id": "claim-65579ecf045b6812",
+      "personId": "michelle-robinson",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "archangel-michael",
+      "entityLabel": "Archangel Michael",
+      "evidence": {
+        "qualification": "Written attribution. A spoken passage requires separate recording-level review.",
+        "section": "A Wakeup call is Nigh / Stand on Your Own Two Feet",
+        "summary": "Robinson publishes two written messages with a Michael credit.",
+        "url": "https://www.michellerobinsonmedium.com/angel-channelings"
+      },
+      "id": "claim-6560f455cf99b782",
+      "personId": "michelle-robinson",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:06:42Z",
       "entityId": "mary-magdalene",
       "entityLabel": "Mary Magdalene",
@@ -2313,6 +2870,23 @@
       },
       "id": "claim-658277b81b4a1735",
       "personId": "lea-chapin",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "praying-mantis-collective-toni-ghazi",
+      "entityLabel": "Praying-Mantis Beings",
+      "evidence": {
+        "qualification": "",
+        "section": "Channeling the Praying-Mantis Beings",
+        "summary": "Ghazi attributes channeled messages to the Mantis collective and associates it with Antares.",
+        "url": "https://tonighazi.com/"
+      },
+      "id": "claim-683cf275c6bb5cf3",
+      "personId": "toni-ghazi",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",
@@ -2381,6 +2955,23 @@
       },
       "id": "claim-6e0c05dd107e7216",
       "personId": "pia-orleane",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "the-guides-speaking-from-source",
+      "entityLabel": "The Guides",
+      "evidence": {
+        "qualification": "Both people share one channel and one set of selected recordings.",
+        "section": "Thomas and AJ channel The Guides",
+        "summary": "The creators identify both participants in their simultaneous channeling and describe The Guides as a nonphysical collective.",
+        "url": "https://www.speakingfromsource.com/"
+      },
+      "id": "claim-6f20231380756158",
+      "personId": "thomas-workman",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",
@@ -2489,6 +3080,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "archangel-uriel",
+      "entityLabel": "Archangel Uriel",
+      "evidence": {
+        "qualification": "Written attribution. A spoken passage requires separate recording-level review.",
+        "section": "Archangel Uriel / A Wakeup call is Nigh",
+        "summary": "The heading and closing credit name Uriel. The same page uses the title again for a different message credited to Michael.",
+        "url": "https://www.michellerobinsonmedium.com/angel-channelings"
+      },
+      "id": "claim-81608b45474e7585",
+      "personId": "michelle-robinson",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:06:42Z",
       "entityId": "god-source-judi-weaver",
       "entityLabel": "God Source",
@@ -2506,6 +3114,40 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "jonah-joy-kingsborough",
+      "entityLabel": "Jonah",
+      "evidence": {
+        "qualification": "Joy also uses the surname Kahn. Her channel is shared with Matt Kahn. The personal attribution is to Joy.",
+        "section": "See Joy and Jonah Live",
+        "summary": "Joy and Jonah describe live workshops in which Joy channels Jonah.",
+        "url": "https://www.joyandjonah.com/about-7f49aae5-9a79-4ed1-80b9-81f3af0b3a53"
+      },
+      "id": "claim-8594011ff2a09d8e",
+      "personId": "joy-kingsborough",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "archangel-gabriel",
+      "entityLabel": "Archangel Gabriel",
+      "evidence": {
+        "qualification": "Written attribution. A spoken passage requires separate recording-level review.",
+        "section": "My Archangel Story / L.A Fires",
+        "summary": "Robinson describes channeling the dated message and credits Gabriel.",
+        "url": "https://www.michellerobinsonmedium.com/angel-channelings"
+      },
+      "id": "claim-85acc65410c333dd",
+      "personId": "michelle-robinson",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:06:42Z",
       "entityId": "star-councils-light-solara",
       "entityLabel": "Star Councils of Light",
@@ -2519,6 +3161,40 @@
       "personId": "solara-an-ra",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "the-guides-paul-selig",
+      "entityLabel": "The Guides",
+      "evidence": {
+        "qualification": "The shared English label supports comparison across creators. Source identity is recorded separately.",
+        "section": "Students of the Guides",
+        "summary": "Selig's website attributes his channeled workshops and related texts to the Guides.",
+        "url": "https://paulselig.com/"
+      },
+      "id": "claim-8b3436e3d533ab00",
+      "personId": "paul-selig",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "alpar-rachel-chamness",
+      "entityLabel": "Alpar",
+      "evidence": {
+        "qualification": "Host, solo episode. Transcript and performance alignment await review.",
+        "section": "5D Channels & Chats, episode 82",
+        "summary": "The episode credits Rachel with channeling Alpar, whom she identifies as a Blue Avian guide.",
+        "url": "https://b8495db6-d376-420b-88ad-ba75cf4d3f1d.libsyn.com/e82-multidimensional-shamanism-channeling-alpar-and-activating-lightworker-codes"
+      },
+      "id": "claim-8c5d83db2917d2fa",
+      "personId": "rachel-chamness",
+      "predicate": "Publisher credits an episode to",
+      "relationshipType": "publisher_credits_episode",
       "reviewState": "parent_primary_source_reviewed",
       "role": "channeler"
     },
@@ -2604,6 +3280,23 @@
       "personId": "lori-xanadu",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "archangel-metatron",
+      "entityLabel": "Archangel Metatron",
+      "evidence": {
+        "qualification": "Written attribution. A spoken passage requires separate recording-level review.",
+        "section": "Shift your Awareness / Make a Choice",
+        "summary": "Robinson credits Metatron in two messages published on her channeling page.",
+        "url": "https://www.michellerobinsonmedium.com/angel-channelings"
+      },
+      "id": "claim-96848b62f5405043",
+      "personId": "michelle-robinson",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
       "reviewState": "parent_primary_source_reviewed",
       "role": "channeler"
     },
@@ -2744,6 +3437,40 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "archangel-jophial",
+      "entityLabel": "Archangel Jophial",
+      "evidence": {
+        "qualification": "Written attribution. A spoken passage requires separate recording-level review.",
+        "section": "Not on Lofty Heights",
+        "summary": "The heading and closing credit of this written message both use the spelling Jophial.",
+        "url": "https://www.michellerobinsonmedium.com/angel-channelings"
+      },
+      "id": "claim-a3272f8a43399ec9",
+      "personId": "michelle-robinson",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "memory-keepers-randi-botnick",
+      "entityLabel": "Memory Keepers",
+      "evidence": {
+        "qualification": "Guest. Other names mentioned in the discussion require their own evidence. Transcript and performance alignment await review.",
+        "section": "5D Channels & Chats, episode 145",
+        "summary": "The episode notes attribute a live message from the Memory Keepers to guest Randi Botnick.",
+        "url": "https://b8495db6-d376-420b-88ad-ba75cf4d3f1d.libsyn.com/e145-why-are-galactic-beings-helping-humanity-heal-now-randi-botnick"
+      },
+      "id": "claim-a4de1407e07c809a",
+      "personId": "randi-botnick",
+      "predicate": "Publisher credits an episode to",
+      "relationshipType": "publisher_credits_episode",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:22:51Z",
       "entityId": "moiyra-pia-orleane",
       "entityLabel": "Moiyra",
@@ -2757,6 +3484,23 @@
       "personId": "pia-orleane",
       "predicate": "Claims channeling in an event series",
       "relationshipType": "claims_series_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "mother-ethzra-rachel-chamness",
+      "entityLabel": "Mother Ethzra",
+      "evidence": {
+        "qualification": "Host, solo episode. Transcript and performance alignment await review.",
+        "section": "5D Channels & Chats, episode 142",
+        "summary": "Rachel describes channeling Mother Ethzra after discussing a past-life recollection.",
+        "url": "https://b8495db6-d376-420b-88ad-ba75cf4d3f1d.libsyn.com/e142-past-life-on-sirius-starseeds-atlantis-fae-portals-5d-ascension-with-mother-ethzra"
+      },
+      "id": "claim-a723a59fa90219af",
+      "personId": "rachel-chamness",
+      "predicate": "Publisher credits an episode to",
+      "relationshipType": "publisher_credits_episode",
       "reviewState": "parent_primary_source_reviewed",
       "role": "channeler"
     },
@@ -2840,6 +3584,23 @@
       },
       "id": "claim-ac9057c4e95e130e",
       "personId": "daniel-scranton",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "theo-sheila-gillette",
+      "entityLabel": "THEO",
+      "evidence": {
+        "qualification": "",
+        "section": "Sheila's Incredible Story",
+        "summary": "AskTHEO identifies Sheila Gillette as the direct-voice medium for a group described as twelve archangelic beings.",
+        "url": "https://asktheo.com/about-us"
+      },
+      "id": "claim-af155a1bafff32e0",
+      "personId": "sheila-gillette",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",
@@ -3254,6 +4015,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "anaombre-rachel-chamness",
+      "entityLabel": "AnaOmbre",
+      "evidence": {
+        "qualification": "Host, joint episode. Transcript and performance alignment await review.",
+        "section": "5D Channels & Chats, episode 143",
+        "summary": "Rachel credits AnaOmbre for her own contribution to a joint discussion with Caitlin.",
+        "url": "https://b8495db6-d376-420b-88ad-ba75cf4d3f1d.libsyn.com/e143-is-telepathy-getting-stronger-pleiadian-channeling-on-lightworkers-dreams-5d-with-caitlin"
+      },
+      "id": "claim-df35e33abc508d32",
+      "personId": "rachel-chamness",
+      "predicate": "Publisher credits an episode to",
+      "relationshipType": "publisher_credits_episode",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-16T23:59:04Z",
       "entityId": "mary-magdalene",
       "entityLabel": "Lady Master Mary Magdalene",
@@ -3441,6 +4219,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "ashanti-daniel-scranton",
+      "entityLabel": "Ashanti",
+      "evidence": {
+        "qualification": "The quoted message is available in English. Spoken introductions and other portions require audio alignment.",
+        "section": "Creator-published message with a link to recording P2wtgwcbEVA",
+        "summary": "Scranton publishes the written message under the name Ashanti and links the corresponding recording.",
+        "url": "https://danielscranton.com/get-excited-2027-is-coming-%e2%88%9eashanti-the-et-human-hybrid/"
+      },
+      "id": "claim-eecd6d6e00ce9bec",
+      "personId": "daniel-scranton",
+      "predicate": "Attributes a published written message to",
+      "relationshipType": "attributes_written_message",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:22:51Z",
       "entityId": "morgan-le-fay",
       "entityLabel": "Morgan le Fay",
@@ -3492,6 +4287,23 @@
       "role": "channeler"
     },
     {
+      "capturedAt": "2026-11-19",
+      "entityId": "the-guides-speaking-from-source",
+      "entityLabel": "The Guides",
+      "evidence": {
+        "qualification": "Both people share one channel and one set of selected recordings.",
+        "section": "Thomas and AJ channel The Guides",
+        "summary": "The creators identify both participants in their simultaneous channeling and describe The Guides as a nonphysical collective.",
+        "url": "https://www.speakingfromsource.com/"
+      },
+      "id": "claim-f2cfe0ecdbed1779",
+      "personId": "aj-cavanagh",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
       "capturedAt": "2026-11-17T00:22:51Z",
       "entityId": "john-the-baptist",
       "entityLabel": "St. John the Baptist",
@@ -3520,6 +4332,23 @@
       },
       "id": "claim-f7c892f33dc2d3db",
       "personId": "althea-lucrezia-avanzo",
+      "predicate": "Claims channeling",
+      "relationshipType": "claims_channeling",
+      "reviewState": "parent_primary_source_reviewed",
+      "role": "channeler"
+    },
+    {
+      "capturedAt": "2026-11-19",
+      "entityId": "bashar",
+      "entityLabel": "Bashar",
+      "evidence": {
+        "qualification": "Historical series attribution. Confirm the speaker and credited source for each recording before a comparison.",
+        "section": "About Elan Interactions and Sharing This Information",
+        "summary": "Elan Interactions attributes early Bashar sessions to Andrew. It says these preceded his solo Elan series and also identifies sessions credited to both names.",
+        "url": "https://www.elaninteractions.com/about.html"
+      },
+      "id": "claim-f8b46f2c93848e31",
+      "personId": "andrew-bayuk",
       "predicate": "Claims channeling",
       "relationshipType": "claims_channeling",
       "reviewState": "parent_primary_source_reviewed",

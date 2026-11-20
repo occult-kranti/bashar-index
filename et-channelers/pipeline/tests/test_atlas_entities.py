@@ -121,8 +121,7 @@ class AtlasEntitiesTests(unittest.TestCase):
         prior = "".join(text.splitlines(keepends=True)[:116]).encode("utf-8")
         self.assertEqual(hashlib.sha256(prior).hexdigest(), audit["prior_source_sha256_utf8_lf"])
         rows = list(csv.DictReader(io.StringIO(text)))
-        self.assertEqual(len(rows), 119)
-        self.assertEqual({r["claim_instance_id"] for r in rows[115:]},
+        self.assertEqual({r["claim_instance_id"] for r in rows[115:119]},
                          {r["claim_instance_id"] for r in audit["accepted_records"]})
         self.assertFalse(any(r["person_id"] == "roxanne-swainhart" and r["claimed_entity"] == "Bashar" for r in rows))
         projection = atlas.build_projection(atlas.DEFAULT_SOURCE.read_bytes())
@@ -135,6 +134,18 @@ class AtlasEntitiesTests(unittest.TestCase):
         pending = [r for r in proposed if r["video_id"] == "Rcemlb-WPPY"]
         self.assertEqual(len(pending), 1)
         self.assertEqual(pending[0]["source_review_state"], "pending_performer_evidence")
+
+    def test_episode_credits_identify_host_guest_and_written_evidence(self):
+        rows = list(csv.DictReader(io.StringIO(atlas.DEFAULT_SOURCE.read_text(encoding="utf-8"))))
+        new = [r for r in rows if r["evidence_round"] == "publisher_episode_review"]
+        self.assertEqual(len(new), 9)
+        episode = [r for r in new if r["source_section"].endswith("episode 143")]
+        self.assertEqual({(r["person_name"], r["claimed_entity"]) for r in episode},
+                         {("Rachel Chamness", "AnaOmbre"), ("Caitlin de León", "Vera Light")})
+        guests = [r for r in new if r["existing_new"] == "guest"]
+        self.assertTrue(all(not r["channel_url"] and not r["collection_id"] for r in guests))
+        self.assertEqual({r["claimed_entity"] for r in new if r["relationship_type"] == "attributes_written_message"},
+                         {"St. Germain", "Ashanti", "The Creators"})
 
 
 if __name__ == "__main__":

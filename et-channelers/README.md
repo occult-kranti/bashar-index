@@ -1,5 +1,11 @@
 # ET channelers: YouTube crawl, index, dashboard and transcript pipeline
 
+The [collection knowledge transfer](knowledge-transfer/) is the operating guide for this study. Its November 20, 00:51 UTC checkpoint records **1,918 of 1,976** audio files verified, with **70 of 101 creators** fully covered. The folder includes the per-creator and per-recording CSVs, all retained attempt evidence, measured production experiments, research-panel findings and the Git release register. [Resume on Windows](knowledge-transfer/operations.md) · [Research and experiment index](knowledge-transfer/research-index.md) · [Every selected recording](knowledge-transfer/evidence/2026-11-20/recording-status.csv)
+
+The publication timeline can be explored down to one day. On November 16 there were 23 assignments and 17 additional possible recordings. All 6,724 days have export rows, including days with zero assigned recordings. [Daily timeline](dashboard/collection/timeline.html?date=2026-11-16) · [Date CSV](dashboard/collection/dates-by-day.csv) · [Method and uncertainty](research/recording-dates-2026-11-19.md)
+
+## November 19 checkpoint
+
 **Latest 20+ videos** selects the newest twenty public, completed uploads on each creator's Videos tab, across every date and duration. The November 19 roster contains 101 channels and 1,976 eligible recordings. At 22:21 UTC, 1,731 had verified audio on Drive, including every available target for 67 creators. The cumulative index retains 2,697 recordings, including Shorts and streams. The working-file budget is 23 GB with 12 GB physically free after reservations. [Collection process](pipeline/COLLECTION_PROCESS.md) · [Roadmap](ROADMAP.md) · [Dashboard hub](../dashboards/)
 
 The local speech worker and the project-funded research panels have separate responsibilities. Once Drive holds every selected recording, the local GPU fills caption gaps and produces paired translations where needed. The API-backed panels use one $100 allowance for study design, analysis and replication review. [Operating instructions and spending controls](pipeline/PROJECT_RESEARCH_AGENTS.md)

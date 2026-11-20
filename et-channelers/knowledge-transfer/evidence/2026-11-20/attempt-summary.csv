@@ -1,0 +1,35 @@
+﻿work_area,outcome,evidence_records
+Archive publication,publication_scheduled,1
+Archive publication,terminal_outcome_unavailable,1
+Browser observation,terminal_outcome_unavailable,1
+Caption retrieval,terminal_outcome_unavailable,2
+Channel discovery and indexing,terminal_outcome_unavailable,182
+Local speech and language,terminal_outcome_unavailable,48
+Local speech and language,worker_admitted,4
+Native YouTube audio,existing_archive_reused,2
+Native YouTube audio,held,281
+Native YouTube audio,local_stage_complete,1058
+Native YouTube audio,metadata_review_complete,1
+Native YouTube audio,provider_refused,11
+Native YouTube audio,remote_pair_verified_local_files_retired,162
+Native YouTube audio,source_start_held,4
+Native YouTube audio,terminal_outcome_unavailable,118
+Ordinary public acquisition,additional_audio_evidence_requested,173
+Ordinary public acquisition,administrative_hold,4
+Ordinary public acquisition,download_failed,9
+Ordinary public acquisition,interrupted_by_owner,1
+Ordinary public acquisition,local_audio_prepared,353
+Ordinary public acquisition,local_browser_start_failed,2
+Ordinary public acquisition,local_worker_contention,3
+Ordinary public acquisition,metadata_provider_failed,4
+Ordinary public acquisition,missing_local_file,1
+Ordinary public acquisition,provider_refused,18
+Ordinary public acquisition,source_start_held,13
+Other retained project evidence,terminal_outcome_unavailable,8
+Other retained project evidence,worker_admitted,1
+Publisher and podcast,other_recorded_outcome,4
+Publisher and podcast,terminal_outcome_unavailable,38
+Qualified YouTube edition,additional_audio_evidence_requested,106
+Qualified YouTube edition,held,35
+Qualified YouTube edition,local_audio_prepared,216
+Qualified YouTube edition,terminal_outcome_unavailable,15

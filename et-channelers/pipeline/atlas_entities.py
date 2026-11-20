@@ -21,13 +21,15 @@ from urllib.parse import parse_qsl, urlsplit
 REPO = Path(__file__).resolve().parents[2]
 DEFAULT_SOURCE = REPO / "et-channelers/research/analysis-plan-2026-11-16/discovery-relationships.csv"
 DEFAULT_OUTPUT = REPO / "channeling-atlas/dist/entity-relationships.json"
-EDITION_DATE = "2026-11-17"
+EDITION_DATE = "2026-11-19"
 REVIEW_STATE = "parent_primary_source_reviewed"
 PREDICATES = {
     "claims_channeling": "Claims channeling",
     "claims_series_channeling": "Claims channeling in an event series",
     "claims_channeling_codes": "Attributes channeled codes to",
     "claims_channeling_light_language": "Attributes light language to",
+    "publisher_credits_episode": "Publisher credits an episode to",
+    "attributes_written_message": "Attributes a published written message to",
     "reports_contact_with": "Reports contact with",
     "reports_guidance_from": "Reports guidance from",
     "reports_guide_association": "Names as a guide",
