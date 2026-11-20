@@ -179,31 +179,33 @@ SCRIPT=r'''
  const chart=document.getElementById('chart'),status=document.getElementById('date-status');
  const from=document.getElementById('date-from'),to=document.getElementById('date-to'),dayControls=document.getElementById('day-controls');
  const error=document.getElementById('range-error'),selection=document.getElementById('day-selection');
- const initialFrom=from.value,initialTo=to.value,DAY=86400000;let selectedDay='';
+ const initialFrom=from.value,initialTo=to.value,DAY=86400000,PAGE_DAYS=366;let selectedDay='',dayPage=0;
  const ordinal=s=>Date.parse(s+'T00:00:00Z')/DAY;
  const iso=n=>new Date(n*DAY).toISOString().slice(0,10);
  function el(tag,text,cls){const x=document.createElement(tag);if(text!==undefined)x.textContent=text;if(cls)x.className=cls;return x;}
  function baseMatch(row){const query=search.value.trim().toLocaleLowerCase();return (!creator.value||row.dataset.creator===creator.value)&&(!method.value||row.dataset.method===method.value)&&(!query||row.dataset.search.toLocaleLowerCase().includes(query));}
  function overlaps(row,start,end){return row.dataset.low&&row.dataset.low<=end&&row.dataset.high>=start;}
  function daily(values){
-  const first=ordinal(from.value),last=ordinal(to.value),days=[];let assigned=0,possible=0,unknown=0;
-  for(let n=first;n<=last;n++)days.push({date:iso(n),metadata:0,upload:0,relative:0,possible:0,total:0,upper:0});
+  const first=ordinal(from.value),last=ordinal(to.value),pages=Math.ceil((last-first+1)/PAGE_DAYS);
+  dayPage=Math.max(0,Math.min(dayPage,pages-1));const visibleFirst=first+dayPage*PAGE_DAYS,visibleLast=Math.min(last,visibleFirst+PAGE_DAYS-1),days=[];let assigned=0,possible=0,unknown=0;
+  for(let n=visibleFirst;n<=visibleLast;n++)days.push({date:iso(n),metadata:0,upload:0,relative:0,possible:0,total:0,upper:0});
   for(const row of values){const low=row.dataset.low,high=row.dataset.high,type=row.dataset.method;
    if(!low){unknown++;continue;}if(!overlaps(row,from.value,to.value))continue;
-   if(low===high){const count=days[ordinal(low)-first];count[['publication','availability'].includes(type)?'metadata':type]++;count.total++;assigned++;}
-   else {possible++;for(let n=Math.max(first,ordinal(low));n<=Math.min(last,ordinal(high));n++)days[n-first].possible++;}
+   if(low===high){assigned++;const at=ordinal(low);if(at>=visibleFirst&&at<=visibleLast){const count=days[at-visibleFirst];count[['publication','availability'].includes(type)?'metadata':type]++;count.total++;}}
+   else {possible++;for(let n=Math.max(visibleFirst,ordinal(low));n<=Math.min(visibleLast,ordinal(high));n++)days[n-visibleFirst].possible++;}
   }
   for(const count of days)count.upper=count.total+count.possible;
-  return {days,assigned,possible,unknown};
+  return {days,assigned,possible,unknown,pages,visibleFirst:iso(visibleFirst),visibleLast:iso(visibleLast)};
  }
  function chooseDay(day){selectedDay=selectedDay===day?'':day;draw();if(selectedDay)document.getElementById('records-heading').focus();}
  function drillMonth(key){const first=ordinal(key+'-01'),next=key.slice(5)==='12'?String(Number(key.slice(0,4))+1)+'-01-01':key.slice(0,5)+String(Number(key.slice(5))+1).padStart(2,'0')+'-01';
-  from.value=iso(first);to.value=iso(Math.min(ordinal(next)-1,ordinal(initialTo)));period.value='day';selectedDay='';draw();from.focus();}
+  from.value=iso(first);to.value=iso(Math.min(ordinal(next)-1,ordinal(initialTo)));period.value='day';selectedDay='';dayPage=0;draw();from.focus();}
  function draw(){
   const values=rows.filter(baseMatch);const bins=new Map();let selected=values.length,ambiguous=0,unknown=0;
   dayControls.hidden=period.value!=='day';document.getElementById('possible-legend').hidden=period.value!=='day';
-  if(period.value==='day'&&(!from.value||!to.value||from.value>to.value||to.value>initialTo||ordinal(to.value)-ordinal(from.value)>365)){
-   error.hidden=false;error.textContent='Choose an ordered daily window of up to 366 days, ending no later than the report date. Year and month views cover the full history.';return;
+  document.getElementById('day-pages').hidden=true;
+  if(period.value==='day'&&(!from.value||!to.value||from.value>to.value||to.value>initialTo)){
+   error.hidden=false;error.textContent='Choose an ordered daily date range ending no later than the report date.';return;
   }error.hidden=true;
   if(period.value!=='day')selectedDay='';
   for(const row of rows)row.hidden=!baseMatch(row)||(!!selectedDay&&!overlaps(row,selectedDay,selectedDay));
@@ -212,6 +214,9 @@ SCRIPT=r'''
   for(const button of document.querySelectorAll('[data-window]'))button.setAttribute('aria-pressed',String(Number(button.dataset.window)===ordinal(to.value)-ordinal(from.value)+1));
   if(period.value==='day'){
    const result=daily(values),maximum=Math.max(0,...result.days.map(x=>x.upper));
+   document.getElementById('day-pages').hidden=result.pages<=1;
+   document.getElementById('visible-days').textContent='Showing '+result.visibleFirst+' to '+result.visibleLast+' · page '+(dayPage+1)+' of '+result.pages+'. Summary counts cover the full requested range.';
+   document.getElementById('previous-days').disabled=dayPage===0;document.getElementById('next-days').disabled=dayPage+1>=result.pages;
    const axis=el('p','Daily assigned count / inclusive upper bound · linear scale 0–'+maximum.toLocaleString()+'. Possible overlaps are not additive across days.','axis');axis.id='chart-scale';
    const list=el('ol',undefined,'bin-list daily-list');list.tabIndex=0;list.setAttribute('aria-label','UTC calendar days including zero counts');
    for(const count of result.days){
@@ -244,11 +249,12 @@ SCRIPT=r'''
   document.getElementById('empty-row').hidden=rows.some(row=>!row.hidden);
  }
  for(const control of [creator,method,period])control.addEventListener('change',draw);search.addEventListener('input',draw);
- for(const input of [from,to])input.addEventListener('change',()=>{selectedDay='';draw();});
- for(const button of document.querySelectorAll('[data-window]'))button.addEventListener('click',()=>{const end=ordinal(to.value||initialTo);from.value=iso(end-Number(button.dataset.window)+1);to.value=iso(end);selectedDay='';draw();});
- for(const [id,direction] of [['previous-window',-1],['next-window',1]])document.getElementById(id).addEventListener('click',()=>{const length=ordinal(to.value)-ordinal(from.value)+1;if(!(length>0&&length<=366))return;const end=Math.min(ordinal(initialTo),ordinal(to.value)+direction*length);from.value=iso(end-length+1);to.value=iso(end);selectedDay='';draw();});
+ for(const input of [from,to])input.addEventListener('change',()=>{selectedDay='';dayPage=0;draw();});
+ for(const button of document.querySelectorAll('[data-window]'))button.addEventListener('click',()=>{const end=ordinal(to.value||initialTo);from.value=iso(end-Number(button.dataset.window)+1);to.value=iso(end);selectedDay='';dayPage=0;draw();});
+ for(const [id,direction] of [['previous-window',-1],['next-window',1]])document.getElementById(id).addEventListener('click',()=>{const length=ordinal(to.value)-ordinal(from.value)+1;if(!(length>0))return;const end=Math.min(ordinal(initialTo),ordinal(to.value)+direction*length);from.value=iso(end-length+1);to.value=iso(end);selectedDay='';dayPage=0;draw();});
+ for(const [id,direction] of [['previous-days',-1],['next-days',1]])document.getElementById(id).addEventListener('click',()=>{dayPage+=direction;selectedDay='';draw();chart.focus();});
  document.getElementById('clear-day').addEventListener('click',()=>{selectedDay='';draw();chart.focus();});
- document.getElementById('clear').addEventListener('click',()=>{creator.value='';method.value='';search.value='';period.value='day';from.value=initialFrom;to.value=initialTo;selectedDay='';draw();search.focus();});
+ document.getElementById('clear').addEventListener('click',()=>{creator.value='';method.value='';search.value='';period.value='day';from.value=initialFrom;to.value=initialTo;selectedDay='';dayPage=0;draw();search.focus();});
  const requested=new URLSearchParams(location.search).get('date');
  if(requested&&/^\d{4}-\d{2}-\d{2}$/.test(requested)&&Number.isFinite(ordinal(requested))&&iso(ordinal(requested))===requested){
   const bounds=rows.filter(row=>row.dataset.low),low=bounds.map(row=>row.dataset.low).sort()[0],high=bounds.map(row=>row.dataset.high).sort().pop();
@@ -304,6 +310,7 @@ def render(report)->str:
 <div class="period-controls"><div class="field"><label for="period">Calendar bins</label><select id="period" aria-controls="chart"><option value="day" selected>Day · zoomed window</option><option value="month">Month</option><option value="year">Year</option></select></div><button id="clear" type="button">Clear filters</button></div>
 <div id="day-controls" class="day-controls"><div class="field"><label for="date-from">From · UTC</label><input id="date-from" type="date" value="{first_day}" max="{last_day}" aria-controls="chart"></div><div class="field"><label for="date-to">To · UTC</label><input id="date-to" type="date" value="{last_day}" max="{last_day}" aria-controls="chart"></div>
 <div class="day-buttons" role="group" aria-label="Daily zoom window"><button type="button" data-window="7" aria-pressed="false">7 days</button><button type="button" data-window="30" aria-pressed="true">30 days</button><button type="button" data-window="90" aria-pressed="false">90 days</button><button id="previous-window" type="button" aria-label="Previous date window">← Previous</button><button id="next-window" type="button" aria-label="Next date window">Next →</button></div><p id="range-error" class="range-error" role="alert" hidden></p></div></div>
+<nav id="day-pages" class="day-buttons" aria-label="Daily chart pages" hidden><p id="visible-days" role="status" aria-live="polite"></p><button id="previous-days" type="button" aria-label="Previous days page">Previous page</button><button id="next-days" type="button" aria-label="Next days page">Next page</button></nav>
 <p class="legend">{legends}<span id="possible-legend"><i class="swatch possible" aria-hidden="true"></i>Possible multi-day overlap · upper bound only</span></p><p class="note">A daily assigned count includes date-stamped metadata, upload fallbacks and intervals contained in one UTC day. A multi-day interval can overlap several days: its possible daily counts must not be summed as distinct recordings. No midpoint is assigned. Year/month views place only whole-window estimates; click a month to zoom into its days.</p>
 <p id="date-status" class="result-count" role="status" aria-live="polite">{len(rows):,} selected; {first_day} to {last_day}: {daily['assigned']:,} assigned a single day, {daily['possible_unique']:,} distinct multi-day intervals could intersect this window; {daily['unknown']:,} unknown. Possible-day upper bounds must not be summed.</p>
 <div id="chart" class="chart" role="region" aria-label="Selected recording date distribution" tabindex="0">{_daily_chart(daily)}</div><p class="note">{e(calnote)} Calibration does not turn an estimated interval into an exact date.</p>
