@@ -74,6 +74,10 @@ Under A2 this means:
 hypothesis results and the dashboard are in; let them find flaws, improvements, further meaningful analysis
 and language-model experiments on the collected data.* Everything that panel adds after seeing results is
 exploratory by A2, stays inside the cap of A3, and follows the hold-out rule of A1.
+The owner added the same day: the panel is also to consider, and where worthwhile implement, further topic
+analysis, comparisons, distributions, and analysis of all recording metadata joined to the transcripts for the
+recordings that have it; and the panel deliberates in two rounds, each expert first proposing and then answering
+the others.
 
 ## Procedure freeze
 
