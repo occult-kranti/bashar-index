@@ -2,6 +2,8 @@
 
 ## Read the current state
 
+The owner paused the remaining downloads at 01:45 UTC on November 20. The marker `sync/STOP_ROLLING_PUBLIC_INTAKE` is present. The private `sync/latest20-download-pause-20261120.json` records which 15 wake-up tasks were enabled before the pause. Read-only receipt and task checks are available while acquisition is paused. [Pre-analysis checkpoint](pre-analysis-checkpoint.md)
+
 The November 20 ordinary queue and its two supported recovery cases have finished. The [last recording and creator totals](evidence/2026-11-20-close/) give the precise starting point for a follow-up. The dated work area described below remains available for reconciling newly verified receipts.
 
 Run the following from the repository’s `et-channelers` directory. On the configured Windows host, the private workspace and installed tools live alongside the checkout under the operator’s profile. Progress queries read saved receipts and selection membership. They can run while a download is active. [Coverage reader](../pipeline/collection_coverage.py) · [Failure definitions](../pipeline/COLLECTION_PROCESS.md#unresolved-downloads)
