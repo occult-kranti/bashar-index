@@ -212,6 +212,50 @@ class WorkerTests(unittest.TestCase):
         with self.assertRaisesRegex(asr.AsrError, "decode_window_gap"):
             asr.collect_segments(runtime, self.audio, 31, lambda: None)
 
+    def test_one_packet_the_decoder_rejects_is_passed_over_and_many_send_the_recording_to_review(self):
+        from types import SimpleNamespace
+        class Rejected(Exception):
+            pass
+        class Samples(list):
+            def reshape(self, _):
+                return self
+            def astype(self, kind, copy=False):
+                return self
+            def __getitem__(self, key):
+                value = list.__getitem__(self, key)
+                return Samples(value) if isinstance(key, slice) else value
+        numbers = SimpleNamespace(float32="float32", empty=lambda count, dtype=None: Samples(),
+                                  concatenate=lambda parts: Samples(x for part in parts for x in part),
+                                  isfinite=lambda values: SimpleNamespace(all=lambda: True))
+        def library(damaged, packets=40):
+            frame = SimpleNamespace(sample_rate=asr.SAMPLE_RATE, samples=asr.SAMPLE_RATE,
+                                    to_ndarray=lambda: Samples([0.0] * asr.SAMPLE_RATE))
+            def decode(index):
+                if index in damaged:
+                    raise Rejected()
+                return [frame]
+            class Container:
+                streams = SimpleNamespace(audio=["only stream"])
+                def __enter__(self):
+                    return self
+                def __exit__(self, *problem):
+                    return False
+                def demux(self, stream):
+                    return iter(SimpleNamespace(decode=lambda index=index: decode(index)) for index in range(packets))
+            resampler = lambda **options: SimpleNamespace(resample=lambda item: [] if item is None else [item])
+            return SimpleNamespace(open=lambda path: Container(), AudioResampler=resampler,
+                                   error=SimpleNamespace(InvalidDataError=Rejected))
+        runtime = SimpleNamespace(np=numbers, av=library({7}))
+        windows = list(asr.CudaRuntime.windows(runtime, "invented.mp3", 39.0))
+        self.assertEqual(([start for start, _ in windows], [len(audio) for _, audio in windows], runtime.undecodable_packets),
+                         ([0.0, 30.0], [30 * asr.SAMPLE_RATE, 9 * asr.SAMPLE_RATE], 1))
+        runtime = SimpleNamespace(np=numbers, av=library(set(range(asr.MAX_UNDECODABLE_PACKETS + 1))))
+        with self.assertRaisesRegex(asr.AsrError, "undecodable_audio"):
+            list(asr.CudaRuntime.windows(runtime, "invented.mp3", 19.0))
+        runtime = SimpleNamespace(np=numbers, av=library({3, 4, 5}))
+        with self.assertRaisesRegex(asr.AsrError, "decoded_duration_mismatch"):
+            list(asr.CudaRuntime.windows(runtime, "invented.mp3", 40.0))
+
     def test_stale_gpu_telemetry_prevents_more_inference(self):
         monitor = asr.Monitor(lambda: {}, lambda: None)
         monitor.start = time.monotonic() - 10

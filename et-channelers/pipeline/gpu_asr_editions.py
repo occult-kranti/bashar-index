@@ -48,6 +48,7 @@ MIN_CREATOR_VOTES = 2
 DOUBT_LOG_PROBABILITY = -0.5
 SOURCE_ORDER = (NATIVE, DIRECT, EXTRACT, PUBLISHER)
 SOURCE_REVIEW_ERRORS = {"audio_stream_count", "decoded_duration_mismatch", "decoded_duration_limit", "no_complete_transcript",
+                        "undecodable_audio",
                         "word_text_alignment", "segment_text_alignment", "segment_time", "word_time", "segment_order"}
 KIND_ORIGINAL = {NATIVE: "original_asr", DIRECT: "qualified_youtube_original_asr", EXTRACT: "qualified_youtube_original_asr",
                  PUBLISHER: "publisher_original_asr"}
@@ -707,6 +708,9 @@ def infer(settings, origin, audio_path, runtime, model, proposal, selection, gua
                                 "quiet_stretches_of_30s_or_more":len(quiet),
                                 "quiet_seconds_in_those_stretches":round(sum(b - a for a, b in quiet), 1),
                                 "quiet_stretches":quiet[:200]}
+                if getattr(runtime, "undecodable_packets", 0):
+                    # Packets the decoder rejected and passed over (see CudaRuntime.windows).
+                    metrics[key]["undecodable_packets_skipped"] = runtime.undecodable_packets
             return fast, text_model, streams, configs, variants, metrics
 
         fast, text_model, streams, configs, variants, metrics = recognize(decision)

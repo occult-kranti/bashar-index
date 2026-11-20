@@ -41,6 +41,7 @@ MAX_MANAGED_BYTES = host_capacity.MAX_MANAGED_BYTES
 MAX_RESULT_BYTES = 20_000_000
 SAMPLE_RATE = 16000
 WINDOW_SECONDS = 30
+MAX_UNDECODABLE_PACKETS = 20    # packets the decoder may reject in one recording before it goes to source review
 MAX_ROLLING_TARGET = 0.80
 FILES = {"segments.json", "transcript.txt", "telemetry.json", "provenance.json", "artifact_manifest.json"}
 PROVENANCE_PATH = HERE / "gpu_asr_provenance.json"
@@ -423,13 +424,27 @@ class CudaRuntime:
                 return self.np.empty(0, dtype=self.np.float32)
             return parts[0] if len(parts) == 1 else self.np.concatenate(parts)
 
+        self.undecodable_packets = skipped = 0
         with self.av.open(str(path)) as container:
             require(len(container.streams.audio) == 1, "audio_stream_count")
             resampler = self.av.AudioResampler(format="fltp", layout="mono", rate=SAMPLE_RATE)
             def decoded():
-                for frame in container.decode(audio=0):
-                    require(frame.sample_rate > 0 and frame.samples / frame.sample_rate <= WINDOW_SECONDS, "oversized_decode_frame")
-                    yield from resampler.resample(frame)
+                nonlocal skipped
+                # The frames of container.decode(audio=0), taken packet by packet. A packet the decoder
+                # rejects (a tag or one damaged frame spliced into a publisher's MP3) is passed over,
+                # as players do, instead of ending the recording. More damage than a few packets
+                # stops here, and lost time beyond two seconds fails the duration check below.
+                for packet in container.demux(container.streams.audio[0]):
+                    try:
+                        frames = packet.decode()
+                    except self.av.error.InvalidDataError:
+                        skipped += 1
+                        require(skipped <= MAX_UNDECODABLE_PACKETS, "undecodable_audio")
+                        self.undecodable_packets = skipped
+                        continue
+                    for frame in frames:
+                        require(frame.sample_rate > 0 and frame.samples / frame.sample_rate <= WINDOW_SECONDS, "oversized_decode_frame")
+                        yield from resampler.resample(frame)
                 yield from resampler.resample(None)
             for frame in decoded():
                 values = frame.to_ndarray().reshape(-1)
