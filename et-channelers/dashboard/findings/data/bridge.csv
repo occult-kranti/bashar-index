@@ -1,0 +1,18 @@
+measure,pairs,english_only_model,larger_model,difference_in_creator_sd,low,high,comparable
+Words per minute of speech,36,147.46,147.1,-0.021,-0.091,0.048,Yes
+Mean length of a word (seconds),36,0.35,0.378,0.648,0.542,0.755,No
+"Pauses of one second or more, per minute of speech",36,3.646,2.575,-0.429,-0.523,-0.334,No
+"Pauses of 0.3 to 1 second, per minute of speech",36,8.945,4.491,-2.494,-2.903,-2.085,No
+Share of the running time inside pauses of 0.3 seconds or more,36,0.201,0.143,-0.65,-0.77,-0.53,No
+"First-person singular per 1,000 words",36,32.574,32.248,-0.023,-0.046,0.0,Yes
+"First-person plural per 1,000 words",36,13.882,13.978,0.011,-0.016,0.039,Yes
+"Second person per 1,000 words",36,45.907,46.427,0.029,0.003,0.054,Yes
+"Contracted forms per 1,000 words",36,16.7,16.645,-0.007,-0.028,0.014,Yes
+"Filled pauses (um, uh) per 1,000 words",36,0.622,2.809,1.773,0.928,2.618,No
+Share of distinct words in a moving window of 100 words,36,0.648,0.646,-0.06,-0.089,-0.032,Yes
+Mean length of a word (letters),36,4.31,4.322,0.059,-0.012,0.13,Yes
+Words per recognizer segment,36,12.389,13.325,0.866,0.505,1.228,No
+Mean probability the recognizer gives its words,36,0.964,0.961,-0.232,-0.586,0.122,Not settled
+"Inserted thanks phrase, per hour",36,2.289,1.343,-0.537,-1.097,0.023,Not settled
+"Isolated short segments, per hour",36,0.443,0.243,-0.196,-0.637,0.244,Not settled
+"Words removed as loops, per 1,000 words",36,3.459,2.84,-0.191,-0.416,0.035,Not settled

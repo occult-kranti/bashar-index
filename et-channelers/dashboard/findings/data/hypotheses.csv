@@ -1,7 +1,7 @@
 id,hypothesis,experiment,waits_for,confirmed_on,status
 H1,The voice a creator presents as a being's is slower than the creator's own voice in the same recording,"SG, RH",span labels,hold-out and wave,Waits for model labels
 H2,"The more checkable a statement about the future, the less firmly it is worded, within a creator",FL,forecast labels,hold-out and wave,Waits for model labels
-H3,"First-person singular is denser at the edges of a recording than in its middle, after three minutes are cut from each end",PO,the freeze and the artefact filter only,hold-out creators,Ready to run: needs no labels
+H3,"First-person singular is denser at the edges of a recording than in its middle, after three minutes are cut from each end",PO,the freeze and the artefact filter only,hold-out creators,"Tested, then dropped by the owner"
 H4,Fewer words are contracted when a being is voiced in the first person than in the creator's own voice,SG,span labels,hold-out and wave,Waits for model labels
 H5,"Claims about the world are relatively denser in a creator's channelled recordings, vocabulary of practice in the same creator's own talks","CX, GB","word groups, title labels",hold-out and wave,Waits for model labels
 H6,Asks to buy or enrol are rarer in the claimed voice than in the creator's own voice,AK,ask and span labels,hold-out and wave,Waits for model labels

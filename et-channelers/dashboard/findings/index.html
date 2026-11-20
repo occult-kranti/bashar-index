@@ -83,7 +83,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hours" data-row="0" data-digits="1">—</b> hours, are transcribed.
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="percent_without_speech" data-row="0" data-digits="1" data-suffix="%">—</b> of that time holds no speech.
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hypotheses" data-row="0">—</b> hypotheses are registered and
-      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed; none has been tested yet.
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed. One hypothesis has been tested, and dropped.
     </p>
     <p class="cs-note">Creators appear as codes. Counts and times only; no transcript text. The run finished on 20 November 2026.</p>
   </header>
@@ -103,6 +103,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     <button class="cs-tab" type="button" data-tab="languages" aria-selected="false">Languages</button>
     <button class="cs-tab" type="button" data-tab="creators" aria-selected="false">Creators</button>
     <button class="cs-tab" type="button" data-tab="experiments" aria-selected="false">Hypotheses and experiments</button>
+    <button class="cs-tab" type="button" data-tab="results" aria-selected="false">Tests and checks</button>
     <button class="cs-tab" type="button" data-tab="findings" aria-selected="false">First findings</button>
   </nav>
 
@@ -233,7 +234,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
   <section class="cs-section" id="experiments" hidden>
     <div class="cs-card" id="card-hypotheses">
       <h2>The ten registered hypotheses</h2>
-      <p class="cs-note">Frozen on 20 November 2026 before any hold-out creator was analysed. None has been tested. Each is a contrast inside one recording or one creator.</p>
+      <p class="cs-note">Frozen on 20 November 2026 before any hold-out creator was analysed. H3 has been tested and dropped by the owner; the other nine have not been run. Each is a contrast inside one recording or one creator.</p>
       <div class="cs-scroll">
         <table class="cs-table" data-source="hypotheses" data-row-key="id">
           <thead><tr><th data-field="id">Id</th><th data-field="hypothesis">Hypothesis</th><th data-field="experiment">Experiment</th><th data-field="confirmed_on">Confirmed on</th><th data-field="status">Status</th></tr></thead>
@@ -260,6 +261,32 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <table class="cs-table" data-source="experiments" data-row-key="id">
           <thead><tr><th data-field="id">Id</th><th data-field="experiment">Experiment</th><th data-field="group">Group</th><th data-field="value">Value</th><th data-field="cost">Cost</th><th data-field="figures">Figures it yields</th><th data-field="status">Status</th></tr></thead>
           <tbody data-draw="rows-experiments"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="cs-section" id="results" hidden>
+    <p>Tests of registered hypotheses and checks of the instruments, as they are run. A row stays here whatever its outcome.</p>
+    <div class="cs-card" id="card-results">
+      <h2>Registered tests so far: H3, tested and dropped</h2>
+      <p class="cs-note">H3 asked whether &ldquo;I&rdquo;, &ldquo;me&rdquo; and &ldquo;my&rdquo; are denser at the start and end of a recording than in its middle, once the first and last three minutes are cut. On the hold-out creators the registered test passed, but the interval over creators includes zero and the larger group seen earlier shows nothing, so the owner dropped it. With nothing cut the contrast is large in both groups: the surplus sits in the opening and closing minutes. Dot: estimate in log units. Line: 90% interval over creators.</p>
+      <div class="cs-chart" data-draw="chart-results" data-source="results"></div>
+      <div class="cs-scroll">
+        <table class="cs-table" data-source="results" data-row-key="sample">
+          <thead><tr><th data-field="id">Id</th><th data-field="sample">Sample</th><th data-field="kind">Kind</th><th class="cs-r" data-field="creators">Creators</th><th class="cs-r" data-field="recordings">Recordings</th><th class="cs-r" data-field="estimate">Estimate</th><th class="cs-r" data-field="low">Low</th><th class="cs-r" data-field="high">High</th><th class="cs-r" data-field="p_one_sided">p</th><th data-field="decision">Decision</th></tr></thead>
+          <tbody data-draw="rows-results"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cs-card" id="card-bridge">
+      <h2>Do the two recognizer models agree?</h2>
+      <p class="cs-note">English was transcribed by an English-only model and the other languages by a larger one. 36 English recordings, one per creator, were transcribed by both. Each row is the larger model minus the English-only model, in units of the spread between creators, with a 90% interval. A measure whose interval lies inside the shaded band (0.2 on either side) can be compared across the two models; one whose interval lies wholly outside it cannot; the rest are not settled by 36 recordings. Neither transcript was checked by a person.</p>
+      <div class="cs-chart" data-draw="chart-bridge" data-source="bridge"></div>
+      <div class="cs-scroll">
+        <table class="cs-table" data-source="bridge" data-row-key="measure">
+          <thead><tr><th data-field="measure">Measure</th><th class="cs-r" data-field="english_only_model">English-only model</th><th class="cs-r" data-field="larger_model">Larger model</th><th class="cs-r" data-field="difference_in_creator_sd">Difference</th><th data-field="comparable">Comparable</th></tr></thead>
+          <tbody data-draw="rows-bridge"></tbody>
         </table>
       </div>
     </div>
@@ -315,8 +342,10 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="data/kinds.csv">Kinds of 34 read recordings</a> <span class="cs-note">(5 rows)</span></li>
         <li><a href="data/terms.csv">Vocabulary families</a> <span class="cs-note">(5 rows)</span></li>
         <li><a href="data/artefacts.csv">Recognizer artefacts</a> <span class="cs-note">(2 rows)</span></li>
-        <li><a href="data/status.csv">Work status</a> <span class="cs-note">(8 rows)</span></li>
+        <li><a href="data/status.csv">Work status</a> <span class="cs-note">(9 rows)</span></li>
         <li><a href="data/budget.csv">Labelling budget</a> <span class="cs-note">(4 rows)</span></li>
+        <li><a href="data/results.csv">Registered tests so far</a> <span class="cs-note">(4 rows)</span></li>
+        <li><a href="data/bridge.csv">The two recognizer models on the same audio</a> <span class="cs-note">(17 rows)</span></li>
     </ul>
   </details>
   <details id="methods">
@@ -336,7 +365,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
 // A small stand-in for the hosted dashboard's data layer: loads the CSV files beside the page and runs the drawings.
 const dash = (() => {
-  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "recordings", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget"];
+  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "recordings", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "bridge"];
   const state = {}, calcs = {}, draws = {};
   const api = {
     colors: ['var(--series-1)'],
@@ -664,7 +693,7 @@ dash.draw('rows-hypotheses', (el) => {
   const got = need(el, ['hypotheses']);
   if (!got) return;
   rows(el, got[0], [{ field: 'id' }, { field: 'hypothesis' }, { field: 'experiment' }, { field: 'confirmed_on' },
-    { field: 'status', chip: (row) => (row.status.startsWith('Ready') ? 'ok' : 'warn') }], 'id');
+    { field: 'status', chip: (row) => (row.status.startsWith('Tested') ? 'plain' : 'warn') }], 'id');
 });
 dash.draw('rows-experiments', (el) => {
   const got = need(el, ['experiments']);
@@ -696,6 +725,60 @@ dash.draw('chart-variance', (el) => {
     .on('pointermove', (event, d) => show(event, d.label + ': ' + fmt(d.value * 100) + '% between creators (95% interval ' + fmt(d.low * 100) + '% to ' + fmt(d.high * 100) + '%), ' + d.creators + ' creators'))
     .on('pointerleave', hide);
 });
+function forest(el, items, options) {
+  const narrow = el.clientWidth < 560, row = narrow ? 44 : 30, margin = { top: 6, bottom: 26 };
+  const height = items.length * row + margin.top + margin.bottom;
+  const { svg, width, show, hide } = canvas(el, height, options.label);
+  const left = narrow ? 4 : Math.min(width * 0.46, d3.max(items, (d) => d.label.length) * 6.4 + 12);
+  const reach = Math.max(options.floor || 0, d3.max(items, (d) => Math.max(Math.abs(d.low), Math.abs(d.high)))) * 1.05;
+  const column = options.column && !narrow;                    // verdict words in a column of their own, clear of the intervals
+  const x = d3.scaleLinear().domain([-reach, reach]).range([left, width - (column ? 96 : 58)]);
+  if (options.band) {
+    svg.append('rect').attr('x', x(-options.band)).attr('width', x(options.band) - x(-options.band)).attr('y', margin.top)
+      .attr('height', height - margin.top - margin.bottom).style('fill', mix(0.14));
+  }
+  const ticks = x.ticks(narrow ? 4 : 6);
+  svg.append('g').selectAll('line').data(ticks).join('line').attr('class', 'cs-gridline').attr('x1', x).attr('x2', x).attr('y1', margin.top).attr('y2', height - margin.bottom);
+  svg.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', margin.top).attr('y2', height - margin.bottom).attr('stroke-width', 1).style('stroke', 'var(--ui-chart-muted)');
+  svg.append('g').selectAll('text').data(ticks).join('text').attr('x', x).attr('y', height - 8).attr('text-anchor', 'middle').text((d) => fmt(d, options.tickDigits));
+  const g = svg.selectAll('g.cs-item').data(items).join('g').attr('class', 'cs-item').attr('transform', (d, i) => 'translate(0,' + (margin.top + i * row) + ')');
+  g.append('text').attr('x', narrow ? left : left - 8).attr('y', narrow ? 12 : row / 2).attr('dy', narrow ? 0 : '0.35em').attr('text-anchor', narrow ? 'start' : 'end').text((d) => d.label);
+  const mid = narrow ? 28 : row / 2;
+  g.append('line').attr('x1', (d) => x(d.low)).attr('x2', (d) => x(d.high)).attr('y1', mid).attr('y2', mid).attr('stroke-width', 2).style('stroke', 'var(--ui-chart-muted)');
+  g.append('circle').attr('cx', (d) => x(d.value)).attr('cy', mid).attr('r', 4.5).style('fill', colour());
+  g.append('text').attr('class', 'cs-val').attr('x', (d) => (column ? width - 84 : Math.min(x(d.high) + 6, width - 52))).attr('y', mid).attr('dy', '0.35em').text((d) => d.text);
+  g.append('rect').attr('x', left).attr('y', 0).attr('width', width - left).attr('height', row).attr('fill', 'transparent')
+    .on('pointermove', (event, d) => show(event, d.tip)).on('pointerleave', hide);
+}
+dash.draw('chart-results', (el) => {
+  const got = need(el, ['results']);
+  if (!got) return;
+  forest(el, got[0].map((row) => ({ label: row.sample, value: Number(row.estimate), low: Number(row.low), high: Number(row.high), text: fmt(Number(row.estimate), 2),
+    tip: row.id + ', ' + row.sample + ': ' + fmt(Number(row.estimate), 3) + ' (90% interval ' + fmt(Number(row.low), 3) + ' to ' + fmt(Number(row.high), 3) + '), ' + row.creators + ' creators, ' + row.recordings + ' recordings' })),
+    { label: 'Dot plot of the H3 contrast in four samples, with 90% intervals over creators', tickDigits: 1, floor: 0.5 });
+});
+dash.draw('rows-results', (el) => {
+  const got = need(el, ['results']);
+  if (!got) return;
+  rows(el, got[0], [{ field: 'id' }, { field: 'sample' }, { field: 'kind' }, number(0)('creators'), number(0)('recordings'), number(3)('estimate'), number(3)('low'), number(3)('high'),
+    { field: 'p_one_sided', right: true }, { field: 'decision', chip: () => 'plain' }], 'sample');
+});
+dash.draw('chart-bridge', (el) => {
+  const got = need(el, ['bridge']);
+  if (!got) return;
+  if (!got[0].length) { el.textContent = 'The comparison has not been analysed yet.'; return; }
+  forest(el, got[0].map((row) => ({ label: row.measure, value: Number(row.difference_in_creator_sd), low: Number(row.low), high: Number(row.high),
+    text: row.comparable === 'Yes' ? 'agrees' : (row.comparable === 'No' ? 'differs' : 'not settled'),
+    tip: row.measure + ': ' + fmt(Number(row.difference_in_creator_sd), 2) + ' spreads (90% interval ' + fmt(Number(row.low), 2) + ' to ' + fmt(Number(row.high), 2) + '); English-only model ' + row.english_only_model + ', larger model ' + row.larger_model })),
+    { label: 'Dot plot of the difference between two recognizer models for each measure, in units of the spread between creators, with 90% intervals and the margin of 0.2 shaded', tickDigits: 1, band: 0.2, floor: 0.5, column: true });
+});
+dash.draw('rows-bridge', (el) => {
+  const got = need(el, ['bridge']);
+  if (!got) return;
+  rows(el, got[0], [{ field: 'measure' }, number(2)('english_only_model'), number(2)('larger_model'), number(2)('difference_in_creator_sd'),
+    { field: 'comparable', chip: (row) => (row.comparable === 'Yes' ? 'ok' : (row.comparable === 'No' ? 'warn' : 'plain')) }], 'measure');
+});
+
 dash.draw('chart-kinds', (el) => {
   const got = need(el, ['kinds']);
   if (!got) return;
