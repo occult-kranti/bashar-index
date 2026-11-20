@@ -1,12 +1,14 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
-## November 20 handoff and release order
+## November 20 pre-analysis checkpoint
+
+The project owner paused the remaining downloads at 01:45 UTC. The Windows collector has a persistent stop marker and all 15 previously enabled download wake-ups are disabled. Preserve the frozen selection of 1,976 across 101 channels. The pause has no scheduled end date. [Checkpoint and backup contents](knowledge-transfer/pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [Handoff for another chat](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
 
 | Stage | Evidence and next action |
 | --- | --- |
-| Audio, eligible queue closed at 01:16 UTC | 1,946 of 1,976 recordings verified, 80 of 101 channels complete. Preserve the 29 source refusals and one metadata failure. Register any verified newly available publisher edition against its exact recording. Full completion remains undated. [Recording ledger and failure register](knowledge-transfer/evidence/2026-11-20-close/) |
+| Audio, paused | Drive has 1,946 verified recordings. All selected audio is accounted for on 80 channels. The other 21 have 30 outstanding links, comprising 29 media refusals and one metadata failure. Resume acquisition only on the owner’s instruction. [Recording ledger and failure register](knowledge-transfer/evidence/2026-11-20-close/) |
 | Calendar, published | Individual days and arbitrary date ranges are available over 6,724 days. There are 1,587 day-assignable recordings and 389 wider estimates. [Interactive timeline](dashboard/collection/timeline.html?date=2026-11-16) · [Daily CSV](dashboard/collection/dates-by-day.csv) |
-| Transcript and translation, scheduled | Stage usable English captions and publisher transcripts. Run the local CUDA batch on remaining speech after completion. Keep original-language transcripts and English translations together. [ASR operating guide](pipeline/GPU_ASR_SETUP.md) |
+| Full-batch transcription and translation, waiting for audio | The existing release condition requires 1,976 verified recordings and closure of the collector. Prefer available English captions and matched publisher transcripts. Fill text gaps with local CUDA and retain both original-language transcripts and English translations where needed. [ASR operating guide](pipeline/GPU_ASR_SETUP.md) |
 | Quantitative and independent review, planned | Freeze the text corpus and calculate creator-balanced term scores, clustering sensitivity and cross-creator passage retrieval. Evaluate common events, prediction timing and speaker-proposed experiments with a second independent panel. [Research plan and hypotheses](research/analysis-plan-2026-11-16/) |
 | Fifty and deeper indexing, deferred | After the two analytical rounds and translation, refresh the roster before scheduling latest 50. The acquisition estimate is 22–28 hours from its eventual start. Then index the remaining public history. [Forecast assumptions](pipeline/COLLECTION_PROCESS.md#latest-50-forecast) |
 

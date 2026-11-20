@@ -1,6 +1,6 @@
 # Collection knowledge transfer
 
-To transfer this work to another chat, use the [copy-ready handoff prompt](CONTINUE_IN_NEW_CHAT.md). It includes the current state, operating constraints and first commands.
+**The project owner paused the remaining 30 downloads at 01:45 UTC on November 20.** The frozen selection, receipt totals and failures remain available for inspection. See the backup inventory and handoff for the next chat. [Pre-analysis checkpoint](pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [Copy-ready handoff](CONTINUE_IN_NEW_CHAT.md)
 
 Start here to operate the latest-20+ audio archive or reproduce a result from it. The archive selects up to twenty public, completed recordings from each channel’s **Videos** tab, newest first. A short recording on that tab qualifies. YouTube Shorts and streams keep their own classifications in the cumulative index. Publication date and running time have no cutoff.
 
@@ -30,7 +30,7 @@ A recording counts once when the private archive has the matching creator/video 
 | How do I check the Windows service, storage, Drive and remaining work? | [Operator handoff](operations.md) |
 | Which fixes improved throughput? What happened in each production batch? | [Measured production history](production-history.md) |
 | What did the research panels and browser, caption, feed and GPU trials establish? | [Research and experiment index](research-index.md) |
-| What happened to one recording or creator? | [Recording status](evidence/2026-11-20/recording-status.csv), [creator status](evidence/2026-11-20/creator-status.csv) and [attempt register](evidence/2026-11-20/attempt-history.csv) |
+| What happened to one recording or creator? | [Recording status](evidence/2026-11-20-close/recording-status.csv), [creator status](evidence/2026-11-20-close/creator-status.csv) and [attempt register](evidence/2026-11-20-close/attempt-history.csv) |
 | Which observations survive, and how can I reproduce the export? | [Evidence dictionary](evidence/README.md), [aggregated attempts](evidence/2026-11-20/attempt-summary.csv) and [exporter](../pipeline/collection_history.py) |
 | Where did a change enter Git? | [Pull requests, branches and merge commits](release-history.csv), [branch heads](branch-heads.csv) and [branch guide](../../BRANCHES.md) |
 | Which channels, people and attributed sources are documented? | [Channeler and source table](../research/analysis-plan-2026-11-16/channeler-entity-table.md), [primary-source relationships](../research/analysis-plan-2026-11-16/discovery-relationships.csv) and [interview guest review](../research/interview-discovery-2026-11-19/verified-guest-channels.csv) |

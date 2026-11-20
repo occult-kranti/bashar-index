@@ -2,9 +2,9 @@
 
 ## Windows handoff for November 20, 2026
 
-The [new-chat prompt](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md) summarizes the current collection, open issues and operating instructions in one copyable block.
+**Downloads are paused by the project owner as of November 20 at 01:45 UTC.** All 30 outstanding recordings remain in scope. Windows has a persistent collector stop marker and all previously enabled download wake-ups are disabled. Keep this state when changing chats. Full-batch transcription and analysis are pending. [Pre-analysis checkpoint](knowledge-transfer/pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [New-chat prompt](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
 
-Read the [knowledge-transfer folder](knowledge-transfer/) first. It brings together the operating instructions, every reviewed research stream, measured batch history, branch inventory and receipt-derived creator and recording tables. The dated source and Drive findings are in the [attempt register](knowledge-transfer/evidence/2026-11-20/attempt-history.csv).
+Read the [knowledge-transfer folder](knowledge-transfer/) first. It brings together operating instructions, reviewed research, measured batch history, branch inventory and receipt-derived creator and recording tables. The final collection evidence is in the [attempt register](knowledge-transfer/evidence/2026-11-20-close/attempt-history.csv).
 
 At 01:16 UTC, the final eligible worker had exited and returned its storage reservation. The archive held 1,946 of 1,976 recordings, including the verified Toni Ghazi recovery and Dallisa Hocking’s publisher edition. Thirty remain across 21 channels. Twenty-nine selected files returned HTTP 403 and one provider failed during metadata retrieval. The complete-audio signal remains pending. [Final per-creator checkpoint](knowledge-transfer/evidence/2026-11-20-close/creator-status.csv) · [Remaining links](knowledge-transfer/evidence/2026-11-20-close/failed-links/) · [Read-only status and recovery commands](knowledge-transfer/operations.md)
 
