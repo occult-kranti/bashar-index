@@ -12,6 +12,10 @@
 
 The closed receipt register is timestamped 01:16:52 UTC. A second read at 01:41 UTC returned the same totals. The frozen selection file has SHA-256 `adb76d392fa9eded77e03fb41687a630fb82a17fb3de21af504092710b08fd01`. [Receipt checkpoint](evidence/2026-11-20-close/checkpoint.json)
 
+At 01:56 UTC, a single Drive metadata listing confirmed the ID, path, byte count and MD5 of all 3,892 required audio and provenance objects. All 1,946 receipt-backed recordings passed. The audit used the SHA-256 recorded at acquisition and read zero media bytes. The per-object and per-recording results are in `archive/media-verification.zip` on the private Drive. [Verification totals and method](evidence/2026-11-20-close/drive-verification.json)
+
+Two Dallisa Hocking listings share one creator-published audio file, each with its own association evidence. This accounts for the 1,945 distinct audio files across the 1,946 archived listings.
+
 ## Where to find the backup
 
 | Location | Contents |

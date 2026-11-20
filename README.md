@@ -6,6 +6,8 @@
 
 The receipt register closed at 01:16 UTC and a second read at 01:41 UTC returned the same counts. Twenty-nine outstanding recordings received HTTP 403 during media retrieval. One failed during metadata retrieval. The scheduling pause preserves all thirty in the selection. [All 101 creators](et-channelers/knowledge-transfer/evidence/2026-11-20-close/creator-status.csv) · [All 1,976 recordings](et-channelers/knowledge-transfer/evidence/2026-11-20-close/recording-status.csv) · [Remaining links and reasons](et-channelers/knowledge-transfer/evidence/2026-11-20-close/failed-links/)
 
+At 01:56 UTC, a fresh Drive metadata check matched all 3,892 required audio and provenance objects to the saved receipts by object ID, archive path, size and MD5. Every one of the 1,946 archived recordings passed. [Drive verification record](et-channelers/knowledge-transfer/evidence/2026-11-20-close/drive-verification.json)
+
 | What we learned | Where to find the implementation and evidence |
 | --- | --- |
 | Public Videos-tab sweeps preserve the newest twenty regular uploads per channel, with no date or duration cutoff. Earlier Shorts, streams and regular uploads remain indexed. | [Roster, scope and selection](et-channelers/knowledge-transfer/) |
