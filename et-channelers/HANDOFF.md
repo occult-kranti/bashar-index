@@ -1,5 +1,13 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Windows handoff for November 20, 2026
+
+Read the [knowledge-transfer folder](knowledge-transfer/) first. It brings together the operating instructions, every reviewed research stream, measured batch history, branch inventory and receipt-derived creator and recording tables. The dated source and Drive findings are in the [attempt register](knowledge-transfer/evidence/2026-11-20/attempt-history.csv).
+
+At 00:51 UTC, 1,918 of 1,976 regular recordings were verified. The next ordinary batch took the 26 eligible rows after closing the previous native batch. Twenty-eight current source refusals and four local or administrative holds remained separately recorded. The machine’s active owner and the current receipt journals take precedence over these saved counts. [Per-creator checkpoint](knowledge-transfer/evidence/2026-11-20/creator-status.csv) · [Read-only status commands and recovery](knowledge-transfer/operations.md)
+
+The local CUDA and text-only research tasks are registered. Full audio coverage and actual source-owner closure release local speech work. Preserve paired original and English text for non-English speech. The sparse exception for one recording with verified digital silence has its own audio-bound evidence. The latest fifty follow translation and both numerical and independent review stages. [Local speech worker](pipeline/GPU_ASR_SETUP.md) · [Paid panel schedule](pipeline/PROJECT_RESEARCH_AGENTS.md) · [Study sequence and estimate](ROADMAP.md)
+
 ## Windows collection as of November 19, 2026
 
 The Windows tasks for local CUDA speech work and text-only API research are registered. The speech task admits work after complete Drive receipt coverage and the exit of the collection owner. The research coordinator waits for that same audio milestone before its methods review, then waits for complete verified text before the two analytical rounds. Its private $100 allowance is shared across every funded job. [Startup, recovery and budget status](pipeline/PROJECT_RESEARCH_AGENTS.md)

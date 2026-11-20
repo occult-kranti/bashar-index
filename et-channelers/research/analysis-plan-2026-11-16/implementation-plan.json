@@ -14,7 +14,7 @@
     "external_inference_uploads_enabled": false,
     "automatic_job_launch_enabled": false,
     "modifies_current_collection": false,
-    "activation_requirement": "A separate explicit implementation and pilot decision after the applicable gates pass; reading this file never enables work."
+    "activation_requirement": "The owner requested the full analysis after the latest-twenty audio run. At that point use the archived English text, produce missing transcripts in the isolated GPU environment and run the documented study with expert review. This planning document starts no processes."
   },
   "source_documents": [
     "transcription-panel-round2.md",
@@ -35,11 +35,13 @@
     "native_audio": true,
     "research_metadata": true,
     "stages": [
-      {"id": "newest_20", "per_channel_newest_videos": 20, "predecessor": null},
-      {"id": "newest_50", "per_channel_newest_videos": 50, "predecessor": "newest_20"},
+      {"id": "newest_20", "label": "Latest 20+ videos", "per_channel_newest_videos": 20, "predecessor": null, "includes": ["videos"], "order": "displayed newest-first public regular uploads on each creator's Videos tab"},
+      {"id": "newest_50", "per_channel_newest_videos": 50, "predecessor": "newest_20", "includes": ["videos"], "order": "displayed newest-first public regular uploads on each creator's Videos tab"},
       {"id": "remaining_archive", "per_channel_newest_videos": null, "predecessor": "newest_50", "includes": ["videos", "shorts", "recorded_streams"]}
     ],
-    "stage_completion": "Verified audio plus metadata, or explicitly confirmed terminal source unavailability; quota, login, storage and generic errors are not success.",
+    "stage_completion": "Report verified audio plus metadata, unresolved or unavailable selected IDs, and channels exposing fewer recordings than requested as separate counts. Only verified recordings count toward audio coverage. Keep a dated, per-creator selection and its observed size.",
+    "supplementary_index": "Retain all prior selections, including Shorts, completed streams, displaced regular uploads and restricted listings. Preserve the literal rank of members-only listings and continue down the same channel to select its public regular uploads.",
+    "publication_date_exclusion": null,
     "duration_exclusion": null,
     "caption_policy": {
       "language_scope": "English only: en and English regional variants",
@@ -56,11 +58,10 @@
   },
   "resources": {
     "storage_units": "decimal bytes",
-    "total_project_limit_bytes": 20000000000,
-    "minimum_unspent_buffer_bytes": 2000000000,
-    "private_root_maximum_bytes": 17000000000,
-    "active_project_maximum_bytes": 18000000000,
-    "effective_private_ceiling_formula": "min(17000000000, 18000000000 - outside_project_bytes - external_reservations_bytes)",
+    "total_project_limit_bytes": 23000000000,
+    "minimum_physical_free_after_reservations_bytes": 12000000000,
+    "active_project_maximum_bytes": 23000000000,
+    "effective_private_ceiling_formula": "23000000000 - outside_project_bytes - external_reservations_bytes",
     "outside_project_bytes_must_include": ["project tools", "all project checkouts", "project environments or caches outside the private root"],
     "private_bytes_must_include": ["native media", "metadata", "caption ZIPs", "journals", "models", "virtual environments", "DLLs", "installer caches", "hub and Xet caches", "temporary files", "decoded windows", "partial downloads", "results", "indexes", "staging copies", "logs"],
     "inventory_before_provisioning": true,
@@ -70,9 +71,9 @@
     "shared_budget": {
       "required": true,
       "status": "not_implemented_for_parallel_asr",
-      "current_limitation": "Current ingestion Budget is process-local and assumes an exclusively owned ingestion run.",
+      "current_limitation": "The November 19 collector accounts for shared source and publisher reservations. The ASR input queue checks all managed roots and outstanding reservations under its own queue lock. Multiple simultaneous GPU workers have no shared ASR execution budget.",
       "acceptable_designs": ["one coordinator owns every reservation/write/delete with worker IPC", "transactional reservation store with an interprocess lock"],
-      "fallback_until_implemented": "Serialize collection and ASR under one ownership lock.",
+      "fallback_until_implemented": "Finish collection first, then stage bounded inputs for a single GPU ASR worker. Use the shared project allowance and physical disk reserve in both phases.",
       "admission_basis": ["actual bytes", "outstanding reservations", "peak temporary duplication", "physical disk free-space floor"],
       "queue_bounds": ["reserved bytes", "audio duration", "item count"],
       "storage_pressure_behavior": "Pause admissions and preserve pending work; do not report completion."

@@ -1,5 +1,21 @@
 # Bashar Index, Channeling Atlas and ET-channeler archive
 
+## Collection knowledge transfer
+
+At **00:51 UTC on November 20, 2026**, Drive held verified audio and provenance for **1,918 of 1,976 selected regular recordings**. Seventy of 101 channels had every available target. The remaining 58 comprised 28 current source refusals, four local or administrative holds and 26 entries awaiting a closed outcome. The collector continued after this snapshot. [Knowledge-transfer guide](et-channelers/knowledge-transfer/) · [All 101 creators](et-channelers/knowledge-transfer/evidence/2026-11-20/creator-status.csv) · [All 1,976 recordings](et-channelers/knowledge-transfer/evidence/2026-11-20/recording-status.csv)
+
+| What we learned | Where to find the implementation and evidence |
+| --- | --- |
+| Public Videos-tab sweeps preserve the newest twenty regular uploads per channel, with no date or duration cutoff. Earlier Shorts, streams and regular uploads remain indexed. | [Roster, scope and selection](et-channelers/knowledge-transfer/) |
+| Basic yt-dlp, browser format inspection, real-time capture, original-track acquisition and independent publisher editions had different outcomes. Some browser experiments yielded repeatable partial files. | [Experiment and expert-panel index](et-channelers/knowledge-transfer/research-index.md) |
+| Grouped Drive publication cut calls from 16 copies and 16 lookups in one batch to five each in a comparable batch. A fourth transfer showed no measured advantage. Local queue and file-recovery fixes preserved completed work. | [Production chronology and timing](et-channelers/knowledge-transfer/production-history.md) · [Collector code and operations](et-channelers/knowledge-transfer/operations.md) |
+| The attempt register preserves 2,880 distinct observations, including retries, local holds, source outcomes and stages without a terminal report. Audio coverage is tracked separately. | [Attempt history](et-channelers/knowledge-transfer/evidence/2026-11-20/attempt-history.csv) · [Field definitions and reproduction](et-channelers/knowledge-transfer/evidence/README.md) |
+| The timeline covers every calendar day from June 23, 2008 through November 19, 2026. Each date separates assigned recordings from additional recordings whose evidence spans that day. | [Explore individual dates](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/collection/timeline.html?date=2026-11-16) · [Date evidence and exports](et-channelers/research/recording-dates-2026-11-19.md) |
+| English captions and publisher transcripts take priority. Local CUDA handles speech and translation. Project-funded agents review source quality, quantitative results and reproducibility under a shared $100 ceiling. | [Operator roles](et-channelers/knowledge-transfer/operations.md) · [Research plan](et-channelers/research/analysis-plan-2026-11-16/) |
+| The Atlas now documents 145 sourced relationships across 44 people and 107 attributed entity labels. Guest performances, host credits, written messages and channel ownership have separate evidence. | [Reviewed channeler table](et-channelers/research/analysis-plan-2026-11-16/channeler-entity-table.md) · [Atlas](https://occult-kranti.github.io/bashar-index/channeling-atlas/dist/#/entities) |
+
+For a new operator, the [Windows handoff](et-channelers/HANDOFF.md) gives the current tasks and the [roadmap](et-channelers/ROADMAP.md) gives the order for transcription, two analysis rounds and the latest fifty. The [branch register](BRANCHES.md) and [release CSV](et-channelers/knowledge-transfer/release-history.csv) trace the software history. Use the [dashboard directory](https://occult-kranti.github.io/bashar-index/dashboards/) for published interfaces and the [private Drive archive](https://drive.google.com/drive/folders/1pMBEavFcXc3BrDbg0BqW0mKkpyOHjD_B) for media and provenance.
+
 ## Start here
 
 Local CUDA handles speech recognition and translation for the latest-20+ study. After the audio is complete, the project's API-backed research panels share a $100 allowance for study design, analysis and independent review. The publication-date timeline already covers all 1,976 selected recordings. [Research agents and billing](et-channelers/pipeline/PROJECT_RESEARCH_AGENTS.md) · [Metadata timeline](et-channelers/dashboard/collection/timeline.html)

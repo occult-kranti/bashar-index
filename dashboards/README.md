@@ -2,6 +2,10 @@
 
 The public [directory](https://occult-kranti.github.io/bashar-index/dashboards/) links all seven maintained repository dashboards, including the [selected-video upload timeline](../et-channelers/dashboard/collection/timeline.html). Shared navigation lives in `assets/research-nav.{css,js}`. Links resolve from the asset URL so they work locally and beneath the GitHub Pages project prefix. A separately hosted copy can set the script's `data-root` to the public project URL.
 
+## Daily edition and operating data
+
+The current [daily publication timeline](../et-channelers/dashboard/collection/timeline.html?date=2026-11-16) covers all 1,976 selected regular recordings. Its 6,724 calendar rows distinguish 1,587 recordings assignable to a day from the 389 with wider windows. Use the [daily CSV](../et-channelers/dashboard/collection/dates-by-day.csv) or [generator and date-evidence guide](../et-channelers/research/recording-dates-2026-11-19.md) for this edition. The [knowledge-transfer folder](../et-channelers/knowledge-transfer/) links the latest dated creator/recording counts, the failed-link dashboard and historical site versions.
+
 ## Rebuilding from the repository root
 
 ```powershell
