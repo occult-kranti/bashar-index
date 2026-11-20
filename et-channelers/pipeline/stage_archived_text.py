@@ -15,9 +15,9 @@ from . import (collection_coverage, common, corpus_asr_view, corpus_caption_view
                publisher_feed_text)
 
 
-def input_rows(root, frame, remote):
+def input_rows(root, frame, remote, *, native_records=None, edition_sources=None, edition_results=None):
     targets = {r["video_id"]: r for r in frame}
-    editions = ingestion_status.latest_records(root / "sync/drive_ingest_manifest.jsonl")
+    editions = native_records if native_records is not None else ingestion_status.latest_records(root / "sync/drive_ingest_manifest.jsonl")
     captions = ingestion_status.latest_records(root / "sync/drive_caption_manifest.jsonl")
     for video, row in targets.items():
         record = captions.get(video, {})
@@ -46,7 +46,7 @@ def input_rows(root, frame, remote):
     yield from corpus_publisher_variant_view.input_rows(root, targets.values(), remote)
     yield from corpus_untimed_publisher_view.input_rows(root, targets.values(), remote, journal_records=publisher_records)
     yield from publisher_feed_text.input_rows(root, targets.values(), remote)
-    yield from gpu_asr_editions.input_rows(root, targets.values(), remote)
+    yield from gpu_asr_editions.input_rows(root, targets.values(), remote, sources=edition_sources, records=edition_results)
 
 
 def existing_bundle(root, job):

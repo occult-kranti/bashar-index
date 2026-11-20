@@ -41,10 +41,11 @@ def need(value, code):
         raise ValueError(code)
 
 
-def _parts(path, receipt):
+def _parts(path, receipt, *, paired_max_bytes=None):
     expected = receipt if receipt.get("artifact_kind") == "asr_bundle" else receipt.get("bundle", {})
     size = expected.get("bytes")
-    need(type(size) is int and 0 < size <= gpu_asr.MAX_RESULT_BYTES, "asr_bundle_size")
+    limit=gpu_asr.MAX_RESULT_BYTES if paired_max_bytes is None else paired_max_bytes
+    need(type(limit) is int and 0 < limit <= 256_000_000 and type(size) is int and 0 < size <= limit, "asr_bundle_size")
     with Path(path).open("rb") as source:
         raw = source.read(size + 1)
     need(len(raw) == size, "asr_bundle_size")
@@ -60,7 +61,7 @@ def _parts(path, receipt):
              and parent.name.startswith("private-asr-view-"), "private_asr_snapshot_location")
         snapshot = parent / "bundle.zip"
         snapshot.write_bytes(raw)
-        proof = verifier(snapshot, expected)
+        proof = verifier(snapshot, expected, max_bytes=paired_max_bytes) if paired and paired_max_bytes is not None else verifier(snapshot, expected)
     with zipfile.ZipFile(io.BytesIO(raw)) as archive:
         for item in archive.infolist():
             mode = stat.S_IFMT(item.external_attr >> 16)
