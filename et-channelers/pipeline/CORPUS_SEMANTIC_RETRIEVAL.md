@@ -1,5 +1,11 @@
 # Post-collection semantic passage candidates
 
+For the restartable local runtime, conversion and actual synthetic CUDA proof,
+use [`minilm_analysis_setup.py`](MINILM_ANALYSIS_SETUP.md) after the validated
+text-generation handoff. It reuses existing CPU Torch, installs only three
+hash-pinned binary wheels in a separate managed venv and generates the manifest
+shown below automatically. No setup or inference runs while collecting audio.
+
 `corpus_semantic_retrieval.py` adds the missing semantic retrieval step, reusing
 the frozen `postrun_candidates` manifest and `corpus_group_lexical` input checks.
 It does not fetch media, assign events or speakers, or infer that two accounts
