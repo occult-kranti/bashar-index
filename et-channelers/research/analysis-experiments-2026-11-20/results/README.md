@@ -12,7 +12,7 @@ stays in this table. Numbers only; creators are never named.
 | H5 | World claims in channelled recordings, practice in own-voice talks | not run | | | waits for model labels |
 | H6 | The claimed voice rarely asks listeners to buy or enrol | not run | | | waits for model labels |
 | H7 | More alike near almanac dates | not run | | | waits for the replication wave |
-| H8 | The H3 contrast is larger than in sermons and wellness talks | not run | | | waits for the comparison set; rests on the contrast of the dropped H3, so its place is an open decision |
+| H8 | The H3 contrast is larger than in sermons and wellness talks | **dropped by the owner 2026-11-20** (A9) | | | its contrast is H3's, shown to be biased; the comparison set was never collected; counts as run with p = 1 |
 | H9 | Same family of beings: shared subject matter, not shared style | not run | | | waits for model labels |
 | H10 | Passed dates are returned to less often | not run | | | waits for the replication wave |
 

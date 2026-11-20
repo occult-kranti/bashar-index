@@ -88,6 +88,32 @@ Then: change by month as well as by week; and every analysis that uses dates is 
 on recordings whose publication date is confirmed to the day (including recordings of different channels published
 on the same date), and once on recordings whose date is only estimated.
 
+**A8. No human check, by the owner's decision of 2026-11-20 (about 22:45 UTC).** Asked whether a person would
+code a small sample (about six hours: 200 voice units, pattern hits, a listening sample), the owner answered:
+*skip it*. So no label is checked against a person. Every result that rests on model labels is reported as
+model-coded and not validated by a person, and the strongest verdict available to H1, H2, H4, H5, H6 and H9 is
+"supported (model-coded)" or "refuted (model-coded)". The only check of accuracy is the known-answer battery of
+the second-round programme (texts with constructed answers), which measures the labellers on texts that are not
+the corpus. The sample design stays on file in case a person becomes available.
+
+**A9. H8 dropped, and the stricter amendments approved in principle, by the owner on 2026-11-20 (about 22:45
+UTC).** H8 compared the H3 contrast in channelled recordings with sermons and wellness talks. The second-round
+panel showed that the H3 contrast is biased (its mean under its own reference is -0.063, not zero) and that the
+registered rule ignores differences between creators; H3 is closed (A6) and the comparison set has not been
+collected. H8 is dropped and keeps a row in the results table as dropped; it counts as run with p = 1 for the Holm
+correction. The owner also approved, in principle, the panel's amendments in the stricter direction for the
+hypotheses not yet run: a creator-level sign-flip p-value enters the Holm correction, whose count is fixed at 10
+with unrun hypotheses at p = 1; the outcome "not determinable: too few eligible creators"; the conditional
+binomial estimator with a minimum-hit rule for H5 and H6; a kappa gate on point estimate and lower bound; H7's
+estimator, reference and margin. Their exact text is drafted by the panel's calibration item and entered here as
+A10 before freeze 2; none of them may make a verdict easier to reach.
+
+**Primary definitions for H1, H4 and H6, chosen by the owner on 2026-11-20 before any label of the frozen
+instrument exists.** Own voice: *broad* (speech with an own-person cue, and uncued solo speech outside the
+claimed voice in recordings whose claimant is the sole speaker or the host). Offers: a passage whose only evidence
+is the creator's own offer does *not* end a claimed voice. The other definitions (strict own voice; labels as the
+model gives them) are computed and reported beside the primary ones as rows. These are constants of freeze 2.
+
 ## Procedure freeze
 
 One entry per hypothesis, written before that hypothesis touches a hold-out transcript. For the hypotheses
