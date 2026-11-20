@@ -40,6 +40,12 @@ OUTSTANDING_KIND = "owner_authorized_outstanding_recordings"
 FALLBACK_REASONS = {"no_reliable_speech", "language_confidence_insufficient",
                     "insufficient_independent_sensitive_speech_evidence"}
 DETECTOR_BASES = {"metadata_and_model_agreement", "model_agreement_across_speech_probes"}
+# Owner policy of 2026-11-20: a creator whose detected recordings are all English is taken as English.
+CHANNEL_POLICY = "owner_2026-11-20_channel_language"
+MIN_CREATOR_VOTES = 2
+# A transcript made without probes whose mean log-probability is below this goes to the detector after
+# all. English results of this run: median -0.12, 2nd percentile -0.40, lowest -0.61 (158 recordings).
+DOUBT_LOG_PROBABILITY = -0.5
 SOURCE_ORDER = (NATIVE, DIRECT, EXTRACT, PUBLISHER)
 SOURCE_REVIEW_ERRORS = {"audio_stream_count", "decoded_duration_mismatch", "decoded_duration_limit", "no_complete_transcript",
                         "word_text_alignment", "segment_text_alignment", "segment_time", "word_time", "segment_order"}
@@ -589,15 +595,30 @@ def quiet_spans(document, duration, least=30.0):
     return spans
 
 
+def transcript_confidence(document):
+    """Speech-time-weighted mean of the recognizer's log-probability per segment; None if it reported none."""
+    weight = total = 0.0
+    for item in document["segments"]:
+        value = item.get("avg_logprob")
+        if type(value) in (int, float) and math.isfinite(value):
+            span = max(.01, item["end"] - item["start"])
+            weight, total = weight + span, total + span * value
+    return total / weight if weight else None
+
+
 def infer(settings, origin, audio_path, runtime, model, proposal, selection, guard, *, checkpoint_path=None,
           capacity_check=None, worker_sha=None, metadata_path=None, rolling_history=None, review=None, english=None,
-          parallel_windows=1, language_fallback=None, prior_decision=None):
+          parallel_windows=1, language_fallback=None, prior_decision=None, channel_language=None):
     """Transcribe original speech, translate non-English speech; both use the inference edition's clock.
 
     ``english`` is ``(proof, engine)`` or ``(proof, engine, parallel_windows)`` for the lease's
     English-only model. The multilingual model still decides the language. Speech it accepts as
     English is then transcribed by the English model, and the result names that model with the
     deciding model beside it.
+
+    ``channel_language`` (``{"language", "votes"}``) is the language of a creator whose detected
+    recordings all agree. Such a recording is transcribed without probes unless its metadata
+    names another language; a transcript that reads poorly sends it to the detector after all.
     """
     need(runtime.model.model.device == "cuda" and runtime.model.model.compute_type == "int8_float16", "CUDA model required")
     lease = base.gpu_lease(settings)
@@ -630,6 +651,11 @@ def infer(settings, origin, audio_path, runtime, model, proposal, selection, gua
             elif review is not None:
                 need(gpu_asr_review.matches(review, origin), "Mismatched individual speech-review edition")
                 decision = gpu_asr_review.scan_language(runtime, audio_path, job, monitor.guard)
+            elif (channel_language is not None and multi.language_code(job["declared_audio_language"])
+                  in ("und", "mul", "zxx", channel_language["language"])):
+                decision = {"status":"accepted", "language":channel_language["language"],
+                            "basis":"creator_established_language", "policy":CHANNEL_POLICY,
+                            "creator_detector_votes":channel_language["votes"], "detector_decision":None}
             else:
                 decision = multi.detect_language(runtime, audio_path, job, monitor.guard)
             if checkpoint is not None:
@@ -641,45 +667,74 @@ def infer(settings, origin, audio_path, runtime, model, proposal, selection, gua
                             "policy":"owner_2026-11-20_language_fallback", "detector_decision":decision}
         if decision["status"] != "accepted":
             return {"status":"language_review", "decision":decision, "audio_identity":audio_identity(origin)}
-        language = decision["language"]
-        fast = english is not None and language == "en"
-        text_model = english[0] if fast else model
-        streams = (english[2] if len(english) > 2 else 1) if fast else parallel_windows
-        configs = {"original": {**base.CONFIG, "language":language, "task":"transcribe"}}
-        if language != "en":
-            configs["english"] = {**base.CONFIG, "language":language, "task":"translate"}
-        if review is not None and decision.get("only_sensitive_strong_probes"):
-            for config in configs.values():
-                config["vad_parameters"] = {**config["vad_parameters"], "threshold": .35}
-        variants, metrics = {}, {}
-        for key, config in configs.items():
-            monitor.guard()
-            # Decoding the source clock belongs to the runtime; only the recognizer differs.
-            # Windows from one model are never resumed with the other.
-            saved_as=key+"@"+text_model["model_sha256"][:16] if fast else key
-            ahead=None
-            if streams > 1:
-                held=(lambda index,name=saved_as:checkpoint.load(name,index) is not None) if checkpoint is not None else None
-                task=ahead=Lookahead(runtime.windows,english[1] if fast else runtime.model,config,streams,held)
-            else:
-                task=multi.TaskRuntime(SimpleNamespace(windows=runtime.windows,model=english[1]) if fast else runtime,config)
-            if checkpoint is not None:
-                task=batch.CheckpointedTask(task,checkpoint,saved_as)
-            try:
-                segments, transcript, voiced = base.collect_segments(task, audio_path,
-                                                                    origin["duration_seconds"], monitor.guard)
-            finally:
-                if ahead is not None:
-                    ahead.close()
-            segments.update(language=language if key == "original" else "en", character_offset_unit="unicode_code_points",
-                            text_kind="original_asr" if key == "original" else "english_audio_translation")
-            variants[key] = (segments, transcript, config)
-            quiet = quiet_spans(segments, origin["duration_seconds"])
-            metrics[key] = {"duration_after_vad_seconds":voiced, "segments":len(segments["segments"]),
-                            "non_speech_seconds":round(max(0.0, origin["duration_seconds"] - voiced), 1),
-                            "quiet_stretches_of_30s_or_more":len(quiet),
-                            "quiet_seconds_in_those_stretches":round(sum(b - a for a, b in quiet), 1),
-                            "quiet_stretches":quiet[:200]}
+        def recognize(decision):
+            language = decision["language"]
+            fast = english is not None and language == "en"
+            text_model = english[0] if fast else model
+            streams = (english[2] if len(english) > 2 else 1) if fast else parallel_windows
+            configs = {"original": {**base.CONFIG, "language":language, "task":"transcribe"}}
+            if language != "en":
+                configs["english"] = {**base.CONFIG, "language":language, "task":"translate"}
+            if review is not None and decision.get("only_sensitive_strong_probes"):
+                for config in configs.values():
+                    config["vad_parameters"] = {**config["vad_parameters"], "threshold": .35}
+            variants, metrics = {}, {}
+            for key, config in configs.items():
+                monitor.guard()
+                # Decoding the source clock belongs to the runtime; only the recognizer differs.
+                # Windows from one model, or one language, are never resumed with another.
+                saved_as=key+"@"+(text_model["model_sha256"][:16] if fast else language)
+                ahead=None
+                if streams > 1:
+                    held=(lambda index,name=saved_as:checkpoint.load(name,index) is not None) if checkpoint is not None else None
+                    task=ahead=Lookahead(runtime.windows,english[1] if fast else runtime.model,config,streams,held)
+                else:
+                    task=multi.TaskRuntime(SimpleNamespace(windows=runtime.windows,model=english[1]) if fast else runtime,config)
+                if checkpoint is not None:
+                    task=batch.CheckpointedTask(task,checkpoint,saved_as)
+                try:
+                    segments, transcript, voiced = base.collect_segments(task, audio_path,
+                                                                        origin["duration_seconds"], monitor.guard)
+                finally:
+                    if ahead is not None:
+                        ahead.close()
+                segments.update(language=language if key == "original" else "en", character_offset_unit="unicode_code_points",
+                                text_kind="original_asr" if key == "original" else "english_audio_translation")
+                variants[key] = (segments, transcript, config)
+                quiet = quiet_spans(segments, origin["duration_seconds"])
+                metrics[key] = {"duration_after_vad_seconds":voiced, "segments":len(segments["segments"]),
+                                "non_speech_seconds":round(max(0.0, origin["duration_seconds"] - voiced), 1),
+                                "quiet_stretches_of_30s_or_more":len(quiet),
+                                "quiet_seconds_in_those_stretches":round(sum(b - a for a, b in quiet), 1),
+                                "quiet_stretches":quiet[:200]}
+            return fast, text_model, streams, configs, variants, metrics
+
+        fast, text_model, streams, configs, variants, metrics = recognize(decision)
+        if decision.get("policy") == CHANNEL_POLICY and decision.get("detector_decision") is None:
+            confidence = transcript_confidence(variants["original"][0])
+            if confidence is not None and confidence < DOUBT_LOG_PROBABILITY:
+                # No probes were run and the transcript reads poorly: the detector looks at this one after all.
+                second = checkpoint.load('language-recheck',0) if checkpoint is not None else None
+                if second is None:
+                    second = multi.detect_language(runtime, audio_path, job, monitor.guard)
+                    if checkpoint is not None:
+                        checkpoint.save('language-recheck',0,second)
+                doubt = {"transcript_log_probability":round(confidence, 3), "doubt_below":DOUBT_LOG_PROBABILITY}
+                if second["status"] != "accepted":
+                    # Unclear probes: one strong probe in another language decides, as for any held recording;
+                    # two plausible languages or a conflict with the metadata wait for a person.
+                    choice = fallback_language(second, (decision["language"], decision["basis"]))
+                    if choice is None:
+                        return {"status":"language_review", "audio_identity":audio_identity(origin),
+                                "decision":{**second, "replaced_creator_language":decision["language"], **doubt}}
+                    if choice[0] != decision["language"]:
+                        second = {"status":"accepted", "language":choice[0], "basis":choice[1],
+                                  "policy":"owner_2026-11-20_language_fallback", "detector_decision":second}
+                if second["status"] == "accepted" and second["language"] != decision["language"]:
+                    decision = {**second, "replaced_creator_language":decision["language"], **doubt}
+                    fast, text_model, streams, configs, variants, metrics = recognize(decision)
+                else:
+                    decision = {**decision, "detector_decision":second, **doubt}
     finally:
         try:
             telemetry = monitor.finish()
@@ -798,7 +853,8 @@ def recover_local_result(settings, origin, selection, proposal):
                 need(not destination.exists(), "Completed result appeared during recovery")
                 path.rename(destination)
                 path = destination
-            return {"run_id":p["run_id"], "bundle":{"path":str(path), **verified["bundle"]}}
+            return {"run_id":p["run_id"], "language_decision":p.get("language_decision") or {},
+                    "bundle":{"path":str(path), **verified["bundle"]}}
     return None
 
 
@@ -816,7 +872,8 @@ def release_staged(root, origin, remote, checkpoint=None):
 
 def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, runtime_factory=multi.Runtime,
         lease_maintenance=None, reviews=None, review_sha256=None, outstanding=None, prefetch=0,
-        background_publish=False, english_loader=load_english, drive_slots=2, language_fallback=False):
+        background_publish=False, english_loader=load_english, drive_slots=2, language_fallback=False,
+        english_first=False, channel_language=False):
     """Run only after complete selected audio, held collector, bound plan, and explicit active GPU lease.
 
     With ``outstanding`` (the owner's exact list from ``authorized_outstanding``) every other
@@ -827,6 +884,9 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
     ``language_fallback`` applies the owner's policy for recordings whose probes held no clear
     speech (see ``fallback_language``): the creator's established language decides at once, and a
     last sweep uses English for creators with no detected language at all.
+    ``channel_language`` transcribes a creator whose detected recordings are all English (at least
+    two, and no published recording in another language) without probing each recording; ``english_first`` does those creators first, then the
+    creators not yet known, and last the creators detected mostly in another language.
     """
     root = settings.root
     frame, scopes, actual = collection_coverage.mixed_selection(Path(selection), {})
@@ -892,18 +952,41 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
                 budget.admit(amount)
 
         # A creator's language is established by at least two detector decisions, four in five agreeing.
-        votes = defaultdict(Counter)
+        votes = defaultdict(Counter)       # detector decisions
+        taken = defaultdict(Counter)       # transcribed on the creator's language without probes: no vote, but part of the ratio
+        spoken = defaultdict(Counter)      # every published language, whatever decided it
+
+        def tally(channel, decision):
+            if decision.get("status") != "accepted" or not decision.get("language"):
+                return
+            spoken[channel][decision["language"]] += 1
+            if decision.get("basis") in DETECTOR_BASES:
+                votes[channel][decision["language"]] += 1
+            elif decision.get("policy") == CHANNEL_POLICY:
+                taken[channel][decision["language"]] += 1
+
         for known in prior_results.values():
-            saved = known["record"].get("language_decision") or {}
-            if saved.get("basis") in DETECTOR_BASES:
-                votes[known["record"]["inference_source"]["channel_dir"]][saved["language"]] += 1
+            tally(known["record"]["inference_source"]["channel_dir"], known["record"].get("language_decision") or {})
 
         def channel_choice(channel, last_sweep):
             if votes[channel]:
-                language, count = votes[channel].most_common(1)[0]
-                decided = count >= 2 and count >= .8 * sum(votes[channel].values())
+                cast = votes[channel] + taken[channel]
+                language, count = cast.most_common(1)[0]
+                decided = votes[channel][language] >= MIN_CREATOR_VOTES and count >= .8 * sum(cast.values())
                 return (language, "creator_established_language") if decided else None
             return ("en", "owner_default_english") if last_sweep else None
+
+        def english_creator(channel):
+            cast = votes[channel]
+            return cast["en"] >= MIN_CREATOR_VOTES and set(cast) == {"en"} and set(spoken[channel]) == {"en"}
+
+        if english_first:
+            def tier(group):
+                cast = votes[group[0]["channel_dir"]]
+                if english_creator(group[0]["channel_dir"]):
+                    return 0
+                return 2 if cast and cast.most_common(1)[0][0] != "en" else 1
+            groups = sorted(groups, key=tier)       # stable: the proposal's order holds within each tier
 
         def needs_input(candidates):
             """A coming recording whose audio will be read: nothing saved, held or individually reviewed."""
@@ -992,6 +1075,8 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
                             options["parallel_windows"] = lease["parallel_windows"]
                         if policy is not None:
                             options.update(language_fallback=policy, prior_decision=prior_decision)
+                        if channel_language and prior_decision is None and english_creator(origin["channel_dir"]):
+                            options["channel_language"] = {"language":"en", "votes":votes[origin["channel_dir"]]["en"]}
                         try:
                             local = infer(settings, origin, paths["audio"], runtime, model, proposal, expected, guard, **options)
                         except base.AsrError as error:
@@ -1006,9 +1091,7 @@ def run(settings, selection, expected, plan_path, proposal, drive, *, limit=1, r
                                 release_staged(root,origin,remote,checkpoint)
                             results.append({"video_ids":[x["video_id"] for x in associations], "state":local["status"]})
                             continue
-                settled = local.get("language_decision") or {}
-                if settled.get("basis") in DETECTOR_BASES:
-                    votes[origin["channel_dir"]][settled["language"]] += 1
+                tally(origin["channel_dir"], local.get("language_decision") or {})
                 if prior_decision is not None and language_hold.is_file():
                     language_hold.replace(language_hold.with_name("language-review.resolved-by-policy.json"))
                 guard()
@@ -1117,6 +1200,10 @@ def main(argv=None):
     execute.add_argument("--background-publish",action="store_true",help="upload and verify results while the next recording is recognized")
     execute.add_argument("--language-fallback",action="store_true",
                          help="for unclear probes use one strong probe, else the creator's established language, else English in a last sweep")
+    execute.add_argument("--channel-language",action="store_true",
+                         help="transcribe creators whose detected recordings are all English without probing each recording")
+    execute.add_argument("--english-first",action="store_true",
+                         help="do creators established as English first, then unknown creators, then other languages")
     args = parser.parse_args(argv)
     root = common.ensure_outside_git(args.root)
     need(bool(args.speech_review) == bool(args.speech_review_sha256), "Supply both speech-review path and digest")
@@ -1150,7 +1237,8 @@ def main(argv=None):
     result = run(settings,args.selection,args.selection_sha256,args.plan,args.plan_sha256,drive,limit=args.limit,
                  reviews=reviews,review_sha256=args.speech_review_sha256,outstanding=outstanding,
                  prefetch=args.prefetch,background_publish=args.background_publish,drive_slots=args.drive_slots,
-                 language_fallback=args.language_fallback)
+                 language_fallback=args.language_fallback,english_first=args.english_first,
+                 channel_language=args.channel_language)
     print(json.dumps(result))
     return 0
 
