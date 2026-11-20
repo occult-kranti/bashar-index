@@ -562,6 +562,37 @@ everything below, and replaces the earlier per-channel caps.
   last-N comparison and its timeline; the combined timeline exists; and the audit sample's agreement figures
   are in the methods note.
 
+### Phase 7d: languages compared, with plots (added 2026-11-20, at the owner's request)
+
+To do once the transcription of the archived latest-20 recordings is finished. Most creators speak English;
+the run has so far also found Japanese, Spanish, Portuguese and Czech creators. Every recording in another
+language has two timed texts: the original, and a machine translation into English. Each result also states how
+its language was decided and how many seconds hold no speech.
+
+* **Topics by language.** Fit one vocabulary and one set of topics on the English texts (English originals,
+  and the English translations of the others), so that every language is measured with the same ruler. Plot
+  topic shares by language and by creator (shares of words, not of recordings): a heat map of topics against
+  languages, and small panels per creator. As a check on the translation, also fit topics on the original
+  texts within each language and say where the two pictures disagree.
+* **Distributions by language.** One plot each, with the languages side by side: recording length, words per
+  minute, share of the recording without speech (music, meditation, silence) and its longest quiet stretch,
+  recordings and hours per creator, and upload dates.
+* **Wording by language.** The terms that set each language group apart in the English texts (log-odds with
+  a prior, as in Phase 7a), and the named beings, star systems and places of Phase 7c counted by language.
+* **Everything else already planned, split by language.** The per-year tables, the last-N comparisons and
+  the prediction and warning counts of Phase 7c each get a version with language as a filter.
+* **A plot of transcript quality by language** (the recognizer's mean log-probability per recording), shown
+  beside the others, so that a difference in transcript quality is not read as a difference in content.
+* **Small groups.** Only a handful of creators speak each language other than English. Every plot states the
+  number of creators, recordings and hours behind each language; a language with one or two creators is
+  described as those creators, not as the language, and no significance test is run on it.
+* **What it needs.** The finished run's ledger (language decision and non-speech seconds per recording) and
+  the staged text views of both texts.
+* **What it gives.** Figures of numbers only, a language filter and a languages page in the dashboard, and
+  the table behind every plot as a CSV. No transcript text; quotes within the 30-word limit.
+* **Done when** every language in the corpus has its topic, distribution and wording plots with the counts
+  on them, and a second reader has re-drawn them from the saved tables.
+
 ### Phase 7b: the cycle runs itself, with a team of agents (added 2026-11-14, at the owner's request)
 
 The pipeline's cloud lanes work, so the routine is now one command, and agents run it. The lead (the
