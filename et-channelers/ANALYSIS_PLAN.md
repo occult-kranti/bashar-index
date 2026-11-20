@@ -1756,6 +1756,86 @@ This is looser than 5.6, whose public timeline shows counts only. Until the owne
 7. **Dashboard v2.** *Done when* it has had two reader rounds.
 8. **Checking, then 12.8 in order.** *Done when* every scored family has frozen criteria and two coders' verdicts.
 
+## 13. Further experiments from ICWSM and related methods (panel of 2026-11-20)
+
+Added at the owner's request: study how ICWSM and related papers do statistics and data analysis, put the
+question to a panel led by a senior mathematical data analyst, and add experiments, plots, heat maps, graphs
+and tables that draw meaning from the transcripts. The full text is in
+[`research/analysis-experiments-2026-11-20/`](research/analysis-experiments-2026-11-20/README.md): the
+catalogue, and the two literature digests it rests on
+([ICWSM](research/analysis-experiments-2026-11-20/literature-icwsm.md),
+[related venues](research/analysis-experiments-2026-11-20/literature-related.md)).
+
+### 13.1 How it was made
+
+Two literature studies came first (32 ICWSM papers read in full text by an automated extractor; 98 references
+from neighbouring venues, 11 opened and 79 confirmed by search), with an audit of this plan against the data and
+a reading of 42 transcripts. Three panel members then proposed 40 experiments: the senior mathematical data
+analyst, a computational social scientist and a visual exploration specialist. A challenger judged each one:
+22 were kept, 17 merged into them, 1 dropped, and 6 added because they were missing. The lead analyst wrote the
+catalogue. Numbers quoted from papers were extracted by machine and must be checked against the PDFs before
+they are cited. When the catalogue was added here, five of its arXiv links were opened again and each led to
+the paper named; the proceedings site refuses automated reading, so its links were not re-opened.
+
+### 13.2 What the first numbers say (provisional)
+
+From 1,213 finished transcripts on 2026-11-20, to be recomputed when the run closes:
+
+* The creator explains 24% to 61% of the variance of recording-level measures (pace 0.58, share without
+  speech 0.51, length 0.42). Recordings are not independent; the unit of inference is the creator.
+* Median recording 17.3 minutes; median pace 148 words per minute of speech; 12.0% of the audio holds no
+  speech, and five creators account for 44% of that.
+* Of 34 sampled recordings with 300 words or more, 17 hold a channelled voice or a relayed message; the others
+  are interviews, guided meditations and talks in the creator's own voice. A part-of-recording label has to
+  come before content statistics.
+* The recognizer adds a short thanks phrase near the end of its 30-second windows (in 55% of English
+  transcripts) and invents short segments in music and silence (9% of recordings). Both are removed by rule
+  before anything is counted, and every result is shown with and without the filter.
+* English and other-language recordings were transcribed by two different models. Comparisons stay inside one
+  model until a bridge experiment has run both on the same audio.
+
+### 13.3 The 28 experiments
+
+| Group | Experiments |
+|---|---|
+| Measurement and inference base | T1 coverage and recognizer ledger; VP variance partition and reliability; EB shrunken creator values with rank intervals; CA coverage audit, placebo contrasts and power; QD quality dependence and artefacts; HR hand-reference study; SP speaker-separation pilot; BR recognizer bridge; SD serial dependence |
+| Inside a recording | PO position curves over running time; LX lexical diversity, repetition and formulaicity; SG delivery-state segmentation; RH rhythm of speech and silence |
+| Content | CX content axis from names, term families and topics; SM creator similarity; GB grounds for belief; SV source or speaker; FL forecast ledger; AK what listeners are asked to do; TP title cue against content |
+| Calendar, events, language | EV world events entering the recordings; LG language case panel; SY calendar synchrony; FA first appearances |
+| Extending the sample | RW replication wave; CS comparison set of non-channelling speech; SL selection sensitivity |
+| Internal checking | PF one-page internal profile per creator |
+
+Each entry in the catalogue states the question, the data and unit, the method, the exact figures and tables,
+what it follows in the literature, and the safeguard against its known pitfalls. Section 5 of the catalogue is
+the one-table overview with value, cost and whether the output is public (numbers only) or private.
+
+### 13.4 Rules it adds to this plan
+
+The catalogue's sixteen rules apply to its experiments and, where they are stricter, to sections 3 and 5 of
+this plan. The ones that change practice: creators are resampled, never recordings (R1); everything seen in a
+pilot is exploratory, and at most ten hypotheses are registered before the remaining creators are analysed
+(R2); artefacts are removed first (R5); one text kind and one recognizer model per comparison (R6); no word
+list or model label is used until two people have measured its precision and recall (R7); the newest 20 is a
+quota, so no trend, origin or history claims (R10); a language here means its few creators, described and not
+tested (R11); nothing is called distinctive of channelling until a comparison set exists (R13).
+
+### 13.5 Decisions for the owner
+
+1. Freeze the registry of at most ten confirmatory hypotheses before the creators transcribed last are
+   analysed. Those 23 creators (366 recordings) are the only part of the cohort no pilot has seen.
+2. Name who does the hand-work of HR: about 4.5 hours of audio transcribed by listening, 60 recordings marked
+   for delivery state, and about 10 hours of name checks.
+3. Approve GPU time after the run for the bridge (BR): 30 to 40 English recordings through both models, and
+   one pass over the 214 recordings that are held in other text kinds.
+4. Decide whether to collect the replication wave (RW) and the comparison set (CS).
+
+### 13.6 Order
+
+The day the transcripts are complete: T1, the artefact filter and the first stage of QD, VP, SD, EB for
+delivery measures, PO as description, RH's instrument check, LX, the first stage of SL and CX, and LG with the
+"not bridged" label. These read stored fields only. Simulation (CA), similarity (SM) and the registered
+contrasts need the frozen corpus and a free machine. Everything that depends on labels waits for HR.
+
 ## Appendix A. Checks made for this plan
 
 **Fresh counts.**

@@ -593,6 +593,31 @@ its language was decided and how many seconds hold no speech.
 * **Done when** every language in the corpus has its topic, distribution and wording plots with the counts
   on them, and a second reader has re-drawn them from the saved tables.
 
+### Phase 7e: experiments from ICWSM and related methods, designed by an analyst panel (added 2026-11-20, at the owner's request)
+
+A panel led by a senior mathematical data analyst studied how ICWSM and related papers do statistics and data
+analysis, read 42 transcripts and the first numbers from the run, and designed 28 further experiments with
+their plots, heat maps, graphs and tables. The catalogue is
+[`research/analysis-experiments-2026-11-20/`](research/analysis-experiments-2026-11-20/README.md); the summary
+and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section 13.
+
+* **Done on 2026-11-20.** The two literature digests, the audit of the plan against the data, the catalogue
+  (40 experiments proposed, 22 kept, 17 merged, 1 dropped, 6 added by the challenger) and its sixteen rules.
+* **To do the day the transcripts are complete** (stored fields only, no labels): the coverage ledger, the
+  artefact filter, the variance partition, shrunken creator values with rank intervals, position curves over
+  a recording's running time, rhythm of speech and silence, lexical diversity and formulaicity, and the first
+  stages of the content axis and of the language case panel (Phase 7d uses the same figures).
+* **To do on the frozen corpus:** the coverage and power simulation, creator similarity with its stability
+  checks, and the registered contrasts on the creators no pilot has seen.
+* **Waits for hand-work:** the hand-reference study comes first; delivery-state segmentation, the forecast
+  ledger, grounds for belief, the ask ladder and name-based content columns all depend on it.
+* **Waits for the owner:** the registry of at most ten hypotheses, an owner for the hand-work, GPU time for the
+  bridge between the two recognizer models, and whether to collect a replication wave and a comparison set of
+  non-channelling speech.
+* **Done when** every experiment marked high value has its figures and tables with intervals and counts, or a
+  written reason why its gate failed, and the pilot numbers in the catalogue have been recomputed on the
+  finished run.
+
 ### Phase 7b: the cycle runs itself, with a team of agents (added 2026-11-14, at the owner's request)
 
 The pipeline's cloud lanes work, so the routine is now one command, and agents run it. The lead (the
