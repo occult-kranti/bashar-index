@@ -126,6 +126,18 @@ exploratory analysis (A2): what is predicted, for when, by which channel, and fo
 the predicted event is documented. Neither changes a registered hypothesis or makes a verdict easier to reach; the
 verification figures enter the multiverse and tipping-point rows that the plan already requires.
 
+**Selection rule of the cohort, stated by the owner on 2026-11-20 (about 23:10 UTC).** The owner's words:
+*selection rule is channeling mediums*. The 101 creators were chosen as channelling mediums: creators who publish
+recordings presented as messages channelled from non-human beings (extraterrestrial civilisations and councils,
+archangels and angels, ascended masters and similar sources). The same evening the owner asked for a hashtag and
+search discovery of further channelling mediums (#channeling, #pleiadian, #galacticcouncil, #raphael and the
+like); its finds are candidates kept apart from the frozen cohort, which does not change.
+
+**Budget as a warning, by the owner on 2026-11-20 (about 23:10 UTC):** *parallely implement all the llm based
+experiments, dont worry about the usd token limit, use that as warning.* The caps of A3 now warn instead of
+stopping; one guard at 250 USD stops only a fault that sends requests in a loop. Money changes nothing in the
+registered procedures.
+
 ## Procedure freeze
 
 One entry per hypothesis, written before that hypothesis touches a hold-out transcript. For the hypotheses
