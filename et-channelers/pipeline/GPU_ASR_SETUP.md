@@ -25,6 +25,21 @@ Use the printed proposal digest for the GPU lease. Once every selected recording
 
 One CUDA model serves the batch. The 30-second utilization window carries across recordings. Each completed speech window is checkpointed against its audio, model and task. A restart decodes the source clock again and reuses those results. Non-English speech produces separately identified original and English views. English speech reuses its original text for the English view. Drive verification precedes local input cleanup. The append-only `sync/edition_asr_manifest.jsonl` records each video association and its edition clock. An optional `--limit N` bounds a single execution. An active pause, an incomplete collection or a mismatched lease holds execution.
 
+### Options added on November 20, 2026
+
+The owner asked for transcripts of the archived recordings while 30 selected recordings still had no audio, and for a faster run. Each option is off by default; without them the command behaves as before.
+
+| Option or lease field | Effect |
+|---|---|
+| `--authorized-outstanding PATH --authorized-outstanding-sha256 SHA` | The owner's dated, exact list of selected recordings that have no archived audio. Every other recording is processed. A listed recording that has since been archived, or a missing one that is not listed, stops the run. `stage_archived_text` takes the same pair. |
+| Lease `additional_models_allowed: true` with an `english_model` block | The multilingual model still decides the language. Speech it accepts as English is recognized by the pinned English-only model, about six times faster on the reference GPU. The result names that model and the deciding model. |
+| Lease `parallel_windows` (and `english_model.parallel_windows`), 1 to 4 | That many 30-second windows are recognized at once. Each window is recognized exactly as it would be alone and results are consumed in source order. |
+| `--prefetch N`, `--background-publish`, `--drive-slots N` | Fetch coming inputs, and upload and verify finished results, while the current recording is recognized. Every per-file check stays in place. |
+| Lease `rolling_utilization_target` up to 0.80, `soft_temperature_c` | The ceiling was 0.70 until the owner raised it. With a soft temperature the worker waits between steps at or above it; the hard stop at 85 °C is unchanged. |
+| `--language-fallback` | For a recording whose probe windows held no clear speech (music, meditation, silence): one strong probe with no rival decides; otherwise the creator's established language (two or more detector decisions, four in five agreeing); otherwise English in a last sweep, for creators with no detected language. Two plausible languages, and metadata holds such as light language, still wait for a person. The detector's own answer is kept beside the decision. |
+
+Each result's `metrics.tasks` now states `non_speech_seconds` and the stretches of 30 seconds or more with no recognized speech. The window decoder joins frames once per window: the samples are identical to before and decoding is four to seven times faster.
+
 `gpu_asr.py` transcribes admitted, already archived English audio with one local
 CUDA model. It does not acquire YouTube media, replace captions, infer speakers,
 or delete source files. Imports are inert; inference requires the explicit `run`
@@ -76,7 +91,7 @@ The coordinator creates `sync/gpu_lease.json`. It must have the supplied owner
 and lease ID, `state=active`, `exclusive_owner=true`, `device_index=0`, an
 unexpired timestamp, `cpu_fallback_allowed=false`, and
 `additional_models_allowed=false`. The VRAM ceiling cannot exceed 6.5 GB and
-the rolling utilization target cannot exceed 0.70. The existing persistent OS
+the rolling utilization target cannot exceed 0.80 (0.70 until the owner raised it on November 20, 2026). The existing persistent OS
 lock at `sync/asr_gpu_owner.lock` enforces one worker process.
 
 Each admission comes from `gpu_asr_queue.prepare_inputs`. It identifies one

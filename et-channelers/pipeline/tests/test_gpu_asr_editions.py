@@ -28,12 +28,12 @@ class EditionAsrTests(unittest.TestCase):
         self.runtime = SimpleNamespace(model=SimpleNamespace(model=SimpleNamespace(device="cuda",compute_type="int8_float16")),
                                        dependencies={"fixture":"1"},close=Mock())
 
-    def item(self, video="source00001", kind=editions.EXTRACT):
+    def item(self, video="source00001", kind=editions.EXTRACT, audio=b"fixed audio"):
         row = {"video_id":video,"channel_dir":"testing","tab":"videos"}
         def obj(data, name):
             return {"bytes":len(data),"md5":hashlib.md5(data).hexdigest(),"sha256":hashlib.sha256(data).hexdigest(),
                     "remote":self.remote+"/testing/"+video+"/"+name,"drive_id":video+"-"+name}
-        return editions.source(kind,row,"a"*64,obj(b"fixed audio","audio.m4a"),obj(b"metadata","provenance.json"),
+        return editions.source(kind,row,"a"*64,obj(audio,"audio.m4a"),obj(b"metadata","provenance.json"),
                                7.0,"fixture-edition",{"video":video})
 
     def inference(self, origin, language):
@@ -281,3 +281,375 @@ class EditionAsrTests(unittest.TestCase):
             self.assertEqual((fetches.call_count,speech.call_count,model.call_count),(1,1,1))
             self.assertEqual(len(common.read_jsonl(sync/editions.JOURNAL)),2)
             self.assertFalse(list((self.root/"asr/input").rglob("audio.m4a")))
+
+    def authorization(self, videos, **changes):
+        document={"schema_version":1,"kind":editions.OUTSTANDING_KIND,"selection_sha256":self.selection,
+                  "authorized_by":"owner","instruction_utc":"2026-11-20T02:30:00Z","outstanding_video_ids":list(videos),**changes}
+        path=self.root/"outstanding.json"
+        path.write_bytes(base.encoded(document))
+        return path,base.hashes(path)["sha256"]
+
+    def test_outstanding_authorization_is_hash_bound_and_names_only_selected_recordings(self):
+        frame=[{"video_id":"source00001"},{"video_id":"absent00001"}]
+        path,pin=self.authorization(["absent00001"])
+        self.assertEqual(editions.authorized_outstanding(self.root,path,pin,self.selection,frame),frozenset({"absent00001"}))
+        with self.assertRaisesRegex(ValueError,"changed"):
+            editions.authorized_outstanding(self.root,path,"0"*64,self.selection,frame)
+        for videos,changes in ((["elsewhere01"],{}),(["absent00001","absent00001"],{}),([],{}),
+                               (["absent00001"],{"selection_sha256":"e"*64}),(["absent00001"],{"authorized_by":"worker"}),
+                               (["absent00001"],{"instruction_utc":""})):
+            with self.subTest(videos=videos,changes=changes):
+                path,pin=self.authorization(videos,**changes)
+                with self.assertRaises(ValueError):
+                    editions.authorized_outstanding(self.root,path,pin,self.selection,frame)
+
+    def test_unified_grouping_skips_exactly_the_authorized_outstanding_recordings(self):
+        origin=self.item()
+        rows=[{"video_id":origin["video_id"],"selected_source":origin,"status":"edition_asr_eligible"},
+              {"video_id":"absent00001","selected_source":None,"status":"audio_missing"}]
+        plan={"source_scope":editions.ALL_SOURCES,"rows":rows}
+        with self.assertRaisesRegex(ValueError,"lacks a typed ASR source"):
+            editions.grouped_sources(plan,plan)
+        groups=editions.grouped_sources(plan,plan,outstanding=frozenset({"absent00001"}))
+        self.assertEqual([[x["video_id"] for x in group] for group in groups],[[origin["video_id"]]])
+        with self.assertRaisesRegex(ValueError,"now has audio"):
+            editions.grouped_sources(plan,plan,outstanding=frozenset({"absent00001",origin["video_id"]}))
+
+    def test_authorized_outstanding_list_processes_archived_audio_and_any_other_gap_fails_closed(self):
+        origin=self.item()
+        absent={"video_id":"absent00001","channel_dir":"testing","tab":"videos"}
+        frame=[{k:origin[k] for k in ("video_id","channel_dir","tab")},absent]
+        live={"profile":editions.PROFILE,"selection_sha256":self.selection,"remote":self.remote,
+              "rows":[{"video_id":origin["video_id"],"selected_source":origin,"status":"edition_asr_eligible"},
+                      {"video_id":absent["video_id"],"selected_source":None,"status":"audio_missing"}]}
+        plan=self.root/"plan.json"
+        plan.write_bytes(base.encoded(live))
+        self.proposal=base.hashes(plan)["sha256"]
+        sync=self.root/"sync"
+        sync.mkdir()
+        (sync/"STOP_DRIVE_INGEST").touch()
+        coverage={"selection_sha256":self.selection,"summary":{"latest20_target":2,"audio_available":1,"channels":1,"remaining_audio":1}}
+        live_lease={"input_frame_sha256":self.proposal,"rolling_utilization_target":.7,"max_vram_bytes":1400,"model":self.model}
+        drive=Mock()
+        stored={}
+        def remote_copy(path,remote):
+            stored[remote]=base.hashes(path)
+        def remote_stat(remote):
+            a=stored[remote]
+            return {"ID":"new-output","Size":a["bytes"],"Hashes":{"md5":a["md5"]}}
+        drive.copy.side_effect=remote_copy
+        drive.stat.side_effect=remote_stat
+        def fetch(_drive,remote,cache,needed):
+            for name in needed:
+                path=cache/name
+                path.parent.mkdir(parents=True,exist_ok=True)
+                path.write_bytes(b"fixed audio" if name.endswith("audio.m4a") else b"metadata")
+        infer_real=editions.infer
+        def infer_test(*args,**kwargs):
+            with patch.object(editions,"infer",infer_real):
+                return self.inference(origin,"en")
+        scopes={"testing":"short_complete_displayed_list"}
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(editions.collection_coverage,"mixed_selection",return_value=(frame,scopes,self.selection)))
+            stack.enter_context(patch.object(editions.collection_coverage,"coverage",return_value=(coverage,frame[:1])))
+            stack.enter_context(patch.object(base,"inventory",return_value={}))
+            stack.enter_context(patch.object(base,"gpu_lease",return_value=live_lease))
+            stack.enter_context(patch.object(editions,"inventory",return_value=live))
+            stack.enter_context(patch.object(editions,"source_catalogue",return_value={origin["video_id"]:{origin["source_key"]:origin}}))
+            stack.enter_context(patch.object(multi,"model_proof",return_value=self.model))
+            fetches=stack.enter_context(patch.object(stage_archived_text,"fetch_batch",side_effect=fetch))
+            speech=stack.enter_context(patch.object(editions,"infer",side_effect=infer_test))
+            model=Mock(return_value=self.runtime)
+            arguments=(self.settings,plan,self.selection,plan,self.proposal,drive)
+            for unlisted in (None,frozenset({"another0001"}),frozenset({absent["video_id"],"another0001"})):
+                with self.subTest(outstanding=unlisted),self.assertRaises(ValueError):
+                    editions.run(*arguments,runtime_factory=model,outstanding=unlisted)
+            self.assertEqual((fetches.call_count,speech.call_count,model.call_count,drive.mock_calls),(0,0,0,[]))
+            result=editions.run(*arguments,runtime_factory=model,limit=None,outstanding=frozenset({absent["video_id"]}))
+        self.assertEqual([row["video_ids"] for row in result],[[origin["video_id"]]])
+        self.assertEqual((fetches.call_count,speech.call_count,model.call_count),(1,1,1))
+        journal=common.read_jsonl(sync/editions.JOURNAL)
+        self.assertEqual([record["video_id"] for record in journal],[origin["video_id"]])
+        self.assertFalse(list((self.root/"asr/input").rglob("audio.m4a")))
+
+    def test_lease_admits_one_fully_named_english_model_and_nothing_looser(self):
+        self.settings.gpu_owner="fixture-owner"
+        pinned={"repository":"fixture-english","revision":"e"*40,"model_sha256":"c"*64,
+                "model_dir":str(self.root/"models/english"),"model_receipt":str(self.root/"english-receipt.json")}
+        lease={"schema_version":1,"state":"active","lease_id":self.settings.gpu_lease_id,"owner":"fixture-owner",
+               "exclusive_owner":True,"device_index":0,"cpu_fallback_allowed":False,"additional_models_allowed":True,
+               "expires_at":"2099-01-01T00:00:00Z","max_vram_bytes":4096,"rolling_utilization_target":.7,"english_model":pinned}
+        path=self.root/"sync/gpu_lease.json"
+        def saved(value):
+            path.unlink(missing_ok=True)
+            base.atomic_json(path,value)
+        saved(lease)
+        self.assertEqual(base.gpu_lease(self.settings)["english_model"],pinned)
+        refused=[{k:v for k,v in lease.items() if k != "english_model"},{**lease,"additional_models_allowed":False},
+                 {**lease,"english_model":{**pinned,"revision":"main"}},{**lease,"english_model":{**pinned,"model_sha256":""}},
+                 {**lease,"english_model":{k:v for k,v in pinned.items() if k != "model_receipt"}},
+                 {**lease,"parallel_windows":9},{**lease,"parallel_windows":"2"}]
+        saved({**lease,"rolling_utilization_target":.8,"parallel_windows":2})
+        self.assertEqual(base.gpu_lease(self.settings)["rolling_utilization_target"],.8)
+        saved({**lease,"rolling_utilization_target":.81})
+        with self.assertRaises(base.AsrError) as caught:
+            base.gpu_lease(self.settings)
+        self.assertEqual(caught.exception.kind,"gpu_target")
+        for number,value in enumerate(refused):
+            with self.subTest(case=number):
+                saved(value)
+                with self.assertRaises(base.AsrError) as caught:
+                    base.gpu_lease(self.settings)
+                self.assertEqual(caught.exception.kind,"gpu_lease_policy")
+        saved(lease)
+        with patch.object(base,"model_proof",return_value={**{k:pinned[k] for k in ("repository","revision")},"model_sha256":"d"*64}), \
+             self.assertRaisesRegex(ValueError,"different English model"):
+            editions.english_model(self.settings,lease)
+        self.assertIsNone(editions.english_model(self.settings,{**lease,"additional_models_allowed":False}))
+
+    def test_english_speech_is_recognized_by_the_english_model_and_the_result_names_both(self):
+        origin=self.item()
+        pinned={"repository":"fixture-english","revision":"e"*40,"model_sha256":"c"*64}
+        engine=object()
+        used=[]
+        monitor=SimpleNamespace(begin=Mock(),finish=Mock(return_value={"sample_count":1}),guard=lambda:None)
+        def segments(task,path,duration,guard):
+            used.append(task.runtime.model)
+            value=task.config["language"] if task.config["task"] == "transcribe" else "en"
+            doc,text=test_corpus_asr_view.AsrViewTests.document(["signal 528 Hz","control"],value,True)
+            return doc,text,4
+        self.runtime.windows=Mock()
+        for language,models in (("en",[engine]),("es",[self.runtime.model,self.runtime.model])):
+            with self.subTest(language=language),ExitStack() as stack:
+                used.clear()
+                stack.enter_context(patch.object(base,"gpu_lease",return_value={"rolling_utilization_target":.7,"max_vram_bytes":1400}))
+                stack.enter_context(patch.object(base,"inventory",return_value={}))
+                stack.enter_context(patch.object(multi,"Monitor",return_value=monitor))
+                stack.enter_context(patch.object(multi,"detect_language",return_value={"status":"accepted","language":language}))
+                stack.enter_context(patch.object(base,"collect_segments",side_effect=segments))
+                local=editions.infer(self.settings,origin,self.root/"invented.m4a",self.runtime,self.model,
+                                     self.proposal,self.selection,lambda:None,english=(pinned,engine))
+                self.assertEqual(used,models)
+                record=multi.verify_pair(Path(local["bundle"]["path"]))["provenance"]
+                self.assertEqual(record["compute"]["models_loaded"],2)
+                if language == "en":
+                    self.assertEqual((record["model"],record["identity"]["language_decision_model"]),(pinned,self.model))
+                    self.assertEqual(record["compute"]["text_model_role"],"english_only")
+                else:
+                    self.assertEqual(record["model"],self.model)
+                    self.assertNotIn("language_decision_model",record["identity"])
+                    self.assertEqual(record["compute"]["text_model_role"],"multilingual")
+        with ExitStack() as stack:
+            used.clear()
+            stack.enter_context(patch.object(base,"gpu_lease",return_value={"rolling_utilization_target":.7,"max_vram_bytes":1400}))
+            stack.enter_context(patch.object(base,"inventory",return_value={}))
+            stack.enter_context(patch.object(multi,"Monitor",return_value=monitor))
+            stack.enter_context(patch.object(multi,"detect_language",return_value={"status":"accepted","language":"ja"}))
+            stack.enter_context(patch.object(base,"collect_segments",side_effect=segments))
+            local=editions.infer(self.settings,self.item("source00009",audio=b"other audio"),self.root/"invented.m4a",self.runtime,
+                                 self.model,self.proposal,self.selection,lambda:None,parallel_windows=2)
+            record=multi.verify_pair(Path(local["bundle"]["path"]))["provenance"]
+            self.assertEqual((used,record["compute"]["model_workers"],record["compute"]["models_loaded"]),
+                             ([self.runtime.model]*2,2,1))
+
+    def test_parallel_windows_return_in_source_order_skip_saved_ones_and_surface_errors(self):
+        import threading, time
+        active,peak,gate=[0],[0],threading.Lock()
+        class Engine:
+            def transcribe(self,audio,**config):
+                with gate:
+                    active[0]+=1
+                    peak[0]=max(peak[0],active[0])
+                time.sleep(.02 if audio % 2 else .005)      # later windows may finish first
+                with gate:
+                    active[0]-=1
+                if audio == 13:
+                    raise RuntimeError("recognizer fault")
+                return iter([f"window {audio}"]),SimpleNamespace(duration_after_vad=audio)
+        def source(path,duration):
+            for number in range(8):
+                yield number*30.0,number
+        ahead=editions.Lookahead(source,Engine(),{"task":"transcribe"},3,skip=lambda index:index in (2,5))
+        seen=[]
+        for start,audio in ahead.windows("invented",240):
+            if audio in (2,5):
+                self.assertIsNone(ahead.current)
+                with self.assertRaisesRegex(ValueError,"not submitted"):
+                    ahead.transcribe(audio)
+                continue
+            segments,info=ahead.transcribe(audio)
+            seen.append((start,list(segments),info.duration_after_vad))
+        ahead.close()
+        self.assertEqual(seen,[(n*30.0,[f"window {n}"],n) for n in (0,1,3,4,6,7)])
+        self.assertGreater(peak[0],1)
+        self.assertLessEqual(peak[0],3)
+        failing=editions.Lookahead(lambda path,duration:iter([(0.0,12),(30.0,13),(60.0,14)]),Engine(),{},2)
+        steps=failing.windows("invented",90)
+        next(steps)
+        self.assertEqual(list(failing.transcribe(12)[0]),["window 12"])
+        next(steps)
+        with self.assertRaisesRegex(RuntimeError,"recognizer fault"):
+            failing.transcribe(13)
+        failing.close()
+        binding={"repository":"fixture-english","revision":"e"*40,"model_sha256":"c"*64,"model_dir":"m","model_receipt":"r"}
+        self.assertIsNotNone(base.english_binding({"english_model":{**binding,"parallel_windows":4}}))
+        for value in (0,5,2.0,"2",True):
+            self.assertIsNone(base.english_binding({"english_model":{**binding,"parallel_windows":value}}))
+
+    def test_fetching_ahead_and_background_publication_keep_every_result_and_fetch_each_input_once(self):
+        sounds={f"source0000{n}":f"audio number {n}".encode() for n in (1,2,3,4)}
+        origins=[self.item(video,audio=data) for video,data in sounds.items()]
+        frame=[{k:s[k] for k in ("video_id","channel_dir","tab")} for s in origins]
+        live={"profile":editions.PROFILE,"selection_sha256":self.selection,"remote":self.remote,
+              "rows":[{"video_id":s["video_id"],"selected_source":s,"status":"edition_asr_eligible"} for s in origins]}
+        plan=self.root/"plan.json"
+        plan.write_bytes(base.encoded(live))
+        self.proposal=base.hashes(plan)["sha256"]
+        sync=self.root/"sync"
+        sync.mkdir()
+        (sync/"STOP_DRIVE_INGEST").touch()
+        coverage={"selection_sha256":self.selection,"summary":{"latest20_target":4,"audio_available":4,"channels":1,"remaining_audio":0}}
+        live_lease={"input_frame_sha256":self.proposal,"rolling_utilization_target":.7,"max_vram_bytes":1400,"model":self.model}
+        drive=Mock()
+        stored={}
+        def remote_copy(path,remote):
+            stored[remote]=base.hashes(path)
+        def remote_stat(remote):
+            a=stored[remote]
+            return {"ID":"output-"+a["md5"],"Size":a["bytes"],"Hashes":{"md5":a["md5"]}}
+        drive.copy.side_effect=remote_copy
+        drive.stat.side_effect=remote_stat
+        by_hash={hashlib.sha256(data).hexdigest():data for data in sounds.values()}
+        fetched=[]
+        def fetch(_drive,remote,cache,needed):
+            for name,proof in needed.items():
+                fetched.append(name)
+                path=cache/name
+                path.parent.mkdir(parents=True,exist_ok=True)
+                path.write_bytes(by_hash.get(proof["sha256"],b"metadata"))
+        infer_real=editions.infer
+        def infer_test(settings,origin,*args,**kwargs):
+            with patch.object(editions,"infer",infer_real):
+                return self.inference(origin,"en")
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(editions.collection_coverage,"mixed_selection",return_value=(frame,{"testing":"short_complete_displayed_list"},self.selection)))
+            stack.enter_context(patch.object(editions.collection_coverage,"coverage",return_value=(coverage,frame)))
+            stack.enter_context(patch.object(base,"inventory",return_value={}))
+            stack.enter_context(patch.object(base,"gpu_lease",return_value=live_lease))
+            stack.enter_context(patch.object(editions,"inventory",return_value=live))
+            stack.enter_context(patch.object(editions,"source_catalogue",return_value={s["video_id"]:{s["source_key"]:s} for s in origins}))
+            stack.enter_context(patch.object(multi,"model_proof",return_value=self.model))
+            stack.enter_context(patch.object(stage_archived_text,"fetch_batch",side_effect=fetch))
+            speech=stack.enter_context(patch.object(editions,"infer",side_effect=infer_test))
+            model=Mock(return_value=self.runtime)
+            result=editions.run(self.settings,plan,self.selection,plan,self.proposal,drive,runtime_factory=model,
+                                limit=None,prefetch=2,background_publish=True,drive_slots=5)
+        self.assertEqual(editions.drive_ingest._DRIVE_CALLS._initial_value,2)
+        self.assertEqual([row["video_ids"] for row in result],[[s["video_id"]] for s in origins])
+        self.assertEqual({row["state"] for row in result},{"verified"})
+        self.assertEqual((speech.call_count,model.call_count,drive.copy.call_count),(4,1,4))
+        self.assertEqual(sorted(fetched),sorted(name for s in origins for name in
+                         (f"testing/{s['video_id']}/audio.m4a",f"testing/{s['video_id']}/provenance.json")))
+        self.assertEqual([r["video_id"] for r in common.read_jsonl(sync/editions.JOURNAL)],[s["video_id"] for s in origins])
+        self.assertFalse(list((self.root/"asr/input").rglob("audio.m4a")))
+
+    def test_unclear_probes_follow_one_strong_probe_then_the_creator_and_two_languages_still_wait(self):
+        def held(reason, *probes):
+            return {"status":"held","reason":reason,
+                    "probes":[{"language":language,"probability":chance} for language,chance in probes]}
+        creator=("pt","creator_established_language")
+        cases=[(held("mixed_or_conflicting_language",("en",.99)),creator,None),
+               (held("metadata_nonlexical_review"),creator,None),
+               (held("language_confidence_insufficient",("en",.97),(None,0),(None,0)),creator,("en","single_strong_probe")),
+               (held("language_confidence_insufficient",("nl",.87),("en",.98)),creator,None),
+               (held("no_reliable_speech",(None,0),(None,0)),creator,creator),
+               (held("language_confidence_insufficient",("en",.62)),None,None),
+               (held("insufficient_independent_sensitive_speech_evidence"),("en","owner_default_english"),("en","owner_default_english"))]
+        for number,(decision,choice,expected) in enumerate(cases):
+            with self.subTest(case=number):
+                self.assertEqual(editions.fallback_language(decision,choice),expected)
+        spoken={"segments":[{"start":0.0,"end":5.0},{"start":40.0,"end":50.0},{"start":60.0,"end":61.0}]}
+        self.assertEqual(editions.quiet_spans(spoken,120.0),[[5.0,40.0],[61.0,120.0]])
+        self.assertEqual(editions.quiet_spans({"segments":[]},45.0),[[0.0,45.0]])
+
+    def test_policy_transcribes_a_recording_with_unclear_probes_and_keeps_the_detector_answer(self):
+        origin=self.item()
+        detector={"status":"held","reason":"no_reliable_speech","probes":[{"language":None,"probability":0}]}
+        monitor=SimpleNamespace(begin=Mock(),finish=Mock(return_value={"sample_count":1}),guard=lambda:None)
+        def segments(task,path,duration,guard):
+            value=task.config["language"] if task.config["task"] == "transcribe" else "en"
+            doc,text=test_corpus_asr_view.AsrViewTests.document(["signal 528 Hz","control"],value,True)
+            return doc,text,4
+        def attempt(**options):
+            with ExitStack() as stack:
+                stack.enter_context(patch.object(base,"gpu_lease",return_value={"rolling_utilization_target":.7,"max_vram_bytes":1400}))
+                stack.enter_context(patch.object(base,"inventory",return_value={}))
+                stack.enter_context(patch.object(multi,"Monitor",return_value=monitor))
+                stack.enter_context(patch.object(multi,"detect_language",return_value=detector))
+                stack.enter_context(patch.object(base,"collect_segments",side_effect=segments))
+                return editions.infer(self.settings,origin,self.root/"invented.m4a",self.runtime,self.model,
+                                      self.proposal,self.selection,lambda:None,**options)
+        self.assertEqual(attempt()["status"],"language_review")
+        self.assertEqual(attempt(language_fallback={"channel":None})["status"],"language_review")
+        local=attempt(language_fallback={"channel":("pt","creator_established_language")})
+        record=multi.verify_pair(Path(local["bundle"]["path"]))["provenance"]
+        decision=record["language_decision"]
+        self.assertEqual((decision["language"],decision["basis"],decision["detector_decision"]),
+                         ("pt","creator_established_language",detector))
+        self.assertEqual(local["language_decision"],decision)
+        self.assertEqual(set(record["text_variants"]),{"original","english"})
+        task=record["metrics"]["tasks"]["original"]
+        self.assertEqual((task["non_speech_seconds"],task["quiet_stretches_of_30s_or_more"]),(3.0,0))
+
+    def test_a_held_recording_is_taken_up_in_the_last_sweep_with_english_and_only_under_the_policy(self):
+        origin=self.item()
+        frame=[{k:origin[k] for k in ("video_id","channel_dir","tab")}]
+        live={"profile":editions.PROFILE,"selection_sha256":self.selection,"remote":self.remote,
+              "rows":[{"video_id":origin["video_id"],"selected_source":origin,"status":"edition_asr_eligible"}]}
+        plan=self.root/"plan.json"
+        plan.write_bytes(base.encoded(live))
+        self.proposal=base.hashes(plan)["sha256"]
+        sync=self.root/"sync"
+        sync.mkdir()
+        (sync/"STOP_DRIVE_INGEST").touch()
+        detector={"status":"held","reason":"no_reliable_speech","probes":[]}
+        hold=self.root/"asr/jobs"/("edition-"+origin["audio"]["sha256"])/"language-review.json"
+        hold.parent.mkdir(parents=True)
+        hold.write_bytes(base.encoded({"status":"language_review","decision":detector,"source":origin,"proposal_sha256":self.proposal}))
+        coverage={"selection_sha256":self.selection,"summary":{"latest20_target":1,"audio_available":1,"channels":1,"remaining_audio":0}}
+        live_lease={"input_frame_sha256":self.proposal,"rolling_utilization_target":.7,"max_vram_bytes":1400,"model":self.model}
+        drive=Mock()
+        stored={}
+        drive.copy.side_effect=lambda path,remote:stored.__setitem__(remote,base.hashes(path))
+        drive.stat.side_effect=lambda remote:{"ID":"new-output","Size":stored[remote]["bytes"],"Hashes":{"md5":stored[remote]["md5"]}}
+        def fetch(_drive,remote,cache,needed):
+            for name in needed:
+                path=cache/name
+                path.parent.mkdir(parents=True,exist_ok=True)
+                path.write_bytes(b"fixed audio" if name.endswith("audio.m4a") else b"metadata")
+        received=[]
+        infer_real=editions.infer
+        def infer_test(settings,source,*args,**options):
+            received.append((options.get("language_fallback"),options.get("prior_decision")))
+            with patch.object(editions,"infer",infer_real):
+                return self.inference(source,"en")
+        with ExitStack() as stack:
+            stack.enter_context(patch.object(editions.collection_coverage,"mixed_selection",return_value=(frame,{"testing":"short_complete_displayed_list"},self.selection)))
+            stack.enter_context(patch.object(editions.collection_coverage,"coverage",return_value=(coverage,frame)))
+            stack.enter_context(patch.object(base,"inventory",return_value={}))
+            stack.enter_context(patch.object(base,"gpu_lease",return_value=live_lease))
+            stack.enter_context(patch.object(editions,"inventory",return_value=live))
+            stack.enter_context(patch.object(editions,"source_catalogue",return_value={origin["video_id"]:{origin["source_key"]:origin}}))
+            stack.enter_context(patch.object(multi,"model_proof",return_value=self.model))
+            stack.enter_context(patch.object(stage_archived_text,"fetch_batch",side_effect=fetch))
+            speech=stack.enter_context(patch.object(editions,"infer",side_effect=infer_test))
+            model=Mock(return_value=self.runtime)
+            arguments=(self.settings,plan,self.selection,plan,self.proposal,drive)
+            self.assertEqual(editions.run(*arguments,runtime_factory=model,limit=None),[])
+            self.assertEqual((speech.call_count,drive.mock_calls),(0,[]))
+            result=editions.run(*arguments,runtime_factory=model,limit=None,language_fallback=True)
+        self.assertEqual([(row["state"],row["video_ids"]) for row in result],[("verified",[origin["video_id"]])])
+        self.assertEqual(received,[({"channel":("en","owner_default_english")},detector)])
+        self.assertFalse(hold.exists())
+        self.assertTrue(hold.with_name("language-review.resolved-by-policy.json").is_file())
+        self.assertEqual(len(common.read_jsonl(sync/editions.JOURNAL)),1)

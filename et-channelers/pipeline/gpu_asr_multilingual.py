@@ -148,8 +148,10 @@ class Runtime(base.CudaRuntime):
 
 
 class Monitor:
-    def __init__(self, runtime, lease_guard, target=70, max_vram=6_500_000_000, *, rolling_history=None):
+    def __init__(self, runtime, lease_guard, target=70, max_vram=6_500_000_000, *, rolling_history=None, soft_temperature=None):
         self.runtime, self.lease_guard, self.target, self.max_vram = runtime, lease_guard, target, max_vram
+        # At or above this many degrees the next step waits, well before the hard stop at 85.
+        self.soft_temperature = soft_temperature
         self.rolling_history = rolling_history
         self.samples, self.window = deque(maxlen=3600), deque()
         self.lock, self.done, self.ready = threading.RLock(), threading.Event(), threading.Event()
@@ -227,7 +229,8 @@ class Monitor:
                 require(last["vram_bytes"] <= self.max_vram, "vram_limit")
                 require(last["temperature_c"] < 85, "temperature_limit")
                 average = self.rolling_mean()
-            if average <= max(1, self.target - 10):
+                warm = self.soft_temperature is not None and last["temperature_c"] >= self.soft_temperature
+            if average <= max(1, self.target - 10) and not warm:
                 return
             time.sleep(1)
 

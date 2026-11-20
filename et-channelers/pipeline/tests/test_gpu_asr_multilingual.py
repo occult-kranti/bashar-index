@@ -271,6 +271,30 @@ class MultilingualTests(unittest.TestCase):
         self.assertEqual(telemetry["peak_gpu_percent"], 37)
         self.assertGreaterEqual(telemetry["telemetry_error_count"], 1)
 
+    def test_warm_card_waits_until_it_cools_and_the_hard_limit_still_stops(self):
+        readings = iter([81, 80, 79])
+        runtime = Mock()
+        def sample():
+            return {"gpu_percent": 10, "vram_bytes": 100, "temperature_c": next(readings, 79), "backend": "pynvml"}
+        monitor = multi.Monitor(runtime, lambda: None, max_vram=1000, soft_temperature=80)
+        monitor.start = multi.time.monotonic()
+        waits = []
+        def cool_down(seconds):
+            waits.append(seconds)
+            monitor.add(sample())
+        monitor.add(sample())
+        with patch.object(multi.time, "sleep", side_effect=cool_down):
+            monitor.guard()
+        self.assertEqual(waits, [1, 1])                      # 81 and 80 wait; 79 goes on
+        unthrottled = multi.Monitor(runtime, lambda: None, max_vram=1000)
+        unthrottled.start = multi.time.monotonic()
+        unthrottled.add({"gpu_percent": 10, "vram_bytes": 100, "temperature_c": 84, "backend": "pynvml"})
+        with patch.object(multi.time, "sleep", side_effect=AssertionError("no soft limit was set")):
+            unthrottled.guard()
+        monitor.add({"gpu_percent": 10, "vram_bytes": 100, "temperature_c": 85, "backend": "pynvml"})
+        with self.assertRaisesRegex(base.AsrError, "temperature_limit"):
+            monitor.guard()
+
     def test_unavailable_smi_values_are_never_treated_as_idle(self):
         runtime = object.__new__(multi.Runtime)
         with patch.object(multi.shutil, "which", return_value="nvidia-smi"), patch.object(multi.subprocess, "run", return_value=SimpleNamespace(returncode=0, stdout="N/A, N/A, N/A\n")) as call:
