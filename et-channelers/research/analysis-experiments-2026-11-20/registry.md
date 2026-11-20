@@ -114,6 +114,18 @@ claimed voice in recordings whose claimant is the sole speaker or the host). Off
 is the creator's own offer does *not* end a claimed voice. The other definitions (strict own voice; labels as the
 model gives them) are computed and reported beside the primary ones as rows. These are constants of freeze 2.
 
+**A11. Verification by language models, and a timeline of predictions, added by the owner on 2026-11-20 (about
+22:50 UTC).** The owner's words: *use LLM based experiments and verifications to solve any limitations, LLMs are
+better than human annotators - study research papers and use prompting engineering and sota guided cot and other
+techniques and add timeline prediction as well as other analysis.* So the place of the human check (declined in
+A8) is taken by verification with language models: known-answer texts, a third and larger model as adjudicator,
+guided chain of thought, self-consistency, prompt variation, and estimates of each model's error rates from their
+agreement. Results then name the verification that was done and its figures, for example "model-coded, verified by
+a third model and on known-answer texts". A timeline of dated predictions in the recordings is added as an
+exploratory analysis (A2): what is predicted, for when, by which channel, and for dates that have passed, whether
+the predicted event is documented. Neither changes a registered hypothesis or makes a verdict easier to reach; the
+verification figures enter the multiverse and tipping-point rows that the plan already requires.
+
 ## Procedure freeze
 
 One entry per hypothesis, written before that hypothesis touches a hold-out transcript. For the hypotheses
