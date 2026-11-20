@@ -43,7 +43,10 @@ removed, and the paper says how many were tested and how many are discussed. Any
 seeing results is labelled exploratory.
 
 **A3. Budget.** 110 USD at most: about 50 for the labelling, about 50 for experiments. A ledger records the
-cost of every request, and the code refuses work that would pass a cap.
+cost of every request, and the code refuses work that would pass a cap. *Changed by the owner on 2026-11-20 at
+about 22:30 UTC:* "total budget is 120, spend and optimize", in answer to the measurement that many requests
+sent at once on the standard interface cost about 1.5 times the batch price. The caps in code are now 60 USD for
+labelling, 50 for experiments, 4 for setup and 115 in total, five below the limit.
 
 **A4. What cannot run yet.** H7 and H10 need the replication wave (later uploads). H8 needs the comparison set.
 They stay registered and unrun. H1 to H6 and H9 can run once their labels exist; H3 needs no labels.
