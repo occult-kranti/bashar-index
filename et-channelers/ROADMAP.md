@@ -646,7 +646,7 @@ and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section
   Thirteen further questions stay exploratory.
 * **Decided by the owner on 2026-11-20:** the ten hypotheses and the thirteen exploratory questions are
   registered and frozen (`research/analysis-experiments-2026-11-20/registry.md`); labels are made by a language
-  model through the ChatGPT API within 110 USD; hypotheses with uninformative findings leave the headline
+  model through the ChatGPT API within 110 USD (raised to 120 the same evening); hypotheses with uninformative findings leave the headline
   claims afterwards.
 * **Done on 20 November, after the run.** The bridge (BR, part a): 36 recordings through both models, none
   failed; 7 of 17 measures agree within the margin, 6 differ, 4 are not settled. The registered test of H3 on
@@ -664,7 +664,8 @@ and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section
 ### Phase 7f: model-coded labels and the registered tests (added 2026-11-20, at the owner's request)
 
 The owner replaced the two human markers of the plan by language models through the OpenAI API, within
-110 USD in total (registry amendments A1 and A3). The labels feed H1, H2, H4, H5, H6 and H9.
+110 USD in total, raised to 120 USD the same evening so that requests can run many at once at the standard
+price (registry amendments A1 and A3). The labels feed H1, H2, H4, H5, H6 and H9.
 
 * **Instruments.** Voice spans (the creator's own voice, a being voiced in the first person, a relayed
   voice, other speakers, other material), asks (requests to buy, enrol, give, subscribe or move off the
@@ -673,7 +674,8 @@ The owner replaced the two human markers of the plan by language models through 
   hidden to a small model, with a middle model as second reader; every cue is a quotation that code checks
   against the text.
 * **Done on 20 November.** A literature study and two protocols; a critic's plan with 27 required changes,
-  a budget of 34.5 USD at planning values and a stop rule at 45 USD; pilot round 1 of the voice and ask
+  a budget of 34.5 USD at batch prices and a stop rule at 45 USD (since raised to 60 USD, because the
+  standard interface used for parallel requests costs about 1.5 times as much); pilot round 1 of the voice and ask
   instruments on 32 recordings of seen creators (the two models agree on 79% of words, kappa 0.74; the ask
   finder found 48 of 49 reference asks); a reading of every large disagreement, which led to eight prompt
   changes; a code review with 32 findings; a request runner that keeps up to 64 requests in flight under a

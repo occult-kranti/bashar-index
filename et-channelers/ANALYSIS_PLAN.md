@@ -1934,7 +1934,7 @@ hold-out without new human labels.
 * **Decision 1:** the owner registered all ten; the registry was frozen at 19:47 UTC with amendments that
   follow from the owner's instructions ([`registry.md`](research/analysis-experiments-2026-11-20/registry.md)).
 * **Decision 2:** the owner replaced the two human markers by language models through the OpenAI API, within
-  110 USD (amendment A1). Results on those labels are called model-coded. The instruments, their pilot and the
+  110 USD, raised to 120 USD the same evening (amendments A1 and A3). Results on those labels are called model-coded. The instruments, their pilot and the
   order of work are in [ROADMAP phase 7f](ROADMAP.md) and the
   [analysis handoff](knowledge-transfer/analysis-handoff-2026-11-20.md).
 * **H3** was tested on the hold-out the same evening, passed its registered rule with an interval over

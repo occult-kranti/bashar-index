@@ -1,8 +1,9 @@
 # Analysis handoff, 20 November 2026 (evening)
 
 Where the analysis of the latest-20 cohort stands, what runs next, and the rules that bind whoever continues.
-Written at about 22:30 UTC on 20 November 2026. All work described here is on the branch
-`feat/partial-cohort-asr-2026-11-20` unless it says otherwise; the dashboards are on `main`.
+Written at about 22:30 UTC on 20 November 2026. The branch `feat/partial-cohort-asr-2026-11-20` was merged
+into `main` the same evening ([PR #95](https://github.com/occult-kranti/bashar-index/pull/95)); later work
+continues on that branch and reaches `main` by pull request.
 
 ## In one paragraph
 
@@ -11,7 +12,7 @@ final failures. The local speech-to-text run finished at 19:56 UTC and transcrib
 (742.9 hours, 5.83 million words, seven languages). A bridge of 36 recordings through both recognizer models
 shows which measures can be compared across them. A registry of ten hypotheses was frozen before the
 last-transcribed creators were analysed; one hypothesis (H3) was tested and then dropped by the owner. Labels
-for the other hypotheses are to be made by language models through the OpenAI API within a budget of 110 USD;
+for the other hypotheses are to be made by language models through the OpenAI API within a budget of 120 USD;
 the labelling instruments are built, piloted once on already-seen creators and being revised. An expert panel
 has started deliberating on the second round of analysis, which the owner widened to include regular
 expressions, topics across channels, metadata, weekly and monthly change, correlations, and date comparisons
@@ -25,7 +26,7 @@ kept apart for confirmed and estimated dates. Spent on the API so far: about 2 U
 | Transcription | Done 19:56 UTC: 1,697 of 1,729 audio files, 742.9 of 746.3 hours. English 1,616, Japanese 30, Spanish 19, Portuguese 18, German 8, Czech 5, Finnish 1. 12.6% of the audio holds no speech. 32 files not transcribed (19 without a complete transcript, 7 with two plausible languages, 4 with no reliable speech, 2 failed word alignment) | [progress table](partial-cohort-asr-progress.md), [run report with 12 figures](../research/transcription-run-2026-11-20/README.md) |
 | GPU clean-up | Run lease released; the earlier lease and pause marker restored byte for byte (SHA-256 `37996ca3…` and `8bd53103…`); the run's scheduled task removed. The collector's stop marker and the disabled download tasks are untouched | private run folder |
 | Recognizer bridge | 36 English recordings transcribed by both models, none failed. By the rule fixed beforehand, 7 of 17 measures agree within 0.2 between-creator standard deviations (pace, pronoun rates, contracted forms, word variety and length), 6 differ (pauses, word duration, segment length, filled pauses: the larger model writes about 4.5 times as many), 4 are not settled. The two transcripts differ in 3.5% of words at the median | [results](../research/analysis-experiments-2026-11-20/results/README.md#br-the-two-recognizer-models-on-the-same-audio) |
-| Registry | Ten hypotheses H1 to H10 and thirteen exploratory questions frozen 19:47 UTC, with amendments A1 to A7 (model-coded labels instead of human markers; pruning keeps a results row; 110 USD; what waits for new data; stricter verdict rule; H3 dropped; the second round belongs to the panel, with the owner's additions) | [registry](../research/analysis-experiments-2026-11-20/registry.md) |
+| Registry | Ten hypotheses H1 to H10 and thirteen exploratory questions frozen 19:47 UTC, with amendments A1 to A7 (model-coded labels instead of human markers; pruning keeps a results row; the budget, now 120 USD; what waits for new data; stricter verdict rule; H3 dropped; the second round belongs to the panel, with the owner's additions) | [registry](../research/analysis-experiments-2026-11-20/registry.md) |
 | H3 | Tested on the 17 English hold-out creators with code frozen beforehand: estimate 0.169, 90% interval −0.130 to 0.495, shift-test p 0.0007; the 61 seen creators give 0.019. Supported by its registered rule, fragile, and dropped by the owner. It keeps its row and counts as run for the Holm correction | [results](../research/analysis-experiments-2026-11-20/results/README.md) |
 | Experiment catalogue | 28 experiments under 16 rules, designed by the first analyst panel | [catalogue](../research/analysis-experiments-2026-11-20/README.md), [ANALYSIS_PLAN.md section 13](../ANALYSIS_PLAN.md) |
 | Paper draft | 17 pages, ICWSM format, with the H3 test and the bridge; findings from the run snapshot marked preliminary | [paper/cohort-draft-2026-11-20](../paper/cohort-draft-2026-11-20/) |
@@ -84,7 +85,8 @@ exists and redo what is missing.
 - **Money.** The key is the owner's own file `%USERPROFILE%\Downloads\gpttoken.txt`, read in place; never copy,
   print or commit it, and suggest that the owner revoke it when the work is finished. Every request goes through
   `openai_client.py` and `runner.py`, whose ledger (`spend.jsonl`) reserves the worst case before sending.
-  Caps in code: labelling 45 USD, experiments 48 USD, setup 4 USD, total 105 USD (the owner's limit is 110).
+  Caps in code: labelling 60 USD, experiments 50 USD, setup 4 USD, total 115 USD (the owner's limit is 120 USD,
+  raised from 110 on 20 November so that requests can run many at once at the standard price).
   Check `python -I openai_client.py --spend` before and after any run.
 - **One process per answer-store tag.** Two processes on the same tag were what damaged a store line in round 1.
 - **Wording.** Results on model labels are *model-coded*; agreement between two models is reliability, not
@@ -97,8 +99,7 @@ exists and redo what is missing.
 
 ## Decisions waiting for the owner
 
-1. Whether to merge `feat/partial-cohort-asr-2026-11-20` into `main` (the transcription run, its pipeline
-   changes and tests, the bridge, the registry and results, the paper draft).
+1. *Decided 20 November:* the branch was merged into `main` (PR #95), and the budget was raised to 120 USD.
 2. Before freeze 1, from the labelling plan, section 6: which own-voice rule is primary (cued only, or also
    uncued solo speech outside the claimed voice); which offer rule is primary for H6 (the prompts now record
    offer-only cues so that both can be computed); the primary voice model on the hold-out; the claimant classes
