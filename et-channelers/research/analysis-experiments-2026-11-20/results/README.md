@@ -7,12 +7,12 @@ stays in this table. Numbers only; creators are never named.
 |---|---|---|---|---|---|
 | H1 | The claimed voice is slower than the creator's own voice | not run | | | waits for model labels |
 | H2 | Checkable forecasts are worded less firmly | not run | | | waits for model labels |
-| H3 | First-person singular is denser at the trimmed edges of a recording than in its middle | **tested 2026-11-20** | U = 0.169 on 17 hold-out creators, 169 recordings (90% interval -0.130 to 0.495; shift p = 0.0007) | supported | **fragile**: see below |
+| H3 | First-person singular is denser at the trimmed edges of a recording than in its middle | **tested 2026-11-20** | U = 0.169 on 17 hold-out creators, 169 recordings (90% interval -0.130 to 0.495; shift p = 0.0007) | supported | **dropped by the owner 2026-11-20**: fragile, see below |
 | H4 | Fewer contractions in the embodied claimed voice | not run | | | waits for model labels |
 | H5 | World claims in channelled recordings, practice in own-voice talks | not run | | | waits for model labels |
 | H6 | The claimed voice rarely asks listeners to buy or enrol | not run | | | waits for model labels |
 | H7 | More alike near almanac dates | not run | | | waits for the replication wave |
-| H8 | The H3 contrast is larger than in sermons and wellness talks | not run | | | waits for the comparison set |
+| H8 | The H3 contrast is larger than in sermons and wellness talks | not run | | | waits for the comparison set; rests on the contrast of the dropped H3, so its place is an open decision |
 | H9 | Same family of beings: shared subject matter, not shared style | not run | | | waits for model labels |
 | H10 | Passed dates are returned to less often | not run | | | waits for the replication wave |
 
@@ -51,8 +51,13 @@ is not read for more than it is.
 
 **Reading.** With the first and last three minutes removed, the evidence that self-reference recedes inside a
 recording is weak and inconsistent between the two samples. Without the trim the contrast is large in both
-(0.35 and 0.43): the surplus of "I" sits in the first and last three minutes. H3 stays open until the
-replication wave; it should not be a headline claim.
+(0.35 and 0.43): the surplus of "I" sits in the first and last three minutes.
+
+**Decision.** The owner dropped H3 on 2026-11-20 after reading this result (registry amendment A6). It is
+out of the claims of the paper and it is closed: no further confirmatory test, on the replication wave or
+elsewhere. This row and the two result files stay, so that the count of hypotheses tested is honest: one
+tested, none claimed so far. Holm correction still counts H3 as run. The untrimmed observation remains as a
+description of how recordings open and close.
 
 **What this changes for the hypotheses not yet run** (amendment made after seeing H3, in the stricter
 direction): a hypothesis is called supported only if its registered test passes and the 90% interval over

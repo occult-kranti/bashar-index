@@ -83,3 +83,23 @@
 % ---- Literature study ----
 \newcommand{\NIcwsmSearches}{four}% research/analysis-experiments-2026-11-20/README.md 1 : 'Four searches found no ICWSM paper on channelling, prophecy or failed predictions'
 \newcommand{\NIcwsmNoArxiv}{nine}% references-report.md (beside main.tex) : 'ICWSM papers for which no arXiv version was found', nine rows
+
+% ---- Registry freeze and the first registered test (research/analysis-experiments-2026-11-20/registry.md, results/) ----
+\newcommand{\RegistryFrozenDate}{20 November 2026}% registry.md : 'Frozen at 2026-11-20 19:47 UTC'
+\newcommand{\HThreeTrimSeconds}{180}% results/h3-holdout.json : procedure.trim_seconds_each_end
+\newcommand{\HThreeCreators}{17}% results/h3-holdout.json : registered_trimmed_filtered.creators
+\newcommand{\HThreeRecordings}{169}% results/h3-holdout.json : registered_trimmed_filtered.recordings
+\newcommand{\HThreeU}{0.169}% results/h3-holdout.json : registered_trimmed_filtered.U (0.1691)
+\newcommand{\HThreeLo}{\ensuremath{-}0.130}% results/h3-holdout.json : interval_90 lower (-0.1304)
+\newcommand{\HThreeHi}{0.495}% results/h3-holdout.json : interval_90 upper (0.4945)
+\newcommand{\HThreeP}{0.0007}% results/h3-holdout.json : p_one_sided, 9,999 circular shifts
+\newcommand{\HThreePositive}{9}% results/h3-holdout.json : creators_with_positive_U
+\newcommand{\HThreeDetectable}{0.54}% registry.md, H3 freeze : detectable U at the registered threshold with 80% power
+\newcommand{\HThreeUntrimmed}{0.348}% results/h3-holdout.json : untrimmed_filtered_reported_not_tested.U (0.3477)
+\newcommand{\HThreeSeenCreators}{61}% results/h3-seen-exploratory.json : registered_trimmed_filtered.creators
+\newcommand{\HThreeSeenRecordings}{558}% results/h3-seen-exploratory.json : registered_trimmed_filtered.recordings
+\newcommand{\HThreeSeenU}{0.019}% results/h3-seen-exploratory.json : registered_trimmed_filtered.U (0.0194)
+\newcommand{\HThreeSeenLo}{\ensuremath{-}0.129}% results/h3-seen-exploratory.json : interval_90 lower
+\newcommand{\HThreeSeenHi}{0.165}% results/h3-seen-exploratory.json : interval_90 upper (0.1648)
+\newcommand{\HThreeSeenP}{0.12}% results/h3-seen-exploratory.json : p_one_sided (0.1225)
+\newcommand{\HThreeSeenUntrimmed}{0.427}% results/h3-seen-exploratory.json : untrimmed_filtered_reported_not_tested.U

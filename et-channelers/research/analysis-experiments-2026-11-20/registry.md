@@ -54,6 +54,27 @@ hypothesis not yet run, "supported" therefore also requires the 90% interval ove
 H3's own verdict is reported as registered, with this weakness stated beside it in
 [`results/README.md`](results/README.md).
 
+**A6. H3 dropped by the owner, 2026-11-20.** After reading the result the owner's instruction was: *drop H3*.
+Under A2 this means:
+
+* H3 leaves the claims of the paper. Its row, estimate, interval and registered verdict stay in the results
+  table, and the paper says that one hypothesis was tested and withdrawn.
+* H3 is closed. It is not tested again as a confirmatory hypothesis, on the replication wave or anywhere
+  else; any later look at the same contrast is exploratory and is labelled so.
+* The untrimmed observation (more first-person singular in the first and last three minutes of a
+  recording) stays as a description of how recordings open and close. It is not a claim about channelled
+  speech.
+* Holm correction counts H3 as one hypothesis that was run: dropping it does not make the thresholds of
+  the others easier.
+* H8 compares the H3 contrast with sermons and wellness talks. It stays registered and unrun; whether it
+  keeps its place now that H3 is dropped is an open decision for the owner, and nothing is changed here.
+
+**A7. Who proposes the second round of experiments, 2026-11-20.** The owner's instruction, given with A6:
+*give the panel experts control and the second experiment budget (50 USD) after the initial analysis, the
+hypothesis results and the dashboard are in; let them find flaws, improvements, further meaningful analysis
+and language-model experiments on the collected data.* Everything that panel adds after seeing results is
+exploratory by A2, stays inside the cap of A3, and follows the hold-out rule of A1.
+
 ## Procedure freeze
 
 One entry per hypothesis, written before that hypothesis touches a hold-out transcript. For the hypotheses
@@ -70,3 +91,4 @@ that need labels the entry will also hold the hashes of the codebooks and prompt
 | Hold-out, counted before the test | 17 creators and 169 recordings are eligible. With the between-creator spread seen above (SD 0.66) the standard error is about 0.16: the test can detect a U of about 0.54 at the registered threshold with 80% power, and a 90% interval will be about 0.26 wide on each side. So it cannot return "negligible", and it can support H3 only if the effect is several times the smallest effect of interest |
 | Interval procedure | percentile bootstrap over creators, then recordings; its coverage has not been audited (the coverage audit CA has not run) |
 | Result, run 2026-11-20 20:39 UTC with the code above | U 0.169 on 17 creators and 169 recordings; 90% interval -0.130 to 0.495; shift p 0.0007; 9 of 17 creators positive. Supported by the registered rule, and fragile: see [`results/README.md`](results/README.md) |
+| Decision | dropped by the owner on 2026-11-20 (amendment A6): out of the claims, row kept, closed |
