@@ -1825,9 +1825,11 @@ tested (R11); nothing is called distinctive of channelling until a comparison se
    analysed. Those 23 creators (366 recordings) are the only part of the cohort no pilot has seen.
 2. Name who does the hand-work of HR: about 4.5 hours of audio transcribed by listening, 60 recordings marked
    for delivery state, and about 10 hours of name checks.
-3. Approve GPU time after the run for the bridge (BR): 30 to 40 English recordings through both models, and
-   one pass over the 214 recordings that are held in other text kinds.
-4. Decide whether to collect the replication wave (RW) and the comparison set (CS).
+3. **Decided 2026-11-20: yes** for the bridge (BR) of 30 to 40 English recordings through both models, on the
+   GPU after the run. The pass over the 214 recordings held in other text kinds was not part of that answer
+   and stays open.
+4. **Decided 2026-11-20: yes, collect both** the replication wave (RW) and the comparison set (CS). What
+   that means in practice is in 13.7.
 
 ### 13.6 Order
 
@@ -1835,6 +1837,31 @@ The day the transcripts are complete: T1, the artefact filter and the first stag
 delivery measures, PO as description, RH's instrument check, LX, the first stage of SL and CX, and LG with the
 "not bridged" label. These read stored fields only. Simulation (CA), similarity (SM) and the registered
 contrasts need the frozen corpus and a free machine. Everything that depends on labels waits for HR.
+
+### 13.7 Approved on 2026-11-20: the bridge, the replication wave and the comparison set
+
+* **Bridge (BR), runs when the transcription run ends.** 36 English recordings from the run, at most one per
+  creator, drawn with a recorded seed from a grid of pace thirds by non-speech thirds (four per cell), 5 to
+  60 minutes long, each already transcribed by the English model. The larger model transcribes the same audio
+  with the run's settings. The second transcripts are kept apart from the run's results and its ledger: they
+  are a measurement of the model, not a second transcript of record. A measure is bridge-safe only if the
+  interval of its mean paired difference lies inside 0.2 between-creator standard deviations.
+* **Replication wave (RW), collected later.** The wave is what each creator uploads after the listing of
+  19 November 2026 that fixed this cohort: recordings nobody has analysed. It is collected on one later date,
+  up to 20 per creator, through the same pipeline and one recognizer model. Proposed capture date:
+  20 February 2027 (the owner confirms or changes it; the date is fixed before the registry is frozen and is
+  not moved afterwards). At the cohort's median posting rate that gives about eleven recordings per creator;
+  frequent posters will reach 20 and occasional posters few or none, which the wave's coverage table shows.
+* **Comparison set (CS), collected once its roster is frozen.** About 20 creators who make no channelling
+  claim, in three strata (sermons, wellness talks, interviews), the newest 20 recordings each, same pipeline
+  and one recognizer model. Before any text is read, a dated file states the selection rule, the strata and
+  the roster, and the owner approves it. Draft rule: English, spoken long-form recordings on the same
+  platform, at least 40 public recordings, median length inside the cohort's quartile range for its closest
+  format, posting within the cohort's calendar window, no claim to channel or relay any being, chosen from a
+  written candidate list by a seeded draw within each stratum and not by hand.
+* **Not included in the approval:** the pass over the 214 recordings held in other text kinds, the
+  "earlier 20" sample of the selection-sensitivity experiment (SL stage 2), the registry of hypotheses, and
+  the owner of the hand-work. They stay open in 13.5.
 
 ## Appendix A. Checks made for this plan
 

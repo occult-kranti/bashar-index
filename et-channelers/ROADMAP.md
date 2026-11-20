@@ -611,9 +611,16 @@ and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section
   checks, and the registered contrasts on the creators no pilot has seen.
 * **Waits for hand-work:** the hand-reference study comes first; delivery-state segmentation, the forecast
   ledger, grounds for belief, the ask ladder and name-based content columns all depend on it.
-* **Waits for the owner:** the registry of at most ten hypotheses, an owner for the hand-work, GPU time for the
-  bridge between the two recognizer models, and whether to collect a replication wave and a comparison set of
-  non-channelling speech.
+* **Approved by the owner on 2026-11-20** (details in ANALYSIS_PLAN 13.7):
+  * the bridge between the two recognizer models: 36 English recordings transcribed again by the larger
+    model on the GPU as soon as the transcription run ends, kept apart from the run's results;
+  * the replication wave: what each creator uploads after the listing of 19 November 2026, collected on one
+    later date (proposed: 20 February 2027), up to 20 per creator;
+  * the comparison set: about 20 creators who make no channelling claim, in three strata (sermons, wellness
+    talks, interviews), newest 20 each, collected once the selection rule and roster are written and frozen.
+* **Still waits for the owner:** the registry of at most ten hypotheses, an owner for the hand-work, the
+  capture date of the replication wave, the roster of the comparison set, and the pass over the 214
+  recordings held in other text kinds.
 * **Done when** every experiment marked high value has its figures and tables with intervals and counts, or a
   written reason why its gate failed, and the pilot numbers in the catalogue have been recomputed on the
   finished run.
