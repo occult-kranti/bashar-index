@@ -104,6 +104,18 @@ class CollectionStateTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'decision_counts'):
             self.build({**self.decision, 'archived_with_verified_audio': 4, 'final_download_failures': 0})
 
+    def test_failed_links_hash_does_not_depend_on_line_ends(self):
+        lf = self.public()['failed_links_sha256']
+        path = self.close / 'failed-links' / 'failed-links.csv'
+        path.write_bytes(path.read_bytes().replace(b'\n', b'\r\n'))
+        crlf_public = self.public()
+        self.assertEqual(crlf_public['failed_links_sha256'], lf)
+        crlf = hashlib.sha256((FAILED_HEADER + FAILED_ROW).replace('\n', '\r\n').encode('utf-8')).hexdigest()
+        for bound in (lf, crlf):
+            with self.subTest(bound=bound[:8]):
+                self.build({**self.decision, 'bound_to': {**self.decision['bound_to'],
+                                                          'published_failed_links_csv_sha256': bound}})
+
     def test_public_evidence_must_agree_before_anything_is_written(self):
         drive = json.loads((self.close / 'drive-verification.json').read_text(encoding='utf-8'))
         (self.close / 'drive-verification.json').write_text(json.dumps({**drive, 'recordings_with_discrepancies': 1}), encoding='utf-8')

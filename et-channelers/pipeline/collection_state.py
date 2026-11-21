@@ -111,7 +111,9 @@ def public_facts(close=CLOSE, tables=RUN_TABLES, progress=PROGRESS):
     missing = Counter(row['creator_key'] for row in rows if row['checkpoint_disposition'] != 'verified_audio_receipt')
     complete = creators - len(missing)
     need(checkpoint.get('complete_creators') == complete, 'complete_creators')
-    failed_raw = (close / 'failed-links' / 'failed-links.csv').read_bytes()
+    # The hash is of the file as git stores it (LF line ends), so a Windows checkout with CRLF ends gives the
+    # same value as the Linux CI checkout; the private decision record may bind either line-end form.
+    failed_raw = (close / 'failed-links' / 'failed-links.csv').read_bytes().replace(b'\r\n', b'\n')
     failed = read_csv(failed_raw)
     need(len(failed) == outstanding, 'failed_links_rows')
     reasons = Counter(row['Failure category'] for row in failed)
@@ -137,6 +139,7 @@ def public_facts(close=CLOSE, tables=RUN_TABLES, progress=PROGRESS):
         'archived': verified, 'outstanding': outstanding, 'complete_creators': complete,
         'by_source': {key: by_source.get(key, 0) for key in SOURCES}, 'failure_labels': dict(reasons),
         'failed_links_sha256': hashlib.sha256(failed_raw).hexdigest(),
+        'failed_links_crlf_sha256': hashlib.sha256(failed_raw.replace(b'\n', b'\r\n')).hexdigest(),
         'receipt_checkpoint_utc': utc(checkpoint.get('as_of_utc')),
         'drive': {'finished_at_utc': utc(drive.get('drive_metadata_finished_utc')), 'recordings_matching': verified,
                   'discrepancies': 0},
@@ -164,7 +167,8 @@ def decision_facts(raw, public):
          and sum(categories.values()) == public['outstanding']
          and {REASONS[key]: count for key, count in categories.items()} == public['failure_labels'], 'decision_reasons')
     bound = value.get('bound_to') or {}
-    need(bound.get('published_failed_links_csv_sha256') == public['failed_links_sha256'], 'decision_binding')
+    need(bound.get('published_failed_links_csv_sha256') in {public['failed_links_sha256'], public['failed_links_crlf_sha256']},
+         'decision_binding')
     return {'closed_at_utc': utc(value.get('decided_at_utc')), 'reasons': {key: categories[key] for key in REASONS if key in categories},
             'decision_record_sha256': hashlib.sha256(raw).hexdigest()}
 
