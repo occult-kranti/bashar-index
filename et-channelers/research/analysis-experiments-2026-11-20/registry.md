@@ -138,6 +138,18 @@ experiments, dont worry about the usd token limit, use that as warning.* The cap
 stopping; one guard at 250 USD stops only a fault that sends requests in a loop. Money changes nothing in the
 registered procedures.
 
+**Owner decisions before freeze 1, 2026-11-21 (about 01:00 UTC), after the pilot of the forecast and title
+instruments.** Two instruments failed the two-model gate after both allowed prompt revisions: the checkability
+parts of H2 (time window kappa 0.55, place 0.29, floor 0.60) and the title codes that split recordings for H5 and
+group creators for H9 (presentation kappa 0.45 and stability 0.87 on the check creators, floors 0.70 and 0.90).
+The owner chose: for checkability, the middle model codes every statement and is the record, and the largest model
+with guided chain of thought re-reads a sample of about 300 statements to measure how often the record is right;
+for titles, the middle model is the record and the largest model decides every title on which the middle and small
+models disagree. Both are reported with their failed gates and with the adjudication figures (amendments A8 and
+A11). The voice label moved more under removed punctuation and capitals than between two runs (4.3% of words
+between claimed and own voice against 1.0%, check sample, small model); by the plan's rule the sentence "the voice
+label responds to punctuation and case" goes with every result of H1, H4 and H6.
+
 ## Procedure freeze
 
 One entry per hypothesis, written before that hypothesis touches a hold-out transcript. For the hypotheses
