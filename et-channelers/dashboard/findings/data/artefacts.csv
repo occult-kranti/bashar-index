@@ -1,3 +1,4 @@
-artefact,percent_of_transcripts
-A short thanks phrase the recognizer adds near the end of a 30-second window,55.0
-Short invented segments in music or silence,9.0
+artefact,percent_of_transcripts,transcripts,of_transcripts,creators_seen
+A stand-alone thanks phrase starting in the last 3 s of a 30-second decoding window,49.9,641,1284,71
+A stand-alone thanks phrase anywhere,55.6,714,1284,71
+"An isolated segment of 1 to 3 words, with no other speech for 5 s on either side",6.9,88,1284,71

@@ -2,9 +2,9 @@ workstream,state,detail
 Transcription,Done,"1,697 of 1,729 audio files, finished 20 Nov 2026 19:56 UTC"
 Registry of hypotheses,Frozen,"Ten hypotheses and thirteen exploratory questions, frozen 20 Nov 2026 19:47 UTC"
 Experiment catalogue,Started,28 experiments under 16 rules; the recognizer bridge and one registered test have run
-Registered tests,1 of 10 run,"H3 tested on 17 hold-out creators, then dropped by the owner; nine wait for labels or new recordings"
+Registered tests,1 of 10 tested,"H3 passed its registered rule on 17 hold-out creators, but the rule was not calibrated at creator level, so H3 is not determined at creator level; it was withdrawn (A6). H8 was dropped before it ran (A9). Eight wait for labels or new recordings"
 Bridge between the two recognizer models,Done,36 of 36 English recordings transcribed again by the larger model; 7 of 17 measures agree within the margin; the two transcripts differ in 3.5% of words (median)
-"Model labelling of voice, forecasts and asks",Pilot running,Prompts are being tested on recordings of already-seen creators only; nothing is frozen and no hold-out recording has been labelled
+"Model labelling of voice, asks, forecasts, sentences and titles",Running,"The instruments were frozen in freeze 1 (21 Nov 2026 04:58 UTC). Labels of the seen creators (looked at before the registry was frozen) are being produced. Production started through the batch interface (05:00 UTC); the voice map and the forecast chain moved to the standard interface at 06:33 UTC, and the sentence codes and the asks find and its small-model check at 06:39 UTC, while the middle-model stages and the titles stay in batch. The cross-vendor voice check passed: kappa 0.91 (90% interval 0.84 to 0.95). Hold-out labels wait for freeze 2"
 Paper draft,Drafted,"17 pages, ICWSM format; findings marked preliminary"
 Replication wave,Waits,"Recordings uploaded after 19 Nov 2026, to be collected on one later date (proposed 20 Feb 2027)"
 Comparison set,Waits,About 20 to 40 creators who make no channelling claim; roster not chosen yet

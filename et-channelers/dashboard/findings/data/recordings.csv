@@ -1,21 +1,20 @@
-measure,bin,bin_left,bin_right,recordings
-share_without_speech,0 to 5%,0,5,755
-share_without_speech,5 to 10%,5,10,345
-share_without_speech,10 to 15%,10,15,166
-share_without_speech,15 to 20%,15,20,111
-share_without_speech,20 to 25%,20,25,82
-share_without_speech,25 to 30%,25,30,46
-share_without_speech,30 to 35%,30,35,32
-share_without_speech,35 to 40%,35,40,23
-share_without_speech,40 to 45%,40,45,11
-share_without_speech,45 to 50%,45,50,19
-share_without_speech,50 to 60%,50,60,23
-share_without_speech,60 to 70%,60,70,19
-share_without_speech,70 to 80%,70,80,9
-share_without_speech,80 to 90%,80,90,7
-share_without_speech,90 to 100%,90,100,49
-longest_quiet_at_least,30 s or more,0.5,,361
-longest_quiet_at_least,1 min or more,1,,199
-longest_quiet_at_least,2 min or more,2,,104
-longest_quiet_at_least,5 min or more,5,,37
-longest_quiet_at_least,10 min or more,10,,12
+measure,bin,bin_left,bin_right,transcripts
+share_without_speech,0 to 2.5%,0,2.5,377
+share_without_speech,2.5 to 7.5%,2.5,7.5,393
+share_without_speech,7.5 to 12.5%,7.5,12.5,177
+share_without_speech,12.5 to 17.5%,12.5,17.5,106
+share_without_speech,17.5 to 22.5%,17.5,22.5,65
+share_without_speech,22.5 to 27.5%,22.5,27.5,43
+share_without_speech,27.5 to 32.5%,27.5,32.5,30
+share_without_speech,32.5 to 37.5%,32.5,37.5,21
+share_without_speech,37.5 to 42.5%,37.5,42.5,7
+share_without_speech,42.5 to 47.5%,42.5,47.5,7
+share_without_speech,47.5 to 55%,47.5,55,15
+share_without_speech,55 to 65%,55,65,14
+share_without_speech,65 to 85%,65,85,16
+share_without_speech,85 to 95%,85,95,5
+share_without_speech,95 to 100%,95,100,17
+longest_quiet_at_least,45 s or more,0.75,,159
+longest_quiet_at_least,90 s or more,1.5,,76
+longest_quiet_at_least,3 min or more,3,,35
+longest_quiet_at_least,6 min or more,6,,12

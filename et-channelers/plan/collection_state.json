@@ -15,10 +15,6 @@
     "retried": false,
     "archived_with_verified_audio": 1946,
     "final_failures": 30,
-    "final_failures_by_reason": {
-      "provider_refusal_http_403": 29,
-      "metadata_lookup_failure": 1
-    },
     "archived_by_source": {
       "youtube_native": 1304,
       "youtube_track_unverified": 464,
@@ -42,37 +38,15 @@
     "not_transcribed": 32,
     "hours": 746.3,
     "hours_transcribed": 742.9,
-    "words": 5832446,
-    "hours_without_speech": 93.7,
-    "share_without_speech": 0.126,
+    "language_count": 7,
     "languages": [
       {
         "language": "English",
         "audio_files": 1616
       },
       {
-        "language": "Japanese",
-        "audio_files": 30
-      },
-      {
-        "language": "Spanish",
-        "audio_files": 19
-      },
-      {
-        "language": "Portuguese",
-        "audio_files": 18
-      },
-      {
-        "language": "German",
-        "audio_files": 8
-      },
-      {
-        "language": "Czech",
-        "audio_files": 5
-      },
-      {
-        "language": "Finnish",
-        "audio_files": 1
+        "language": "All other languages",
+        "audio_files": 81
       }
     ]
   },

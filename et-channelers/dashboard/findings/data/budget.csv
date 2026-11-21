@@ -1,5 +1,5 @@
 item,usd
-Spent so far,23.3283
-Labelling allowance,60
-Experiments allowance,50
-Owner's limit,120
+Committed,99.24
+Committed at worst case,99.24
+Warning level,120.0
+Hard stop,130.0

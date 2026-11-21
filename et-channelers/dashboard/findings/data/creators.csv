@@ -3,9 +3,7 @@ recordings_transcribed,Recordings transcribed per creator,0 to 9,0,10,8
 recordings_transcribed,Recordings transcribed per creator,10 to 14,10,15,6
 recordings_transcribed,Recordings transcribed per creator,15 to 16,15,17,7
 recordings_transcribed,Recordings transcribed per creator,17,17,18,14
-recordings_transcribed,Recordings transcribed per creator,18,18,19,28
-recordings_transcribed,Recordings transcribed per creator,19,19,20,23
-recordings_transcribed,Recordings transcribed per creator,20,20,21,15
+recordings_transcribed,Recordings transcribed per creator,18 to 20,18,21,66
 hours_transcribed,Hours transcribed per creator,0 to 2 h,0,2,10
 hours_transcribed,Hours transcribed per creator,2 to 4 h,2,4,18
 hours_transcribed,Hours transcribed per creator,4 to 6 h,4,6,18
@@ -14,27 +12,3 @@ hours_transcribed,Hours transcribed per creator,8 to 10 h,8,10,12
 hours_transcribed,Hours transcribed per creator,10 to 12 h,10,12,11
 hours_transcribed,Hours transcribed per creator,12 to 15 h,12,15,10
 hours_transcribed,Hours transcribed per creator,15 h or more,15,,7
-hours_without_speech,Hours without speech per creator,0 to 0.25 h,0,0.25,25
-hours_without_speech,Hours without speech per creator,0.25 to 0.5 h,0.25,0.5,21
-hours_without_speech,Hours without speech per creator,0.5 to 1 h,0.5,1,30
-hours_without_speech,Hours without speech per creator,1 to 2 h,1,2,17
-hours_without_speech,Hours without speech per creator,2 h or more,2,,7
-share_without_speech,Share of the creator's transcribed time without speech,0 to 5%,0,0.05,29
-share_without_speech,Share of the creator's transcribed time without speech,5 to 10%,0.05,0.1,28
-share_without_speech,Share of the creator's transcribed time without speech,10 to 15%,0.1,0.15,18
-share_without_speech,Share of the creator's transcribed time without speech,15 to 20%,0.15,0.2,8
-share_without_speech,Share of the creator's transcribed time without speech,20 to 30%,0.2,0.3,8
-share_without_speech,Share of the creator's transcribed time without speech,30 to 40%,0.3,0.4,3
-share_without_speech,Share of the creator's transcribed time without speech,40 to 100%,0.4,1.0,6
-median_minutes,"Median recording length per creator, minutes",0 to 5 min,0,5,10
-median_minutes,"Median recording length per creator, minutes",5 to 10 min,5,10,12
-median_minutes,"Median recording length per creator, minutes",10 to 20 min,10,20,29
-median_minutes,"Median recording length per creator, minutes",20 to 30 min,20,30,24
-median_minutes,"Median recording length per creator, minutes",30 to 45 min,30,45,13
-median_minutes,"Median recording length per creator, minutes",45 min or more,45,,12
-median_pace,"Median words per minute of speech per creator (seen creators, five or more English recordings)",under 130 wpm,,130,11
-median_pace,"Median words per minute of speech per creator (seen creators, five or more English recordings)",130 to 140 wpm,130,140,9
-median_pace,"Median words per minute of speech per creator (seen creators, five or more English recordings)",140 to 150 wpm,140,150,22
-median_pace,"Median words per minute of speech per creator (seen creators, five or more English recordings)",150 to 160 wpm,150,160,10
-median_pace,"Median words per minute of speech per creator (seen creators, five or more English recordings)",160 to 170 wpm,160,170,9
-median_pace,"Median words per minute of speech per creator (seen creators, five or more English recordings)",170 wpm or more,170,,9

@@ -9,10 +9,10 @@ and the order of the next work are in the [analysis handoff](knowledge-transfer/
 | Stage | State and next action |
 | --- | --- |
 | Audio, closed | 1,946 verified recordings; 30 final failures, not retried. The collector's stop marker stays. |
-| Transcription, done | 1,697 of 1,729 audio files, 742.9 hours, 5.83 million words; English 1,616, six other languages 81. 12.6% of the audio holds no speech. [Progress table](knowledge-transfer/partial-cohort-asr-progress.md) · [Run report](research/transcription-run-2026-11-20/README.md) |
+| Transcription, done | 1,697 of 1,729 audio files, 742.9 hours, 5.83 million words; English 1,616, six other languages 81, pooled (each is spoken by fewer than 5 creators). 12.6% of the audio holds no speech. [Progress table](knowledge-transfer/partial-cohort-asr-progress.md) · [Run report](research/transcription-run-2026-11-20/README.md) |
 | Recognizer bridge, done | 36 recordings through both models: 7 of 17 measures agree, 6 differ (pauses, word timing, fillers), 4 not settled. [Result](research/analysis-experiments-2026-11-20/results/README.md) |
-| Registry, frozen | Ten hypotheses and thirteen exploratory questions, amendments A1 to A7. H3 tested and dropped by the owner. [Registry](research/analysis-experiments-2026-11-20/registry.md) |
-| Model-coded labels, piloting | Voice and ask instruments piloted once on seen creators and being revised; forecast, sentence and title instruments being built. Phase 7f. |
+| Registry, frozen | Ten hypotheses and thirteen exploratory questions, with amendments (among them A8, no human check, and A9, H8 dropped before it ran). H3 tested and dropped by the owner. [Registry](research/analysis-experiments-2026-11-20/registry.md) |
+| Model-coded labels, seen creators in production | The voice, ask, forecast, sentence and title instruments were frozen in freeze 1 (21 November, 04:58 UTC). Seen-creator production started through the batch interface (05:00); the voice map and the forecast chain (06:33) and the sentence codes and the asks find and its small-model check (06:39) moved to the standard interface. Hold-out labels wait for freeze 2. Budget: 130 USD, a hard stop, with a warning at 120 USD (registry, 02:00). Phase 7f. |
 | Second round, planning | An expert panel deliberates on flaws, further analyses and language-model experiments, with the owner's additions. Phase 7g. |
 | Paper and dashboards, updated | 17-page draft; findings dashboard with a tests-and-checks tab. [Dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/) · [Draft](paper/cohort-draft-2026-11-20/) |
 
@@ -608,8 +608,9 @@ its language was decided and how many seconds hold no speech.
   the table behind every plot as a CSV. No transcript text; quotes within the 30-word limit.
 * **Done when** every language in the corpus has its topic, distribution and wording plots with the counts
   on them, and a second reader has re-drawn them from the saved tables.
-* **Status on 20 November, evening.** The run found seven languages: English 1,616 audio files, Japanese 30,
-  Spanish 19, Portuguese 18, German 8, Czech 5, Finnish 1. The distributions by language (length, share without
+* **Status on 20 November, evening.** The run found seven languages: English, 1,616 audio files, and six others,
+  81 audio files together. Each language other than English is spoken by fewer than 5 creators, so the six are
+  given only pooled (cells with fewer than 5 creators are pooled). The distributions by language (length, share without
   speech, how the language was decided) are in the [run report](research/transcription-run-2026-11-20/README.md)
   and the dashboard's languages tab. Topics and wording by language are not done; they join the second round
   (Phase 7g). The bridge settles which measures may be read across languages: word-based ones yes; pauses,
@@ -654,9 +655,9 @@ and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section
   the seen creators show nothing), and dropped by the owner; it keeps its row. Amendments A5 (a hypothesis is
   supported only if its 90% interval over creators also excludes zero), A6 (H3 dropped) and A7 (the second
   round belongs to the panel). [Results](research/analysis-experiments-2026-11-20/results/README.md)
-* **Still waits for the owner:** an owner for the hand-work, the
-  capture date of the replication wave, the roster of the comparison set, the pass over the 214
-  recordings held in other text kinds, and whether H8 keeps its place now that H3 is dropped.
+* **Still waits for the owner:** the capture date of the replication wave, the roster of the comparison set and
+  the pass over the recordings held in other text kinds. Decided on 20 November (about 22:45 UTC): no human check
+  (A8), and H8 dropped before it ran (A9).
 * **Done when** every experiment marked high value has its figures and tables with intervals and counts, or a
   written reason why its gate failed, and the pilot numbers in the catalogue have been recomputed on the
   finished run.
@@ -665,7 +666,9 @@ and the decisions it needs are in [`ANALYSIS_PLAN.md`](ANALYSIS_PLAN.md) section
 
 The owner replaced the two human markers of the plan by language models through the OpenAI API, within
 110 USD in total, raised to 120 USD the same evening so that requests can run many at once at the standard
-price (registry amendments A1 and A3). The labels feed H1, H2, H4, H5, H6 and H9.
+price (registry amendments A1 and A3). On 21 November (registry, 02:00 UTC) the owner set the total at 130 USD, a
+hard stop in the client, with a warning at 120 USD, and the large production runs go through the batch interface
+at half price. The labels feed H1, H2, H4, H5, H6 and H9.
 
 * **Instruments.** Voice spans (the creator's own voice, a being voiced in the first person, a relayed
   voice, other speakers, other material), asks (requests to buy, enrol, give, subscribe or move off the
@@ -680,11 +683,14 @@ price (registry amendments A1 and A3). The labels feed H1, H2, H4, H5, H6 and H9
   finder found 48 of 49 reference asks); a reading of every large disagreement, which led to eight prompt
   changes; a code review with 32 findings; a request runner that keeps up to 64 requests in flight under a
   rate limiter, with a ledger that reserves the worst case before anything is sent.
-* **Next.** Pilot round 2 with the revised prompts and its single-factor experiments, on seen creators only;
-  the owner's decisions listed in the [handoff](knowledge-transfer/analysis-handoff-2026-11-20.md); freeze 1
-  (prompts, schemas, models, settings and code by hash, committed in the registry); labels for seen creators;
-  freeze 2 (constants from seen labels); labels for the hold-out; reliability checks on the hold-out; then the
-  tests of H1, H2, H4, H5, H6 and H9 under amendment A5.
+* **Done on 21 November (registry).** Freeze 1 (prompts, schemas, models, settings and code by hash) at 04:58 UTC;
+  the cross-vendor voice check VG-6 passed at 04:59 (kappa 0.91, 90% interval 0.84 to 0.95). Seen-creator
+  production started through the batch interface at 05:00; the voice map and the forecast chain moved to the
+  standard interface at 06:33, and the sentence codes and the asks find and its small-model check at 06:39, because
+  the small model's batch queue was the bottleneck; the middle-model stages and the titles stay in batch. The
+  130 USD hard stop and every tag cap are checked at worst case (04:55).
+* **Next.** Finish the labels for seen creators; freeze 2 (constants from seen labels); labels for the hold-out;
+  reliability checks on the hold-out; then the tests of H1, H2, H4, H5, H6 and H9 under amendment A5.
 * **Wording.** Every result is *model-coded*: no person has validated a label, and agreement between two
   models of one vendor is reliability, not validity. A small human sample (about four hours) is designed and
   would change what H1, H4 and H6 may claim; nobody has been named to code it.
