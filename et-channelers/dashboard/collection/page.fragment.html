@@ -121,6 +121,20 @@
 .cc-operation { flex:none; border:1px solid var(--color-border-line); padding:6px 10px; font-size:12px; font-weight:600; border-radius:3px; }
 .cc-operation[data-state="cooldown"] { color:var(--color-warn); background:color-mix(in srgb,var(--color-warn) 8%,var(--color-panel)); border-color:color-mix(in srgb,var(--color-warn) 35%,var(--color-border-line)); }
 .cc-operation[data-state="verified"] { color:var(--color-ok); border-color:var(--color-ok); }
+.cc-operation[data-state="closed"] { color:var(--color-ok); border-color:var(--color-ok); background:color-mix(in srgb,var(--color-ok) 7%,var(--color-panel)); }
+.cc-closure { padding:24px 28px; border:1px solid var(--color-border-line); border-inline-start:4px solid var(--color-ok); background:color-mix(in srgb,var(--color-ok) 5%,var(--color-panel)); scroll-margin-top:20px; }
+.cc-closure[hidden],.cc-stages[hidden],.cc-coverage-closure[hidden] { display:none; }
+.cc-closure h2 { margin:6px 0 0; font:400 28px/1.2 var(--font-anthropic-serif); letter-spacing:-.02em; text-wrap:balance; }
+.cc-closure p { margin:10px 0 0; max-width:80ch; font-size:14px; line-height:1.6; }
+.cc-closure .cc-eyebrow { margin:0; font-size:11px; }
+.cc-closure .cc-closure-links { font-size:13px; }
+.cc-closure-stages { margin:0 0 4px; }
+.cc-earlier { margin-top:18px; }
+.cc-earlier>summary { cursor:pointer; padding:12px 0; color:var(--color-ok); font-size:13px; font-weight:600; }
+.cc-earlier>summary:focus-visible { outline:2px solid var(--color-fg); outline-offset:3px; }
+.cc-earlier[open]>summary { margin-bottom:10px; }
+.cc-coverage-closure { color:var(--color-fg); border-inline-start:3px solid var(--color-ok); padding-inline-start:12px; }
+@media(max-width:760px) { .cc-closure { padding:18px; } .cc-closure h2 { font-size:24px; } }
 .cc-current-explanation { margin:14px 0 24px; color:var(--color-fg-muted); font-size:14px; max-width:76ch; }
 .cc-current-metrics { display:grid; grid-template-columns:1.5fr repeat(3,1fr); padding:4px 0 26px; gap:18px; }
 .cc-current-metrics>div { min-width:0; border-inline-start:1px solid var(--color-border-line); padding-inline-start:18px; }
@@ -213,21 +227,29 @@
 <div class="cc-page">
   <header class="cc-hero" id="top">
     <p class="cc-eyebrow">Channeling research archive / Collection</p>
-    <div class="cc-hero-row"><h1 class="cc-title">Building the archive.</h1><p class="cc-lede">Follow what has reached Drive, what is waiting, and where the research corpus stands.</p></div>
-    <p class="cc-hero-note">Native audio, source metadata and available English captions. Transcription follows only where usable text is missing.</p>
+    <div class="cc-hero-row"><h1 class="cc-title">What the archive holds.</h1><p class="cc-lede">What reached Drive from the latest-20 selection, what could not be downloaded, and where the research corpus stands.</p></div>
+    <p class="cc-hero-note">Native audio, source metadata and available English captions. Archived audio without usable text was transcribed on a local GPU.</p>
   </header>
   <div class="cc-workspace">
     <aside class="cc-rail"><nav class="cc-nav" aria-label="Collection sections"><div class="cc-nav-group"><p>Collection</p><a class="cc-nav-link" href="#collection-current" data-go="collection-current">Current collection</a><a class="cc-nav-link" href="#channel-downloads" data-go="channel-downloads">Channel downloads</a><a class="cc-nav-link" href="#archive-overview" data-go="archive-overview">Historical archive</a></div><div class="cc-nav-group"><p>Archive & sources</p><a class="cc-nav-link" href="#people-states" data-go="people-states">Coverage by state</a><a class="cc-nav-link" href="#sources" data-go="sources">Sources & links</a><a class="cc-nav-link" href="#methods" data-go="methods">Collection methods</a><a class="cc-nav-link" href="#everyone" data-go="everyone">People & groups</a><a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar recordings</a><a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a><a class="cc-nav-link" href="#per-person" data-go="per-person">Texts by person</a><a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio & transcripts</a></div><div class="cc-nav-group"><p>Research</p><a class="cc-nav-link" href="#predictions" data-go="predictions">Prediction candidates</a><a class="cc-nav-link" href="#keywords" data-go="keywords">Title keywords</a><a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackout references</a><a class="cc-nav-link" href="#contacts" data-go="contacts">Websites & contacts</a></div></nav><a class="cc-rail-top" href="#top">Back to top &uarr;</a></aside>
     <main class="cc-main" id="collection-content">
+      <section class="cc-closure" id="cc-closure" aria-labelledby="cc-closure-heading" hidden>
+        <p class="cc-eyebrow">Collection record</p>
+        <h2 id="cc-closure-heading">Reading the collection record&hellip;</h2>
+        <p id="cc-closure-summary"></p>
+        <p class="cc-closure-links" id="cc-closure-links"><a href="../findings/">Transcript findings and experiments</a> &middot; <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/knowledge-transfer/analysis-handoff-2026-11-20.md">Analysis handoff</a> &middot; <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/knowledge-transfer/evidence/2026-11-20-close/README.md">Evidence of the close</a> &middot; <a href="../../knowledge-transfer/evidence/2026-11-20-close/failed-links/index.html">Failed links and reasons</a></p>
+      </section>
       <section class="cc-current" id="collection-current" tabindex="-1" aria-labelledby="cc-current-heading">
-        <div class="cc-current-top"><div><p class="cc-eyebrow">Current collection &middot; YouTube</p><h2 id="cc-current-heading">Newest first. Every channel.</h2></div><span class="cc-operation" id="cc-current-state" role="status">Loading snapshot</span></div>
+        <div class="cc-current-top"><div><p class="cc-eyebrow">Latest-20 collection &middot; YouTube</p><h2 id="cc-current-heading">Newest first. Every channel.</h2></div><span class="cc-operation" id="cc-current-state" role="status">Loading the record</span></div>
         <p class="cc-current-explanation" id="cc-current-explanation">Reading the latest collection counts&hellip;</p>
         <div class="cc-current-metrics">
           <div class="cc-primary-metric"><span class="cc-metric-number" id="cc-verified">&mdash;</span><span class="cc-metric-label" id="cc-verified-label">Native YouTube audio and metadata pairs verified on Drive</span></div>
-          <div><span class="cc-metric-number" id="cc-awaiting">&mdash;</span><span class="cc-metric-label">Downloaded, awaiting upload</span></div>
-          <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label">Channels in this pass</span></div>
-          <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label">Items in the full index</span></div>
+          <div><span class="cc-metric-number" id="cc-awaiting">&mdash;</span><span class="cc-metric-label" id="cc-awaiting-label">Downloaded, awaiting upload</span></div>
+          <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label" id="cc-channels-label">Channels in this pass</span></div>
+          <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label" id="cc-indexed-label">Items in the full index</span></div>
         </div>
+        <ol class="cc-stages cc-closure-stages" id="cc-closure-stages" aria-label="Collection and transcription" hidden></ol>
+        <details class="cc-earlier" id="cc-earlier" open><summary id="cc-earlier-summary">Collection checkpoint details</summary>
         <section class="cc-eta" id="collection-eta" aria-labelledby="cc-eta-heading">
           <h3 id="cc-eta-heading">How long will collection take?</h3>
           <p id="cc-eta-coverage">Reading coverage from the saved estimate&hellip;</p>
@@ -255,12 +277,14 @@
         <div class="cc-current-foot"><div><span class="cc-storage-label">Project storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="17000000000" value="0" aria-label="Project storage used"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
         <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>
         <p class="cc-snapshot-time" id="cc-legacy-summary"></p>
+        </details>
       </section>
       <section class="cc-coverage" id="channel-downloads" aria-labelledby="cc-coverage-heading">
         <p class="cc-eyebrow">Latest 20+ videos</p>
         <h2 id="cc-coverage-heading">Every channel, at a glance.</h2>
         <p id="cc-coverage-summary" class="cc-coverage-note">Reading verified audio and text coverage&hellip;</p>
         <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. The latest 20 public regular uploads on each channel qualify at any date or duration. Publisher editions carry their own source labels. The YouTube editions column counts recordings whose original track and spoken language still need review.</p>
+        <p class="cc-coverage-note cc-coverage-closure" id="cc-coverage-closure" hidden><span id="cc-coverage-closure-text"></span> <a href="../../knowledge-transfer/evidence/2026-11-20-close/creator-status.csv" download>Final outcome per creator (CSV)</a> &middot; <a href="../../knowledge-transfer/evidence/2026-11-20-close/failed-links/index.html">Failed links and reasons</a></p>
         <div class="cc-coverage-controls">
           <label for="cc-coverage-search">Find a channel<input type="search" id="cc-coverage-search" placeholder="Channel name" autocomplete="off"></label>
           <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="active">Working now</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>
