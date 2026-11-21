@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Collection · Channeling research archive</title>
-<meta name="description" content="Follow the newest YouTube collection, its verified audio and metadata, and the historical research archive.">
+<meta name="description" content="The closed latest-20 YouTube collection: verified audio and metadata, the final download failures, the finished transcription run and the historical research archive.">
 <link rel="stylesheet" href="../../../assets/research-nav.css">
 <script defer src="../../../assets/research-nav.js" data-page="collection"></script>
 <style>
@@ -124,7 +124,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
   Promise.all(NAMES.map(load)).then(schedule);
   function put(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; }
   function number(value) { return Number.isFinite(+value) ? (+value).toLocaleString('en-US') : '—'; }
-  function date(value) { const d = new Date(value); return Number.isNaN(d.getTime()) ? 'Date unavailable' : new Intl.DateTimeFormat('en-US', {dateStyle:'medium', timeStyle:'short'}).format(d); }
+  function date(value) { const d = new Date(value); return Number.isNaN(d.getTime()) ? 'Date unavailable' : new Intl.DateTimeFormat('en-US', {dateStyle:'medium', timeStyle:'short', timeZone:'UTC'}).format(d) + ' UTC'; }
   async function collectionStatus() {
     try {
       const response = await fetch(BASE + 'ingestion_status.json', {cache:'no-cache'});
@@ -171,6 +171,15 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const legacy = data.legacy_operation;
       put('cc-legacy-summary', legacy ? 'Legacy collector: ' + (labels[legacy.state] || 'state unconfirmed').toLowerCase() + (legacy.retry_after ? '; its recorded retry window ends ' + date(legacy.retry_after) : '') + '. Its preserved controls are separate from the native batch lane.' : '');
       put('cc-current-date', date(data.generated_at)); put('cc-verified', number(data.counts.audio_archived_videos ?? data.counts.verified_pairs));
+      const regularPriority = data.selection?.basis === 'latest20plus_public_regular';
+      if (regularPriority || data.selection?.basis === 'canonical_mixed_latest20') {
+        const selected = data.selection;
+        put('cc-verified', number(selected.verified_audio));
+        put('cc-verified-label', 'of ' + number(selected.total) + (regularPriority ? ' public regular uploads' : ' selected recordings') + ' have audio verified on Drive');
+        put('cc-legacy-summary', regularPriority
+          ? 'Latest 20+ videos follows each channel’s Videos tab in newest-first order. Every publication date and duration qualifies. The cumulative list retains ' + number(selected.archive.total) + ' recordings.'
+          : 'This selection includes Videos, Shorts and completed streams. Across all saved selections the archive holds ' + number(data.counts.verified_pairs) + ' native YouTube audio and metadata pairs.');
+      }
       put('cc-awaiting', number(data.counts.awaiting_upload)); put('cc-channels', number(data.counts.channels));
       put('cc-indexed', number(data.counts.indexed_total)); put('cc-workers', number(data.operation.workers));
       if (Number.isFinite(data.counts.caption_verified_videos)) {
@@ -224,22 +233,77 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         const item = document.createElement('li'); item.className = 'cc-stage'; item.dataset.state = stage.state;
         const ordinal = document.createElement('span'); ordinal.className = 'cc-stage-order'; ordinal.textContent = String(i + 1).padStart(2, '0');
         const title = document.createElement('h3'); title.textContent = stage.label;
+        if (stage.basis === 'legacy_videos_queue') title.textContent += ' (historical video queue)';
         const total = document.createElement('p'); total.className = 'cc-stage-total'; total.textContent = number(stage.total) + ' items';
         const caption = document.createElement('p'); caption.className = 'cc-stage-caption'; caption.textContent = stage.key === 'final_index' ? 'Indexed · final round stays on hold' : number(stage.verified) + ' verified pairs' + (stage.state === 'waiting' ? (stage.key === 'final_archive' ? ' · follows newest 50' : ' · follows newest 20') : '');
         if (stage.unavailable) caption.textContent += ' · ' + number(stage.unavailable) + ' unavailable';
+        const selectedAudio = ['canonical_mixed_latest20', 'latest20plus_public_regular'].includes(stage.basis);
+        if (selectedAudio) caption.textContent = number(stage.verified) + ' recordings with verified audio' + (stage.unavailable ? ' · ' + number(stage.unavailable) + ' unavailable' : '');
         item.append(ordinal, title, total, caption);
-        if (stage.key !== 'final_index') { const progress = document.createElement('progress'); progress.max = Math.max(1, stage.total); progress.value = stage.verified; progress.setAttribute('aria-label', stage.label + ' verified pairs'); item.append(progress); }
+        if (stage.key !== 'final_index') { const progress = document.createElement('progress'); progress.max = Math.max(1, stage.total); progress.value = stage.verified; progress.setAttribute('aria-label', stage.label + (selectedAudio ? ' verified audio' : ' verified pairs')); item.append(progress); }
         holder.append(item);
       } }
+      if (regularPriority) {
+        const s = data.selection, formats = s.archive.formats;
+        put('cc-source-coverage', number(s.remaining_audio) + ' public regular uploads still need audio. The cumulative list contains ' + number(formats.videos || 0) + ' regular uploads, ' + number(formats.shorts || 0) + ' Shorts and ' + number(formats.streams || 0) + ' recorded streams. ' + number(s.archive.literal_members_only) + ' members-only listings within the newest 20 remain indexed at their original positions.');
+      } else if (data.selection?.basis === 'canonical_mixed_latest20') {
+        const selected = data.selection;
+        const formats = selected.by_format || {};
+        put('cc-source-coverage', number(selected.verified_audio) + ' / ' + number(selected.total) + ' chosen latest-20 recordings have verified audio; ' + number(selected.unavailable) + ' are unavailable and ' + number(selected.remaining_audio) + ' still need audio. Selection: ' + number(formats.videos?.total) + ' videos, ' + number(formats.shorts?.total) + ' Shorts, ' + number(formats.streams?.total) + ' recorded streams and ' + number(formats.unknown?.total) + ' unclassified. Unavailable entries do not complete the audio goal.');
+      }
+      return data;
     } catch (_) { put('cc-current-state', 'Status unavailable'); put('cc-current-explanation', 'The latest collection snapshot could not be loaded. The historical archive tables remain available below.'); }
   }
-  async function collectionEta() {
+  async function collectionEta(statusSnapshot) {
     const hours = (values) => Array.isArray(values) && values.length === 2 && values.every(v => Number.isFinite(v) && v >= 0) ? values.map(v => v.toFixed(1)).join('–') : 'Unknown';
     try {
       const response = await fetch(BASE + 'collection_eta.json', {cache:'no-cache'});
       if (!response.ok) throw new Error('estimate unavailable');
       const data = await response.json();
       if (data.schema_version !== 2 || data.scope !== 'collection_eta' || !data.current) throw new Error('unexpected estimate');
+      const regularPriority = statusSnapshot?.selection?.basis === 'latest20plus_public_regular';
+      if (regularPriority || statusSnapshot?.selection?.basis === 'canonical_mixed_latest20') {
+        const selected = statusSnapshot.selection;
+        const forecast = data.current.latest50;
+        const futureHours = forecast?.download_hours_from_start;
+        const showFifty = regularPriority && forecast?.selection_sha256 === selected.sha256
+          && forecast?.start_condition === 'latest20_translations_and_both_analysis_rounds_complete'
+          && Array.isArray(futureHours) && futureHours.length === 2 && futureHours.every(v => Number.isFinite(v) && v >= 0)
+          && futureHours[0] <= futureHours[1];
+        const fiftyNote = showFifty ? ' Latest 50 is estimated at ' + futureHours.map(v => Math.round(v)).join('–')
+          + ' download hours after latest-20+ translation and both analysis rounds finish.' : '';
+        const pace = regularPriority ? data.current.regular_receipt_pace : data.current.mixed_receipt_pace;
+        const scopeHash = selected.priority_scope_sha256 || selected.sha256;
+        const aligned = typeof scopeHash === 'string' && pace?.selection_sha256 === scopeHash
+          && pace.total === selected.total && pace.saved === selected.verified_audio && pace.remaining === selected.remaining_audio;
+        if (aligned || selected.remaining_audio === 0) {
+          const rate = aligned ? pace.verified_per_wall_hour : null;
+          const estimate = aligned ? pace.conditional_hours_at_observed_rate : null;
+          put('cc-eta-next-label', 'Verified recordings per hour');
+          put('cc-eta-next-value', Number.isFinite(rate) ? rate.toFixed(1) : 'Unknown');
+          put('cc-eta-next-scope', aligned ? number(pace.new_verified) + ' recordings reached Drive between ' + date(pace.started_at) + ' and ' + date(pace.ended_at) + '.' : 'Collection receipts cover every selected recording.');
+          put('cc-eta-first-label', 'Latest-20 audio completion');
+          put('cc-eta-first-value', selected.remaining_audio === 0 ? 'Complete' : Number.isFinite(estimate) ? estimate.toFixed(1) + ' h' : 'Unknown');
+          put('cc-eta-first-scope', selected.remaining_audio === 0 ? 'All ' + number(selected.total) + ' publicly listed selections have verified audio.' : number(selected.remaining_audio) + ' still need audio. The estimate assumes the observed rate continues and the remaining recordings become available.');
+          put('cc-eta-coverage', number(selected.verified_audio) + ' / ' + number(selected.total) + ' selected recordings have verified audio.');
+          put('cc-eta-date', date(statusSnapshot.generated_at));
+          put('cc-eta-basis-date', date(aligned ? pace.ended_at : statusSnapshot.generated_at));
+          put('cc-eta-calendar', (selected.remaining_audio === 0 ? 'The acquisition target was met by this checkpoint.' : 'A calendar finish depends on source availability.') + fiftyNote);
+          put('cc-eta-evidence', 'The coverage and pace use the same frozen recording selection.');
+          put('cc-eta-freshness', 'Coverage measured ' + date(statusSnapshot.generated_at) + '.');
+          return;
+        }
+        put('cc-eta-next-label', regularPriority ? 'Latest 20+ regular uploads' : 'Current mixed selection'); put('cc-eta-next-value', 'Unknown');
+        put('cc-eta-next-scope', number(selected.remaining_audio) + ' chosen recordings still need verified audio; unavailable items remain separate.');
+        put('cc-eta-first-label', 'Latest-20 audio completion'); put('cc-eta-first-value', 'Unknown');
+        put('cc-eta-first-scope', regularPriority ? 'A finish estimate needs recent Drive receipts for these public regular uploads.' : 'No representative finish estimate is established for the current mixed-format selection.');
+        put('cc-eta-coverage', number(selected.verified_audio) + ' / ' + number(selected.total) + ' current chosen recordings have verified audio.');
+        put('cc-eta-date', date(statusSnapshot.generated_at)); put('cc-eta-basis-date', date(data.current.measured_service?.ended_at));
+        put('cc-eta-calendar', 'A calendar finish depends on source availability.' + fiftyNote);
+        put('cc-eta-evidence', 'The dated historical estimate was generated ' + date(data.current.generated_at) + '.');
+        put('cc-eta-freshness', 'Current selection checkpoint ' + date(statusSnapshot.generated_at) + '.');
+        return;
+      }
       const current = data.current, next = current.next_recovery_batch, first = current.untouched_first_pass, service = current.measured_service;
       const nextMinutes = next.planning_active_hours?.map(v => v * 60);
       put('cc-eta-next-value', next.items === 0 ? 'Selected plan terminal' : Array.isArray(nextMinutes) && nextMinutes.every(Number.isFinite) ? nextMinutes.map(v => Math.round(v)).join('–') + ' active min' : 'Unknown');
@@ -294,9 +358,11 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       data.channels = data.channels.map(row => ({...row, qualified_youtube_only_audio: row.qualified_youtube_only_audio ?? 0}));
       const numeric = ['target','youtube_audio','publisher_only_audio','qualified_youtube_only_audio','audio_total','with_saved_text','remaining_audio'];
       if (!data.channels.every(row => typeof row.channel === 'string' && numeric.every(key => Number.isInteger(row[key]) && row[key] >= 0) && row.target <= 20 && row.youtube_audio + row.publisher_only_audio + row.qualified_youtube_only_audio === row.audio_total && row.audio_total + row.remaining_audio === row.target && row.with_saved_text <= row.audio_total)) throw new Error('invalid channel counts');
-      const stages = ['saved','downloading','processing','awaiting_upload','queued','other_pending'];
       const activity = data.activity;
-      const byChannel = new Map((Array.isArray(activity?.channels) ? activity.channels : []).map(row => [row.channel_dir, row]));
+      const activityRows = Array.isArray(activity?.channels) ? activity.channels : [];
+      const showSourceWaits = data.selection_basis === 'latest20plus_public_regular' || activityRows.some(row => row.waiting_for_source > 0);
+      const stages = ['saved','downloading','processing','awaiting_upload','queued', ...(showSourceWaits ? ['waiting_for_source'] : []), 'other_pending'];
+      const byChannel = new Map(activityRows.map(row => [row.channel_dir, {...row, waiting_for_source: row.waiting_for_source ?? 0}]));
       const activityValid = activity?.schema_version === 1 && byChannel.size === data.channels.length && data.channels.every(row => {
         const current = byChannel.get(row.channel_dir);
         return current && stages.every(field => Number.isInteger(current[field]) && current[field] >= 0) && current.saved === row.audio_total && current.target === row.target && stages.reduce((total, field) => total + current[field], 0) === row.target;
@@ -331,11 +397,11 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const qualifiedOnly = totals.qualified_youtube_only_audio ?? 0;
       put('cc-coverage-summary', number(totals.audio_available) + ' / ' + number(totals.latest20_target) + ' entries have saved audio: ' + number(totals.youtube_native_audio) + ' YouTube native recordings and ' + number(totals.publisher_only_audio) + ' additional publisher editions' + (qualifiedOnly ? ', plus ' + number(qualifiedOnly) + ' YouTube editions with unverified track and language' : '') + '. ' + number(totals.audio_with_saved_text) + ' have an audio edition with saved captions or a transcript.');
       const activityTotals = activityValid ? stages.reduce((result, field) => ({...result, [field]: channels.reduce((total, row) => total + row.activity[field], 0)}), {}) : null;
-      put('cc-coverage-activity', activityTotals ? 'At this checkpoint: ' + number(activityTotals.downloading) + ' transferring audio, ' + number(activityTotals.processing) + ' preparing or validating, and ' + number(activityTotals.awaiting_upload) + ' awaiting upload. ' + number(activityTotals.queued) + ' are queued in the running batch. In progress includes these three working stages; remaining entries need separate scheduling or recovery.' : 'Worker activity was not verified for this checkpoint; archived counts remain available.');
+      put('cc-coverage-activity', activityTotals ? number(activityTotals.downloading) + ' transferring audio, ' + number(activityTotals.processing) + ' preparing or validating, and ' + number(activityTotals.awaiting_upload) + ' awaiting upload. ' + number(activityTotals.queued) + ' are queued in the running batch.' + (showSourceWaits ? ' ' + number(activityTotals.waiting_for_source) + ' await a source. ' + number(activityTotals.other_pending) + ' are pending outside those stages.' : '') : 'Archived counts are available. Worker activity at this checkpoint is unknown.');
       const activityDownload = document.getElementById('cc-activity-download');
       if (activityDownload && activityValid) {
         const csvCell = value => { let text = String(value); if ([61,43,45,64].includes(text.trimStart().charCodeAt(0)) || [9,10,13].includes(text.charCodeAt(0))) text = "'" + text; return '"' + text.replaceAll('"', '""') + '"'; };
-        const records = [['Creator','Target','Saved audio','Downloading','Preparing or validating','Awaiting upload','Queued','Other pending'], ...channels.map(row => [row.channel,row.target,...stages.map(field => row.activity[field])])];
+        const records = [['Creator','Target','Saved audio','Downloading','Preparing or validating','Awaiting upload','Queued', ...(showSourceWaits ? ['Waiting for source'] : []), 'Other pending'], ...channels.map(row => [row.channel,row.target,...stages.map(field => row.activity[field])])];
         const newline = String.fromCharCode(13,10);
         const url = URL.createObjectURL(new Blob([String.fromCharCode(0xfeff) + records.map(row => row.map(csvCell).join(',')).join(newline) + newline], {type:'text/csv;charset=utf-8'}));
         activityDownload.href = url; activityDownload.hidden = false;
@@ -343,13 +409,88 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       }
       put('cc-coverage-date', date(data.generated_at));
       render();
+      return {generated_at: data.generated_at, channels: data.channels.length, target: totals.latest20_target};
     } catch (_) {
       body.replaceChildren(); const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 9; td.className = 'cc-left'; td.textContent = 'The channel coverage checkpoint could not be loaded.'; tr.append(td); body.append(tr);
       put('cc-coverage-summary', 'Channel coverage is unavailable. Use the dated collection snapshot above.');
       put('cc-coverage-date', 'unavailable'); put('cc-coverage-shown', ''); search.disabled = true; filter.disabled = true;
     }
   }
-  const loadCollection = () => { collectionStatus(); collectionEta(); collectionCoverage(); };
+  async function collectionClosure(statusSnapshot, coverage) {
+    // The owner's close and the finished transcription run come from plan/collection_state.json
+    // (pipeline/collection_state.py). The receipt snapshot above stays visible as the earlier checkpoint.
+    const banner = document.getElementById('cc-closure');
+    const whole = (value) => Number.isInteger(value) && value >= 0;
+    const utc = (value, options) => { const d = new Date(value); return Number.isNaN(d.getTime()) ? 'date unavailable' : new Intl.DateTimeFormat('en-GB', {timeZone:'UTC', ...options}).format(d); };
+    const day = (value) => utc(value, {day:'numeric', month:'long', year:'numeric'});
+    const clock = (value) => utc(value, {hour:'2-digit', minute:'2-digit', hourCycle:'h23'}) + ' UTC';
+    try {
+      const response = await fetch(BASE + 'collection_state.json', {cache:'no-cache'});
+      if (!response.ok) throw new Error('state unavailable');
+      const s = await response.json();
+      const selection = s.selection || {}, d = s.downloads || {}, t = s.transcription || {};
+      if (s.schema_version !== 1 || s.scope !== 'latest20_collection_state' || d.state !== 'closed'
+          || ![selection.recordings, selection.creators, d.archived_with_verified_audio, d.final_failures].every(whole)
+          || d.archived_with_verified_audio + d.final_failures !== selection.recordings) throw new Error('unexpected state');
+      const finished = t.state === 'finished' && whole(t.audio_files) && whole(t.audio_files_transcribed) && t.audio_files_transcribed <= t.audio_files && Number.isFinite(t.hours_transcribed);
+      const hours = (value) => Number.isFinite(value) ? value.toFixed(1) : '—';
+      const reasonText = {provider_refusal_http_403: (n) => number(n) + ' refused by the media provider with HTTP 403', metadata_lookup_failure: (n) => number(n) + (n === 1 ? ' failed its' : ' failed their') + ' metadata lookup'};
+      const reasons = Object.entries(d.final_failures_by_reason || {}).filter(([key, n]) => reasonText[key] && whole(n)).map(([key, n]) => reasonText[key](n));
+      const languages = Array.isArray(t.languages) ? t.languages.filter((row) => row && typeof row.language === 'string' && whole(row.audio_files)) : [];
+      const words = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+      const count = (n) => n < words.length ? words[n] : number(n);
+      const stamp = (value) => day(value) + ', ' + clock(value);
+      put('cc-closure-heading', 'Downloads closed. ' + (finished ? 'Transcription finished.' : 'Transcription not finished.'));
+      put('cc-closure-summary', 'The owner closed the latest-20 download goal on ' + day(d.closed_at_utc) + ': ' + number(d.archived_with_verified_audio) + ' of the ' + number(selection.recordings) + ' selected recordings from ' + number(selection.creators) + ' channels are archived with verified audio. The other ' + number(d.final_failures) + ' are final failures and are not retried.' + (finished ? ' The local speech-to-text run finished ' + (day(t.finished_at_utc) === day(d.closed_at_utc) ? 'the same day' : 'on ' + day(t.finished_at_utc)) + ' at ' + clock(t.finished_at_utc) + ': ' + number(t.audio_files_transcribed) + ' of ' + number(t.audio_files) + ' audio files, ' + hours(t.hours_transcribed) + ' hours' + (languages.length ? ', in ' + count(languages.length) + ' languages' : '') + '.' : ''));
+      put('cc-current-state', 'Downloads closed');
+      const pill = document.getElementById('cc-current-state'); if (pill) pill.dataset.state = 'closed';
+      put('cc-current-explanation', 'Closed by the owner on ' + day(d.closed_at_utc) + ' at ' + clock(d.closed_at_utc) + '. ' + (reasons.length ? 'Of the ' + number(d.final_failures) + ' final failures, ' + reasons.join(' and ') + '. ' : '') + (d.drive_verification && whole(d.drive_verification.recordings_matching) ? 'The Drive check of ' + day(d.drive_verification.finished_at_utc) + ', ' + clock(d.drive_verification.finished_at_utc) + ', matched the audio and provenance objects of all ' + number(d.drive_verification.recordings_matching) + ' archived recordings. ' : '') + 'The collector stays stopped; no download is scheduled.');
+      put('cc-verified', number(d.archived_with_verified_audio));
+      put('cc-verified-label', 'of ' + number(selection.recordings) + ' selected recordings have audio verified on Drive');
+      put('cc-awaiting', number(d.final_failures)); put('cc-awaiting-label', 'Final download failures, not retried');
+      put('cc-channels', number(selection.creators)); put('cc-channels-label', 'Channels in the frozen selection');
+      put('cc-indexed', finished ? number(t.audio_files_transcribed) : '—'); put('cc-indexed-label', 'Audio files transcribed' + (whole(t.audio_files) ? ', of ' + number(t.audio_files) : ''));
+      const holder = document.getElementById('cc-closure-stages');
+      if (holder) {
+        holder.replaceChildren();
+        const stages = [
+          ['Latest 20 per channel', number(selection.recordings) + ' recordings', number(d.archived_with_verified_audio) + ' archived · ' + number(d.final_failures) + ' final failures · closed', d.archived_with_verified_audio, selection.recordings],
+          ['Speech to text', (whole(t.audio_files) ? number(t.audio_files) : '—') + ' audio files', finished ? number(t.audio_files_transcribed) + ' transcribed · finished ' + utc(t.finished_at_utc, {day:'numeric', month:'short'}) + ', ' + clock(t.finished_at_utc) : 'Not finished', finished ? t.audio_files_transcribed : 0, whole(t.audio_files) ? t.audio_files : 1],
+          ['Extend to 50', 'Not started', 'Later, after the analysis rounds; no download is scheduled', null, null],
+        ];
+        stages.forEach(([label, total, caption, value, max], i) => {
+          const item = document.createElement('li'); item.className = 'cc-stage'; item.dataset.state = value === null ? 'waiting' : 'complete';
+          const ordinal = document.createElement('span'); ordinal.className = 'cc-stage-order'; ordinal.textContent = String(i + 1).padStart(2, '0');
+          const title = document.createElement('h3'); title.textContent = label;
+          const amount = document.createElement('p'); amount.className = 'cc-stage-total'; amount.textContent = total;
+          const note = document.createElement('p'); note.className = 'cc-stage-caption'; note.textContent = caption;
+          item.append(ordinal, title, amount, note);
+          if (value !== null) { const bar = document.createElement('progress'); bar.max = Math.max(1, max); bar.value = value; bar.setAttribute('aria-label', label + ': ' + number(value) + ' of ' + number(max)); item.append(bar); }
+          holder.append(item);
+        });
+        holder.hidden = false;
+      }
+      const links = document.getElementById('cc-closure-links'); if (links) links.hidden = false;
+      const earlier = document.getElementById('cc-earlier');
+      if (earlier) earlier.open = false;
+      put('cc-earlier-summary', 'Earlier checkpoint of the open collection' + (statusSnapshot ? ' · ' + stamp(statusSnapshot.generated_at) + (whole(statusSnapshot.counts?.channels) ? ' · ' + number(statusSnapshot.counts.channels) + '-channel queue' : '') : ''));
+      if (coverage) {
+        put('cc-coverage-closure-text', 'This table is the checkpoint of ' + stamp(coverage.generated_at) + ', taken while collection was open, for the earlier queue of ' + number(coverage.channels) + ' channels and ' + number(coverage.target) + ' recordings. The final outcome for each of the ' + number(selection.creators) + ' channels in the frozen selection is in the closure record.');
+        const note = document.getElementById('cc-coverage-closure'); if (note) note.hidden = false;
+      }
+      if (banner) { banner.hidden = false; banner.dataset.state = 'closed'; }
+      return s;
+    } catch (_) {
+      put('cc-closure-heading', 'Collection record unavailable');
+      put('cc-closure-summary', 'The record of the closed collection could not be loaded. The dated checkpoint below may be out of date.');
+      if (banner) banner.hidden = false;
+      return null;
+    }
+  }
+  const loadCollection = () => {
+    const status = collectionStatus().then(async (snapshot) => { await collectionEta(snapshot); return snapshot; });
+    Promise.all([status, collectionCoverage()]).then(([snapshot, coverage]) => collectionClosure(snapshot, coverage));
+  };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadCollection, {once:true}); else loadCollection();
 })();
 </script>
@@ -475,6 +616,20 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
 .cc-operation { flex:none; border:1px solid var(--color-border-line); padding:6px 10px; font-size:12px; font-weight:600; border-radius:3px; }
 .cc-operation[data-state="cooldown"] { color:var(--color-warn); background:color-mix(in srgb,var(--color-warn) 8%,var(--color-panel)); border-color:color-mix(in srgb,var(--color-warn) 35%,var(--color-border-line)); }
 .cc-operation[data-state="verified"] { color:var(--color-ok); border-color:var(--color-ok); }
+.cc-operation[data-state="closed"] { color:var(--color-ok); border-color:var(--color-ok); background:color-mix(in srgb,var(--color-ok) 7%,var(--color-panel)); }
+.cc-closure { padding:24px 28px; border:1px solid var(--color-border-line); border-inline-start:4px solid var(--color-ok); background:color-mix(in srgb,var(--color-ok) 5%,var(--color-panel)); scroll-margin-top:20px; }
+.cc-closure[hidden],.cc-stages[hidden],.cc-coverage-closure[hidden] { display:none; }
+.cc-closure h2 { margin:6px 0 0; font:400 28px/1.2 var(--font-anthropic-serif); letter-spacing:-.02em; text-wrap:balance; }
+.cc-closure p { margin:10px 0 0; max-width:80ch; font-size:14px; line-height:1.6; }
+.cc-closure .cc-eyebrow { margin:0; font-size:11px; }
+.cc-closure .cc-closure-links { font-size:13px; }
+.cc-closure-stages { margin:0 0 4px; }
+.cc-earlier { margin-top:18px; }
+.cc-earlier>summary { cursor:pointer; padding:12px 0; color:var(--color-ok); font-size:13px; font-weight:600; }
+.cc-earlier>summary:focus-visible { outline:2px solid var(--color-fg); outline-offset:3px; }
+.cc-earlier[open]>summary { margin-bottom:10px; }
+.cc-coverage-closure { color:var(--color-fg); border-inline-start:3px solid var(--color-ok); padding-inline-start:12px; }
+@media(max-width:760px) { .cc-closure { padding:18px; } .cc-closure h2 { font-size:24px; } }
 .cc-current-explanation { margin:14px 0 24px; color:var(--color-fg-muted); font-size:14px; max-width:76ch; }
 .cc-current-metrics { display:grid; grid-template-columns:1.5fr repeat(3,1fr); padding:4px 0 26px; gap:18px; }
 .cc-current-metrics>div { min-width:0; border-inline-start:1px solid var(--color-border-line); padding-inline-start:18px; }
@@ -567,21 +722,29 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
 <div class="cc-page">
   <header class="cc-hero" id="top">
     <p class="cc-eyebrow">Channeling research archive / Collection</p>
-    <div class="cc-hero-row"><h1 class="cc-title">Building the archive.</h1><p class="cc-lede">Follow what has reached Drive, what is waiting, and where the research corpus stands.</p></div>
-    <p class="cc-hero-note">Native audio, source metadata and available English captions. Transcription follows only where usable text is missing.</p>
+    <div class="cc-hero-row"><h1 class="cc-title">What the archive holds.</h1><p class="cc-lede">What reached Drive from the latest-20 selection, what could not be downloaded, and where the research corpus stands.</p></div>
+    <p class="cc-hero-note">Native audio, source metadata and available English captions. Archived audio without usable text was transcribed on a local GPU.</p>
   </header>
   <div class="cc-workspace">
     <aside class="cc-rail"><nav class="cc-nav" aria-label="Collection sections"><div class="cc-nav-group"><p>Collection</p><a class="cc-nav-link" href="#collection-current" data-go="collection-current">Current collection</a><a class="cc-nav-link" href="#channel-downloads" data-go="channel-downloads">Channel downloads</a><a class="cc-nav-link" href="#archive-overview" data-go="archive-overview">Historical archive</a></div><div class="cc-nav-group"><p>Archive & sources</p><a class="cc-nav-link" href="#people-states" data-go="people-states">Coverage by state</a><a class="cc-nav-link" href="#sources" data-go="sources">Sources & links</a><a class="cc-nav-link" href="#methods" data-go="methods">Collection methods</a><a class="cc-nav-link" href="#everyone" data-go="everyone">People & groups</a><a class="cc-nav-link" href="#bashar" data-go="bashar">Bashar recordings</a><a class="cc-nav-link" href="#interviews" data-go="interviews">Interviews</a><a class="cc-nav-link" href="#per-person" data-go="per-person">Texts by person</a><a class="cc-nav-link" href="#audio-behind" data-go="audio-behind">Audio & transcripts</a></div><div class="cc-nav-group"><p>Research</p><a class="cc-nav-link" href="#predictions" data-go="predictions">Prediction candidates</a><a class="cc-nav-link" href="#keywords" data-go="keywords">Title keywords</a><a class="cc-nav-link" href="#blackouts" data-go="blackouts">Blackout references</a><a class="cc-nav-link" href="#contacts" data-go="contacts">Websites & contacts</a></div></nav><a class="cc-rail-top" href="#top">Back to top &uarr;</a></aside>
     <main class="cc-main" id="collection-content">
+      <section class="cc-closure" id="cc-closure" aria-labelledby="cc-closure-heading" hidden>
+        <p class="cc-eyebrow">Collection record</p>
+        <h2 id="cc-closure-heading">Reading the collection record&hellip;</h2>
+        <p id="cc-closure-summary"></p>
+        <p class="cc-closure-links" id="cc-closure-links"><a href="../findings/">Transcript findings and experiments</a> &middot; <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/knowledge-transfer/analysis-handoff-2026-11-20.md">Analysis handoff</a> &middot; <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/knowledge-transfer/evidence/2026-11-20-close/README.md">Evidence of the close</a> &middot; <a href="../../knowledge-transfer/evidence/2026-11-20-close/failed-links/index.html">Failed links and reasons</a></p>
+      </section>
       <section class="cc-current" id="collection-current" tabindex="-1" aria-labelledby="cc-current-heading">
-        <div class="cc-current-top"><div><p class="cc-eyebrow">Current collection &middot; YouTube</p><h2 id="cc-current-heading">Newest first. Every channel.</h2></div><span class="cc-operation" id="cc-current-state" role="status">Loading snapshot</span></div>
+        <div class="cc-current-top"><div><p class="cc-eyebrow">Latest-20 collection &middot; YouTube</p><h2 id="cc-current-heading">Newest first. Every channel.</h2></div><span class="cc-operation" id="cc-current-state" role="status">Loading the record</span></div>
         <p class="cc-current-explanation" id="cc-current-explanation">Reading the latest collection counts&hellip;</p>
         <div class="cc-current-metrics">
-          <div class="cc-primary-metric"><span class="cc-metric-number" id="cc-verified">&mdash;</span><span class="cc-metric-label">Native audio + metadata pairs verified on Drive</span></div>
-          <div><span class="cc-metric-number" id="cc-awaiting">&mdash;</span><span class="cc-metric-label">Downloaded, awaiting upload</span></div>
-          <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label">Channels in this pass</span></div>
-          <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label">Items in the full index</span></div>
+          <div class="cc-primary-metric"><span class="cc-metric-number" id="cc-verified">&mdash;</span><span class="cc-metric-label" id="cc-verified-label">Native YouTube audio and metadata pairs verified on Drive</span></div>
+          <div><span class="cc-metric-number" id="cc-awaiting">&mdash;</span><span class="cc-metric-label" id="cc-awaiting-label">Downloaded, awaiting upload</span></div>
+          <div><span class="cc-metric-number" id="cc-channels">&mdash;</span><span class="cc-metric-label" id="cc-channels-label">Channels in this pass</span></div>
+          <div><span class="cc-metric-number" id="cc-indexed">&mdash;</span><span class="cc-metric-label" id="cc-indexed-label">Items in the full index</span></div>
         </div>
+        <ol class="cc-stages cc-closure-stages" id="cc-closure-stages" aria-label="Collection and transcription" hidden></ol>
+        <details class="cc-earlier" id="cc-earlier" open><summary id="cc-earlier-summary">Collection checkpoint details</summary>
         <section class="cc-eta" id="collection-eta" aria-labelledby="cc-eta-heading">
           <h3 id="cc-eta-heading">How long will collection take?</h3>
           <p id="cc-eta-coverage">Reading coverage from the saved estimate&hellip;</p>
@@ -609,12 +772,14 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         <div class="cc-current-foot"><div><span class="cc-storage-label">Project storage <b id="cc-local-storage">&mdash;</b></span><meter id="cc-storage-meter" min="0" max="17000000000" value="0" aria-label="Project storage used"></meter></div><p>Up to <b id="cc-workers">4</b> download workers<br><span id="cc-final-policy">Final-round policy is shown with the collection snapshot.</span></p></div>
         <p class="cc-snapshot-time">Collection snapshot <time id="cc-current-date">loading</time>. Counts reflect saved receipts, not a live connection.</p>
         <p class="cc-snapshot-time" id="cc-legacy-summary"></p>
+        </details>
       </section>
       <section class="cc-coverage" id="channel-downloads" aria-labelledby="cc-coverage-heading">
-        <p class="cc-eyebrow">Latest-20 download coverage</p>
+        <p class="cc-eyebrow">Latest 20+ videos</p>
         <h2 id="cc-coverage-heading">Every channel, at a glance.</h2>
         <p id="cc-coverage-summary" class="cc-coverage-note">Reading verified audio and text coverage&hellip;</p>
-        <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. Targets use up to 20 indexed videos per channel. Publisher editions keep their own source labels. Other YouTube editions have unverified original track and spoken language. Text availability does not establish transcription accuracy.</p>
+        <p class="cc-coverage-note">Saved checkpoint <time id="cc-coverage-date">loading</time>. The latest 20 public regular uploads on each channel qualify at any date or duration. Publisher editions carry their own source labels. The YouTube editions column counts recordings whose original track and spoken language still need review.</p>
+        <p class="cc-coverage-note cc-coverage-closure" id="cc-coverage-closure" hidden><span id="cc-coverage-closure-text"></span> <a href="../../knowledge-transfer/evidence/2026-11-20-close/creator-status.csv" download>Final outcome per creator (CSV)</a> &middot; <a href="../../knowledge-transfer/evidence/2026-11-20-close/failed-links/index.html">Failed links and reasons</a></p>
         <div class="cc-coverage-controls">
           <label for="cc-coverage-search">Find a channel<input type="search" id="cc-coverage-search" placeholder="Channel name" autocomplete="off"></label>
           <label for="cc-coverage-filter">Show<select id="cc-coverage-filter"><option value="all">All channels</option><option value="active">Working now</option><option value="audio">Audio still needed</option><option value="text">Saved audio needs text</option></select></label>

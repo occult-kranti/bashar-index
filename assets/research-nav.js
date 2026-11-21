@@ -42,8 +42,8 @@
   if (existingSkip && /skip/i.test(existingSkip.textContent)) document.body.prepend(existingSkip);
   const context = {
     bashar: ['BASHAR REFERENCE INDEX', 'September 2026 research edition. Browse the original catalogue, or open the cross-channel prediction timeline.', 'Explore predictions', 'et-channelers/dashboard/predictions.html'],
-    atlas: ['ATLAS · 23 OCTOBER 2026 SNAPSHOT', 'People, entities and source records from the published research edition. New collection progress is tracked separately.', 'See current collection', 'et-channelers/dashboard/collection/'],
-    report: ['RESEARCH REPORT · FROZEN EVIDENCE', 'Findings below describe the 23 October 2026 sample. The current collection does not change these results.', 'Browse all dashboards', 'dashboards/']
+    atlas: ['ATLAS · 23 OCTOBER 2026 SNAPSHOT', 'People, entities and source records from the published research edition. The latest-20 collection and its transcript findings are tracked separately.', 'See transcript findings', 'et-channelers/dashboard/findings/'],
+    report: ['RESEARCH REPORT · FROZEN EVIDENCE', 'Findings below describe the 23 October 2026 sample. The latest-20 collection and its transcripts do not change these results.', 'Browse all dashboards', 'dashboards/']
   }[current];
   if (main && context) {
     const aside = document.createElement('aside'); aside.className = 'rs-context'; aside.setAttribute('aria-label', 'Research edition');

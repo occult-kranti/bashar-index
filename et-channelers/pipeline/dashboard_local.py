@@ -35,7 +35,7 @@ HEAD = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Collection · Channeling research archive</title>
-<meta name="description" content="Follow the newest YouTube collection, its verified audio and metadata, and the historical research archive.">
+<meta name="description" content="The closed latest-20 YouTube collection: verified audio and metadata, the final download failures, the finished transcription run and the historical research archive.">
 <link rel="stylesheet" href="../../../assets/research-nav.css">
 <script defer src="../../../assets/research-nav.js" data-page="collection"></script>
 <style>
@@ -155,7 +155,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
   Promise.all(NAMES.map(load)).then(schedule);
   function put(id, value) { const el = document.getElementById(id); if (el) el.textContent = value; }
   function number(value) { return Number.isFinite(+value) ? (+value).toLocaleString('en-US') : '—'; }
-  function date(value) { const d = new Date(value); return Number.isNaN(d.getTime()) ? 'Date unavailable' : new Intl.DateTimeFormat('en-US', {dateStyle:'medium', timeStyle:'short'}).format(d); }
+  function date(value) { const d = new Date(value); return Number.isNaN(d.getTime()) ? 'Date unavailable' : new Intl.DateTimeFormat('en-US', {dateStyle:'medium', timeStyle:'short', timeZone:'UTC'}).format(d) + ' UTC'; }
   async function collectionStatus() {
     try {
       const response = await fetch(BASE + 'ingestion_status.json', {cache:'no-cache'});
@@ -440,13 +440,88 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       }
       put('cc-coverage-date', date(data.generated_at));
       render();
+      return {generated_at: data.generated_at, channels: data.channels.length, target: totals.latest20_target};
     } catch (_) {
       body.replaceChildren(); const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 9; td.className = 'cc-left'; td.textContent = 'The channel coverage checkpoint could not be loaded.'; tr.append(td); body.append(tr);
       put('cc-coverage-summary', 'Channel coverage is unavailable. Use the dated collection snapshot above.');
       put('cc-coverage-date', 'unavailable'); put('cc-coverage-shown', ''); search.disabled = true; filter.disabled = true;
     }
   }
-  const loadCollection = () => { collectionStatus().then(collectionEta); collectionCoverage(); };
+  async function collectionClosure(statusSnapshot, coverage) {
+    // The owner's close and the finished transcription run come from plan/collection_state.json
+    // (pipeline/collection_state.py). The receipt snapshot above stays visible as the earlier checkpoint.
+    const banner = document.getElementById('cc-closure');
+    const whole = (value) => Number.isInteger(value) && value >= 0;
+    const utc = (value, options) => { const d = new Date(value); return Number.isNaN(d.getTime()) ? 'date unavailable' : new Intl.DateTimeFormat('en-GB', {timeZone:'UTC', ...options}).format(d); };
+    const day = (value) => utc(value, {day:'numeric', month:'long', year:'numeric'});
+    const clock = (value) => utc(value, {hour:'2-digit', minute:'2-digit', hourCycle:'h23'}) + ' UTC';
+    try {
+      const response = await fetch(BASE + 'collection_state.json', {cache:'no-cache'});
+      if (!response.ok) throw new Error('state unavailable');
+      const s = await response.json();
+      const selection = s.selection || {}, d = s.downloads || {}, t = s.transcription || {};
+      if (s.schema_version !== 1 || s.scope !== 'latest20_collection_state' || d.state !== 'closed'
+          || ![selection.recordings, selection.creators, d.archived_with_verified_audio, d.final_failures].every(whole)
+          || d.archived_with_verified_audio + d.final_failures !== selection.recordings) throw new Error('unexpected state');
+      const finished = t.state === 'finished' && whole(t.audio_files) && whole(t.audio_files_transcribed) && t.audio_files_transcribed <= t.audio_files && Number.isFinite(t.hours_transcribed);
+      const hours = (value) => Number.isFinite(value) ? value.toFixed(1) : '—';
+      const reasonText = {provider_refusal_http_403: (n) => number(n) + ' refused by the media provider with HTTP 403', metadata_lookup_failure: (n) => number(n) + (n === 1 ? ' failed its' : ' failed their') + ' metadata lookup'};
+      const reasons = Object.entries(d.final_failures_by_reason || {}).filter(([key, n]) => reasonText[key] && whole(n)).map(([key, n]) => reasonText[key](n));
+      const languages = Array.isArray(t.languages) ? t.languages.filter((row) => row && typeof row.language === 'string' && whole(row.audio_files)) : [];
+      const words = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+      const count = (n) => n < words.length ? words[n] : number(n);
+      const stamp = (value) => day(value) + ', ' + clock(value);
+      put('cc-closure-heading', 'Downloads closed. ' + (finished ? 'Transcription finished.' : 'Transcription not finished.'));
+      put('cc-closure-summary', 'The owner closed the latest-20 download goal on ' + day(d.closed_at_utc) + ': ' + number(d.archived_with_verified_audio) + ' of the ' + number(selection.recordings) + ' selected recordings from ' + number(selection.creators) + ' channels are archived with verified audio. The other ' + number(d.final_failures) + ' are final failures and are not retried.' + (finished ? ' The local speech-to-text run finished ' + (day(t.finished_at_utc) === day(d.closed_at_utc) ? 'the same day' : 'on ' + day(t.finished_at_utc)) + ' at ' + clock(t.finished_at_utc) + ': ' + number(t.audio_files_transcribed) + ' of ' + number(t.audio_files) + ' audio files, ' + hours(t.hours_transcribed) + ' hours' + (languages.length ? ', in ' + count(languages.length) + ' languages' : '') + '.' : ''));
+      put('cc-current-state', 'Downloads closed');
+      const pill = document.getElementById('cc-current-state'); if (pill) pill.dataset.state = 'closed';
+      put('cc-current-explanation', 'Closed by the owner on ' + day(d.closed_at_utc) + ' at ' + clock(d.closed_at_utc) + '. ' + (reasons.length ? 'Of the ' + number(d.final_failures) + ' final failures, ' + reasons.join(' and ') + '. ' : '') + (d.drive_verification && whole(d.drive_verification.recordings_matching) ? 'The Drive check of ' + day(d.drive_verification.finished_at_utc) + ', ' + clock(d.drive_verification.finished_at_utc) + ', matched the audio and provenance objects of all ' + number(d.drive_verification.recordings_matching) + ' archived recordings. ' : '') + 'The collector stays stopped; no download is scheduled.');
+      put('cc-verified', number(d.archived_with_verified_audio));
+      put('cc-verified-label', 'of ' + number(selection.recordings) + ' selected recordings have audio verified on Drive');
+      put('cc-awaiting', number(d.final_failures)); put('cc-awaiting-label', 'Final download failures, not retried');
+      put('cc-channels', number(selection.creators)); put('cc-channels-label', 'Channels in the frozen selection');
+      put('cc-indexed', finished ? number(t.audio_files_transcribed) : '—'); put('cc-indexed-label', 'Audio files transcribed' + (whole(t.audio_files) ? ', of ' + number(t.audio_files) : ''));
+      const holder = document.getElementById('cc-closure-stages');
+      if (holder) {
+        holder.replaceChildren();
+        const stages = [
+          ['Latest 20 per channel', number(selection.recordings) + ' recordings', number(d.archived_with_verified_audio) + ' archived · ' + number(d.final_failures) + ' final failures · closed', d.archived_with_verified_audio, selection.recordings],
+          ['Speech to text', (whole(t.audio_files) ? number(t.audio_files) : '—') + ' audio files', finished ? number(t.audio_files_transcribed) + ' transcribed · finished ' + utc(t.finished_at_utc, {day:'numeric', month:'short'}) + ', ' + clock(t.finished_at_utc) : 'Not finished', finished ? t.audio_files_transcribed : 0, whole(t.audio_files) ? t.audio_files : 1],
+          ['Extend to 50', 'Not started', 'Later, after the analysis rounds; no download is scheduled', null, null],
+        ];
+        stages.forEach(([label, total, caption, value, max], i) => {
+          const item = document.createElement('li'); item.className = 'cc-stage'; item.dataset.state = value === null ? 'waiting' : 'complete';
+          const ordinal = document.createElement('span'); ordinal.className = 'cc-stage-order'; ordinal.textContent = String(i + 1).padStart(2, '0');
+          const title = document.createElement('h3'); title.textContent = label;
+          const amount = document.createElement('p'); amount.className = 'cc-stage-total'; amount.textContent = total;
+          const note = document.createElement('p'); note.className = 'cc-stage-caption'; note.textContent = caption;
+          item.append(ordinal, title, amount, note);
+          if (value !== null) { const bar = document.createElement('progress'); bar.max = Math.max(1, max); bar.value = value; bar.setAttribute('aria-label', label + ': ' + number(value) + ' of ' + number(max)); item.append(bar); }
+          holder.append(item);
+        });
+        holder.hidden = false;
+      }
+      const links = document.getElementById('cc-closure-links'); if (links) links.hidden = false;
+      const earlier = document.getElementById('cc-earlier');
+      if (earlier) earlier.open = false;
+      put('cc-earlier-summary', 'Earlier checkpoint of the open collection' + (statusSnapshot ? ' · ' + stamp(statusSnapshot.generated_at) + (whole(statusSnapshot.counts?.channels) ? ' · ' + number(statusSnapshot.counts.channels) + '-channel queue' : '') : ''));
+      if (coverage) {
+        put('cc-coverage-closure-text', 'This table is the checkpoint of ' + stamp(coverage.generated_at) + ', taken while collection was open, for the earlier queue of ' + number(coverage.channels) + ' channels and ' + number(coverage.target) + ' recordings. The final outcome for each of the ' + number(selection.creators) + ' channels in the frozen selection is in the closure record.');
+        const note = document.getElementById('cc-coverage-closure'); if (note) note.hidden = false;
+      }
+      if (banner) { banner.hidden = false; banner.dataset.state = 'closed'; }
+      return s;
+    } catch (_) {
+      put('cc-closure-heading', 'Collection record unavailable');
+      put('cc-closure-summary', 'The record of the closed collection could not be loaded. The dated checkpoint below may be out of date.');
+      if (banner) banner.hidden = false;
+      return null;
+    }
+  }
+  const loadCollection = () => {
+    const status = collectionStatus().then(async (snapshot) => { await collectionEta(snapshot); return snapshot; });
+    Promise.all([status, collectionCoverage()]).then(([snapshot, coverage]) => collectionClosure(snapshot, coverage));
+  };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadCollection, {once:true}); else loadCollection();
 })();
 </script>

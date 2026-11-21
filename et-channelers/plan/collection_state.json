@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "scope": "latest20_collection_state",
+  "as_of_utc": "2026-11-20T19:56:00Z",
+  "selection": {
+    "sha256": "adb76d392fa9eded77e03fb41687a630fb82a17fb3de21af504092710b08fd01",
+    "recordings": 1976,
+    "creators": 101,
+    "label": "Newest 20 public uploads on each creator's Videos tab"
+  },
+  "downloads": {
+    "state": "closed",
+    "closed_by": "owner",
+    "closed_at_utc": "2026-11-20T04:57:21Z",
+    "retried": false,
+    "archived_with_verified_audio": 1946,
+    "final_failures": 30,
+    "final_failures_by_reason": {
+      "provider_refusal_http_403": 29,
+      "metadata_lookup_failure": 1
+    },
+    "archived_by_source": {
+      "youtube_native": 1304,
+      "youtube_track_unverified": 464,
+      "publisher_edition": 178
+    },
+    "creators_complete": 80,
+    "receipt_checkpoint_utc": "2026-11-20T01:16:52Z",
+    "drive_verification": {
+      "finished_at_utc": "2026-11-20T01:56:31Z",
+      "recordings_matching": 1946,
+      "discrepancies": 0
+    },
+    "decision_record_sha256": "1afb3e83784911b4badf7428e9e554ff0174e5c36528bcbf0dacfa87759a7c8f",
+    "failed_links_csv_sha256": "06989aec97962a7179602f7a356b886980a5d52a807b6d87e2490df3110b628a"
+  },
+  "transcription": {
+    "state": "finished",
+    "finished_at_utc": "2026-11-20T19:56:00Z",
+    "audio_files": 1729,
+    "audio_files_transcribed": 1697,
+    "not_transcribed": 32,
+    "hours": 746.3,
+    "hours_transcribed": 742.9,
+    "words": 5832446,
+    "hours_without_speech": 93.7,
+    "share_without_speech": 0.126,
+    "languages": [
+      {
+        "language": "English",
+        "audio_files": 1616
+      },
+      {
+        "language": "Japanese",
+        "audio_files": 30
+      },
+      {
+        "language": "Spanish",
+        "audio_files": 19
+      },
+      {
+        "language": "Portuguese",
+        "audio_files": 18
+      },
+      {
+        "language": "German",
+        "audio_files": 8
+      },
+      {
+        "language": "Czech",
+        "audio_files": 5
+      },
+      {
+        "language": "Finnish",
+        "audio_files": 1
+      }
+    ]
+  },
+  "evidence": {
+    "close": "knowledge-transfer/evidence/2026-11-20-close/",
+    "transcription_tables": "research/transcription-run-2026-11-20/tables/",
+    "analysis_handoff": "knowledge-transfer/analysis-handoff-2026-11-20.md"
+  }
+}
