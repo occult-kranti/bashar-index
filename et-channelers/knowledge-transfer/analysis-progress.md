@@ -5,7 +5,7 @@ Where the analysis of the latest-20 cohort stands, stage by stage, and when the 
 | Stage | State | Expected end (UTC) |
 |---|---|---|
 | Pilot round 2: voice and asks, all single-factor experiments, decision | done | - |
-| Known-answer battery for every instrument | running | 21 Nov 06:49 |
+| Known-answer battery for every instrument | done | - |
 | Gate runs on the check sample: forecasts, sentence codes, titles | done | - |
 | Freeze integration: all instruments in production and freeze, hold-out paths | done | - |
 | Analysis code for H1, H2, H4, H5, H6, H9, tested on simulations | done | - |
@@ -18,17 +18,17 @@ Where the analysis of the latest-20 cohort stands, stage by stage, and when the 
 | Forecast critic: relayed forecasts follow the codebook; forecast gates rerun | done | - |
 | Voice revision (the one allowed) and gate rerun on the check sample | done | - |
 | Freeze 1: config, hashes, registry entry committed | done | - |
-| Hypothesis code follow-ups of the 04:55 decisions; A10 text aligned and verified | running | 21 Nov 07:26 |
-| Privacy fixes merged; Pages and hosted findings dashboards republished | running | 21 Nov 07:55 |
-| Paper rewritten as a measurement-and-protocol paper (first-round results as placeholders), reviewed | running | 21 Nov 09:52 |
-| Labels for the 71 seen creators, all instruments (small-model stages standard, the rest batch at about 40 min per wave; forecasts need four waves) | running | 21 Nov 11:10 |
-| Freeze 2: constants from seen labels, amendment A10, analysis code hashed | waiting | 21 Nov 12:10 |
-| Labels for the hold-out and other creators (same interfaces and waves as the seen run) | waiting | 21 Nov 15:10 |
-| Reliability runs on the hold-out sample (repeats, rewordings, altered inputs) | waiting | 21 Nov 14:10 |
-| Registered tests H1, H2, H4, H5, H6, H9 with verdicts under A5 and A10 | waiting | 21 Nov 15:55 |
-| Results table, dashboards and paper updated and merged | waiting | 21 Nov 17:25 |
+| Hypothesis code rounds 3 to 5 (06:44, 09:19, 11:08 decisions), seen feature files; A10 text aligned and verified | running | 21 Nov 12:59 |
+| Privacy fixes merged; Pages and hosted findings dashboards republished | done | - |
+| Paper rewritten as a measurement-and-protocol paper, second pass (length, reviews; first-round results as placeholders) | running | 21 Nov 13:40 |
+| Labels for the 71 seen creators, all instruments (small-model stages standard, the rest batch at about 40 min per wave; forecasts need four waves) | done | - |
+| Freeze 2: constants from seen labels, amendment A10, analysis code hashed | waiting | 21 Nov 13:59 |
+| Labels for the hold-out and other creators (small-model stages standard, middle and large in batch; about a quarter of the seen volume) | waiting | 21 Nov 15:59 |
+| Reliability runs on the hold-out sample (repeats, rewordings, altered inputs) | waiting | 21 Nov 15:59 |
+| Registered tests H1, H2, H4, H5, H6, H9 with verdicts under A5 and A10 | waiting | 21 Nov 16:44 |
+| Results table, dashboards and paper updated and merged | waiting | 21 Nov 18:14 |
 
-ETA for the first-round results: **21 Nov 2026 17:25 UTC** (measured from 06:40 UTC; estimates, not promises). Seen-creator labelling moved its small-model stages to the standard interface at 06:33 to 06:39 UTC because the small model's batch queue had stalled; the rest stays in batch at about 40 minutes per wave. If the batch waves keep that pace, seen labels can end about two hours earlier than the table says.
+ETA for the first-round results: **21 Nov 2026 18:14 UTC** (measured from 11:10 UTC; estimates, not promises). Seen-creator labels were complete at 11:10 UTC. Freeze 2 waits for the last hypothesis-code round (H6's reference, H9's content words) and the freeze-2 constants computed from the seen labels.
 
 Changes since the last refresh (21 Nov, about 02:00 UTC):
 
