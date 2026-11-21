@@ -1145,6 +1145,17 @@ that need labels the entry will also hold the hashes of the codebooks and prompt
 | Earlier record | kept beside it as `llm/freeze-20261121T045822Z.json`, SHA-256 `c3b1161d950046b75f1add7a2158e379861b37c105d39d60140522b2903f7eae`; the seen labels made under it keep its freeze time |
 | Requests | unchanged: the request-id fixture holds 256 requests with equal ids and bodies (45 lists) |
 
+### Freeze 2 (analysis constants and analysis code), frozen 2026-11-21 16:10:00 UTC
+
+| Item | Value |
+|---|---|
+| Record | `llm/freeze2.json`, SHA-256 `5ef43dd88164f5389c48ece8b08d639d6e3b6464173b63fea3db7ad68effb008`; written 2026-11-21T16:10:00Z; names freeze 1 of 2026-11-21T16:06:43Z and registry commit `941a55623f509dfbb4fa5b2f98bd281dd870e930` (amendment A10 entered) |
+| Constants | `constants.py` SHA-256 `cf54452896a51e5b779bb5e624cebe775f24fbc4d32414a43322eebd97f05c89`: H4_YARDSTICK 0.14738201990446706 (52 seen creators with at least 40 own-voice forms; middle-model yardstick 0.1618 beside it); H2_LENGTH_BANDS (12, 20); H2_PARTS_RETAINED (time_window, named_actor, observable_outcome; place 0.043 and quantity 0.030 below the 5% line); MH_INTERVAL_RULE wider; H9 smallest effect 0.2 (placeholder adopted, row of 16:06). Computed by run.py constants through the seen-only path at 14:00 UTC and confirmed bit for bit by a second reader that imports nothing from the package |
+| Analysis code | 22 modules of code/hypotheses (commit c08c2a8 holds the same bytes): `__init__.py` `b4ed66eddbf158a3`; `a10_checks.py` `ac19d4e20f19c3bb`; `adapter.py` `a52657963447d23a`; `common.py` `5ec55e5130571462`; `constants.py` `cf54452896a51e5b`; `features.py` `b724e14965840990`; `h1_rate.py` `8b11327c478b9e73`; `h2_hedging.py` `08ad4c98b51789fa`; `h4_contraction.py` `09dac7b7de3b6d5a`; `h5_world_claims.py` `9cd43e3ff8cbcd1a`; `h6_asks.py` `cac91d3465bdff70`; `h9_family.py` `e96852e099a63e0b`; `progress.py` `fc20cd3e37d6663b`; `report.py` `987e8f848325ae68`; `run.py` `43adb372cf8d6ef4`; `sim_cost.py` `74fbf28cf31cb411`; `simulate.py` `9c42f69955663cd3`; `stats.py` `b2ee20bbde5d0005`; `tipping.py` `76edebef04dd57ca`; `verdicts.py` `b94c72253443e3ae`; `voice_sets.py` `89ca2e0bcf854b0b`; `wording.py` `9e56ab7a94b44666` |
+| Pinned files | 6542 files: freeze.json, config.json, creator-sets.json, reliability_samples.json, every seen label and feature file (voice, asks, sentences, forecasts 1,293 each; titles 71; features 1,293, features-4), and the two inputs of the feature step |
+| Checks at writing | produce.py status: freeze 1 and freeze 2 unchanged; the analysis package's freeze-2 check: no problem; produce.py features seen: 1,293 identical, 0 written |
+| What it unlocks | hold-out and other-group labels and feature files, the hold-out reliability runs and the census, then the registered tests H1, H2, H4, H5, H6 and H9 with this code |
+
 ## Hold-out contact log
 
 Every time a file, figure or table touched recordings of the 23 hold-out creators (or of the 6 other creators)
