@@ -18,6 +18,19 @@ joins three things and refuses to write when they disagree:
 
 `--check` re-reads the committed public evidence and confirms that a published state still agrees with it; it needs
 no private file. Nothing here contacts YouTube, Drive or any other service.
+
+Small cells (paper review, task D7, and its follow-up of 21 November 2026): no count by category describes fewer than
+5 creators. The creators behind each category are counted from the ledger fields of the public evidence (the creator
+and outcome of each recording), and categories are pooled by the rule of the exploratory reporting plan, section 3:
+a category of fewer than 5 creators goes into "other", and while "other" holds fewer than 5 creators the smallest
+remaining category joins it. When every category would end up in "other", only the total is published (the final
+download failures are such a case). The run is counted in audio files, the unit the state published before
+21 November 2026, never in recordings beside them (units decision of 21 November 2026).
+
+Ledger fields only (close of the privacy findings, 21 November 2026): the state describes the whole run with counts
+of audio files, hours of audio and languages, which come from the run's ledger. It carries no word count and no time
+without speech of the whole run: those are transcript and timing measures of every creator, hold-out creators
+included, and the run report now gives timing measures for the creators seen before the registry freeze only.
 """
 from __future__ import annotations
 
@@ -43,6 +56,29 @@ SOURCES = ('youtube_native', 'youtube_track_unverified', 'publisher_edition')
 REASONS = {'provider_refusal_http_403': 'Provider refusal', 'metadata_lookup_failure': 'Metadata lookup failure'}
 PROGRESS_ROW = re.compile(r'^\| (\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}) \| ([\d,]+) of ([\d,]+) \| ([\d.]+) of ([\d.]+) \|'
                           r'.*\| finished \|\s*$')
+MIN_CREATORS = 5
+POOLED = 'other'
+
+
+def pool_by_creators(groups, least=MIN_CREATORS):
+    """groups: {category: (count, set of creators)}. Returns {category: count} with every category of fewer than `least`
+    creators pooled into POOLED (exploratory reporting plan, section 3): while the pool holds fewer than `least`
+    creators, the remaining category with the fewest creators (then the fewest items) joins it. Returns None when every
+    category ends up pooled, since a breakdown that is all "other" is the total alone. Order is kept, POOLED last."""
+    creators = lambda names: set().union(*(groups[name][1] for name in names)) if names else set()
+    pooled = [name for name, (_, who) in groups.items() if len(who) < least]
+    if not pooled:
+        return {name: count for name, (count, _) in groups.items()}
+    while len(creators(pooled)) < least:
+        rest = [name for name in groups if name not in pooled]
+        if not rest:
+            return None
+        pooled.append(min(rest, key=lambda name: (len(groups[name][1]), groups[name][0])))
+    kept = {name: count for name, (count, _) in groups.items() if name not in pooled}
+    if not kept:
+        return None
+    kept[POOLED] = sum(groups[name][0] for name in pooled)
+    return kept
 
 
 def need(ok, reason):
@@ -107,8 +143,14 @@ def public_facts(close=CLOSE, tables=RUN_TABLES, progress=PROGRESS):
     need(all(row['verified_audio'] in SOURCES for row in archived)
          and all(row['verified_audio'] == '' for row in rows
                  if row['checkpoint_disposition'] != 'verified_audio_receipt'), 'recording_sources')
-    by_source = Counter(row['verified_audio'] for row in archived)
+    # Creators per audio source, from the creator and the source of each archived recording (ledger fields).
+    sources = {key: (0, set()) for key in SOURCES}
+    for row in archived:
+        count, who = sources[row['verified_audio']]
+        sources[row['verified_audio']] = (count + 1, who | {row['creator_key']})
+    by_source = pool_by_creators(sources)
     missing = Counter(row['creator_key'] for row in rows if row['checkpoint_disposition'] != 'verified_audio_receipt')
+    need(len(missing) >= MIN_CREATORS, 'final_failure_creators')   # the final failures as one count: 5 or more creators
     complete = creators - len(missing)
     need(checkpoint.get('complete_creators') == complete, 'complete_creators')
     # The hash is of the file as git stores it (LF line ends), so a Windows checkout with CRLF ends gives the
@@ -117,18 +159,36 @@ def public_facts(close=CLOSE, tables=RUN_TABLES, progress=PROGRESS):
     failed = read_csv(failed_raw)
     need(len(failed) == outstanding, 'failed_links_rows')
     reasons = Counter(row['Failure category'] for row in failed)
+    # Creators per failure reason: the failed recording's creator is read from the outcome table (by video id), and
+    # only the reason column of the failed-links table is used.
+    creator_of = {row['video_id']: row['creator_key'] for row in rows if row['checkpoint_disposition'] != 'verified_audio_receipt'}
+    label_key = {label: key for key, label in REASONS.items()}
+    by_reason = {}
+    for row in failed:
+        video, label = row['Video ID'].lstrip("'"), row['Failure category']
+        need(video in creator_of and label in label_key, 'failed_links_join')
+        count, who = by_reason.get(label_key[label], (0, set()))
+        by_reason[label_key[label]] = (count + 1, who | {creator_of[video]})
+    need(sum(count for count, _ in by_reason.values()) == outstanding, 'failed_links_join')
 
     summary = measures(tables / 'summary.csv')
     need(int(summary['Recordings selected']) == selected, 'run_selection')
+    # The run is counted in audio files, as the state published it before 21 November 2026 (units decision of that
+    # day): no count of the run in recordings stands beside them, since the difference of the two would be solved.
+    need(not {'Recordings in the run', 'Recordings transcribed'} & set(summary), 'run_units')
     files, transcribed = int(summary['Audio files in the run']), int(summary['Audio files transcribed'])
     not_transcribed = int(summary['Recordings not transcribed'])
     need(0 < transcribed <= files and transcribed + not_transcribed == files, 'run_files')
-    hours_done, words = float(summary['Hours transcribed']), int(summary['Words transcribed'])
-    silent_hours, silent_share = float(summary['Hours without speech']), float(summary['Share of hours without speech'])
-    need(0 <= silent_share <= 1 and 0 <= silent_hours <= hours_done and words > 0, 'run_measures')
+    hours_done = float(summary['Hours transcribed'])
+    need(hours_done > 0, 'run_measures')
+    # Since 2026-11-21 (task D7) the table has no row of fewer than 5 creators: English and one pooled row of the
+    # other languages, whose rows sum to the audio files transcribed; the summary gives the number of languages found.
     languages = [row for row in read_csv((tables / 'languages.csv').read_bytes())
-                 if (row.get('scope') or 'language') == 'language']   # the table also carries a pooled row since 2026-11-21
-    need(languages and sum(int(row['audio_files']) for row in languages) == transcribed, 'run_languages')
+                 if (row.get('scope') or 'language') in ('language', 'pooled')]
+    need(languages and 'recordings' not in languages[0] and sum(int(row['audio_files']) for row in languages) == transcribed
+         and all(int(row['creators']) >= MIN_CREATORS for row in languages), 'run_languages')
+    found = int(summary['Languages found']) if 'Languages found' in summary else len(languages)
+    need(found >= len(languages), 'run_language_count')
     rows = [line for line in Path(progress).read_text(encoding='utf-8').splitlines() if PROGRESS_ROW.match(line)]
     need(len(rows) == 1, 'progress_finished_row')
     day, clock, done, total, hours, all_hours = PROGRESS_ROW.match(rows[0]).groups()
@@ -137,7 +197,7 @@ def public_facts(close=CLOSE, tables=RUN_TABLES, progress=PROGRESS):
     return {
         'selection': {'sha256': selection, 'recordings': selected, 'creators': creators},
         'archived': verified, 'outstanding': outstanding, 'complete_creators': complete,
-        'by_source': {key: by_source.get(key, 0) for key in SOURCES}, 'failure_labels': dict(reasons),
+        'by_source': by_source, 'failure_labels': dict(reasons), 'by_reason': pool_by_creators(by_reason),
         'failed_links_sha256': hashlib.sha256(failed_raw).hexdigest(),
         'failed_links_crlf_sha256': hashlib.sha256(failed_raw.replace(b'\n', b'\r\n')).hexdigest(),
         'receipt_checkpoint_utc': utc(checkpoint.get('as_of_utc')),
@@ -146,8 +206,7 @@ def public_facts(close=CLOSE, tables=RUN_TABLES, progress=PROGRESS):
         'transcription': {'state': 'finished', 'finished_at_utc': utc(f'{day}T{clock}:00Z'),
                           'audio_files': files, 'audio_files_transcribed': transcribed,
                           'not_transcribed': not_transcribed, 'hours': float(all_hours),
-                          'hours_transcribed': hours_done, 'words': words,
-                          'hours_without_speech': silent_hours, 'share_without_speech': silent_share,
+                          'hours_transcribed': hours_done, 'language_count': found,
                           'languages': [{'language': row['language'], 'audio_files': int(row['audio_files'])}
                                         for row in sorted(languages, key=lambda row: -int(row['audio_files']))]},
     }
@@ -169,25 +228,33 @@ def decision_facts(raw, public):
     bound = value.get('bound_to') or {}
     need(bound.get('published_failed_links_csv_sha256') in {public['failed_links_sha256'], public['failed_links_crlf_sha256']},
          'decision_binding')
-    return {'closed_at_utc': utc(value.get('decided_at_utc')), 'reasons': {key: categories[key] for key in REASONS if key in categories},
-            'decision_record_sha256': hashlib.sha256(raw).hexdigest()}
+    # The decision's categories are checked against the public table above; what is published of them is decided by
+    # the creators behind each category (public['by_reason']), not copied from the decision.
+    return {'closed_at_utc': utc(value.get('decided_at_utc')), 'decision_record_sha256': hashlib.sha256(raw).hexdigest()}
 
 
 def build(public, decision):
     transcription = dict(public['transcription'])
     instants = [decision['closed_at_utc'], public['drive']['finished_at_utc'], transcription['finished_at_utc']]
+    downloads = {
+        'state': 'closed', 'closed_by': 'owner', 'closed_at_utc': decision['closed_at_utc'], 'retried': False,
+        'archived_with_verified_audio': public['archived'], 'final_failures': public['outstanding'],
+    }
+    # a breakdown is published only where every category holds 5 or more creators after pooling (None: the total only)
+    if public['by_reason'] is not None:
+        downloads['final_failures_by_reason'] = public['by_reason']
+    if public['by_source'] is not None:
+        downloads['archived_by_source'] = public['by_source']
+    downloads.update({
+        'creators_complete': public['complete_creators'],
+        'receipt_checkpoint_utc': public['receipt_checkpoint_utc'], 'drive_verification': public['drive'],
+        'decision_record_sha256': decision['decision_record_sha256'],
+        'failed_links_csv_sha256': public['failed_links_sha256'],
+    })
     return {
         'schema_version': 1, 'scope': SCOPE, 'as_of_utc': max(instants),
         'selection': {**public['selection'], 'label': "Newest 20 public uploads on each creator's Videos tab"},
-        'downloads': {
-            'state': 'closed', 'closed_by': 'owner', 'closed_at_utc': decision['closed_at_utc'], 'retried': False,
-            'archived_with_verified_audio': public['archived'], 'final_failures': public['outstanding'],
-            'final_failures_by_reason': decision['reasons'], 'archived_by_source': public['by_source'],
-            'creators_complete': public['complete_creators'],
-            'receipt_checkpoint_utc': public['receipt_checkpoint_utc'], 'drive_verification': public['drive'],
-            'decision_record_sha256': decision['decision_record_sha256'],
-            'failed_links_csv_sha256': public['failed_links_sha256'],
-        },
+        'downloads': downloads,
         'transcription': transcription,
         'evidence': {'close': 'knowledge-transfer/evidence/2026-11-20-close/',
                      'transcription_tables': 'research/transcription-run-2026-11-20/tables/',
@@ -201,11 +268,7 @@ def check(state, public):
     downloads = state['downloads']
     sha(downloads['decision_record_sha256'])
     closed = utc(downloads['closed_at_utc'])
-    reasons = downloads['final_failures_by_reason']
-    need(set(reasons) <= set(REASONS)
-         and {REASONS[key]: count for key, count in reasons.items()} == public['failure_labels'], 'state_reasons')
-    expected = build(public, {'closed_at_utc': closed, 'reasons': reasons,
-                              'decision_record_sha256': downloads['decision_record_sha256']})
+    expected = build(public, {'closed_at_utc': closed, 'decision_record_sha256': downloads['decision_record_sha256']})
     need(state == expected, 'state_drift')
     return True
 

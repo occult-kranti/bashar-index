@@ -1,8 +1,8 @@
-measure,share_between_creators,low,high,creators,recordings
-Lexical variety (MATTR-500),0.610,0.492,0.704,70,1004
-Pace (words per speech minute),0.573,0.460,0.654,71,1117
-Share of time without speech,0.497,0.264,0.704,71,1117
-Recording length (log minutes),0.432,0.320,0.536,71,1117
-Mean segment log-probability,0.409,0.133,0.651,71,1117
-Share of segments ending in ?,0.291,0.223,0.364,71,1117
-Repeated five-word share,0.237,0.126,0.456,70,1106
+measure,share_between_creators,low,high,creators
+Lexical variety (MATTR-500),0.610,0.492,0.704,all but fewer than 5 of 71
+Pace (words per speech minute),0.573,0.460,0.654,71
+Share of time without speech,0.497,0.264,0.704,71
+Recording length (log minutes),0.432,0.320,0.536,71
+Mean segment log-probability,0.409,0.133,0.651,71
+Share of segments ending in ?,0.291,0.223,0.364,71
+Repeated five-word share,0.237,0.126,0.456,all but fewer than 5 of 71
