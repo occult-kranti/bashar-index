@@ -151,6 +151,52 @@ class MetadataTimelineTests(unittest.TestCase):
         self.assertEqual(old['days'][0]['publication'],1)
         self.assertEqual(old['assigned'],1)
 
+    def test_month_overview_keeps_exact_days_whole_windows_and_crossing_windows_apart(self):
+        rows=timeline._validated(fixture())['records'];result=timeline.month_overview(rows,'2026-11-19')
+        months={x['month']:x for x in result['months']}
+        self.assertEqual([x['month'] for x in result['months'] if x['recent']][0],'2025-12')
+        self.assertEqual(sum(x['recent'] for x in result['months']),12)
+        self.assertEqual([x['month'] for x in result['months'] if not x['recent']],['1985-03','2024-02','2025-10'])
+        self.assertEqual((months['2026-06']['exact'],months['2026-06']['window'],months['2026-06']['crossing'],months['2026-06']['creators']),(0,1,0,1))
+        for key in ('2026-08','2026-09','2025-12','2026-01'):
+            self.assertEqual((months[key]['window'],months[key]['crossing'],months[key]['creators'],months[key]['creators_upper']),(0,1,0,1))
+        self.assertEqual(sum(x['exact'] for x in result['months']),3)
+        self.assertEqual(sum(x['window'] for x in result['months'])+result['crossing_unique']+result['unknown'],4)
+        self.assertEqual(months['2026-11']['partial_to'],'2026-11-19');self.assertIsNone(months['2026-10']['partial_to'])
+        self.assertEqual((result['earlier']['exact'],result['earlier']['window'],result['earlier']['creators']),(3,0,1))
+        self.assertEqual(result['earlier_max_creators'],1)
+        weeks=timeline.period_counts(rows,'2026-06-01','2026-06-30')
+        self.assertEqual((weeks['exact'],weeks['window'],weeks['crossing']),(0,1,0))
+        with self.assertRaises(ValueError):timeline.period_counts(rows,'2026-07-01','2026-06-30')
+
+    def test_month_panel_is_static_counts_only_and_notes_spreadsheet_guarded_ids(self):
+        report=fixture();report['records'][2].update(video_id='-hyphenated',url='https://www.youtube.com/watch?v=-hyphenated',
+            source_url='https://www.youtube.com/watch?v=-hyphenated')
+        html=timeline.render(report);doc=Markup(html);text=' '.join(doc.text)
+        self.assertIn('Recordings and creators by month',text)
+        self.assertIn('the 1 ID that begins with a hyphen carries a leading apostrophe',text)
+        self.assertIn('Channel listings read',text);self.assertIn('2026-11-19',text)
+        panel=html[html.index('<section class="month-panel"'):html.index('</section>',html.index('<section class="month-panel"'))]
+        self.assertNotIn('Synthetic recording',panel);self.assertNotIn('href=',panel);self.assertNotIn('Alpha',panel)
+        self.assertIn('to the 19th',panel);self.assertIn('Show the 3 earlier months',panel)
+        self.assertEqual(sum(tag=='ol' and a.get('class')=='month-list' for tag,a in doc.tags),2)
+        # The cap is "up to 20": creators with fewer recordings are counted, never implied to have 20.
+        self.assertIn('Each creator contributes up to their 20 newest public uploads (0 of the 2 creators contribute 20; the other 2 contribute fewer)',panel)
+        self.assertIn('Up to the newest 20 public Videos-tab uploads per creator',text)
+        self.assertNotIn('contributes their 20 newest',html)
+
+    def test_month_panel_says_all_creators_reach_the_cap_only_when_they_do(self):
+        report=fixture();base=report['records'][0];records=[]
+        for creator in ('alpha','beta'):
+            for rank in range(1,21):
+                video=(creator[0]+str(rank).zfill(10))[:11]
+                records.append(dict(deepcopy(base),video_id=video,channel_dir=creator,creator=creator.title(),rank=rank,
+                    url='https://www.youtube.com/watch?v='+video,source_url='https://www.youtube.com/watch?v='+video))
+        report['records']=records;html=timeline.render(report)
+        self.assertIn('(all 2 creators contribute 20)',html)
+        report['records']=records[:-1];html=timeline.render(report)
+        self.assertIn('(1 of the 2 creators contributes 20; the other 1 contributes fewer)',html)
+
     def test_unknown_daily_dates_never_gain_assigned_or_possible_counts(self):
         rows=timeline._validated(fixture())['records'][-1:]
         result=timeline.day_window(rows,'2026-11-18','2026-11-19')

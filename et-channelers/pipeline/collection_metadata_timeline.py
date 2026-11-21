@@ -14,10 +14,13 @@ import re
 from urllib.parse import urlsplit,parse_qs
 
 from .collection_failure_dashboard import STYLE as BASE_STYLE
+from .dataset_timeline import spreadsheet_cell
 
 METHODS={'publication':'Publication date','availability':'Availability metadata',
          'upload':'Upload fallback','relative':'Relative interval','unknown':'Unknown'}
 SERIES=(('metadata','Publication / availability metadata'),('upload','Upload fallback'),('relative','Interval estimate'))
+# The selection rule takes at most this many of each creator's newest public uploads; some creators have fewer.
+SELECTION_CAP=20
 
 def _need(ok,message):
     if not ok:raise ValueError(message)
@@ -136,6 +139,143 @@ def day_window(records, start, end):
             'unknown': unknown, 'selected': len(records)}
 
 
+def _next_month(key, step=1):
+    index = int(key[:4])*12 + int(key[5:7]) - 1 + step
+    return f'{index//12:04d}-{index%12+1:02d}'
+
+
+def _month_last_day(key):
+    return (date.fromisoformat(_next_month(key)+'-01')-timedelta(days=1)).isoformat()
+
+
+def period_counts(records, start, end):
+    """Exact days and estimated windows that touch one inclusive UTC period.
+
+    An exact day, or an estimated window lying wholly inside the period, is
+    definite. A window that also reaches outside the period is counted apart
+    in every period it touches, so those counts must never be summed."""
+    start, end = _day(start), _day(end)
+    _need(start is not None and end is not None and start <= end, 'ordered period required')
+    exact = window = crossing = 0; definite = set(); possible = set()
+    for row in records:
+        low = row['exact_day'] or row['date_min']; high = row['exact_day'] or row['date_max']
+        if not low or high < start or low > end:
+            continue
+        if row['exact_day']:
+            exact += 1; definite.add(row['channel_dir'])
+        elif start <= low and high <= end:
+            window += 1; definite.add(row['channel_dir'])
+        else:
+            crossing += 1; possible.add(row['channel_dir'])
+    return {'start': start, 'end': end, 'exact': exact, 'window': window, 'crossing': crossing,
+            'creators': len(definite), 'creators_upper': len(definite | possible)}
+
+
+def month_overview(records, last_day, recent=12):
+    """Every calendar month in the recent run, and each earlier month that holds a date.
+
+    Each exact day and each window inside one month is placed in exactly one
+    month; a month-crossing window stays apart and is reconciled once."""
+    last_day = _day(last_day); _need(last_day is not None and recent >= 1, 'report day and recent months required')
+    dated = [row for row in records if row['exact_day'] or row['date_min']]
+    lows = [row['exact_day'] or row['date_min'] for row in dated]
+    highs = [row['exact_day'] or row['date_max'] for row in dated]
+    final = max([last_day] + highs)[:7]; first_recent = _next_month(last_day[:7], 1-recent)
+    key = min([first_recent] + lows)[:7]; months = []
+    while key <= final:
+        row = {'month': key, **period_counts(records, key+'-01', _month_last_day(key))}
+        row['recent'] = key >= first_recent
+        row['partial_to'] = last_day if key == last_day[:7] and last_day < row['end'] else None
+        if row['recent'] or row['exact'] or row['window'] or row['crossing']:
+            months.append(row)
+        key = _next_month(key)
+    crossing = sum(1 for row in dated if not row['exact_day'] and row['date_min'][:7] != row['date_max'][:7])
+    _need(sum(row['exact']+row['window'] for row in months)+crossing+len(records)-len(dated) == len(records),
+          'month overview does not reconcile')
+    earlier = [row for row in months if not row['recent']]
+    return {'months': months, 'first_recent': first_recent, 'crossing_unique': crossing,
+            'unknown': len(records)-len(dated), 'first_dated': min(lows) if lows else None,
+            'earlier': period_counts(records, min(lows), (date.fromisoformat(first_recent+'-01')-timedelta(days=1)).isoformat())
+            if lows and min(lows) < first_recent+'-01' else None,
+            'earlier_max_creators': max((row['creators_upper'] for row in earlier), default=0),
+            'maximum': max((row['exact']+row['window']+row['crossing'] for row in months), default=0)}
+
+
+def _ordinal_day(value):
+    day = int(value[8:]); suffix = 'th' if 10 <= day % 100 <= 20 else {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+    return f'{day}{suffix}'
+
+
+def _month_list(rows, maximum, label):
+    items = []
+    for row in rows:
+        partial = f' to {row["partial_to"]}' if row['partial_to'] else ''
+        detail = (f'{row["month"]}{partial}: {row["exact"]:,} with an exact day; {row["window"]:,} estimated windows inside the month; '
+                  f'{row["crossing"]:,} more windows cross into it from a neighbouring month; {row["creators"]:,} creators'
+                  + (f', up to {row["creators_upper"]:,} counting crossing windows' if row['creators_upper'] > row['creators'] else '') + '.')
+        segments = ''.join(f'<span class="segment {kind}" style="width:{100*count/max(1, maximum):.6f}%"></span>'
+                           for kind, count in (('m-exact', row['exact']), ('relative', row['window']), ('possible', row['crossing'])) if count)
+        window = f'{row["window"]:,}' + (f'<span class="subline">+{row["crossing"]:,} crossing</span>' if row['crossing'] else '')
+        people = f'{row["creators"]:,}' + (f'<span class="subline">up to {row["creators_upper"]:,}</span>' if row['creators_upper'] > row['creators'] else '')
+        month = row['month'] + (f'<span class="subline">to the {_ordinal_day(row["partial_to"])}</span>' if row['partial_to'] else '')
+        items.append(f'<li class="month-row"><span class="month-cells" aria-hidden="true"><span class="m-month">{month}</span>'
+                     f'<span class="bar">{segments}</span><span class="m-num">{row["exact"]:,}</span><span class="m-num">{window}</span>'
+                     f'<span class="m-num">{people}</span></span><span class="sr-only">{detail}</span></li>')
+    head = ('<div class="month-row month-head" aria-hidden="true"><span class="month-cells"><span>Month</span><span>Recordings</span>'
+            '<span class="m-num">Exact day</span><span class="m-num">Window</span><span class="m-num">Creators</span></span></div>')
+    return head + f'<ol class="month-list" aria-label="{escape(label, quote=True)}">' + ''.join(items) + '</ol>'
+
+
+def _month_panel(rows, generated_at, creator_count):
+    """A static month-by-month view; it covers the whole selection and ignores the filters."""
+    last_day = generated_at[:10]; overview = month_overview(rows, last_day)
+    observed = sorted({row['observed_at'][:10] for row in rows if row['observed_at']})
+    listing_day = observed[-1] if observed else last_day
+    listing = ('the day the channel listings were read' if len(observed) <= 1 else
+               'the day the last channel listings were read')
+    weeks = period_counts(rows, (date.fromisoformat(listing_day)-timedelta(days=27)).isoformat(), listing_day)
+    exact_days = sorted(row['exact_day'] for row in rows if row['exact_day'])
+    share = 100*(weeks['exact']+weeks['window'])/max(1, len(rows))
+    lead = (f'<p><strong>{weeks["exact"]+weeks["window"]:,} of the {len(rows):,} recordings ({share:.0f}%)</strong> are dated inside the four weeks '
+            f'ending on {listing_day}, {listing} ({weeks["start"]} to {weeks["end"]}, UTC): {weeks["exact"]:,} by an exact day and {weeks["window"]:,} by an estimated '
+            f'window lying wholly inside those weeks. They come from {weeks["creators"]:,} of the {creator_count:,} creators.'
+            + (f' Half of the {len(exact_days):,} exact days fall on or after {exact_days[len(exact_days)//2]}.' if exact_days else '') + '</p>')
+    recent = [row for row in overview['months'] if row['recent']]; earlier = [row for row in overview['months'] if not row['recent']]
+    span = period_counts(rows, recent[0]['start'], recent[-1]['end'])
+    held = (f'The {len(recent):,} months from {recent[0]["month"]} to {recent[-1]["month"]} hold {span["exact"]+span["window"]:,} of the '
+            f'{len(rows):,} recordings ({100*(span["exact"]+span["window"])/max(1, len(rows)):.0f}%) by an exact day or a window wholly inside them, '
+            f'from {span["creators"]:,} of the {creator_count:,} creators.')
+    full = sum(1 for count in Counter(row['channel_dir'] for row in rows).values() if count >= SELECTION_CAP)
+    other = creator_count - full; verb = lambda n: 'contributes' if n == 1 else 'contribute'
+    if full == creator_count:
+        reach = f'all {creator_count:,} creators contribute {SELECTION_CAP}' if creator_count > 1 else f'the creator contributes {SELECTION_CAP}'
+    else:
+        reach = (f'{full:,} of the {creator_count:,} creators {verb(full)} {SELECTION_CAP}; '
+                 f'the other {other:,} {verb(other)} fewer')
+    summary = ''
+    if overview['earlier']:
+        before = overview['earlier']
+        summary = (f'<p class="note month-earlier">Earlier months, {before["start"][:7]} to {_next_month(overview["first_recent"], -1)}: '
+                   f'{before["exact"]:,} exact days and {before["window"]:,} estimated windows lying wholly inside that period, from {before["creators"]:,} creators. '
+                   f'No earlier month holds more than {overview["earlier_max_creators"]:,} creators.</p>'
+                   f'<details class="month-details"><summary>Show the {len(earlier):,} earlier months that hold a date</summary>'
+                   f'<div class="month-scroll" tabindex="0" role="region" aria-label="Earlier months">'
+                   + _month_list(earlier, overview['maximum'], 'Earlier calendar months with a date, oldest first') +
+                   '<p class="note">Months with no dated recording are left out.</p></div></details>')
+    legend = ('<p class="legend month-legend"><span><i class="swatch m-exact" aria-hidden="true"></i>Exact day</span>'
+              '<span><i class="swatch relative" aria-hidden="true"></i>Estimated window inside the month</span>'
+              '<span><i class="swatch possible" aria-hidden="true"></i>Window crossing a month boundary · counted in each month it touches</span></p>')
+    return (f'<section class="month-panel" aria-labelledby="month-heading"><div class="section-head"><h2 id="month-heading" tabindex="-1">Recordings and creators by month</h2></div>'
+            f'<div class="month-grid"><div class="month-copy"><p class="intro">Each creator contributes up to their {SELECTION_CAP} newest public uploads ({reach}), '
+            f'so the selection is not spread evenly in time. A creator who uploads often reaches {SELECTION_CAP} within weeks; one who uploads rarely reaches back years. '
+            f'{held}</p>{lead}{legend}<p class="note">A creator counts in a month when one of their recordings has an exact day '
+            'or a whole estimated window there; “up to” adds creators known only from crossing windows. Crossing windows may belong to either month and '
+            'must not be summed. This panel covers the full selection; the filters below do not change it.</p></div>'
+            f'<div class="chart month-chart"><p class="axis">The {len(recent):,} calendar months to the report date · linear scale <span class="nowrap">0–{overview["maximum"]:,}</span> recordings per month</p>'
+            + _month_list(recent, overview['maximum'], f'Recordings and creators per calendar month, {recent[0]["month"]} to {recent[-1]["month"]}') +
+            summary + '</div></div></section>')
+
+
 def _daily_chart(result):
     maximum = max((row['possible_total'] for row in result['days']), default=0)
     bars = []
@@ -168,6 +308,9 @@ EXTRA_STYLE=r'''
 .possible{background:repeating-linear-gradient(90deg,transparent,transparent 3px,#8e8069 3px,#8e8069 4px);outline:1px dashed var(--muted);outline-offset:-1px}.day-bin{grid-template-columns:6.5rem minmax(3rem,1fr) 4.8rem;min-height:2.1rem}.day-bin strong .subline{font-size:.73rem;font-weight:400;white-space:nowrap}.day-link,.month-link{font:inherit;color:var(--forest);background:none;border:0;text-decoration:underline;text-underline-offset:.18rem;padding:.4rem .1rem;text-align:left;cursor:pointer;min-height:32px}.day-link[aria-pressed="true"]{font-weight:800;outline:2px solid var(--forest)}.day-controls{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:end;gap:.7rem}.day-controls .field{min-width:9rem;flex:1}.day-buttons{display:flex;flex-wrap:wrap;gap:.4rem}.day-buttons button{min-height:40px;padding:.45rem .7rem}.day-buttons button[aria-pressed="true"]{background:var(--forest);color:var(--paper)}.range-error{color:#a02121;flex-basis:100%;margin:.25rem 0}.day-selection{padding:.7rem 0;border-bottom:1px solid var(--line)}.day-selection button{margin-left:.6rem}.download-links{display:flex;gap:.8rem;flex-wrap:wrap}.daily-legend{margin-bottom:.5rem}.static-overview{margin-top:1rem}.static-overview summary{cursor:pointer;padding:.5rem 0}
 @media(max-width:1100px){.timeline-metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.timeline-metrics .metric{padding-left:1rem;border-left:1px solid var(--line)}.timeline-metrics .metric:nth-child(3n+1){border-left:0;padding-left:0}.timeline-controls{grid-template-columns:1fr 1fr}.timeline-controls>.field:first-child{grid-column:1/-1}.evidence-cell{min-width:0;max-width:none}.bin{grid-template-columns:4.3rem minmax(3rem,1fr) 3rem;gap:.5rem}}
 @media(max-width:550px){.timeline-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline-metrics .metric{border-left:1px solid var(--line)!important;padding-left:1rem!important}.timeline-metrics .metric:nth-child(2n+1){border-left:0!important;padding-left:0!important}.timeline-controls{grid-template-columns:1fr}.chart{padding:.7rem}.bin{font-size:.8rem}.legend{display:grid;gap:.5rem}}
+.month-panel{margin:.5rem 0}.month-grid{display:grid;grid-template-columns:minmax(0,25rem) minmax(0,1fr);gap:1.25rem 2rem;align-items:start}.month-copy .intro{margin-top:0}.month-legend{display:grid;gap:.45rem}.m-exact{background:var(--forest)}.month-list{list-style:none;padding:0;margin:0}.month-row{margin:.25rem 0}.nowrap{white-space:nowrap}.month-cells{display:grid;grid-template-columns:5rem minmax(4rem,1fr) 4rem 5.6rem 5rem;align-items:center;gap:.8rem;min-height:2.05rem;font-size:.85rem;font-variant-numeric:tabular-nums}.month-head .month-cells{color:var(--muted);font-size:.78rem;min-height:0;padding-bottom:.35rem;border-bottom:1px solid var(--line)}.m-num{text-align:right}.m-num .subline,.m-month .subline{font-size:.73rem;margin-top:0;white-space:nowrap}.month-earlier{margin:1rem 0 .25rem}.month-details summary{cursor:pointer;padding:.5rem 0;min-height:24px}.month-scroll{max-height:26rem;overflow:auto;padding-right:.25rem}
+@media(max-width:1100px){.month-grid{grid-template-columns:1fr}}
+@media(max-width:550px){.month-cells{grid-template-columns:4.2rem minmax(2.4rem,1fr) 2.7rem 4.3rem 3.9rem;gap:.35rem;font-size:.8rem}.month-head .month-cells{font-size:.72rem}}
 @media(max-width:550px){.day-bin{grid-template-columns:5.8rem minmax(2rem,1fr) 4.1rem;gap:.35rem}.day-controls .field{min-width:0;width:calc(50% - .7rem)}.day-link{font-size:.76rem}.day-buttons{width:100%}.download-links{font-size:.85rem}.section-head{flex-wrap:wrap}}
 '''
 
@@ -296,14 +439,20 @@ def render(report)->str:
         ('Selected recordings',len(rows),f'{len(data["creators"]):,} creators'),('Date-stamped metadata',counts['publication']+counts['availability'],'publication / availability fields'),
         ('Upload fallback',counts['upload'],'not promoted to publication date'),('Interval estimates',counts['relative'],'no representative midpoint assigned'),('Unknown',counts['unknown'],'kept unresolved')))
     legends=''.join(f'<span><i class="swatch {kind}" aria-hidden="true"></i>{label}</span>' for kind,label in SERIES)
+    guarded=sum(spreadsheet_cell(r['video_id'])!=r['video_id'] for r in rows)
+    csvnote=(f' In the full CSV, the {guarded:,} {"ID that begins" if guarded==1 else "IDs that begin"} with a hyphen {"carries" if guarded==1 else "carry"} a leading apostrophe '
+             'so spreadsheets keep them as text; remove it before matching IDs.' if guarded else '')
+    observed=sorted({r['observed_at'][:10] for r in rows if r['observed_at']})
+    listed=(observed[0] if len(observed)==1 else f'{observed[0]} to {observed[-1]}') if observed else 'Not recorded'
     calibration=data['calibration'];calnote=(f'Calibration: {calibration["within_interval"]:,} of {calibration["compared"]:,} date-stamped comparisons fell inside the saved listing-age interval.' if calibration['compared'] else 'No interval calibration comparisons were supplied.')
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
 <title>Publication metadata timeline · Latest 20+ videos</title><style>{BASE_STYLE}{EXTRA_STYLE}</style></head>
 <body><a class="skip" href="#timeline-heading">Skip to date distribution</a><div class="page"><header class="masthead"><span class="wordmark">Channeling research archive</span><span class="edition">Latest 20+ videos · metadata timeline</span></header>
 <main><div class="hero"><div><p class="eyebrow">Public regular uploads · selected by tab rank</p><h1>When were these recordings published?</h1><p class="intro">Date-stamped publication and availability metadata, upload fallbacks and listing-age estimates remain distinct. These dates describe the selected public uploads, not necessarily when a performance was recorded.</p></div>
-<dl class="snapshot"><div><dt>Report generated · UTC</dt><dd>{e(data['generated_at'])}</dd></div><div><dt>Scope</dt><dd>Latest 20 regular uploads per creator</dd></div></dl></div>
+<dl class="snapshot"><div><dt>Report generated · UTC</dt><dd>{e(data['generated_at'])}</dd></div><div><dt>Channel listings read · UTC</dt><dd>{e(listed)}</dd></div><div><dt>Scope</dt><dd>Up to the newest {SELECTION_CAP} public Videos-tab uploads per creator</dd></div></dl></div>
 <dl class="metrics timeline-metrics" aria-label="Full selection date coverage">{metrics}</dl><p class="note">Dates and durations do not determine eligibility. This is a capped selection, not each creator’s complete publication history.</p>
+{_month_panel(rows,data['generated_at'],len(data['creators']))}
 <div class="section-head"><h2 id="timeline-heading" tabindex="-1">Date distribution</h2><div class="download-links"><a class="download" href="dates-by-day.csv" download>Download daily counts CSV</a><a class="download" href="recording-dates.csv" download>Download full recording dates CSV</a></div></div>
 <div id="controls" class="filters timeline-controls" hidden><div class="field"><label for="search">Search title, ID or method</label><input id="search" type="search" autocomplete="off" aria-controls="date-table"></div>
 <div class="field"><label for="creator">Creator</label><select id="creator" aria-controls="date-table"><option value="">All creators</option>{options}</select></div><div class="field"><label for="method">Date evidence</label><select id="method" aria-controls="date-table"><option value="">All evidence methods</option>{methods}</select></div>
@@ -315,7 +464,7 @@ def render(report)->str:
 <p id="date-status" class="result-count" role="status" aria-live="polite">{len(rows):,} selected; {first_day} to {last_day}: {daily['assigned']:,} assigned a single day, {daily['possible_unique']:,} distinct multi-day intervals could intersect this window; {daily['unknown']:,} unknown. Possible-day upper bounds must not be summed.</p>
 <div id="chart" class="chart" role="region" aria-label="Selected recording date distribution" tabindex="0">{_daily_chart(daily)}</div><p class="note">{e(calnote)} Calibration does not turn an estimated interval into an exact date.</p>
 <details class="static-overview"><summary>All-year overview · no zoom</summary><div class="chart" aria-label="Full selection year overview">{_chart(year,'year-overview-scale')}</div></details>
-<section aria-labelledby="records-heading"><div class="section-head"><h2 id="records-heading" tabindex="-1">Recording-level date evidence</h2></div><p class="note">The full table includes every selected recording. Creator, method and search filters apply throughout; clicking a day shows its definite dates and possible overlaps. The full CSV always preserves every row. Source links and evidence checksums identify retained metadata; this page makes no source requests.</p>
+<section aria-labelledby="records-heading"><div class="section-head"><h2 id="records-heading" tabindex="-1">Recording-level date evidence</h2></div><p class="note">The full table includes every selected recording. Creator, method and search filters apply throughout; clicking a day shows its definite dates and possible overlaps. The full CSV always preserves every row.{csvnote} Source links and evidence checksums identify retained metadata; this page makes no source requests.</p>
 <p id="day-selection" class="day-selection" hidden><span id="selected-day-text"></span> <a id="day-permalink" href="?date={last_day}">Link to this UTC day</a><button id="clear-day" type="button">Show all dates</button></p>
 <div class="table-wrap"><table id="date-table" class="date-table" role="table"><caption>Selected recording date evidence · rank is one-based · calendar dates and observation clocks use UTC</caption><thead role="rowgroup"><tr role="row">{''.join('<th role="columnheader" scope="col">'+x+'</th>' for x in ('Recording','Creator','Date / interval','Method','Public source','Chart placement'))}</tr></thead>
 <tbody role="rowgroup">{''.join(out)}<tr id="empty-row" role="row" hidden><td role="cell" colspan="6" class="empty">No recordings match these filters.</td></tr></tbody></table></div></section>
