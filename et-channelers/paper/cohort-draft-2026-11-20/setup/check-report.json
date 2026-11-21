@@ -1,53 +1,129 @@
 {
- "bib_entries": 70,
- "citations_used": 70,
+ "bib_entries": 82,
+ "citations_used": 82,
  "citations_missing": [],
  "bib_entries_not_cited": [],
- "number_macros_used": 333,
+ "number_macros_used": 371,
  "capitalised_macros_undefined": [],
  "literal_numerals": {
-  "0": 2,
+  "0": 8,
+  "0.005": 1,
+  "0.10": 3,
+  "0.15": 1,
+  "0.3": 1,
+  "0.4": 1,
+  "0.5": 3,
+  "0.67": 1,
+  "0.8": 1,
+  "0.90": 1,
   "00": 1,
-  "1": 9,
+  "000": 1,
+  "1": 11,
+  "1.5": 1,
+  "10": 2,
   "13": 1,
+  "147": 1,
+  "15": 1,
   "150": 1,
+  "180": 1,
   "2": 4,
+  "24": 1,
   "256": 1,
   "27": 1,
   "3": 1,
   "30": 3,
   "300": 1,
   "4": 1,
+  "40": 2,
   "403": 1,
-  "5": 2,
-  "50": 1,
+  "48": 1,
+  "5": 4,
+  "50": 3,
   "500": 1,
   "6": 1,
-  "95": 5
+  "80": 2,
+  "800": 1,
+  "90": 6,
+  "95": 6,
+  "99": 1
  },
  "literal_numeral_contexts": {
   "0": [
    "length; parts of a whole as log-ratios. \\\\ R10 & The newest \\NPerCreator{} a",
-   "ts and word lists before any text is read (R10).   first publishes a feasibi"
+   "ts and word lists before any text is read (R10).   first publishes a feasibi",
+   ", the less committed its wording (Somers' $D<0$, $|D|\\geq 0.10$) & within-cr"
+  ],
+  "0.005": [
+   "positive $U$. By the registered rule ($p\\leq 0.005$ and $U\\geq 0.10$) H3 is supp"
+  ],
+  "0.10": [
+   "mmitted its wording (Somers' $D<0$, $|D|\\geq 0.10$) & within-creator $D$ betwee",
+   "ecording than in its middle ($U>0$, at least 0.10 log units) & creator mean of ",
+   "he registered rule ($p\\leq 0.005$ and $U\\geq 0.10$) H3 is supported. We do not "
+  ],
+  "0.15": [
+   " difference of any later reference (at least 0.15), from a ledger frozen before"
+  ],
+  "0.3": [
+   "ds more length, about half as many pauses of 0.3 to 1 second (\\BridgeShortPaus"
+  ],
+  "0.4": [
+   "ratio of two validated word groups (at least 0.4) &  ,   & hold-out and wave, "
+  ],
+  "0.5": [
+   "med voice than in the own voice, by at least 0.5 SD & creator mean of the with",
+   "ce than in the own voice (rate ratio at most 0.5) & creator-level within-recor",
+   "s than in sermons and wellness talks (margin 0.5 SD) & standardised difference"
+  ],
+  "0.67": [
+   "per \\RatePerWords{} words; equivalent inside 0.67 to 1.5 &   & hold-out and wav"
+  ],
+  "0.8": [
+   "out 40 comparison creators, or a margin near 0.8 standard deviations, to reach"
+  ],
+  "0.90": [
+   "h agree on it with a probability of at least 0.90 and no strong probe names ano"
   ],
   "00": [
    "e they describe the \\snap, taken at about 13:00 UTC while the run was still g"
+  ],
+  "000": [
+   "Large{} against \\BridgeFillerSmall{} per 1{,}000 words). \\BridgeOpen{} measure"
   ],
   "1": [
    "ption{The experiments of the catalogue, part 1 of 2. None has been run. ``Th",
    "has a stated reference distribution, $p = (b+1)/(m+1)$, and a check that a p",
    "stated reference distribution, $p = (b+1)/(m+1)$, and a check that a planted"
   ],
+  "1.5": [
+   "ePerWords{} words; equivalent inside 0.67 to 1.5 &   & hold-out and wave, pool"
+  ],
+  "10": [
+   "\\CrPacePninety{} words per minute of speech (10th and 90th percentiles; Figur",
+   "e creator medians is \\FigTwoCohortMed; their 10th and 90th percentiles are \\F"
+  ],
   "13": [
    "wise they describe the \\snap, taken at about 13:00 UTC while the run was stil"
   ],
+  "147": [
+   "ce. Novelty statements rest on the skeptic's 147 keyword searches (99 Crossref"
+  ],
+  "15": [
+   "r. H10 runs only if 50 dated statements from 15 creators have matured. Experi"
+  ],
   "150": [
    "r.} Among \\TermBase{} English transcripts of 150 words or more, \\TermSoul\\% co"
+  ],
+  "180": [
+   "first and last tenth against the middle six, 180 seconds cut from each end &  "
   ],
   "2": [
    "{The experiments of the catalogue, part 1 of 2. None has been run. ``Three l",
    "ts few creators: description, no tests. \\\\ R12 & Topics, clusters and axes n",
    "ption{The experiments of the catalogue, part 2 of 2. None has been run.}   \\"
+  ],
+  "24": [
+   "cript has been analysed. Two proposers wrote 24 proposals, and a skeptic judg"
   ],
   "256": [
    "er, byte count and MD5 digest of each; a SHA-256 digest is recorded at acquisi"
@@ -69,26 +145,51 @@
   "4": [
    "nnelling until a comparison set exists. \\\\ R14 & Every figure shows an inter"
   ],
+  "40": [
+   "e of creator-level $U$, cohort against about 40 comparison creators &  ,   & ",
+   "ot run below twelve creators. H8 needs about 40 comparison creators, or a mar"
+  ],
   "403": [
    "sed \\NFailedForbidden{} media requests (HTTP 403), and \\NFailedMetadata{} reco"
   ],
+  "48": [
+   "skeptic's 147 keyword searches (99 Crossref, 48 arXiv) and the proposers' sea"
+  ],
   "5": [
-   "napshot, and has a data file behind it. \\\\ R15 & Public outputs hold numbers",
-   "ers, coded identifiers and derived labels (R15), and rankings on selling, fo"
+   "napshot, and has a data file behind it. \\\\ R15 & Public outputs hold counts,",
+   "own voice in the same recording, by at least 5\\% & creator mean of the withi",
+   "ithin-creator $D$ between checkability (0 to 5) and binary commitment, at fi"
   ],
   "50": [
+   "ordings of the same roster. H10 runs only if 50 dated statements from 15 crea",
+   "nd 800 words left, ten equal parts each with 50 words or more, the recognizer",
    "eech and \\NUnderFiftyWords{} hold fewer than 50 words. Stretches of 30 second"
   ],
   "500": [
    " is the moving-average type-token ratio over 500-word windows). For pace, the "
   ],
   "6": [
-   " labels; claims are reported as claims. \\\\ R16 & Cited numbers are re-checke"
+   "cording; claims are reported as claims. \\\\ R16 & Cited numbers are re-checke"
+  ],
+  "80": [
+   "tect a $U$ of about \\HThreeDetectable{} with 80\\% power, so it could not have",
+   "e not comparable with each other. The middle 80\\% of creator medians of pace "
+  ],
+  "800": [
+   "oved from each end, at least ten minutes and 800 words left, ten equal parts e"
+  ],
+  "90": [
+   "nits and passes its registered test, but the 90\\% interval over creators runs",
+   "ay be compared across the models only if the 90\\% interval of the difference ",
+   "recordings were eligible. $U$ is \\HThreeU{} (90\\% interval over creators \\HTh"
   ],
   "95": [
    "e estimate for pace is \\IccPaceSeen{} with a 95\\% bootstrap interval of \\IccP",
    "to \\IccSeenRecordingsMax{} recordings), with 95\\% percentile intervals from \\",
-   "an and \\ShareBelowCutoffPninetyfive{} at the 95th percentile. We treat log-pr"
+   "st{} of the first tenth of the running time (95\\% interval \\CovSeenFirstLo{} "
+  ],
+  "99": [
+   " rest on the skeptic's 147 keyword searches (99 Crossref, 48 arXiv) and the p"
   ]
  },
  "privacy_names_checked": 230,
@@ -130,6 +231,9 @@
   "channelled speech",
   "Three levels",
   "no stable structure",
-  "no difference"
+  "no difference",
+  "Claimed voice",
+  "embodied",
+  "Wave"
  ]
 }

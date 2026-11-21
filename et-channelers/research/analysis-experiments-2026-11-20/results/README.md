@@ -32,7 +32,14 @@ was read; the code is [`../code/h3_position.py`](../code/h3_position.py). Files:
 | Creators with a positive U | 9 of 17 | 36 of 61 |
 | First-person singular per 1,000 words, edges against middle | 29.1 against 26.0 | 29.2 against 28.8 |
 | U without the artefact filter | 0.166 | 0.019 |
-| U without the trim (reported, not tested) | 0.348 | 0.427 |
+| U without the trim (reported, not tested) | 0.348 (output of the frozen procedure; see the note below) | 0.427 |
+
+**The hold-out and the positional rule.** Under the owner's rule of 20 November 2026, displays of speech by
+position in the recording show the seen creators only until freeze 2. The two hold-out numbers above are the
+output of H3's frozen procedure, which was registered to report the untrimmed contrast beside the test; they
+are kept here and in the paper as that output, and the findings dashboard shows only the registered test for the
+hold-out. Whether the registered H3 output is exempt from the positional rule is for the owner to confirm; until
+then no other positional estimate on the hold-out is published.
 
 **What the registered rule says.** Supported: the shift test passes the strictest Holm threshold (0.005) and
 the estimate is above the smallest effect of interest (0.10).
@@ -70,8 +77,10 @@ for the other languages, so no English recording had been through both. 36 Engli
 creator, drawn by seed over thirds of pace and of time without speech, hold-out creators excluded) were transcribed
 again by the larger model; none failed a check. Code: [`../code/br_bridge.py`](../code/br_bridge.py), SHA-256
 `77262c2fff13b856dcabcc657dd8d06883a7e84535dd44b4b57c65339126a867`, committed before the run on all 36 pairs (it had been tried on the
-25 pairs finished at the time; nothing was changed). Files: [`br-bridge.json`](br-bridge.json),
-[`br-pairs.csv`](br-pairs.csv) (recordings numbered, no identifiers), figures in [`figures/`](figures/).
+25 pairs finished at the time; nothing was changed). Files: [`br-bridge.json`](br-bridge.json) and the
+figures in [`figures/`](figures/). The per-recording pairs (`br-pairs.csv`, one recording per creator) were
+moved to the private archive on 20 November 2026 under the owner's rule that nothing public is per creator or per
+recording; [`../code/br_figures.py`](../code/br_figures.py) now draws the first figure from them as percentiles only.
 
 The rule is the catalogue's, fixed beforehand: a measure can be compared across the two models ("agrees") only if
 the 90% interval of the mean paired difference lies inside 0.2 standard deviations between creators. That spread
@@ -102,11 +111,13 @@ the registered rule has two outcomes, and "differs" and "not settled" both count
 
 ![Difference between the two models in units of the spread between creators](figures/br-2-difference-in-creator-spread.png)
 
+![Distribution of the paired differences per measure, in its own units](figures/br-1-difference-distribution.png)
+
 **What it shows.** 7 of 17 measures agree, 6 differ and 4 are not settled.
 
 * What is counted from the words agrees: pace, pronoun rates, contracted forms, variety and length of words. The
   two transcripts differ in 3.5% of words at the median (quartiles 2.7% and
-  4.8%; one recording reaches 59%). Neither transcript is a human reference,
+  4.8%). Neither transcript is a human reference,
   so this is disagreement between models and not an error rate.
 * What depends on word timing differs. The larger model gives words 28 ms more
   length on average and about half as many short pauses. Pause counts and pause shares must not be compared
