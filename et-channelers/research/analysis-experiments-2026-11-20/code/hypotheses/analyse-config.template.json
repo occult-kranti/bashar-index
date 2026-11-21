@@ -1,0 +1,48 @@
+{
+ "_comment": "Confirmatory config template for run.py analyse (track B, 2026-11-21). Copy it, fill the out folder and the feature folders, and run only after freeze2.json matches the code: before that every real label file and TABLE's file are refused. The hold-out cross-check is on: each hold-out recording's model role is compared with TABLE's resolved model (id and model columns only). The verification figures are the A11 figures (third model, known-answer battery, cross-vendor reader); null prints 'figures not entered'. The word 'validated' is refused in them (registry 2026-11-21 03:08). Seen folders are listed beside the hold-out ones: H9 pairs hold-out cells with seen cells, and the A10.7 null-mean check runs on the seen creators; every confirmatory estimate uses hold-out creators only (common.confirmatory).",
+ "title": "confirmatory analysis, hold-out creators",
+ "out": "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/hypothesis-results/confirmatory",
+ "sources": {
+  "primary": {
+   "voice": [
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/holdout/voice",
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/seen/voice"
+   ],
+   "asks": [
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/holdout/asks",
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/seen/asks"
+   ],
+   "forecasts": [
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/holdout/forecasts",
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/seen/forecasts"
+   ],
+   "sentences": [
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/holdout/sentences",
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/seen/sentences"
+   ],
+   "titles": [
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/holdout/titles",
+    "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/llm/labels/seen/titles"
+   ],
+   "features": [
+    "FILL: hold-out feature files (the guarded feature step after freeze 2)",
+    "FILL: seen feature files (features.py seen)"
+   ]
+  }
+ },
+ "asr_model_required": "english_only",
+ "holdout_model_crosscheck": {
+  "table": "C:/Users/mehta/et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/panel-second-round-2026-11-20/r2-runs/TABLE/private/recordings.csv",
+  "enabled": true
+ },
+ "gates": {},
+ "cross_vendor_voice": {"_comment": "gate VG-6 (registry 2026-11-21 03:21): passed false caps H1, H4 and H6 at 'not determined' with the flag 'readers of two vendors disagree (kappa k)'; null means not entered", "passed": null, "kappa": null},
+ "creator_sd": {},
+ "verification": {
+  "all": {
+   "third_model": null,
+   "known_answer": null,
+   "cross_vendor": null
+  }
+ }
+}
