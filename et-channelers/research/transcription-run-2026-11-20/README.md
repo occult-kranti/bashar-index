@@ -1,7 +1,12 @@
-# Transcription run of 20 November 2026: plots, heat maps, graphs and tables
+# Transcription run of 20 November 2026: plots, graphs and tables
 
-Finished run, 20 November 2026: 1,697 audio files, 742.9 hours. Everything here is a count or a measure of time; no transcript text is used. Creators appear
-as coded ids (C001 to C101). The tables behind every figure are in [`tables/`](tables/).
+Finished run, 20 November 2026: 1,697 audio files, 742.9 hours. Everything here is a count, a distribution or a cohort-level estimate; no transcript text is
+used. Nothing is shown per creator or per recording: no creator codes, no video ids, no ranked lists, no table row,
+chart mark or label for a single creator or recording. Every number the run measured rests on
+5 or more creators: a language row shows hours and time without speech only if that many
+creators speak the language, every bin of the two-dimensional table and of the histograms over audio files holds
+files of that many creators, and the outer bands of the histograms over creators are merged until each holds that
+many. The tables behind every figure are in [`tables/`](tables/).
 
 Two notes on reading the numbers. "Without speech" is what the voice detector removed: music, meditation and
 silence cannot be told apart. And the distributions count each audio file once: two files are each shared by two
@@ -19,6 +24,7 @@ recordings, so 1,697 audio files stand for 1,699 recordings.
 | Recordings not transcribed | 32 |
 | Hours without speech | 93.7 |
 | Share of hours without speech | 12.6% |
+| Share of the hours without speech held by the five creators with the most | 35.9% |
 | Hours in quiet stretches of 30 s or more | 38.1 |
 | Recordings with a quiet stretch of 2 minutes or more | 104 |
 | Recordings at least half without speech | 107 |
@@ -43,22 +49,30 @@ recordings, so 1,697 audio files stand for 1,699 recordings.
 
 ![What happened to the selected recordings](figures/fig02-outcome-of-selected-recordings.png)
 
-The recordings that were not transcribed are listed, with the reason for each, in
-[`tables/not-transcribed.csv`](tables/not-transcribed.csv).
+The recordings that were not transcribed are counted by reason in the table above. The list of those
+recordings is kept in the private archive.
 
 ## Languages
 
-| Language | Audio files | Hours | Creators | Hours without speech |
+| Language | Audio files | Creators | Hours | Hours without speech |
 |---|---|---|---|---|
-| English | 1616 | 716.5 | 95 | 90.3 |
-| Japanese | 30 | 11.4 | 2 | 1.0 |
-| Spanish | 19 | 2.4 | 1 | 0.0 |
-| Portuguese | 18 | 9.2 | 1 | 1.2 |
-| German | 8 | 2.5 | 1 | 0.8 |
-| Czech | 5 | 0.9 | 1 | 0.3 |
-| Finnish | 1 | 0.1 | 1 | 0.1 |
+| English | 1,616 | 95 | 716.5 | 90.3 |
+| Japanese | 30 | 2 |  |  |
+| Spanish | 19 | 1 |  |  |
+| Portuguese | 18 | 1 |  |  |
+| German | 8 | 1 |  |  |
+| Czech | 5 | 1 |  |  |
+| Finnish | 1 | 1 |  |  |
+| All other languages | 81 | 6 | 26.4 | 3.4 |
+
+Every language other than English is spoken by one or two creators, so a row of its own would be those creators'
+values. Those rows give counts only; their hours and time without speech are given together, in the row
+"All other languages".
 
 ![Languages other than English](figures/fig03-languages.png)
+
+Recording length, in whole minutes, for English and for the other languages together (a percentile of one or two
+creators' files would be their recordings' lengths):
 
 ![Recording length by language](figures/fig12-length-by-language.png)
 
@@ -83,33 +97,41 @@ How the language of each recording was decided:
 
 ![Share of each recording without speech](figures/fig05-share-without-speech.png)
 
-![Creators with the most time without speech](figures/fig06-hours-without-speech-by-creator.png)
+![How the time without speech is spread over creators](figures/fig06-creators-by-time-without-speech.png)
 
 ![Longest stretch without speech in a recording](figures/fig10-longest-quiet-stretch.png)
 
+Recording length against share without speech, in bins. The bands are wide enough that every bin holds files of
+5 or more creators, so no bin is left out; the bands of
+share without speech are unions of the bands of the histogram above.
+
 ![Recording length against share without speech](figures/fig09-length-against-share-without-speech.png)
 
-### Heat maps
+### Where in a recording the speech is missing
 
-Where in a recording the speech is missing, for the 98 creators with three or more transcripts. Each
-row is a creator and each column a tenth of the running time; darker means less of that tenth is covered by
-transcript segments. Many creators are darker in the last tenth, and a few in the first.
+The share of each tenth of the running time that is not covered by transcript segments, averaged over the
+71 creators seen before the registry of hypotheses was frozen (1,293 audio files; each creator
+weighted equally), with a 95% interval from resampling creators and then their recordings. Speech is thinnest
+at the ends: 17% of the first tenth and 27% of the last tenth are not covered, against about 12% in the
+middle. The hold-out and other creators are left out of this display until the labelling procedure is frozen.
 
-![Where recordings have no speech](figures/fig07-heatmap-position-in-recording.png)
+![Where recordings have no speech](figures/fig07-speech-by-position-in-recording.png)
 
-The share without speech of each of a creator's newest 20 recordings. Grey cells are recordings that were not
-in this run (they already had text of another kind, or their audio could not be downloaded) or were not
-transcribed.
+### The newest 20 recordings
 
-![Share of each recording without speech, newest 20 per creator](figures/fig08-heatmap-newest-20.png)
+The share without speech by position among each creator's newest 20 recordings (1 is the newest), as a mean
+over the 59 to 93 creators with a transcribed recording at that position, with a 95% interval, and
+as a median.
+
+![Share without speech by position among the newest 20](figures/fig08-newest-20-by-position.png)
 
 ## Speaking pace
 
-Words per minute of speech for the 70 creators that had already been looked at before the registry of
-hypotheses was frozen and that have five or more English recordings. The hold-out creators are left out of
-this figure on purpose: their transcripts are not analysed before the labelling procedure is frozen.
+The distribution of the median words per minute of speech of the 70 creators that had already been looked at before
+the registry of hypotheses was frozen and that have five or more English recordings. The hold-out creators are
+left out on purpose: their transcripts are not analysed before the labelling procedure is frozen.
 
-![Speaking pace by creator](figures/fig11-pace-by-creator.png)
+![Speaking pace across creators](figures/fig11-pace-across-creators.png)
 
 ## Tables
 
@@ -117,10 +139,16 @@ this figure on purpose: their transcripts are not analysed before the labelling 
 |---|---|
 | [`tables/summary.csv`](tables/summary.csv) | the run in numbers |
 | [`tables/outcome-of-selected-recordings.csv`](tables/outcome-of-selected-recordings.csv) | the 1,976 selected recordings by outcome |
-| [`tables/languages.csv`](tables/languages.csv) | audio files, hours, creators and non-speech hours by language |
+| [`tables/languages.csv`](tables/languages.csv) | audio files and creators by language; hours and non-speech hours where a row has 5 or more creators, and for the other languages pooled |
 | [`tables/how-language-was-decided.csv`](tables/how-language-was-decided.csv) | audio files by the basis of the language decision |
-| [`tables/not-transcribed.csv`](tables/not-transcribed.csv) | the recordings not transcribed, with minutes and reason |
-| [`tables/per-creator.csv`](tables/per-creator.csv) | one row per coded creator: recordings, hours, non-speech hours and share, quiet stretches, languages, median pace where shown |
+| [`tables/length-by-language.csv`](tables/length-by-language.csv) | percentiles of recording length, whole minutes, for English and for the other languages pooled |
+| [`tables/recordings-histograms.csv`](tables/recordings-histograms.csv) | audio files per band of share without speech (5-point bands to 50%, 10-point above), and by longest quiet stretch (30 s or more, 1 min or more, 2 min or more, 5 min or more, 10 min or more) |
+| [`tables/length-by-share-bins.csv`](tables/length-by-share-bins.csv) | audio files per bin of length and share without speech; every bin holds files of 5 or more creators |
+| [`tables/creators-histograms.csv`](tables/creators-histograms.csv) | creators per band of six measures (recordings, hours, hours and share without speech, median length, median pace); outer bands merged until each holds 5 or more creators |
+| [`tables/creators-quantiles.csv`](tables/creators-quantiles.csv) | the 10th, 25th, 50th, 75th and 90th percentiles of the same measures over creators |
+| [`tables/position-in-recording.csv`](tables/position-in-recording.csv) | share of each tenth of the running time not covered by speech, seen creators, with 95% interval |
+| [`tables/newest-20-by-position.csv`](tables/newest-20-by-position.csv) | share without speech by position among the newest 20, with 95% interval and quartiles |
 
-Made 2026-11-20 20:08 UTC from the run's ledger and result files. The figures follow one palette: a single blue
-for marks, and a light-to-dark blue ramp for the heat maps.
+Made 2026-11-20 20:08 UTC from the run's ledger and result files; tables and figures redrawn on 20 November 2026
+under the rule above. The figures follow one palette: a single blue for marks, a light band for intervals and a
+light-to-dark blue ramp for the binned plot.

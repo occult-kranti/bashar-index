@@ -79,9 +79,20 @@ exists and redo what is missing.
   (`creator-sets.json` in the private `llm` folder). The 23 hold-out creators and the 6 others may be counted
   only by ledger fields (durations, dates, languages). `prep.load_words` will refuse other recordings before
   the freeze.
-- **Privacy.** Transcript text, creator names, video ids and titles stay private. Public outputs carry counts
-  and creator codes (C001 to C101). Transcript text goes to an outside service only for the OpenAI labelling the
-  owner ordered, with `store` false; batch files are deleted at the vendor after collection.
+- **Privacy.** Transcript text, creator names, video ids and titles stay private. Public outputs carry counts by
+  category, distributions (quantiles, binned histograms, two-dimensional bins with at least 5 creators per occupied
+  bin), cohort-level estimates with intervals and per-language rows. No public file, chart or table has a row,
+  point, cell or label per creator, a row per recording, a creator code of any kind, a video id beside anything
+  derived from a transcript or the run, or a top or bottom list of creators (the owner's decision of 20 November
+  2026, "replace and tighten": the earlier creator codes could be broken). Speech-by-position displays use the
+  seen creators only until freeze 2. Added after the privacy review of the same day: every number the run or a
+  transcript measured rests on 5 or more creators. A language row gives hours or time without speech only if 5 or
+  more creators speak the language (every language but English is one or two named creators, so the others are
+  pooled); choose bins so that nothing needs suppressing, because suppressed cells can be solved from public
+  margins (`run_report.py` checks this with `pinned_cells`); merge the outer bins of a histogram until each holds 5
+  or more creators; and print no minimum or maximum of a transcript measure (use the 10th and 90th percentiles),
+  since an extreme is one creator's or one recording's value and can be tied to a name through public lengths. Transcript text goes to an outside service only for the
+  OpenAI labelling the owner ordered, with `store` false; batch files are deleted at the vendor after collection.
 - **Money.** The key is the owner's own file `%USERPROFILE%\Downloads\gpttoken.txt`, read in place; never copy,
   print or commit it, and suggest that the owner revoke it when the work is finished. Every request goes through
   `openai_client.py` and `runner.py`, whose ledger (`spend.jsonl`) reserves the worst case before sending.

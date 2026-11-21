@@ -1,17 +1,24 @@
-"""Figures of experiment BR (a) from br-bridge.json and br-pairs.csv.
+"""Figures of experiment BR (a) from br-bridge.json and, for BR-1, the per-recording pairs.
 
-    python br_figures.py RESULTS_DIR
+    python br_figures.py RESULTS_DIR [PAIRS_CSV]
 
-Writes figures/br-1-difference-against-mean.png and figures/br-2-difference-in-creator-spread.png there.
+Writes figures/br-2-difference-in-creator-spread.png in RESULTS_DIR from br-bridge.json. With PAIRS_CSV (the
+br-pairs.csv that br_bridge.py writes, kept in the private archive since 20 November 2026) it also writes
+figures/br-1-difference-distribution.png: per measure, the distribution of the paired differences as percentiles
+(middle half, 10th to 90th percentile, median) with the mean difference and the limits of agreement. No mark stands
+for a single recording: the 36 recordings come one per creator, so a per-recording mark would be a per-creator mark.
 """
 import csv
 import json
 from pathlib import Path
 import sys
+import textwrap
 
 import matplotlib
 matplotlib.use("Agg")
+import matplotlib.ticker  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
 
 SURFACE, INK, MUTED, GRID, BLUE, BAND = "#fcfcfb", "#1f2328", "#6b7280", "#e5e7eb", "#2a78d6", "#dbe9fb"
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "axes.edgecolor": GRID, "axes.labelcolor": MUTED,
@@ -22,10 +29,6 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "axes.edgecol
 def main():
     folder = Path(sys.argv[1])
     result = json.loads((folder / "br-bridge.json").read_text(encoding="utf-8"))
-    pairs = {}
-    for row in csv.DictReader(open(folder / "br-pairs.csv", encoding="utf-8")):
-        if row["english_only_model"] != "":
-            pairs.setdefault(row["measure"], []).append((float(row["english_only_model"]), float(row["larger_model"])))
     out = folder / "figures"
     out.mkdir(exist_ok=True)
 
@@ -57,34 +60,48 @@ def main():
     figure.savefig(out / "br-2-difference-in-creator-spread.png", dpi=170)
     plt.close(figure)
 
-    # BR-1: difference against mean, one panel per measure
+    if len(sys.argv) < 3:
+        print("wrote", sorted(path.name for path in out.glob("br-*.png")))
+        return
+
+    # BR-1: distribution of the paired differences per measure, in the measure's own units; percentiles only
+    pairs = {}
+    for row in csv.DictReader(open(sys.argv[2], encoding="utf-8")):
+        if row["english_only_model"] != "":
+            pairs.setdefault(row["measure"], []).append(float(row["larger_model"]) - float(row["english_only_model"]))
     measures = result["measures"]
     columns = 4
     lines = -(-len(measures) // columns)
-    figure, axes = plt.subplots(lines, columns, figsize=(11.5, 2.5 * lines))
+    figure, axes = plt.subplots(lines, columns, figsize=(11.5, 1.8 * lines + 0.9))
     for axis, row in zip(axes.flat, measures):
-        values = pairs[row["measure"]]
-        means = [(small + large) / 2 for small, large in values]
-        differences = [large - small for small, large in values]
-        axis.axhline(0, color=MUTED, linewidth=0.7)
-        axis.axhline(row["mean_difference"], color=BLUE, linewidth=1.2)
-        for limit in row["limits_of_agreement"]:
-            axis.axhline(limit, color=BLUE, linewidth=0.8, linestyle=(0, (4, 3)))
-        axis.plot(means, differences, "o", color=BLUE, markersize=4.2, alpha=0.85, markeredgecolor=SURFACE, markeredgewidth=0.6)
-        axis.set_title(row["label"], fontsize=8, loc="left", color=INK)
-        axis.grid(color=GRID, linewidth=0.5)
+        differences = np.asarray(pairs[row["measure"]])
+        p10, q1, median, q3, p90 = np.percentile(differences, [10, 25, 50, 75, 90])
+        low, high = row["limits_of_agreement"]
+        axis.axvline(0, color=MUTED, linewidth=0.7)
+        axis.axvspan(low, high, color=BAND, zorder=0)
+        axis.plot([p10, p90], [0, 0], color=MUTED, linewidth=1.4, solid_capstyle="butt", zorder=2)
+        axis.add_patch(plt.Rectangle((q1, -0.22), q3 - q1, 0.44, facecolor=BLUE, alpha=0.45, edgecolor="none", zorder=3))
+        axis.plot([median, median], [-0.22, 0.22], color=INK, linewidth=1.4, zorder=4)
+        axis.plot(row["mean_difference"], 0, "D", color=BLUE, markersize=5, markeredgecolor=SURFACE, markeredgewidth=0.6, zorder=5)
+        reach = max(abs(low), abs(high), abs(p10), abs(p90)) * 1.1 or 1.0
+        axis.set_xlim(-reach, reach)
+        axis.set_ylim(-0.6, 0.6)
+        axis.set_yticks([])
+        axis.set_title(textwrap.fill(row["label"], 40), fontsize=8, loc="left", color=INK)
+        axis.xaxis.set_major_locator(matplotlib.ticker.MaxNLocator(5))
+        axis.grid(axis="x", color=GRID, linewidth=0.5)
         axis.set_axisbelow(True)
-        for side in ("top", "right"):
+        for side in ("top", "right", "left"):
             axis.spines[side].set_visible(False)
         axis.tick_params(length=0, labelsize=7.5)
     for axis in list(axes.flat)[len(measures):]:
         axis.axis("off")
-    figure.suptitle("Difference between the two models against their mean, per recording (solid: mean difference; dashed: limits of agreement)",
+    figure.suptitle(f"Larger model minus English-only model on the same {result['pairs']} English recordings, per measure in its own units",
                     x=0.01, ha="left", fontsize=11)
-    figure.supxlabel("Mean of the two models", fontsize=9, color=MUTED)
-    figure.supylabel("Larger model minus English-only model", fontsize=9, color=MUTED)
-    figure.tight_layout(rect=(0.01, 0.01, 1, 0.96))
-    figure.savefig(out / "br-1-difference-against-mean.png", dpi=150)
+    figure.text(0.01, 0.005, "Bar: middle half of the paired differences; line: 10th to 90th percentile; black tick: median; diamond: mean difference; "
+                             "shaded: limits of agreement. Percentiles only: no mark stands for one recording.", fontsize=7.5, color=MUTED)
+    figure.tight_layout(rect=(0.0, 0.03, 1, 0.95))
+    figure.savefig(out / "br-1-difference-distribution.png", dpi=150)
     plt.close(figure)
     print("wrote", sorted(path.name for path in out.glob("br-*.png")))
 

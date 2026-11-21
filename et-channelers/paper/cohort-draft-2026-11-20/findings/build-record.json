@@ -14,7 +14,9 @@
  "ledger_creators": 100,
  "ledger_last_written_utc": "2026-11-20T17:15:21.160047+00:00",
  "holdout_creators": 23,
- "macros": 425,
+ "macros": 410,
  "seed": 20261120,
- "bootstrap": 2000
+ "bootstrap": 2000,
+ "rebuilt_utc": "2026-11-21T00:26:32.376114+00:00",
+ "rebuilt_with": "--as-built: ledger lines, clock and progress row pinned to built_utc"
 }

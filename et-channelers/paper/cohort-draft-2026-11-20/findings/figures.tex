@@ -1,24 +1,25 @@
 % figures.tex : the four figures and one optional figure, with proposed captions. Needs \usepackage{graphicx}.
 % \input after numbers.tex. Set \findingsdir if the PDFs are not in findings/ relative to the main file.
 % Every figure is one column wide (3.3 in), vector PDF, grey-scale, TrueType fonts embedded (no Type 3).
-% The data behind each figure is the CSV of the same name. Creators appear only as coded ids (C01 ...), and only in fig2_creator_pace.csv.
+% The data behind each figure is the CSV of the same name. No figure or CSV is per creator or carries a creator code:
+% figures 2 and A are distributions over creators (owner's decision of 20 November 2026, "replace and tighten").
 % Snapshot = 2026-11-20 about 13:00 UTC, 1,213 finished transcripts of 1,729 audio files. PROVISIONAL.
-% Figures 1, 2, 3 (filled marks) and 4 (filled marks) use only the 71 creators with five or more finished transcripts.
+% Figures 1, 2, 3 (filled marks) and 4 use only the 71 creators with five or more finished transcripts.
 \providecommand{\findingsdir}{findings}
 
 % Figure 1. Distributions of recording length, pace and share without speech.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{\findingsdir/fig1_distributions.pdf}
-\caption{Distributions over recordings at the snapshot of \SnapDate{} (provisional): (a) recording length, (b) pace of English recordings with at least one minute of speech, (c) share of the running time without speech. Recordings of the \SnapCreatorsFivePlus{} creators with five or more finished transcripts ($n = \SeenAudio$ distinct audio files; $n = \SeenPaceN$ in b). Solid line: median; dashed lines: quartiles. The horizontal axis of (a) and the vertical axis of (c) are logarithmic. No transcript was checked by a person, and recognizer artefacts had not been removed.}
+\caption{Distributions over recordings at the snapshot of \SnapDate{} (provisional): (a) recording length, (b) pace of English recordings with at least one minute of speech, (c) share of the running time without speech. Recordings of the \SnapCreatorsFivePlus{} creators with five or more finished transcripts ($n = \SeenAudio$ distinct audio files; $n = \SeenPaceN$ in b). Solid line: median; dashed lines: quartiles. In (b) the two outer bars pool the slowest and the fastest recordings, so that each holds recordings of five or more creators and no bar is one recording's value. The horizontal axis of (a) and the vertical axis of (c) are logarithmic. No transcript was checked by a person, and recognizer artefacts had not been removed.}
 \label{fig:distributions}
 \end{figure}
 
-% Figure 2. Creator-level pace with intervals, ranked.
+% Figure 2. Distribution of creator-level pace.
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{\findingsdir/fig2_creator_pace.pdf}
-\caption{Median pace per creator, ranked, with 95\% intervals (snapshot of \SnapDate, provisional). \NFigTwoCreators{} creators with five or more English recordings of at least one minute of speech. Intervals are percentile intervals from \NBootstrap{} resamples of each creator's recordings. Filled marks: eight or more recordings; hollow marks: five to seven. Dashed line and band: median and interquartile range of the creator medians. Values are raw, not shrunken. The intervals are not rank intervals and their coverage has not been audited, so the figure does not single out any creator.}
+\caption{Distribution of the median pace of a creator (snapshot of \SnapDate, provisional): number of creators per band of ten words per minute of speech, for the \NFigTwoCreators{} creators with five or more English recordings of at least one minute of speech. The outer bands are open and merged until each holds five or more creators. The median of the creator medians is \FigTwoCohortMed; their 10th and 90th percentiles are \FigTwoPtenMed{} and \FigTwoPninetyMed. The 95\% percentile interval of a creator's median, from \NBootstrap{} resamples of its recordings, excludes the median of creator medians for \NFigTwoOutside{} of the \NFigTwoCreators{} creators; this describes spread and is not a set of tests. Values are raw, not shrunken, and no creator is shown on its own.}
 \label{fig:pace}
 \end{figure}
 
@@ -30,18 +31,18 @@
 \label{fig:variance}
 \end{figure}
 
-% Figure 4. Where speech sits along a recording's running time.
+% Figure 4. Where speech sits along a recording's running time (seen creators only).
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{\findingsdir/fig4_speech_along_running_time.pdf}
-\caption{Mean share of each tenth of a recording's running time that is covered by speech segments (snapshot of \SnapDate, provisional). Filled circles: creators weighted equally (\SnapCreatorsFivePlus{} creators with five or more finished transcripts, \SeenAudio{} audio files), with a pointwise 95\% band from \NBootstrap{} two-stage resamples (creators, then recordings). Open diamonds: all \SnapAudio{} audio files pooled. Speech segments are the output of the recognizer's voice detector and were not validated; the band is pointwise, not simultaneous.}
+\caption{Mean share of each tenth of a recording's running time that is covered by speech segments (snapshot of \SnapDate, provisional). Creators weighted equally (\SnapCreatorsFivePlus{} creators with five or more finished transcripts, \SeenAudio{} audio files), with a pointwise 95\% band from \NBootstrap{} two-stage resamples (creators, then recordings). Hold-out and other creators are left out of this display until their labelling procedure is frozen. Speech segments are the output of the recognizer's voice detector and were not validated; the band is pointwise, not simultaneous.}
 \label{fig:running}
 \end{figure}
 
-% Optional figure. Calendar window of each creator's newest 20 recordings (all 101 creators; listing dates only, no transcript).
+% Optional figure. Calendar window of the newest 20 recordings, as a distribution over the 101 creators (listing dates only, no transcript).
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{\findingsdir/figA_calendar_window.pdf}
-\caption{Calendar window of the newest \NPerCreator{} recordings of each of the \NCreators{} creators: one line per creator, from its oldest to its newest selected recording, in time before the listing date of \ListingDate{} (logarithmic axis). The windows span \SpanMin{} to \SpanMax{} days (median \SpanMed). \NEstimatedDates{} of the \NSelected{} dates are intervals estimated from a displayed age, and the line uses the interval ends. Dates are upload dates, not dates of speaking.}
+\caption{Calendar window of the newest \NPerCreator{} recordings of the \NCreators{} creators: number of creators per band of the span from the oldest to the newest selected recording (dark), and per band of the age of the oldest selected recording at the listing date of \ListingDate{} (light). The windows span \SpanMin{} to \SpanMax{} days (median \SpanMed). \NEstimatedDates{} of the \NSelected{} dates are intervals estimated from a displayed age, and the bands use the interval ends. Dates are upload dates, not dates of speaking.}
 \label{fig:calendar}
 \end{figure}
