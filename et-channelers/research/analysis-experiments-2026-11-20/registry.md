@@ -138,7 +138,7 @@ experiments, dont worry about the usd token limit, use that as warning.* The cap
 stopping; one guard at 250 USD stops only a fault that sends requests in a loop. Money changes nothing in the
 registered procedures.
 
-**Owner decisions before freeze 1, 2026-11-21 (about 01:00 UTC), after the pilot of the forecast and title
+**Owner decisions before freeze 1, 2026-11-21 (about 00:30 UTC), after the pilot of the forecast and title
 instruments.** Two instruments failed the two-model gate after both allowed prompt revisions: the checkability
 parts of H2 (time window kappa 0.55, place 0.29, floor 0.60) and the title codes that split recordings for H5 and
 group creators for H9 (presentation kappa 0.45 and stability 0.87 on the check creators, floors 0.70 and 0.90).
@@ -149,6 +149,19 @@ models disagree. Both are reported with their failed gates and with the adjudica
 A11). The voice label moved more under removed punctuation and capitals than between two runs (4.3% of words
 between claimed and own voice against 1.0%, check sample, small model); by the plan's rule the sentence "the voice
 label responds to punctuation and case" goes with every result of H1, H4 and H6.
+
+## Decisions taken by the lead under the owner's delegation
+
+On 2026-11-21 at about 00:50 UTC the owner wrote: *you take all recommended decisions, dont stop until all analysis
+done and dashboard and paper created*. From then on the lead takes the recommended option of each open decision
+without asking, and lists it here with its reason. No such decision may weaken the hold-out rule or a registered
+rule after results are seen.
+
+| When (UTC) | Decision | Reason |
+|---|---|---|
+| 2026-11-21 00:45 | The ask check call judges each distinct unit range once and returns the set of ask classes in it, mapped back onto the find call's candidates; the stopgap that kept the find call's class is removed | One sentence can ask for two actions of different classes; the earlier check could lose one. The check stays blind to the find call's classes. Made before freeze 1, so no hold-out label is affected |
+| 2026-11-21 00:50 | The reworded voice codebook (a robustness row) cuts rule 2 to its first sentence | Plan R15 asks the reworded row to test the hint in rule 2; dropping only one sentence would leave the next sentence referring to nothing |
+| 2026-11-21 00:50 | Two rewordings per primary codebook (voice, asks, forecast critic, checkability, commitment, time expressions, sentence codes, titles), written under one fixed instruction, and the largest-model census of pay-or-enrol asks in a claimed voice, are built before freeze 1 | They are robustness rows of the hold-out (programme item HR); prompts and code used on the hold-out must be fixed by hash in freeze 1 |
 
 ## Procedure freeze
 
