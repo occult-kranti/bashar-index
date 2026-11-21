@@ -124,7 +124,8 @@ def public_facts(close=CLOSE, tables=RUN_TABLES, progress=PROGRESS):
     hours_done, words = float(summary['Hours transcribed']), int(summary['Words transcribed'])
     silent_hours, silent_share = float(summary['Hours without speech']), float(summary['Share of hours without speech'])
     need(0 <= silent_share <= 1 and 0 <= silent_hours <= hours_done and words > 0, 'run_measures')
-    languages = read_csv((tables / 'languages.csv').read_bytes())
+    languages = [row for row in read_csv((tables / 'languages.csv').read_bytes())
+                 if (row.get('scope') or 'language') == 'language']   # the table also carries a pooled row since 2026-11-21
     need(languages and sum(int(row['audio_files']) for row in languages) == transcribed, 'run_languages')
     rows = [line for line in Path(progress).read_text(encoding='utf-8').splitlines() if PROGRESS_ROW.match(line)]
     need(len(rows) == 1, 'progress_finished_row')
