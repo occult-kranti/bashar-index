@@ -1,5 +1,4 @@
 id,sample,kind,creators,recordings,estimate,low,high,p_one_sided,creators_positive,verdict,decision
 H3,"Hold-out creators, three minutes cut from each end",Registered test,17,169,0.169,-0.13,0.494,0.0007,9,Supported by the registered rule,Dropped by the owner
-H3,"Hold-out creators, nothing cut",Exploratory,18,196,0.348,0.04,0.705,,12,,Description only
 H3,"Creators seen earlier, three minutes cut from each end",Exploratory,61,558,0.019,-0.129,0.165,0.1225,36,,Exploratory
 H3,"Creators seen earlier, nothing cut",Exploratory,64,746,0.427,0.248,0.608,,52,,Description only

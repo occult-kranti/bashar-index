@@ -1,0 +1,7 @@
+measure,label,creators,p10,q1,median,q3,p90
+recordings_transcribed,Recordings transcribed per creator,101,13.0,17.0,18.0,19.0,20.0
+hours_transcribed,Hours transcribed per creator,101,2.2,3.7,6.4,10.5,14.2
+hours_without_speech,Hours without speech per creator,100,0.1,0.2,0.5,1.0,1.6
+share_without_speech,Share of the creator's transcribed time without speech,100,0.02,0.044,0.089,0.15,0.287
+median_minutes,"Median recording length per creator, minutes",100,5.1,10.7,19.6,29.2,46.6
+median_pace,"Median words per minute of speech per creator (seen creators, five or more English recordings)",70,124.7,139.1,148.7,160.4,173.9

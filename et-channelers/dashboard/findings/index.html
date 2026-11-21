@@ -24,7 +24,8 @@ a:focus-visible, summary:focus-visible, select:focus-visible { outline: 3px soli
 details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); }
 .cs-files { margin: 8px 0 0; padding-left: 20px; display: grid; gap: 4px; font-size: var(--ui-font-size-caption); }
 
-/* Layout: a short summary on top, then six sections switched by tabs. Marks use the first series colour; heat maps mix it with the page ground. */
+/* Layout: a short summary on top, then seven sections switched by tabs. Marks use the first series colour; the binned plot and interval bands mix it with the page ground.
+   Nothing on the page is per creator or per recording: distributions, binned plots and cohort curves only. */
 .cs-page [hidden] { display: none !important; }
 .cs-page, .cs-section { grid-template-columns: minmax(0, 1fr); }
 .cs-page > *, .cs-section > *, .cs-grid > * { min-width: 0; }
@@ -61,6 +62,8 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 .cs-table th { text-align: left; font-weight: var(--ui-font-weight-medium); color: var(--color-fg-muted); border-bottom: 1px solid var(--color-border-line); padding: var(--ui-pad-xs) var(--ui-pad-sm); position: sticky; top: 0; background: var(--color-panel); }
 .cs-table td { border-bottom: 1px solid var(--color-border-line); padding: var(--ui-pad-xs) var(--ui-pad-sm); vertical-align: top; }
 .cs-table td.cs-r, .cs-table th.cs-r { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cs-table.cs-compact th, .cs-table.cs-compact td { padding: var(--ui-pad-xs) var(--ui-pad-xs); }
+.cs-table.cs-compact th.cs-r { white-space: normal; }
 .cs-chip { display: inline-block; border: 1px solid var(--color-border-line); border-radius: 999px; padding: 0 var(--ui-pad-sm); white-space: nowrap; }
 .cs-chip[data-tone="ok"] { border-color: var(--color-ok); color: var(--color-ok); }
 .cs-chip[data-tone="warn"] { border-color: var(--color-warn); }
@@ -68,7 +71,6 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 .cs-meter { height: 10px; border-radius: 999px; background: var(--color-border-line); overflow: hidden; }
 .cs-meter > span { display: block; height: 100%; min-width: 2px; }
 .cs-legend { display: flex; align-items: center; gap: var(--ui-gap-sm); color: var(--color-fg-muted); font-size: var(--ui-font-size-caption); }
-.cs-ramp { width: 120px; height: 10px; border-radius: 2px; border: 1px solid var(--color-border-line); }
 @media print { .cs-tabs { display: none; } .cs-section { break-before: page; } .cs-tall { max-height: none; } }
 
 </style>
@@ -85,7 +87,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hypotheses" data-row="0">—</b> hypotheses are registered and
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed. One hypothesis has been tested, and dropped.
     </p>
-    <p class="cs-note">Creators appear as codes. Counts and times only; no transcript text. The run finished on 20 November 2026.</p>
+    <p class="cs-note">Counts, distributions and cohort-level estimates only: nothing here is shown per creator or per recording, and there is no transcript text. The run finished on 20 November 2026.</p>
   </header>
 
   <div class="cs-tiles" id="tiles">
@@ -148,37 +150,35 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     <div class="cs-grid">
       <div class="cs-card" id="card-hist">
         <h2>Share of each recording without speech</h2>
-        <p class="cs-note">Recordings per 5-point band. The vertical scale is logarithmic.</p>
+        <p class="cs-note">Recordings per band: 5 points wide up to 50%, 10 points above, so every band holds recordings of five or more creators. The vertical scale is logarithmic.</p>
         <div class="cs-chart" data-draw="chart-hist" data-source="recordings"></div>
       </div>
-      <div class="cs-card" id="card-top">
-        <h2>Creators with the most time without speech</h2>
-        <p class="cs-note">Hours without speech, with the share of that creator's transcribed time.</p>
-        <div class="cs-chart" data-draw="chart-top" data-source="creators"></div>
+      <div class="cs-card" id="card-spread">
+        <h2>How the time without speech is spread over creators</h2>
+        <p class="cs-note">Creators per band of the share of their transcribed time that holds no speech.</p>
+        <div class="cs-chart" data-draw="chart-spread" data-source="creators"></div>
       </div>
-      <div class="cs-card" id="card-scatter">
+      <div class="cs-card" id="card-bins">
         <h2>Recording length against share without speech</h2>
-        <p class="cs-note">One dot per audio file. Length is on a logarithmic scale.</p>
-        <div class="cs-chart" data-draw="chart-scatter" data-source="recordings"></div>
+        <p class="cs-note">Audio files per bin; darker means more. The bands are wide enough that every bin holds files of five or more creators, so none is left out.</p>
+        <div class="cs-chart" data-draw="chart-bins" data-source="length_share"></div>
       </div>
       <div class="cs-card" id="card-quiet">
         <h2>Longest stretch without speech</h2>
-        <p class="cs-note">How many recordings have a quiet stretch at least this long. Stretches of 30 seconds or more.</p>
+        <p class="cs-note">How many recordings have a quiet stretch at least this long. Longer thresholds are left out: the recordings past them come from fewer than five creators.</p>
         <div class="cs-chart" data-draw="chart-quiet" data-source="recordings"></div>
       </div>
     </div>
     <div class="cs-grid">
-      <div class="cs-card" id="card-heat-position">
+      <div class="cs-card" id="card-position">
         <h2>Where in a recording the speech is missing</h2>
-        <p class="cs-note">Rows are creators with three or more transcripts, from least to most time without speech. Columns are tenths of the running time.</p>
-        <div class="cs-legend"><span>0%</span><span class="cs-ramp" data-draw="ramp"></span><span>100% not covered by speech</span></div>
-        <div class="cs-chart" data-draw="heat-position" data-source="position"></div>
+        <p class="cs-note">Share of each tenth of the running time not covered by speech, averaged over the creators seen before the hypotheses were frozen, each creator weighted equally. Band: 95% interval. Hold-out creators are left out until the labelling procedure is frozen.</p>
+        <div class="cs-chart" data-draw="chart-position" data-source="position"></div>
       </div>
-      <div class="cs-card" id="card-heat-newest">
-        <h2>Each creator's newest 20 recordings</h2>
-        <p class="cs-note">Share of each recording without speech. Column 1 is the newest. Grey cells were not in this run or were not transcribed.</p>
-        <div class="cs-legend"><span>0%</span><span class="cs-ramp" data-draw="ramp"></span><span>100% without speech</span></div>
-        <div class="cs-chart" data-draw="heat-newest" data-source="newest20"></div>
+      <div class="cs-card" id="card-newest">
+        <h2>Share without speech by position among the newest 20</h2>
+        <p class="cs-note">Mean over the creators with a transcribed recording at that position, with a 95% interval; dashed line: median. Position 1 is the newest.</p>
+        <div class="cs-chart" data-draw="chart-newest" data-source="newest20"></div>
       </div>
     </div>
   </section>
@@ -188,16 +188,16 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
       <div class="cs-card" id="card-languages">
         <h2>Languages</h2>
         <div class="cs-scroll">
-          <table class="cs-table" data-source="languages" data-row-key="language">
-            <thead><tr><th data-field="language">Language</th><th class="cs-r" data-field="audio_files">Audio files</th><th class="cs-r" data-field="hours">Hours</th><th class="cs-r" data-field="creators">Creators</th><th class="cs-r" data-field="hours_without_speech">Hours without speech</th></tr></thead>
+          <table class="cs-table cs-compact" data-source="languages" data-row-key="language">
+            <thead><tr><th data-field="language">Language</th><th class="cs-r" data-field="audio_files">Files</th><th class="cs-r" data-field="creators">Creators</th><th class="cs-r" data-field="hours">Hours</th><th class="cs-r" data-field="hours_without_speech">Hours without speech</th></tr></thead>
             <tbody data-draw="rows-languages"></tbody>
           </table>
         </div>
-        <p class="cs-note">English recordings were transcribed by a smaller English model and the others by a larger multilingual one. Until both have been run on the same audio, compare inside one language only.</p>
+        <p class="cs-note">Each language other than English is spoken by one or two creators, so its row gives counts only; hours and time without speech are given for those languages together. English recordings were transcribed by a smaller English model and the others by a larger multilingual one. Until both have been run on the same audio, compare inside one language only.</p>
       </div>
       <div class="cs-card" id="card-other-languages">
         <h2>Languages other than English</h2>
-        <p class="cs-note">Audio files per language. English is left out so the others can be read.</p>
+        <p class="cs-note">Audio files and creators per language. English is left out so the others can be read.</p>
         <div class="cs-chart" data-draw="chart-languages" data-source="languages"></div>
       </div>
       <div class="cs-card" id="card-basis">
@@ -209,23 +209,46 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
   </section>
 
   <section class="cs-section" id="creators" hidden>
-    <div class="cs-card" id="card-creators">
-      <div class="cs-row">
-        <h2>One row per creator</h2>
-        <label class="cs-note" for="creator-sort">Sort by</label>
-        <select class="dash-select" id="creator-sort" aria-label="Sort creators by">
-          <option value="hours_without_speech">Hours without speech</option>
-          <option value="share_without_speech">Share without speech</option>
-          <option value="hours">Hours transcribed</option>
-          <option value="median_minutes">Median recording length</option>
-          <option value="creator_code">Code</option>
-        </select>
+    <p>How the creators are spread on six measures. Each chart counts creators per band, and the table gives percentiles over creators; nothing is shown for a single creator, and the outer bands are merged until each holds five or more creators. Speaking pace is shown only for creators that had already been looked at before the hypotheses were frozen; the others stay unread until the labelling procedure is fixed.</p>
+    <div class="cs-grid">
+      <div class="cs-card" id="card-creators-recordings">
+        <h2>Recordings transcribed</h2>
+        <p class="cs-note">Creators by the number of their newest 20 recordings that were transcribed in this run.</p>
+        <div class="cs-chart" data-draw="chart-creators" data-source="creators" data-measure="recordings_transcribed"></div>
       </div>
-      <p class="cs-note">Speaking pace is shown only for creators that had already been looked at before the hypotheses were frozen; the others stay unread until the labelling procedure is fixed.</p>
-      <div class="cs-scroll cs-tall">
-        <table class="cs-table" data-source="creators" data-row-key="creator_code">
-          <thead><tr><th data-field="creator_code">Creator</th><th class="cs-r" data-field="selected">Selected</th><th class="cs-r" data-field="transcribed">Transcribed</th><th class="cs-r" data-field="hours">Hours</th><th class="cs-r" data-field="hours_without_speech">Hours without speech</th><th class="cs-r" data-field="share_without_speech">Share without speech</th><th class="cs-r" data-field="median_minutes">Median minutes</th><th class="cs-r" data-field="median_pace">Words per minute</th><th data-field="languages">Languages</th></tr></thead>
-          <tbody data-draw="rows-creators"></tbody>
+      <div class="cs-card" id="card-creators-hours">
+        <h2>Hours transcribed</h2>
+        <p class="cs-note">Creators by the hours of audio transcribed.</p>
+        <div class="cs-chart" data-draw="chart-creators" data-source="creators" data-measure="hours_transcribed"></div>
+      </div>
+      <div class="cs-card" id="card-creators-quiet-hours">
+        <h2>Hours without speech</h2>
+        <p class="cs-note">Creators with a transcript, by the hours of their audio that hold no speech.</p>
+        <div class="cs-chart" data-draw="chart-creators" data-source="creators" data-measure="hours_without_speech"></div>
+      </div>
+      <div class="cs-card" id="card-creators-share">
+        <h2>Share without speech</h2>
+        <p class="cs-note">Creators with a transcript, by the share of their transcribed time without speech.</p>
+        <div class="cs-chart" data-draw="chart-creators" data-source="creators" data-measure="share_without_speech"></div>
+      </div>
+      <div class="cs-card" id="card-creators-length">
+        <h2>Median recording length</h2>
+        <p class="cs-note">Creators with a transcript, by the median length of their transcribed recordings.</p>
+        <div class="cs-chart" data-draw="chart-creators" data-source="creators" data-measure="median_minutes"></div>
+      </div>
+      <div class="cs-card" id="card-creators-pace">
+        <h2>Speaking pace</h2>
+        <p class="cs-note">Seen creators with five or more English recordings, by the median words per minute of speech.</p>
+        <div class="cs-chart" data-draw="chart-creators" data-source="creators" data-measure="median_pace"></div>
+      </div>
+    </div>
+    <div class="cs-card" id="card-creator-quantiles">
+      <h2>Percentiles over creators</h2>
+      <p class="cs-note">10th, 25th, 50th (median), 75th and 90th percentile of each measure over creators; n is the number of creators. Pace: seen creators with five or more English recordings.</p>
+      <div class="cs-scroll">
+        <table class="cs-table cs-compact" data-source="creator_quantiles" data-row-key="measure">
+          <thead><tr><th data-field="label">Measure</th><th class="cs-r" data-field="creators" title="Creators">n</th><th class="cs-r" data-field="p10">10th</th><th class="cs-r" data-field="q1">25th</th><th class="cs-r" data-field="median" title="Median">50th</th><th class="cs-r" data-field="q3">75th</th><th class="cs-r" data-field="p90">90th</th></tr></thead>
+          <tbody data-draw="rows-creator-quantiles"></tbody>
         </table>
       </div>
     </div>
@@ -270,7 +293,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     <p>Tests of registered hypotheses and checks of the instruments, as they are run. A row stays here whatever its outcome.</p>
     <div class="cs-card" id="card-results">
       <h2>Registered tests so far: H3, tested and dropped</h2>
-      <p class="cs-note">H3 asked whether &ldquo;I&rdquo;, &ldquo;me&rdquo; and &ldquo;my&rdquo; are denser at the start and end of a recording than in its middle, once the first and last three minutes are cut. On the hold-out creators the registered test passed, but the interval over creators includes zero and the larger group seen earlier shows nothing, so the owner dropped it. With nothing cut the contrast is large in both groups: the surplus sits in the opening and closing minutes. Dot: estimate in log units. Line: 90% interval over creators.</p>
+      <p class="cs-note">H3 asked whether &ldquo;I&rdquo;, &ldquo;me&rdquo; and &ldquo;my&rdquo; are denser at the start and end of a recording than in its middle, once the first and last three minutes are cut. On the hold-out creators the registered test passed, but the interval over creators includes zero and the larger group seen earlier shows nothing, so the owner dropped it. With nothing cut the contrast is large among the creators seen earlier: the surplus sits in the opening and closing minutes. Beyond the registered test, no estimate by position in the recording is shown for the hold-out creators until the labelling procedure is frozen. Dot: estimate in log units. Line: 90% interval over creators.</p>
       <div class="cs-chart" data-draw="chart-results" data-source="results"></div>
       <div class="cs-scroll">
         <table class="cs-table" data-source="results" data-row-key="sample">
@@ -320,22 +343,24 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
   <details id="notes">
     <summary>How to read this page</summary>
-    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover three days or fifteen years, so nothing here is a trend. Languages other than English come from a handful of creators each. Figures on the first five tabs describe the finished run; the last tab describes an earlier snapshot. The hypotheses will be tested with labels made by a language model, which no person has checked.</p>
+    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover three days or fifteen years, so nothing here is a trend. Each language other than English comes from one or two creators, so only counts are given for it and its hours are pooled with the other languages. Every number the run measured rests on five or more creators. Figures on the first five tabs describe the finished run; the last tab describes an earlier snapshot. The hypotheses will be tested with labels made by a language model, which no person has checked.</p>
   </details>
 
   <details id="data">
     <summary>The data behind this page</summary>
-    <p class="cs-note">Every figure, chart and table is drawn from these files. They hold counts and measures of time only. Built 2026-11-20.</p>
+    <p class="cs-note">Every figure, chart and table is drawn from these files. They hold counts, distributions and cohort-level estimates only; no file has a row per creator or per recording, and every number the run measured rests on five or more creators. Built 2026-11-21.</p>
     <ul class="cs-files">
-        <li><a href="data/summary.csv">Run summary</a> <span class="cs-note">(15 rows)</span></li>
+        <li><a href="data/summary.csv">Run summary</a> <span class="cs-note">(16 rows)</span></li>
         <li><a href="data/outcome.csv">Selected recordings by outcome</a> <span class="cs-note">(7 rows)</span></li>
-        <li><a href="data/languages.csv">Languages</a> <span class="cs-note">(7 rows)</span></li>
+        <li><a href="data/languages.csv">Languages</a> <span class="cs-note">(8 rows)</span></li>
         <li><a href="data/language_basis.csv">How language was decided</a> <span class="cs-note">(4 rows)</span></li>
-        <li><a href="data/creators.csv">Creators (coded)</a> <span class="cs-note">(101 rows)</span></li>
-        <li><a href="data/recordings.csv">Recordings: length, share without speech, language</a> <span class="cs-note">(1,697 rows)</span></li>
+        <li><a href="data/creators.csv">Creators per band of six measures</a> <span class="cs-note">(39 rows)</span></li>
+        <li><a href="data/creator_quantiles.csv">Percentiles over creators</a> <span class="cs-note">(6 rows)</span></li>
+        <li><a href="data/recordings.csv">Recordings per band: share without speech, longest quiet stretch</a> <span class="cs-note">(20 rows)</span></li>
+        <li><a href="data/length_share.csv">Recordings binned by length and share without speech</a> <span class="cs-note">(20 rows)</span></li>
         <li><a href="data/progress.csv">Hours transcribed over the day</a> <span class="cs-note">(170 rows)</span></li>
-        <li><a href="data/position.csv">Speech by position in the recording</a> <span class="cs-note">(980 rows)</span></li>
-        <li><a href="data/newest20.csv">Newest 20 recordings per creator</a> <span class="cs-note">(2,000 rows)</span></li>
+        <li><a href="data/position.csv">Speech by position in the recording (seen creators, 95% interval)</a> <span class="cs-note">(10 rows)</span></li>
+        <li><a href="data/newest20.csv">Share without speech by position among the newest 20</a> <span class="cs-note">(20 rows)</span></li>
         <li><a href="data/experiments.csv">Experiment catalogue</a> <span class="cs-note">(28 rows)</span></li>
         <li><a href="data/hypotheses.csv">Registered hypotheses</a> <span class="cs-note">(10 rows)</span></li>
         <li><a href="data/variance.csv">Variation between creators</a> <span class="cs-note">(7 rows)</span></li>
@@ -344,7 +369,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="data/artefacts.csv">Recognizer artefacts</a> <span class="cs-note">(2 rows)</span></li>
         <li><a href="data/status.csv">Work status</a> <span class="cs-note">(9 rows)</span></li>
         <li><a href="data/budget.csv">Labelling budget</a> <span class="cs-note">(4 rows)</span></li>
-        <li><a href="data/results.csv">Registered tests so far</a> <span class="cs-note">(4 rows)</span></li>
+        <li><a href="data/results.csv">Registered tests so far</a> <span class="cs-note">(3 rows)</span></li>
         <li><a href="data/bridge.csv">The two recognizer models on the same audio</a> <span class="cs-note">(17 rows)</span></li>
     </ul>
   </details>
@@ -365,7 +390,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
 // A small stand-in for the hosted dashboard's data layer: loads the CSV files beside the page and runs the drawings.
 const dash = (() => {
-  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "recordings", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "bridge"];
+  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "creator_quantiles", "recordings", "length_share", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "bridge"];
   const state = {}, calcs = {}, draws = {};
   const api = {
     colors: ['var(--series-1)'],
@@ -411,18 +436,16 @@ const mix = (share) => 'color-mix(in oklab, ' + dash.colors[0] + ' ' + Math.roun
 dash.calc('headline', {
   title: 'Headline figures',
   description: 'The figures printed at the top of the page, taken from the run summary and counted from the lists.',
-  inputs: ['summary', 'languages', 'hypotheses', 'experiments', 'creators'],
-  fn: (summary, languages, hypotheses, experiments, creators) => {
+  inputs: ['summary', 'languages', 'hypotheses', 'experiments'],
+  fn: (summary, languages, hypotheses, experiments) => {
     const get = (measure) => Number((summary.find((row) => row.measure === measure) || {}).value);
-    const quiet = creators.map((row) => Number(row.hours_without_speech) || 0).sort((a, b) => b - a);
-    const total = quiet.reduce((sum, value) => sum + value, 0);
-    const top = quiet.slice(0, 5).reduce((sum, value) => sum + value, 0);
+    const top5 = get('Share of the hours without speech held by the five creators with the most');
     return [{
       files: get('Audio files transcribed'), files_in_run: get('Audio files in the run'), hours: get('Hours transcribed'),
       hours_without_speech: get('Hours without speech'), percent_without_speech: Math.round(get('Share of hours without speech') * 1000) / 10,
       not_transcribed: get('Recordings not transcribed'), words_millions: Math.round(get('Words transcribed') / 10000) / 100,
-      half_silent: get('Recordings at least half without speech'), languages: languages.length, hypotheses: hypotheses.length,
-      experiments: experiments.length, top5_percent: total ? Math.round(top / total * 100) : 0,
+      half_silent: get('Recordings at least half without speech'), languages: languages.filter((row) => row.scope !== 'pooled').length, hypotheses: hypotheses.length,
+      experiments: experiments.length, top5_percent: Number.isFinite(top5) ? Math.round(top5 * 100) : null,
     }];
   },
 });
@@ -561,117 +584,122 @@ dash.draw('meter-budget', (el) => {
 dash.draw('chart-hist', (el) => {
   const got = need(el, ['recordings']);
   if (!got) return;
-  const shares = got[0].map((row) => Number(row.share_without_speech) * 100).filter(Number.isFinite);
-  const bins = d3.bin().domain([0, 100]).thresholds(d3.range(0, 100, 5))(shares.map((value) => Math.min(value, 99.999)));
+  const bins = got[0].filter((row) => row.measure === 'share_without_speech')
+    .map((row) => ({ x0: Number(row.bin_left), x1: Number(row.bin_right), n: Number(row.recordings) })).filter((b) => Number.isFinite(b.n));
   const height = 250, margin = { top: 12, right: 10, bottom: 34, left: 40 };
-  const { svg, width, show, hide } = canvas(el, height, 'Histogram of the share of each recording without speech');
+  const { svg, width, show, hide } = canvas(el, height, 'Histogram of the share of each recording without speech: recordings per band, 5 points wide up to 50% and 10 points above');
+  const most = d3.max(bins, (b) => b.n) || 1;
   const x = d3.scaleLinear().domain([0, 100]).range([margin.left, width - margin.right]);
-  const y = d3.scaleLog().domain([0.7, d3.max(bins, (b) => b.length)]).range([height - margin.bottom, margin.top]);
-  const ticks = [1, 10, 100, 1000].filter((t) => t <= d3.max(bins, (b) => b.length));
+  const y = d3.scaleLog().domain([0.7, most]).range([height - margin.bottom, margin.top]);
+  const ticks = [1, 10, 100, 1000].filter((t) => t <= most);
   svg.append('g').selectAll('line').data(ticks).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
   svg.append('g').selectAll('text').data(ticks).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => fmt(d));
   svg.append('g').selectAll('text').data([0, 20, 40, 60, 80, 100]).join('text').attr('x', x).attr('y', height - 16).attr('text-anchor', 'middle').text((d) => d + '%');
   svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 2).attr('text-anchor', 'middle').text('Share of the running time without speech');
-  svg.append('g').selectAll('rect').data(bins.filter((b) => b.length)).join('rect').attr('x', (b) => x(b.x0) + 1).attr('width', (b) => Math.max(1, x(b.x1) - x(b.x0) - 2))
-    .attr('y', (b) => y(b.length)).attr('height', (b) => y(0.7) - y(b.length)).attr('rx', 2).style('fill', colour())
-    .on('pointermove', (event, b) => show(event, b.x0 + '% to ' + b.x1 + '%: ' + fmt(b.length) + ' recordings')).on('pointerleave', hide);
+  svg.append('g').selectAll('rect').data(bins.filter((b) => b.n > 0)).join('rect').attr('x', (b) => x(b.x0) + 1).attr('width', (b) => Math.max(1, x(b.x1) - x(b.x0) - 2))
+    .attr('y', (b) => y(b.n)).attr('height', (b) => y(0.7) - y(b.n)).attr('rx', 2).style('fill', colour())
+    .on('pointermove', (event, b) => show(event, b.x0 + '% to ' + b.x1 + '%: ' + fmt(b.n) + ' recordings')).on('pointerleave', hide);
 });
 
-dash.draw('chart-top', (el) => {
+// Creators per band of one measure, from the creators dataset (no row per creator).
+function creatorBars(el, measure, label) {
   const got = need(el, ['creators']);
   if (!got) return;
-  const top = got[0].filter((row) => Number(row.hours_without_speech) > 0).sort((a, b) => Number(b.hours_without_speech) - Number(a.hours_without_speech)).slice(0, 12);
-  bars(el, top.map((row) => ({ label: row.creator_code, value: Number(row.hours_without_speech),
-    text: fmt(Number(row.hours_without_speech), 1) + ' h (' + fmt(Number(row.share_without_speech) * 100) + '% of ' + fmt(Number(row.hours), 1) + ' h)' })),
-    'Bar chart of the twelve creators with the most hours without speech');
-});
+  const rowsIn = got[0].filter((row) => row.measure === measure);
+  if (!rowsIn.length) { el.textContent = 'No data for this measure.'; return; }
+  bars(el, rowsIn.map((row) => ({ label: row.bin, value: Number(row.creators), text: fmt(Number(row.creators)) + (Number(row.creators) === 1 ? ' creator' : ' creators') })), label);
+}
+dash.draw('chart-spread', (el) => creatorBars(el, 'share_without_speech', 'Bar chart of creators per band of the share of their transcribed time without speech'));
+dash.draw('chart-creators', (el) => creatorBars(el, el.dataset.measure, 'Bar chart of creators per band: ' + el.dataset.measure.replace(/_/g, ' ')));
 
-dash.draw('chart-scatter', (el) => {
-  const got = need(el, ['recordings']);
+dash.draw('chart-bins', (el) => {
+  const got = need(el, ['length_share']);
   if (!got) return;
-  const points = got[0].map((row) => ({ code: row.creator_code, minutes: Number(row.minutes), share: Number(row.share_without_speech) * 100, language: row.language })).filter((p) => p.minutes > 0);
-  const height = 270, margin = { top: 12, right: 12, bottom: 34, left: 40 };
-  const { svg, width, show, hide } = canvas(el, height, 'Scatter plot of recording length against share without speech');
-  const x = d3.scaleLog().domain([d3.min(points, (p) => p.minutes), d3.max(points, (p) => p.minutes)]).range([margin.left, width - margin.right]);
-  const y = d3.scaleLinear().domain([0, 100]).range([height - margin.bottom, margin.top]);
-  svg.append('g').selectAll('line').data([0, 25, 50, 75, 100]).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
-  svg.append('g').selectAll('text').data([0, 25, 50, 75, 100]).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => d + '%');
-  const marks = [1, 5, 20, 60, 240].filter((t) => t >= x.domain()[0] && t <= x.domain()[1]);
-  svg.append('g').selectAll('text').data(marks).join('text').attr('x', x).attr('y', height - 16).attr('text-anchor', 'middle').text((d) => d);
-  svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 2).attr('text-anchor', 'middle').text('Recording length in minutes');
-  svg.append('g').selectAll('circle').data(points).join('circle').attr('cx', (p) => x(p.minutes)).attr('cy', (p) => y(p.share)).attr('r', 2.6).style('fill', colour()).attr('fill-opacity', 0.38)
-    .on('pointermove', (event, p) => show(event, p.code + ', ' + p.language + ': ' + fmt(p.minutes, 1) + ' min, ' + fmt(p.share) + '% without speech')).on('pointerleave', hide);
+  const blank = (value) => value === null || value === undefined || value === '';
+  const cells = got[0].map((row) => ({ l0: Number(row.length_left_minutes), l1: blank(row.length_right_minutes) ? null : Number(row.length_right_minutes),
+    s0: Number(row.share_left_percent), s1: Number(row.share_right_percent), n: Number(row.recordings), band: row.length_band, share: row.share_band }));
+  const lengthBand = (c) => (c.l1 === null ? c.l0 + '+' : c.l0 + '–' + c.l1);
+  const columns = Array.from(new Set(cells.map((c) => c.l0))).sort(d3.ascending);
+  const rowsY = Array.from(new Set(cells.map((c) => c.s0))).sort(d3.ascending);
+  const columnName = new Map(cells.map((c) => [c.l0, lengthBand(c)]));
+  const rowName = new Map(cells.map((c) => [c.s0, c.s0 + '–' + c.s1 + '%']));
+  const height = 300, margin = { top: 6, right: 6, bottom: 40, left: 58 };
+  const { svg, width, show, hide } = canvas(el, height, 'Binned plot of audio files by recording length and share without speech; every bin holds files of five or more creators');
+  const x = d3.scaleBand().domain(columns).range([margin.left, width - margin.right]).paddingInner(0.06);
+  const y = d3.scaleBand().domain(rowsY).range([height - margin.bottom, margin.top]).paddingInner(0.06);
+  const most = d3.max(cells, (c) => c.n) || 1;
+  const shade = (n) => 0.12 + 0.88 * Math.log(n) / Math.log(most);
+  const g = svg.append('g').selectAll('g').data(cells).join('g');
+  g.append('rect').attr('x', (c) => x(c.l0)).attr('y', (c) => y(c.s0)).attr('width', x.bandwidth()).attr('height', y.bandwidth()).attr('rx', 2)
+    .style('fill', (c) => mix(shade(c.n)))
+    .on('pointermove', (event, c) => show(event, c.band + ', ' + c.share + ' without speech: ' + fmt(c.n) + ' audio files')).on('pointerleave', hide);
+  if (x.bandwidth() >= 26) {
+    g.append('text').attr('x', (c) => x(c.l0) + x.bandwidth() / 2).attr('y', (c) => y(c.s0) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'middle')
+      .style('fill', (c) => (shade(c.n) > 0.6 ? 'var(--color-panel)' : 'var(--color-fg)')).style('pointer-events', 'none').text((c) => fmt(c.n));
+  }
+  svg.append('g').selectAll('text').data(rowsY).join('text').attr('x', margin.left - 6).attr('y', (s) => y(s) + y.bandwidth() / 2).attr('dy', '0.35em').attr('text-anchor', 'end').text((s) => rowName.get(s));
+  svg.append('g').selectAll('text').data(columns).join('text').attr('x', (l) => x(l) + x.bandwidth() / 2).attr('y', height - 24).attr('text-anchor', 'middle').text((l) => columnName.get(l));
+  svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 4).attr('text-anchor', 'middle').text('Recording length in minutes; rows: share without speech');
 });
 
 dash.draw('chart-quiet', (el) => {
   const got = need(el, ['recordings']);
   if (!got) return;
-  const longest = got[0].map((row) => Number(row.longest_quiet_minutes)).filter((value) => value >= 0.5).sort(d3.ascending);
-  const points = longest.map((value, index) => ({ minutes: value, count: longest.length - index }));
-  const height = 250, margin = { top: 12, right: 12, bottom: 34, left: 40 };
-  const { svg, width, show, hide } = canvas(el, height, 'Step chart of how many recordings have a quiet stretch at least a given length');
-  const x = d3.scaleLog().domain([0.5, d3.max(longest)]).range([margin.left, width - margin.right]);
-  const y = d3.scaleLinear().domain([0, longest.length]).nice().range([height - margin.bottom, margin.top]);
-  svg.append('g').selectAll('line').data(y.ticks(5)).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
-  svg.append('g').selectAll('text').data(y.ticks(5)).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => fmt(d));
-  svg.append('g').selectAll('text').data([0.5, 1, 2, 5, 10, 20, 60].filter((t) => t <= d3.max(longest))).join('text').attr('x', x).attr('y', height - 16).attr('text-anchor', 'middle').text((d) => d);
-  svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 2).attr('text-anchor', 'middle').text('Longest quiet stretch in minutes');
-  svg.append('path').datum(points).attr('fill', 'none').style('stroke', colour()).attr('stroke-width', 2).attr('d', d3.line().curve(d3.curveStepAfter).x((p) => x(p.minutes)).y((p) => y(p.count)));
-  const two = points.find((p) => p.minutes >= 2);
-  if (two) {
-    svg.append('circle').attr('cx', x(2)).attr('cy', y(two.count)).attr('r', 3.5).style('fill', colour());
-    svg.append('text').attr('class', 'cs-val').attr('x', x(2) + 8).attr('y', y(two.count) - 8).text(fmt(two.count) + ' with 2 minutes or more');
-  }
-  const bisect = d3.bisector((p) => p.minutes).left;
-  svg.append('rect').attr('x', margin.left).attr('y', margin.top).attr('width', width - margin.left - margin.right).attr('height', height - margin.top - margin.bottom).attr('fill', 'transparent')
-    .on('pointermove', (event) => {
-      const minutes = x.invert(d3.pointer(event)[0]);
-      const point = points[Math.min(points.length - 1, bisect(points, minutes))];
-      show(event, fmt(point.count) + ' recordings have a quiet stretch of ' + fmt(minutes, 1) + ' minutes or more');
-    }).on('pointerleave', hide);
+  bars(el, got[0].filter((row) => row.measure === 'longest_quiet_at_least').map((row) => ({ label: row.bin, value: Number(row.recordings), text: fmt(Number(row.recordings)) })),
+    'Bar chart of how many recordings have a quiet stretch at least a given length');
 });
 
-function heat(el, data, column, value, columnLabel, label, describe) {
-  const orders = Array.from(new Set(data.map((row) => Number(row.creator_order)))).sort(d3.ascending);
-  const columns = Array.from(new Set(data.map((row) => Number(row[column])))).sort(d3.ascending);
-  const cell = 5, margin = { top: 4, right: 4, bottom: 30, left: 38 };
-  const height = orders.length * cell + margin.top + margin.bottom;
-  const { svg, width, show, hide } = canvas(el, height, label);
-  const x = d3.scaleBand().domain(columns).range([margin.left, width - margin.right]).paddingInner(0.04);
-  const y = (order) => margin.top + (order - orders[0]) * cell;
-  svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (row) => x(Number(row[column]))).attr('y', (row) => y(Number(row.creator_order)))
-    .attr('width', x.bandwidth()).attr('height', cell).style('fill', (row) => (row[value] === null || row[value] === '' ? 'var(--color-border-line)' : mix(Number(row[value]))))
-    .on('pointermove', (event, row) => show(event, describe(row))).on('pointerleave', hide);
-  const codes = new Map(data.map((row) => [Number(row.creator_order), row.creator_code]));
-  svg.append('g').selectAll('text').data(orders.filter((order, index) => index % 10 === 0)).join('text').attr('x', margin.left - 5).attr('y', (order) => y(order) + cell / 2)
-    .attr('dy', '0.35em').attr('text-anchor', 'end').text((order) => codes.get(order));
-  svg.append('g').selectAll('text').data(columns.filter((c, index) => columns.length <= 10 || index % 2 === 0)).join('text').attr('x', (c) => x(c) + x.bandwidth() / 2).attr('y', height - 16)
-    .attr('text-anchor', 'middle').text(columnLabel);
+// A cohort curve with a 95% band, and optionally a second, dashed line.
+function curve(el, points, options) {
+  const height = 250, margin = { top: 12, right: 12, bottom: 40, left: 40 };
+  const { svg, width, show, hide } = canvas(el, height, options.label);
+  const x = d3.scalePoint().domain(points.map((p) => p.x)).range([margin.left + 6, width - margin.right - 6]);
+  const top = Math.max(d3.max(points, (p) => p.high), d3.max(points, (p) => (p.second === undefined ? 0 : p.second))) * 1.1;
+  const y = d3.scaleLinear().domain([0, top]).nice().range([height - margin.bottom, margin.top]);
+  svg.append('g').selectAll('line').data(y.ticks(5)).join('line').attr('class', 'cs-gridline').attr('x1', margin.left).attr('x2', width - margin.right).attr('y1', y).attr('y2', y);
+  svg.append('g').selectAll('text').data(y.ticks(5)).join('text').attr('x', margin.left - 6).attr('y', y).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => fmt(d) + '%');
+  const every = Math.max(1, Math.ceil(points.length * 34 / Math.max(1, width - margin.left - margin.right)));
+  svg.append('g').selectAll('text').data(points.filter((p, index) => index % every === 0)).join('text').attr('x', (p) => x(p.x)).attr('y', height - 24).attr('text-anchor', 'middle').text((p) => p.tick);
+  svg.append('text').attr('x', (margin.left + width - margin.right) / 2).attr('y', height - 4).attr('text-anchor', 'middle').text(options.axis);
+  svg.append('path').datum(points).style('fill', mix(0.18)).attr('d', d3.area().x((p) => x(p.x)).y0((p) => y(p.low)).y1((p) => y(p.high)));
+  if (points[0].second !== undefined) {
+    svg.append('path').datum(points).attr('fill', 'none').style('stroke', 'var(--ui-chart-muted)').attr('stroke-width', 1.2).attr('stroke-dasharray', '4 3')
+      .attr('d', d3.line().x((p) => x(p.x)).y((p) => y(p.second)));
+  }
+  svg.append('path').datum(points).attr('fill', 'none').style('stroke', colour()).attr('stroke-width', 2).attr('d', d3.line().x((p) => x(p.x)).y((p) => y(p.value)));
+  svg.append('g').selectAll('circle').data(points).join('circle').attr('cx', (p) => x(p.x)).attr('cy', (p) => y(p.value)).attr('r', 3).style('fill', colour());
+  const step = x.step();
+  svg.append('g').selectAll('rect').data(points).join('rect').attr('x', (p) => x(p.x) - step / 2).attr('y', margin.top).attr('width', step).attr('height', height - margin.top - margin.bottom)
+    .attr('fill', 'transparent').on('pointermove', (event, p) => show(event, p.tip)).on('pointerleave', hide);
 }
-dash.draw('ramp', (el) => { el.style.background = 'linear-gradient(to right, ' + mix(0) + ', ' + mix(1) + ')'; });
-dash.draw('heat-position', (el) => {
+dash.draw('chart-position', (el) => {
   const got = need(el, ['position']);
   if (!got) return;
-  heat(el, got[0], 'tenth', 'share_not_covered', (c) => (c * 10) + '%', 'Heat map of the share of each tenth of the running time not covered by speech, by creator',
-    (row) => row.creator_code + ', ' + ((row.tenth - 1) * 10) + '% to ' + (row.tenth * 10) + '% of the running time: ' + fmt(Number(row.share_not_covered) * 100) + '% not covered by speech');
+  curve(el, got[0].map((row) => ({ x: Number(row.tenth), tick: ((row.tenth - 1) * 10) + '%', value: Number(row.mean_share_not_covered) * 100,
+    low: Number(row.ci95_low) * 100, high: Number(row.ci95_high) * 100,
+    tip: row.running_time + ' of the running time: ' + fmt(Number(row.mean_share_not_covered) * 100, 1) + '% not covered by speech (95% interval ' + fmt(Number(row.ci95_low) * 100, 1) + '% to ' + fmt(Number(row.ci95_high) * 100, 1) + '%), ' + row.creators + ' creators' })),
+    { label: 'Line chart of the share of each tenth of the running time not covered by speech, seen creators, with a 95% band', axis: 'Start of each tenth of the running time' });
 });
-dash.draw('heat-newest', (el) => {
+dash.draw('chart-newest', (el) => {
   const got = need(el, ['newest20']);
   if (!got) return;
-  heat(el, got[0], 'position_newest_first', 'share_without_speech', (c) => c, 'Heat map of the share without speech of each creator’s newest 20 recordings',
-    (row) => row.creator_code + ', recording ' + row.position_newest_first + ': ' + (row.share_without_speech === null || row.share_without_speech === '' ? 'not in this run or not transcribed' : fmt(Number(row.share_without_speech) * 100) + '% without speech'));
+  curve(el, got[0].map((row) => ({ x: Number(row.position_newest_first), tick: row.position_newest_first, value: Number(row.mean_share_without_speech) * 100,
+    low: Number(row.ci95_low) * 100, high: Number(row.ci95_high) * 100, second: Number(row.median) * 100,
+    tip: 'Position ' + row.position_newest_first + ': mean ' + fmt(Number(row.mean_share_without_speech) * 100, 1) + '% without speech (95% interval ' + fmt(Number(row.ci95_low) * 100, 1) + '% to ' + fmt(Number(row.ci95_high) * 100, 1) + '%), median ' + fmt(Number(row.median) * 100, 1) + '%, ' + row.creators + ' creators' })),
+    { label: 'Line chart of the share without speech by position among the newest 20 recordings, with a 95% band and the median dashed', axis: 'Position among the newest 20 (1 = newest)' });
 });
 
 dash.draw('rows-languages', (el) => {
   const got = need(el, ['languages']);
   if (!got) return;
-  rows(el, got[0], [{ field: 'language' }, number(0)('audio_files'), number(1)('hours'), number(0)('creators'), number(1)('hours_without_speech')], 'language');
+  rows(el, got[0], [{ field: 'language' }, number(0)('audio_files'), number(0)('creators'), number(1)('hours'), number(1)('hours_without_speech')], 'language');
 });
+const plural = (count, word) => fmt(count) + ' ' + word + (count === 1 ? '' : 's');
 dash.draw('chart-languages', (el) => {
   const got = need(el, ['languages']);
   if (!got) return;
-  bars(el, got[0].filter((row) => row.language !== 'English').map((row) => ({ label: row.language, value: Number(row.audio_files),
-    text: fmt(Number(row.audio_files)) + ' files, ' + fmt(Number(row.hours), 1) + ' h' })), 'Bar chart of audio files per language other than English');
+  bars(el, got[0].filter((row) => row.scope !== 'pooled' && row.language !== 'English').map((row) => ({ label: row.language, value: Number(row.audio_files),
+    text: plural(Number(row.audio_files), 'file') + ', ' + plural(Number(row.creators), 'creator') })), 'Bar chart of audio files per language other than English');
 });
 dash.draw('chart-basis', (el) => {
   const got = need(el, ['language_basis']);
@@ -680,14 +708,14 @@ dash.draw('chart-basis', (el) => {
     'Bar chart of audio files by how their language was decided');
 });
 
-dash.draw('rows-creators', (el) => {
-  const got = need(el, ['creators']);
+dash.draw('rows-creator-quantiles', (el) => {
+  const got = need(el, ['creator_quantiles']);
   if (!got) return;
-  const select = document.querySelector('#creator-sort');
-  const key = select ? select.value : 'hours_without_speech';
-  const sorted = got[0].slice().sort((a, b) => (key === 'creator_code' ? d3.ascending(a.creator_code, b.creator_code) : d3.descending(Number(a[key]) || 0, Number(b[key]) || 0)));
-  rows(el, sorted, [{ field: 'creator_code' }, number(0)('selected'), number(0)('transcribed'), number(1)('hours'), number(1)('hours_without_speech'),
-    number(0, '%')('share_without_speech'), number(1)('median_minutes'), number(0)('median_pace'), { field: 'languages' }], 'creator_code');
+  const cell = (field) => ({ field, right: true, text: (row) => (row[field] === null || row[field] === '' || row[field] === undefined ? ''
+    : (row.measure === 'share_without_speech' ? fmt(Number(row[field]) * 100, 1) + '%' : fmt(Number(row[field]), 1))) });
+  const short = { recordings_transcribed: 'Recordings', hours_transcribed: 'Hours', hours_without_speech: 'Hours without speech',
+    share_without_speech: 'Share without speech', median_minutes: 'Median length, min', median_pace: 'Pace, words per min (seen)' };
+  rows(el, got[0], [{ field: 'label', text: (row) => short[row.measure] || row.label }, number(0)('creators'), cell('p10'), cell('q1'), cell('median'), cell('q3'), cell('p90')], 'measure');
 });
 dash.draw('rows-hypotheses', (el) => {
   const got = need(el, ['hypotheses']);
@@ -755,7 +783,7 @@ dash.draw('chart-results', (el) => {
   if (!got) return;
   forest(el, got[0].map((row) => ({ label: row.sample, value: Number(row.estimate), low: Number(row.low), high: Number(row.high), text: fmt(Number(row.estimate), 2),
     tip: row.id + ', ' + row.sample + ': ' + fmt(Number(row.estimate), 3) + ' (90% interval ' + fmt(Number(row.low), 3) + ' to ' + fmt(Number(row.high), 3) + '), ' + row.creators + ' creators, ' + row.recordings + ' recordings' })),
-    { label: 'Dot plot of the H3 contrast in four samples, with 90% intervals over creators', tickDigits: 1, floor: 0.5 });
+    { label: 'Dot plot of the H3 contrast in the registered test and in the creators seen earlier, with 90% intervals over creators', tickDigits: 1, floor: 0.5 });
 });
 dash.draw('rows-results', (el) => {
   const got = need(el, ['results']);
@@ -806,7 +834,6 @@ function open(name, link) {
   if (link) dash.setLink(name);
 }
 document.querySelectorAll('#dash-root .cs-tab').forEach((tab) => { tab.addEventListener('click', () => open(tab.dataset.tab, true)); });
-document.querySelectorAll('#creator-sort').forEach((select) => { select.addEventListener('change', () => dash.draw('rows-creators')); });
 document.querySelectorAll('#experiment-group').forEach((select) => { select.addEventListener('change', () => dash.draw('rows-experiments')); });
 if (location.hash.length > 1) open(location.hash.slice(1), false);
 let shown = null;
