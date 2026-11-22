@@ -1,0 +1,72 @@
+% sections/appendix-checklist.tex -- Appendix C, the venue's paper checklist (outline section 5, app:checklist; M3).
+% Writer: A. Written 2026-11-21, 06:18 to 06:25 UTC (clock: date -u). Word count: about 1,150 (appendix, no budget).
+% The questions follow the AAAI ICWSM paper checklist (2024 template, the version named in the project's literature
+%   notes, literature-icwsm.md N10). No copy of the template is kept in the project and none was fetched for this
+%   draft (no external call): the integrator must check the wording and the numbering against the checklist of the
+%   target year before submission. Answers come from the ethics statement and Sections 3 to 9; every "no" gives its
+%   reason (ethics determination: none; human validation: none, amendment A8; data release: none).
+% Macros used that are not in outline section 7: none. Pending labels used: none.
+% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): the first-round results are reported from the
+%   public results file (no longer "marked pending").
+
+\section{Paper checklist}
+\label{app:checklist}
+
+{\small
+\begin{enumerate}
+\item For most authors\ldots
+\begin{enumerate}
+\item Would answering this research question advance science without violating social contracts, such as violating privacy norms, perpetuating unfair profiling, exacerbating the socio-economic divide, or implying disrespect to societies or cultures? \textbf{Yes, with open points.} The paper reports distributions only, with no cell of fewer than five creators (smaller cells are merged or stated against a larger count), names no creator and gives no truth label to any religious statement. Speech of third parties was sent to a commercial service, and no ethics determination exists (ethics statement).
+\item Do your main claims in the abstract and introduction accurately reflect the paper's contributions and scope? \textbf{Yes.} The paper is a measurement and protocol paper; its first-round test results are model-coded descriptions, reported as registered from the public results file (Sections~\ref{sec:intro} and~\ref{sec:results}).
+\item Do you clarify how the proposed methodological approach is appropriate for the claims made? \textbf{Yes.} Machine anchors are reported as agreement, not accuracy; every interval of a creator-level estimate resamples creators, and other intervals are named (Sections~\ref{sec:pipeline} and~\ref{sec:measure}).
+\item Do you clarify what are possible artifacts in the data used, given population-specific distributions? \textbf{Yes.} Judgment sample, quota window, exclusions, coverage by rank, run order and languages (Sections~\ref{sec:data}, \ref{sec:coverage} and~\ref{sec:limits}; Table~\ref{tab:exclusions}); recognizer artefacts (Sections~\ref{sec:seams} and~\ref{sec:artefacts}).
+\item Did you describe the limitations of your work? \textbf{Yes} (Section~\ref{sec:limits}).
+\item Did you discuss any potential negative societal impacts of your work? \textbf{Yes, in part.} The ethics statement addresses the identification of creators and of third parties heard in their recordings, and the processing of their speech by an external service. No separate impact section is given.
+\item Did you discuss any potential misuse of your work? \textbf{No.} No data, labels or model are released; the misuse the paper guards against is re-identification, by its privacy rules (ethics statement).
+\item Did you describe steps taken to prevent or mitigate potential negative outcomes of the research, such as data and model documentation, data anonymization, responsible release, access control, and the reproducibility of findings? \textbf{Yes.} Distributions only, no cell of fewer than five creators (merged or stated against a larger count), seen-only timing displays, private audio and transcripts, frozen hashes (ethics statement; Section~\ref{sec:protocol}).
+\item Have you read the ethics review guidelines and ensured that your paper conforms to them? \textbf{No.} No ethics or exemption determination exists; obtaining one, and the other open acts of the ethics statement, are the owner's steps before submission.
+\end{enumerate}
+
+\item Additionally, if your study involves hypotheses testing\ldots
+\begin{enumerate}
+\item Did you clearly state the assumptions underlying all theoretical results? \textbf{NA.} The first-round results are tests of registered hypotheses, not theoretical results; the registered hypotheses, their references and minimums are stated in Section~\ref{sec:tests}.
+\item Have you provided justifications for all theoretical results? \textbf{NA} (no theoretical result).
+\item Did you discuss competing hypotheses or theories that might challenge or complement your theoretical results? \textbf{NA} (no theoretical result). The registered refuting results are fixed in advance (Section~\ref{sec:tests}).
+\item Have you considered alternative mechanisms or explanations that might account for the same outcomes observed in your study? \textbf{Yes} for the measurements: grid against speech (grid-shift control), weighting and window span, posting rate and creator-differing error (Section~\ref{sec:measure}).
+\item Did you address potential biases or limitations in your theoretical framework? \textbf{Yes} (Sections~\ref{sec:deviations} and~\ref{sec:limits}).
+\item Have you related your theoretical results to the existing literature in social science? \textbf{Yes} (Section~\ref{sec:related}).
+\item Did you discuss the implications of your theoretical results for policy, practice, or further research in the social science domain? \textbf{Yes,} for further research: the uses each measure allows (Table~\ref{tab:status}) and what stays pending (Section~\ref{sec:conclusion}).
+\end{enumerate}
+
+\item Additionally, if you are including theoretical proofs\ldots \textbf{NA} (no proofs).
+
+\item Additionally, if you ran machine learning experiments\ldots
+\begin{enumerate}
+\item Did you include the code, data, and instructions needed to reproduce the main experimental results (either in the supplemental material or as a URL)? \textbf{No.} Audio and transcripts cannot be shared; code, frozen hashes and derived distributions are planned for release (ethics statement).
+\item Did you specify all the training details (e.g., data splits, hyperparameters, how they were chosen)? \textbf{NA} for training (no model was trained). Decoding settings, model identifiers, efforts and output caps are stated (Sections~\ref{sec:pipeline} and~\ref{sec:freezes}).
+\item Did you report error bars (e.g., with respect to the random seed after running experiments multiple times)? \textbf{Yes.} Creator-level estimates carry intervals that resample creators, with their level named; other intervals (Wilson, shuffle bands, Monte Carlo) are named as such; counts carry none.
+\item Did you include the total amount of compute and the type of resources used (e.g., type of GPUs, internal cluster, or cloud provider)? \textbf{In part.} Transcription ran locally; requests and tokens sent to the language-model API are in Table~\ref{tab:external} and the spend in Section~\ref{sec:deviations}. GPU type and hours are not stated.
+\item Do you justify how the proposed evaluation is sufficient and appropriate to the claims made? \textbf{Yes, with its limit:} no reference made by people exists, so the claims are limited to agreement, reliability and recovery on constructed texts (Sections~\ref{sec:anchors} and~\ref{sec:verification}).
+\item Do you discuss what is ``the cost'' of misclassification and fault (in)tolerance? \textbf{Yes.} Error tolerance of word measures (Section~\ref{sec:variance}) and label error (Section~\ref{sec:limits}).
+\end{enumerate}
+
+\item Additionally, if you are using existing assets (e.g., code, data, models) or curating/releasing new assets, without compromising anonymity\ldots
+\begin{enumerate}
+\item If your work uses existing assets, did you cite the creators? \textbf{Yes} for the recognizer models \cite{radford2022robust,gandhi2023distilwhisper}. The makers of the recordings are not named, by the privacy rule.
+\item Did you mention the license of the assets? \textbf{No.} Model licences and the platform's terms are not stated here; the lawful basis for archiving the audio is an open act of the owner (ethics statement).
+\item Did you include any new assets in the supplemental material or as a URL? \textbf{No.} No data or labels are released.
+\item Did you discuss whether and how consent was obtained from people whose data you're using/curating? \textbf{Yes.} No consent was obtained; public availability is not consent (ethics statement).
+\item Did you discuss whether the data you are using/curating contains personally identifiable information or offensive content? \textbf{Yes.} The recordings identify their creators and hold speech of guests, clients and audience members, with belief and health content (ethics statement).
+\item If you are curating or releasing new datasets, did you discuss how you intend to make your datasets FAIR? \textbf{NA} (no dataset is released).
+\item If you are curating or releasing new datasets, did you create a Datasheet for the Dataset? \textbf{NA} (no dataset is released).
+\end{enumerate}
+
+\item Additionally, if you used crowdsourcing or conducted research with human subjects, without compromising anonymity\ldots
+\begin{enumerate}
+\item Did you include the full text of instructions given to participants and screenshots? \textbf{NA.} No participants were recruited and no crowd workers were used; no person labelled anything (amendment A8).
+\item Did you describe any potential participant risks, with mentions of Institutional Review Board (IRB) approvals? \textbf{No.} No participants were recruited, but the recordings hold speech of identifiable people, and no ethics or exemption determination exists (ethics statement).
+\item Did you include the estimated hourly wage paid to participants and the total amount spent on participant compensation? \textbf{NA} (no participants).
+\item Did you discuss how data is stored, shared, and deidentified? \textbf{Yes.} Private copies, no sharing, distributions only with no cell of fewer than five creators (ethics statement).
+\end{enumerate}
+\end{enumerate}
+}

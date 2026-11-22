@@ -6,3 +6,5 @@ sim_out/*
 !sim_out/h6-cluster-reference-levels.md
 !sim_out/h6-cluster-reference-levels.json
 !sim_out/h6-pipeline-levels-1252.json
+!sim_out/simulation-results.json
+!sim_out/simulation-results.md

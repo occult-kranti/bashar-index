@@ -1,0 +1,51 @@
+% sections/data.tex -- Section 3, data and selection.
+% Writer: B. Written 2026-11-21 from 06:11 UTC; second review round 08:10 UTC; third review round from 11:35 UTC
+%   (clock: date -u): the harvest's whole counts (methods review M26); moved to Appendix A by the page limit (move log of
+%   the third round, private fix list): fig:flow (its counts stay in the Collection paragraph), and the "Three levels"
+%   and "Dates" paragraphs, unchanged.
+% Fourth review round from 12:45 UTC (clock: date -u): the set-aside count as one count (other text or a language
+%   review, as the public outcome table prints it) and the census in one unit, recordings (privacy review P4); the
+%   group counts are transcripts, and the other group's is not printed.
+% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): no creator count of the other group either
+%   (the roster's and the registry's other groups are nested and differ by fewer than 5): \NOtherCreators is a bound.
+% Macros used that are not in outline section 7: \NSetAside, \NRunRecordings, \NTranscribedRecordings, \HarvestTerms, \HarvestQueries, \HarvestChannels, \HarvestCohortFound
+%   (third round, from the discovery harvest summary; counts only).
+% Pending labels used: none.
+% Literal numerals left in the text are thresholds of rules or definitions: 5 (five-creator cell rule), 10th and 90th
+%   (percentiles).
+% Wording: "judgment sample", statements about this roster only; the recordings with other text are not called
+%   third-party text as a whole (plan addendum 1, section 5); non-seen creators appear only through counts, durations,
+%   dates, languages and run order.
+
+\section{Data and selection}
+\label{sec:data}
+
+\paragraph{Selection rule and target of inference.} The authors chose \NCreators{} creators on one video platform as
+channelling mediums: creators who publish recordings presented as messages channelled from non-human beings. The owner
+wrote this rule down after the registry freeze and after the test of H3, and the roster grew from \RosterFirst{} to
+\NCreators{} creators on the day of the listing. A later discovery harvest, closed early after refusals, sent
+\HarvestQueries{} of \HarvestTerms{} planned queries, met \HarvestChannels{} distinct channels and found
+\HarvestCohortFound{} of the \NCreators{} roster creators among them; it fixes no sampling frame. The cohort is therefore
+a judgment sample \cite{mcgrady2023dialing}: creator-resampling intervals refer to creators like these, within-creator
+contrasts are conditional on them, and nothing is said about channelling mediums at large, a period or a trend.
+Appendix~\ref{app:measure} gives the three levels of the design (creator, recording kind, voice span) and the dates.
+
+\paragraph{The newest-20 quota.} The selection takes each creator's newest \NPerCreator{} public regular uploads in
+listing order (\NSelected{} recordings). It is a quota, not a period: between the 10th and 90th percentiles of creators
+the newest \NPerCreator{} span from \SpanPtenDays{} days to \SpanPninetyYears{} years (median \SpanMedDays{} days), so
+posting rate is entangled with every comparison between creators (Section~\ref{sec:variance}).
+
+\paragraph{Collection.} \NArchived{} recordings were archived with hash-verified audio (an audit confirmed all
+\NVerifiedObjects{} storage objects), and \NFailed{} are final download failures (\NFailedCreators{} creators);
+downloads are closed. \NSetAside{} recordings were set aside before the run, because they had English text of another
+kind (\NOtherTextCreators{} creators) or were held for a language review; \NOwnEarlierAsr{} of them carry the project's
+own earlier recognizer text, not third-party text. So \NRunRecordings{} recordings (\RunHours{} h of audio) entered the
+run, and \NTranscribedRecordings{} (\TranscribedHours{} h) were transcribed; \NNotTranscribed{} were not, most for want
+of speech (Figure~\ref{fig:flow} in Appendix~\ref{app:measure} traces every loss). Counts of the census are recordings.
+
+\paragraph{Groups.} Seen: \NSeen{} creators, \NSeenFiles{} transcripts, \SeenHours{} h; every number from text,
+segments, word times or the voice detector comes from them. Hold-out: \NHoldout{} creators, \NHoldoutFiles{}
+transcripts, including all \NNonEnglishFiles{} non-English transcripts (\NNonEnglishCreators{} creators). Other:
+\NOtherCreators{} creators. Non-seen
+creators enter only through counts, durations, dates, languages and run order. Live streams, short videos, paid
+material, other platforms and deleted recordings are outside the cohort (Table~\ref{tab:exclusions}).

@@ -1,0 +1,40 @@
+% sections/deviations.tex -- Section 8, deviations from the registered design.
+% Writer: C. Written 2026-11-21, 06:12 to 06:14 UTC; second review round 08:20 UTC; third review round from 12:00 UTC
+%   (clock: date -u): A10 as drafted; the registry rows after the A10 draft's last alignment (09:19, 11:08, 11:10) and
+%   the A10 rows of contacts, the freeze-1 entry and corrections of the record now enter once each (builder);
+%   condensed for the page limit (the decisive deviations are each stated where they occur, Sections 6 and 7).
+% Fourth review round from 12:40 UTC (clock: date -u): A10's guard stated as what it covers, the looser and mixed
+%   rows named as outside it (methods review M1); the class 'mixed' for rows stricter for some uses and looser for
+%   others, and for the M9 revisions (M11; registry 06:44 (7)).
+% Macros used that are not in outline section 7: \NDevStricter, \NDevGuarded, \NDevNeutral, \NDevLooser, \NDevMixed,
+%   \NDevExploratory, \NDevBudget, \NDevOther (they sum to \NDeviationRows), \SpendMeasured, \SpendCommitted,
+%   \SpendStamp.
+% Results round (2026-11-21, from 19:16 UTC; clock: date -u): the deviation table reads the registry's own table (A10
+%   Part 8, entered 16:07) and the registry rows after it (16:06 to 23:34 since the final pre-push check); H9's
+%   smallest effect (16:06) is a mixed row; HR not bought (16:26, 18:17, 18:41); the final spend, past the warning.
+% Final pre-push check (2026-11-21, from 23:35 UTC; clock: date -u): the simulation battery (21:52) is a budget or
+%   operations row; the rows of the public results file (20:48, 22:33, 23:34) are reporting, counted in \NDevOther,
+%   whose definition (disclosure, correction of the record, the freeze-1 entry, reporting, not yet decided) is in the
+%   table's caption; the
+%   exploratory round's start (23:17) is an exploratory row.
+% Pending labels used: none. Sources: D6-deviation-table.csv, the deviation part of the A10 draft, registry rows after
+%   it, llm/spend.jsonl (read-only).
+
+\section{Deviations from the registered design}
+\label{sec:deviations}
+
+Table~\ref{tab:deviations} lists \NDeviationRows{} deviations from the frozen registry, each with its time, decider,
+the results known then and its direction: \NDevStricter{} stricter, \NDevGuarded{} guarded by A10, \NDevNeutral{}
+neutral, \NDevLooser{} looser, \NDevMixed{} mixed (of more than one or of an unknown direction, outside the guard),
+\NDevExploratory{} exploratory, \NDevBudget{} budget or operations and \NDevOther{} other (timeline in
+Figure~\ref{fig:timeline}).
+Decisive: H3's reference held creators fixed, its estimand was off-centre and its interval unaudited, and it was closed
+(A6) without its wave replication; the selection rule was written after H3's test. Changes of estimator, reference,
+minimum, interval or centring fall under A10's guard; the looser and mixed deviations do not, among them the merge of
+relayed into claimed voice after its gate and the pre-declared merge had failed, the forecast critic's class of record,
+the instruments kept below their floors, freeze 1's timing, the release rule of the hold-out robustness rows, and the
+M9 revisions of H2 and H5, which the registry keeps outside the guard (06:44 (7)) and reports beside the rows without
+them, and H9's smallest effect, the registry's placeholder adopted rather than set from seen creators (16:06). The
+round cap of 50 USD was exceeded
+through the channeler discovery (registry 03:08); total OpenAI spend was \SpendMeasured{} USD measured and
+\SpendCommitted{} USD committed at \SpendStamp, past the 120 USD warning and under the 130 USD hard stop.
