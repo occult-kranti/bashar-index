@@ -43,7 +43,7 @@ count is stated against its minimum. Beyond the counts of the whole run, the hol
 registered tests.
 The same tab compares the two recognizer models on 36 recordings transcribed by both.
 The budget card shows the spend committed for model calls, read from the spend ledger when the page was built
-(2026-11-21T23:36:49Z), against the owner's hard stop, with the warning level.
+(2026-11-22T03:10:53Z), against the owner's hard stop, with the warning level.
 
 The page and its data are built outside the repository from the run's private records, by the same script
-that feeds the hosted copy of this dashboard. Built 2026-11-21T23:36:49Z.
+that feeds the hosted copy of this dashboard. Built 2026-11-22T03:10:53Z.
