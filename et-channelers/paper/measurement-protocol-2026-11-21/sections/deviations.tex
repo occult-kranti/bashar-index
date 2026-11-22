@@ -1,40 +1,40 @@
-% sections/deviations.tex -- Section 8, deviations from the registered design.
-% Writer: C. Written 2026-11-21, 06:12 to 06:14 UTC; second review round 08:20 UTC; third review round from 12:00 UTC
-%   (clock: date -u): A10 as drafted; the registry rows after the A10 draft's last alignment (09:19, 11:08, 11:10) and
-%   the A10 rows of contacts, the freeze-1 entry and corrections of the record now enter once each (builder);
-%   condensed for the page limit (the decisive deviations are each stated where they occur, Sections 6 and 7).
-% Fourth review round from 12:40 UTC (clock: date -u): A10's guard stated as what it covers, the looser and mixed
-%   rows named as outside it (methods review M1); the class 'mixed' for rows stricter for some uses and looser for
-%   others, and for the M9 revisions (M11; registry 06:44 (7)).
-% Macros used that are not in outline section 7: \NDevStricter, \NDevGuarded, \NDevNeutral, \NDevLooser, \NDevMixed,
-%   \NDevExploratory, \NDevBudget, \NDevOther (they sum to \NDeviationRows), \SpendMeasured, \SpendCommitted,
-%   \SpendStamp.
-% Results round (2026-11-21, from 19:16 UTC; clock: date -u): the deviation table reads the registry's own table (A10
-%   Part 8, entered 16:07) and the registry rows after it (16:06 to 23:34 since the final pre-push check); H9's
-%   smallest effect (16:06) is a mixed row; HR not bought (16:26, 18:17, 18:41); the final spend, past the warning.
-% Final pre-push check (2026-11-21, from 23:35 UTC; clock: date -u): the simulation battery (21:52) is a budget or
-%   operations row; the rows of the public results file (20:48, 22:33, 23:34) are reporting, counted in \NDevOther,
-%   whose definition (disclosure, correction of the record, the freeze-1 entry, reporting, not yet decided) is in the
-%   table's caption; the
-%   exploratory round's start (23:17) is an exploratory row.
-% Pending labels used: none. Sources: D6-deviation-table.csv, the deviation part of the A10 draft, registry rows after
-%   it, llm/spend.jsonl (read-only).
+% sections/deviations.tex -- Section 7, deviations from the registered design and what the protocol teaches.
+% PaperOrchestra rewrite of 2026-11-21 (section writer of tests.tex and deviations.tex). Sources: raw_materials/
+%   experimental_log.md sections 15 to 19, findings/numbers.tex (deviation classes), registry.md (deviation table, A10
+%   Part 8, and the rows after it), floats/tab_deviations*.tex. Spend and budget figures are in Appendix B.
+% Integrator's page cut (2026-11-21): the looser and mixed deviations as one run-in list; the lessons as a run-in list,
+%   the last two merged (outline cut 5); the wave's simulation figures left to Appendix B, which prints them.
 
-\section{Deviations from the registered design}
+\section{Deviations, and what the protocol teaches}
 \label{sec:deviations}
 
-Table~\ref{tab:deviations} lists \NDeviationRows{} deviations from the frozen registry, each with its time, decider,
-the results known then and its direction: \NDevStricter{} stricter, \NDevGuarded{} guarded by A10, \NDevNeutral{}
-neutral, \NDevLooser{} looser, \NDevMixed{} mixed (of more than one or of an unknown direction, outside the guard),
-\NDevExploratory{} exploratory, \NDevBudget{} budget or operations and \NDevOther{} other (timeline in
-Figure~\ref{fig:timeline}).
-Decisive: H3's reference held creators fixed, its estimand was off-centre and its interval unaudited, and it was closed
-(A6) without its wave replication; the selection rule was written after H3's test. Changes of estimator, reference,
-minimum, interval or centring fall under A10's guard; the looser and mixed deviations do not, among them the merge of
-relayed into claimed voice after its gate and the pre-declared merge had failed, the forecast critic's class of record,
-the instruments kept below their floors, freeze 1's timing, the release rule of the hold-out robustness rows, and the
-M9 revisions of H2 and H5, which the registry keeps outside the guard (06:44 (7)) and reports beside the rows without
-them, and H9's smallest effect, the registry's placeholder adopted rather than set from seen creators (16:06). The
-round cap of 50 USD was exceeded
-through the channeler discovery (registry 03:08); total OpenAI spend was \SpendMeasured{} USD measured and
-\SpendCommitted{} USD committed at \SpendStamp, past the 120 USD warning and under the 130 USD hard stop.
+\paragraph{Deviations.} Every departure from the registry is reported \cite{willroth2024best}. The deviation table lists all \NDeviationRows{} deviations with their time,
+scope, the results known then and their direction (Table~\ref{tab:deviations}): \NDevStricter{} stricter,
+\NDevGuarded{} guarded by A10, \NDevNeutral{} neutral, \NDevLooser{} looser, \NDevMixed{} mixed (stricter for some uses
+and looser for others, or unknown), \NDevExploratory{} exploratory, \NDevBudget{} budget or operations, and
+\NDevOther{} other. The registry does not record who classified the directions, and no one outside the project checked
+them. The decisive ones concern H3: its reference held creators fixed, its estimand was off-centre, its interval was
+unaudited, and it was withdrawn without its registered wave replication; the cohort's selection rule was written after
+its test. The reporting plan's exploratory round, begun after the tests, runs on code written after the analysis
+freeze, a deviation declared before any of its outputs was read.
+
+Outside A10's guard lie the looser and mixed deviations: for every label-based test, no person check (A8),
+verification by models (A11), an instrument freeze before the known-answer battery finished, and
+``uninformative'' undefined at the registry freeze; for single hypotheses, relayed voice merged into claimed voice
+after its gate and the pre-declared merge failed (H1, H6), a forecast class of record chosen after a gate failure (H2), instruments below their
+floors (H2, H5, H9), revisions inside both guarded versions (H2, H5) and a placeholder smallest effect (H9); for the
+first-round inputs, two readings chosen after the hold-out gates were computed (voice gate A per instrument; the title
+exception kept); for the hold-out, contacts before the analysis freeze (Section~\ref{sec:limits}) and a loosened release rule for robustness
+rows, which were not bought, for budget reasons.
+
+\paragraph{What this protocol teaches.} (a)~Base minimums on a sample-size
+analysis: sign-test arithmetic alone committed the registry to tests that, on the cautious projection, a
+\NHoldout-creator hold-out could not determine. (b)~Project eligibility on the cautious, creator-level bound; the
+announcement made on it held. (c)~Eligibility built on model-coded constructs makes determinability depend on the
+labeller (H1, H4). (d)~Re-gate on a hold-out reliability sample: two instruments that passed on the seen gate samples
+failed there; selection on those samples, the difference between the groups and chance on a small sample may each
+contribute. (e)~Read a design-weighted cross-vendor kappa beside its hard stratum; a reader of the drafting agents'
+family is only weakly independent \cite{kim2025correlated}. (f)~Hashes fix content, not time: deposit the registry
+externally. (g)~Deviations can raise or lower a test's severity \cite{lakens2024when}; a fixed Holm count with unrun
+places at $p = 1$ is conservative but costly with few creators, and a wave of the same creators would show
+persistence, not confirmation (Appendix~\ref{app:protocol}).

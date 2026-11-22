@@ -1,40 +1,44 @@
-% sections/pipeline.tex -- Section 4, the pipeline.
-% Writer: B. Written 2026-11-21 from 06:13 UTC; third review round from 11:38 UTC (clock: date -u): the recognizer rule
-%   in its registered scope (methods review M18); the voice detector gates decoding (M15).
-% Fourth round (12:45 UTC, clock: date -u): the language-decision count against the run's transcripts is not printed
-%   (privacy review P4: the census is in recordings, one unit).
-% Macros used that are not in outline section 7: none.
-% Pending labels used: none.
-% Floats placed here: none.
-% Literal numerals left in the text are constants of method from the run's configuration (WER README section 3; OLD
-%   setup-numbers.tex): 30 s windows, 16 kHz, beam 5, temperature 0, 500 ms minimum silence; and constants of the filter
-%   and seam rules: 3 s, 5 s, 1/(1-g/30).
-% "registry 03:08" and "registry 02:50" name registry rows of 21 November 2026 (UTC).
+% sections/pipeline.tex -- Section 3.2, the pipeline (a subsection of Section 3, which data.tex opens).
+% Complete rewrite of 2026-11-21 by the data-pipeline section writer of the PaperOrchestra-style rewrite, from
+%   outline.json (section_plan; attack_response PIPE-1, SCOPE-1, LANG-1, PAUSE-1) and the raw materials.
+%   Every number is a macro of findings/numbers.tex.
+% Integrator's page cut (2026-11-21): the writer's cuts 1 and 2; the pause-ranking clause left to Section 4.2.
+% Literal numerals are constants of method from the run's configuration and the registered rules: 30-s windows, 16 kHz,
+%   beam 5, temperature 0, 500-ms minimum silence; the filter's 3 s; the seam rule's 5 s and 1/(1-g/30).
+% Checkpoint names come from the research folder's notes on the run's recorded settings (literature-related, section 1)
+%   and the bridge code's model check; the other configuration items are not in the allowed materials and are named as
+%   not stated (limitations, Pipeline paragraph).
+% Cites: radford2022robust, gandhi2023distilwhisper, bain2023whisperx (refs.bib). Floats placed here: none
+%   (tab:artefacts is cited; Appendix A). Pending macros used: none.
 
-\section{The pipeline}
+\subsection{Pipeline}
 \label{sec:pipeline}
 
-\paragraph{Decoding.} Audio is cut into contiguous, non-overlapping 30-s windows at 16\,kHz, each recognised alone
-without conditioning on earlier text: beam 5, temperature 0 without fallback, word time stamps. Inside each window a
-voice detector (500-ms minimum silence) runs before decoding, so stretches it finds without speech never reach the
-recognizer. A
-distilled English-only model handles English \cite{gandhi2023distilwhisper}, the larger multilingual model other
-languages, partly by speech-to-English translation \cite{radford2022robust}.
+\paragraph{Decoding.} Audio is cut into contiguous, non-overlapping 30-s windows at 16\,kHz, each decoded alone without
+conditioning on earlier text (beam 5, temperature 0 without fallback, word time stamps). In each window a voice detector
+(500-ms minimum silence) runs first, so stretches it finds without speech never reach the recognizer. The recorded
+settings name Whisper large-v3 \cite{radford2022robust}: its distilled English-only version for English
+\cite{gandhi2023distilwhisper}, the multilingual model for other languages, partly by its own translation into
+English.
 
-\paragraph{Language.} \LangCreatorRulePct\% of the run's language decisions rest on the creator rule without a
-probe. The only guard is a re-check below a mean log-probability of \LogpGate, against a seen
-median of \SeenLogpMedian. No decision was checked by a person; a pseudo-word flag is in Table~\ref{tab:nonlanguage}.
+\paragraph{Scope.} Seam findings hold only for this fixed-grid chunked decoding, not for Whisper's sequential
+long-form transcription, which moves each window by its predicted time stamps and conditions it on earlier text, nor
+for cut-and-merge at detected speech \cite{bain2023whisperx}. Not stated here: implementation, compute type, hardware and
+detector settings; the handling of detector-removed audio and of the last, partial window; the shifted grid's start;
+and what differed between worker versions. Nobody listened, and no independent voice detector, forced aligner or
+speaker separation ran (Appendix~\ref{app:measure}), so voice spans are inferred from text.
 
-\paragraph{Recognizer rule.} \NSeenEnglishOnly{} of the \NSeenFiles{} seen transcripts come from the English-only model,
-\NSeenOtherModel{} from another or an unrecorded one. As registered (03:08), every registered test and every
-seen-derived constant it uses (H4's yardstick, H2's length bands, the eligibility projections) uses only English-only
-transcripts; the others form one model-stratified sensitivity row. Comparisons across models are descriptive only.
+\paragraph{Language and models.} \LangCreatorRulePct\% of language decisions follow the creator rule, which assigns
+the creator's language without probing the recording; the only guard re-checks recordings whose mean log-probability
+falls below \LogpGate{} (seen median \SeenLogpMedian) and would pass fluent English-like text written for other speech.
+No language decision was checked by a person. As amended (A10), registered tests, and the seen-derived constants they
+use, read only English-only-model transcripts: \NSeenEnglishOnly{} of the \NSeenFiles{} seen ones; the rest form one
+sensitivity row, and cross-model comparisons are descriptive (Section~\ref{sec:bridge}).
 
-\paragraph{Filter and seam rule.} Artefact filter version 2 removes by position, not wording, a thanks phrase starting
-in a window's last 3\,s, isolated short segments, stock text, repeats and loops. Each number states whether it uses raw
-text, version 1 (the bridge, as run) or version 2. Pauses use the capped, weighted seam rule (registry 03:08): a gap under
-5\,s containing a window boundary is dropped, other gaps $g$ under 5\,s are weighted by $1/(1-g/30)$; the literal rule
-and no rule are rows.
-
-\paragraph{Checks.} Nobody listened; how time without speech is defined, and which checks were not run, is in
-Appendix~\ref{app:measure} (moved there by the page limit).
+\paragraph{Text versions and pauses.} Each number uses raw text, filter version 1 (H3 and the two-model bridge of
+Section~\ref{sec:bridge}, as run) or
+filter version 2, named in captions. Version 2 removes, by position, a thanks phrase starting in a window's last
+3\,s, which appears to be inserted (Section~\ref{sec:artefacts}), and also isolated short segments, stock text, repeats
+beyond the third, and loops (Table~\ref{tab:artefacts}). The capped seam rule drops a gap under 5\,s that contains a
+window boundary and weights any other gap of $g<5$\,s by $1/(1-g/30)$; the literal rule and no rule are sensitivity
+rows. The weight assumes gaps independent of grid phase, which fails in part (Section~\ref{sec:seams}).

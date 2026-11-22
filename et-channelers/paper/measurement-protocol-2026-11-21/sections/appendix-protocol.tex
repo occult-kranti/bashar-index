@@ -1,60 +1,231 @@
-% sections/appendix-protocol.tex -- Appendix B, protocol records.
-% Writer: C. Written 2026-11-21, 06:13 to 06:25 UTC (clock: date -u). Prose about 735 words, captions about 890
-%   (appendix, outside the 8-page budget).
-% Floats: tab:freeze, tab:gates, tab:ka, tab:doubleread, tab:crossvendor, tab:hthree, fig:hthree, fig:eligibility,
-%   fig:power, fig:plasmode, tab:deviations, fig:timeline, tab:contacts, tab:outputs.
-%   Table bodies floats/tab_*.tex are expected to hold the tabular only (caption and label are here).
-%   Figures floats/fig_*.pdf are copied or re-drawn by build_floats.py (fig_hthree.pdf holds the placebo and the trim
-%   panel of R1, side by side or stacked).
-% Fourth review round (from 12:50 UTC; clock: date -u): the known-answer bounds with their assumption (methods review
-%   M3); A10 "at freeze 2 at the latest" (M12); the class 'mixed' and the 02:55 merge's scope in the deviation caption
-%   (M1, M11, M12); freeze 1's timing against the 03:08 rule (M6); no line at the hold-out creators with English
-%   recordings (privacy review P5).
-% Macros used that are not in outline section 7: \DblSUnits, \DblSCreators, \DblFcUnits, \DblFcCreators
-%   (requested in findings/macros-requested-C.md).
-% Results round (2026-11-21, from 19:16 UTC; clock: date -u): freeze 1's amendment, freeze 2 and its constants, A10
-%   entered, first-round production and its interfaces; the 12:52 decisions (H6's window, asks counted once, H9's mask);
-%   CAL part (f) not run; the first-round results tables tab:results-detail, tab:results-rows, tab:results-holm from the
-%   public results file (pending until it exists); deviation and timeline captions to the registry of 18:41.
-% Final pre-push check (2026-11-21, from 23:35 UTC; clock: date -u): the lead's rule of 22:33 UTC for every agreement
-%   figure applied to the gate tables, the second reading and the 00:30 figures (a figure that fails reads "not
-%   published (fewer than 5 creators)"); the deviation caption to the registry row of 23:34, with the class
-%   'reporting' inside 'other'; the timeline caption to the latest registry row (\TimelineEndStamp).
-%   Lead's decision of 2026-11-22 00:15 UTC: the rule as worded; a figure over several codes with no single positive
-%   code needs 5 or more creators in all and disagreements from none or 5 or more creators (codes given alike are not
-%   tested on their own); the captions and the sentence of the gates paragraph say so.
-% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): the committed spend with its measured part
-%   (unreleased reservations of ended runs); the gate tables cover the gate sample G, with the R-hold failures
-%   (\ResRholdCommit, \ResRholdSentC); the recording-property projections against the minimum only (tab:programme,
-%   fig:eligibility); the hold-out median of English recordings over all hold-out creators; c of tab:ka under the
-%   nested-count rule.
-% Pending labels used: \PendVerDep, \PendVerAdjG, \PendHThreeX, \PendTlBuild, \PendLabV, \PendLabA, \PendLabF,
-%   \PendLabS, \PendLabT, \PendLabK; the result macros and tables of findings/results.tex and floats/tab_results*.tex.
-% "registry 04:59" and the like name rows of the registry dated 21 November 2026 (UTC).
+% sections/appendix-protocol.tex -- Appendix B, protocol records (label app:protocol).
+% Complete rewrite of 2026-11-21 (PaperOrchestra-style section writer; clock: date -u 23:03 UTC), from outline.json
+%   (section_plan B.1 to B.12, plotting_plan, attack_response LOG-1, PEND-1, RES-1, SCOPE-1, LIT-1) and the raw
+%   materials; the earlier text of this file served as source only. Numbers only through findings/*.tex macros.
+% Pending macros (\Pend...) appear only in the second paragraph of B.10 and in floats/tab_outputs.tex.
+% Floats (GENERATED bodies; captions and labels here): tab:freeze, tab:status, tab:status-labels, tab:gates,
+%   tab:gates-b, tab:ka, tab:ka-b, tab:doubleread, tab:crossvendor, tab:programme, tab:hthree, fig:hthree, fig:power,
+%   fig:plasmode, tab:results (moved here from tests.tex), tab:results-detail, tab:results-detail-b, tab:results-rows,
+%   tab:results-holm, tab:deviations to tab:deviations-f (six parts), fig:timeline with its key, tab:contacts,
+%   tab:outputs, tab:external, and fig:eligibility (moved back here from tests.tex by the integrator's page cut,
+%   outline cut 6; the main text refers to it).
+% New subsection labels: app:glossary, app:timeline, app:status, app:gates, app:verification, app:programme,
+%   app:results, app:deviations, app:money, app:outputs, app:external, app:searches.
+% Refers to labels of other files: sec:protocol, sec:deviations, tab:hypotheses, fig:eligibility.
+% Citations: holm1979simple, inthout2014hartung, gelman2014beyond (refs-orchestra.bib); lipsitch2010negative,
+%   cameron2008bootstrapbased, mackinnon2022clusterrobust (refs.bib).
+% "(registry 03:08)" and the like point to registry rows dated 20 or 21 November 2026 (UTC).
 
 \section{Protocol records}
 \label{app:protocol}
 
-This appendix holds the records behind Sections~\ref{sec:protocol} to~\ref{sec:deviations}. Every label is model-coded,
-and no person checked any label (A8). Agreement between models is reliability, not validity. Exploratory (registry A2);
-not a test of H1--H10, except H3's registered rows. The status tables, the programme table, the second-reading and
-cross-vendor detail, the H3 detail and the paragraph on roles and versions were moved here from Sections 6 and 7 by the
-page limit, unchanged except for the third review round's corrections (move log of that round).
+This appendix is the record behind Sections~\ref{sec:protocol} to~\ref{sec:deviations}: a glossary
+(\ref{app:glossary}); time stamps and hashes (\ref{app:timeline}); each instrument's status, gates and verification
+(\ref{app:status} to~\ref{app:verification}); the programme and H3 (\ref{app:programme}); the first-round results
+(\ref{app:results}); deviations and hold-out contacts (\ref{app:deviations}); money (\ref{app:money}); exploratory
+outputs (\ref{app:outputs}); external processing (\ref{app:external}); and literature searches (\ref{app:searches}).
+Every label is model-coded and was not checked by a person (A8); agreement between models is agreement, not accuracy,
+and shows reliability, not validity. All of it is exploratory (registry A2) except the registered rows of H3 and of the
+first round. Times are UTC on 20 or 21 November 2026; ``(registry 03:08)'' points to the registry row of that time.
 
-\paragraph{Measurement status.} Tables~\ref{tab:status} and~\ref{tab:status-labels} give each construct's instrument,
-reference, reliability, bridge verdict, grid sensitivity and the uses allowed in this paper.
+\subsection{Roles and plain words for the codes}
+\label{app:glossary}
 
-% INTEGRATOR (2026-11-21): the status table is taller than a page, so the builder writes it in two parts; the second
-% part (the model-coded label instruments) has no bridge or seam column because every such cell is empty.
+\paragraph{People.} The \emph{owner}, the project owner, is a person who took the registry's owner decisions (the
+budget, A6, A8, A9, A11, the selection rule, the exception of about 00:30, closing the downloads). At about 00:50 on
+21 November the owner delegated every recommended decision in writing to the \emph{lead}, an AI agent (an Anthropic
+model) that logged each decision with its reason; no such decision may weaken the hold-out rule or a registered rule
+after results are seen. The registry does not record that any person reviewed the lead's decisions. Anthropic model
+agents also formed the analyst panels (the \emph{first panel}, which made the snapshot tables and the position pilot
+that suggested H3, and the \emph{second-round panel} of A7, which ran the items in capitals below), proposed and reviewed
+the hypotheses, read the cross-vendor sample and drafted this paper; labels came from OpenAI models. The \emph{paper
+review} is an
+internal review of an earlier draft (five reviewers, all reject, by 02:49); its item M9 asked that H2 and H5 be revised
+at the analysis level.
+
+\paragraph{Groups and samples.} \emph{Seen creators} (\NSeen): those whose transcripts model agents could read while
+designing instruments; every exploratory number and every constant fixed before freeze 2 comes from them.
+\emph{Development} and \emph{check creators} are subsets: prompts were developed on the first, and the gate samples
+(\emph{G}) and verification samples were drawn from the second. \emph{Hold-out creators} (\NHoldout): those with at
+most three of the first \SnapLines{} finished transcripts (the \emph{snapshot}, about 13:00 on 20 November) and ten or
+more to come, the tail of the English-first run queue begun at \EnglishFirstStamp. \emph{Other group}:
+\NOtherCreators{} roster creators in neither group, counts only before freeze 2 and an exploratory group after it.
+\emph{Set W}: \PilotWRecordings{} development recordings, one per creator, behind the eligibility projections.
+\emph{R-hold}: \RholdRecordings{} hold-out recordings, \RholdPerThird{} from each third of the run order, drawn from
+ledger fields only, on which the frozen instruments were run again for the gates that the tests read (A10.5). RW, the
+replication wave (H7, H10), and CS, the comparison set (H8), were never collected. A \emph{hold-out contact} is any
+operation outside a frozen procedure that opens, loads, sends to a model, displays or derives a value from a hold-out
+or other-group recording's text, segments, word times, positional timing, metadata or labels; run-ledger counts,
+durations, dates, languages and run order are not contacts.
+
+\paragraph{Registry, amendments and outcomes.} The \emph{registry}, frozen at \RegistryFrozenStamp, holds the
+hypotheses' hash, amendments, the lead's decisions, deviations, procedure freezes, first-round results and the contact
+log. H1 to H10 are stated in Table~\ref{tab:hypotheses}; the thirteen exploratory questions E1 to E13 are not reported
+as results. A1, labels from language models; A2, uninformative results leave the headline claims with their rows kept,
+and changes after results are exploratory; A3, the budget; A4, H7 and H10 need the wave and H8 the comparison set; A5,
+after H3, ``supported'' also needs the 90\% creator interval to exclude zero; A6, H3 withdrawn; A7, the second-round
+panel's budget, all of its additions exploratory; A8, no person check; A9, H8 dropped and stricter amendments approved in
+principle; A10, their text; A11, verification by language models. A10.1, the Holm $p$ is an exact creator sign-flip (Monte Carlo
+above 20 creators) over ten places; A10.2, ``not determinable: too few eligible creators''; A10.3, H2's minimum; A10.4,
+conditional estimators for H5 and H6; A10.5, the combined gate rule and ``not run for want of an instrument'', with the
+owner's exception; A10.6, H7's estimator, reference and margin; A10.7, $t$ intervals on creator values, HKSJ pooling and
+a null-mean check. Parts 2 to 8: the person check replaced without lowering any floor, ``uninformative'' defined,
+hold-out-only estimates and freeze 2 in code, the relayed-voice merge, the recognizer rule, the M9 revisions, the
+deviation table. The \emph{guard}: where A10 replaces a registered estimator, reference, minimum, interval or centring,
+both versions are computed, the larger $p$ enters Holm, and a verdict needs both. \emph{Not determinable}: too few
+eligible creators, or either version not determinable; it includes \emph{not run for want of an instrument}, an
+instrument below a floor after its one revision ($p = 1$). \emph{Not determined}: determinable, but the verdict's
+conditions fail or the versions differ. \emph{Uninformative} (02:50): the 90\% creator interval holds zero and the
+smallest effect of interest in either direction, or the verdict is not determinable. \emph{Holm}: the step-down
+correction \cite{holm1979simple} over ten places, first step 0.005, with closed, dropped and unrun hypotheses at
+$p = 1$.
+
+\paragraph{Freezes.} The H3 procedure freeze hashed H3's code and filter version 1. \emph{Freeze 1} fixed the
+instruments (prompts, schemas, code, configuration, models) and unlocked seen labels; its amendment 1 added the
+production driver's feature step. \emph{Freeze 2} fixed the analysis code and constants and unlocked hold-out labels and
+the tests. The \emph{seen-only path} is the one loader allowed before freeze 2; the \emph{request-id fixture} holds
+requests whose ids and bodies must stay equal across freeze records.
+
+\paragraph{Instruments and gates.} Voice: a small-model map, then small- and middle-model labels; V0 cannot tell, V1
+own person, V2 embodied source (a being speaks in the first person through the creator), V3 relayed source (the creator
+reports a being's words), V4 other participant, V6 unseparated conversation; claimed voice is V2 plus V3; revision 3
+(variant B) is the frozen form. Asks: a find (the union of two small-model draws) and a check (the middle model is the
+record); K1 pay or enrol, K3 platform engagement, K4 off-platform move. Forecasts: FA finds candidates; FB, the critic,
+separates the forecast of record F1 from the rest (F8: others' forecasts, not adopted) and gives a ten-class label; FC
+codes five checkability parts (time window, place, named actor, observable outcome, quantity), and the FC check is the
+large model's re-read; FD codes commitment; FE time expressions. FRAME marks a part taken only from the ``period of the
+talk'' line, which rule R10 keeps out of H2's primary. Sentence codes: twelve primary codes in three groups for H5
+(world claim, practice and feeling, neither); Q2, the general-principle code, is placed three ways, and Q1, Q3 and Q8
+move in sensitivity rows. Title codes: presentation (four codes, among them P0, P1 and P2; P1 carries a quoted cue) and
+source family (such as ET star peoples; AD angels, masters and deities; S8 councils without a star name); TA, the large
+model, decides disputes. Guided steps: typed fields before the label. Gates: A valid answers, B exact quotations, C
+stability over three runs, D agreement of two models, E agreement with a second finder; the \emph{combined rule} needs
+the point estimate at the floor and the lower 90\% bound at the floor minus 0.10. Plan 3.4 sets the gates, one revision
+per instrument and the merges declared in advance. VG-0 to VG-9 are verification gates (VG-3 canaries, VG-6 the
+cross-vendor check).
+
+\paragraph{Verification and statistics.} KA, the known-answer battery, has the arms K1E and K1R (planted embodied and
+relayed passages), K2 (cue deletion), K3 (register rewrites), K4V (an own offer inside a claimed passage), K4n (asks), X2
+(after a farewell), X4 (a change of subject), CV6 (an interview as conversation), CVQ (questioner and source), spill
+(the claimed label past a return to own voice) and the audit arms KA-L, KA-D, KA-E and KA-C. DBL: the second reading.
+Third model: the large OpenAI model. VER-3R: the blind read by an Anthropic model, gated by VG-6. VER-DEP and VER-ADJ-G:
+the effective number of readers, and a third reader on the gate samples. HR, the hold-out robustness rows: (a) H6's
+census under three readings and the asks the small finder missed, (b) H2 under two coders, (c) every estimate under
+three codebook rewordings; none was bought. HUMAN: the person check, not run. CAL: the calibration study on seen
+creators (creator-level placebo, coverage audit, power, planted-effect recovery, and eligibility projections under a
+creator-property bound, eligibility as a fixed habit of the creator, the cautious bound, and a recording-property
+bound, the upper one); its part (f), a repeat on seen labels, did not run, and the simulation battery (synthetic
+creators run through the frozen code) stands in. CA, CA-1: the coverage audit named in H3's registered text, not run
+before H3. H3-X: H3's creator-level rerun. Sign-flip: an exact creator-level permutation of signs. OE: observed minus
+expected (A10.4). MH: Mantel-Haenszel. DL: DerSimonian-Laird with a normal interval (registered); HKSJ:
+Hartung-Knapp-Sidik-Jonkman with a $t(k-1)$ interval (amended) \cite{inthout2014hartung}. SESOI: the smallest effect of
+interest. Type M: the exaggeration factor of a passing estimate \cite{gelman2014beyond}. Plasmode: a simulation on seen
+cluster sizes under a population null. ICC: the between-creator share of variance on a named scale (NB:
+negative-binomial latent). $U$: H3's creator-balanced, trimmed contrast of first-person singular rates at a recording's
+edges against its middle. $|D|$: Somers' $D$.
+
+\paragraph{Items and build codes.} BR, the bridge (two recognizer models, same audio); BR-b, the agreement anchors;
+BR-b-H, their hold-out and other-group part; BR-y, years and numbers; BR-GS, the grid-shift re-decode; GRID, the item on
+the 30-s grid; TABLE, the item that repaired ids and extracted only time stamps and durations of non-seen recordings,
+with date-evidence levels E0 to E3 (E1 a confirmed upload day, E2 confirmed from local time stamps, E3 estimated),
+unrelated to E1 to E13; ENTRY, entrance cues; RX and RXP, pattern families (ids such as D6, digit dates) and their
+model-read precision; NAMES v2, the name list and mask; TIME, time-expression roles; COR, two-level correlations; filter
+versions 1 and 2 (version 1 is H3's and the bridge's, as run); normaliser versions 1 and 2 (version 2 chosen after the
+first result). Paper-review build items: D1 census, D2 balance, D3 time without speech, D4 headlines and drift, D5
+status, D6 timeline and deviations, D7 privacy audit, D8 external processing; R1 H3 at the creator level, R2
+calibration and eligibility, R3 bridge, R4 sensitivity, R5 variance partition, R6 error tolerance, R7 seams; L1 to L3,
+model-coded checks. The analysis catalogue's rules form a separate series: R1 the creator is the unit; R7 no label
+before two people measured it (replaced by A1 and A8); R10 a checkability part counts only if found in the statement or
+its context sentence; R11 a language means its few creators. F5 to F39 number the second-round panel's findings (F5,
+H3's off-centre estimand; F11, its unaudited interval).
+
+\paragraph{Table codes.} ``Known then'': BR, the bridge result; BR-b, the anchor's first tables; CAL, calibration
+results; G, the instrument's gate, pilot or known-answer results; PAN, other panel results; REV, the paper review; FRV,
+the freeze-readiness verification; DBL, the second reading; VG, the sealed cross-vendor figures; SV and V3 to V5, the
+second to fifth verifications of the hypothesis code; FT, feature-step counts; SP, seen production; SP-C, constants on
+seen labels; DV, the fourth verification of the A10 draft. Reporting plan: B built, R runs without labels, L waits for
+labels, F2 waits for freeze 2, N waits for a decision or data, X will not run, I other; M main text, S appendix or
+supplement, W dashboard; LAB-V, -A, -F, -S, -T and -K, the seen descriptions of voice, asks, forecasts, sentence codes,
+titles and recording kinds; TL-BUILD, the prediction timeline.
+
+\subsection{Time stamps and hashes}
+\label{app:timeline}
+
+Only internal commits attest this order: hashes fix content, not time, and no external, time-stamped deposit exists
+(an act left to the owner). Figure~\ref{fig:timeline} and its key give every event; Table~\ref{tab:freeze} gives the
+freeze records.
+
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\item \textbf{Registry and H3.} The hold-out rests on the snapshot and on English-first order from \EnglishFirstStamp.
+The registry was frozen at \RegistryFrozenStamp{} (hypotheses file SHA-256 prefix \HypothesesShaPrefix, unchanged
+since). H3 was frozen at \HThreeFrozenStamp{} and tested on the hold-out at \HThreeRunStamp; A5 followed at 20:39 and
+A6 at 20:49, and that evening came the owner's change of the A3 budget, A8, A9, A11 and the selection rule.
+\item \textbf{Before freeze 1} (21 November): the owner's exception (about 00:30) and delegation (about 00:50); the gates
+and revisions of voice (01:15), asks (01:30 to 02:20) and the forecast critic (02:53 to 03:12); the relayed-voice merge
+(02:55); the paper review (by 02:49); the announcement, the definition of ``uninformative'' and the M9 revisions
+(02:50); A10 decided (03:08) and completed (04:55); the cross-vendor rule fixed (03:21) after its sealed figures were
+computed (\VtrSealMadeStamp) and before they were opened.
+\item \textbf{Freeze 1} at \FreezeOneStamp: record prefix \FreezeOnePrefix, configuration prefix
+\FreezeOneConfigPrefix, \FreezeOneFiles{} file hashes. Then the cross-vendor figures were opened (04:59) and seen
+production ran (\ProdSeenStamp); the reporting plan (prefix \PlanShaPrefix) and its addendum 1 (written at
+\AddendumOneStamp) were registered by hash at \PlanRegisteredStamp; the known-answer battery completed (09:10); and
+addendum 2 (prefix \AddendumTwoShaPrefix) was registered at \AddendumTwoStamp.
+\item \textbf{Before freeze 2:} code revisions from 06:44 to 15:14 (\ref{app:programme}); constants from seen labels at
+\ConstantsStamp; freeze 1 written again at \FreezeOneAmendStamp{} (record prefix \FreezeOneAmendPrefix; production
+driver from \ProduceOldPrefix{} to \ProduceNewPrefix; every other hash, the configuration and the request-id fixture of
+\FixtureRequests{} requests unchanged; the first record kept); A10 entered at \ATenStamp{} (draft prefix
+\ATenShaPrefix).
+\item \textbf{Freeze 2} at \FreezeTwoStamp: record prefix \FreezeTwoPrefix; it names the registry commit that holds
+A10; \FreezeTwoModules{} analysis modules, the constants (prefix \ConstantsPrefix) and \FreezeTwoPinned{} pinned files,
+every seen label and feature file among them.
+\item \textbf{After freeze 2:} hold-out production (\HoldoutProdStamp); R-hold drawn (\RholdDrawnStamp) and done
+(\RholdDoneStamp); checkability re-read (\ChkHoldoutStamp); all labelling done (\LabellingDoneStamp); the registered
+tests from 18:54 to 19:03, both freezes checked unchanged; decisions on their inputs (19:30); the results file written
+(20:48) and republished at 21:50, at 22:33 and last at \ResStamp; the simulation battery done (21:52); the exploratory
+round of the reporting plan started (23:17).
+\end{itemize}
+
+\paragraph{Freeze-2 constants.} They were computed from seen labels through the seen-only path at \ConstantsStamp{} and
+confirmed by a second reader that imports nothing from the analysis package. H4's yardstick is \HFourYardstick{} over
+\HFourYardstickCreators{} seen creators with at least \HFourMinForms{} own-voice forms, a minimum set in code before any
+seen label and kept, as a stated choice, once both values were known (without it \HFourYardstickNoMin{} over
+\HFourYardstickNoMinCreators{} creators; from middle-model labels \HFourYardstickMiddle). It scales H4's standardised
+drops, so it moves the conditions that compare a drop with 0.5, not the sign-flip $p$. H2's length bands are
+\HTwoBandLo{} and \HTwoBandHi{} words, and its parts the time window, named actor and observable outcome; place
+(\HTwoPlacePct\%) and quantity (\HTwoQuantityPct\%) fall below the 5\% line. H9's smallest effect stays at the
+registry's placeholder, \HNineSesoi{} standardised units (16:06): no rule for setting it from seen creators was
+registered, and one chosen with the seen cells computed would let seen data pick it; the seen H9 contrast is a
+description only. The Mantel-Haenszel intervals stay the wider of two, since the coverage repeat did not run. H6's
+registered half-count version stays uncentred under the guard (seen null mean \HSixRegNullMean; 15:14).
+
+\begin{table}[t]
+\centering
+\small
+\input{floats/tab_freeze.tex}
+\caption{The instrument freeze (freeze 1), recorded \FreezeOneStamp: record and configuration hash prefixes, file
+hashes and the three OpenAI models; for each instrument its stages, models, efforts, output caps and record model per
+group (seen, hold-out, other). Last rows: amendment 1 of freeze 1 (\FreezeOneAmendStamp; the feature step) and the
+analysis freeze (freeze 2, \FreezeTwoShort). Hashes fix content, not time.}
+\label{tab:freeze}
+\end{table}
+
+\subsection{Status of the constructs}
+\label{app:status}
+
+Tables~\ref{tab:status} and~\ref{tab:status-labels} give each construct's instrument and version, reference,
+reliability, bridge verdict, sensitivity to the decoding grid and allowed uses. No reference is a person (the column
+reads none, rule, model or machine text), so no row supports a claim of accuracy.
+
 \begin{table*}[tp]
 \centering
 \small
 \input{floats/tab_status.tex}
-\caption{Measurement status per construct, part 1, transcript and audio measures: instrument and version; reference
-(none, rule, model or machine text); reliability with $n$ and interval; bridge verdict (two recognizer models);
-decoding-grid sensitivity; uses allowed in this paper. Updated from the paper review's status table with the agreement
-anchors, the grid shift, the gates, the known-answer battery, the cross-vendor reader and the second reading; every
-update is logged. No row is checked by a person; agreement between machines is not accuracy.}
+\caption{Status per construct, part 1: transcript and audio measures. Instrument and version; reference (none, rule,
+model or machine text); reliability with $n$, interval and source item; bridge verdict between the two recognizer
+models; sensitivity to the decoding grid; uses allowed in this paper. Rows of the paper review's status table (D5),
+updated with the anchors, the grid shift, the gates, the known-answer battery, the cross-vendor reader and the second
+reading; every update is logged. No row was checked by a person; agreement between machines is not accuracy.}
 \label{tab:status}
 \end{table*}
 
@@ -62,124 +233,110 @@ update is logged. No row is checked by a person; agreement between machines is n
 \centering
 \small
 \input{floats/tab_status_labels.tex}
-\caption{Measurement status per construct, part 2, model-coded label instruments (columns as in part 1; neither the
-bridge nor the decoding grid was measured for them). Gate figures are the gates of record on the gate sample, with the
-registry's figures at the owner's 00:30 decision beside them where they differ. Every label is model-coded and not
-checked by a person.}
+\caption{Status per construct, part 2: model-coded label instruments (columns as in part 1 without the bridge and grid
+columns, which were not measured for them). Gate figures are those of record on the gate sample G, with the figures at
+the owner's decision of about 00:30 beside them where they differ; the gates on the hold-out reliability sample are in
+Appendix~\ref{app:gates}. Model-coded; not checked by a person.}
 \label{tab:status-labels}
 \end{table*}
 
-\paragraph{Roles, timeline and versions.} Labels come from the OpenAI models; Anthropic model agents were the
-cross-vendor reader, the panels, proposers and skeptic, and the drafters of this paper (full list in the ethics
-statement). The labelling method is ``guided steps'': typed fields before the label. The prediction timeline reports
-what was predicted and whether an outcome is observable, never whether it came true (\PendTlBuild); sources outside the
-selection rule (deceased persons, a higher self) are separate rows. A first frozen
-version stays the version of record and revisions are rows, as for the entrance patterns (Table~\ref{tab:entry}).
+\subsection{Gates, choices after gate results, and the hold-out reliability sample}
+\label{app:gates}
 
-\paragraph{Freezes and gates.} Freeze 1 fixes the instruments (Table~\ref{tab:freeze}; record prefix \FreezeOnePrefix).
-Freeze 1 did not wait for the last known-answer voice batches, which cannot change an instrument whose one revision is
-spent (registry 04:59), against the 03:08 rule that it wait for the battery (looser for its timing); they finished at
-09:10. Seen production ran \ProdSeenStamp{} and measured \ProdSeenUsd{} USD; committed spend then stood at
-\ProdCommittedUsd{} USD (registry 11:10), under the 130 USD hard stop, tested at worst case with every open batch job at
-its full cost (04:55). Moved here from Section 6.1 by the page limit: when the small model's batch queue returned almost
-nothing, its stages moved to the standard interface with request ids and bodies unchanged (06:33 to 08:33).
+\paragraph{Gates of record.} Tables~\ref{tab:gates} and~\ref{tab:gates-b} list every gate on G, failures included.
+Voice, asks and the forecast critic each spent plan 3.4's one revision and were gated again on the same sample, so a
+pass after revision is not out of sample; R-hold is the only out-of-sample reliability evidence. The gate bounds come
+from creator-then-recording bootstraps whose coverage was not audited; the audit made for H3 found creator percentile
+intervals below nominal at \MinCreatorsRegistered{} and \HThreeCreators{} creators (Table~\ref{tab:hthree}, block E),
+so a pass near its floor, such as voice stability (\VoiceGateC{} against \VoiceGateCFloor), is weaker than it looks.
+Gate D's floor lies below the lowest minimum that \citet{krippendorff2004reliability} accepts, even for tentative
+conclusions; his minimums are set for independent human coders and for $\alpha$, not $\kappa$. The merges declared in
+advance: unseparated conversation into other participant; frame-only relay reported apart; a failing
+checkability part leaves the score; fewer than four passing parts leave the time window only.
 
-\paragraph{Freeze 2 and first-round production.} Moved here from Section 6.1 by the page limit (results round). The
-amendment of freeze 1 (\FreezeOneAmendStamp; record prefix \FreezeOneAmendPrefix) changed the production driver alone,
-from \ProduceOldPrefix{} to \ProduceNewPrefix: a feature step that runs only after freeze 2 for a group other than the
-seen one and loads the analysis package's feature code only at the hash freeze 2 pins, with the seen run's pinned
-inputs, so that seen and hold-out features come from one source; every other hash, the configuration and the
-request-id fixture (\FixtureRequests{} requests with equal ids and bodies) are unchanged, and the record of
-\FreezeOneStamp{} is kept beside it. Freeze 2 (\FreezeTwoStamp; record prefix \FreezeTwoPrefix; registry commit
-\FreezeTwoCommit, which holds A10) pins \FreezeTwoModules{} analysis modules, the constants (prefix \ConstantsPrefix) and
-\FreezeTwoPinned{} files, every seen label and feature file among them. The constants came from the seen labels through
-the seen-only path at \ConstantsStamp, confirmed by a second reader that imports nothing from the package. H4's
-yardstick is \HFourYardstick{} over \HFourYardstickCreators{} seen creators with at least \HFourMinForms{} own-voice
-forms, a minimum set in code before any seen label existed and kept, as a stated choice, once both values were known
-(\HFourYardstickNoMin{} over \HFourYardstickNoMinCreators{} creators without it; the middle model's
-\HFourYardstickMiddle{} beside it); the yardstick scales H4's standardised drops, so it moves the conditions that compare
-a drop with 0.5 and not the sign-flip $p$. H2's length bands are \HTwoBandLo{} and \HTwoBandHi{} words, and its retained
-parts the time window, named actor and observable outcome (place, \HTwoPlacePct\%, and quantity, \HTwoQuantityPct\%,
-fall below the 5\% line). H9's smallest effect stays at the registry's placeholder, \HNineSesoi{} standardised units:
-no rule for setting it from seen creators was registered, and one chosen with the seen cells computed would let seen
-data pick the threshold; the seen H9 contrast is a description only (16:06). The Mantel-Haenszel intervals stay the
-wider of two, since the coverage repeat did not run, and H6's registered half-count version stays uncentred under the
-guard, with a null mean of \HSixRegNullMean{} on seen creators (15:14).
+\paragraph{Voice.} Revision 3 passes gates C (\VoiceGateC) and D (claimed, own and other, \VoiceGateDKappa; embodied,
+own and other, \VoiceGateDEmbodied). Its relayed row fails (\VoiceRelayedKappa, lower bound \VoiceRelayedLower, against
+0.60 and 0.50), and the declared merge, frame-only relay reported apart, does worse (\VoiceFrameOnlyKappa, lower bound
+\VoiceFrameOnlyLower), so by plan 3.4 H1, H4 and H6 would not run. At 02:55 the lead merged relayed into claimed voice
+instead: H1 and H6 use the merged voice, H4's primary stays embodied with the merged voice as a secondary row (registry
+04:55 (a)), and relayed-only rows carry no verdict. The deviation table classes the merge looser; A10's record calls it
+stricter and lists H1 and H4. The label moves more without punctuation and case than between runs
+(\VoicePunctMovePct\% against \VoiceRunMovePct\% of words), so every voice result says it responds to them. The middle
+voice model runs at effort low (02:55), a recorded deviation. The voice record is the small model on seen creators and
+the middle model on the hold-out, chosen at 01:15 because the middle model agreed more closely with the reference
+reading on the development set; the battery later found the small model weak on relayed voice, return cues, own offers
+and interviews (02:53). H4's yardstick comes from small-model labels (\HFourYardstick; middle model
+\HFourYardstickMiddle), so labeller and group are confounded there.
 
-Hold-out production (\HoldoutProdStamp; \HoldoutProdRecordings{} English recordings, projected at about
-\HoldoutProdProjUsd{} USD before sending) went through the standard interface, because the small model's batch queue
-still returned nothing to a probe (13:23); the hard stop, tested at worst case, refused a standard-interface chunk of
-the hold-out voice labels at \HardStopRefusalStamp{} (\HardStopRefusalCommitted{} USD committed plus
-\HardStopRefusalWorst{} at worst case), so the middle model's voice labels went through batch, whose reservations hold
-the expected cost; committed spend passed the owner's 120 USD warning at the end of hold-out production
-(\WarningPassedCommitted{} USD). The other group was labelled for exploratory use. R-hold, \RholdRecordings{} hold-out
-recordings, \RholdPerThird{} from each third of the run order, was drawn from ledger fields only (\RholdDrawnStamp). In
-plan mode the reliability driver fed placeholder answers into the arms that reuse production's answers, so their stitched
-maps and request ids differed, and it refused R-hold (\PlanModeRefusedStamp); the fix, which touches plan mode only, is
-kept as a patch and not applied, the driver restored byte for byte to its frozen hash (\ReliabilityPrefix) at
-\ReliabilityRestoredStamp, and R-hold ran in run mode, which rebuilds production's requests exactly (checked on every
-seen recording), with per-command run limits; only the cost preview of plan mode is lost (17:29). Its small-model arms
-ran through the standard interface (\RholdSmallUsd{} USD, to \RholdSmallStamp), its middle-model arms through batch for
-one arm and then the standard interface, the open batch job cancelled and collected first (18:17): \RholdArms{} arms,
-\RholdUsd{} USD, to \RholdDoneStamp. The large model reread \ChkHoldoutStatements{} hold-out statements for checkability
-(\ChkHoldoutStamp). All labelling ended at \LabellingDoneStamp{}: \FinalCommitted{} USD committed (\SpendMeasured{}
-measured, the rest held by unreleased reservations of ended runs), \FinalPastWarning{} past the warning and
-\FinalBelowStop{} below the hard stop. Not bought: HR (a),
-whose \HrAUsd{} USD would have left less than 1 USD under the hard stop at worst case (18:17), and HR (b, c), a
-fifth-tier line that starts only while committed spend plus its cap stays within 120 USD (03:08); the rewording arms of
-HR were not run.
+\paragraph{Asks and forecasts.} The ask find failed gate C, so its one revision took the union of two draws (01:30);
+gate C then passed (\AsksGateC, lower bound \AsksGateCLower). The small model's check failed gate B, so at 02:20 the
+check's record moved to the middle model, exact on \AsksMiddleExact{} of \AsksMiddleExact{} quotations on the same runs
+(classed neutral); the small check is gate D's second reader (specific agreement \AsksGateD). The forecast critic's
+revision was one sentence about relayed forecasts (02:53); its gate D then passes on its lower bound (\FbGateD, lower
+bound \FbGateDLower), though not on the check creators alone (Table~\ref{tab:gates-b}). Its ten-class label fails
+stability (\FbTenClassStab{} against 0.85) and is a description only; at 03:12 the class of record for every registered
+and timeline use became F1 against the rest (gate C \FbGateC), looser for the gate and neutral for the registered uses.
+Checkability fails gate D on all five parts between the small and middle models (named actor \FcNamedActorSmallMid);
+against the large model four parts pass and quantity fails (the place and named-actor figures are not published, fewer
+than 5 creators); the quantity figure is \FcQuantityLarge. An agreement figure of the gate tables is printed only where
+its positive code comes from 5 or more creators in each reading (a figure over several codes: 5 or more creators in
+all) and its disagreements, if any, from 5 or more creators (the lead's rule of 22:33).
 
-\paragraph{Gates.} Table~\ref{tab:gates} lists
-every gate on the gate sample G; the R-hold gates (A10.5) are in the public results file, and their two failures are
-stated in Section~\ref{sec:instruments}. Voice, asks and the forecast critic each spent the one revision plan 3.4 allows after the gates on the gate
-sample; checkability and titles had failed after both prompt revisions of the pilot stage when the owner kept them
-(about 00:30). The merges plan 3.4 declares in advance (moved here from Section 6.3): unseparated conversation into
-other participant; frame-only relay reported apart; a failing checkability part leaves the score; fewer than four
-passing parts leave the time-window part only. Embodied against own voice gave
-\VoiceGateDEmbodied{} at gate D. The ask find spent its revision on a union of two draws (gate C \AsksGateC{}
-[\AsksGateCLower]); the middle ask check, exact on \AsksMiddleExact{} of \AsksMiddleExact{} quotations, is the record,
-and the small check is the second reader of gate D (specific agreement \AsksGateD). The forecast critic spent its
-revision on one sentence about relayed forecasts; gate D then passes (\FbGateD{} [\FbGateDLower]), ``forecast or not''
-is the class of record (gate C \FbGateC), and the ten-class label fails stability against 0.85 and is description
-only; its stability figure is \FbTenClassStab. Checkability fails gate D on all five parts between the small and middle
-models (named actor \FcNamedActorSmallMid); against the large model four parts pass and quantity fails (the place and
-named-actor figures rest on fewer than 5 creators and are not published); the quantity figure is \FcQuantityLarge. When
-the owner kept checkability and titles below their floors (about 00:30, registry), the time window stood at
-\ChkTimeKappaEarly{} against 0.60; the place figure of then is \ChkPlaceKappaEarly; title presentation on the check
-creators: \TitlePresKappa; title stability: \TitleStab. The gates of record on the gate sample give presentation
-\TitlePresKappaG{} [\TitlePresKappaGLo, \TitlePresKappaGHi] against \TitlePresFloor; stability fails its floor of
-\TitleStabGFloor{} (Table~\ref{tab:gates-b}), and its figure is \TitleStabG. An agreement figure of the gate tables is
-printed only where its positive code comes from 5 or more creators in each reading (a figure over several codes: 5 or
-more creators in all) and its disagreements, if any, from 5 or more creators (the lead's rule of 22:33 UTC). On G the
-sentence codes and the commitment code pass their gates; on R-hold the commitment code passes (\ResRholdCommit) and the
-sentence codes fail gate C (\ResRholdSentC).
+\paragraph{The owner's exception.} Checkability (H2) and the title codes (H5, H9) had failed after both prompt
+revisions of the pilot stage when the owner kept them, at about 00:30: the time window stood at \ChkTimeKappaEarly{}
+against 0.60; the place figure of then is \ChkPlaceKappaEarly; title presentation on the check creators:
+\TitlePresKappa; title stability: \TitleStab. The gates of record on G give presentation \TitlePresKappaG{} (90\%
+\TitlePresKappaGLo{} to \TitlePresKappaGHi) against \TitlePresFloor; stability fails its floor of \TitleStabGFloor,
+and its figure is \TitleStabG. Both stand with their failed gates reported and with large-model adjudication: the middle model is the
+record, and the large model re-reads a sample of checkability statements and decides every title on which the middle
+and small models disagree. A10.5, entered later, wrote the exception into the gate rule and extends it to no other
+instrument, so a verdict of H2, H5 or H9 carries the flag of an instrument below its floor. The sentence codes and the
+commitment code pass their gates on G; the sentence codes stay at one unit per call, the gated form, against the
+protocol text's 15 per call (03:21).
 
-\begin{table}[t]
-\centering
-\small
-\input{floats/tab_freeze.tex}
-\caption{Freeze 1 (instruments), recorded \FreezeOneStamp: record hash prefix, \FreezeOneFiles{} file hashes,
-configuration hash prefix \FreezeOneConfigPrefix, models (small \ModelSmall, middle \ModelMiddle, large \ModelLarge),
-record model per instrument and group, efforts and output caps; the last rows give the amendment of freeze 1
-(\FreezeOneAmendStamp) and freeze 2 (\FreezeTwoShort; analysis constants, analysis code, the registry commit holding A10).}
-\label{tab:freeze}
-\end{table}
+\paragraph{Adjudicator and timing.} The recorded forecast and title gates used \ModelLargeGate; production adjudication
+uses \ModelLarge, fixed at 01:10 for cached cost, so the instruments below their floors rest on an adjudicator whose
+gate figures are not the recorded ones. Freeze 1 did not wait for the known-answer battery's last voice batches (04:59),
+against the rule of 03:08 (looser for its timing); the battery cannot change an instrument whose one revision is spent,
+and it finished at 09:10.
 
-% INTEGRATOR (2026-11-21): the gate table is taller than a page; the builder writes it in two parts.
+\paragraph{The hold-out reliability sample.} \ResRholdGates{} Voice passes, with the middle model as record on the small
+model's map; its gate A is read per instrument, as plan 3.4 states it, while a per-stage reading of the map would fail
+it (flagged; registry 19:30 (2)). Asks and commitment pass (commitment gates \ResRholdCommit). Checkability and the
+title codes stay below their floors under the exception; the title family code fails gate D on its lower bound, and the
+exception is applied as recorded, not extended (19:30 (3)). The small model's own stability on R-hold is below its floor
+(Table~\ref{tab:results-rows}, H4). Gates passed after revision on G thus did not all hold on the hold-out; selection on
+the same sample, the known difference between the groups and chance on a small sample may each contribute, and these
+records cannot tell them apart. Figures without a macro are in the results file.
+
+\paragraph{Running R-hold.} In plan mode the reliability driver fed placeholder answers into the arms that reuse
+production's answers, so their maps and request ids differed, and it refused R-hold (\PlanModeRefusedStamp). The fix,
+which touches plan mode only, is kept as a patch and not applied; the driver was restored byte for byte to its frozen
+hash (prefix \ReliabilityPrefix) at \ReliabilityRestoredStamp, and R-hold ran in run mode, which rebuilds production's
+requests exactly (checked on every seen recording), with per-command run limits; only plan mode's cost preview was lost
+(17:29). The small-model arms ran through the standard interface until \RholdSmallStamp; the middle-model arms ran
+through batch for one arm, then through the standard interface once the open batch job was cancelled and collected
+(18:17); all \RholdArms{} arms were done by \RholdDoneStamp. The frozen R-hold report stopped on one arm's file layout
+in the robustness block; a driver outside the freeze ran the frozen report body without that arm, and its figures were
+accepted (19:30 (1); a contact in Table~\ref{tab:contacts}). The rewording arms of HR never ran. The large model also
+re-read \ChkHoldoutStatements{} hold-out statements for checkability (\ChkHoldoutStamp); the results file prints this
+agreement for the time window, named actor and observable outcome and withholds place and quantity under its
+five-creator rule. It is agreement between two models of one vendor, not accuracy.
+
 \begin{table*}[tp]
 \centering
 \small
 \input{floats/tab_gates.tex}
-\caption{Every gate of the instruments on the gate sample G (A valid answers, B exact quotations, C stability over
-three runs, D two-model agreement, E agreement with a second finder) and of the verification layer (VG), part 1: value
-with 90\% interval (creators, then recordings), floor, outcome under the combined rule (point at the floor, lower bound
-at the floor minus 0.10), revisions spent, the decision taken and its UTC time. Failed gates are kept. The R-hold gates
-(A10.5) are in the public results file, their two failures in Section~\ref{sec:instruments}. The large model of the recorded
-gates is \ModelLargeGate; production adjudication uses \ModelLarge. An agreement figure (gates C, D, E and the large
-model's re-reading) is printed only where its positive code comes from 5 or more creators in each reading (a figure over
-several codes: 5 or more creators in all; a code both readings give alike is not a cell of its own) and the creators
-with an item the readings code differently are none or 5 or more (the lead's rule of 22:33 UTC); a figure that fails reads ``not published (fewer than 5 creators)'', its verdict kept. Counts of
-valid answers are given as shares. Model-coded; agreement is not accuracy.}
+\caption{Every gate on the gate sample G, part 1 (voice, asks, forecasts): gate (A valid answers, B exact quotations,
+C stability over three runs, D agreement of two models, E agreement with a second finder), measure, value with its
+90\% interval (creators, then recordings), floor with the combined rule's lower bound in brackets (point at the floor,
+lower bound at the floor minus 0.10) and verdict, with the decision taken after a failure and its time. Failed gates
+are kept. The recorded forecast and title gates used \ModelLargeGate; production adjudication uses \ModelLarge. The gates
+on the hold-out reliability sample are in the results file (Appendix~\ref{app:gates}). An agreement figure (gates C, D,
+E and the large model's re-reading) is printed only where its positive code comes from 5 or more creators in each
+reading (a figure over several codes: 5 or more creators in all) and the creators with an item the readings code
+differently are none or 5 or more (the lead's rule of 22:33); a figure that fails reads ``not published (fewer than 5
+creators)'', its verdict kept. Valid answers are given as shares. Model-coded; agreement, not accuracy.}
 \label{tab:gates}
 \end{table*}
 
@@ -187,58 +344,81 @@ valid answers are given as shares. Model-coded; agreement is not accuracy.}
 \centering
 \small
 \input{floats/tab_gates_b.tex}
-\caption{Every gate on the gate sample G, part 2 (columns as in part 1; R-hold gates in the public results file; an
-agreement figure resting on fewer than 5 creators reads ``not published''). Model-coded; agreement is not accuracy.}
+\caption{Every gate on the gate sample G, part 2 (forecasts continued, sentence codes, titles; columns as in part 1).
+Checkability and the title codes are kept below their floors by the owner's exception (A10.5). Agreement figures follow
+the lead's rule of 22:33 as in part 1; a figure that fails it reads ``not published (fewer than 5 creators)'', its
+verdict kept. Model-coded; agreement, not accuracy.}
 \label{tab:gates-b}
 \end{table*}
 
-\paragraph{Verification.} In the known-answer battery (Table~\ref{tab:ka}) the small model, on voice revision 2,
-spilled the claimed label past returns to the own voice (\KaSpillE{} after embodied and \KaSpillR{} after relayed
-frames, against base), handled an own offer inside a claimed passage as the known answer requires in \KaKfourVSmall,
-and labelled interviews as conversation in \KaCvSixSmall{} against \KaCvSixMiddle{} for the middle model. On revision 3,
-the frozen form (complete at 09:10), the spills are \KaSpillERevThree{} and \KaSpillRRevThree{} (90\%
-\KaSpillRRevThreeLo{} to \KaSpillRRevThreeHi), the own-offer arm \KaKfourVSmallRevThree, the interview arm
-\KaCvSixSmallRevThree{} (moved here from Section 6.4 by the page limit), the subject-change arm \KaXFourSmallRevThree{} and the
-share of constructed regions matched \KaRegionsSmallRevThree{} (middle \KaRegionsMiddleRevThree); the canary gates
-(VG-3) pass for voice, asks and forecasts. Planted asks are found at
-\KaAsksFound{} and non-asks kept at \KaNonAsks; forecast parts are right at \KaFcPartsLo{} to \KaFcPartsHi; sentence
-codes and titles are at ceiling on prototypes. The elevated and plain register arms are void by their own rule: their
-rewrites, made by the labelling model's family, failed the code checks too often. Stated confidence is near ceiling, and
-the small model is over-confident. After the critic's revision the bare ``they say that'' relay frame is still mostly
-not a forecast of record (\KaBareFrameSmall{} and \KaBareFrameMiddle{} of \KaBareFrameN{} for the small and middle
-models); the known answer was not changed afterwards. Measured cost: \KaCost{} USD.
+\subsection{Verification}
+\label{app:verification}
 
-The second reading (Table~\ref{tab:doubleread}; moved here from Section 6.4 by the page limit, results round: its
-time-window disagreements mostly take the window from the period of the talk and concentrate in few creators, hence
-H2's sensitivity row) set \ModelMiddle{} against the sentence-code record \ModelSmall{}
-(\DblSUnits{} units, \DblSCreators{} creators) and \ModelLarge{} against the checkability record \ModelMiddle{}
-(\DblFcUnits{} statements, \DblFcCreators{} creators): group kappa \DblSGroup{} (90\% \DblSGroupLo--\DblSGroupHi) and
-time window \DblFcTime{} (\DblFcTimeLo--\DblFcTimeHi), moved here from Section 6.4 by the page limit. With the
-general-principle code moved to world claim or to
-practice and feeling, the group kappa is \DblSQTwoWorld{} or \DblSQTwoPractice; primary codes give \DblSPrimary.
-Checkability: named actor \DblFcActor, observable outcome \DblFcOutcome; place \DblFcPlace; quantity \DblFcQuantity.
-Commitment was not reread. Measured cost: \DblCost{} USD.
+\paragraph{Known-answer battery.} The texts were constructed from development windows with planted answers; the
+registry does not record who wrote the planted passages. The register rewrites (K3) were made by a model of the
+labelling models' family and failed the code checks too often, so the elevated and plain register arms are void by
+their own rule. If constructed texts are easier than speech, which was not tested, recovery shares are an upper bound
+for the corpus, not accuracy on it, and error shares are lower bounds; only differences between cells are interpreted
+(Tables~\ref{tab:ka} and~\ref{tab:ka-b}). On voice revision 2 the small model recovered \KaKoneRSmall{} of planted
+relayed passages; its claimed label spilled past returns to own voice by \KaSpillE{} after embodied and \KaSpillR{}
+after relayed frames (against base); it handled an own offer inside a claimed passage as required in a share of
+\KaKfourVSmall; and it labelled interviews as conversation in a share of \KaCvSixSmall, against \KaCvSixMiddle{} for the
+middle model. On revision 3, the frozen form (complete at 09:10), it recovers \KaKoneRSmallRevThree{} of relayed
+passages (90\% \KaKoneRSmallRevThreeLo{} to \KaKoneRSmallRevThreeHi), spills \KaSpillERevThree{} and
+\KaSpillRRevThree{} (90\% \KaSpillRRevThreeLo{} to \KaSpillRRevThreeHi), and reads \KaKfourVSmallRevThree{} on the
+own-offer arm, \KaCvSixSmallRevThree{} on the interview arm and \KaXFourSmallRevThree{} on the subject-change arm;
+constructed regions are matched at \KaRegionsSmallRevThree{} (middle model \KaRegionsMiddleRevThree). The middle model,
+the hold-out record, stays at \KaMiddleRevThreeLo{} to \KaMiddleRevThreeHi{} on the voice arms, and the small model
+still trails it on some arms. The canary gates (VG-3) pass for voice, asks and forecasts. Planted asks are found at
+\KaAsksFound{} and planted non-asks kept at \KaNonAsks{} (union find); forecast parts match the constructed answer at
+\KaFcPartsLo{} to \KaFcPartsHi; sentence codes and titles are at ceiling on prototypes, which carries no information.
+Stated confidence is near ceiling, and the small model is over-confident. After the critic's revision the bare ``they
+say that'' relay frame is still mostly not a forecast of record (\KaBareFrameSmall{} and \KaBareFrameMiddle{} of
+\KaBareFrameN{} items, small and middle models); the known answer was not changed afterwards.
 
-The cross-vendor reader (Table~\ref{tab:crossvendor}) gives \VtrDisagreeKappa{}
-(\VtrDisagreeKappaLo--\VtrDisagreeKappaHi) on the \VtrDisagreeUnits{} units where the small and middle models' first
-runs disagree; \VtrHeavyUnits{} units on which both agree that the voice is not claimed carry about
-\VtrHeavySharePct\% of the weight; the bootstrap's coverage is not audited (moved here from Section 6.4 by the page
-limit, results round). It saw ten units of context on each side with names masked, as the
-large OpenAI model did, while the small and middle models read longer unmasked windows. Its comparator, the stored
-OpenAI majority, was fixed in code before the first read; the record model's row decides nothing. Against the small
-model's first run it gives \VtrSmallRunOne, against the large model \VtrLarge. The effective number of readers and the
-all-same share (\PendVerDep) and a third reader on the gate samples (\PendVerAdjG) are pending.
+\paragraph{Second reading.} Another model of the same vendor re-read seen check units (Table~\ref{tab:doubleread}).
+Against the small model's sentence-code record, the middle model gives a group kappa of \DblSGroup{} (90\% \DblSGroupLo{}
+to \DblSGroupHi; \DblSUnits{} units of \DblSCreators{} creators), \DblSQTwoWorld{} or \DblSQTwoPractice{} with the
+general-principle code moved to world claim or to practice and feeling, and \DblSPrimary{} on the twelve primary codes.
+Against the middle model's checkability record (\DblFcUnits{} statements of \DblFcCreators{} creators), the large model
+gives \DblFcTime{} for the time window (90\% \DblFcTimeLo{} to \DblFcTimeHi), \DblFcActor{} for named actor and
+\DblFcOutcome{} for observable outcome; place: \DblFcPlace; quantity: \DblFcQuantity. Its time-window disagreements
+mostly take the window from the period of the talk and concentrate in few creators, hence H2's sensitivity row that
+counts such a window as ``no''. Commitment was not reread. Two models of one vendor show reliability, not validity.
+
+\paragraph{Cross-vendor check.} In VER-3R an agent of the lead's own model, an Anthropic model (registry 01:10), read
+\VtrUnits{} units of \VtrCreators{} seen check creators blind (Table~\ref{tab:crossvendor}), with ten units of context
+on each side and names masked, as the large OpenAI model read them; the small and middle models read longer unmasked
+windows. Its comparator, the stored OpenAI majority of the small model's three runs and the middle model's first run,
+was fixed in code before the first read; the record model's row decides nothing. The rule of 03:21 asks for a kappa of
+at least 0.60 and a lower 90\% bound of at least 0.50; a failure would have capped H1, H4 and H6 at ``not determined''.
+Opened at 04:59, the check passes: kappa \VtrKappa{} (90\% creator bootstrap \VtrKappaLo{} to \VtrKappaHi),
+design-weighted to a frame of \VtrFrameUnits{} units of \VtrRecordings{} recordings, and \VtrKappaUnweighted{}
+unweighted; against the small model's first run \VtrSmallRunOne, the middle model's first run (the hold-out record)
+\VtrMiddleRunOne{} and the large model \VtrLarge. It is weaker than it looks. Where the small and middle models' first
+runs disagree (\VtrDisagreeUnits{} units), kappa is \VtrDisagreeKappa{} (\VtrDisagreeKappaLo{} to
+\VtrDisagreeKappaHi), below the floor. \VtrHeavyUnits{} units that both call not claimed carry about
+\VtrHeavySharePct\% of the weight; the effective number of units under these weights is not reported, and the
+bootstrap's coverage was not audited. About \VtrOtherClaimedSharePct\% of the weighted disagreement is the reader's
+``other'' where the majority says ``claimed'', the voice H1 and H6 use and of which H4's embodied voice is part. The
+sealed figures were computed at \VtrSealMadeStamp, before the row of 03:21 fixed pass and fail, though opened only after
+freeze 1. The check covers the voice label only. Prompts and codebooks were developed on seen creators only; the
+registry does not record who drafted them or whether the drafting agents had read the units of the blind sample. With
+the known-answer gates the check met the release rule of the hold-out robustness rows (b, c), loosened at 03:21 so that
+the model fallback could pass (classed mixed: stricter for H1, H4 and H6, looser for those rows), which were not
+bought.
 
 \begin{table*}[tp]
 \centering
 \small
 \input{floats/tab_ka.tex}
-\caption{Known-answer battery: share of planted answers recovered per arm by the small and the middle model, with
-creator-clustered 90\% intervals. If constructed texts are easier than speech (not tested), recovery shares are upper
-bounds for the corpus and error shares (spill, non-asks kept, losses after cue deletion) lower bounds; the levels are
-printed, but only differences between cells are interpreted. Voice rows on revision 3, the frozen form, then on revision 2,
-on the same items. $n$: items; $c$: creators of the constructed items, stated against the largest $c$ of its arm or
-block (``all but $<$5'') when it falls fewer than 5 short of it. Void arms are marked. Model-coded; not checked by a person.}
+\caption{Known-answer battery, part 1: share of planted answers recovered per arm by the small and the middle model,
+with creator-clustered 90\% intervals ($n$ items, $c$ creators of the constructed items). Texts constructed from
+development windows with planted answers; register rewrites made by a model of the labelling models' family. If
+constructed texts are easier than speech (not tested), recovery shares are an upper bound for the corpus, not accuracy
+on it, and error shares (spill, non-asks kept, losses after cue deletion) are lower bounds; only differences between
+cells are interpreted. Voice rows on revision 3, the frozen form, then on revision 2, on the same items. Model-coded;
+not checked by a person.}
 \label{tab:ka}
 \end{table*}
 
@@ -246,7 +426,8 @@ block (``all but $<$5'') when it falls fewer than 5 short of it. Void arms are m
 \centering
 \small
 \input{floats/tab_ka_b.tex}
-\caption{Known-answer battery, part 2 (columns as in part 1).}
+\caption{Known-answer battery, part 2 (voice on revision 2 continued, the void register arms, asks, forecast parts,
+sentence codes and titles; columns as in part 1). Arms at ceiling on prototypes carry no information.}
 \label{tab:ka-b}
 \end{table*}
 
@@ -254,13 +435,13 @@ block (``all but $<$5'') when it falls fewer than 5 short of it. Void arms are m
 \centering
 \small
 \input{floats/tab_doubleread.tex}
-\caption{Second reading on seen check creators: sentence groups and primary codes (record \ModelSmall, second reader
-\ModelMiddle; \DblSUnits{} units) and the five checkability parts (record \ModelMiddle, second reader \ModelLarge;
-\DblFcUnits{} statements): kappa and specific agreement with $n$ and 90\% interval (creators, then recordings). A view
-is printed only where its positive code comes from 5 or more creators in each reading (a view over several codes: 5 or
-more creators in all) and the creators with a unit the readings code differently are none or 5 or more (the lead's rule
-of 22:33 UTC); place and quantity fail it and read ``not published (fewer than 5 creators)''. Two models of one vendor:
-reliability, not validity.}
+\caption{Second reading on seen check creators by another model of the same vendor: sentence groups and primary codes
+(record \ModelSmall, second reader \ModelMiddle; \DblSUnits{} units) and the five checkability parts (record
+\ModelMiddle, second reader \ModelLarge; \DblFcUnits{} statements): share equal, kappa and specific agreement, with $n$
+and 90\% intervals (creators, then recordings). A view is printed only where its positive code comes from 5 or more
+creators in each reading (a view over several codes: 5 or more creators in all) and the creators with a unit the
+readings code differently are none or 5 or more (the lead's rule of 22:33); place and quantity fail it and read ``not
+published (fewer than 5 creators)''. Reliability, not validity.}
 \label{tab:doubleread}
 \end{table}
 
@@ -268,90 +449,233 @@ reliability, not validity.}
 \centering
 \small
 \input{floats/tab_crossvendor.tex}
-\caption{Cross-vendor check (gate VG-6) on \VtrUnits{} units of \VtrCreators{} check creators, weighted to
-\VtrFrameUnits{} units of \VtrRecordings{} recordings: the Anthropic reader against each OpenAI reader and their
-majority, weighted kappa with 90\% creator-bootstrap intervals (coverage not audited; such intervals covered below
-nominal at \MinCreatorsRegistered{} to \HThreeCreators{} creators in this project's audit) and the unweighted kappa; the rule (kappa at least 0.60, lower
-bound at least 0.50, against the stored OpenAI majority) and its outcome; sensitivity rows, which decide nothing; the
+\caption{Cross-vendor check (VG-6) on \VtrUnits{} units of \VtrCreators{} seen check creators, design-weighted to a frame
+of \VtrFrameUnits{} units of \VtrRecordings{} recordings (sampling weights, not an ordinal weighted kappa): the
+Anthropic reader against each OpenAI reader and their stored majority, kappa with its 90\% creator-bootstrap interval
+(coverage not audited; such intervals covered below nominal at \MinCreatorsRegistered{} to \HThreeCreators{} creators
+in this project's audit) and unweighted kappa; the rule and its outcome; sensitivity rows, which decide nothing; the
 stratum where the small and middle models' first runs disagree; and where the frame weight sits. Model-coded; not
 checked by a person.}
 \label{tab:crossvendor}
 \end{table}
 
-\paragraph{H3 and the programme.} Table~\ref{tab:programme} is the registered programme, Table~\ref{tab:hthree} and
-Figure~\ref{fig:hthree} carry Section~\ref{sec:hthree}, and Figures~\ref{fig:eligibility} to~\ref{fig:plasmode} carry
-Section~\ref{sec:tests}. Moved here from Section 7 by the page limit (results round): the pilot behind the projections
-holds \PilotWRecordings{} recordings of as many creators, while hold-out creators have a median of
-\HoldoutEnglishRecMedian{} English recordings; the smallest attainable $p$ at the lower bound is \MinPHOne, \MinPHFour{}
-and \MinPHSix{} for H1, H4 and H6; H2's power is at the nearest CAL count (\PowerHTwoCreators) and H5's at
-\PowerHFiveCreators; under placebo H3's registered rule says ``supported'' in \HThreePlaceboTwelve\% of sets of
-\MinCreatorsRegistered{} creators as well; the tests run as registered and amended (A10 under its guard; the 02:55
-merge). H3 in detail: as arithmetic on the published hold-out summary, not as creator-level rows of the
-frozen code, the 90\% $t$ interval on the \HThreeCreators{} creator means is \HThreeTLo{} to \HThreeTHi{} and
-\HThreePositive{} of \HThreeCreators{} creators are positive; the seen value recentred to a null mean of zero is
-\HThreeSeenRecentred{} (90\% \HThreeSeenRecentredLo{} to \HThreeSeenRecentredHi; moved here from Section 7.1 by the
-page limit), with creator sign-flip $p$ \HThreeSeenSignFlipP; at sets of \MinCreatorsRegistered{} and \HThreeCreators{} creators CAL's
-power at the smallest effect is \HThreePowerTwelve\% and \HThreePowerSeventeen\%, and an audit made afterwards found 90\%
-coverage of \HThreeCovTwelve{} and \HThreeCovSeventeen{} (two-stage percentile) and \HThreeCovT{} ($t$). Moved here from
-Section 7 by the page limit (fourth review round): the DerSimonian--Laird intervals of H1 and H4 over-reject under the
-placebo too, as normal intervals do with few clusters \cite{cameron2008bootstrapbased,mackinnon2022clusterrobust};
-H2 and H5 were revised at the analysis level before freeze 1, and before freeze 2 and any hold-out label the
-hypothesis code was verified again (details below); the registered versions stay as registered under A10's guard.
-Revisions before freeze 1, in full: H2's primary row drops statements whose checkability and commitment share scenario or
-withdrawal wording (fixed rule; flagged row beside it) and keeps parts with at least 5\% prevalence; a sensitivity row
-counts time windows taken only from the period of the talk as ``no''; H5 excludes units next to a self-naming cue and
-reports three placements of the general-principle code; H1 and H6 use claimed voice (embodied and relayed), H4 embodied
-voice; relayed-only rows carry no verdict (``below the reliability floor''). Revisions of the hypothesis code before
-freeze 2 and any hold-out label, moved here from Section 7: the amended H6 version's observed-minus-expected statistic is
-centred per recording (06:44); its reference became a conditional draw under the per-recording null, because the
-one-sided sign-flip rejected \HSixSignFlipRejectPct\% at the 0.005 level when creators have one ask at a low claimed
-share (09:19); because an ask-level conditional reference over-rejects on bursts (\HSixBurstRejectPct\% at 0.005 for
-bursts of \HSixBurstSize), asks are redrawn by cluster and the larger of the cluster-level conditional $p$ and the
-sign-flip $p$ enters the guard, with \HSixDraws{} draws (11:08, which also withdrew the 09:19 claim that the new
-reference can only make a verdict harder to reach); H9's content words exclude the frozen family table and the
-name-list forms, and contractions of function words count as function words (11:08). After the fifth verification
-(12:52): asks within \HSixClusterUnits{} units of each other, about a minute of speech, chain into one cluster, with a
-\HSixClusterSensUnits-unit window as a sensitivity row and dependence beyond the window not modelled; with \HSixDraws{}
-draws the side of 0.005 still depends on the draws inside about \HSixPBandLo{} to \HSixPBandHi; asks of one class whose
-unit ranges overlap count once, since the union of two find draws can return one ask twice (a counting correction in
-both versions of H6, outside the guard; 15:14); ain't and y'all also count as function words; the wide mask stays, every
-token of every family variant (about \HNineMaskPct\% of content tokens), which can only lower same-family content
-similarity. CAL's re-projection of eligibility from seen labels (part f) did not run (16:06).
+\subsection{Programme, H3 and projections}
+\label{app:programme}
+
+\paragraph{Programme and projections.} Table~\ref{tab:programme} is the registered programme as it stood before any
+hold-out label; Table~\ref{tab:hypotheses} states each claim. An exact creator sign-flip can pass the first Holm step
+(0.005) only from \MinCreatorsOneSided{} creators one-sided or \MinCreatorsTwoSided{} two-sided; A10 makes the second
+H2's minimum, and the first is H9's amended minimum; the registered minimum for H1 and H4 to H6 is
+\MinCreatorsRegistered. Before any hold-out label the calibration study projected eligible hold-out creators from
+model-coded pilot labels of set W under its two bounds (Figure~\ref{fig:eligibility}); hold-out creators have a median
+of \HoldoutEnglishRecMedian{} English recordings, and the pilot cannot tell the bounds apart. On the creator-property
+bound the median projections for H1, H4 and H6 lay below the registered minimum, where no $p$ can pass the first Holm
+step (smallest attainable $p$ in Table~\ref{tab:programme}); on the recording-property bound all three lay above it,
+with power \PowerHOneUpper, \PowerHFourUpper{} and \PowerHSixUpper{} at \PowerUpperCreators{} creators. Hence the
+announcement of 02:50 that H1, H4 and H6 were probably not determinable: a statement of risk on the cautious bound, not
+a forecast. H2 lay above its minimum on both bounds (power \PowerHTwo{} at $|D| = 0.10$, at \PowerHTwoCreators{}
+creators); H5's only projection, an upper bound from pilot titles, lay below its minimum (power \PowerHFive{} at
+\PowerHFiveCreators{} creators); H9 was not projected, since its cells need labels and the name list. This power was
+computed after the registry freeze, on seen data, and is not a design-stage power analysis (Figure~\ref{fig:power}).
+
+\paragraph{Calibration.} Under a creator-level placebo on seen creators, a negative control \cite{lipsitch2010negative},
+H2's registered within-creator reference rejects about \HTwoRefTimesNominal{} times nominally and H6's registered
+half-count rule \HSixRefTimesLo{} to \HSixRefTimesHi{} times; A10 replaces both under its guard. The DerSimonian-Laird
+intervals of H1 and H4 over-reject under the placebo too, as normal intervals do with few clusters
+\cite{cameron2008bootstrapbased,mackinnon2022clusterrobust}. The repeat on seen labels (part f) did not run (16:06); the
+simulation battery stands in, and no verdict reads it.
+
+\paragraph{Revisions before freeze 1.} The M9 revisions (02:50) lie outside the guard, and rows without them are
+reported. H2's primary drops statements whose checkability and commitment share scenario or withdrawal wording (fixed
+patterns, with a flagged row beside it) and keeps the parts with at least 5\% prevalence; a sensitivity row counts time
+windows taken only from the period of the talk as ``no''. H5 excludes units next to a self-naming cue and reports three
+placements of the general-principle code. After the merge of 02:55, H1 and H6 use claimed voice and H4 embodied voice;
+relayed-only rows carry no verdict (``below the reliability floor'').
+
+\paragraph{Revisions of the hypothesis code before freeze 2.} None used a first-round or hold-out label. At 06:44 H6's
+amended observed-minus-expected statistic was centred per recording. At 09:19 its reference became a conditional draw
+under the per-recording null, because the one-sided sign-flip rejected \HSixSignFlipRejectPct\% at the 0.005 level when
+creators have one ask at a low claimed share. At 11:08 asks came to be redrawn by cluster, because an ask-level
+conditional reference over-rejects on bursts (\HSixBurstRejectPct\% at 0.005 for bursts of \HSixBurstSize{} asks); the
+larger of the cluster-level conditional $p$ and the sign-flip $p$ enters the guard, with \HSixDraws{} draws, and the
+row withdrew the claim of 09:19 that the new reference can only make a verdict harder to reach. Also at 11:08, H9's
+content words came to exclude the frozen family table and the name-list forms, and contractions of function words to
+count as function words. At 12:52 asks within \HSixClusterUnits{} units of each other (about a minute of speech) came to
+chain into one cluster, with a \HSixClusterSensUnits-unit window as a sensitivity row and dependence beyond the window
+not modelled; with \HSixDraws{} draws the side of 0.005 still depends on the draws inside about \HSixPBandLo{} to
+\HSixPBandHi. Also at 12:52: asks of one class whose unit ranges overlap count once, since the union of two find draws
+can return one ask twice (settled at 15:14 as a counting correction in both versions of H6, outside the guard); ain't
+and y'all count as function words; and the wide mask stays, every token of every family variant (about \HNineMaskPct\%
+of content tokens), which can only lower same-family content similarity.
+
+\paragraph{H3 in detail.} H3, the one hypothesis that needs no labels, was frozen at \HThreeFrozenStamp{} and run on the
+hold-out at \HThreeRunStamp{} on 20 November (Table~\ref{tab:hthree}, Figure~\ref{fig:hthree}). Its registered row is
+$U$ = \HThreeU{} on \HThreeCreators{} creators and \HThreeRecordings{} recordings (90\% two-stage percentile interval
+\HThreeRegLo{} to \HThreeRegHi; one-sided $p$ against circular shifts within recordings \HThreeShiftP), supported by its
+registered rule. Because the shift reference holds creators fixed, that rule says ``supported'' under the placebo in
+\HThreePlaceboTwelve\% of sets of \MinCreatorsRegistered{} creators and \HThreePlaceboSeventeen\% of sets of
+\HThreeCreators, against a nominal 0.5\%. As arithmetic on the published hold-out summary, not as the frozen code's
+creator-level rows, the 90\% $t$ interval on the \HThreeCreators{} creator means is \HThreeTLo{} to \HThreeTHi, and
+\HThreePositive{} of \HThreeCreators{} creators are positive. The estimand is off-centre under its own reference: the
+seen value recentred to a null mean of zero is \HThreeSeenRecentred{} (90\% \HThreeSeenRecentredLo{} to
+\HThreeSeenRecentredHi), with a creator sign-flip $p$ of \HThreeSeenSignFlipP. Power at the smallest effect is
+\HThreePowerTwelve\% and \HThreePowerSeventeen\% at \MinCreatorsRegistered{} and \HThreeCreators{} creators; an audit
+made afterwards found 90\% coverage of \HThreeCovTwelve{} and \HThreeCovSeventeen{} for the two-stage percentile
+interval and \HThreeCovT{} for the $t$ interval at \HThreeCreators{} creators; a passing estimate at the smallest effect
+would exaggerate it about \HThreeTypeM{} times (normal model). Restated verdict: supported by its registered rule; the
+rule was not calibrated at the creator level; not determined at the creator level; exploratory; withdrawn (A6). Its
+wave replication was not run, the selection rule was written after its test, and the pilot that suggested it probably
+read early hold-out files (Table~\ref{tab:contacts}).
+
+\paragraph{A wave of the same creators.} H7 and H10 need a replication wave, and a wave of the same creators would show
+persistence, not confirmation (Figure~\ref{fig:plasmode}): under a population null with persistent creator effects it
+passes at 0.005 in \PlasmodeWaveLo{} to \PlasmodeWaveHi\% of cases once a seen look passed at 0.05, while fresh creators
+alone pass at about the nominal rate. H7's smallest effect is still open: a multiple $k$ of the spread of its estimand
+under its block reference on seen creators, with $k$ to be fixed before any wave recording (A10.6); H7 did not run.
 
 \begin{table*}[tp]
 \centering
 \small
 \input{floats/tab_programme.tex}
-\caption{The registered programme, stated before any hold-out label: state; registered reference and CAL's verdict on
-it (creator-level placebo on seen-creator analogues); smallest effect; minimum creators for the first Holm step and the
-registered ``not run'' minimum; projected eligible hold-out creators (model-coded pilot labels) under CAL's
-creator-property bound (median, 90\% range; an end left open would show a count this paper withholds) and its
-recording-property bound (against the minimum only); H5 one upper bound, H9 not projected; CAL's power at the smallest
-effect under each (CAL creator count in brackets); smallest attainable $p$ at the first bound; the 02:50 announcement
-(H1, H4, H6) or the projection's reading, and instrument flags (bold: below its floor by the owner's exception, A10.5);
-result (public results file). Projections, not counts.}
+\caption{The registered programme as it stood before any hold-out label (claims in Table~\ref{tab:hypotheses}): state;
+registered reference and the calibration study's verdict on it (creator-level placebo on seen-creator analogues);
+smallest effect of interest; creators for the first Holm step and the registered ``not run'' minimum; projected
+eligible hold-out creators from model-coded pilot labels under the creator-property bound (median and 90\% range), then
+under the recording-property bound (against the minimum only); power at the smallest effect under each bound, at the
+calibration study's creator count in brackets; smallest attainable $p$ at the first bound; the announcement of 02:50
+(H1, H4 and H6 only) or the projection's reading, with instrument flags (bold: below its floor by the owner's exception,
+A10.5); the first-round result. Medians of projections, not counts of creators.}
 \label{tab:programme}
-\end{table*} H7's smallest effect is still open: a multiple $k$ of the spread of its estimand under its block
-reference on seen creators, with $k$ fixed before any wave recording (A10.6; H7 is not run in the first round). H9's
-is the registry's placeholder, \HNineSesoi, adopted at 16:06 (a deviation). Hedge rates by kind (lexical against modal)
-are a planned seen-label output beside H2's commitment code (\PendLabF).
+\end{table*}
 
-\paragraph{First-round results.} Tables~\ref{tab:results-detail} to~\ref{tab:results-holm} carry
-Section~\ref{sec:results} from the public results file that the converter writes from the private report, with every
-creator count in a printed form; nothing here is read from the private report. \ResWithheld{} Supported and refuted
-verdicts carry their verification figures in Table~\ref{tab:results-detail}.
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_hthree.tex}
+\caption{H3 restated at the creator level. A: the registered rule on the hold-out (\HThreeCreators{} creators,
+\HThreeRecordings{} recordings). B and D: arithmetic on the published hold-out summary, not the frozen code's
+creator-level rows, which wait for the creator-level rerun (not yet produced; Appendix~\ref{app:outputs}). C: seen
+creators, recomputed with the frozen rules. E and F: calibration, coverage, power and exaggeration from the calibration
+study's placebo on seen creators; a passing estimate at the smallest effect would exaggerate it about \HThreeTypeM{}
+times (normal model). G: the restated verdict.}
+\label{tab:hthree}
+\end{table*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_hthree.pdf}
+\caption{H3's calibration and trim, seen creators only (exploratory). (a) Placebo $p$ of the calibration study per
+0.05 bin, as a ratio to the count expected under a uniform $p$, with a binomial 90\% band (grey): the registered
+circular-shift test (orange) piles up in both tails because it holds creators fixed, while the creator sign-flip on the
+recentred $U$ (blue) does not pile up in the lower tail, where its one-sided test rejects. (b) Recentred $U$
+(creator-equal mean, 90\% $t$ interval) against the seconds trimmed at each end, for the creators eligible at each trim
+and for the fixed set eligible at 300 s; the value falls as more seconds are trimmed.}
+\label{fig:hthree}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_eligibility.pdf}
+\caption{Eligible hold-out creators projected before any hold-out label, from model-coded pilot labels. Dots and bars:
+median and 90\% range with eligibility a fixed habit of the creator (cautious bound); arrows: eligibility a property of
+each recording, shown only as above the minimum. Solid ticks: registered minimum; dashed ticks: fewest creators that
+can pass the first Holm step. H3: its realised count; H5: one upper bound; H9: not projected. Projections, not counts.}
+\label{fig:eligibility}
+\end{figure}
+
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{floats/fig_power.pdf}
+\caption{Power of a creator sign-flip at the first Holm step (0.005) against the true effect in units of the smallest
+effect of interest (vertical line at 1; horizontal line at 0.8): the calibration study's seen-creator analogues for H1
+to H5 and its planted simulation for H6, at the creator counts in the legend, and, dotted, a normal model at the
+projected median for H1 to H4 only. Analogues carry no labels and are not hypothesis quantities.}
+\label{fig:power}
+\end{figure*}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_plasmode.pdf}
+\caption{Why a wave of the same creators cannot replicate: a simulation on seen cluster sizes and within-creator pace
+residuals of the \NSeen{} seen creators, under a population null with persistent creator effects. Share of cases in
+which a one-sided test at 0.005 passes, given that an exploratory seen look passed at 0.05, against the recording-level
+ICC of the persistent effects: a wave of the same creators passes in \PlasmodeWaveLo{} to \PlasmodeWaveHi\% of cases at
+the positive ICCs simulated, a wave pooled with fresh creators slightly less often, fresh creators alone at about the
+nominal 0.5\%; at an ICC of zero all three sit near nominal. Bars: 90\% Monte Carlo intervals.}
+\label{fig:plasmode}
+\end{figure}
+
+\subsection{First-round results}
+\label{app:results}
+
+\paragraph{Source.} The registered tests ran from 18:54 to 19:03 on the frozen code under both freezes.
+Tables~\ref{tab:results} to~\ref{tab:results-holm} reproduce the results file that the project's converter wrote from
+their private report, first at 20:48, then at 21:50 (converter fixes) and at 22:33 (one rule for agreement figures),
+and last at \ResStamp. Nothing here is read
+from the private report, and every creator count is printed against its minimum or against 5. \ResSummary{}
+\ResCounts{} \ResWithheld{} The announcement made in advance held for H1, H4 and H6, and H5 and H9 joined them (the
+registry's reading).
+
+\paragraph{What the guard replaced.} Both versions were computed on the same data and are printed in
+Tables~\ref{tab:results-detail} and~\ref{tab:results-detail-b}. H1 and H4: the interval (DerSimonian-Laird normal to
+HKSJ $t(k-1)$). H2: the reference (a permutation within creator and length band to a two-sided creator sign-flip), the
+minimum (\MinCreatorsOneSided{} to \MinCreatorsTwoSided) and the interval (creator bootstrap to HKSJ). H5: the estimator
+(the half-count log-ratio difference to OE with a Mantel-Haenszel odds ratio), the reference, the minimum (10 hits per
+group and side to 10 per group) and the interval (the wider of a percentile and a jackknife $t$ interval until the
+coverage repeat). H6: the estimator (the half-count log rate ratio to OE centred per recording, with a Mantel-Haenszel
+rate ratio), the reference (the larger of the cluster-level conditional $p$ and the sign-flip $p$), the minimum (also
+\MinCreatorsOneSided{} creators with an ask) and the interval. H9: an added minimum of \MinCreatorsOneSided{} creators
+with a cell in the hold-out. In every case the two versions gave the same verdict.
+
+\paragraph{Reasons and flags.} H2 is not run for want of an instrument because the forecast class of record failed
+gate D on R-hold; its eligible count reached its minimum. H5 is not determinable on its count, and its sentence codes
+also failed gate C on R-hold; the file and the registry report both conditions, and neither states which takes
+precedence. H2, H5 and H9 carry the flag of an instrument below its floor. The cross-vendor
+check passed, so no cap applies to H1, H4 or H6. No detectable effect is stated: the repeat on seen labels did not run,
+and the file states that H6's detectable effect comes from the simulation battery, whose results it does not hold; the
+battery completed on the frozen code at 21:52 and is read by no verdict.
+
+\paragraph{The labeller.} Table~\ref{tab:results-rows} gives every registered robustness row. Each is not
+determinable, not run for want of an instrument, not determined, or not printed because it rests on fewer than 5
+creators, with one exception: H4's second-model row, on the small model's labels, computes ``supported
+(model-coded)''. It carries the flag ``labels below the reliability floor'', because the small model's own stability on
+R-hold is below its floor, and it is not a result of H4, whose primary is not determinable (registry 19:30 (4)). H1's
+second-model row is ``not determined'' rather than ``not determinable''. The file therefore marks H1 and H4 as not
+robust to the labeller, H9 as not assessable, and H2, H5 and H6 as robust: whether a hypothesis was determinable
+depended on which model labelled.
+
+\paragraph{Wording of verification.} A supported or refuted verdict would read ``verified by a third model, on
+known-answer texts and by a reader of another vendor''. The file prints these figures per hypothesis because the
+wording rule requires them, though no verdict needs them in this round: the cross-vendor kappa \VtrKappa, the middle
+model's known-answer figures \KaRegionsMiddleRevThree{} (constructed regions) and \KaMiddleRevThreeLo{} to
+\KaMiddleRevThreeHi{} (voice arms), and, in the file only, the third model's voice figure and the arm-level recalls.
+Uninformative results leave the headline claims; their rows stay (A2). The counts written before the outcomes: the
+recognizer rule applied as registered (English-only model); seen primary \NSeen{} creators and \NSeenFiles{}
+recordings, of which \NSeenEnglishOnly{} were kept and \NSeenOtherModel{} excluded (unknown model); hold-out primary
+\HoldoutProdRecordings{} recordings, every other hold-out cell withheld.
+
+\begin{table}[tp]
+\centering
+\small
+\input{floats/tab_results.tex}
+\caption{First-round results on the hold-out, as the results file states them (model-coded): eligible creators of the
+primary (amended) version against its minimum ($<$5, $<$min., $\geq$min.: a count stated against 5 or against the
+minimum only); estimate with its 90\% creator interval (n.p.: not printed); Holm-adjusted $p$ of the larger of the two
+versions' $p$; verdict under A10's guard; uninformative flag. $\dagger$: instrument below its floor (owner's exception,
+A10.5). Claims in Table~\ref{tab:hypotheses}.}
+\label{tab:results}
+\end{table}
 
 \begin{table*}[tp]
 \centering
 \small
 \input{floats/tab_results_detail.tex}
-\caption{First-round results in full, from the public results file: for each hypothesis, the amended and the registered
-version under A10's guard (eligible creators against the version's minimum; the version's $p$; the estimate with its
-90\% creator interval and scale; the verdict as worded by the frozen code; the version's uninformative flag and
-reason), and under them the guard, the Holm entry, the robustness summary, the VG-6 cap, the instrument flag, the
-detectable-effect note and, for a supported or refuted verdict, its verification wording. Estimates, intervals and $p$
-are printed only where the version rests on 5 or more creators with a non-zero value. Model-coded; not checked by a
-person. Part 1 of 2 (H1, H2, H4). \ResPendingNote}
+\caption{First-round results in full, part 1 of 2 (H1, H2, H4): for each hypothesis the amended and the registered
+version under A10's guard (eligible creators against the version's minimum; $p$; estimate with its 90\% creator interval
+and scale; the verdict as worded by the frozen code; the uninformative flag and reason), and under them the guard, the
+Holm entry, the robustness summary, the cross-vendor cap, the instrument flag and the gates on the hold-out reliability
+sample. Estimates, intervals and $p$ are printed only where a version rests on 5 or more creators with a non-zero value.
+Model-coded; not checked by a person.}
 \label{tab:results-detail}
 \end{table*}
 
@@ -359,7 +683,8 @@ person. Part 1 of 2 (H1, H2, H4). \ResPendingNote}
 \centering
 \small
 \input{floats/tab_results_detail_b.tex}
-\caption{First-round results in full, part 2 of 2 (H5, H6, H9; columns as in part 1). \ResPendingNote}
+\caption{First-round results in full, part 2 of 2 (H5, H6, H9; columns as in part 1), with H6's note on its detectable
+effect.}
 \label{tab:results-detail-b}
 \end{table*}
 
@@ -368,8 +693,11 @@ person. Part 1 of 2 (H1, H2, H4). \ResPendingNote}
 \small
 \input{floats/tab_results_rows.tex}
 \caption{Registered robustness rows of the first round (second model, voice definitions, recognizer stratification,
-other label sources): the verdict each row gives and its uninformative flag; a row resting on fewer than 5 creators is
-listed without a verdict. Rows print no counts. Model-coded. \ResPendingNote}
+other codings and label sources): the verdict each row gives and its uninformative flag; a row resting on fewer than 5
+creators is listed without a verdict, and no row prints a count. Read across a hypothesis's rows, they show whether its
+verdict is robust to the labeller: not for H1 and H4, whose second-model rows differ from the primary. H4's second-model
+row computes ``supported (model-coded)'' on the small model's labels, flagged because those labels fall below their
+stability floor on the hold-out reliability sample; it is not a result of H4. Model-coded.}
 \label{tab:results-rows}
 \end{table*}
 
@@ -377,92 +705,79 @@ listed without a verdict. Rows print no counts. Model-coded. \ResPendingNote}
 \centering
 \small
 \input{floats/tab_results_holm.tex}
-\caption{Holm over the ten registered hypotheses (A9, A10.1): rank, status, threshold, the $p$ that enters (the larger
-of a hypothesis's two versions; 1 for the closed, dropped and unrun ones) and the Holm-adjusted $p$.
-\ResPendingNote}
+\caption{Holm's correction over the ten registered hypotheses (A9, A10.1) at a family-wise 0.05: rank, status,
+threshold, the $p$ that enters (the larger of a hypothesis's two versions; 1 for the closed, dropped and unrun ones and
+for every result not determinable or not run for want of an instrument) and the adjusted $p$. No step passes.}
 \label{tab:results-holm}
 \end{table}
 
-\begin{table*}[tp]
-\centering
-\small
-\input{floats/tab_hthree.tex}
-\caption{H3 restated at the creator level. Hold-out rows (\HThreeCreators{} creators, \HThreeRecordings{} recordings)
-use only the published summaries (blocks B and D are arithmetic on them, not the frozen code's creator-level rows, which
-wait for H3-X); the registered interval is printed as the registry records it; seen rows are recomputed with the
-frozen rules. Calibration, coverage and power come
-from CAL's placebo on seen creators; a passing estimate at the smallest effect would exaggerate it about
-\HThreeTypeM{} times (normal model). Restated verdict: supported by its registered rule; the rule was not calibrated at
-the creator level; not determined at the creator level; exploratory; withdrawn (A6). Pending: \PendHThreeX.}
-\label{tab:hthree}
-\end{table*}
+\subsection{Deviations, timeline and contacts}
+\label{app:deviations}
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{floats/fig_hthree.pdf}
-\caption{H3's calibration and trim. (a) Placebo: sets per $p$ bin over the count expected under a uniform $p$, with a
-binomial 90\% band (CAL, sets of \HThreeCreators{} seen creators); the registered circular-shift $p$ piles up in both
-tails because it holds creators fixed, while a creator sign-flip on the recentred $U$ stays near nominal. (b) Trim:
-recentred $U$ (creator-equal mean, 90\% $t$ interval) against the seconds trimmed from each end, seen creators only.
-Exploratory.}
-\label{fig:hthree}
-\end{figure}
+\paragraph{The deviation table.} Tables~\ref{tab:deviations} to~\ref{tab:deviations-f} list \NDeviationRows{}
+deviations from the frozen registry, each with its time, scope, what was done, what was known then and its direction,
+from three sources with no row twice: the paper review's table (to 00:50), the registry's own table (A10 Part 8, rows
+from 01:10) and the registry rows written after that table was last brought up to date (16:06 to 23:34). Classes:
+\emph{stricter}, a verdict can only become harder to reach; \emph{guarded}, a change that could move a result toward
+support, covered by A10's guard; \emph{neutral}, no effect on any verdict; \emph{looser}, a change that can make a
+verdict easier to reach, outside the guard; \emph{mixed}, stricter for some uses and looser for others, or of a
+direction not known in advance, outside the guard; \emph{exploratory}, exploratory outputs only; \emph{budget or
+operations}, no effect on any procedure; \emph{other}, a disclosure, a correction of the record, or not yet decided.
+Counts: \NDevStricter{} stricter, \NDevGuarded{} guarded, \NDevNeutral{} neutral, \NDevLooser{} looser, \NDevMixed{}
+mixed, \NDevExploratory{} exploratory, \NDevBudget{} budget or operations and \NDevOther{} other. The registry does not
+record who classified each direction, and no one outside the project checked the classes. Figure~\ref{fig:timeline}
+places the events, results, hold-out contacts and public outputs on one axis.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{floats/fig_eligibility.pdf}
-\caption{Projected eligible hold-out creators per hypothesis, under CAL's two bounds: eligibility as a property of the
-creator (filled dot, the bound the announcement of 02:50 rests on; median and 90\% range, a dashed arrow where the upper
-end is not drawn) and of each recording (arrow from the minimum: its median lies above the minimum; neither its median
-nor its range is drawn, as the projections are capped at a count this paper withholds). Solid tick, the registered ``not run'' minimum; black tick, the smallest count at which an exact sign-flip can
-pass 0.005 (\MinCreatorsOneSided{} one-sided, \MinCreatorsTwoSided{} two-sided). H3 shows its realised count; H5 is one upper bound
-from pilot titles. Projections from model-coded pilot labels, not counts.}
-\label{fig:eligibility}
-\end{figure}
+\paragraph{Deviations outside the guard, by hypothesis.} H3: its reference held creators fixed, its interval was fixed
+without the coverage audit, the audit and the planted-effect check were skipped, and the leave-one-creator-out range
+was not reported (all looser); H3 is withdrawn. Every test: ``uninformative'' had no operational definition at the
+registry freeze, and the hold-out was defined and touched before freeze 2 (looser). Every label-based test: no person
+check (A8) and verification by language models in its place (A11), both looser, and freeze 1 not waiting for the
+battery (looser for its timing). H1 and H6, and H4's secondary row: the relayed-voice merge of 02:55 (looser). H2: the
+forecast class of record chosen at 03:12 (looser for the gate). H2, H5 and H9: the instruments kept below their floors
+at about 00:30 (looser). H2 and H5: the M9 revisions (mixed, direction not known in advance; rows without them
+reported). H1, H4 and H6, and the hold-out robustness rows: the cross-vendor rule of 03:21 (mixed: stricter for the three
+hypotheses, looser for releasing rows that were never bought). H9: the smallest effect adopted at the registry's
+placeholder (16:06, mixed). The inputs of the first-round tests: the decisions of 19:30 on the R-hold report, voice gate
+A read per instrument, the title exception applied as recorded and the flag on H4's second-model row (mixed; made after
+the gates were computed, the flag after the results). The rows after the tests (20:48 to 23:34) record the results file
+and its republications and the simulation battery, and change no verdict. The exploratory round of the reporting plan,
+started at 23:17, runs on code written after freeze 2, against the plan's rule that its code is frozen in the freeze-2
+record; this deviation (classed exploratory) was declared before any output of the round was read.
 
-\begin{figure*}[tp]
-\centering
-\includegraphics[width=\textwidth]{floats/fig_power.pdf}
-\caption{Power of a creator sign-flip at the first Holm step (0.005) against the true effect in units of the smallest
-effect of interest: CAL's seen-creator analogues (H1 to H5) and CAL's planted simulation for H6, at the creator counts
-named in the legend, and, dotted, a normal model at the projected median for H1 to H4 only. Analogues carry no labels
-and are not hypothesis quantities.}
-\label{fig:power}
-\end{figure*}
+\paragraph{Hold-out contacts.} Table~\ref{tab:contacts} reproduces the registry's contact log. Before freeze 2, hold-out
+material was touched by the first panel's snapshot tables (\ContactSnapshotFiles{} hold-out audio files;
+\ContactSnapshotStamp), made before the hold-out was declared; its position pilot on \PilotCreators{} creators, more than
+the seen ones, so that early hold-out files probably entered the reading that suggested H3 (time not recorded); the run
+report's position displays and per-creator tables (\ContactRunReportStamp, 20 November); H3's registered run
+(\HThreeRunStamp, allowed by its freeze); a second-round panel script that loaded about \ContactCoverageFiles{}
+hold-out metadata files in full (\ContactCoverageStamp, 20 November), a breach of the round's rule found by two other
+panel members; TABLE's planned, logged extraction (\ContactTableStamp, 20 November); the public-output generators, which
+loaded a per-recording timing cache that included the hold-out (\ContactPrivacyStamp); and the one-off script that cut
+that cache to the seen creators (\ContactSeenDerivStamp). After freeze 2 came the driver outside the freeze that ran
+R-hold's frozen report body (about 18:40 to 18:50), the registered tests (18:54 to 19:03), the lead's privacy count
+after the tests (about 20:44 to 20:47), which printed only whether each count reached 5 (an inspection command also
+showed the lead the first characters of a creator code, nothing else), and the privacy recounts behind the public
+results file (about 21:30 to 23:30) by its converter and the verifiers of the publish fixes, which read the creator
+field and codes of the hold-out checkability check files and of R-hold's forecast and ask arms and used only whether
+each count reached 5. Hold-out transcript windows went to the OpenAI
+API for the frozen instruments only. The registry records that no contact produced a statistic about a registered
+hypothesis on hold-out text other than the registered tests run by their frozen procedures, and the paper prints no
+number from the contacts. The \NCloudOnlyObjects{} cloud-only metadata objects are to be read once after freeze 2, in
+one logged read-only pass (registry 03:08); no such read is recorded.
 
-\begin{figure}[t]
-\centering
-\includegraphics[width=\columnwidth]{floats/fig_plasmode.pdf}
-\caption{Why a wave of the same creators cannot replicate. Plasmode under a population null with persistent creator
-effects (seen cluster sizes and within-creator pace residuals): share of cases in which a one-sided test at 0.005 passes,
-given that an exploratory seen look passed at 0.05. A wave of the same creators passes in
-\PlasmodeWaveLo--\PlasmodeWaveHi\% of cases across the simulated recording-level ICCs; fresh creators alone pass at about
-nominal. Bars: 90\% Monte Carlo intervals.}
-\label{fig:plasmode}
-\end{figure}
-
-\paragraph{Deviations and contacts.} Table~\ref{tab:deviations} and Figure~\ref{fig:timeline} carry
-Section~\ref{sec:deviations}; Table~\ref{tab:contacts} lists every hold-out contact named in Section~\ref{sec:limits}.
-The \NCloudOnlyObjects{} cloud-only metadata objects are to be read once, after freeze 2, in one logged read-only pass
-(registry 03:08; moved here from Section 9 by the page limit, results round); the registry records no such read yet.
-
-% INTEGRATOR (2026-11-21): the deviation table is about three pages tall; the builder writes it in three parts of
-% consecutive, numbered rows. The class column uses the seven classes of Section 8.
 \begin{table*}[tp]
 \centering
 \small
 \input{floats/tab_deviations.tex}
-\caption{Deviations from the registry frozen \RegistryFrozenStamp{} (hypotheses SHA-256 prefix
-\HypothesesShaPrefix), part 1 of 6: row number; UTC of the change; what it applies to; what was done against the
-registry; results known at the time; direction as recorded; and its class (stricter; guarded by amendment A10; neutral;
-looser; mixed: stricter for some uses and looser for others, or of a direction not known in advance, outside the guard;
-exploratory; budget or operations; other: disclosure, correction of the record, the freeze-1 entry, reporting (the
-public results file and its republications), or not yet decided).
-\NDeviationRows{} rows: the paper review's table, the registry's deviation table (A10 Part 8, entered at \ATenStamp;
-its rows of contacts, of the freeze-1 entry and of corrections of the record included), and the registry rows written
-after that table was last brought up to date (16:06 to 23:34); no deviation is listed twice. The relayed-voice merge of
-02:55 is classed looser here, against A10's own record, and applies to H1 and H6 (registry 04:55 (a)), where A10 lists
-H1 and H4 (Section~\ref{sec:instruments}).}
+\caption{Deviations from the registry frozen \RegistryFrozenStamp{} (hypotheses SHA-256 prefix \HypothesesShaPrefix),
+part 1 of 6: row; UTC of the change; scope; what was done against the registry; what was known then (codes in
+Appendix~\ref{app:glossary}); direction as recorded; class (defined in Appendix~\ref{app:deviations}).
+\NDeviationRows{} rows: the paper review's table (to 00:50), the registry's deviation table (A10 Part 8, entered
+\ATenStamp; rows from 01:10, its rows of contacts, of the freeze-1 entry and of corrections of the record included) and
+the registry rows written after that table was last brought up to date (16:06 to 23:34), none twice. The relayed-voice
+merge of 02:55 is classed looser here, against A10's own record (stricter), and applies to H1 and H6 (registry 04:55
+(a)), where A10 lists H1 and H4.}
 \label{tab:deviations}
 \end{table*}
 
@@ -502,24 +817,23 @@ H1 and H4 (Section~\ref{sec:instruments}).}
 \centering
 \small
 \input{floats/tab_deviations_f.tex}
-\caption{Deviations from the registry, part 6 of 6 (columns as in part 1).}
+\caption{Deviations from the registry, part 6 of 6 (columns as in part 1): the rows from 16:06 to 23:34, the last six
+after the registered tests.}
 \label{tab:deviations-f}
 \end{table*}
 
-% INTEGRATOR (2026-11-21): floats/fig_timeline.pdf was re-drawn by the builder with the events after 01:10 UTC; the
-% numbers on the marks are keyed in floats/tab_timeline_key.tex, set below the figure.
 \begin{figure*}[tp]
 \centering
 \includegraphics[width=\textwidth]{floats/fig_timeline.pdf}
 
 \medskip
 \input{floats/tab_timeline_key.tex}
-\caption{Design timeline in UTC, one lane each for run progress, design events, results, hold-out contacts and public
-outputs; the key below the plot names each numbered event. Times are commit times or the time stated in the cited
-record. A selection of events to the registry's latest row (\TimelineEndStamp): first-round labelling (to
-\LabellingDoneStamp), the tests and the decisions on their inputs, the full simulation battery, the first-round results
-and their republications (the current version last) and the start of the exploratory round; the contacts of 21
-November included; the deviations themselves are in Table~\ref{tab:deviations}.}
+\caption{Design timeline in UTC, 19 to 21 November 2026 (axis broken at 20 November, 14:00), with lanes for run
+progress, design events, results, hold-out contacts and public outputs; the key below the plot names each numbered
+event. Times are commit times or the time stated in the cited record; for two events (the battery's and seen
+production's completion) the key and the registry differ by a minute. A selection of events to the latest
+republication of the results file (\ResStamp; the registry's latest row is of \TimelineEndStamp), the start of the
+exploratory round included; the deviations are in Table~\ref{tab:deviations}.}
 \label{fig:timeline}
 \end{figure*}
 
@@ -527,37 +841,105 @@ November included; the deviations themselves are in Table~\ref{tab:deviations}.}
 \centering
 \small
 \input{floats/tab_contacts.tex}
-\caption{Every contact with hold-out recordings outside a procedure frozen for it: UTC, what touched the hold-out, what
-was read or written, status. Counts of recordings, durations, dates and languages from the run ledger are not contacts.
-The registry records that no contact produced a statistic about a registered hypothesis on hold-out text other than
-the registered tests run by their frozen procedures (H3; then H1, H2, H4, H5, H6 and H9).}
+\caption{Every contact with hold-out material outside a procedure frozen for it, before and after the analysis freeze,
+as the registry's contact log records it: time, what touched the hold-out, what was read or written, and status. Counts
+of recordings, durations, dates and languages from the run ledger are not contacts. The registry records that no
+contact produced a statistic about a registered hypothesis on hold-out text other than the registered tests run by
+their frozen procedures (H3; then H1, H2, H4, H5, H6 and H9).}
 \label{tab:contacts}
 \end{table*}
 
-\paragraph{Exploratory outputs.} The reporting plan lists every exploratory output with its place;
-Table~\ref{tab:outputs} counts them by status. The seen-creator model-coded descriptions made under freeze 1 are
-pending: voice \PendLabV, asks \PendLabA, forecasts \PendLabF, sentence codes \PendLabS, titles \PendLabT, recording
-kinds \PendLabK.
+\subsection{Money}
+\label{app:money}
+
+Labels were bought from the OpenAI API under the owner's rules. The budget was fixed with A3 and raised on the evening
+of 20 November; caps then became warnings with a loop guard; at 02:00 on 21 November came a hard stop of 130 USD in the
+client, with a warning at 120 USD. The second experiment round had a cap of 50 USD (A7), which the channeler discovery
+exceeded before a hard cap closed its model calls (registry 02:25 and 03:08). From 03:08 the money left went by
+priority: the registered chain, then the verification that replaces the person check, HR (a), small programme lines,
+and conditional lines such as HR (b, c). From 04:55 the hard stop was tested at worst case, with every open batch job
+at its full cost.
+
+Seen production measured \ProdSeenUsd{} USD; committed spend then stood at \ProdCommittedUsd{} USD (11:10). When the
+small model's batch queue returned almost nothing, its stages moved to the standard interface with request ids and
+bodies unchanged (06:33 to 08:33). Hold-out production, projected at about \HoldoutProdProjUsd{} USD before sending,
+went through the standard interface, because that queue still returned nothing to a probe (13:23). The hard stop
+refused a standard-interface chunk of hold-out voice labels at \HardStopRefusalStamp{} (\HardStopRefusalCommitted{} USD
+committed plus \HardStopRefusalWorst{} USD at worst case), so the middle model's voice labels went through batch, whose
+reservations hold the expected cost. Committed spend passed the warning at the end of hold-out production
+(\WarningPassedCommitted{} USD). R-hold cost \RholdUsd{} USD (small-model arms \RholdSmallUsd{} USD), the known-answer
+battery \KaCost{} USD and the second reading \DblCost{} USD. HR (a), capped at \HrAUsd{} USD, was not bought because it
+would have left less than 1 USD under the hard stop at worst case (18:17); HR (b, c), a fifth-priority line, could start
+only while committed spend plus its cap stayed within 120 USD (03:08), so it was not bought either. When labelling ended
+(\LabellingDoneStamp), \FinalCommitted{} USD were committed (\SpendMeasured{} measured, the rest held by unreleased
+reservations of ended runs), \FinalPastWarning{} USD past the warning and \FinalBelowStop{} USD below the hard stop; the
+ledger read at \SpendStamp{} gives \SpendMeasured{} USD measured and \SpendCommitted{} USD committed.
+
+\subsection{Exploratory outputs}
+\label{app:outputs}
+
+The exploratory reporting plan (prefix \PlanShaPrefix) lists every exploratory output with its place and reports each
+whatever it shows. It was registered by hash at \PlanRegisteredStamp, after most of the outputs it governs had been
+built, as its addendum 1 states, naming them; addendum 2 records the choices made after results. Table~\ref{tab:outputs}
+counts the outputs by status and place. The prediction timeline reports what was predicted and whether an outcome is
+observable, never whether a prediction came true; sources outside the selection rule (deceased persons, a higher self)
+are separate rows. A first frozen version stays the version of record, and revisions are rows. The plan's exploratory
+round started at 23:17, after the registered tests, on code written after freeze 2 (Appendix~\ref{app:deviations}); no
+output of that round is reported here.
+
+This paragraph alone names outputs that do not exist yet. Not yet produced: the seen-creator model-coded descriptions
+made under freeze 1, of voice (\PendLabV), asks (\PendLabA), forecasts with hedge rates by kind, lexical against modal
+(\PendLabF), sentence codes (\PendLabS), titles (\PendLabT) and recording kinds (\PendLabK); the effective number of
+readers, the all-same share and bounds on shared errors (\PendVerDep); a third reader on the gate samples
+(\PendVerAdjG); the word error rate against possibly human-made texts of hold-out and other-group creators, allowed
+after freeze 2 as a logged contact (\PendBrbH); years and numbers against the anchor references (\PendBrY); H3 at the
+creator level on the hold-out with the frozen code, with and without the recordings that overlap the pilot, which can
+never give a confirmatory verdict (\PendHThreeX); and the prediction timeline counts (\PendTlBuild).
 
 \begin{table}[t]
 \centering
 \small
 \input{floats/tab_outputs.tex}
 \caption{Exploratory outputs of the reporting plan (SHA-256 prefix \PlanShaPrefix) and its addendum 1, counted by
-status (reported; not run, with reason; pending; superseded) and by place (main text; appendix or supplement;
-dashboard). The full status table, one row per output with its UTC time of run and code hash, is an online supplement.}
+status (built and reported in full; waiting for first-round labels; waiting for freeze 2; will not run, with its
+reason; runs without labels; waiting for a decision or data; other) and by place (main text; appendix or supplement).
+The plan's status table at report time is not yet produced. The full status table, one row per output with its time of
+run and code hash, is an online supplement.}
 \label{tab:outputs}
 \end{table}
 
-\paragraph{External processing.} Table~\ref{tab:external} lists every service that received project data (ethics
-statement).
+\subsection{External processing}
+\label{app:external}
 
-% INTEGRATOR: moved here from the ethics statement by the P7 move log (build of 2026-11-21 07:05 UTC); caption as
-% written by writer A. Third review round: full width (the column float ran over the page).
+Table~\ref{tab:external} lists every service that received project data, from one read of the request ledger at
+\ExtStamp{} (ethics statement). Transcript text went to the OpenAI API from seen creators and, after freeze 2, from
+hold-out and other-group creators for the frozen instruments only; it includes speech of guests, clients and audience
+members (\ThirdPartySharePct\% of words in a model-coded pilot; 95\% \ThirdPartyShareLo{} to \ThirdPartyShareHi). Other
+requests carried public metadata and web-search results of candidate channels for the channeler discovery
+(\ExtDiscoveryRequests), constructed known-answer texts (\ExtKnownAnswerRequests) and seen statements sent with the
+vendor's web-search tool (\ExtWebStatementRequests). Requests were sent with storage switched off, but the vendor keeps
+abuse-monitoring logs unless zero data retention is approved, and no such approval is on file; the retention terms for
+the Anthropic agents were not read.
+
 \begin{table*}[tp]
 \centering
 \small
 \input{floats/tab_external.tex}
-\caption{External processing of project data, from one read of the request ledger at \ExtStamp: \ExtRequests{} requests to the language-model API and \ExtInputTokensM{} million input tokens, which the rows sum to, and about \ExtWordsM{} million words of transcript-derived text with repeats (an estimate; words are not logged; transcript text from seen creators, and after freeze 2 from hold-out and other-group creators for the frozen instruments). The other rows carry constructed texts, public metadata of candidate channels or tests. Third-party share: model-coded voice-map pilot, 95\% creator bootstrap. Retention as each vendor documents it; the Anthropic terms were not read. This inventory is not an ethics determination.}
+\caption{External processing of project data, from one read of the request ledger at \ExtStamp: \ExtRequests{}
+requests to the language-model API and \ExtInputTokensM{} million input tokens, which the rows sum to, and about
+\ExtWordsM{} million words of transcript-derived text with repeats (an estimate; words are not logged). Rows other than
+transcript windows carry constructed texts, public metadata of candidate channels, or tests. Third-party share:
+model-coded voice-map pilot, 95\% creator bootstrap. Retention as each vendor documents it; the Anthropic terms were not
+read. This inventory is not an ethics determination.}
 \label{tab:external}
 \end{table*}
+
+\subsection{Literature searches and sources}
+\label{app:searches}
+
+No ICWSM paper on channelling turned up in \NIcwsmSearches{} searches. A study of channelling recordings across many
+speakers was not found in the registry's metadata searches, among them \NSkepticSearches{} keyword searches by the
+skeptic agent in Crossref and arXiv; none of the abstracts that \NSeamSearches{} arXiv searches returned reports where in
+a fixed decoding window invented text falls. Model agents made these searches in free metadata indexes, so ``not
+found'' means only that. Statements about cited works rest on their abstracts or on automated extraction; the references
+added in this version were checked against bibliographic records before they were cited.

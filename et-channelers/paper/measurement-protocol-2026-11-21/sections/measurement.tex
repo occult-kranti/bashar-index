@@ -1,210 +1,165 @@
-% sections/measurement.tex -- Section 5, what the pipeline does to the audio (seven subsections).
-% Writer: B. Written 2026-11-21 from 06:14 UTC; second review round 08:04 to 08:40 UTC; third review round from 11:40
-%   UTC (clock: date -u): the caption row as a re-decode, not representative (methods review M16); the normaliser
-%   timeline of the addendum facts (P18); the rows of Table 1 on their own scales (M12); the bridge's measures and limits
-%   (M11); the grid-shift concentration, the worker-version mix and the pause share in SD units (M21); the voice
-%   detector gates decoding and the precision bound's assumption (M15); the rank dependence's source (M26); ICC scale
-%   and draws, MATTR windows (M22, P19); the two-level log-probability rows filled from Table U (P20). Moved to Appendix
-%   A by the page limit: fig:coverage and the second half of the tolerance paragraph (move log, private fix list).
-% Fourth review round from 12:30 UTC (clock: date -u): the rate form of the triangle bound (methods review M9); the
-%   bridge as verdicts only, without the sentence on the pair left out, the outlying pair's ratio, the drop tallies and
-%   the limits of agreement (privacy review P1, P7; M10); the grid shift on like estimands by worker version (M7) and the thanks
-%   change with its interval (M2); the precision check without a band (M4, P8); the set-aside count (P4); the tolerance
-%   thresholds against the measured disagreement (M8).
-% Macros used that are not in outline section 7: those of the second round (t intervals of the anchors, seen-pair
-%   bridge, grid-shift SD units and precision check) and of the third (\GsNearSeamRatio, \GsSameVersion*,
-%   \GsEarlierVersionRecordings, \GsPauseShareSd*, \Anchor*Stamp, \AnchorCaptionsNotSeen*, \VpDrawsNb), all generated
-%   by the private builder.
-% Macros withheld by the builder (never written to findings/numbers.tex): single-creator facts and cells of fewer than 5
-%   creators, and counts that would give one by difference; the list and reasons are in the private build record.
-% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): the seen bridge pairs are nested in the
-%   registered pairs (public, one per creator) and fewer than 5 short of them, so they are not counted: the bridge is
-%   sized by \BridgePairs{} registered pairs, all but fewer than 5 from seen creators (\BridgeSeenPairs is text).
-% Pending labels used: \PendBrbH, \PendBrY, \PendAddendumTwo.
-% Floats placed here: tab:anchors, fig:seams (figure*), tab:artefacts.
-% Literal numerals left in the text are constants of method or thresholds of rules: 30 s, 15 s, 0.25 s, 1 s, 3 s, 0.3 s,
-%   60 s, 6 min, 5 to 60 minutes (bridge design), 0.1 and 0.2 SD (fixed lines and margins), 20% and 10% (injection grid
-%   and simulated median), ranks 1--5 and 6--20, 5 creators (cell rule), 10th and 90th, plan 6.7 (a section number).
-% "registry 03:08" names the registry row of 21 November 2026, 03:08 UTC.
+% sections/measurement.tex -- Section 4, measuring the pipeline without a human reference (five subsections).
+% Rewritten 2026-11-21 by the section writer of the PaperOrchestra-style rewrite (outline.json, section_plan).
+% Integrator's page cut (2026-11-21): the writer's cuts (c) and (d), the triangle bound to Appendix A (which states it
+%   in full), shorter wording throughout; every remaining claim keeps its caveat.
+% Every number is a macro of findings/*.tex or floats/caption-notes.tex; floats are generated and only \input here.
+% Literal numerals are design constants: 30-s windows, the 15-s shift, 0.25-s, 1-s and 3-s bins, 0.3-s pauses,
+%   5 to 60 minutes, 6 min, 0.1 and 0.2 SD, 20% and 10% (injection grid and median), ranks 1--5 and 6--20,
+%   the 5-creator rule, 10th and 90th percentiles.
+% Floats placed here: fig:seams (figure*, 4.2). tab:anchors and fig:coverage moved to Appendix A (A.2, A.5) by the
+%   integrator's page cut; 4.1 and 4.4 refer to them.
 
-\section{What the pipeline does to the audio}
+\section{Measuring the pipeline without a human reference}
 \label{sec:measure}
 
-Text-, segment- and detector-derived numbers come from seen creators; the creator is the unit. Each number names its
-weighting and interval: 95\% creator bootstrap or $t$ on creator means, 90\% where the source item uses 90\%.
-Agreement between machines is never accuracy. Table~\ref{tab:headlines}
-gives each headline's estimand. Exploratory (registry A2); not a test of H1--H10.
+Every number here from text, segments, word times or the voice detector comes from seen creators (the census of
+Section~\ref{sec:coverage} counts all creators' recordings); all are exploratory (registry amendment A2), not tests of
+registered hypotheses. The creator is the unit: intervals resample creators or are $t$ intervals on creator values,
+95\% unless marked 90\%. Agreement between machines is never accuracy. Appendix~\ref{app:measure} gives each estimand
+and weighting.
 
 \subsection{Agreement anchors}
 \label{sec:anchors}
 
-\begin{table}[t]
-\centering
-\small
-\input{floats/tab_anchors.tex}
-\caption{Agreement anchors, seen creators. Each row compares two machines and is not an error rate; the rows are not on
-one scale. Anchor rows (captions, reproducibility, larger model): raw recognizer text, normaliser version 2, alignment
-over the whole text, per cent of reference words; creator means with 95\% $t$ intervals on creator values. Bridge:
-\BridgeSeenPairs{} seen pairs (s.p.), all but fewer than 5 of its \BridgePairs, filter version 2, alignment inside each
-30-s window, the larger model as reference, median pair. Grid shift: raw words, per cent of run-grid words. $b$: 95\% creator percentile bootstrap, below its nominal level
-at these creator counts; $r$: 5 creators (rough). The publisher texts of undeclared origin hold fewer than 5 creators.}
-\label{tab:anchors}
-\end{table}
+Table~\ref{tab:anchors} (Appendix~\ref{app:measure}) gives the ladder of anchors, each a comparison of two machines on
+its own scale. With no reference known to be made by people, the usual check against human text
+\cite{proksch2019testing} is not run; anchors on possibly human-made texts of non-seen creators are not yet produced
+(Appendix~\ref{app:protocol}).
 
-No seen recording has a reference text known to be made by people. The recordings set aside for other text are public
-only as three text classes in two groups, with no single kind and no group total: seen recordings carry the project's
-own earlier recognizer text, platform automatic captions, or untimed transcripts of undeclared origin from fewer than 5
-creators. Texts outside the seen group, whose makers were not read, were allowed after freeze 2 and are pending (\PendBrbH). The usual check
-against text made by people \cite{proksch2019testing,litterer2024mapping} is therefore ``not run''.
+On \AnchorCaptionRecordings{} seen recordings, one per creator (about \AnchorCaptionWords{} caption words), a re-decode
+with the run's settings differs from platform automatic captions on \AnchorCaptionMeanPct\% of caption words (creator
+mean; $t$ \AnchorCaptionMeanTLo--\AnchorCaptionMeanTHi), \AnchorCaptionPooledPct\% pooled. The captions are machine
+text too, and these recordings, set aside before the run at the newest listing ranks (Section~\ref{sec:coverage}), are
+no sample of the run. The normaliser, chosen after the first result, lower-cases, drops fillers and expands
+contractions, so this anchor is blind to case, filler and contraction errors.
 
-On \AnchorCaptionRecordings{} seen recordings of as many creators (about \AnchorCaptionWords{} caption words), a
-re-decode with the run's recognizer and settings differs from platform automatic captions on \AnchorCaptionMeanPct\% of
-caption words (creator mean; 95\% $t$ \AnchorCaptionMeanTLo--\AnchorCaptionMeanTHi), or \AnchorCaptionPooledPct\%
-pooled over words (substitutions \AnchorCaptionSubPct\%, deletions \AnchorCaptionDelPct\%, insertions
-\AnchorCaptionInsPct\%); filter version 2 gives \AnchorCaptionFilteredPct\%. These recordings were set aside before the
-run: native audio, one per creator, at the newest listing ranks (Section~\ref{sec:coverage}), so they are not a sample of
-the run's transcripts. The normaliser (version 2) was chosen after the result: the first tables (\AnchorFirstTablesStamp,
-version 1) and a confusion check (\AnchorConfusionStamp) preceded it (\AnchorNormaliserFixedStamp); the 03:43 that the
-registry gives is a later fix of the trimming rule, and neither version was hashed before the first rate, as plan 6.7
-required (hashes \AnchorHashStamp; addendum 2, registered at \AddendumTwoStamp, prefix \AddendumTwoShaPrefix). Version 1, rebuilt exactly, and the trimmed variant
-are not printed: their differences from this row rest on fewer than 5 creators whose errors differ. Strata by length
-and confidence, added after the reporting plan, are in Table~\ref{tab:wer-strata}.
+The run's code reproduces the same recognizer's earlier text exactly in \AnchorReproExact{} of
+\AnchorReproRecordings{} recordings; the others differ for a reason the materials do not record. A larger model's
+earlier text differs by \AnchorLargerModelPct\% (\AnchorLargerModelCreators{} creators; rough, added after the plan).
+Without the captions' own error rate, these disagreements bound nothing about the run's error
+(Appendix~\ref{app:measure}).
 
-Edit counts obey the triangle inequality, but without the captions' own error rate the bound says nothing about the
-run's error (Appendix~\ref{app:measure}). The run's code reproduces the same recognizer's earlier text exactly in
-\AnchorReproExact{} of \AnchorReproRecordings{} recordings (creator mean \AnchorReproMeanPct\%, $t$
-\AnchorReproMeanTLo--\AnchorReproMeanTHi); the larger model's earlier text differs by \AnchorLargerModelPct\% ($t$
-\AnchorLargerModelTLo--\AnchorLargerModelTHi; \AnchorLargerModelCreators{} creators, rough; added after the plan). Name
-errors were not scored (the normaliser lower-cases); years and numbers are pending (\PendBrY).
-
-\subsection{The bridge between the two recognizer models}
+\paragraph{Two recognizer models on the same audio.}
 \label{sec:bridge}
-
-Both models transcribed English recordings of 5 to 60 minutes of \BridgePairs{} creators, one per creator (filter
-version 1, as run); the figures here rest on the seen ones, all but fewer than 5. Against a margin of \BridgeMargin{} between-creator SD fixed in advance, \BridgeAgree{} of
-\BridgeMeasures{} measures agree on average, \BridgeDiffer{} differ and \BridgeOpen{} are not settled, with per-measure
-and with simultaneous 90\% intervals on the between-creator scale (within-creator scale, per measure:
-\BridgeAgreeWithin, \BridgeDifferWithin{} and \BridgeOpenWithin; Table~\ref{tab:bridge-verdicts}). Pace, pronoun and
-contraction rates, word length and variety (distinct words in 100-word windows) agree; word duration, pauses, words per
-segment and filled pauses differ. No single-pair drop moves a verdict between agrees and differs. Only verdicts are
-printed: means, intervals and limits of agreement of these pairs would, beside the registered bridge results, give
-single pairs' values by difference.
-
-Single recordings agree less than these averages. The median pair disagrees on \BridgeDisagreeMedianPct\% of words
-(quartiles \BridgeDisagreeQOnePct\% and \BridgeDisagreeQThreePct\%; filter version 2, alignment inside each window;
-numerals and capitalised words: Appendix~\ref{app:measure}). So English recordings may be compared across models
-on the agreeing word measures, on average and descriptively only.
+In the bridge, both models transcribed English recordings of 5 to 60 minutes, one per creator (\BridgePairs{} registered pairs, all
+but fewer than 5 from seen creators; filter version 1). Against a margin of \BridgeMargin{} between-creator SD (SD of
+creator means) fixed in advance, \BridgeAgree{} of \BridgeMeasures{} measures agree on average on \BridgeSeenPairs{}
+seen pairs, \BridgeDiffer{} differ and \BridgeOpen{} are not settled (90\% intervals; within-creator scale
+\BridgeAgreeWithin, \BridgeDifferWithin, \BridgeOpenWithin; Table~\ref{tab:bridge-verdicts}). Pace, pronoun and
+contraction rates, word length and word variety agree; word duration, pauses, words per segment and filled pauses
+differ; the artefact measures and mean word probability are not settled. As both models see the same detector-gated audio, agreement on pace may
+be partly mechanical. The median pair disagrees on \BridgeDisagreeMedianPct\% of words (quartiles
+\BridgeDisagreeQOnePct\% and \BridgeDisagreeQThreePct\%; filter version 2). Across models, only agreeing word measures
+may be compared, on average and descriptively.
 
 \subsection{Window seams and the grid shift}
 \label{sec:seams}
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=0.9\textwidth]{floats/fig_seams.pdf}
-\caption{The 30-s decoding grid in the \NSeenEnglishOnly{} English-only transcripts of \NSeen{} seen creators (full
-windows). (a) Recognizer segments by the second of the window in which they start, against a uniform share
-(filter off). (b) Word-onset density relative to the mid-window rate and (c) mean word probability, by 0.25-s phase
-(filter off); creator-bootstrap 90\% bands in (a) to (c). (d) Grid shift, \GsRecordings{} recordings: onset density in a
-window's first and last 0.25\,s on a decode's own grid and on the other grid (placebo), for the run decode (dots) and
-the shifted decode (squares), with 95\% intervals. No audio was played.}
+\includegraphics[width=\textwidth]{floats/fig_seams.pdf}
+\caption{The fixed 30-s decoding grid marks the transcripts. \CapSeams{} Filter off in (a) to (c). In (d) each decode
+is read on its own grid and on the other grid (placebo); dot: run decode, square: shifted decode. No audio was played.}
 \label{fig:seams}
 \end{figure*}
 
-The fixed grid marks the transcripts (Figure~\ref{fig:seams}). \SegStartSecZeroPct\% of segments start in a window's
-first second, against \UniformSecondPct\% per second if uniform (filter off). Word onsets in a window's first 0.25\,s are
-\OnsetFirstQuarter{} times the mid-window rate, at mean word probability \WordProbFirstQuarter; in its last 0.25\,s,
-\OnsetLastQuarter{} times, at \WordProbLastQuarter{} (filter off). \ZeroGapPct\% of within-segment word gaps are exactly
-zero and \PauseAtBoundaryPct\% of pauses of 0.3\,s or more sit at segment boundaries (filter version 2): word times are
-the recognizer's, less exact than forced alignment \cite{rousso2024tradition}. The grid makes \GridPauseSurplusPct\% of
-gaps of 0.3 to 30\,s (gaps pooled; 90\% creator bootstrap \GridPauseSurplusLo--\GridPauseSurplusHi;
-\GridPauseSurplusPten\% to \GridPauseSurplusPninety\% between creators' 10th and 90th percentiles) and
-\GridPauseTimePct\% of pause time; \GridFillerLastThreePct\% of filled pauses sit in a window's last 3\,s above the flat
-rate (90\% \GridFillerLastThreeLo--\GridFillerLastThreeHi); the capped seam rule keeps creators' rank order on pause
-measures (Appendix~\ref{app:measure}).
+\SegStartSecZeroPct\% of segments start in a window's first second (uniform: \UniformSecondPct\% per second;
+Figure~\ref{fig:seams}). Word onsets in the first 0.25\,s are \OnsetFirstQuarter{} times the mid-window rate, at word
+probability \WordProbFirstQuarter; in the last 0.25\,s, \OnsetLastQuarter{} times, at \WordProbLastQuarter. Word times
+are the recognizer's, not forced-aligned: \ZeroGapPct\% of within-segment gaps
+are zero, and \PauseAtBoundaryPct\% of pauses of 0.3\,s or more sit at segment boundaries. The grid makes
+\GridPauseSurplusPct\% of gaps of 0.3 to 30\,s (gaps pooled; 90\% \GridPauseSurplusLo--\GridPauseSurplusHi), \GridPauseTimePct\% of pause time, and
+\GridFillerLastThreePct\% of filled pauses in a window's last 3\,s above the flat rate (90\%
+\GridFillerLastThreeLo--\GridFillerLastThreeHi).
 
-\paragraph{Grid shift.} \GsRecordings{} seen recordings, one per creator, were decoded again with the grid moved by
-15\,s (raw words). Decoding is deterministic: all \GsControlIdentical{} re-decodes on the run grid reproduce the record.
-The shift changes \GsChangedPct\% of words (mean over recordings; 95\% \GsChangedLo--\GsChangedHi; word-pooled
-\GsChangedPooledPct\%; by worker version in Appendix~\ref{app:measure}). \GsEditsNearRunSeamPct\% of edits lie within
-1\,s of a run-grid seam, about \GsNearSeamRatio{} times the uniform share of \GsUniformNearSeamPct\%; most edits lie
-elsewhere in the windows. First-quarter-second onset density is \GsOnsetFirstOwn{} times the mean on a decode's own grid
-and \GsOnsetFirstPlacebo{} on the other grid, a negative control \cite{lipsitch2010negative}. No word crosses its own
-seam, so own seams fall in pauses more often (\GsSeamInPauseOwnPct\% against \GsSeamInPausePlaceboPct\%), yet the pause
-share moves by \GsPauseShareSd{} between-creator SD (95\% \GsPauseShareSdLo{} to \GsPauseShareSdHi) and word counts by
-\GsWordsDiffPct\% (Table~\ref{tab:gridshift}; every measure in Appendix~\ref{app:measure}). Thanks phrases may move
-with the grid: these
-recordings hold \GsThanksRunRate{} thanks-phrase segments (all, before the filter) per speech hour on the run grid and
-\GsThanksShiftRate{} on the shifted grid, but the 95\% interval of the change includes zero (mean change \GsThanksSd{}
-SD, 95\% \GsThanksSdLo{} to \GsThanksSdHi). Isolated segments barely move (\GsIsoSd{} SD).
+\paragraph{Grid shift.} \GsRecordings{} seen recordings, one per creator, were decoded again on a grid moved by 15\,s.
+Decoding is deterministic: all \GsControlIdentical{} re-decodes on the run grid reproduce the record. The shift changes
+\GsChangedPct\% of words (\GsChangedLo--\GsChangedHi; worker versions do not inflate this, Appendix~\ref{app:measure}).
+\GsEditsNearRunSeamPct\% of edits lie within 1\,s of a run-grid seam, about \GsNearSeamRatio{} times the uniform
+\GsUniformNearSeamPct\%, though most lie elsewhere. In a negative control \cite{lipsitch2010negative}, onset density in
+a window's first 0.25\,s is \GsOnsetFirstOwn{} times the mean on a decode's own grid but \GsOnsetFirstPlacebo{} on the
+other grid (Figure~\ref{fig:seams}d): the shift separates seam effects on onsets and timing from the speech.
 
-Word counts and pause shares move little with the grid; boundary words, early onsets and pauses near seams do not, and
-the count of thanks phrases may not. Timing measures are therefore whole-span rates, pauses follow the seam rule, and
-any measure built on thanks-phrase counts is measured on one grid position.
+The pause share moves by \GsPauseShareSd{} between-creator SD (\GsPauseShareSdLo{} to \GsPauseShareSdHi) and word
+counts by \GsWordsDiffPct\%. On average no pause measure moves by more than \GsPauseSdMax{} SD and no word measure by
+more than \GsWordSdMax{} SD, filled pauses excepted (\GsFillerSd; \GsFillerSdLo{} to \GsFillerSdHi;
+Table~\ref{tab:gridshift}); these are intervals, not equivalence tests, on a lenient yardstick for change within one
+recording. As no word crosses its own seam, own seams fall in pauses more often than placebo seams
+(\GsSeamInPauseOwnPct\% against \GsSeamInPausePlaceboPct\%), so the seam rule's assumption of gaps independent of grid
+phase (Section~\ref{sec:pipeline}) fails in part. The rule keeps creators' rank order (rank correlation at least
+\SeamRuleRankCorrMin), so pause results are within-model rankings, not levels; timing measures are whole-span rates,
+and thanks-phrase counts are tied to one grid position.
 
-\subsection{Inserted phrases and the artefact rules}
+\subsection{An apparently inserted phrase and the positional filter}
 \label{sec:artefacts}
 
-In the English-only seen transcripts a stand-alone two-word thanks phrase appears to be inserted at window ends
-(Table~\ref{tab:artefacts} in Appendix~\ref{app:measure} gives every rule of the filter). On the
-run's grid it starts in a window's last 3\,s \ThanksPerSpeechHour{} times per hour of detector speech (hours pooled;
-90\% \ThanksPerSpeechHourLo--\ThanksPerSpeechHourHi, creators resampled, the grid's position fixed; creator-equal
-\ThanksPerSpeechHourCreator), a rate measured on one grid position (Section~\ref{sec:seams}). It appears in
-\ThanksPerWindowPct\% of windows mostly covered by other speech and in none without other speech, a zero that follows
-from the design: the voice detector gates decoding, so a window without speech reaches the recognizer empty, unlike the
-non-speech audio of the cited hallucination studies \cite{koenecke2024careless,baranski2025investigation} (shares and
-prevalence in Appendix~\ref{app:measure}).
+Whisper-family models write fluent phrases with no speech behind them, tied to non-speech audio or long non-vocal
+stretches \cite{koenecke2024careless,baranski2025investigation}. Here a stand-alone two-word thanks phrase, a closing
+courtesy, appears to be inserted at window ends. On the run grid it starts in a window's last 3\,s
+\ThanksPerSpeechHour{} times per hour of detector speech (hours pooled; creator-equal \ThanksPerSpeechHourCreator; 90\%
+\ThanksPerSpeechHourLo--\ThanksPerSpeechHourHi, resampling creators with the grid fixed). It sits in
+\ThanksPerWindowPct\% of windows mostly covered by other speech, \ThanksPerWindowPartialPct\% of partly covered ones and
+none without speech: the detector gates decoding, so a window without speech reaches the recognizer empty, unlike the
+non-speech audio of the cited studies.
 
-The positional rule removes \ThanksLateSegments{} of the \ThanksStandalone{} stand-alone thanks segments in full
-windows. If spoken thanks phrases were spread evenly over window phase, the phrase's rate in the other 3-s bins would
-bound the rule's precision: \ThanksPrecisionPoint{} at the point estimate, at least \ThanksPrecisionLow{} at a
-conservative 95\% bound. A check on the re-decodes without that assumption gives no number, since fewer than 5 creators
-have a removal that recurs on the other grid (Appendix~\ref{app:measure}), so the bound, with its assumption, stands.
-Nobody listened. The isolated-segment rule is
-weaker: at least \IsoGridTiedPct\% of its \IsoSegments{} removals are tied to the grid, and switching it off moves no
-creator's mean of a word measure by 0.1 between-creator SD or more (Table~\ref{tab:artefacts}).
+Two untested accounts compete: decoding of windows from which the detector removed non-speech, or spoken closings at
+window ends. A grid-made phrase would follow the shifted window ends, a spoken one its audio time. Thanks segments
+(before the filter) are fewer on the shifted grid (\GsThanksRunRate{} against \GsThanksShiftRate{} per speech hour),
+but the change is not distinguishable from zero (\GsThanksSd{} SD; \GsThanksSdLo{} to \GsThanksSdHi), and of
+\GsPrecisionRemoved{} removals sought on the shifted decode, fewer than 5 creators have one that recurs at the same
+audio time (no share printed; privacy rule).
 
-\subsection{Where the time without speech sits}
+The positional rule removes \ThanksLateSegments{} of \ThanksStandalone{} stand-alone thanks segments in full windows;
+closings in the last, partial window escape it. If spoken thanks phrases were spread evenly over window phase, their
+rate in the other 3-s bins would bound its precision at \ThanksPrecisionPoint{} (at least \ThanksPrecisionLow{} at a
+conservative 95\% bound). The isolated-segment and loop rules are weaker, and the loop rule may remove genuine
+repetition such as chanting (Appendix~\ref{app:artefacts}).
+
+\subsection{Time without speech, and what the run covers}
 \label{sec:nonspeech}
 
-The voice detector's non-speech is \NonSpeechPooledPct\% of seen audio with hours pooled (95\%
-\NonSpeechPooledLo--\NonSpeechPooledHi) and \NonSpeechCreatorPct\% with creators weighted equally ($t$
-\NonSpeechCreatorLo--\NonSpeechCreatorHi); time outside recognizer segments is \OutsideSegPooledPct\% pooled (filter
-version 2; Table~\ref{tab:nonspeech}). Music, toning and silence cannot be told apart. Time outside recognizer segments
-gathers at the end; no positional figure is given for the voice detector. Segments cover \LastPartialCoverage{} of the
-last, partial decoding window (creator-equal; 95\% \LastPartialCoverageLo--\LastPartialCoverageHi), against
-\WindowBeforeCoverage{} of the window before and \MiddleCoverage{} in the middle of recordings of 6\,min or more. The
-window before also drops when the partial window is short, so the dip is not only a decoding effect. Appendix~\ref{app:measure}
-gives the rest of this subsection's figures.
+The voice detector's non-speech is \NonSpeechPooledPct\% of seen audio, hours pooled
+(\NonSpeechPooledLo--\NonSpeechPooledHi), \NonSpeechCreatorPct\% creator-equal (\NonSpeechCreatorLo--\NonSpeechCreatorHi)
+and \NonSpeechMedianPct\% at the creator median, so creators with much of it pull the means up. Time outside recognizer
+segments is \OutsideSegPooledPct\% pooled (\OutsideSegPooledLo--\OutsideSegPooledHi). Neither tells music, toning,
+meditation and silence apart; long pauses count as non-speech.
 
-\subsection{Coverage and selection}
+Time outside segments gathers at the end (Figure~\ref{fig:coverage}, Appendix~\ref{app:measure}): segments cover \LastPartialCoverage{} of the
+last, partial decoding window (\LastPartialCoverageLo--\LastPartialCoverageHi), against \WindowBeforeCoverage{} of the
+window before and \MiddleCoverage{} in the middle of recordings of 6\,min or more. The dip mixes decoding, as the
+partial window is short, with content, as the window before also drops when the partial window is short; without a
+positional figure for the detector, the two cannot be separated.
+
+\paragraph{Coverage by listing rank.}
 \label{sec:coverage}
-
-Within creators, the odds that a recording at listing ranks 1--5 lacks a run transcript are \OrNotTranscribed{} times
-those at ranks 6--20 (Mantel--Haenszel by creator; 95\% creator bootstrap \OrNotTranscribedLo--\OrNotTranscribedHi),
-driven by text set aside (odds ratio \OrOtherText, \OrOtherTextLo--\OrOtherTextHi), much of it the project's own
-earlier recognizer text (\NOwnEarlierAsr{} of the \NSetAside{} recordings set aside); having no text of any kind does
-not depend on rank (\OrNoText, \OrNoTextLo--\OrNoTextHi). Rank is listing order, not time: run-transcript analyses
-under-represent the newest uploads of the quota, which is no trend (Figure~\ref{fig:rank}, Table~\ref{tab:rank-odds}).
+Within creators, a recording at listing ranks 1--5 is likelier than one at ranks 6--20 to lack a run transcript
+(Mantel--Haenszel odds ratio \OrNotTranscribed; creator bootstrap \OrNotTranscribedLo--\OrNotTranscribedHi). Text set
+aside drives this (\OrOtherText, \OrOtherTextLo--\OrOtherTextHi), much of it the project's own earlier recognizer text
+(\NOwnEarlierAsr{} of \NSetAside{} set-aside recordings); having no text at all does not depend on rank (\OrNoText,
+\OrNoTextLo--\OrNoTextHi). Rank is listing order, not time: run-transcript analyses under-represent the newest uploads,
+and the caption anchor comes from those ranks.
 
 \subsection{Variance structure and error tolerance}
 \label{sec:variance}
 
-On \VpCreators{} creators and \VpRecordings{} recordings (filter version 2) the creator carries much of each measure's
-variance (Figure~\ref{fig:icc}; Table~\ref{tab:vp}). ICCs, with scale and 95\% creator-resampling interval: pace
-\IccPace{} (words per minute; \IccPaceLo--\IccPaceHi), share without speech \IccNonspeech{} (logit;
-\IccNonspeechLo--\IccNonspeechHi), contractions \IccContr{} (negative-binomial latent log-rate at the median length;
-\IccContrLo--\IccContrHi), MATTR-500 \IccMattr{} (ratio; \IccMattrLo--\IccMattrHi), repeated five-word share
-\IccRepFive{} (logit; \IccRepFiveLo--\IccRepFiveHi) and mean segment log-probability \IccSegLogp{} (nats;
-\IccSegLogpLo--\IccSegLogpHi); for counts the ICC depends on the scale \cite{nakagawa2017coefficient}
-(Appendix~\ref{app:measure}). For pace the Kish design effect is \KishPace{} (about \NeffPace{} effective recordings) and a
-ten-recording creator mean has reliability \RtenPace; log posting rate explains at most \PostingRateMaxPct\% of any
-headline's between-creator variance. The ICC is a design fact of this roster. Correlations at both levels are in
-Table~\ref{tab:cor}.
+On \VpCreators{} creators and \VpRecordings{} recordings, the intraclass correlation (ICC: share of variance between
+creators, on a named scale) is \IccPace{} for pace (words per minute; \IccPaceLo--\IccPaceHi), \IccNonspeech{} for the
+share without speech (logit; \IccNonspeechLo--\IccNonspeechHi), \IccContr{} for contractions (negative-binomial latent
+scale; \IccContrLo--\IccContrHi), \IccMattr{} for MATTR-500, a moving-average type-token ratio
+(\IccMattrLo--\IccMattrHi), \IccRepFive{} for the repeated five-word share (logit; \IccRepFiveLo--\IccRepFiveHi) and
+\IccSegLogp{} for mean segment log-probability (nats; \IccSegLogpLo--\IccSegLogpHi; Table~\ref{tab:vp}); for counts the
+ICC depends on the scale \cite{nakagawa2017coefficient}. Between-creator variance holds channel and recognizer variance
+as well as the speaker's. For pace the Kish design effect (variance inflation from clustering) is \KishPace{} (about
+\NeffPace{} effective recordings), and a ten-recording creator mean has reliability \RtenPace: inference must be at the
+creator level.
 
-Error injected equally with the bridge's edit profile \cite{proksch2019testing,fetic2021topic} moves cohort means of
-pronoun, contraction and question-mark rates by under 0.2 between-creator SD up to 20\%; word length, MATTR-1000 and
-filled pauses reach 0.2 SD at about \TolWordLenPct\%, \TolMattrPct\% and \TolFillerPct\% (Figure~\ref{fig:tolerance}).
-These thresholds lie at or just above the measured machine disagreement (median bridge pair
-\BridgeDisagreeMedianPct\%, captions \AnchorCaptionMeanPct\% by creator mean), so if true error is of that size these
-three cohort means may already be off by about 0.2 between-creator SD; error that differs between creators can link
-them to the share without speech (Appendix~\ref{app:measure}). Tolerance, not accuracy.
+Error injected uniformly with the bridge's edit profile, as in word-error simulations
+\cite{proksch2019testing,fetic2021topic}, moves cohort means of pronoun, contraction and question-mark rates by under
+0.2 between-creator SD up to 20\%. Word length, MATTR-1000 and filled pauses reach 0.2 SD at about \TolWordLenPct\%,
+\TolMattrPct\% and \TolFillerPct\% (Table~\ref{tab:tolerance}), at or just above the measured disagreement (bridge
+median pair \BridgeDisagreeMedianPct\%; captions \AnchorCaptionMeanPct\%, blind to fillers). The 90th-percentile
+creator crosses earlier, below the bridge's median-pair disagreement for filled pauses and MATTR-1000, and uniform
+injection understates systematic loss of fillers and contractions, so between-creator comparisons of these three
+measures are not supported for creators in the upper tail. At a median error of 10\%, error that differs between
+creators and tracks the share without speech can move their correlation with that share by up to \RSixAssocMax{}
+(\RSixFillerAssoc{} for filled pauses). Tolerance, not accuracy.

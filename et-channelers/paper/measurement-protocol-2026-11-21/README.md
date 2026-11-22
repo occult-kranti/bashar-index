@@ -3,14 +3,18 @@
 Assembled 2026-11-21, 06:45 to 07:15 UTC, revised after two reviews (methods; privacy and consistency) from 07:36
 to 08:40 UTC, revised again from 11:10 to 12:00 UTC for the parts of those reviews the first revision never saw, the
 page limit and the new facts (section 8), revised a fourth time from 12:24 to 13:10 UTC after a new methods review
-and a new privacy review of the third draft (section 9), brought up to the registry of 18:41 UTC, with the
-first-round results wired in, from 19:16 to 20:15 UTC (results round, section 10), filled with the published results
-from 20:42 to 20:55 UTC (section 11), corrected after the pre-publish verification from 21:28 UTC (section 12), and
-corrected again after the final pre-push check from 23:35 UTC (section 13; clock: `date -u`). This folder holds an
-anonymous ICWSM submission draft in the AAAI two-column format:
+and a new privacy review of the third draft (section 9), and brought up to the registry of 18:41 UTC, with the
+first-round results wired in, from 19:16 to 20:15 UTC (results round, section 10; clock: `date -u`). It was then
+rewritten section by section in a PaperOrchestra-style rewrite (2026-11-21 to 22; section 12, which also gives the
+current section map, files and build state). This folder holds an anonymous ICWSM submission draft in the AAAI
+two-column format, now titled:
 
-> *What a Speech-Recognition Pipeline Does to Online Channelling Recordings: Agreement Anchors, Decoding-Window Seams,
-> and a Registered, Then Amended, Protocol for Model-Coded Labels*
+> *Auditing Speech Recognition Without Human Transcripts on Online Channelling Recordings, with Lessons from a
+> Registered, Then Amended, Protocol for Model-Coded Labels*
+
+Its title before the rewrite was *What a Speech-Recognition Pipeline Does to Online Channelling Recordings: Agreement
+Anchors, Decoding-Window Seams, and a Registered, Then Amended, Protocol for Model-Coded Labels*. Sections 1 to 11
+below describe the draft before the rewrite; their section, table and page numbers are those of that draft.
 
 This README holds no transcript text, creator or channel name or code, video id, title, quotation, or per-recording or
 per-creator value, and no count of fewer than 5 creators.
@@ -36,10 +40,9 @@ It is not a findings paper about channelling, not a dataset paper (nothing is re
 person checked any label or transcript). Section 7 states the design of the first-round tests (H1, H2, H4, H5, H6, H9),
 their projected eligible creators (both of CAL's bounds) and power in advance; their results reach the paper only
 through the public results file `research/analysis-experiments-2026-11-20/results/first-round-2026-11-21.json`, which
-the lead writes with `publish_results.py` from the private report. The file was published on 2026-11-21 (section 11);
-a rebuild fills Section 7.2, Table 2, the abstract, introduction and conclusion sentences, the gate failures on R-hold
-(Section 6.4) and the three results tables of Appendix B from it, for any outcome. Before it existed, every result
-macro was a `\pending` placeholder.
+the lead writes with `publish_results.py` from the private report. Until that file exists every result macro is a
+`\pending` placeholder; once it exists, a rebuild fills Section 7.2, Table 2, the abstract, introduction and conclusion
+sentences and the three results tables of Appendix B, for any outcome.
 
 ## 2. Files
 
@@ -47,15 +50,16 @@ macro was a `\pending` placeholder.
 |---|---|---|
 | `main.tex` | Integrator file: preamble, macro files, section order, bibliography, appendices. No prose. | integrator |
 | `aaai25.sty`, `aaai25.bst` | AAAI 2025 author kit, copied unchanged from the old draft (SHA-256 in the header of `main.tex`) | copied |
-| `sections/*.tex` | Title, abstract, Sections 1 to 10, ethics statement, Appendices A to C | writers A, B, C; revised in the review round |
+| `sections/*.tex` | Title, abstract, Sections 1 to 9 (since the rewrite; 1 to 10 before it), ethics statement, Appendices A to C | writers A, B, C; revised in the review round; rewritten in the PaperOrchestra-style rewrite |
 | `findings/numbers.tex` | Every number the paper uses, as a macro, one per line, with its source file and field in a comment. Only macros the paper uses are written; withheld macros never are | GENERATED |
 | `findings/pending.tex` | One macro per placeholder; each expands to `\pending{...}` | GENERATED |
 | `findings/results.tex` | The first-round result macros (`\Res...`), from the public results file; `\pending{...}` while it does not exist | GENERATED |
 | `floats/tab_*.tex`, `floats/fig_*.pdf` (and `.png`) | Tabulars (the writers add float, caption, label) and figures | GENERATED |
 | `floats/caption-notes.tex` | Base, unit and pooling of each figure, as macros | GENERATED |
-| `floats/tab_results*.tex` | Results table (main text), both versions under the guard (two parts), robustness rows, Holm table | GENERATED |
+| `floats/tab_results*.tex` | Results table (Appendix B since the rewrite; main text before it), both versions under the guard (two parts), robustness rows, Holm table | GENERATED |
 | `refs.bib` | References verified in the old draft's reference work (Crossref or arXiv metadata) | writers A, C |
 | `refs-new.bib` | Entries verified later by the lead; empty | lead |
+| `refs-orchestra.bib` | 82 entries added by the rewrite's literature merge step, checked against Crossref, arXiv, DataCite, PMLR and OpenLibrary records; on the bibliography line of `main.tex` | literature merge step of the rewrite |
 | `build.sh` | Build script (below) | integrator |
 
 Kept in the private work folder `paper-measurement-2026-11-21/work` of the run, because they read or hold private
@@ -82,28 +86,23 @@ Results only: `build_numbers.py --results-only` rewrites `findings/results.tex` 
 the public results file (the rest of the paper as built). The builder reads that file and nothing else of the tests: it
 validates it against `first-round-results.schema.json`, refuses a synthetic document in this folder, prints every
 creator count in the file's printed form, and states against 5 or against the minimum any count that this paper would
-otherwise print 1 to 4 away from a creator total it prints or implies (the group totals, the English-only hold-out
-count, the file's hold-out count, and the counts already public on main: the bridge's registered pairs, H3's eligible
-and positive counts, the hold-out design and the registry's other group) or above the English-only hold-out count. A
-scratch test of other outcomes
+otherwise print 1 to 4 away from a creator total it prints or implies (hold-out 23, English-only hold-out 17, seen 71,
+all 101, the other group (printed only as a bound, fewer than 10), the file's hold-out count) or above the English-only hold-out count. A scratch test of other outcomes
 sets `ET_PAPER_PUB` (a copy of this folder), `ET_RESULTS_JSON` and `ET_RESULTS_ALLOW_SYNTHETIC=1`; it never writes into
 this folder or the private work folder.
 
 `build.sh` sets the PDF's dates in UTC (`SOURCE_DATE_EPOCH`, `FORCE_SOURCE_DATE`), and `main.tex` suppresses the pdfTeX
 banner and the figures' info dictionaries, so the PDF carries no local time zone.
 
-State of the build after the final pre-push check (section 13; `\BuildStamp` gives its time, the results file was
-read as published at the time `\ResStamp` gives): 519 macros written (only those the paper uses), 12 pending macros and
-22 result macros, none of them pending (15 placeholders in the PDF text by the paper check, all from
-`findings/pending.tex` and the status table at report time), 0 errors, 0 undefined references, citations or macros, no
-float too large for its page; nine boxes run at most 4 pt over their column (no layout effect); builder checks 162
-passed, 0 failed. The PDF has 59 pages: main text pages 1 to 8 (the conclusion ends on page 8), the ethics statement
-and the references from page 9, Appendix A from page 12, Appendix B from page 30, Appendix C pages 58 to 59. The paper
-check found no undefined macro or missing citation, no privacy hit (its accepted matches are listed in its report with
-their reason: a cited co-author's surname, the platform's name in cited titles, the build script's default path), no
-risky phrase and no nested creator-count pair of the forms it recognises (sections 12 and 13).
+State of the build of 2026-11-21, 20:09 UTC (`\BuildStamp`; results pending): 517 macros written (only those the
+paper uses), 12 pending macros and 18 result macros, 9 of them pending (33 placeholders in the PDF text by the paper
+check), 0 errors, 0 undefined references, citations or macros, no float too large for its page; eight table cells run 1
+to 2 pt over their column (no layout effect); builder checks 111 passed, 0 failed. The PDF has 53 pages: main text pages
+1 to 8 (the conclusion and the start of the ethics statement on page 8), references pages 9 to 10, Appendix A pages 11
+to 28, Appendix B pages 29 to 51, Appendix C pages 52 to 53. With the converter's synthetic documents (scratch copies,
+section 10) the conclusion also ends on page 8.
 
-Earlier state, kept for the record: the paper check (`check_paper.py`, run by `build.sh`) found at 20:13 UTC what it found at 13:00 UTC, with 55 creator
+The paper check (`check_paper.py`, run by `build.sh`) found at 20:13 UTC what it found at 13:00 UTC, with 55 creator
 counts near a printed total listed for review (one more, a caption's "fewer than 5 creators"); the disclosure scan
 (`public_disclosure_scan.py` of the privacy checkout, `pipeline/` of this checkout has none; run at 20:13 UTC on all 85
 readable files of this folder, the PDF included, against 237 name strings, 1,976 ids and 1,393 seen titles) found 0
@@ -116,13 +115,13 @@ file; 54 creator counts near a printed total, listed for review in the private r
 (`public_disclosure_scan.py` of the privacy checkout, run at 12:56 UTC on every file of this folder, the PDFs and build
 files included, against 237 name strings, 1,976 ids and 1,393 seen titles) found 0 small cells, names, ids or titles.
 
-## 4. What still waits for its source
+## 4. What waits for the first-round results and freeze 2
 
-Every placeholder prints as **[pending: ...]** and is filled only by a later build from its source, never by hand. The
-first-round results are no longer among them: they are filled from the public results file (section 11).
+Every placeholder prints as **[pending: ...]** and is filled only by a later build from its source, never by hand.
 
 | Waits for | Placeholders |
 |---|---|
+| The public results file of the first-round tests (the lead runs `publish_results.py` when the tests end) | the result macros of `findings/results.tex` (`\ResSummary`, `\ResAbstract`, `\ResStamp`, `\ResH<k>Kind`, ...) and the four `tab_results*` tables |
 | H3 at the creator level on the hold-out | `\PendHThreeX` |
 | Word error rate against possibly human-made texts of hold-out and other-group creators | `\PendBrbH` |
 | Seen-creator model-coded descriptions under freeze 1 | `\PendLabV`, `\PendLabA`, `\PendLabF`, `\PendLabS`, `\PendLabT`, `\PendLabK` |
@@ -133,8 +132,8 @@ first-round results are no longer among them: they are filled from the public re
 Filled in the results round from the registry (no longer placeholders): freeze 2, A10's entry and addendum 2.
 Stated in the text instead of a placeholder: CAL part (f) did not run (registry 16:06 (2)), and HR (a) and HR (b, c)
 were not bought (18:41). When a source appears, add its reader to `build_numbers.py` (replacing the entry in its
-`PENDING` list), run `bash build.sh --numbers`, and check the build log and the paper check. A new version of the public
-results file is read by `bash build.sh --numbers` (or `--results-only` followed by `bash build.sh`).
+`PENDING` list), run `bash build.sh --numbers`, and check the build log and the paper check. When the public results
+file appears, `bash build.sh --numbers` (or `--results-only` followed by `bash build.sh`) fills the results.
 
 ## 5. Integrator's changes and decisions of the first assembly (2026-11-21)
 
@@ -196,8 +195,9 @@ was handled). Generator first, then text. The item-by-item answer is `work/plann
 
 ## 7. Open points
 
-- **Canonical literature.** `refs-new.bib` is empty; the canonical works on channelling and its milieu that the review
-  names wait for verified entries. Section 9 states their absence and the other review conditions still unmet.
+- **Canonical literature.** Closed in the rewrite: `refs-orchestra.bib` holds verified entries for canonical works on
+  channelling, and the rewritten Sections 1 and 2 cite them (Klimo; Brown; Hughes; Wooffitt). `refs-new.bib` stays
+  empty.
 - **Addendum 2** of the reporting plan (normaliser timeline, public inventory form, grid-shift choices, seeds) is the
   lead's to write and register (`\PendAddendumTwo`).
 - **Precision band.** Closed in the fourth round: no share or band of the direct precision check is printed; the
@@ -213,13 +213,11 @@ was handled). Generator first, then text. The item-by-item answer is `work/plann
 - Ethics and exemption determination, lawful basis, data-protection assessment and removal route are the owner's acts;
   the vendor-retention terms of the Anthropic agents were not read. The paper is not to be submitted before the ethics
   determination.
-- **Bridge (fourth round; restated in section 12).** The paper prints the bridge as verdicts and tallies on the seen
-  pairs only; each equals the verdict on all registered pairs. Since the pre-publish verification the seen pairs are
-  not counted: the bridge is sized by its registered pairs (public on main, one per creator), all but fewer than 5 from
-  seen creators. Printing the registered results as published instead remains the lead's decision.
-- **Projections (closed in section 12).** The projections are capped at the number of hold-out creators with English
-  recordings, which the paper withholds; their recording-property bounds are now stated against the minimum only, and
-  no printed range end shows the cap.
+- **Bridge (fourth round).** The paper prints the bridge as verdicts and tallies on the seen pairs only; each equals
+  the verdict on all registered pairs. Printing the registered results as published instead, as the privacy review
+  proposed, is the lead's decision (private fix list of the fourth round).
+- **Projections (fourth round).** One count withheld in this round can still be bounded from printed projections; the
+  private fix list of the fourth round states how, for the lead.
 
 ## 8. Third review round (2026-11-21, 11:10 to 12:00 UTC)
 
@@ -318,11 +316,11 @@ before the round is in the private `work/backup-before-results-round/`.
   and first-round production details, the CAL bound ranges and power counts, the cross-vendor strata and weights, the
   second-reading detail, the triangle inequality, the grid shift by worker version and in SD units, the precision
   check, part of the tolerance paragraph, and the cloud-only read; condensed in place: Sections 6.3, 7, 8, 9, 10.
-- **Open at this round (closed since).** The public results file did not exist yet at this round (it was written at
-  20:48 UTC; section 11). CAL part (f) did not run and is stated so. The disclosure scan named in the task
-  (`pipeline/public_disclosure_scan.py` of this checkout) is not in this checkout; the privacy checkout's copy was run.
-  The registry's row of 16:13 named the number of hold-out creators with English recordings, which this paper
-  withholds; the paper does not repeat it, and since section 12 no printed projection shows it either.
+- **Open.** The public results file does not exist yet (the lead writes it). CAL part (f) did not run and is stated so.
+  The disclosure scan named in the task (`pipeline/public_disclosure_scan.py` of this checkout) is not in this
+  checkout; the privacy checkout's copy was run. The registry's row of 16:13 names the number of hold-out creators with
+  English recordings, which this paper withholds (and which the printed projections already bound); the paper does
+  not repeat it.
 
 ## 11. Results filled (2026-11-21, 20:42 to 20:55 UTC)
 
@@ -340,81 +338,66 @@ not determinable; H2 not run for want of an instrument); none passes the Holm st
   model-coded descriptions, VER-DEP, VER-ADJ-G, BR-b-H, BR-y, H3-X, TL-BUILD) are not produced by the registered tests
   and stay marked pending until they are.
 
-## 12. Pre-publish verification (2026-11-21, from 21:28 UTC)
+## 12. PaperOrchestra-style rewrite (2026-11-21 to 22)
 
-An adversarial verification of the public outputs before publication (privacy of the paper, consistency with the
-public results file and the registry). Generator first, then text; the builder and the paper check before the round are
-in the private `work/backup-before-prepublish-fixes/`. No count printed here is new.
+Every section file was rewritten by one writer each, in the manner of the PaperOrchestra multi-agent paper-writing
+method (outline, literature step, section writers, integrator, reviewers and verifiers, all Anthropic model agents; no
+code of that method and no outside model API ran). The house rules of the earlier rounds hold: numbers only through
+the macros of `findings/*.tex`, the privacy rules, the registered wording, limitations stated.
 
-- **Projections.** CAL's projections are capped at the number of hold-out creators with English recordings, which the
-  paper withholds; a median or range end at that cap stated it. The recording-property bounds are now stated against
-  the registered minimum only (Section 7, the programme table, the eligibility figure, which draws them as arrows from
-  the minimum), a creator-property range end that would show the cap is left open, and the median of English
-  recordings is taken over all hold-out creators. The builder checks that no printed or drawn projection value reaches
-  the cap.
-- **Balance.** Table B and the Love plot drop a group's standardized difference when it rests on fewer than 5
-  creators with a value other than the group's common one, and a field where the seen group has 1 to 4 such creators
-  or neither comparison group can be printed (a dominance check in the builder on the private covariate file; counts
-  only leave it).
-- **Nested counts.** The label-flip table prints a recording count, one per creator, fewer than 5 below a count it is
-  nested in as "all but <5"; so does the known-answer table for the creators of a row against its arm or block. The
-  other group is given no count (a bound only), since the roster's and the registry's other groups are nested and
-  differ by fewer than 5. The seen bridge pairs are not counted: the bridge is sized by its registered pairs, all but
-  fewer than 5 from seen creators, and the verdicts, each equal to the verdict on all registered pairs, stay as they
-  were.
-- **Entrance cues.** A read-precision share whose on-target items come from fewer than 5 creators is not printed; the
-  builder bounds the creators from the samples' at most two items per creator and otherwise takes the count the
-  verification made from the private sample file (this builder opens no transcript file).
-- **Results tables.** The robustness summary reads the published rows only ("not assessable" where every row is
-  withheld); a hypothesis label is no longer taken for a count (H6's detectable-effect note and H9's wording are
-  printed as the results file gives them).
-- **Gates and spend.** The gate tables cover the gate sample G; on R-hold the forecast class of record fails gate D and
-  the sentence codes fail gate C, stated in Section 6.3, the tests, the limitations and the conclusion with the figures
-  of the public results file only (`\ResRhold...` macros of `findings/results.tex`). The committed spend is stated with
-  its measured part, the rest held by unreleased reservations of ended runs (Appendix B and the deviation table). The
-  deviation rows on A10's exact text and on the smallest effects of H7 and H9 now state their outcome (16:07 and 16:06).
-- **Checks.** `check_paper.py` lists, besides its earlier checks, accepted privacy matches with their reason, new risky
-  phrases (the hold-out title total, the seen bridge pairs, the projections' cap, the other group's count), and nested
-  creator-count pairs of the forms it can recognise (a row's creators against its block or arm in a table, a column of
-  nested counts, "N of M", group-qualified counts in the PDF text against the group's printed or public total, and an
-  exact count beside "all but fewer than 5 of M"). The builder's final check scans every generated file for the same
-  counts.
+- **Title.** *Auditing Speech Recognition Without Human Transcripts on Online Channelling Recordings, with Lessons from
+  a Registered, Then Amended, Protocol for Model-Coded Labels* (`sections/title.tex`).
+- **Section map.** 1 Introduction; 2 Related work; 3 Corpus and pipeline (3.1 corpus, 3.2 pipeline); 4 Measuring the
+  pipeline without a human reference (4.1 agreement anchors and the two-model bridge, 4.2 window seams and the grid
+  shift, 4.3 the apparently inserted phrase and the positional filter, 4.4 time without speech and coverage, 4.5
+  variance and error tolerance); 5 the internally registered, then amended, protocol (5.1 registry, hold-out and
+  freezes, 5.2 instruments and gates, 5.3 amendments and the guard, 5.4 verification without a person); 6 the first
+  round (Table 1, the registered hypotheses and their state; 6.3 the results as registered, H3); 7 deviations and
+  lessons; 8 limitations; 9 conclusion; ethics statement. Appendix A: measurement records; Appendix B: protocol records
+  (B.7 holds the first-round results tables, `tab_results*`); Appendix C: the paper checklist.
+- **Bibliography.** `main.tex` reads `refs`, `refs-new` and `refs-orchestra` (file table, section 2).
+- **Builder outputs.** `findings/` and `floats/` are those of the private builder's run of 22 November 2026, 00:15 UTC
+  (`\BuildStamp`), copied unchanged; the rewrite never runs `build.sh --numbers`. They carry the lead's rule of
+  21 November, 22:33 UTC for agreement figures (a figure that fails it reads "not published (fewer than 5 creators)"),
+  the public results file as republished at 23:33 UTC (schema 1.3.0), and the deviation table to the registry row of
+  23:34 UTC. The lead then ran the builder against the rewritten sections (22 November 2026, 01:51 UTC; section 13),
+  which leaves out the 23 macros the rewritten text does not use.
+- **Final verification fixes (2026-11-22, to 01:45 UTC).** Wording for the withheld agreement figures and the rule in
+  the gate and second-reading captions; the results file's three republications; the deviation rows of 23:17 (the
+  exploratory round, on code written after freeze 2) and 23:34; the privacy recounts behind the results file in the
+  contact lists; the position confound of voice spans; a main-text statement on the exploratory reporting plan; the
+  90% level of three intervals of Section 5.4; citation wording (religion online, correlated errors, forced alignment,
+  reliability minimums).
+- **Build state (2026-11-22, 01:45 UTC).** 68 pages: main text pages 1 to 8 (the ethics statement ends on page 8),
+  references pages 9 to 11, Appendix A pages 12 to 32, Appendix B pages 33 to 66, Appendix C pages 67 to 68. No LaTeX
+  error, no undefined reference, citation or macro, no float too large; nine table cells run up to 3.7 pt over their
+  column. The paper check found no privacy-name hit, no risky disclosure phrase, no nested creator-count pair, no
+  undefined macro and no missing citation.
 
-## 13. Final pre-push check (2026-11-21, from 23:35 UTC; rebuilt 2026-11-22, 00:10 and 00:15 UTC)
+## 13. Lead's decisions on the rewrite's open items (2026-11-22, 01:51 to 02:10 UTC)
 
-The fixes of the final check before the push, generator first, then text; the builder before them is in the private
-`work/backup-before-prepublish-fixes/build_numbers.before-final-check.py`. No count of creators is printed here.
+The final verification left five items to the lead (registry row of 2026-11-22 01:55).
 
-- **One rule for every agreement figure.** The lead's rule of 22:33 UTC (the positive code from 5 or more creators in
-  each reading; the creators with an item the readings code differently none or 5 or more; a minor code both readings
-  give alike is not a cell of its own) now governs every agreement figure the paper prints from a reliability sample. It
-  is read as worded (lead's decision of 2026-11-22 00:15 UTC): a figure with a positive code (YES, F1, an ask found,
-  committed and the like; P1 for the title presentation codes) is tested on that code in each reading and on its
-  disagreements; a figure over several codes with no single positive code needs 5 or more creators in all and
-  disagreements from none or 5 or more creators, and a code both readings give alike is not tested on its own. A
-  figure that fails reads "not published (fewer than 5 creators)"; its verdict is kept.
-  - The second reading (Table 31) is counted from its readings: place and quantity are not published, and
-    `\DblFcPlace` and `\DblFcQuantity` read "not published (fewer than 5 creators)".
-  - The gate tables on the gate sample G (Tables 27 and 28) are counted from the items of every gate figure, rebuilt
-    from the stored answers by the private `work/recount_agreement_g.py` (nothing sent; each recomputed point estimate
-    equals the recorded one). Not published: checkability place and quantity at gates C and D; place, named actor and
-    quantity against the large model; the hedge gap of gate E; the title presentation stability and the title source
-    family at gate C; the ask stability of the final accepted asks.
-  - The registry's figures of the owner's 00:30 decision are counted too: the place figure and the two title figures
-    are not published; the time-window figure stays.
-  - Counts of valid answers are given as shares, without their shortfalls, as the results file now gives them.
-- **Deviations.** The table carries the registry rows to 23:34 (99 rows in six parts): the start of the exploratory
-  round (23:17, exploratory) and the results file republished at 23:33 (23:34) are added. The simulation battery
-  (21:52) is a budget or operations row; the rows of the results file (20:48, 22:33, 23:34) are reporting, which the
-  caption now counts in "other", with the freeze-1 entry. The 22:33 row gives the rule in the registry's words ("0 or 5
-  or more") and says that three hold-out checkability parts withheld at 21:50 were published under it. The caption's
-  range reads 16:06 to 23:34.
-- **Timeline.** Figure 14 runs to the registry's latest row (23:34 UTC): the republication of 22:33, the start of the
-  exploratory round and the current version of the results file (23:33) are events; its caption says so, and the axis
-  carries ticks to 21:00 on 21 November.
-- **Contacts.** The registry's contact entry for the privacy recounts behind the results file (about 21:30 to 23:30)
-  is read into Table 45; the table's widest column was widened so that it fits its page.
-- **Length.** 59 pages; the main text is unchanged and still ends on page 8, the ethics statement on page 9.
-- **Not checked.** The cross-vendor table (VER-3R units), the known-answer battery (constructed texts, recovery against
-  a key, not agreement between readings), the hedge kappa and read precisions of the status table, and the
-  pre-declared frame-only merge of 02:55 were not recounted.
+- **The other group's size.** It follows by difference from counts public on the main branch (roster, seen and hold-out
+  creators), and the registered plan files there print it. What it shows is run coverage, not a value of anyone's
+  speech. Those files are hashed records and are not edited. The paper
+  keeps the bound and its privacy rule now names this exception (Section 3.1).
+- **Entrance-cue read precision.** These rows are agreement figures under the rule of 21 November, 22:33 UTC, so the
+  items read off target must also come from no creator or from 5 or more. The development row (one off-target item,
+  hence one creator) is withheld. The check row's off-target items come from 5 or more creators (counted by script from
+  the private sample file, counts only) and stay. The anchors table's source comment no longer describes the withheld
+  value.
+- **Commits, hash prefixes and script names.** They stay in this public draft. It sits in the project's own public
+  repository, and the hashes are the evidence of the registration. A copy for double-blind review would print them as
+  "withheld for anonymous review" and use role words for the scripts.
+- **Bibliography.** The rewrite corrected entries in `refs.bib` against their records, against its own rule of not
+  editing that file. The corrections are kept. The Wooffitt entry's note now says that its DOI is the 2017 reissue's.
+- **Submission.** The paper is not to be submitted before an ethics or exemption determination exists. The checklist
+  answer (Appendix C, 1(i)) now says so. The main text is at its page limit, and its ethics statement already says
+  that no determination exists.
+- **Build state (01:51 UTC).** The builder was run against the rewritten sections (`bash build.sh --numbers`): 163
+  checks passed. 68 pages: the main text and ethics statement end on page 8, and the references start on page 9. The
+  paper check is clean: no unused macro in `numbers.tex`, no nested creator-count pair, no privacy-name hit, no risky
+  phrase.
+- **History.** The rewrite replaces the measurement paper in place. The draft it replaces stays in the history of the
+  main branch (pull request 102).
