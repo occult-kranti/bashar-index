@@ -71,6 +71,10 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 .cs-meter { height: 10px; border-radius: 999px; background: var(--color-border-line); overflow: hidden; }
 .cs-meter > span { display: block; height: 100%; min-width: 2px; }
 .cs-legend { display: flex; align-items: center; gap: var(--ui-gap-sm); color: var(--color-fg-muted); font-size: var(--ui-font-size-caption); }
+.cs-banner { border: 1px solid var(--color-warn); border-radius: var(--ui-radius); padding: var(--ui-pad-sm) var(--ui-pad-md); font-size: var(--ui-font-size-body); }
+.cs-banner:empty { display: none; }
+.cs-pending { color: var(--color-fg-muted); font-size: var(--ui-font-size-body); }
+#card-first-round .cs-chip, #card-first-round-verdicts .cs-chip { white-space: normal; border-radius: var(--ui-radius); }
 @media print { .cs-tabs { display: none; } .cs-section { break-before: page; } .cs-tall { max-height: none; } }
 
 </style>
@@ -85,8 +89,10 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hours" data-row="0" data-digits="1">—</b> hours, are transcribed.
       Among the creators seen before the registry freeze, <b class="cs-num" data-draw="fig" data-source="headline" data-field="percent_without_speech" data-row="0" data-digits="1" data-suffix="%">—</b> of the audio holds no speech.
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hypotheses" data-row="0">—</b> hypotheses are registered and
-      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed. One hypothesis has been tested and withdrawn, and one was dropped before it ran.
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed; part of one, the bridge between the two recognizer models, has run. One hypothesis has been tested and withdrawn, and one was dropped before it ran.
+      <span data-draw="round-lede" data-source="first_round"></span>
     </p>
+    <p class="cs-banner" data-draw="round-banner" data-source="first_round" role="status"></p>
     <p class="cs-note">Counts, distributions and cohort-level estimates only: nothing here is shown per creator or per recording, and there is no transcript text. No row, bin or cell describes fewer than five creators: cells with fewer than five creators are pooled. The run finished on 20 November 2026.</p>
   </header>
 
@@ -137,15 +143,16 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <p>Committed so far: <b class="cs-num" data-draw="fig" data-source="budget" data-field="usd" data-where="item=Committed" data-prefix="$" data-digits="2">—</b>
           (<b class="cs-num" data-draw="fig" data-source="budget" data-field="usd" data-where="item=Committed at worst case" data-prefix="$" data-digits="2">—</b> committed at worst case, with every open batch job at its worst cost).
           The owner's budget is a hard stop at <b class="cs-num" data-draw="fig" data-source="budget" data-field="usd" data-where="item=Hard stop" data-prefix="$">—</b>,
-          with a warning at <b class="cs-num" data-draw="fig" data-source="budget" data-field="usd" data-where="item=Warning level" data-prefix="$">—</b>.</p>
+          with a warning at <b class="cs-num" data-draw="fig" data-source="budget" data-field="usd" data-where="item=Warning level" data-prefix="$">—</b>.
+          <span data-draw="budget-state" data-source="budget"></span></p>
         <div class="cs-meter" data-draw="meter-budget" data-source="budget" role="img" aria-label="Committed spend against the hard stop; the tick marks the warning level"></div>
-        <p class="cs-note">Read from the spend ledger when the page was built; the bar is the committed spend against the hard stop, and the tick is the warning level. Labels for the hypotheses are made by a language model. They are not checked by a person, and every result that rests on them will say so.</p>
+        <p class="cs-note">Read from the spend ledger when the page was built; the bar is the committed spend against the hard stop, and the tick is the warning level. The labels for the hypotheses were made by language models. No person checked them, and every result that rests on them says so: it is model-coded.</p>
       </div>
     </div>
   </section>
 
   <section class="cs-section" id="silence" hidden>
-    <p>Timing measures are shown for the <b class="cs-num" data-draw="fig" data-source="headline" data-field="seen_creators" data-row="0">—</b> creators seen before the registry of hypotheses was frozen; the hold-out and other creators stay out of them until the labelling procedure is frozen.
+    <p>Timing measures are shown for the <b class="cs-num" data-draw="fig" data-source="headline" data-field="seen_creators" data-row="0">—</b> creators seen before the registry of hypotheses was frozen; the hold-out and other creators stay out of them.
       Among the seen creators, <b class="cs-num" data-draw="fig" data-source="headline" data-field="percent_without_speech" data-row="0" data-digits="1" data-suffix="%">—</b> of the audio holds no speech, and the five with the most such time hold
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="top5_percent" data-row="0" data-suffix="%">—</b> of it.
       "Without speech" is what the voice detector removed: music, meditation and silence cannot be told apart. The charts count the seen creators' transcripts, one per audio file. Their bands of share without speech and of the longest quiet stretch are offset from the full-run bands published before 21 November 2026, so that no such band of the other creators can be found by subtraction. The length bands of the binned plot are the full-run ones; the other creators' transcripts in each length band, which follow by subtraction, are of five or more creators.</p>
@@ -174,7 +181,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     <div class="cs-grid">
       <div class="cs-card" id="card-position">
         <h2>Where in a recording the speech is missing</h2>
-        <p class="cs-note">Share of each tenth of the running time not covered by speech, averaged over the creators seen before the hypotheses were frozen, each creator weighted equally. Band: 95% interval. Hold-out creators are left out until the labelling procedure is frozen.</p>
+        <p class="cs-note">Share of each tenth of the running time not covered by speech, averaged over the creators seen before the hypotheses were frozen, each creator weighted equally. Band: 95% interval. Hold-out creators are left out of every timing measure.</p>
         <div class="cs-chart" data-draw="chart-position" data-source="position"></div>
       </div>
       <div class="cs-card" id="card-newest">
@@ -211,7 +218,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
   </section>
 
   <section class="cs-section" id="creators" hidden>
-    <p>How the creators are spread. Recordings and hours transcribed are counted per band over all selected creators, with adjacent bands merged until each holds five or more creators. The timing measures (time and share without speech, speaking pace) are given as percentiles over the creators that had already been looked at before the hypotheses were frozen; the others stay unread until the labelling procedure is fixed. Nothing is shown for a single creator.</p>
+    <p>How the creators are spread. Recordings and hours transcribed are counted per band over all selected creators, with adjacent bands merged until each holds five or more creators. The timing measures (time and share without speech, speaking pace) are given as percentiles over the creators that had already been looked at before the hypotheses were frozen; the others are left out of them. Nothing is shown for a single creator.</p>
     <div class="cs-grid">
       <div class="cs-card" id="card-creators-recordings">
         <h2>Recordings transcribed</h2>
@@ -244,11 +251,22 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
   <section class="cs-section" id="experiments" hidden>
     <div class="cs-card" id="card-hypotheses">
       <h2>The ten registered hypotheses</h2>
-      <p class="cs-note">Frozen on 20 November 2026 before any hold-out creator was analysed. H3 passed its registered rule, but the rule was not calibrated at creator level, so H3 is not determined at creator level; it was withdrawn (amendment A6). H8 was dropped before it ran (amendment A9). The other eight have not been run. Each is a contrast inside one recording or one creator.</p>
+      <p class="cs-note">Frozen on 20 November 2026 before any hold-out creator was analysed. H3 passed its registered rule, but the rule was not calibrated at creator level, so H3 is not determined at creator level; it was withdrawn (amendment A6). H8 was dropped before it ran (amendment A9). H1, H2, H4, H5, H6 and H9 make the first round: they are tested on the hold-out creators with the analysis code and constants fixed by freeze 2 (21 November 2026, 16:10 UTC), on labels made by language models. H7 and H10 are not run in the first round. Each is a contrast inside one recording or one creator.</p>
       <div class="cs-scroll">
         <table class="cs-table" data-source="hypotheses" data-row-key="id">
           <thead><tr><th data-field="id">Id</th><th data-field="hypothesis">Hypothesis</th><th data-field="experiment">Experiment</th><th data-field="confirmed_on">Confirmed on</th><th data-field="status">Status</th></tr></thead>
           <tbody data-draw="rows-hypotheses"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cs-card" id="card-first-round-verdicts">
+      <h2>First round: verdicts on the hold-out creators</h2>
+      <p class="cs-pending" data-draw="round-note" data-source="first_round"></p>
+      <p class="cs-note">Every label behind these verdicts was made by language models from frozen prompts and no person checked it, so every verdict is model-coded; agreement between models is reported as agreement, not accuracy. Eligible creators are those of the amended version, the primary one; a count of creators that would lie one to four from another count on this page is stated against its minimum instead. A result is uninformative when its 90% interval over creators contains both zero and the smallest effect of interest, or when its verdict is not determinable. The verification sentence names the checks that stand in for a person's check.</p>
+      <div class="cs-scroll">
+        <table class="cs-table" data-source="first_round" data-row-key="id">
+          <thead><tr><th data-field="id">Id</th><th data-field="hypothesis">Hypothesis</th><th data-field="verdict">Verdict</th><th data-field="eligible_creators">Eligible creators</th><th data-field="uninformative">Uninformative</th><th data-field="verification">Verification</th></tr></thead>
+          <tbody data-draw="rows-first-round-verdicts"></tbody>
         </table>
       </div>
     </div>
@@ -278,9 +296,21 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
   <section class="cs-section" id="results" hidden>
     <p>Tests of registered hypotheses and checks of the instruments, as they are run. A row stays here whatever its outcome.</p>
+    <div class="cs-card" id="card-first-round">
+      <h2>Registered tests of the first round</h2>
+      <p class="cs-pending" data-draw="round-note" data-source="first_round"></p>
+      <p class="cs-note">H1, H2, H4, H5, H6 and H9 on the hold-out creators, with the code and constants fixed by freeze 2 and Holm over all ten hypotheses (H3, H7, H8 and H10 enter at p = 1). Each row has its own scale, so the rows are not comparable with each other. Dot: the amended version's estimate; line: its 90% interval over creators; the thin vertical line is zero. An estimate is shown only where the result is determinable and rests on five or more creators with a non-zero value. Every result is model-coded.</p>
+      <div class="cs-chart" data-draw="chart-first-round" data-source="first_round"></div>
+      <div class="cs-scroll">
+        <table class="cs-table" data-source="first_round" data-row-key="id">
+          <thead><tr><th data-field="id">Id</th><th data-field="verdict">Verdict</th><th data-field="eligible_creators">Eligible creators</th><th data-field="estimate">Estimate [90% interval]</th><th data-field="natural">As a ratio</th><th class="cs-r" data-field="holm_adjusted_p">Holm-adjusted p</th><th data-field="uninformative">Uninformative</th></tr></thead>
+          <tbody data-draw="rows-first-round"></tbody>
+        </table>
+      </div>
+    </div>
     <div class="cs-card" id="card-results">
-      <h2>Registered tests so far: H3, tested and withdrawn</h2>
-      <p class="cs-note">H3 asked whether &ldquo;I&rdquo;, &ldquo;me&rdquo; and &ldquo;my&rdquo; are denser at the start and end of a recording than in its middle, once the first and last three minutes are cut. On the 17 hold-out creators H3 passed its registered rule. That rule was not calibrated at creator level: its reference rotates the positions inside each recording and holds the creators fixed, and the estimate is not centred: the mean of that shift reference is &minus;0.063, not 0. That value, recorded in registry amendment A9, was computed by the second-round panel's calibration check on the 61 creators seen earlier, not on the hold-out creators. A later check on the creators seen earlier found that the rule rejects more often than its nominal level when there is no effect, and that it has little power at the smallest effect of interest. The 90% interval over creators includes zero, so H3 is not determined at creator level; the owner withdrew it (amendment A6). The registered result stays here. With nothing cut the contrast is large among the creators seen earlier: the surplus sits in the opening and closing minutes. Beyond the registered test, no estimate by position in the recording is shown for the hold-out creators until the labelling procedure is frozen. Dot: estimate in log units. Line: 90% interval over creators.</p>
+      <h2>H3, tested and withdrawn</h2>
+      <p class="cs-note">H3 asked whether &ldquo;I&rdquo;, &ldquo;me&rdquo; and &ldquo;my&rdquo; are denser at the start and end of a recording than in its middle, once the first and last three minutes are cut. On the 17 hold-out creators H3 passed its registered rule. That rule was not calibrated at creator level: its reference rotates the positions inside each recording and holds the creators fixed, and the estimate is not centred: the mean of that shift reference is &minus;0.063, not 0. That value, recorded in registry amendment A9, was computed by the second-round panel's calibration check on the 61 creators seen earlier, not on the hold-out creators. A later check on the creators seen earlier found that the rule rejects more often than its nominal level when there is no effect, and that it has little power at the smallest effect of interest. The 90% interval over creators includes zero, so H3 is not determined at creator level; the owner withdrew it (amendment A6). The registered result stays here. With nothing cut the contrast is large among the creators seen earlier: the surplus sits in the opening and closing minutes. Beyond the registered test, no estimate by position in the recording is shown for the hold-out creators. Dot: estimate in log units. Line: 90% interval over creators.</p>
       <div class="cs-chart" data-draw="chart-results" data-source="results"></div>
       <div class="cs-scroll">
         <table class="cs-table" data-source="results" data-row-key="sample">
@@ -291,7 +321,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     </div>
     <div class="cs-card" id="card-bridge">
       <h2>Do the two recognizer models agree?</h2>
-      <p class="cs-note">English was transcribed by an English-only model and the other languages by a larger one. 36 English recordings, one per creator, were transcribed by both. Each row is the larger model minus the English-only model, in units of the spread between creators, with a 90% interval. A measure whose interval lies inside the shaded band (0.2 on either side) can be compared across the two models; one whose interval lies wholly outside it cannot; the rest are not settled by 36 recordings. Neither transcript was checked by a person.</p>
+      <p class="cs-note">English was transcribed by an English-only model and the other languages by a larger one. 36 English recordings, one per creator, were transcribed by both. Each row is the larger model minus the English-only model, in units of the spread between creators, with a 90% interval. A measure whose interval lies inside the shaded band (0.2 on either side) can be compared across the two models; one whose interval lies wholly outside it cannot; the rest are not settled by 36 recordings. Neither transcript was checked by a person. The comparison is of means over 36 English recordings of 5 to 60 minutes. Single recordings differ more: for pace the limits of agreement (mean difference plus or minus 1.96 SD of the differences) are -0.51 to +0.46 of the spread between creators. Leaving out any one recording changes none of the 13 settled rows. Nothing here applies to other languages, where language and creator change with the model.</p>
       <div class="cs-chart" data-draw="chart-bridge" data-source="bridge"></div>
       <div class="cs-scroll">
         <table class="cs-table" data-source="bridge" data-row-key="measure">
@@ -317,12 +347,12 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
       </div>
       <div class="cs-card" id="card-terms">
         <h2>Vocabulary families in English transcripts</h2>
-        <p class="cs-note">Share of transcripts that contain at least one term of the family. Crude word patterns, not validated.</p>
+        <p class="cs-note">Share of transcripts that contain at least one term of the family. Crude word patterns, not checked by a person.</p>
         <div class="cs-chart" data-draw="chart-terms" data-source="terms"></div>
       </div>
       <div class="cs-card" id="card-artefacts">
         <h2>Recognizer artefacts</h2>
-        <p class="cs-note">Share of the 1,284 English transcripts of the 71 creators seen before the freeze (finished run, English-only model) that hold each pattern. Window-phase counts attribute at least 94.9% of the stand-alone thanks phrases that start in the last 3 s of a window to the recognizer, but 83.7% of all stand-alone thanks phrases sit inside running speech and nobody has listened to the audio, so these are counts of a pattern, not of checked insertions. Nothing on this tab, nor the run's counts, distributions and speaking pace, has these artefacts removed; only the H3 test and the comparison of the two models applied the artefact filter.</p>
+        <p class="cs-note">Share of the 1,284 English transcripts of the 71 creators seen before the freeze (finished run, English-only model) that hold each pattern. Window-phase counts attribute at least 94.9% of the stand-alone thanks phrases that start in the last 3 s of a window to the recognizer, but 83.7% of all stand-alone thanks phrases sit inside running speech and nobody has listened to the audio, so these are counts of a pattern, not of checked insertions. For the isolated segments the bound is weaker: window-phase counts tie at least 62.5% of them to the window. Nothing on this tab, nor the run's counts, distributions and speaking pace, has these artefacts removed; only the H3 test and the comparison of the two models applied the artefact filter.</p>
         <div class="cs-chart" data-draw="chart-artefacts" data-source="artefacts"></div>
       </div>
     </div>
@@ -330,7 +360,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
   <details id="notes">
     <summary>How to read this page</summary>
-    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover three days or fifteen years, so nothing here is a trend. Each language other than English comes from fewer than five creators, so the languages other than English are shown only as one pooled row. No row, bin or cell describes fewer than five creators: cells with fewer than five creators are pooled, and two counts of creators of nested groups never differ by one to four. Figures on the first five tabs describe the finished run: counts of the whole run come from its ledger, and timing measures from the creators seen before the registry freeze only. The last tab describes an earlier snapshot. The hypotheses will be tested with labels made by a language model, which no person has checked.</p>
+    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover anything from a few days to many years, so nothing here is a trend. Each language other than English comes from fewer than five creators, so the languages other than English are shown only as one pooled row. No row, bin or cell describes fewer than five creators: cells with fewer than five creators are pooled, and two counts of creators of nested groups never differ by one to four. Figures on the first five tabs describe the finished run: counts of the whole run come from its ledger, and timing measures from the creators seen before the registry freeze only. The last tab describes an earlier snapshot. The hypotheses of the first round are tested on the hold-out creators with labels made by language models, which no person has checked, so every verdict is model-coded; beyond the counts of the whole run, the hold-out creators enter only the registered tests.</p>
   </details>
 
   <details id="data">
@@ -356,18 +386,21 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="data/artefacts.csv">Recognizer artefacts</a> <span class="cs-note">(3 rows)</span></li>
         <li><a href="data/status.csv">Work status</a> <span class="cs-note">(9 rows)</span></li>
         <li><a href="data/budget.csv">Model-call budget</a> <span class="cs-note">(4 rows)</span></li>
-        <li><a href="data/results.csv">Registered tests so far</a> <span class="cs-note">(3 rows)</span></li>
+        <li><a href="data/results.csv">H3, tested and withdrawn</a> <span class="cs-note">(3 rows)</span></li>
+        <li><a href="data/first_round.csv">Registered tests of the first round (model-coded)</a> <span class="cs-note">(6 rows)</span></li>
         <li><a href="data/bridge.csv">The two recognizer models on the same audio</a> <span class="cs-note">(17 rows)</span></li>
     </ul>
   </details>
   <details id="methods">
     <summary>Methods and documents</summary>
     <ul class="cs-files">
-        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/transcription-run-2026-11-20/README.md">Transcription run report, with the static figures</a></li>
-        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/analysis-experiments-2026-11-20/README.md">Experiment catalogue: 28 experiments and 16 rules</a></li>
-        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/analysis-experiments-2026-11-20/hypotheses.md">The ten hypotheses, with estimands and prior work</a></li>
-        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/research/analysis-experiments-2026-11-20/registry.md">Registry freeze of 20 November 2026</a></li>
-        <li><a href="https://github.com/occult-kranti/bashar-index/blob/feat/partial-cohort-asr-2026-11-20/et-channelers/paper/cohort-draft-2026-11-20/main.pdf">Paper draft (preliminary)</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/transcription-run-2026-11-20/README.md">Transcription run report, with the static figures</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/README.md">Experiment catalogue: 28 experiments and 16 rules</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/hypotheses.md">The ten hypotheses, with estimands and prior work</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/registry.md">Registry: freeze of 20 November 2026, amendments, freezes 1 and 2, decisions and results</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/results/first-round-2026-11-21.md">Registered tests of the first round: the public results (model-coded)</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/paper/measurement-protocol-2026-11-21/main.pdf">Paper: measurement and protocol (anonymous draft of 21 November 2026)</a></li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/paper/cohort-draft-2026-11-20/main.pdf">First paper draft (preliminary, superseded)</a></li>
     </ul>
   </details>
 </div>
@@ -377,7 +410,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
 // A small stand-in for the hosted dashboard's data layer: loads the CSV files beside the page and runs the drawings.
 const dash = (() => {
-  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "creator_quantiles", "recordings", "length_share", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "bridge"];
+  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "creator_quantiles", "recordings", "length_share", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "first_round", "bridge"];
   const state = {}, calcs = {}, draws = {};
   const api = {
     colors: ['var(--series-1)'],
@@ -753,8 +786,10 @@ dash.draw('rows-creator-quantiles', (el) => {
 dash.draw('rows-hypotheses', (el) => {
   const got = need(el, ['hypotheses']);
   if (!got) return;
+  // determined verdicts read as settled, results pending as waiting, the rest plain
+  const tone = (row) => (/^(Supported|Refuted)/.test(String(row.status)) ? 'ok' : (/^Results pending/.test(String(row.status)) ? 'warn' : 'plain'));
   rows(el, got[0], [{ field: 'id' }, { field: 'hypothesis' }, { field: 'experiment' }, { field: 'confirmed_on' },
-    { field: 'status', chip: (row) => (row.status.startsWith('Tested') ? 'plain' : 'warn') }], 'id');
+    { field: 'status', chip: tone }], 'id');
 });
 dash.draw('rows-experiments', (el) => {
   const got = need(el, ['experiments']);
@@ -838,6 +873,100 @@ dash.draw('rows-bridge', (el) => {
   if (!got) return;
   rows(el, got[0], [{ field: 'measure' }, number(2)('english_only_model'), number(2)('larger_model'), number(2)('difference_in_creator_sd'),
     { field: 'comparable', chip: (row) => (row.comparable === 'Yes' ? 'ok' : (row.comparable === 'No' ? 'warn' : 'plain')) }], 'measure');
+});
+
+// The registered tests of the first round, from the public results file ("results pending" until it is published).
+// Each hypothesis has an estimate on its own scale, so each is drawn on an axis of its own, centred on zero.
+const ROUND_WORDS = { supported: 'supported (model-coded)', refuted: 'refuted (model-coded)', 'not determined': 'not determined', 'not determinable': 'not determinable', 'not run for want of an instrument': 'not run for want of an instrument' };
+const COUNT_WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+const roundState = (rowsIn) => (!rowsIn.length || rowsIn.every((row) => row.status === 'pending') ? 'pending'
+  : (rowsIn.some((row) => row.status === 'synthetic') ? 'synthetic' : 'final'));
+const roundTone = (row) => (row.kind === 'supported' || row.kind === 'refuted' ? 'ok' : (row.kind === 'pending' ? 'warn' : 'plain'));
+const blankCell = (value) => value === null || value === undefined || value === '';
+const est = (value) => (blankCell(value) || !Number.isFinite(Number(value)) ? '' : fmt(Number(value), 3));
+const PENDING_TEXT = 'Results pending: the six registered tests of the first round have run on the hold-out creators with the frozen code. Their verdicts appear here once their public results file is published.';
+dash.draw('round-lede', (el) => {
+  const got = need(el, ['first_round']);
+  if (!got) return;
+  const rowsIn = got[0];
+  if (roundState(rowsIn) === 'pending') { el.textContent = 'Six more were tested on the hold-out creators in the first round: results pending.'; return; }
+  const tally = Object.keys(ROUND_WORDS).map((kind) => [kind, rowsIn.filter((row) => row.kind === kind).length]).filter(([, n]) => n > 0)
+    .map(([kind, n]) => n + ' ' + ROUND_WORDS[kind]);
+  el.textContent = (COUNT_WORDS[rowsIn.length] || String(rowsIn.length)).replace(/^./, (c) => c.toUpperCase()) + ' were taken to their registered tests on the hold-out creators in the first round: ' + tally.join(', ') + '.';
+});
+dash.draw('round-banner', (el) => {
+  const source = dash.data('first_round');
+  el.textContent = source.status === 'ok' && roundState(source.data) === 'synthetic'
+    ? 'Synthetic test data: the first-round results on this copy come from simulated creators and describe nothing in the corpus. This copy is never published.' : '';
+});
+dash.draw('round-note', (el) => {
+  const got = need(el, ['first_round']);
+  if (!got) return;
+  const state = roundState(got[0]);
+  const published = (got[0].find((row) => !blankCell(row.published_utc)) || {}).published_utc;
+  el.textContent = state === 'pending' ? PENDING_TEXT
+    : 'Results of the registered tests, from their public results file' + (published ? ' (published ' + String(published).replace('T', ' ').replace('Z', ' UTC') + ')' : '') + '.';
+});
+dash.draw('rows-first-round-verdicts', (el) => {
+  const got = need(el, ['first_round']);
+  if (!got) return;
+  rows(el, got[0], [{ field: 'id' }, { field: 'hypothesis' }, { field: 'verdict', chip: roundTone }, { field: 'eligible_creators' },
+    { field: 'uninformative' }, { field: 'verification' }], 'id');
+});
+dash.draw('rows-first-round', (el) => {
+  const got = need(el, ['first_round']);
+  if (!got) return;
+  const estimate = (row) => (blankCell(row.estimate) ? (row.kind === 'pending' ? '' : (row.estimate_note || 'not published'))
+    : est(row.estimate) + ' [' + est(row.low) + ' to ' + est(row.high) + '], ' + row.estimate_name);
+  const natural = (row) => (blankCell(row.natural) ? '' : row.natural_name + ' ' + est(row.natural) + (blankCell(row.natural_low) ? '' : ' [' + est(row.natural_low) + ' to ' + est(row.natural_high) + ']'));
+  rows(el, got[0], [{ field: 'id' }, { field: 'verdict', chip: roundTone }, { field: 'eligible_creators' }, { field: 'estimate', text: estimate },
+    { field: 'natural', text: natural }, { field: 'holm_adjusted_p', right: true }, { field: 'uninformative' }], 'id');
+});
+dash.draw('chart-first-round', (el) => {
+  const got = need(el, ['first_round']);
+  if (!got) return;
+  if (roundState(got[0]) === 'pending') {                   // the card's note says "results pending"; no empty chart box
+    el.replaceChildren();
+    el.style.minHeight = '0';
+    return;
+  }
+  el.style.minHeight = '';
+  const items = got[0].map((row) => ({ id: row.id, kind: row.kind, uninformative: row.uninformative === 'yes', name: row.estimate_name, scale: row.scale,
+    shown: !blankCell(row.estimate) && !blankCell(row.low) && !blankCell(row.high), value: Number(row.estimate), low: Number(row.low), high: Number(row.high),
+    natural: blankCell(row.natural) ? '' : row.natural_name + ' ' + est(row.natural) + (blankCell(row.natural_low) ? '' : ' (90% interval ' + est(row.natural_low) + ' to ' + est(row.natural_high) + ')'),
+    note: row.estimate_note || 'estimate not published' }));
+  const rowHeight = 78, margin = { left: 24, right: 24 };          // room for the end ticks' labels and a gap between rows
+  const { svg, width, show, hide } = canvas(el, items.length * rowHeight + 8, 'Strips of the first-round estimates with their 90% intervals over creators, each hypothesis on its own scale centred on zero');
+  const narrow = width < 460;
+  items.forEach((item, i) => {
+    const top = 6 + i * rowHeight;
+    const g = svg.append('g');
+    const words = ROUND_WORDS[item.kind] || item.kind;
+    g.append('text').attr('class', 'cs-val').attr('x', 0).attr('y', top + 11)
+      .text(item.id + (item.shown && !narrow ? ' · ' + item.name : '') + ' · ' + words + (item.uninformative ? ' · uninformative' : ''));
+    if (!item.shown) {
+      g.append('text').attr('x', 0).attr('y', top + 34).text(item.note);
+      return;
+    }
+    const reach = Math.max(Math.abs(item.low), Math.abs(item.high), Math.abs(item.value), 1e-6) * 1.12;
+    const x = d3.scaleLinear().domain([-reach, reach]).nice().range([margin.left, width - margin.right]);
+    g.append('line').attr('x1', x(0)).attr('x2', x(0)).attr('y1', top + 18).attr('y2', top + 42).attr('stroke-width', 1).style('stroke', 'var(--ui-chart-muted)');
+    g.append('line').attr('x1', x(item.low)).attr('x2', x(item.high)).attr('y1', top + 30).attr('y2', top + 30).attr('stroke-width', 2).style('stroke', 'var(--ui-chart-muted)');
+    g.append('circle').attr('cx', x(item.value)).attr('cy', top + 30).attr('r', 5).style('fill', colour());
+    g.selectAll('text.tick').data(x.ticks(narrow ? 3 : 5)).join('text').attr('class', 'tick').attr('x', x).attr('y', top + 56).attr('text-anchor', 'middle').text((d) => fmt(d, 2));
+    g.append('rect').attr('x', margin.left).attr('y', top + 16).attr('width', width - margin.left - margin.right).attr('height', 30).attr('fill', 'transparent')
+      .on('pointermove', (event) => show(event, item.id + ': ' + est(item.value) + ' (90% interval ' + est(item.low) + ' to ' + est(item.high) + '), ' + item.scale + (item.natural ? '; ' + item.natural : '')))
+      .on('pointerleave', hide);
+  });
+});
+dash.draw('budget-state', (el) => {
+  const got = need(el, ['budget']);
+  if (!got) return;
+  const amount = (item) => Number((got[0].find((row) => row.item === item) || {}).usd);
+  const committed = amount('Committed'), warning = amount('Warning level'), stop = amount('Hard stop');
+  if (![committed, warning, stop].every(Number.isFinite)) { el.textContent = ''; return; }
+  el.textContent = committed > warning ? 'Committed spend is past the warning level, $' + fmt(stop - committed, 2) + ' below the hard stop.'
+    : 'Committed spend is $' + fmt(warning - committed, 2) + ' below the warning level.';
 });
 
 dash.draw('chart-kinds', (el) => {
