@@ -1,5 +1,7 @@
 # Paper draft: build notes, sources of numbers, and checks before submission
 
+> **Superseded on 2026-11-21** by the measurement-and-protocol paper (`paper/measurement-protocol-2026-11-21/`, added to this repository when the lead publishes it); this draft is kept unchanged as a record, and the statements in it corrected since are listed in [`corrections-2026-11-21.md`](../../research/analysis-experiments-2026-11-20/corrections-2026-11-21.md).
+
 This folder holds an anonymous draft for ICWSM in the AAAI two-column format. It was written on 2026-11-20 while the transcription run was still going. Every number computed from transcripts is provisional.
 
 **In this repository.** The folder holds the paper, its references, its numbers, tables and figures. The scripts that generated them (`work/`, `work2/`) and the downloaded e-print (`style-source/`) are kept in the project's private archive, not here, so the rows for them below describe the private copy. `build.sh` here needs only `pdflatex` and `bibtex`; the tables in `floats/` are already split. The draft is anonymous, but this repository is not: decide where the draft lives before a double-blind submission.

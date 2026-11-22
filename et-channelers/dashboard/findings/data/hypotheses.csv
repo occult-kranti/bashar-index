@@ -1,11 +1,11 @@
 id,hypothesis,experiment,waits_for,confirmed_on,status
-H1,The voice a creator presents as a being's is slower than the creator's own voice in the same recording,"SG, RH",span labels,hold-out and wave,Waits for model labels
-H2,"The more checkable a statement about the future, the less firmly it is worded, within a creator",FL,forecast labels,hold-out and wave,Waits for model labels
+H1,The voice a creator presents as a being's is slower than the creator's own voice in the same recording,"SG, RH",nothing: taken to its registered test in the first round,hold-out and wave,"Not determinable, first round"
+H2,"The more checkable a statement about the future, the less firmly it is worded, within a creator",FL,nothing: taken to its registered test in the first round,hold-out and wave,"Not run for want of an instrument (A10.5), first round"
 H3,"First-person singular is denser at the edges of a recording than in its middle, after three minutes are cut from each end",PO,the freeze and the artefact filter only,hold-out creators,Passed its registered rule; not determined at creator level; withdrawn (A6)
-H4,Fewer words are contracted when a being is voiced in the first person than in the creator's own voice,SG,span labels,hold-out and wave,Waits for model labels
-H5,"Claims about the world are relatively denser in a creator's channelled recordings, vocabulary of practice in the same creator's own talks","CX, GB","word groups, title labels",hold-out and wave,Waits for model labels
-H6,Asks to buy or enrol are rarer in the claimed voice than in the creator's own voice,AK,ask and span labels,hold-out and wave,Waits for model labels
-H7,Recordings by different creators uploaded within three days of each other are more alike in weeks with an almanac-listed date,SY,"replication wave, frozen date lists",replication wave,Waits for recordings uploaded after 19 Nov 2026
+H4,Fewer words are contracted when a being is voiced in the first person than in the creator's own voice,SG,nothing: taken to its registered test in the first round,hold-out and wave,"Not determinable, first round"
+H5,"Claims about the world are relatively denser in a creator's channelled recordings, vocabulary of practice in the same creator's own talks","CX, GB",nothing: taken to its registered test in the first round,hold-out and wave,"Not determinable, first round"
+H6,Asks to buy or enrol are rarer in the claimed voice than in the creator's own voice,AK,nothing: taken to its registered test in the first round,hold-out and wave,"Not determinable, first round"
+H7,Recordings by different creators uploaded within three days of each other are more alike in weeks with an almanac-listed date,SY,"replication wave, frozen date lists",replication wave,"Not run: it needs a replication wave, and none exists"
 H8,The edge-against-middle contrast of H3 is larger in channelled recordings than in sermons and wellness talks,"CS, PO",comparison set,comparison set,Dropped before it ran (A9)
-H9,Creators who name the same family of beings share subject vocabulary more than a way of speaking,SV,"name list, family labels","hold-out, then wave",Waits for model labels
-H10,A dated forecast whose date has passed is returned to less often than a comparable undated one (runs only if enough dates mature),"FL, RW","hashed ledger, replication wave",replication wave,Waits for recordings uploaded after 19 Nov 2026
+H9,Creators who name the same family of beings share subject vocabulary more than a way of speaking,SV,nothing: taken to its registered test in the first round,"hold-out, then wave","Not determinable, first round"
+H10,A dated forecast whose date has passed is returned to less often than a comparable undated one (runs only if enough dates mature),"FL, RW","hashed ledger, replication wave",replication wave,Not run in the first round

@@ -12,8 +12,9 @@
  "rule": "bridge-safe if the 90% interval of the mean difference lies inside the margin on both sides",
  "between_creator_sd_from": {
   "group": "creators seen before the registry was frozen",
-  "creators_with_three_or_more_recordings": 68,
-  "recordings": 1112
+  "creators_with_three_or_more_recordings": "all but fewer than 5 of the 71 seen creators",
+  "recordings": 1112,
+  "public_form": "The count of creators was replaced on 2026-11-21 by its form against the 71 seen creators, because the two groups are nested and their counts differed by fewer than 5; br_bridge.py wrote it as an integer."
  },
  "word_disagreement": {
   "definition": "word edits (substitution, deletion, insertion) needed to turn the English-only transcript into the larger model's, over the larger model's word count, after the artefact filter and lower-casing; neither transcript is a human reference",
@@ -23,8 +24,7 @@
    0.026528776978417268,
    0.04805779499528845
   ],
-  "smallest": 0.013157894736842105,
-  "largest": 0.5857106791214339
+  "public_form": "The smallest and the largest value, each one recording's own value, were removed from this public copy on 2026-11-21 (no public statistic rests on fewer than 5 creators); every other field is as br_bridge.py wrote it."
  },
  "speech_seconds_equal_in_all_pairs": true,
  "measures": [
