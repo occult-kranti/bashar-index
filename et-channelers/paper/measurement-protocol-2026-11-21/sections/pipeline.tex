@@ -1,0 +1,40 @@
+% sections/pipeline.tex -- Section 4, the pipeline.
+% Writer: B. Written 2026-11-21 from 06:13 UTC; third review round from 11:38 UTC (clock: date -u): the recognizer rule
+%   in its registered scope (methods review M18); the voice detector gates decoding (M15).
+% Fourth round (12:45 UTC, clock: date -u): the language-decision count against the run's transcripts is not printed
+%   (privacy review P4: the census is in recordings, one unit).
+% Macros used that are not in outline section 7: none.
+% Pending labels used: none.
+% Floats placed here: none.
+% Literal numerals left in the text are constants of method from the run's configuration (WER README section 3; OLD
+%   setup-numbers.tex): 30 s windows, 16 kHz, beam 5, temperature 0, 500 ms minimum silence; and constants of the filter
+%   and seam rules: 3 s, 5 s, 1/(1-g/30).
+% "registry 03:08" and "registry 02:50" name registry rows of 21 November 2026 (UTC).
+
+\section{The pipeline}
+\label{sec:pipeline}
+
+\paragraph{Decoding.} Audio is cut into contiguous, non-overlapping 30-s windows at 16\,kHz, each recognised alone
+without conditioning on earlier text: beam 5, temperature 0 without fallback, word time stamps. Inside each window a
+voice detector (500-ms minimum silence) runs before decoding, so stretches it finds without speech never reach the
+recognizer. A
+distilled English-only model handles English \cite{gandhi2023distilwhisper}, the larger multilingual model other
+languages, partly by speech-to-English translation \cite{radford2022robust}.
+
+\paragraph{Language.} \LangCreatorRulePct\% of the run's language decisions rest on the creator rule without a
+probe. The only guard is a re-check below a mean log-probability of \LogpGate, against a seen
+median of \SeenLogpMedian. No decision was checked by a person; a pseudo-word flag is in Table~\ref{tab:nonlanguage}.
+
+\paragraph{Recognizer rule.} \NSeenEnglishOnly{} of the \NSeenFiles{} seen transcripts come from the English-only model,
+\NSeenOtherModel{} from another or an unrecorded one. As registered (03:08), every registered test and every
+seen-derived constant it uses (H4's yardstick, H2's length bands, the eligibility projections) uses only English-only
+transcripts; the others form one model-stratified sensitivity row. Comparisons across models are descriptive only.
+
+\paragraph{Filter and seam rule.} Artefact filter version 2 removes by position, not wording, a thanks phrase starting
+in a window's last 3\,s, isolated short segments, stock text, repeats and loops. Each number states whether it uses raw
+text, version 1 (the bridge, as run) or version 2. Pauses use the capped, weighted seam rule (registry 03:08): a gap under
+5\,s containing a window boundary is dropped, other gaps $g$ under 5\,s are weighted by $1/(1-g/30)$; the literal rule
+and no rule are rows.
+
+\paragraph{Checks.} Nobody listened; how time without speech is defined, and which checks were not run, is in
+Appendix~\ref{app:measure} (moved there by the page limit).

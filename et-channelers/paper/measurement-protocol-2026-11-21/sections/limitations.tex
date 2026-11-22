@@ -1,0 +1,28 @@
+% sections/limitations.tex -- Section 9, limitations (outline section 5, sec:limits).
+% Writer: A. Written 2026-11-21, 06:15 to 06:50 UTC; second review round 08:22 UTC; third review round from 12:02 UTC
+%   (clock: date -u): the review conditions still unmet and the canonical literature not cited (methods review M17);
+%   the caption row's representativeness and normaliser (M16); the small voice model on revision 3 (registry 09:10;
+%   P24); A10 as drafted (P8); condensed for the page limit (every contact keeps its UTC time; the instrument details
+%   stand in Sections 6 and 7).
+% Fourth round from 12:45 UTC (clock: date -u): the known-answer bound with its assumption (methods review M3); the
+%   thanks count "may depend" on the grid (M2); the HR release rule and the class of record (M6, M11).
+% Macros used that are not in outline section 7: \NCloudOnlyObjects (requested in findings/macros-requested-A.md).
+% Results round (2026-11-21, from 19:16 UTC; clock: date -u): A10 entered; hold-out text sent to the API after freeze 2;
+%   HR not bought; the anchor against possibly human-made texts allowed after freeze 2 and still pending.
+% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): the R-hold gate failures (\ResRholdShort).
+% Pending labels used: none.
+
+\section{Limitations}
+\label{sec:limits}
+
+\paragraph{Selection.} The roster is a judgment sample: its rule was written down late, it grew on the day of the listing, and a discovery harvest closed early (Section~\ref{sec:data}). Intervals refer to creators like these; live streams, short videos, paid material, other platforms and deleted recordings are missing; nothing describes mediums at large, a period or a trend.
+
+\paragraph{No human reference.} No text known to be made by people exists for the seen creators, so no word error rate is measured; agreement with automatic captions is not accuracy, rests on \AnchorCaptionRecordings{} set-aside recordings and uses a normaliser chosen after the result. No detector decision, language decision, artefact rule or label was checked by a person (A8); agreement between models is reliability, not validity; known-answer recovery bounds corpus recovery from above only if constructed texts are easier than speech, which was not tested; errors that all model readers share go undetected.
+
+\paragraph{Recognizer, voice and languages.} The 30-s grid leaves seams, and the count of a thanks phrase that appears to be inserted, and any measure built on it, may depend on where the grid sits. Time stamps are the recognizer's; timing measures are used inside one model only; non-speech is the voice detector's, which also gates decoding; \LangCreatorRulePct\% of language decisions rest on the creator rule. Voice spans are inferred from text without speaker separation, and the own voice concentrates in openings and closings, so voice is partly confounded with position. Without a corpus of non-channelling speech, nothing is called distinctive of channelling. Every other language has fewer than five creators, all in the hold-out; the bridge covers English only.
+
+\paragraph{Hold-out.} The \NHoldout{} hold-out creators are the tail of an English-first run. Before freeze 2, hold-out material was touched (Table~\ref{tab:contacts}) by the first panel's tables (\ContactSnapshotFiles{} files, \ContactSnapshotStamp) and position pilot (\PilotCreators{} creators, time not recorded), the run report's position displays (\ContactRunReportStamp), H3's run (\HThreeRunStamp), a panel script that loaded about \ContactCoverageFiles{} metadata files (\ContactCoverageStamp), TABLE's logged extraction (\ContactTableStamp), the public-output generators that loaded the run report's per-recording timing cache (\ContactPrivacyStamp), and the one-off script that cut that cache to the seen creators (\ContactSeenDerivStamp). None produced a statistic of a registered hypothesis on hold-out text other than H3's test, and this paper prints no number from them. After freeze 2, hold-out transcript windows went to the OpenAI API for the frozen instruments only (ethics statement).
+
+\paragraph{Programme and instruments.} H3 passed a rule not calibrated at the creator level and was withdrawn; H1, H4 and H6 fall below their minimum on the lower of two projections that the pilot cannot tell apart. H2, H5 and H9 rest on instruments kept below their floors by the owner's exception\ResRholdShort; relayed voice was merged after its gate failed; the release rule of the hold-out robustness rows was loosened, and those rows, the rewording rows among them, were not bought; the forecast critic's class of record was chosen after its ten-class label failed; H9's smallest effect is a placeholder adopted without a rule; the recorded gates used another large model than production; on the frozen voice form the small model trails the middle one on some known-answer arms (Table~\ref{tab:ka}); entrance cues were read once by a model.
+
+\paragraph{What the review asked for and is not met.} The paper review asked for an external reference (none exists for the seen creators; the anchor against possibly human-made texts of other creators is pending), an ethics determination (none exists; the paper is not to be submitted before it) and the canonical literature on channelling and its milieu (not cited: no verified entries exist in this draft). The corpus cannot be shared, so the results cannot be reproduced elsewhere.

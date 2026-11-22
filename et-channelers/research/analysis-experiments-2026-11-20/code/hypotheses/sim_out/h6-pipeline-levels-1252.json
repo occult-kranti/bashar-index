@@ -1,0 +1,227 @@
+{
+ "note": "synthetic creators only; simulate.task (the battery's path), 9,999 reference draws",
+ "fingerprint": "d97db4a2a7c472fec0ec118c70a65e260cb9099384d4ed0c20170975960f2e7d",
+ "seconds": 612.8,
+ "table": [
+  {
+   "scenario": "null",
+   "creators": 17,
+   "sets": 1000,
+   "determinable": 1000,
+   "mean_largest_cluster": 2.1,
+   "amended (window 5)": {
+    "reject_0.005": 0.002,
+    "reject_0.05": 0.035,
+    "n": 1000
+   },
+   "cluster p (window 5)": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.046,
+    "n": 1000
+   },
+   "sign-flip of OE": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.042,
+    "n": 1000
+   },
+   "ask-level p": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.049,
+    "n": 1000
+   },
+   "amended, window 1 (11:08)": {
+    "reject_0.005": 0.002,
+    "reject_0.05": 0.035,
+    "n": 1000
+   },
+   "amended, window 10": {
+    "reject_0.005": 0.002,
+    "reject_0.05": 0.033,
+    "n": 1000
+   },
+   "guarded": {
+    "reject_0.005": 0.001,
+    "reject_0.05": 0.033,
+    "n": 1000
+   },
+   "mc_se_0.005": 0.0022304708023195463,
+   "mc_se_0.05": 0.006892024376045111
+  },
+  {
+   "scenario": "null_burst",
+   "creators": 17,
+   "sets": 1000,
+   "determinable": 1000,
+   "mean_largest_cluster": 4.281,
+   "amended (window 5)": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.04,
+    "n": 1000
+   },
+   "cluster p (window 5)": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.042,
+    "n": 1000
+   },
+   "sign-flip of OE": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.048,
+    "n": 1000
+   },
+   "ask-level p": {
+    "reject_0.005": 0.05,
+    "reject_0.05": 0.161,
+    "n": 1000
+   },
+   "amended, window 1 (11:08)": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.041,
+    "n": 1000
+   },
+   "amended, window 10": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.041,
+    "n": 1000
+   },
+   "guarded": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.033,
+    "n": 1000
+   },
+   "mc_se_0.005": 0.0022304708023195463,
+   "mc_se_0.05": 0.006892024376045111
+  },
+  {
+   "scenario": "null_gapped",
+   "creators": 12,
+   "sets": 1000,
+   "determinable": 1000,
+   "mean_largest_cluster": 3.981,
+   "amended (window 5)": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.045,
+    "n": 1000
+   },
+   "cluster p (window 5)": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.045,
+    "n": 1000
+   },
+   "sign-flip of OE": {
+    "reject_0.005": 0.016,
+    "reject_0.05": 0.065,
+    "n": 1000
+   },
+   "ask-level p": {
+    "reject_0.005": 0.05,
+    "reject_0.05": 0.149,
+    "n": 1000
+   },
+   "amended, window 1 (11:08)": {
+    "reject_0.005": 0.015,
+    "reject_0.05": 0.065,
+    "n": 1000
+   },
+   "amended, window 10": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.043,
+    "n": 1000
+   },
+   "guarded": {
+    "reject_0.005": 0.004,
+    "reject_0.05": 0.043,
+    "n": 1000
+   },
+   "mc_se_0.005": 0.0022304708023195463,
+   "mc_se_0.05": 0.006892024376045111
+  },
+  {
+   "scenario": "null_gapped",
+   "creators": 17,
+   "sets": 1000,
+   "determinable": 1000,
+   "mean_largest_cluster": 3.996,
+   "amended (window 5)": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.034,
+    "n": 1000
+   },
+   "cluster p (window 5)": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.034,
+    "n": 1000
+   },
+   "sign-flip of OE": {
+    "reject_0.005": 0.009,
+    "reject_0.05": 0.069,
+    "n": 1000
+   },
+   "ask-level p": {
+    "reject_0.005": 0.053,
+    "reject_0.05": 0.146,
+    "n": 1000
+   },
+   "amended, window 1 (11:08)": {
+    "reject_0.005": 0.009,
+    "reject_0.05": 0.069,
+    "n": 1000
+   },
+   "amended, window 10": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.033,
+    "n": 1000
+   },
+   "guarded": {
+    "reject_0.005": 0.003,
+    "reject_0.05": 0.034,
+    "n": 1000
+   },
+   "mc_se_0.005": 0.0022304708023195463,
+   "mc_se_0.05": 0.006892024376045111
+  },
+  {
+   "scenario": "null_sparse_low_share",
+   "creators": 17,
+   "sets": 1000,
+   "determinable": 1000,
+   "mean_largest_cluster": 1.345,
+   "amended (window 5)": {
+    "reject_0.005": 0.001,
+    "reject_0.05": 0.041,
+    "n": 1000
+   },
+   "cluster p (window 5)": {
+    "reject_0.005": 0.001,
+    "reject_0.05": 0.041,
+    "n": 1000
+   },
+   "sign-flip of OE": {
+    "reject_0.005": 0.006,
+    "reject_0.05": 0.061,
+    "n": 1000
+   },
+   "ask-level p": {
+    "reject_0.005": 0.001,
+    "reject_0.05": 0.043,
+    "n": 1000
+   },
+   "amended, window 1 (11:08)": {
+    "reject_0.005": 0.001,
+    "reject_0.05": 0.042,
+    "n": 1000
+   },
+   "amended, window 10": {
+    "reject_0.005": 0.0,
+    "reject_0.05": 0.041,
+    "n": 1000
+   },
+   "guarded": {
+    "reject_0.005": 0.001,
+    "reject_0.05": 0.01,
+    "n": 1000
+   },
+   "mc_se_0.005": 0.0022304708023195463,
+   "mc_se_0.05": 0.006892024376045111
+  }
+ ]
+}

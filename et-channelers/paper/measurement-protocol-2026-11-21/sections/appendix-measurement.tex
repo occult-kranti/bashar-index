@@ -1,0 +1,507 @@
+% sections/appendix-measurement.tex -- Appendix A, measurement records.
+% Writer: B. Written 2026-11-21, from 06:19 UTC (clock: date -u); end time in fix-list-B.md.
+% Word count: not budgeted (appendix); one or two sentences per float plus captions.
+% Macros used that are not in outline section 7: none.
+% Pending labels used: \PendSegLogpTwoLevel.
+% Floats placed here (23; tables have bodies floats/<file>.tex holding the tabular only, caption and label here, except
+%   tab:exclusions, whose tabular is written below because the outline gives it to writer B):
+%   tab:wer-strata, tab:gridshift, tab:headlines (table*), tab:drift, fig:rank, tab:rank-odds, fig:love, tab:balance
+%   (table*), fig:classes, tab:nonspeech, tab:vp (table*), fig:tolerance, tab:tolerance, tab:bridge-verdicts, fig:bland,
+%   fig:sensitivity, tab:sensitivity, tab:kinds, tab:nonlanguage, tab:labelflips, tab:exclusions (table*), tab:entry,
+%   tab:cor. These include the P7 moves of outline section 10 (tab:gridshift, tab:headlines, tab:bridge-verdicts, tab:vp,
+%   fig:tolerance, tab:kinds, fig:love); their pointer sentences are in sections 3, 5 and 6.
+% Fourth review round (from 12:50 UTC; clock: date -u): fig:bridge and fig:bland removed and tab:bridge-verdicts
+%   reduced to verdicts (privacy review P1, P7; methods review M10); fig:rank in two classes per rank (P3); Table B
+%   without the other group's medians and the roster-vintage row (P2, P6); census in recordings and the set-aside count
+%   as one count (P4); D4's isolated-segment counts withdrawn from Table U and Table D (P7); the precision check without
+%   a band (M4, P8).
+% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): the other group and the seen bridge pairs are
+%   not counted (\NOtherCreators and \BridgeSeenPairs are text); Table B and the Love plot drop group differences that
+%   rest on fewer than 5 creators off the group's common value; Rec. of tab:labelflips under the nested-count rule;
+%   a read-precision share of tab:entry resting on fewer than 5 creators is withheld.
+% Builder notes: the body of tab:bridge-verdicts must not print the outlying pair's own disagreement, nor a ratio from
+%   which it follows; creator counts that fall fewer than 5 short of a printed total are printed as "all but <5" by the
+%   builder (second review round, 2026-11-21, 08:25 UTC).
+% Literal numerals left in the text are thresholds or constants of method: 5 creators, 1--4, 0.25 and 0.1 (fixed lines),
+%   0.2 SD (margin), 0--20% (injection grid), ranks 1--5 and 6--20, 120 days (R4 window), 15 s, 30 s, 60 s, 3 s.
+
+\section{Measurement records}
+\label{app:measure}
+
+Every float in this appendix is exploratory (registry A2/A7) and not a test of H1--H10. Text-derived figures come from
+the seen creators; counts, durations, dates and languages cover all creators. Cells of fewer than 5 creators are merged
+by the plan's rule, and no minimum or maximum of a transcript measure is printed. Moved here from Sections 3 and 5 by
+the page limit, unchanged (move log of the third review round): the census flow figure, the paragraphs ``Three levels''
+and ``Dates'', the artefact table, the figure of coverage by position, and parts of Sections 5.5 and 5.7.
+
+% Moved here from Section 3 by the page limit (third review round); caption unchanged.
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{floats/fig_flow.pdf}
+\caption{Coverage of the newest-20 quota, with every loss and its reason. Boxes give creators, recordings (transcripts in
+the group boxes) and hours. Of \NSelected{} recordings of \NCreators{} creators, \NArchived{} were archived with
+hash-verified audio and \NFailed{} are final download failures (\NFailedCreators{} creators). \NSetAside{} recordings
+with English text of another kind (\NOtherTextCreators{} creators) or held for a language review were set aside, so
+\NRunRecordings{} recordings (\RunHours{} h of audio) entered the run. \NTranscribedRecordings{} recordings
+(\TranscribedHours{} h) were transcribed and \NNotTranscribed{} were not, most for want of speech. Census counts, in
+recordings. No cell of fewer than 5 creators is printed: reasons are merged, and a creator count that falls fewer than 5
+short of a printed total reads ``all but $<$5''.}
+\label{fig:flow}
+\end{figure*}
+
+\paragraph{Three levels.} The \emph{creator} was selected as a medium; a \emph{recording} is of a kind (channelled
+session, relayed message, interview, guided practice, own-voice talk, other); a \emph{span} is in a claimed, own or other
+voice (Section~\ref{sec:protocol}). In an interim census of \LOneRecordings{} recordings of \LOneCreators{} development
+creators, a claimed voice is the main kind of \LOneClaimedMainPct\% of recordings (creator-weighted; 95\%
+\LOneClaimedMainLo--\LOneClaimedMainHi), and \LOneNoClaimedCreators{} creators (\LOneNoClaimedLo{} to \LOneNoClaimedHi{}
+over model runs) have no sampled recording with a claimed voice in a quarter of its words; model-coded, not checked by a
+person, interim (Table~\ref{tab:kinds}).
+
+\paragraph{Dates.} Every selected recording has a date row: \NExactDays{} exact days and \NIntervalDates{} intervals
+estimated from the displayed age. Local time stamps confirm \NConfirmedFromStamps{} intervals, so \NConfirmedDays{}
+recordings have a confirmed day and \NStillInterval{} keep an interval (median width \IntervalMedianWidth{} days;
+\NIntervalOverYear{} over a year). The published CSV prefixes the \NApostropheIds{} identifiers that begin with a hyphen
+with an apostrophe. Dates are upload dates, not dates of speaking.
+
+\paragraph{Agreement anchors and grid shift.} Table~\ref{tab:wer-strata} gives the strata of the caption anchor and of the
+reproducibility row; Table~\ref{tab:gridshift} gives every measure of the grid shift. Moved here from Section 5.1 by
+the page limit (fourth review round): halves at the median give \AnchorCaptionShortPct\% and \AnchorCaptionLongPct\% by
+length and \AnchorCaptionLowConfPct\% and \AnchorCaptionHighConfPct\% by recognizer confidence (rough), strata added
+after the reporting plan (addendum 1). In the bridge, numerals disagree \BridgeNumeralRatio{} times and capitalised
+words \BridgeCapsRatio{} times as often as words overall (Section~\ref{sec:bridge}). The capped seam rule keeps
+creators' rank order on every pause measure (rank correlation with no rule $\geq$ \SeamRuleRankCorrMin; moved here from
+Section 5.3).
+
+Moved here from Section 5 by the page limit (results round). \emph{Triangle inequality.} The run's edits against a true
+transcript are at most its edits against the captions plus the captions' own edits, and at least their difference. As
+rates, with $D$ the disagreement per caption word and $e$ the captions' own error rate, the run's error rate lies between
+$|rD - e|$ and $rD + e$, where $r$, caption words over true words, is itself unknown within $1 \pm e$. Without $e$ the
+bound says nothing: agreement (small $D$) shows only that the run's error is close to the captions' own error $e$, which
+is unknown; and the bound concerns text after the normaliser, which lower-cases, drops fillers and expands
+contractions. \emph{Grid shift by worker version.} The \GsEarlierVersionRecordings{} transcripts of record made by
+earlier worker versions change less (mean \GsEarlierVersionMeanPct\%) than the other \GsSameVersionRecordings{} (mean
+\GsSameVersionMeanPct\%, word-pooled \GsSameVersionPct\%), so the mixed headline does not inflate the grid effect. In
+between-creator SD units every pause measure moves by at most \GsPauseSdMax{} on average and every word measure by at
+most \GsWordSdMax, except filled pauses (\GsFillerSd; 95\% \GsFillerSdLo{} to \GsFillerSdHi); these are intervals, not
+tests of equivalence. \emph{Precision check.} A phrase made by the grid should vanish when the grid moves, a spoken one
+should recur. Of the \GsPrecisionRemoved{} removals in \GsPrecisionRecordings{} recordings, fewer than 5 creators have
+a removal that recurs on the other grid; no share is printed from so small a count (Table~\ref{tab:gridshift-b}).
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_wer_strata.tex}
+\caption{Agreement anchors by stratum, raw recognizer text: the platform-caption row by audio edition, by length half
+and by recognizer-confidence half (thirds hold fewer than 5 creators), and the reproducibility row by length third.
+Creator mean and word-pooled disagreement with 95\% creator percentile-bootstrap intervals; $r$ marks cells of fewer
+than \MinCreatorsRegistered{} creators, below the smallest set size of this project's coverage audit, where such
+intervals already cover below their nominal level (read as rough); a level or stratum whose values could be recovered by
+difference, or whose errors come from fewer than 5 creators, is not printed. Halves and the confidence and edition strata were added after the
+exploratory reporting plan (addendum 1, \AddendumOneStamp). Agreement of two machines, not an error rate.}
+\label{tab:wer-strata}
+\end{table}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_gridshift.tex}
+\caption{Grid shift, part 1: every measure with its 95\% interval from resampling the \GsRecordings{} recordings (one
+per creator; raw recognizer words; grid moved by 15\,s). Controls: \GsControlIdentical{} recordings decoded again on
+the run grid. Placebo rows measure a decode on the other grid.}
+\label{tab:gridshift}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_gridshift_b.tex}
+\caption{Grid shift, part 2: the plan's thanks-phrase, isolated-segment and SD-unit rows, each change in units of the
+SD of seen creators' means (all seen creators but fewer than 5 with three or more long transcripts), with its 95\%
+interval from a seed per measure; percentiles over recordings are not printed, because with \GsRecordings{} recordings
+each rests on a tail of fewer than 5 creators; rows that would give a cell of fewer than 5 creators by difference are
+merged into the row of their family. Below, the positional rule checked on the re-decodes: removals and the count of
+creators with a recurring removal, in the source's wording (fewer than 5, which includes none); no share or band of
+shares is printed, since the source prints its band only when it includes 0, a rule that depends on the result.
+Filter version 2 on each decode's own grid. No audio was played.}
+\label{tab:gridshift-b}
+\end{table*}
+
+\paragraph{Artefact rules.} Table~\ref{tab:artefacts} gives every rule of filter version 2 (Section~\ref{sec:artefacts}).
+Moved here from Section 5.4 by the page limit (fourth review round): the window-end thanks phrase appears in
+\ThanksPerWindowPct\% of windows mostly covered by other speech (90\% \ThanksPerWindowLo--\ThanksPerWindowHi) and in
+\ThanksPerWindowPartialPct\% of partly covered windows; all but fewer than 5 of the \NSeen{} seen creators have one;
+\ThanksTranscriptPct\% of transcripts hold one at a window end, a share that ranges from \ThanksWeightRangeLo{} to
+\ThanksWeightRangeHi{} over weightings and is not a headline.
+
+% Moved here from Section 5.4 by the page limit (third review round); caption unchanged.
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_artefacts.tex}
+\caption{Recognizer artefacts by rule of filter version 2, \NSeenEnglishOnly{} English-only transcripts of \NSeen{} seen
+creators (full 30-s windows): units removed, removed with the isolated rule off, per 1,000 full windows, share of
+transcripts with one (90\% creator bootstrap), creators with one, rate per speech hour (90\%), and the precision bound
+from window-phase counts (which assumes spoken phrases spread evenly over window phase). Nothing was checked by a person.}
+\label{tab:artefacts}
+\end{table}
+
+\paragraph{Headline numbers and their drift.} Table~\ref{tab:headlines} (Table U) states each headline number with its
+estimand, weighting, interval and counts; Table~\ref{tab:drift} (Table D) sets each against the earlier draft's snapshot.
+
+% INTEGRATOR (2026-11-21): Table U is taller than a page; the builder writes it in two parts of consecutive rows.
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_headlines.tex}
+\caption{Table U, part 1: each headline number of this paper with its estimand, weighting, 95\% interval ($t$ on
+creator means for means of creator values; creator bootstrap otherwise), creators and recordings, on the closed run.
+Counts, durations and languages cover all creators; every number from text, segments or the voice detector covers the
+\NSeen{} seen creators. Counts follow D4's definitions and can differ from the filter's counts of
+Table~\ref{tab:artefacts} (for example, the share of transcripts with a bare thanks segment anywhere); D4's counts of
+isolated short segments are not printed, because beside each other and beside the filter's counts they differ by cells
+of fewer than 5 creators (Table~\ref{tab:artefacts} gives the filter's); census counts are in recordings
+(Section~\ref{sec:data}), and ``all'' in the last column means every transcript of the run; ICC rows are one-way ANOVA ICC(1) on raw recording values, while Table~\ref{tab:vp}
+gives each measure on its named scale. A percentile in a tail of fewer than 5 creators is not printed.}
+\label{tab:headlines}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_headlines_b.tex}
+\caption{Table U, part 2 (columns as in part 1).}
+\label{tab:headlines-b}
+\end{table*}
+
+% INTEGRATOR (2026-11-21): Table D is taller than a page; the builder writes it in two parts of consecutive rows.
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_drift.tex}
+\caption{Table D, part 1: drift from the earlier draft's snapshot (\SnapLines{} transcripts) to the closed run, like
+with like. Where the snapshot had no such estimand, or another definition, its cells read ``--''; so do snapshot values
+computed from the transcripts or timing of all creators, hold-out included, which are not printed. A difference also
+mixes more transcripts. ICCs here are point values; their intervals for the closed run are in Table~\ref{tab:headlines}
+and Table~\ref{tab:vp}.}
+\label{tab:drift}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_drift_b.tex}
+\caption{Table D, part 2 (columns as in part 1).}
+\label{tab:drift-b}
+\end{table*}
+
+\paragraph{Coverage by rank and balance of the groups.} Figure~\ref{fig:rank} and Table~\ref{tab:rank-odds} show how the
+run's coverage depends on listing rank (Section~\ref{sec:coverage}). Figure~\ref{fig:love} and Table~\ref{tab:balance}
+show how the hold-out differs from the seen creators on fields known before the run (Section~\ref{sec:holdout}); a
+difference between them is never a replication or a failed replication.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_rank.pdf}
+\caption{Coverage of the newest-20 quota by listing rank (1 is the newest; listing order, not time): (a) share of the
+\NSelected{} selected recordings with a run transcript and without one (set aside, download failed or not transcribed,
+merged); (b) share of native platform audio among the recordings in the run, and of the other editions merged, with
+95\% creator-bootstrap bands. A creator has at most one recording at a rank, so each cell is a count of creators, and
+every cell holds 5 or more; the split by reason is in Table~\ref{tab:rank-odds}. Description of coverage; no trend is
+read from rank.}
+\label{fig:rank}
+\end{figure}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_rank_odds.tex}
+\caption{Missingness by listing rank and recording properties. Top: odds ratios for ranks 1--5 against 6--20, pooled
+(0.5 added per cell), Mantel--Haenszel within creator and conditional logit, with 95\% creator-bootstrap intervals, and
+the creators with variation in the outcome. Bottom: standardized mean differences of recordings with other text (O) and
+of recordings with no text (M) against transcribed recordings, with 90\% creator-bootstrap intervals. Event counts and
+group sizes are not printed: beside the census counts some would give a cell of fewer than 5 by difference.}
+\label{tab:rank-odds}
+\end{table*}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_love.pdf}
+\caption{Standardized mean differences of creator values on ledger and inventory fields only: hold-out (\NHoldout)
+minus seen (\NSeen) and other (\NOtherCreators) minus seen, with 90\% intervals from creator resamples within group,
+clipped at $\pm$1 (values beyond the edge printed beside it); dashed lines $\pm$0.25, dotted $\pm$0.1. With
+\NOtherCreators{} creators the other group's differences are unstable. The binary roster-vintage field is not drawn
+(its signed differences would give group cells of fewer than 5 creators), and neither is a group's difference that
+rests on fewer than 5 creators with a value other than the group's common one, nor a field where the seen group has
+1 to 4 such creators. No transcript field of a non-seen creator was read.}
+\label{fig:love}
+\end{figure}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_balance.tex}
+\caption{Table B: balance of the seen, hold-out and other creators on fields known before the run, with medians and
+quartiles for the seen and hold-out groups (with \NOtherCreators{} creators the other group's median would be a
+single value of the group, so only its standardized mean difference is printed; ``--'' marks hold-out quartiles that
+would interpolate a single value)
+and standardized mean differences (90\% creator-bootstrap intervals; ``--'' where the group's difference rests on fewer
+than 5 creators with a value other than the group's common one, and a field left out where the seen group has 1 to 4
+such creators); the roster vintage of all creators only (by group,
+and as a signed difference of a binary field, it would give cells of fewer than 5 creators); and the cross-validated AUC of hold-out membership on \DTwoFields{} pre-run fields, \DTwoAuc{} against a
+999-shuffle 95\% band of \DTwoAucBandLo--\DTwoAucBandHi.}
+\label{tab:balance}
+\end{table*}
+
+\paragraph{Time without speech.} Moved here from Section 4 by the page limit (fourth review round): the voice
+detector's non-speech is recomputed as audio minus detector speech seconds, because the stored field is zero in some
+transcripts; time outside recognizer segments is a second definition. No independent voice detector, forced aligner or
+speaker separation (no new audio-analysis packages, registry 02:50) and no re-probe of creator-rule files was run.
+Figure~\ref{fig:coverage} shows coverage by recognizer segments by position,
+Figure~\ref{fig:classes} splits running time into classes by position, and Table~\ref{tab:nonspeech} gives both
+definitions of time without speech under three weightings (Section~\ref{sec:nonspeech}). Moved here from Section 5.5
+by the page limit: the voice detector's non-speech is \NonSpeechMedianPct\% at the creator median; \OutsideSegEdgesPct{}
+points of the time outside recognizer segments (\OutsideSegPooledPct\%, 95\% \OutsideSegPooledLo--\OutsideSegPooledHi)
+lie before the first or after the last segment, and long pauses count as non-speech. The last 15\,s are covered
+\LastFifteenCoverage, the 15\,s before them \FifteenToThirtyCoverage{} and the first 15\,s \FirstFifteenCoverage. The
+last 60\,s hold about \LastSixtyRatio{} times the share outside recognized speech of the rest (\LastSixtyOutsidePct\%
+against \RestOutsidePct\%, hours pooled; Figure~\ref{fig:classes}). Across weightings and windows, the non-speech
+headline leaves its pre-set margin in \RFourNonspeechMoves{} of \RFourSpecs{} specifications and end coverage in
+\RFourEndCoverageMoves{} (Figure~\ref{fig:sensitivity}). The share of transcripts with a thanks segment anywhere is
+\ThanksAnywherePct\% by GRID's definition (Table~\ref{tab:headlines} gives D4's).
+
+% Moved here from Section 5.5 by the page limit (third review round); caption unchanged.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_coverage.pdf}
+\caption{Share of each 15-s bin inside recognizer segments (filter version 2), aligned at the start (top) and at the
+end (bottom) of the recording, by length band, \NSeen{} seen creators weighted equally. Grey: sup-$t$ simultaneous 95\%
+band from creator-then-recording resamples; dotted: pointwise 95\%; dashed: all lengths; axis 0 to 1; bins under 5
+creators omitted. Seen creators only: no positional display of the hold-out is drawn.}
+\label{fig:coverage}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_classes.pdf}
+\caption{Running time inside recognizer segments, in gaps under 3\,s, in gaps of 3--30\,s and in stretches of 30\,s or
+more (filter version 2), for the whole recording, the first 60\,s, the rest and the last 60\,s; (a) hours pooled, (b)
+creators weighted equally, with 95\% creator-bootstrap intervals; \NSeen{} seen creators. Music, meditation and silence
+cannot be told apart.}
+\label{fig:classes}
+\end{figure}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_nonspeech.tex}
+\caption{Share of audio without speech, seen creators: the voice detector's non-speech and time outside recognizer
+segments (filter version 2 and none), pooled over hours, creator-equal and at the creator median, with 95\% intervals and
+leave-one-creator-out ranges; and the coverage of the last partial decoding window against the window before it.}
+\label{tab:nonspeech}
+\end{table*}
+
+\paragraph{Variance and error tolerance.} Moved here from Section 5.7 by the page limit (results round): the caption
+anchor's creator mean has a 95\% $t$ bound up to \AnchorCaptionMeanTHi\% and is \AnchorCaptionPooledPct\% pooled, so the
+tolerance thresholds lie near either form of the measured machine disagreement; error that differs between creators
+can link word length, MATTR-1000 and filled pauses to the share without speech, so their between-creator comparisons
+carry a caveat. Figure~\ref{fig:icc} shows the share of variance between creators for each
+measure, and Table~\ref{tab:vp} is the full variance partition behind it; Figure~\ref{fig:tolerance} and
+Table~\ref{tab:tolerance} give the error tolerance of the word measures (Section~\ref{sec:variance}). Tolerance is not
+accuracy. Moved here from Section 5.7 by the page limit: error that differs between creators and tracks non-speech can
+move their creator-level correlation with non-speech share by up to \RSixAssocMax{} either way (word length, MATTR-1000)
+and \RSixFillerAssoc{} (filled pauses) at a 10\% median; pronoun, contraction, question-mark and numeral rates, pace and
+log words keep their structure. Every between-creator comparison of word length, MATTR or filled-pause rate carries this
+caveat. The MATTR window is 500 words for the ICC, 1,000 in the tolerance and 100 in the bridge (``variety'').
+Gaussian and logit ICC intervals rest on \VpDrawsGauss{} creator draws. Moved here from Section 5.7 by the page limit
+(fourth review round): the ANOVA estimate of the earlier draft for mean segment log-probability is \IccSegLogpAnova{}
+(\IccSegLogpAnovaLo--\IccSegLogpAnovaHi); negative-binomial intervals rest on \VpDrawsNb{} creator draws; parametric
+intervals are \ParamNarrowLo{} to \ParamNarrowHi{} times narrower for \ParamNarrowRows{} of the \VpMeasures{} measures;
+for first-person singular the point values are \IccFsRaw{} (raw) and \IccFsLog{} (log), an illustration of scale, and
+\IccFs{} on the latent scale (95\% \IccFsLo--\IccFsHi).
+
+% INTEGRATOR: moved here from Section 5.7 by the P7 move log (build of 2026-11-21 07:05 UTC); caption unchanged.
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\columnwidth]{floats/fig_icc.pdf}
+\caption{Share of variance between creators (ICC) for word and timing measures (a) and recognizer measures (b), on
+\VpCreators{} seen creators and \VpRecordings{} recordings (filter version 2), each on the scale named in its label: raw
+(open) and adjusted for log length, edition and median word probability (filled), with 95\% creator-resampling
+intervals; grey bars: parametric intervals, for comparison only. A design fact of this roster.}
+\label{fig:icc}
+\end{figure}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_vp.tex}
+\caption{Table VP-1, condensed: measure, scale, raw ICC with its 95\% creator-resampling interval, adjusted ICC (log
+length, edition, median word probability), ICC with the filter off, Kish design effect, effective recordings and the
+reliability of a ten-recording creator mean; \VpCreators{} seen creators, \VpRecordings{} recordings, filter version 2.
+The ICC is a design fact of this roster.}
+\label{tab:vp}
+\end{table*}
+
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{floats/fig_tolerance.pdf}
+\caption{Injected word error (0--20\%) against each word measure's creator-equal cohort mean relative to its clean
+value, with the bridge's edit profile (solid) and a uniform profile (dashed); grey: 10th--90th percentile over creators;
+dotted: $\pm$0.2 between-creator SD. The vertical band marks the bridge's model-to-model disagreement, which is not an
+error rate. Tolerance, not accuracy.}
+\label{fig:tolerance}
+\end{figure*}
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_tolerance.tex}
+\caption{Injected error rate at which the cohort mean, the median creator and the 90th-percentile creator move by 0.2
+between-creator SD, by edit profile, with the same rate for every creator; and the scenarios in which the error rate
+differs between creators and tracks pace or the share of time without speech. ICC$_{20}$ is the ICC at 20\% injected
+error, a simulation summary without interval. Between-creator comparisons of word length, MATTR and filled-pause rate
+carry the caveat of Section~\ref{sec:variance}.}
+\label{tab:tolerance}
+\end{table}
+
+\paragraph{Bridge.} Table~\ref{tab:bridge-verdicts} gives the bridge verdicts under both scales and both kinds of
+interval (Section~\ref{sec:bridge}). The figure of mean paired differences and the Bland--Altman summaries of earlier
+drafts are not printed (fourth review round): beside the registered bridge results, the seen pairs' means, intervals
+and limits of agreement would give single pairs' values by difference, and a bin median of a fifth of the pairs is one
+pair's value.
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_bridge_verdicts.tex}
+\caption{Bridge verdicts per measure on the between-creator (Between) and the within-creator scale (Within), with
+per-measure and simultaneous (sim.) 90\% $t$ intervals against the margin of $\pm$\BridgeMargin{} SD fixed in advance, on \BridgeSeenPairs{} seen pairs
+(all but fewer than 5 of its \BridgePairs{} registered pairs); verdicts only, each equal to the verdict on all registered pairs. No single-pair drop moves a verdict between agrees and differs. The verdicts concern means over English
+audio of 5--60 minutes, not single recordings or other languages; neither transcript is a human reference.}
+\label{tab:bridge-verdicts}
+\end{table}
+
+\paragraph{Weighting and window sensitivity.} Figure~\ref{fig:sensitivity} and Table~\ref{tab:sensitivity} show each
+headline under other weightings and windows, against a margin fixed before the run.
+
+\begin{figure*}[tp]
+\centering
+\includegraphics[width=\textwidth]{floats/fig_sensitivity.pdf}
+\caption{Headline numbers, and the reporting plan's cue-count robustness rows (``plan row''), under five weightings and
+three restrictions (each creator's own newest 120 days, a fixed calendar window, thirds of posting rate), with
+creator-bootstrap 90\% intervals; grey band: the creator-equal baseline $\pm$ the margin fixed before the run. In this
+roster, under the newest-20 quota; no period or trend.}
+\label{fig:sensitivity}
+\end{figure*}
+
+\begin{table*}[tp]
+\centering
+\small
+\input{floats/tab_sensitivity.tex}
+\caption{Per headline: creator-equal baseline, the margin fixed before the run, the range over the \RFourSpecs{}
+specifications, and how many move the estimate beyond the margin. Baselines are the sensitivity build's own
+creator-equal estimates and can differ in the last digit from the figures of Section~\ref{sec:measure}. The term rows
+are robustness rows of the reporting plan (cue counts), not headlines of this paper and not findings about channelling.}
+\label{tab:sensitivity}
+\end{table*}
+
+\paragraph{Model-coded checks of the measurement.} Table~\ref{tab:kinds} is the interim census of recording kinds
+(Section~\ref{sec:data}), Table~\ref{tab:nonlanguage} the pseudo-word flag (Section~\ref{sec:pipeline}) and
+Table~\ref{tab:labelflips} how much the choice of recognizer moves model-coded labels. All three are model-coded and not
+checked by a person.
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_kinds.tex}
+\caption{Interim census of recording kinds and claimed-voice bands on \LOneRecordings{} recordings of \LOneCreators{}
+development creators: creator-weighted shares of recordings and of speech hours with 95\% creator-bootstrap intervals,
+under the small model (modal kind of five runs) and the middle model, with their specific agreement and run-to-run
+stability. Model-coded, not checked by a person; development creators only; interim. It replaces the earlier draft's
+count from a purposive reading.}
+\label{tab:kinds}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_nonlanguage.tex}
+\caption{Pseudo-word flag, fixed on development creators before any reading: model-read share of flagged and unflagged
+30-s windows read as non-language, weighted to all windows of each stratum, and lexical measures with and without the
+flagged windows. Model-read: without audio a reader cannot tell glossolalia from misrecognised speech or another
+language.}
+\label{tab:nonlanguage}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_labelflips.tex}
+\caption{Stability of model-coded labels across the two recognizers' transcripts on the bridge recordings of
+development creators: flip shares of voice labels (words) and asks (events) between transcripts against run-to-run
+flips on one transcript, with creator-bootstrap 90\% intervals. Rec.: recordings with the label, one per creator; a
+count fewer than 5 below a count it is nested in reads ``all but $<$5''. The instruments are those of that run, before
+their later revisions. Stability, not accuracy.}
+\label{tab:labelflips}
+\end{table}
+
+\paragraph{Exclusions.} Table~\ref{tab:exclusions} states, for each recording outside the analysed set, its likely
+effect on each estimand of this paper. Live streams, short videos, paid material, other platforms and deleted recordings
+were never listed, so they are not counted.
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.10\textwidth}%
+>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.10\textwidth}%
+>{\raggedright\arraybackslash}p{0.11\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}%
+>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.10\textwidth}@{}}
+\toprule
+Exclusion & Size & Time without speech & Artefacts & Coverage & Voice & Asks & Forecasts \\
+\midrule
+Live streams & not listed & unknown & more windows per recording & outside the quota & interactive channelled sessions under-represented & asks to a live audience under-represented & unknown \\
+Short videos & not listed & unknown & few windows & outside the quota & excerpts of sessions missing & promotional asks may be missing & unknown \\
+Members-only and paid material & not listed & unknown & unknown & outside the quota & full sessions behind payment missing & asks measured on the free tier only & unknown \\
+Other platforms & not listed & unknown & unknown & publisher editions used as audio only & unknown & unknown & unknown \\
+Deleted before the listing & not observable & unknown & unknown & not observable & unknown & unknown & forecasts that failed may be missing (survivorship) \\
+Set aside before the run (English text of another kind, or a language review) & \NSetAside{} recordings (other text: \NOtherTextCreators{} creators) & newest ranks missing from run measures & newest ranks missing & newest ranks under-represented (Section~\ref{sec:coverage}) & newest ranks missing & newest ranks missing & newest ranks missing \\
+Final download failures & \NFailed{} recordings, \NFailedCreators{} creators & missing recordings shorter on average (Table~\ref{tab:rank-odds}) & small & small & small & small & small \\
+Not transcribed & \NNotTranscribed{} recordings, most without speech & files without speech left out, so the share without speech is slightly understated & none & small & none & none & none \\
+\bottomrule
+\end{tabular}
+\caption{Exclusions and their likely effect on each estimand of this paper. ``Not listed'': outside the newest-20 listing
+of regular public uploads, so not counted. Directions are judgments from the design, not measurements, except where a
+section or table is named.}
+\label{tab:exclusions}
+\end{table*}
+
+\paragraph{Entrance cues and two-level correlations.} Table~\ref{tab:entry} reports the entrance experiment's cue counts
+under its first frozen version, the version of record, with its revision beside it. Table~\ref{tab:cor} gives
+correlations between delivery and recognizer confidence at two levels, which replaces the earlier draft's pooled
+statement.
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_entry.tex}
+\caption{Entrance cues, version 1 (frozen before the check reading; version of record): read precision with Wilson
+95\% intervals; distribution over creators of the share of recordings with a first-entrance cue, in bins of 5 or more
+creators; the creator-balanced share of recordings with a cue and the person of the cue, with 90\% creator-then-recording
+intervals; version 2 (revised after a model check) as a revision row of counts. On check creators \EntryReadOn{} of
+\EntryRead{} cues were on target, as read once by a model agent and not checked by a person; a share whose on-target
+items come from fewer than 5 creators is not printed (n.p.). Cue counts and upper bounds.}
+\label{tab:entry}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\small
+\input{floats/tab_cor.tex}
+\caption{Spearman correlations of pace, the share of time without speech, log words and mean log word probability (a
+stand-in for recognizer confidence) at two levels: between creators (creator means) and within creators (ranks inside
+each creator, for creators with 5 or more recordings; primary), with 90\% creator-bootstrap intervals. Last row: the
+earlier draft's pooled correlation of mean segment log-probability with pace, split at two levels in Table U with that
+table's own definitions (creator medians; creator-centred values) and 95\% intervals: \CorSegLogpPaceBetween{} between
+and \CorSegLogpPaceWithin{} within creators.}
+\label{tab:cor}
+\end{table}

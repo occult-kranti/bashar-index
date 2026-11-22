@@ -1,0 +1,35 @@
+% sections/introduction.tex -- Section 1, introduction with the contributions (outline section 5, sec:intro).
+% Writer: A. Written 2026-11-21, 06:10 to 06:30 UTC; revised in the third review round from 11:30 UTC (clock: date -u):
+%   intervals named by kind (privacy review P27); no hand-typed counts (P24: "ten hypotheses", "four contributions");
+%   the projected eligibility and power of H1, H2 and H4 to H6 only (P13); condensed for the page limit.
+% Macros used that are not in outline section 7: \NSeamSearches (requested in findings/macros-requested-A.md).
+% Pending labels used: none.
+% Sources: problem paragraph from the verified OLD refs*.bib entries; state of the design from D1-flow.csv,
+%   REG/registry.md (frozen table, A6, freeze-1 table, 11:10 row) and LLM/freeze.json frozen_utc; novelty counts from
+%   REG/hypotheses.md 14.0 and 14.1 (N1, N5a) and OLD/setup/setup-numbers.tex (NIcwsmSearches).
+% No claim of prevalence or growth of the practice (meta-review M29).
+% Results round (2026-11-21, from 19:16 UTC; clock: date -u): the state box after freeze 2, hold-out production and the
+%   end of first-round labelling; \ResIntro and \ResStateBox from findings/results.tex (pending until published).
+
+\section{Introduction}
+\label{sec:intro}
+
+Text studies of spoken content on video platforms read what a speech recognizer wrote. Recognizers of the Whisper family write text that was never spoken, more often where the audio holds no voice \cite{koenecke2024careless,baranski2025investigation,wang2025calmwhisper}, and long recordings decoded in windows drift and repeat \cite{bain2023whisperx}. Where silence, music, meditation and long pauses are part of the content, what the recognizer does to the audio is the first measurement, before any count of words.
+
+Recordings of channelling creators, sessions presented as messages from non-human beings, are a hard case: one recording can hold long stretches without speech, several speakers in one audio stream, ritual openings and closings, and constructs that a later study would code with a language model (a claimed voice against the speaker's own, asks to buy or enrol, statements about the future). We make no claim about how common the practice is or whether it grows.
+
+We ran one local pass over the newest uploads of \NCreators{} creators and set its output against every machine text available: platform automatic captions, the project's earlier recognizer text, a larger model's earlier text, the second recognizer model on the same audio (the bridge), and a re-decode on a grid moved by 15\,s. We describe where the 30-s windows leave seams and inserted phrases, where the time without speech sits, which recordings the run covers, and how variance divides between creators and recordings. Beside this we report a protocol for labels coded by language models (gates, freezes by hash, a known-answer battery, a second reading, a reader of another vendor), registered, then amended in the open. This is a measurement and protocol paper: it reports no finding about channelling, and \ResIntro.
+
+\medskip
+\noindent\fbox{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}{\small\textbf{State of the design at \BuildStamp.} The transcription run is closed: \NTranscribedRecordings{} recordings, \TranscribedHours{} hours, \NLanguages{} languages. The registry of hypotheses H1 to H10 was frozen at \RegistryFrozenStamp; H3 was run and withdrawn (A6). Freeze 1 fixed the label instruments at \FreezeOneStamp, and seen-creator labels were produced under it (\ProdSeenStamp). Freeze 2 fixed the analysis code and constants at \FreezeTwoShort; hold-out labels followed (\HoldoutProdStamp), and first-round labelling ended at \LabellingDoneStamp. \ResStateBox{} No person has checked any label or transcript.}}
+\medskip
+
+The contributions are:
+\begin{enumerate}
+\item a measurement of the pipeline on this audio against every machine anchor available, and of what cannot be measured: no text known to be made by people exists for the seen creators, so no word error rate is reported (Section~\ref{sec:measure});
+\item an anatomy of window seams and inserted phrases tied to the fixed 30-s grid, with a grid-shift control that separates the grid's effect from the speech (Sections~\ref{sec:seams} and~\ref{sec:artefacts});
+\item the creator-level variance structure of word and timing measures, and the error tolerance of word measures (Section~\ref{sec:variance});
+\item a registered, then amended, protocol for model-coded labels (gates, freezes by hash, verification), with the projected eligibility and power stated before any hold-out label existed and the first-round results as registered (Sections~\ref{sec:protocol} to~\ref{sec:deviations}).
+\end{enumerate}
+
+We claim no first. A study of channelling recordings across many speakers was not found in \NSkepticSearches{} keyword searches made by a skeptic agent for the registry (Section~\ref{sec:related}). We take no position on where channelled material comes from; claims made in the recordings are treated as claims.

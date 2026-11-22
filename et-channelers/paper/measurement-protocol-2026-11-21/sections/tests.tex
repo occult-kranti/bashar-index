@@ -1,0 +1,78 @@
+% sections/tests.tex -- Section 7, first-round tests: design, projections and power stated in advance.
+% Writer: C. Written 2026-11-21, 06:09 to 06:25 UTC; second review round 08:04 to 08:40 UTC; third review round from
+%   11:55 UTC (clock: date -u): power at the nearest CAL count (methods review M20); H5 and H2 not announced, H9 not
+%   projected (P12, P13); the registered H3 row (P14, M24); the plasmode's conditioning (M24); the hypothesis-code
+%   decisions of 06:44, 09:19 and 11:08 (registry). Moved to Appendix B by the page limit: tab:programme and the H3
+%   detail (t interval from the published summary, recentred value, calibration, power, coverage).
+% Fourth review round from 12:40 UTC (clock: date -u): the count of hold-out creators with English recordings is not
+%   printed (privacy review P5: beside the hold-out and non-English counts it gives a cell of fewer than 5 by
+%   difference); "as registered and amended" (M12).
+% Macros used that are not in outline section 7: the third round's \HThreeRegLo, \HThreeRegHi, \HThreeShiftP,
+%   \HSixSignFlipRejectPct, \HSixBurstRejectPct, \HSixBurstSize, \HSixDraws, \PowerHTwoCreators, \PowerHFiveCreators.
+% Results round (2026-11-21, from 19:16 UTC; clock: date -u): H9's smallest effect adopted at the placeholder (16:06);
+%   CAL part (f) not run, the battery in its place (15:14 (2), 16:06 (2)); the last code decisions before freeze 2 in
+%   one sentence (12:52); Section 7.3 reads the public results file through findings/results.tex (\Res... macros),
+%   written for every outcome (supported, refuted, not determined, not determinable, uninformative); tab:results.
+% Pending labels used: \PendHThreeX; the result macros of findings/results.tex expand to \pending{...} until the public
+%   results file exists.
+% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): the recording-property projections are stated
+%   against the minimum only (\ProjH...Rec are text, e.g. "more than 12"; the projections are capped at a withheld
+%   count); the gate failures on R-hold from the public results file (\ResRholdShort, findings/results.tex).
+% Citations: card2020little, lipsitch2010negative, cameron2008bootstrapbased, mackinnon2022clusterrobust (refs.bib).
+% "registry 02:50" and the like name rows of the registry dated 21 November 2026 (UTC).
+
+\section{First-round tests}
+\label{sec:tests}
+
+An exact creator sign-flip passes the first Holm step (0.005) only from \MinCreatorsOneSided{} creators one-sided or
+\MinCreatorsTwoSided{} two-sided, which amendment A10 makes H2's minimum; the registered minimum for H1 and H4 to H6 is
+\MinCreatorsRegistered{} (programme: Table~\ref{tab:programme}).
+
+\paragraph{Announced in advance.} Before any hold-out label (registry 02:50), with power stated before results
+\cite{card2020little}, H1, H4 and H6 were announced as probably not determinable. CAL projects eligibility from
+model-coded pilot labels as a property of the creator or of each recording (Figure~\ref{fig:eligibility}; ranges and
+smallest attainable $p$ in Table~\ref{tab:programme}). The announcement rests on the first, lower bound, \ProjHOne,
+\ProjHFour{} and \ProjHSix{} eligible creators against \MinCreatorsRegistered, where no $p$ can pass the first Holm
+step; the second puts all three above the minimum (\ProjHOneRec, \ProjHFourRec{} and \ProjHSixRec{} creators at the
+median), with CAL power \PowerHOneUpper, \PowerHFourUpper{} and \PowerHSixUpper{} at
+\PowerUpperCreators{} creators. The pilot cannot tell the bounds apart (the first holds if eligibility is a fixed habit
+of the creator, the second if it varies by recording), so the announcement is a statement of risk on the cautious
+bound, not a forecast. Not announced: H2 (\ProjHTwo{} or \ProjHTwoRec{} creators; power \PowerHTwo{} at $|D| = 0.10$)
+and H5 (\ProjHFive, an upper bound; power \PowerHFive). H9 is not projected (its cells need labels and the name list);
+its smallest effect is the registry's placeholder, \HNineSesoi{} standardised units (16:06). H2, H5 and H9 rest on
+instruments below their floors (Section~\ref{sec:instruments})\ResRholdShort.
+
+\paragraph{Calibration and revisions.} Under a creator-level placebo \cite{lipsitch2010negative}, H2's registered
+within-creator reference rejects about \HTwoRefTimesNominal{} times nominally and H6's half-count rule \HSixRefTimesLo{}
+to \HSixRefTimesHi{} times; A10 replaces them under its guard. CAL's repeat on seen labels (part f) did not run; the
+simulation battery stands in for it (16:06). Other findings and every code revision before freeze 2 (the last at 12:52)
+are in Appendix~\ref{app:protocol}.
+
+\subsection{H3, restated}
+\label{sec:hthree}
+
+H3's registered row is $U$ = \HThreeU{} on \HThreeCreators{} hold-out creators (90\% \HThreeRegLo{} to \HThreeRegHi;
+shift $p$ \HThreeShiftP). Restated (registry 03:08; Table~\ref{tab:hthree}): supported by its registered rule, which
+says ``supported'' under placebo in \HThreePlaceboSeventeen\% of sets of \HThreeCreators{} creators against 0.5\%; not
+determined at the creator level; exploratory; withdrawn (A6); its wave replication was not run, and creator-level rows
+on the hold-out wait for H3-X (\PendHThreeX).
+
+\subsection{Results}
+\label{sec:results}
+
+\ResSummary{} \ResCounts{} \ResHolm{} Table~\ref{tab:results} gives each result, Appendix~\ref{app:protocol} both
+versions, the robustness rows and the Holm table. Labels are model-coded (A8); a supported or refuted
+verdict reads ``verified by a third model, on known-answer texts and by a reader of another vendor''; uninformative
+results leave the headline claims, their rows kept (A2). \ResDiscussion{} A replication wave, which H7 and H10 need,
+would show persistence, not confirmation (Figure~\ref{fig:plasmode}).
+
+\begin{table}[t]
+\centering
+\small
+\input{floats/tab_results.tex}
+\caption{First-round results on the hold-out (public results file; model-coded): eligible creators of the primary
+version / its minimum ($<$5, $<$min., $\geq$min.: a count stated against 5 or the minimum only); estimate with its 90\%
+creator interval (n.p.: not printed); Holm-adjusted $p$ of the larger of the two versions' $p$; verdict under A10's
+guard; uninformative flag. $\dagger$: instrument below its floor. \ResPendingNote}
+\label{tab:results}
+\end{table}
