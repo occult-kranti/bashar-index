@@ -5,6 +5,9 @@
 % Year of an arXiv entry: year of first submission to arXiv (the API's `published` field).
 % Year of a Crossref entry: print year when Crossref gives one, otherwise the issued year.
 % venuesource is a non-printing field: it records where the venue in `note` comes from.
+% Corrected in place on 2026-11-21 by the literature merge step of the rewrite, from the citation audit (keys kept):
+% attanasio2025effects, gerard2024modeling, ding2023same, habib2021reddit and phipson2016permutation now cite the
+% published version whose title, year and venue the audit confirmed through Crossref (see each venuesource field).
 
 @article{chen2025digital,
   author = {Chen, Rongyi and Xin, Ziyan and Xiao, Qing and Xiao, Ruiwei and Xiao, Jingjia and Zhang, Bingbing and Shen, Hong and Lu, Zhicong},
@@ -47,15 +50,15 @@
 
 @article{attanasio2025effects,
   author = {Attanasio, Asja and Corso, Francesco and De Francisci Morales, Gianmarco and Pierri, Francesco},
-  title = {{Effects of Algorithmic Visibility on Conspiracy Communities: Reddit after Epstein's 'Suicide'}},
-  journal = {arXiv preprint arXiv:2512.24351},
-  year = {2025},
-  eprint = {2512.24351},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.CY},
-  url = {https://arxiv.org/abs/2512.24351},
-  note = {ICWSM 2026; arXiv version cited},
-  venuesource = {venue as stated in the digest}
+  title = {{Effects of Mainstream Visibility on Conspiracy Communities: Reddit After Epstein's `Suicide'}},
+  journal = {Proceedings of the International AAAI Conference on Web and Social Media},
+  volume = {20},
+  number = {1},
+  pages = {174--185},
+  year = {2026},
+  doi = {10.1609/icwsm.v20i1.42631},
+  url = {https://doi.org/10.1609/icwsm.v20i1.42631},
+  venuesource = {Crossref record of DOI 10.1609/icwsm.v20i1.42631 (citation audit, 2026-11-21); replaces the arXiv preprint 2512.24351, whose title reads `Effects of Algorithmic Visibility'; key kept}
 }
 
 @article{russo2022spillover,
@@ -164,15 +167,14 @@
 
 @article{gerard2024modeling,
   author = {Gerard, Patrick and Volkova, Svitlana and Penafiel, Louis and Lerman, Kristina and Weninger, Tim},
-  title = {{Modeling Information Narrative Detection and Evolution on Telegram during the Russia-Ukraine War}},
-  journal = {arXiv preprint arXiv:2409.07684},
-  year = {2024},
-  eprint = {2409.07684},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.SI},
-  url = {https://arxiv.org/abs/2409.07684},
-  note = {ICWSM 2025; arXiv version cited},
-  venuesource = {arXiv comment field}
+  title = {{Modeling Information Narrative Evolution on Telegram During the Russia-Ukraine War}},
+  journal = {Proceedings of the International AAAI Conference on Web and Social Media},
+  volume = {19},
+  pages = {602--614},
+  year = {2025},
+  doi = {10.1609/icwsm.v19i1.35834},
+  url = {https://doi.org/10.1609/icwsm.v19i1.35834},
+  venuesource = {Crossref record of DOI 10.1609/icwsm.v19i1.35834 (citation audit, 2026-11-21); replaces the arXiv preprint 2409.07684, whose title adds `Detection and'; key kept}
 }
 
 @article{gerard2025bridging,
@@ -202,16 +204,15 @@
 }
 
 @article{ding2023same,
-  author = {Ding, Xiaohan and Horning, Mike and Rho, Eugenia H.},
-  title = {{Same Words, Different Meanings: Semantic Polarization in Broadcast Media Language Forecasts Polarization on Social Media Discourse}},
-  journal = {arXiv preprint arXiv:2301.08832},
+  author = {Ding, Xiaohan and Horning, Michael and Rho, Eugenia H.},
+  title = {{Same Words, Different Meanings: Semantic Polarization in Broadcast Media Language Forecasts Polarity in Online Public Discourse}},
+  journal = {Proceedings of the International AAAI Conference on Web and Social Media},
+  volume = {17},
+  pages = {161--172},
   year = {2023},
-  eprint = {2301.08832},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.CL},
-  url = {https://arxiv.org/abs/2301.08832},
-  note = {ICWSM 2023; arXiv version cited},
-  venuesource = {arXiv DOI field (10.1609/icwsm.v17i1.22135) and the digest}
+  doi = {10.1609/icwsm.v17i1.22135},
+  url = {https://doi.org/10.1609/icwsm.v17i1.22135},
+  venuesource = {Crossref record of DOI 10.1609/icwsm.v17i1.22135 (citation audit, 2026-11-21); replaces the arXiv preprint 2301.08832, whose title ends `Forecasts Polarization on Social Media Discourse'; key kept}
 }
 
 @article{zhang2017community,
@@ -268,15 +269,15 @@
 
 @article{habib2021reddit,
   author = {Habib, Hussam and Nithyanand, Rishab},
-  title = {{Reddit and the Fourth Estate: Exploring the magnitude and effects of media influence on community level moderation on Reddit}},
-  journal = {arXiv preprint arXiv:2111.00084},
-  year = {2021},
-  eprint = {2111.00084},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.SI},
-  url = {https://arxiv.org/abs/2111.00084},
-  note = {ICWSM 2022; arXiv version cited},
-  venuesource = {arXiv DOI field (10.1609/icwsm.v16i1.19291) and the digest}
+  title = {{Exploring the Magnitude and Effects of Media Influence on Reddit Moderation}},
+  journal = {Proceedings of the International AAAI Conference on Web and Social Media},
+  volume = {16},
+  pages = {275--286},
+  year = {2022},
+  doi = {10.1609/icwsm.v16i1.19291},
+  url = {https://doi.org/10.1609/icwsm.v16i1.19291},
+  note = {arXiv:2111.00084 under the title `Reddit and the Fourth Estate'},
+  venuesource = {Crossref record of DOI 10.1609/icwsm.v16i1.19291 (citation audit, 2026-11-21); replaces the arXiv preprint 2111.00084 under its earlier title; key kept}
 }
 
 @article{pangakis2024keeping,
@@ -603,15 +604,15 @@
 
 @article{phipson2016permutation,
   author = {Phipson, Belinda and Smyth, Gordon K.},
-  title = {{Permutation p-values should never be zero: calculating exact p-values when permutations are randomly drawn}},
-  journal = {arXiv preprint arXiv:1603.05766},
-  year = {2016},
-  eprint = {1603.05766},
-  archivePrefix = {arXiv},
-  primaryClass = {stat.AP},
-  url = {https://arxiv.org/abs/1603.05766},
-  note = {Statistical Applications in Genetics and Molecular Biology 9(1), 2010; arXiv version cited},
-  venuesource = {arXiv journal-ref field}
+  title = {{Permutation P-values Should Never Be Zero: Calculating Exact P-values When Permutations Are Randomly Drawn}},
+  journal = {Statistical Applications in Genetics and Molecular Biology},
+  volume = {9},
+  number = {1},
+  pages = {Article 39},
+  year = {2010},
+  doi = {10.2202/1544-6115.1585},
+  url = {https://doi.org/10.2202/1544-6115.1585},
+  venuesource = {Crossref record of DOI 10.2202/1544-6115.1585, article number from the arXiv journal-ref of 1603.05766 (citation audit, 2026-11-21); replaces the 2016 arXiv deposit of the 2010 article; key kept}
 }
 
 @article{proksch2019testing,

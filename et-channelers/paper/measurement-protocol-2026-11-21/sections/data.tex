@@ -1,51 +1,51 @@
-% sections/data.tex -- Section 3, data and selection.
-% Writer: B. Written 2026-11-21 from 06:11 UTC; second review round 08:10 UTC; third review round from 11:35 UTC
-%   (clock: date -u): the harvest's whole counts (methods review M26); moved to Appendix A by the page limit (move log of
-%   the third round, private fix list): fig:flow (its counts stay in the Collection paragraph), and the "Three levels"
-%   and "Dates" paragraphs, unchanged.
-% Fourth review round from 12:45 UTC (clock: date -u): the set-aside count as one count (other text or a language
-%   review, as the public outcome table prints it) and the census in one unit, recordings (privacy review P4); the
-%   group counts are transcripts, and the other group's is not printed.
-% Pre-publish verification (2026-11-21, from 21:30 UTC; clock: date -u): no creator count of the other group either
-%   (the roster's and the registry's other groups are nested and differ by fewer than 5): \NOtherCreators is a bound.
-% Macros used that are not in outline section 7: \NSetAside, \NRunRecordings, \NTranscribedRecordings, \HarvestTerms, \HarvestQueries, \HarvestChannels, \HarvestCohortFound
-%   (third round, from the discovery harvest summary; counts only).
-% Pending labels used: none.
-% Literal numerals left in the text are thresholds of rules or definitions: 5 (five-creator cell rule), 10th and 90th
-%   (percentiles).
-% Wording: "judgment sample", statements about this roster only; the recordings with other text are not called
-%   third-party text as a whole (plan addendum 1, section 5); non-seen creators appear only through counts, durations,
-%   dates, languages and run order.
+% sections/data.tex -- Section 3, corpus and pipeline: the section head and Section 3.1 (corpus); pipeline.tex holds 3.2.
+% Complete rewrite of 2026-11-21 by the data-pipeline section writer of the PaperOrchestra-style rewrite, from
+%   outline.json (section_plan, attack_response) and the raw materials (idea.md, experimental_log.md, macros.md).
+%   Every number is a macro of findings/numbers.tex.
+% Integrator's page cut (2026-11-21): the posting-rate clause moved to Appendix A (writer's cut 3, already there); the
+%   datasheet citation dropped from the box (cut 4; Appendix A cites it); shorter wording elsewhere, no count dropped.
+% Literal numerals are rule constants only: the 5-creator rule, 1 to 4 (the pair rule), 10th and 90th percentiles.
+% Floats placed here: none. The corpus box is inline text; the census flow and the exclusions table stay in Appendix A.
+% Cites: none (the random-sample contrast and its citations are in Section 2). Pending macros used: none.
+% The privacy rule is stated here once for the whole paper; other sections point to sec:data.
 
-\section{Data and selection}
+\section{Corpus and pipeline}
 \label{sec:data}
 
-\paragraph{Selection rule and target of inference.} The authors chose \NCreators{} creators on one video platform as
-channelling mediums: creators who publish recordings presented as messages channelled from non-human beings. The owner
-wrote this rule down after the registry freeze and after the test of H3, and the roster grew from \RosterFirst{} to
-\NCreators{} creators on the day of the listing. A later discovery harvest, closed early after refusals, sent
-\HarvestQueries{} of \HarvestTerms{} planned queries, met \HarvestChannels{} distinct channels and found
-\HarvestCohortFound{} of the \NCreators{} roster creators among them; it fixes no sampling frame. The cohort is therefore
-a judgment sample \cite{mcgrady2023dialing}: creator-resampling intervals refer to creators like these, within-creator
-contrasts are conditional on them, and nothing is said about channelling mediums at large, a period or a trend.
-Appendix~\ref{app:measure} gives the three levels of the design (creator, recording kind, voice span) and the dates.
+\subsection{Corpus}
 
-\paragraph{The newest-20 quota.} The selection takes each creator's newest \NPerCreator{} public regular uploads in
-listing order (\NSelected{} recordings). It is a quota, not a period: between the 10th and 90th percentiles of creators
-the newest \NPerCreator{} span from \SpanPtenDays{} days to \SpanPninetyYears{} years (median \SpanMedDays{} days), so
-posting rate is entangled with every comparison between creators (Section~\ref{sec:variance}).
+\paragraph{Selection.} The authors chose \NCreators{} creators on one video platform as channelling mediums: creators
+who publish recordings presented as messages channelled from non-human beings. The owner wrote this rule down after the
+registry freeze and after testing H3, the one label-free hypothesis (Section~\ref{sec:hthree}); the roster grew from
+\RosterFirst{} to \NCreators{} on the listing day. A later discovery harvest, closed early after \HarvestQueries{} of
+\HarvestTerms{} planned queries, met \HarvestChannels{} channels, \HarvestCohortFound{} of them roster creators, and
+fixes no sampling frame. This judgment sample represents no population (Section~\ref{sec:related}): intervals refer
+to creators like these, not to all mediums, a period or a trend.
 
-\paragraph{Collection.} \NArchived{} recordings were archived with hash-verified audio (an audit confirmed all
-\NVerifiedObjects{} storage objects), and \NFailed{} are final download failures (\NFailedCreators{} creators);
-downloads are closed. \NSetAside{} recordings were set aside before the run, because they had English text of another
-kind (\NOtherTextCreators{} creators) or were held for a language review; \NOwnEarlierAsr{} of them carry the project's
-own earlier recognizer text, not third-party text. So \NRunRecordings{} recordings (\RunHours{} h of audio) entered the
-run, and \NTranscribedRecordings{} (\TranscribedHours{} h) were transcribed; \NNotTranscribed{} were not, most for want
-of speech (Figure~\ref{fig:flow} in Appendix~\ref{app:measure} traces every loss). Counts of the census are recordings.
+\paragraph{Quota.} Each creator gives its newest \NPerCreator{} public regular uploads, a quota, not a period: they span
+\SpanPtenDays{} days to \SpanPninetyYears{} years from the creators' 10th to 90th percentile (median \SpanMedDays{}
+days), so posting rate is entangled with comparisons between creators (Appendix~\ref{app:measure}). Dates are upload
+dates.
 
-\paragraph{Groups.} Seen: \NSeen{} creators, \NSeenFiles{} transcripts, \SeenHours{} h; every number from text,
-segments, word times or the voice detector comes from them. Hold-out: \NHoldout{} creators, \NHoldoutFiles{}
-transcripts, including all \NNonEnglishFiles{} non-English transcripts (\NNonEnglishCreators{} creators). Other:
-\NOtherCreators{} creators. Non-seen
-creators enter only through counts, durations, dates, languages and run order. Live streams, short videos, paid
-material, other platforms and deleted recordings are outside the cohort (Table~\ref{tab:exclusions}).
+\medskip
+\noindent\fbox{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}{\small\textbf{Corpus summary}; counts are
+recordings. \textit{Selected:} \NSelected. \textit{Archived:} \NArchived{} with hash-verified audio; \NFailed{} final download failures (\NFailedCreators{} creators).
+\textit{Set aside before the run:} \NSetAside, with English text of another kind (\NOtherTextCreators{} creators) or
+held for a language review; \NOwnEarlierAsr{} of them hold the project's own earlier recognizer text. \textit{Run:}
+\NRunRecordings{} entered (\RunHours{} h); \NTranscribedRecordings{} transcribed (\TranscribedHours{} h, \NLanguages{}
+languages); \NNotTranscribed{} not, most for want of speech. \textit{Excluded:} live streams, short videos, paid or
+members-only material, other platforms, recordings deleted before the listing (Appendix~\ref{app:measure}).}}
+\medskip
+
+\paragraph{Groups.} \textit{Seen} creators (\NSeen{}; \NSeenFiles{} transcripts, \SeenHours{} h) are those whose
+transcripts model agents could read while designing instruments; prompts were developed on some
+(development creators), gate and verification samples drawn from others (check creators). Every number from text,
+word times or the voice detector comes from them. \textit{Hold-out} creators (\NHoldout{}; \NHoldoutFiles{}
+transcripts, with all \NNonEnglishFiles{} non-English ones, from \NNonEnglishCreators{} creators) are kept for the
+registered tests (Section~\ref{sec:holdout}). The rest, \NOtherCreators{} creators, form an \textit{other} group, for
+a reason the registry does not record. Non-seen creators enter only as counts, durations, dates, languages and run
+order.
+
+\paragraph{Privacy rule.} No printed cell, bin or figure rests on fewer than 5 creators. Of two nested groups whose
+creator counts differ by 1 to 4, only one count is printed, and values recoverable by difference are suppressed (bar
+the other group's size, which public counts fix); such places read ``not shown (privacy rule)'' or give a bound.
