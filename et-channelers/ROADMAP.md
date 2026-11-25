@@ -1,6 +1,33 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
-## November 20, evening: transcripts done, analysis under way
+## November 25: registered tests done, exploratory round being released, third panel running
+
+The registered tests of the first round ran on 21 November and gave no verdict that could be determined. The
+exploratory round ran on 22 November. Its release, the paper update and the third-round expert panel stopped on
+22 November at 07:25 UTC, when the agents' weekly usage limit was reached, and restarted on 25 November. Nothing
+was lost: the agents had only read files.
+
+| Stage | State and next action |
+| --- | --- |
+| Audio and transcription, closed | Unchanged since 20 November: 1,946 recordings archived, 30 final failures; 1,697 audio files transcribed. Downloads are closed. |
+| Registered tests, done | H3 was tested on 20 November and withdrawn by the owner as fragile. The first round (H1, H2, H4, H5, H6, H9) ran on the hold-out creators on 21 November (18:54 to 19:03 UTC), with the code and constants of freeze 2. None could be determined: too few eligible creators, and for H2 no instrument above its reliability floor. Every Holm-adjusted p is 1. H7 and H10 were not run (they need a replication wave), and H8 was dropped. [Results](research/analysis-experiments-2026-11-20/results/README.md) |
+| Model-coded labels, done | Every label was made by language models from frozen prompts; no person checked any. 126.70 USD of the 130 USD hard stop is committed, and no further model call is planned. Phase 7f. |
+| Exploratory round, being released | The registered reporting plan lists 172 exploratory outputs. The first wave (22 November, about 02:00 UTC) and the second (04:55 UTC) reported 111 of them; 60 are not run, most because they need model calls. Release pass 1 gave every reported output its figures and reviewed the outputs built before the round (07:10 UTC). Release pass 2 is running: corrections, a recount of every agreement figure by creator, the public results folder, one figure gallery, addendum 3 to the plan, the paper's update, then scans and adversarial verification. Phase 7h. |
+| Paper, being updated | The measurement-and-protocol paper was rewritten by model agents in the manner of PaperOrchestra and merged on 22 November (pull request 104). It is being updated with the exploratory release. It is not to be submitted before an ethics or exemption determination exists. [Paper](paper/measurement-protocol-2026-11-21/) |
+| Dashboards, next update with the release | Updated on 22 November (pull request 105). The next update adds the exploratory release and its gallery. [Dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) |
+| Third-round expert panel, running | Twelve model-agent members: six methods members, an expert on occult and religious history, an ET and contactee historian, an insider reader of conspiracy culture, and a denialist panel of three. Three moderated rounds, then a fourth on novelty and on research questions only this corpus can answer, checked with literature searches. Phase 7i. |
+| Replication wave, not collected | A listing scan on 21 November (no download) found 42 new videos on 30 of the 101 channels. A confirmation wave would need a new collection, which the owner has not opened. |
+
+**Next, in order.**
+
+1. Finish release pass 2, publish the release, update both dashboards with links to it and to the gallery.
+2. Read the panel's programme, log each decision in the registry and publish it.
+3. Run the programme's no-cost analyses on the seen creators, with plots, as exploratory outputs.
+4. Delete the private hold-out text caches once the release is verified (lead's decision D10), and log it.
+5. Owner items: an ethics or exemption determination before any submission; revoking the OpenAI key now that
+   no model call is planned; whether to open a confirmation wave.
+
+## November 20, evening (superseded): transcripts done, analysis under way
 
 The owner closed the download goal on 20 November: 1,946 of 1,976 selected recordings are archived and the 30
 outstanding ones are final failures. The local speech-to-text run finished at 19:56 UTC. The details, the rules
@@ -697,6 +724,9 @@ at half price. The labels feed H1, H2, H4, H5, H6 and H9.
 * **Done when** each of the six hypotheses has its row in the results table, with estimate, interval, verdict
   under A5 and the reliability of its labels, or the reason it was not run; and the dashboards and the paper
   show them.
+* **State on 2026-11-25: done.** The seen labels were finished on 21 November at 11:10 UTC, freeze 2 was made at
+  16:10 UTC, and the hold-out labels and reliability runs were done by 18:41 UTC. The six tests ran from 18:54 to
+  19:03 UTC, each with its row in the results table; the dashboards and the paper show them.
 
 ### Phase 7g: the second round, led by an expert panel (added 2026-11-20, at the owner's request)
 
@@ -722,6 +752,50 @@ the collected data (registry amendment A7). Everything it adds is exploratory.
   tables in the dashboards and the paper.
 * **Done when** every item of the programme has its outputs or a written reason why not, and every item of the
   owner's list above is covered or explicitly left out with a reason.
+
+* **State on 2026-11-25.** The programme ran on 21 November. Its outputs, with plots for each experiment (a
+  gallery of 24 experiments, 22 November), are reviewed for release with the exploratory round (Phase 7h).
+
+### Phase 7h: the exploratory round and its release (added 2026-11-21 under the registered reporting plan)
+
+The exploratory reporting plan was registered by hash on 21 November (06:36 UTC), together with addendum 1,
+and addendum 2 at 13:05 UTC. It lists every exploratory output with its place in the paper and reports
+each whatever it shows. Nothing in it is a test of H1 to H10.
+
+* **Done.** The first wave (22 November, about 02:00 UTC) and a second wave of the 13 no-cost outputs that no
+  package had taken (04:55 UTC): 111 outputs reported, 60 not run. Every package was verified through two lenses
+  and fixed. Release pass 1 (07:10 UTC): figures for every reported output, and public tables and figures for the
+  outputs built before the round, each group verified adversarially and fixed. The lead's decisions D1 to D56,
+  each logged in the registry.
+* **Running.** Release pass 2: corrections to existing files, a recount of every agreement figure by creator, the
+  public results folder `research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/` with one
+  figure gallery, addendum 3, the paper's update, then scans and three adversarial verifiers.
+* **Rules.** Hold-out results are printed beside the seen ones, never pooled. Every output made after a hold-out
+  contact carries a flag, and every contact is in the registry's contact log. No cell rests on fewer than 5
+  creators, and no value can be recovered by difference.
+* **Done when** the release is published with its gallery, the paper cites it, and the dashboards link to it.
+
+### Phase 7i: the third-round expert panel (added 2026-11-21, at the owner's request)
+
+The owner asked for a panel that treats everything run so far as preliminary experiments and searches for
+deeper analysis, with an expert on occult and religious history, an ET and contactee expert, a conspiracy
+theorist and a denialist panel, three rounds moderated by the lead, plots for each experiment, and a further
+round on novelty and on research questions only this corpus can answer.
+
+* **Members.** All are model agents playing a role: a statistician, a computational linguist, a computational
+  social scientist, a measurement methodologist, a speech and audio researcher, an LLM-annotation researcher,
+  the two domain experts, an insider reader of conspiracy culture, and three denialists (a materialist skeptic,
+  a methodological denier and a sociological debunker).
+* **Process.** Round 1, proposals. Round 2, each member answers all others. Round 3, revised proposals and a
+  ranking. Round 4, novelty claims checked with literature searches and worded "not found in N searches",
+  attacked by the denialists and the statistician. The lead's assistant writes a synthesis after each round.
+  The lead decides the programme.
+* **Rules.** The hold-out is spent, so new hypotheses are explored on seen creators and registered for a future
+  confirmation wave. Proposals that need model calls are listed as unfunded. The domain and emic members inform
+  codebooks; nothing they say is published as fact or endorsement. The communities are described without
+  mockery.
+* **Done when** the programme is published with every decision and its reason, and its no-cost analyses have
+  their outputs and plots.
 
 ### Phase 7b: the cycle runs itself, with a team of agents (added 2026-11-14, at the owner's request)
 
