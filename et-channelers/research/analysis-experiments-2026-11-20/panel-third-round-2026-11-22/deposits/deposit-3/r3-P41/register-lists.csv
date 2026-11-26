@@ -1,0 +1,16 @@
+list_id,file_stem,entries_served,planned_use
+L01,r3-P43-dated-strata,r3-P43 / r4-P26 (also feeds r3-P44 / r4-P27 through L02),"Co-presence of historically dated vocabularies: one joint table of thematic-historical layers, each with an entry date and per-term dates where a source gives one"
+L02,r3-P44-strata-pairs,r3-P44 / r4-P27,Pairs of L01 layers (and of L05 with L06) tested against the fixed-margin null; the decisive pair marked
+L03,r3-P45-density-dimension,r3-P45,Density scale against dimension scale (a title-free lineage marker)
+L04,r3-P46-source-name-classes,r3-P46,Source names in titles by class: open (kind or collective names) and franchise-like (individual names used by many channels in the published record); the unnamed class is a residual rule; the single-channel class is not written (see README)
+L05,r3-P48-control-register-v2,"r3-P48 (also r3-P49, r3-P50, r4-P18, r4-P27 adversary side, r4-P28, r4-P29 base)","Control talk by sub-register, adversary classes split by valence, bridge terms apart"
+L06,r3-P49-shift-terms,r3-P49 / r4-P18 (shift curve); r3-P44 conspirituality pair,Shift-of-consciousness vocabulary (the second conviction of conspirituality)
+L07,r3-P51-named-actor-classes,r3-P51 / r4-P28,"Named institutions by class, disclosure split into institutional and consciousness-based, contested public-health content, criminal-law process words"
+L08,r4-P29-defanging,r4-P29,How an adversary's threat is resolved: by inner means or by an outside agent
+L09,r3-P52-plural-self-reference,r3-P52 / r4-P12,First-person plural and singular forms; self-naming and address frames that remove units from the ratio
+L10,r3-P53-self-described-modes,r3-P53 / r4-P30 (groups for r3-P16; received-text class for r3-P14),Cues of self-described modes of mediation
+L11,r3-P55-endorsement,r3-P55,"References to the creator as the channel, and endorsement predicates"
+L12,r3-P56-commerce-idiom-dissemination,r3-P56,Insider idiom of payment as exchange or gift; asks to share a message
+L13,r3-P60-destinations-suppression,r3-P60,Off-platform destination classes (link domains) with funnel depth; suppression talk split into platform moderation and hidden-actor suppression
+L14,r3-P61-persuasion-devices,r3-P61 (pilot; instrument for the comparison set only),Persuasion and monetisation devices with devotional twins; price cues for the priced-or-unpriced rule
+L15,r3-P40-passed-years,r3-P40 / r4-P25,"Retrospective cue families (fulfilment, timeline split, deferral) near target years; year roles"

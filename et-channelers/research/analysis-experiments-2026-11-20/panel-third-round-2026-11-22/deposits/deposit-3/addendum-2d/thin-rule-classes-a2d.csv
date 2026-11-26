@@ -1,0 +1,73 @@
+list_id,list_file,class,register_rows_counted,expanded_forms_counted,status_as_hashed_literal,status_after_correction,affected_by_correction
+L15,r3-P40-passed-years-a2.csv,DEFER,1,23,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L15,r3-P40-passed-years-a2.csv,FULFIL,1,9,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L15,r3-P40-passed-years-a2.csv,SPLIT,1,18,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L15,r3-P40-passed-years-a2.csv,YEAR-LIT,4,4,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L03,r3-P45-density-dimension-a2c.csv,DEN,0,0,no counted term left (set aside),no counted term left (set aside),no
+L03,r3-P45-density-dimension-a2c.csv,DIM,2,115,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L04,r3-P46-source-name-classes-a2b.csv,FRANCHISE,13,38,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L04,r3-P46-source-name-classes-a2b.csv,OPEN,11,33,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L05,r3-P48-control-register-v2-a2c.csv,ADV-AMB,2,13,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L05,r3-P48-control-register-v2-a2c.csv,ADV-NEG,3,18,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L05,r3-P48-control-register-v2-a2c.csv,BRIDGE,1,2,not computed (too few terms),not computed (too few terms),no
+L05,r3-P48-control-register-v2-a2c.csv,CR-A,3,6,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L05,r3-P48-control-register-v2-a2c.csv,CR-B,4,5,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L05,r3-P48-control-register-v2-a2c.csv,CR-C,8,21,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L05,r3-P48-control-register-v2-a2c.csv,CR-D,2,3,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L05,r3-P48-control-register-v2-a2c.csv,CR-E,1,1,not computed (too few terms),not computed (too few terms),no
+L06,r3-P49-shift-terms-a2.csv,SHIFT,7,53,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L07,r3-P51-named-actor-classes-a2b.csv,CONTEST-PH,3,22,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L07,r3-P51-named-actor-classes-a2b.csv,DISC-CONSC,1,1,not computed (too few terms),not computed (too few terms),no
+L07,r3-P51-named-actor-classes-a2b.csv,DISC-INST,5,21,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L07,r3-P51-named-actor-classes-a2b.csv,INST-CORP,1,5,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L07,r3-P51-named-actor-classes-a2b.csv,INST-GOV,1,3,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L07,r3-P51-named-actor-classes-a2b.csv,INST-INTL,5,8,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L07,r3-P51-named-actor-classes-a2b.csv,INST-MEDIA,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L07,r3-P51-named-actor-classes-a2b.csv,INST-RELIG,1,3,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L07,r3-P51-named-actor-classes-a2b.csv,INST-SEC,4,8,computed if 3 or more rows are used by 5 or more creators,computed if 3 or more forms are used by 5 or more creators,no
+L07,r3-P51-named-actor-classes-a2b.csv,INST-SPACE,1,1,not computed (too few terms),not computed (too few terms),no
+L07,r3-P51-named-actor-classes-a2b.csv,LEGAL,2,8,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L09,r3-P52-plural-self-reference-a2b.csv,FP-PL,1,10,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L09,r3-P52-plural-self-reference-a2b.csv,FP-SG,1,9,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L10,r3-P53-self-described-modes.csv,MODE-CONSCIOUS,1,10,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L10,r3-P53-self-described-modes.csv,MODE-DICTATION,1,8,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L10,r3-P53-self-described-modes.csv,MODE-HIGHERSELF,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L10,r3-P53-self-described-modes.csv,MODE-LIGHTLANG,1,2,not computed (too few terms),not computed (too few terms),no
+L10,r3-P53-self-described-modes.csv,MODE-READALOUD,1,18,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L10,r3-P53-self-described-modes.csv,MODE-RECITATION,1,6,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L10,r3-P53-self-described-modes.csv,MODE-RELAY,1,19,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L10,r3-P53-self-described-modes.csv,MODE-TRANCE,1,14,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L11,r3-P55-endorsement-a2c.csv,ENDORSE,2,54,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L11,r3-P55-endorsement-a2c.csv,REF-CREATOR,1,2,not computed (too few terms),not computed (too few terms),no
+L12,r3-P56-commerce-idiom-dissemination.csv,DISSEM,1,18,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L12,r3-P56-commerce-idiom-dissemination.csv,IDIOM,1,19,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-ALTVID,1,6,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-AUDIO,1,3,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-EMAIL,1,5,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-LINKHUB,1,2,not computed (too few terms),not computed (too few terms),no
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-MEMB,1,11,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-MSG,1,7,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-SELF,1,2,not computed (too few terms),not computed (too few terms),no
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-SERVICE,1,12,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-SHOP,1,11,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-SOCIAL,1,6,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,DEST-UNRESOLVED,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,SUPP-HIDDEN,1,18,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L13,r3-P60-destinations-suppression-a2b.csv,SUPP-PLATFORM,1,17,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,AUTHORITY-C,2,14,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,COMMIT-C,1,10,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,COMMIT-D,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,DISCOUNT-C,1,9,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,GUARANTEE-C,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,PRICE,1,19,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,RECIP-C,1,13,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,RECIP-D,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,SCARCITY-C,1,10,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,SCARCITY-D,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,SOCIAL-C,1,11,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,SOCIAL-D,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,UNITY-D,1,8,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,URGENCY-C,1,9,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L14,r3-P61-persuasion-devices-a2b.csv,URGENCY-D,1,4,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L08,r4-P29-defanging-a2b.csv,RES-INNER,2,60,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes
+L08,r4-P29-defanging-a2b.csv,RES-OUTSIDE,2,15,not computed (too few terms),computed if 3 or more forms are used by 5 or more creators,yes

@@ -1,0 +1,11 @@
+r3-P41 register build checks
+terms: 255; expanded forms: 1192
+kinds: {'counted': 200, 'excluded': 5, 'gated': 4, 'not listed': 16, 'class row': 6, 'gate-only': 1, 'frame': 2, 'counted-unless-gate': 1, 'domain': 9, 'flagged': 1, 'fixed elsewhere': 10}
+term rows per list: {'L01': 105, 'L03': 3, 'L04': 24, 'L05': 37, 'L06': 7, 'L07': 26, 'L08': 4, 'L09': 4, 'L10': 8, 'L11': 3, 'L12': 2, 'L13': 13, 'L14': 15, 'L15': 8}
+sources used: 124 of 130 defined; unused: BROWN1997, HASTINGS1991, MELTON1990, PARTRIDGE2003, HOFSTADTER1964, WEBER2004
+terms on more than one list: 37
+terms with forms nested in another list's forms: 10
+PROBLEMS (0):
+NOTES:
+  list L07: form 'disclosure' on terms T183,T184 (intended: one surface form, two gated classes; a token passing both gates is context-assigned and never counted)
+  pronoun forms of L09 nested inside other lists' phrases: 70 form pairs (expected; L09 counts pronoun tokens wherever they occur, other lists count their phrases)
