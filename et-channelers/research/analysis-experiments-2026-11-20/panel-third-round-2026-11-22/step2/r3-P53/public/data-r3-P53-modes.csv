@@ -1,0 +1,29 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P53 / r4-P30: self-described modes of mediation (the cue part) and where the frozen voice code files them; deposit 3's L10; step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Mode is self-presentation: 'creators who describe their practice as X' (cue counts in speech, any voice). A mode group is computed only if 3 or more of its expanded forms are each used by 5 or more of the 23 creators (addendum 2d); relay and dictation phrases also occur in ordinary speech (precision unknown).
+# Where the voice code files the cues (r4-P30) is a description: no correct filing is defined, so no misfiling rate is read. The modes the programme names as most at risk of misfiling (conscious or blended, dictation, received text read aloud) are thin here.
+# Values are shares; group counts are printed exactly where the count rule allows, otherwise as a band.
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: a privacy note is worded as a rule; no number changed.
+# Made 2026-11-26T15:00:13Z by code/publish_p53.py.
+entry,mode,what_it_names,row,creators,status,value
+r3-P53 / r4-P30,MODE-TRANCE,full trance,status,,not computed (too few terms or creators),
+r3-P53 / r4-P30,MODE-CONSCIOUS,conscious or blended,status,,not computed (too few terms or creators),
+r3-P53 / r4-P30,MODE-DICTATION,dictation,status,,not computed (too few terms or creators),
+r3-P53 / r4-P30,MODE-RELAY,relay,creators who describe their practice as relay (2 or more cues),10 to 19,computed,
+r3-P53 / r4-P30,MODE-RELAY,relay,the same with 1 or more cue (sensitivity),10 to 19,computed,
+r3-P53 / r4-P30,MODE-RELAY,relay,LAB-V's claimed share in the group against the other creators,,"not printed (a group's count is not printed exactly, or the other group holds fewer than 5 creators)",
+r3-P53 / r4-P30,MODE-RELAY,relay,"share of the mode's cues filed in claimed-voice units (creator-balanced, recordings inside the voice definition)",10 to 19,computed,0.473
+r3-P53 / r4-P30,MODE-RELAY,relay,share filed in own-voice units or units with no voice side (merged: the no-side part alone rests on fewer than 5 creators),10 to 19,computed,0.527
+r3-P53 / r4-P30,MODE-HIGHERSELF,higher self or Source,creators who describe their practice as higher self or Source (2 or more cues),18,computed,0.783
+r3-P53 / r4-P30,MODE-HIGHERSELF,higher self or Source,the same with 1 or more cue (sensitivity),not printed (privacy rule),computed,
+r3-P53 / r4-P30,MODE-HIGHERSELF,higher self or Source,LAB-V's claimed share in the group against the other creators,,"not printed (a group's count is not printed exactly, or the other group holds fewer than 5 creators)",
+r3-P53 / r4-P30,MODE-HIGHERSELF,higher self or Source,"share of the mode's cues filed in claimed-voice units (creator-balanced, recordings inside the voice definition)",10 to 19,computed,0.426
+r3-P53 / r4-P30,MODE-HIGHERSELF,higher self or Source,share filed in own-voice units or units with no voice side (merged: the no-side part alone rests on fewer than 5 creators),10 to 19,computed,0.574
+r3-P53 / r4-P30,MODE-READALOUD,received text read aloud,status,,not computed (too few terms or creators),
+r3-P53 / r4-P30,MODE-RECITATION,recitation of another receiver's message,status,,not computed (too few terms or creators),
+r3-P53 / r4-P30,MODE-LIGHTLANG,"vocalisation without recognisable words, self-described as light language",status,,not computed (too few terms or creators),
+r3-P53 / r4-P30,,,shift by mode (r3-P16),,not computed here (r3-P16),

@@ -1,0 +1,111 @@
+{
+ "id": "r3-P45",
+ "carries": null,
+ "class": "a.2 (ruling 11)",
+ "step": 2,
+ "status": "done (exploratory)",
+ "written_utc": "2026-11-26T13:05:58Z",
+ "label": "Exploratory; not a test of H1-H10. Tier L: the 23 non-development seen creators, run once with no split. Cue counts: sense not resolved, precision unknown (no reader). Model-coded labels, not checked by a person; agreement, never accuracy.",
+ "reading": "Not computed: DEN has no counted term after addendum 2c, so the density-scale share cannot be formed; C5 not run. DIM's checks carried from r3-P42.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec": {
+  "file": "prespec.md (shared by r3-P43 to r3-P46)",
+  "sha256": "7d1f1f186750520e69bddb1eb116c5189f50be04941addee57d7de80cb784af4",
+  "hashed_utc": "2026-11-26T12:44:24Z",
+  "amendment_1_sha256": "cf4ddb46a8999b23305c5da3842e029795df1e97b0ce71a78c13d127cdf89aee",
+  "amendment_1_hashed_utc": "2026-11-26T12:45:01Z",
+  "before_any_count": true
+ },
+ "run": {
+  "utc": "2026-11-26T12:49:11Z to 12:51:57Z",
+  "code": "code/analyse_p4346.py",
+  "under": "run_locked.sh, one process",
+  "analysis_code_sha256": "739bca629cbbbb58b0edba6cdad0f80debe40bba93ebac8e584f8b7e613133c9",
+  "reproduction_of_r3-P42": {
+   "composition_pseudo_F": true,
+   "composition_p": false,
+   "survival_rho": true,
+   "pairs_z": true,
+   "balances": true
+  },
+  "reproduction_note": "composition p 0.1665 in both; 'false' above is numpy's rounding of 0.1665 to 3 places (0.166) against Python's (0.167)"
+ },
+ "inputs_sha256": {
+  "panel-third-round-2026-11-22/step2/r3-P42/code/analyse_p42.py": "e6d370d855b7270cdbe33959af5226b9c62df301e01d0ecbbf56fd50bc7ee30f",
+  "panel-third-round-2026-11-22/step2/r3-P42/code/p42common.py": "ae6b91c039c3eb3fedb5b7cf7136309faa99f95b542f71c2a6e92ce2bb20d9d6",
+  "panel-third-round-2026-11-22/step2/common/lexmatch.py": "2297864c74dfe2604211399438963b2b89d46896a2f83137ce9232cf10d28d28",
+  "panel-third-round-2026-11-22/step2/r3-P42/private/p42-extract.private.pkl": "8101aba5f9b647ed718fdbbbb00a80ce11680c8b74aa296e0f1346c7de8a1215",
+  "panel-third-round-2026-11-22/step2/r3-P42/private/p42-counts.private.pkl": "1cd15e57a07a56b9ad5fa35dce89e4965056b62f4b1d799ddb9271b1b5ff007e",
+  "panel-third-round-2026-11-22/step1/r3-P01/code/pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "exploratory-2026-11-21/CROSS/code/mtmm.py": "cf1e5f7a0541e6296d668ac0b679ce20dbcf826a03b11a76903df489022c0e5c",
+  "exploratory-2026-11-21/CROSS/code/crosscommon.py": "bb5aadb1156bf6b983ea4de747aa174a18afc3c3e9b6e8c20c4173739cf5f7da",
+  "panel-third-round-2026-11-22/step2/r3-P43/prespec.md": "7d1f1f186750520e69bddb1eb116c5189f50be04941addee57d7de80cb784af4",
+  "panel-third-round-2026-11-22/step2/r3-P43/prespec-amendment-1.md": "cf4ddb46a8999b23305c5da3842e029795df1e97b0ce71a78c13d127cdf89aee"
+ },
+ "privacy": {
+  "identifier_hits": 0,
+  "png_text_chunks": 0,
+  "pdf_document_information": 0,
+  "creator_counts_in_text": [
+   5,
+   11,
+   23
+  ],
+  "solvers": {
+   "zsolve": "rows tested 0; pinned 0; narrowed 0",
+   "qscan_all2": "files with quantile columns 0; flagged rows 0",
+   "whole_position_scan": "files read; rows with quantiles 0; failing rows 0",
+   "s1_carried": "carried_share not printed: 0 rows testable",
+   "s1_predk": "no 'creators' column (no banded count with an interval): 0 rows testable",
+   "s1_chain": "no 'statistic' column: 0 rows testable",
+   "s1_bucket, s1_bucket_p01, s1_shape, s1_seen, s1_profile, s1_blanks_p01, s1_crossval, s1_p27": "run on step 1's merged public tree plus these entries' public files; they read step-1 files only; s1_shape: rows left with 4 or fewer values 0",
+   "s1_blanks (d62)": "no leak (empty counter)",
+   "banded rows": "no row prints a banded or withheld creator count beside an interval; the layer-user bands (5 to 9, 10 to 14, 15 or more of the 23) and R11's '5 or more of the 23' carry no interval and keep 5 or more values each"
+  },
+  "solver_log": "r3-P43/private/solver-run.private.log"
+ },
+ "contacts": "none (contacts.md)",
+ "files_sha256": {
+  "code/analyse_p4346.py": "739bca629cbbbb58b0edba6cdad0f80debe40bba93ebac8e584f8b7e613133c9",
+  "code/finalize_p4346.py": "4da9a361be6d3b3cc8947a066a1f34b1b49c64b9a5cfd27f231b6fc5992af607",
+  "code/p4346common.py": "4d4f7a17a739d931d0b16e79473a34378b4347d511454e86819f0e6cc7ba2e9b",
+  "code/publish_p4346.py": "caf60ee41e8f083a77f2ce6222a78c0e25c6a0af5e90e84b658c56f573d68576",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "c22ec4c16a76cf33c5250d3742bb133478a64fcf62816420b5df8d37bd082483",
+  "prespec-amendment-1.md": "cf4ddb46a8999b23305c5da3842e029795df1e97b0ce71a78c13d127cdf89aee",
+  "prespec-hash-record.md": "6d565f1f195c5d60e2aa6eed385a2b3559cbf5307a332c96e14be253c0ab3f3d",
+  "prespec.md": "7d1f1f186750520e69bddb1eb116c5189f50be04941addee57d7de80cb784af4",
+  "public/data-r3-P45-readings.csv": "493c53c18fc102e498e9b526836c94216d70da5a362f215042bb0800473cb0f2",
+  "public/fig-r3-P45-status.pdf": "501fd441321858127f104c59bf5f3d0831e96c439f820769a3cf519bbe17b23f",
+  "public/fig-r3-P45-status.png": "3e6cbe902cdcef8b409d0d5cdc77b3ad5be544f46f0bb8a9578bb0e39d95b7f1",
+  "README.md": "abdb09dea6b1575e290efdb80e95791ba8442c8dc490100ff05892e9f12e59ae"
+ },
+ "note_2026-11-26_decision_70": "2026-11-26T14:07:22Z (UTC, from date -u): files changed by the lead's step-2 decision 70 (no number changed); their recorded hashes refreshed: README.md, code/publish_p4346.py",
+ "note_2026-11-26_decision_86": "2026-11-26T15:09:31Z (UTC, from date -u): files changed by the lead's step-2 decision 86 (no number changed); their recorded hashes refreshed: README.md, code/publish_p4346.py, public/data-r3-P45-readings.csv, public/fig-r3-P45-status.pdf, public/fig-r3-P45-status.png",
+ "note_2026-11-26_decision_95": "2026-11-26T15:37:28Z (UTC, from date -u): files changed by the lead's step-2 decision 95 (no number changed); their recorded hashes refreshed: code/publish_p4346.py",
+ "note_2026-11-26_decision_97": "2026-11-26T15:51:01Z (UTC, from date -u): files changed by the lead's step-2 decision 97 (no number changed); their recorded hashes refreshed: code/publish_p4346.py",
+ "published_copy": {
+  "staged_utc": "2026-11-26T15:51:01Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "abdb09dea6b1575e290efdb80e95791ba8442c8dc490100ff05892e9f12e59ae",
+   "contacts.md": "271aff5605865e2c5982b80b3696a3425cad1bc40bb8f9199873485462de2485",
+   "prespec-amendment-1.md": "cf4ddb46a8999b23305c5da3842e029795df1e97b0ce71a78c13d127cdf89aee",
+   "prespec-hash-record.md": "6d565f1f195c5d60e2aa6eed385a2b3559cbf5307a332c96e14be253c0ab3f3d",
+   "prespec.md": "7d1f1f186750520e69bddb1eb116c5189f50be04941addee57d7de80cb784af4",
+   "public/data-r3-P45-readings.csv": "493c53c18fc102e498e9b526836c94216d70da5a362f215042bb0800473cb0f2",
+   "public/fig-r3-P45-status.pdf": "501fd441321858127f104c59bf5f3d0831e96c439f820769a3cf519bbe17b23f",
+   "public/fig-r3-P45-status.png": "3e6cbe902cdcef8b409d0d5cdc77b3ad5be544f46f0bb8a9578bb0e39d95b7f1"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "not_published": "code/, private/",
+  "path_replacements": [
+   {
+    "file": "contacts.md",
+    "replaced_by": "(copied to a scratch folder)"
+   }
+  ]
+ }
+}

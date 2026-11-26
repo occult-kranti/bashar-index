@@ -1,0 +1,153 @@
+{
+  "id": "r3-P42",
+  "class": "a.2 (ruling 11)",
+  "step": 2,
+  "status": "done (exploratory)",
+  "written_utc": "2026-11-26T12:18:58Z",
+  "label": "Exploratory; not a test of H1-H10. Seen creators only (the 23 non-development seen creators, tier L). Cue counts: sense not resolved, precision unknown (no reader). Model-coded voice labels, not checked by a person; agreement, never accuracy.",
+  "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+  "prespec": {
+    "file": "deposits/deposit-3/r3-P42/prespec.md (read with addendum-2d/README-a2d.md)",
+    "sha256": "c98b3bf947e32ed4fee94bb0bf0ce60de8e4e8f2e62f230f9335aaee77096dfc",
+    "deposit_merged_utc": "2026-11-26T11:14:53Z",
+    "hashes_md_sha256": "e12fb42545f77a36031644100af4df95f759c60cbb0f13275e45a7f7efca5c01"
+  },
+  "matcher": {
+    "file": "../common/lexmatch.py",
+    "sha256": "2297864c74dfe2604211399438963b2b89d46896a2f83137ce9232cf10d28d28",
+    "tests": "../common/test_lexmatch.py",
+    "tests_sha256": "2fdf847008668aec4af16b725325c4c0aa5dfbc3fbab4ae6a707915015464e60",
+    "tests_result": "39 tests, 0 failed",
+    "hashed_utc": "2026-11-26T11:35:21Z (before any corpus text was read)"
+  },
+  "records": {
+    "a6_variants_hashed_utc": "2026-11-26T11:40:48Z",
+    "run_record_hashed_utc": "2026-11-26T11:45:43Z",
+    "amendments_before_any_count_read_utc": [
+      "2026-11-26T11:47:50Z",
+      "2026-11-26T11:51:42Z"
+    ],
+    "count_utc": "2026-11-26T11:51:42Z to 11:52:38Z",
+    "checks_utc": "2026-11-26T11:58:15Z to 12:02:28Z; A1 extended 12:14:49Z to 12:15:51Z"
+  },
+  "classes": {
+    "total": 67,
+    "computed": 15,
+    "not computed (too few terms)": 49,
+    "not computed until r3-P54 (waits for the owner's ethics act)": 3
+  },
+  "reading": "Most lists cannot be computed on the 23 non-development creators (49 of 67 classes thin). Of the 75 statistic rows of the 15 computed classes, 43 sit inside their matched-placebo or pseudo-strata band (fail as structure), 5 are term-dependent, 1 is not separable from the ledger's coded families, 1 holds through every check (L01 S14's concentration); 15 title-profile rows cannot be computed and 10 are not printed (privacy rule) or undefined. L01's composition test: no stratigraphic structure beyond placebos; survival strip: no dated order beyond the null; L02: no pair outside both bands; L06: no excess over matched placebos; L09: outside both bands but term-dependent ('we').",
+  "not_computed": [
+    "C5 two-author test (no second author's list was hashed before the run)",
+    "L15 target-year cue rates against the control-year band (year roles not fixed in deposit 3)",
+    "title-profile contrasts (a title-profile group holds fewer than 5 of the 23 creators)",
+    "not computed until r3-P54: L01 S12 and S15; L05 CR-A; L02 P000 and the 30 pairs with S12 or S15; et's A-window estimand for r3-P48",
+    "not computed (too few terms): 49 classes (data-r3-P42-classes.csv), 76 layer pairs and P001, every balance but occult B1 and B2"
+  ],
+  "departures": [
+    "C5 not run before or in the run (no second author's list existed); a later, separate C5 remains possible",
+    "the latest addendum version of each list binds (a2d, a2c, a2b, a2, original), not the prespecification's earlier table",
+    "run record amended twice before any count was read (L08 and L15 statistics as shares inside base units or year windows; stored quantities)",
+    "after the first analysis run: zero replacement corrected before any result was read; then P001 thin when every L05 class is thin, CR-A's residual terms out of L05's collision totals, L09's C2 and C4, L13 depth carriers (no choice changed)",
+    "C2 on single-row classes is term-dependent by construction under the literal rule; the form-level reading is printed beside",
+    "A1 extended to the audience and economy contrasts after the results were read (every other value identical)",
+    "A1 rows whose estimate without coder-shared forms rests on fewer than 5 creators read conservatively (changed L01 S06's economy reading)",
+    "gates run on one recording's run of label units on one voice side; sub-streams named in README departure 8"
+  ],
+  "privacy": {
+    "creator_counts_printed": [
+      23,
+      11
+    ],
+    "count_23": "the 23 non-development creators (deposit 2's printed count, same set)",
+    "count_11": "the 11 voice-eligible creators: its nesting with other printed groups was checked; any pair 1 to 4 apart carries no statistic on the smaller group",
+    "identifier_scan": "0 hits (CSV, PNG, PDF, README, records)",
+    "pdf_document_information": "none",
+    "banded_rows": 0,
+    "solvers": {
+      "s1_predk": "no 'creators' column in any r3-P42 CSV (no banded count): 0 rows testable",
+      "s1_carried": "carried_share is not printed: 0 rows testable (7 CSVs)",
+      "s1_crossval": "wired to step 1's r3-P32 files; reads none of r3-P42's",
+      "s1_p27": "wired to step 1's r3-P27 file; reads none of r3-P42's",
+      "s1_chain": "no matching rows ('statistic'/'pi90' columns absent): 0 rows testable",
+      "s1_bucket": "run on the staged step-1 tree plus r3-P42: reads only step-1 files; validation 36/36, 4/4, 9/9, 66/66",
+      "s1_bucket_p01": "run beside its bucket.py: step-1 file only; 36 of 36 reproduced",
+      "s1_shape": "staged step-1 tree plus r3-P42: rows left with 4 or fewer values: 0 (reads only step-1 files)",
+      "zsolve": "over r3-P42/public: rows tested 0, pinned 0, narrowed 0",
+      "qscan_all2": "over r3-P42/public: files with quantile columns 0; flagged rows 0",
+      "s1_seen (seen.py)": "reads step 1's r3-P04 files only (stopped on an empty step-1 estimate cell); none of r3-P42's",
+      "s1_blanks (blanks.py)": "reads step-1 files only; its report under decision 56's superseded rule is settled by decision 65",
+      "s1_blanks_p01 (blanks_p01.py)": "step 1's r3-P01 file only: 'no leak' on every row",
+      "s1_profile (profile.py)": "reads step 1's r3-P07 files only (stopped on an empty step-1 estimate cell); none of r3-P42's"
+    },
+    "solver_logs": "private/solver-run.private.log, private/solver-final.private.log"
+  },
+  "contacts": "none (contacts.md)",
+  "files_sha256": {
+    "a6-variants-hash-record.md": "ca1e1aa7cd269ebe1a70f825cd146e5df6181424ec543a232f2dd515c8b50b38",
+    "code/analyse_p42.py": "e6d370d855b7270cdbe33959af5226b9c62df301e01d0ecbbf56fd50bc7ee30f",
+    "code/count_p42.py": "43800249fe5dd2c6ca82cc3268da23de3821592387e1005e0028d4a7d63d021e",
+    "code/extract_p42.py": "42ff51aa9152b5fadf0a4b54b14291c10669428ccbabe058d9f49133f29a047c",
+    "code/gen_variants_p42.py": "0ddaeeae6dbc7c285003d035e5fe73cd7d39f9c8f8a33ccc8d7224dee875a0a5",
+    "code/p42common.py": "ae6b91c039c3eb3fedb5b7cf7136309faa99f95b542f71c2a6e92ce2bb20d9d6",
+    "code/plot_p42.py": "b8ac3a43b119c44a9fc8460e63c01644dca8d57d0a870e139ca3f36389f36d22",
+    "code/publish_p42.py": "b82d8a98ef3ba123dc2bde869247c8952c5fdb2ae65490292c6c2b6f7fa224e2",
+    "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+    "contacts.md": "49a2786e23fa7eb5912a3147e9e310c2a2613ef4a8b95cc06f400be34385127e",
+    "public/data-r3-P42-classes.csv": "85e556b9e8bcf7c23484de8f3a19ddc634c14bd3a0e721e25a0f908dc0c94558",
+    "public/data-r3-P42-collisions.csv": "891108981719a4d710e30a275d9e38a1ca5581aafe0e5a8542c4ae91e0d890b2",
+    "public/data-r3-P42-dif.csv": "8873187bbdc122636de832464879b4bc78f3f709b6c59a94130f8d96274b65c6",
+    "public/data-r3-P42-influence.csv": "0da4e4a29c0436ef7f274f72051f55e06888fae539729829793a5d2004d87561",
+    "public/data-r3-P42-l01.csv": "9d4199c26ce253a29643f79dc0eaf1d636f822d8709609319fd7603b7b808902",
+    "public/data-r3-P42-lists.csv": "d36dc39b8df9aea5efc1723531e95b00ca89f3daf4167cd42c4bfcfe92b53374",
+    "public/data-r3-P42-pairs.csv": "a449d9474ce8acf72ea88a9007498e0c7c84d6c41caaa46ab3fa3cf3da1e7f17",
+    "public/fig-r3-P42-collisions.pdf": "2fad2551bdf6d417d2c6c4227144378c05754f2c37cf35d96c2be167f4004d21",
+    "public/fig-r3-P42-collisions.png": "45ff26f3b61a761fbc13356e85abb2443ec53fd1bc6fa997578d7406edd8243d",
+    "public/fig-r3-P42-influence.pdf": "acde072032707d5501b531428a7ea288359cee937a2e81c480fa53cffe03e15a",
+    "public/fig-r3-P42-influence.png": "c19ae940dabee28ceb4ed1877f876bf28c10534a98339fcc120e4e7366eaa6c2",
+    "public/fig-r3-P42-placebo-bands.pdf": "cceef467ebb70f81e27fa41eafa92d16c9e5d6cd403f14e3e862c94a964d7573",
+    "public/fig-r3-P42-placebo-bands.png": "b754261b188ed3d42135466462326442135717898a7418d0f9060f98ad0363a5",
+    "public/fig-r3-P42-structure.pdf": "d8d458bacee6a3b5ca917323f28944c7ea8f5855d801e204b0c859394ab3918b",
+    "public/fig-r3-P42-structure.png": "993e199a498979f8dc27c6b371167aa17aaf5b47af1388c25b23012b988c5605",
+    "README.md": "f158269f7449dbaea4ce8b734489799fa22bb0b942f0ce4a20891f862686bbe1",
+    "run-record-hash.md": "936dd75c2d86ca2fe8d74851d444f80fa576e1285acbb5c321f91984ae239ba7",
+    "run-record.md": "6637735907f4c173b95713f0f671dc1216c7337f9896540efbc0c24b42f7f8c4"
+  },
+  "note_2026-11-26_decision_70": "2026-11-26T14:07:22Z (UTC, from date -u): files changed by the lead's step-2 decision 70 (no number changed); their recorded hashes refreshed: README.md",
+  "note_2026-11-26_decision_86": "2026-11-26T15:09:31Z (UTC, from date -u): files changed by the lead's step-2 decision 86 (no number changed); their recorded hashes refreshed: README.md, code/plot_p42.py, code/publish_p42.py, public/data-r3-P42-classes.csv, public/data-r3-P42-collisions.csv, public/data-r3-P42-dif.csv, public/data-r3-P42-influence.csv, public/data-r3-P42-l01.csv, public/data-r3-P42-lists.csv, public/fig-r3-P42-influence.pdf, public/fig-r3-P42-influence.png, public/fig-r3-P42-placebo-bands.pdf, public/fig-r3-P42-placebo-bands.png, public/fig-r3-P42-structure.pdf, public/fig-r3-P42-structure.png",
+  "note_2026-11-26_decision_95": "2026-11-26T15:37:28Z (UTC, from date -u): files changed by the lead's step-2 decision 95 (no number changed); their recorded hashes refreshed: README.md, code/publish_p42.py, public/data-r3-P42-classes.csv, public/data-r3-P42-l01.csv, public/data-r3-P42-lists.csv",
+  "note_2026-11-26_decision_97": "2026-11-26T15:51:01Z (UTC, from date -u): files changed by the lead's step-2 decision 97 (no number changed); their recorded hashes refreshed: README.md, code/publish_p42.py, public/data-r3-P42-classes.csv, public/data-r3-P42-l01.csv",
+  "published_copy": {
+    "staged_utc": "2026-11-26T15:51:01Z",
+    "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+    "published_sha256": {
+      "README.md": "f158269f7449dbaea4ce8b734489799fa22bb0b942f0ce4a20891f862686bbe1",
+      "a6-variants-hash-record.md": "ca1e1aa7cd269ebe1a70f825cd146e5df6181424ec543a232f2dd515c8b50b38",
+      "contacts.md": "49a2786e23fa7eb5912a3147e9e310c2a2613ef4a8b95cc06f400be34385127e",
+      "public/data-r3-P42-classes.csv": "85e556b9e8bcf7c23484de8f3a19ddc634c14bd3a0e721e25a0f908dc0c94558",
+      "public/data-r3-P42-collisions.csv": "891108981719a4d710e30a275d9e38a1ca5581aafe0e5a8542c4ae91e0d890b2",
+      "public/data-r3-P42-dif.csv": "8873187bbdc122636de832464879b4bc78f3f709b6c59a94130f8d96274b65c6",
+      "public/data-r3-P42-influence.csv": "0da4e4a29c0436ef7f274f72051f55e06888fae539729829793a5d2004d87561",
+      "public/data-r3-P42-l01.csv": "9d4199c26ce253a29643f79dc0eaf1d636f822d8709609319fd7603b7b808902",
+      "public/data-r3-P42-lists.csv": "d36dc39b8df9aea5efc1723531e95b00ca89f3daf4167cd42c4bfcfe92b53374",
+      "public/data-r3-P42-pairs.csv": "a449d9474ce8acf72ea88a9007498e0c7c84d6c41caaa46ab3fa3cf3da1e7f17",
+      "public/fig-r3-P42-collisions.pdf": "2fad2551bdf6d417d2c6c4227144378c05754f2c37cf35d96c2be167f4004d21",
+      "public/fig-r3-P42-collisions.png": "45ff26f3b61a761fbc13356e85abb2443ec53fd1bc6fa997578d7406edd8243d",
+      "public/fig-r3-P42-influence.pdf": "acde072032707d5501b531428a7ea288359cee937a2e81c480fa53cffe03e15a",
+      "public/fig-r3-P42-influence.png": "c19ae940dabee28ceb4ed1877f876bf28c10534a98339fcc120e4e7366eaa6c2",
+      "public/fig-r3-P42-placebo-bands.pdf": "cceef467ebb70f81e27fa41eafa92d16c9e5d6cd403f14e3e862c94a964d7573",
+      "public/fig-r3-P42-placebo-bands.png": "b754261b188ed3d42135466462326442135717898a7418d0f9060f98ad0363a5",
+      "public/fig-r3-P42-structure.pdf": "d8d458bacee6a3b5ca917323f28944c7ea8f5855d801e204b0c859394ab3918b",
+      "public/fig-r3-P42-structure.png": "993e199a498979f8dc27c6b371167aa17aaf5b47af1388c25b23012b988c5605",
+      "run-record-hash.md": "36a9dd2e170ddda4e4e073fc577cc388fb4d289dc097127cbe574621cdf65ab2",
+      "run-record.md": "6637735907f4c173b95713f0f671dc1216c7337f9896540efbc0c24b42f7f8c4"
+    },
+    "changed_for_publication": [
+      "run-record-hash.md"
+    ],
+    "not_published": "code/, private/, prespec-draft.md (cited by hash only, deposit 3), prespec.md and prespec-hash-record.md (published in deposit 3; the README links to them; decision 70)",
+    "added_or_changed_for_publication": [
+      "run-record-hash.md: label line and/or agnosticism sentence added (step-1 decision 47)"
+    ]
+  }
+}

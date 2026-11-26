@@ -1,0 +1,32 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P51 / r4-P28: named actors and contested content, by voice (description only); deposit 3's L07 and L05, step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Terms that a glossary of antisemitic tropes documents are set aside (decision 51 L1); CR-A prints 'not computed until r3-P54 (waits for the owner's ethics act)'.
+# A class is computed only if 3 or more of its expanded forms are each used by 5 or more of the 23 creators (addendum 2d's thin rule); every class of L07 and every sub-register of L05 is thin, so no class row is computed. Contested content and named institutions are described as cue counts only, neutrally; a count is not a stance.
+# Made 2026-11-26T13:15:00Z by code/publish_p51.py.
+entry,list,class,what_it_names,status,note
+r3-P51 / r4-P28,L07,CONTEST-PH,contested public-health content,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,DISC-INST,institutional disclosure,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,DISC-CONSC,consciousness-based disclosure,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,INST-SEC,security institutions,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,INST-SPACE,space agency,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,INST-INTL,international institutions,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,INST-GOV,government,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,INST-RELIG,religious institutions,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,INST-MEDIA,news media,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,INST-CORP,corporations,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,LEGAL,criminal-law process (den-soc's legal-risk rows),not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,ADV-NEG,"adversary beings, negative valence",not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,ADV-AMB,"adversary beings, ambivalent valence",not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,BRIDGE,polarity cosmology (bridge),not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,CR-A,a hidden controlling group,not computed until r3-P54 (waits for the owner's ethics act),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,CR-B,an institution named as controlling,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,CR-C,a technology or programme of control,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,CR-D,an ontological or spiritual control system,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L05,CR-E,the population described as controlled,not computed (too few terms or creators),"rows unmatched, position-matched and middle-model: not computed"
+r3-P51 / r4-P28,L07,disclosure split,institutional against consciousness-based disclosure,not computable (a disclosure class is thin),
+r3-P51 / r4-P28,,by stratum composition,the unmatched row inside each title-profile stratum (CSS-5),not computed (a profile stratum holds fewer than 5 voice-eligible creators),
+r3-P51 / r4-P28,,three-way prediction table,"meaning, news hook, attribution shield",not scored (the three-way prediction table was not deposited before any count),

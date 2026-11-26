@@ -1,0 +1,23 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); voice labels and title codes are model-coded and not checked by a person; agreement between instruments is agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P43: survival strip (prespec 2.5): each dated layer's entry year (first year of the register's layer entry date) against the share of the 23 creators using it (one or more counted hits), printed as a band of the 23; beside it the central 90% of the same share over r3-P42's 200 matched-placebo sets.
+# S12 (imported) and S14 (undated) are left out by rule; S15 waits for r3-P54. The rank correlation's reading and bands are in data-r3-P43-readings.csv (the rank correlation itself is not printed: privacy rule).
+# Changed 2026-11-26T14:03:54Z (UTC, from date -u) by the lead's step-2 decision 70, and 2026-11-26T14:54:05Z (UTC) by decision 86: a value is not printed (privacy rule); no other value changed.
+# Privacy: every printed value rests on 5 or more creators who carry it, otherwise 'not printed'; no per-creator row or point; terms named only from the deposited lists and only where 5 or more creators use them; group sizes, group means and co-use counts are not printed; counts near printed counts are banded.
+# Made 2026-11-26T14:56:56Z by code/publish_p4346.py.
+layer,entry_year,status,creators_using_layer,placebo_share_5,placebo_share_95
+S01,1830,not computed (too few terms or creators),,,
+S02,1848,computed,15 or more of the 23 creators,0.7,0.91
+S03,1875,computed,not printed (privacy rule),0.91,1.0
+S04,1875,computed,15 or more of the 23 creators,0.83,0.96
+S05,1934,not computed (too few terms or creators),,,
+S06,1947,computed,15 or more of the 23 creators,0.74,0.91
+S07,1966,not computed (too few terms or creators),,,
+S08,1971,not computed (too few terms or creators),,,
+S09,1975,not computed (too few terms or creators),,,
+S10a,2005,not computed (too few terms or creators),,,
+S10b,2017,not computed (too few terms or creators),,,
+S11,2001,not computed (too few terms or creators),,,
+S13,1934,computed,10 to 14 of the 23 creators,0.61,0.83
+S15,1990,not computed until r3-P54 (waits for the owner's ethics act),,,

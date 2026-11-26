@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); voice labels and title codes are model-coded and not checked by a person; agreement between instruments is agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P46: MTMM's source-family cells on tier L (prespec 5.3): the four source-family measures of CROSS's mtmm.py (small, middle and page read titles; rule reads transcripts), rebuilt with its definitions for the 23 creators, with all recordings and without template recordings (recordings whose page title holds a listed L04 name; their titles and transcripts dropped).
+# Spearman rho over the 23 creators (each of them holds all four measures, with and without template recordings); 90% creator-bootstrap percentile intervals (2,000 draws; a fixed method: r3-P30 holds no class for a correlation across creators). Difference: without minus with, on the same resampled creators. Margin 0.10 (deposit 2); named direction: lower without template recordings.
+# Agreement between methods is agreement, never accuracy. A cell prints only if each of its measures is non-zero for 5 or more creators.
+# Privacy: every printed value rests on 5 or more creators who carry it, otherwise 'not printed'; no per-creator row or point; terms named only from the deposited lists and only where 5 or more creators use them; group sizes, group means and co-use counts are not printed; counts near printed counts are banded.
+# Made 2026-11-26T13:00:23Z by code/publish_p4346.py.
+pair,inputs,rho_all,low_90_all,high_90_all,rho_without_templates,low_90_without,high_90_without,difference,low_90_difference,high_90_difference,reading_of_difference
+source family|small against source family|middle,same input (title),not printed,,,not computed (too few terms or creators),,,,,,not computed (too few terms or creators)
+source family|small against source family|rule,different inputs (title against transcript),0.374,0.042,0.638,not computed (too few terms or creators),,,,,,not computed (too few terms or creators)
+source family|small against source family|page,same input (title),0.749,0.486,0.934,not computed (too few terms or creators),,,,,,not computed (too few terms or creators)
+source family|middle against source family|rule,different inputs (title against transcript),not printed,,,not computed (too few terms or creators),,,,,,not computed (too few terms or creators)
+source family|middle against source family|page,same input (title),not printed,,,not computed (too few terms or creators),,,,,,not computed (too few terms or creators)
+source family|rule against source family|page,different inputs (title against transcript),0.466,0.045,0.731,not computed (too few terms or creators),,,,,,not computed (too few terms or creators)

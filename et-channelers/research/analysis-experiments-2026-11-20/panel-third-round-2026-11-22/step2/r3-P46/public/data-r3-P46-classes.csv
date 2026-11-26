@@ -1,0 +1,14 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); voice labels and title codes are model-coded and not checked by a person; agreement between instruments is agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P46: source names as title templates, and classes of name; the 23 non-development seen creators (deposit 2's split, tier L), run once with no split. Name classes come from the literature (L04), never from counts; no list of names tied to one channel is written (decision 51 L4).
+# The thin rule reads L04's classes on expanded forms (addendum 2d); r3-P42's row reading is printed beside. Counts in this file are counts of list terms or titles unless they say creators.
+# Privacy: every printed value rests on 5 or more creators who carry it, otherwise 'not printed'; no per-creator row or point; terms named only from the deposited lists and only where 5 or more creators use them; group sizes, group means and co-use counts are not printed; counts near printed counts are banded.
+# Made 2026-11-26T13:00:23Z by code/publish_p4346.py.
+row,status,value,note
+class OPEN (titles naming a name of this class),not computed (too few terms or creators),expanded forms used in titles by 5 or more creators: 0 (addendum 2d's sense; 3 needed),rows used by 5 or more creators: 0 (r3-P42's literal reading: not computed (too few terms or creators))
+class FRANCHISE (titles naming a name of this class),not computed (too few terms or creators),expanded forms used in titles by 5 or more creators: 0 (addendum 2d's sense; 3 needed),rows used by 5 or more creators: 0 (r3-P42's literal reading: not computed (too few terms or creators))
+UNNAMED: P1 titles naming no OPEN or FRANCHISE name,computed,share of P1 titles: 0.833,"size: 35 titles of 42 P1 titles (titles, not creators)"
+template status (a creator with 2 or more titles holding a listed name; both classes pooled),not computed (too few terms or creators),template: not computed (too few terms or creators),no template: not computed (too few terms or creators)
+pooled L04 forms used in titles by 5 or more creators,computed,0 (3 needed for template status),
+names used in titles by 5 or more creators (from the list),computed,none,

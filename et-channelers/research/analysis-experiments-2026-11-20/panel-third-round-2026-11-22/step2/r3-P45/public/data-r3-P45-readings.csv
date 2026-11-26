@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); voice labels and title codes are model-coded and not checked by a person; agreement between instruments is agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P45: density or dimension, a title-free lineage marker; the 23 non-development seen creators (deposit 2's split, tier L), run once with no split. A description, partly post hoc, that must carry the two-author test.
+# DEN (density-scale forms) has no counted term after addendum 2c's set-aside of single-source terms, so the density-scale share cannot be formed. The DIM rows are r3-P42's checks recomputed with its own functions; no new count.
+# A voice contrast prints only where each voice side is carried by 5 or more of the 11 voice-eligible creators, checked from the private data (decision 86).
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: some values are not printed (privacy rule); no number changed.
+# Privacy: every printed value rests on 5 or more creators who carry it, otherwise 'not printed'; no per-creator row or point; terms named only from the deposited lists and only where 5 or more creators use them; group sizes, group means and co-use counts are not printed; counts near printed counts are banded.
+# Made 2026-11-26T15:08:06Z by code/publish_p4346.py.
+row,status,estimate,placebo_band_5,placebo_band_95,reading
+"primary: density-scale share DEN / (DEN + DIM) per creator, histogram with its permutation band",not computed (no counted density term after the set-asides of addendum 2c),,,,the histogram is not drawn
+C5 two-author test (required for r3-P45),not computed in this step (decision 65 item 2),,,,any reading would be undetermined (author-dependent) until it runs
+"DIM side (carried from r3-P42): voice contrast, log(claimed rate / own rate), 11 voice-eligible creators",not printed (fewer than 5 creators carry it),,,,
+"DIM side (carried from r3-P42): concentration, creator random-intercept variance, 23 creators",computed (carried),1.165,0.042,0.651,outside the band (above); C2: undetermined (term-dependent)
+DIM side (carried from r3-P42): largest form's share of DIM hits (single-form rule),computed (carried),0.197,,,not single-form

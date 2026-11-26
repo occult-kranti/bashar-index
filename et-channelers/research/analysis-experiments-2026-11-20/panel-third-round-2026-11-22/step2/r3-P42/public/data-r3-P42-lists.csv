@@ -1,0 +1,94 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); model-coded voice labels, not checked by a person.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P42: lexicon checks without a reader (deposit 3's hashed prespecification, read with addendum 2d); run once on the 23 non-development seen creators (split policy, tier L).
+# Privacy: every printed value rests on 5 or more creators; counts near printed counts are not printed; terms are named only from the deposited lists and only when 5 or more creators use them; bands are fixed-method bands (placebo, pseudo-strata, permutation, curveball, creator bootstrap), never an interval chosen by the creator count.
+# Per list: the checks that are not one row per class, and the check of prespecification section 5 that can make each list fail. Values are shares or contrasts, never counts of creators (the 23 and the 11 excepted).
+# L13: a funnel-depth row prints only where every link class at that depth is printed. L14: a priced share prints only where its priced hits come from 5 or more creators (decisions 75 and 86). A voice contrast (and every value read from one) prints only where each voice side is carried by 5 or more of the 11 voice-eligible creators, checked from the private data (decision 86).
+# Made 2026-11-26T15:34:16Z by code/publish_p42.py.
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: some values are not printed (privacy rule); no number changed.
+# Changed 2026-11-26T15:34:10Z (UTC, from date -u) by the lead's step-2 decision 95: some values are not printed (privacy rule); no number changed.
+list,entry,check,status,value,band_5,band_95,reading,note
+L01,r3-P43 / r4-P26,A2: share of the list's forms set aside,computed,0.118,,,,
+L01-S01,"r3-P43 (rapture layer, its own file)",A2: share of the list's forms set aside,computed,0.0,,,,
+L03,r3-P45,A2: share of the list's forms set aside,computed,0.233,,,,
+L04,r3-P46,A2: share of the list's forms set aside,computed,0.0,,,,
+L05,r3-P48,A2: share of the list's forms set aside,computed,0.395,,,,
+L06,r3-P49 / r4-P18,A2: share of the list's forms set aside,computed,0.0,,,,
+L07,r3-P51 / r4-P28,A2: share of the list's forms set aside,computed,0.0,,,,
+L08,r4-P29,A2: share of the list's forms set aside,computed,0.0,,,,
+L09,r3-P52 / r4-P12,A2: share of the list's forms set aside,computed,0.0,,,,
+L10,r3-P53 / r4-P30,A2: share of the list's forms set aside,computed,0.0,,,,
+L11,r3-P55,A2: share of the list's forms set aside,computed,0.082,,,,
+L12,r3-P56,A2: share of the list's forms set aside,computed,0.0,,,,
+L13,r3-P60,A2: share of the list's forms set aside,computed,0.0,,,,
+L14,r3-P61,A2: share of the list's forms set aside,computed,0.0,,,,
+L15,r3-P40 / r4-P25,A2: share of the list's forms set aside,computed,0.0,,,,
+L03,r3-P45,single-form rule (one form carries more than half of DIM hits),computed,0.197,,,not single-form,largest form: multidimensional
+L03,r3-P45,density-scale share (density against dimension),not computed (too few terms),,,,,DEN has no counted term after addendum 2c
+L03,r3-P45,A6 cardinal dimension variants: DIM voice contrast,not printed (fewer than 5 creators carry the estimate),,,,,
+L03,r3-P45,C5 two-author test (required for r3-P45),not computed in this run (no second author's list was hashed before the run),,,,,
+L04,r3-P46,"titles naming a OPEN name (C1, C2 by name)",not computed (too few terms),,,,,
+L04,r3-P46,"titles naming a FRANCHISE name (C1, C2 by name)",not computed (too few terms),,,,,
+L04,r3-P46,UNNAMED: P1 titles naming no OPEN or FRANCHISE name,computed,0.833,,,,"size: 35 titles of 42 P1 titles (titles, not creators)"
+L05,r3-P48,"per-sub-register rate distributions, prediction scorecard",not computed (too few terms),,,,,"every class is thin at 23 creators except CR-A, which is not computed until r3-P54"
+L05,r3-P48,et's A-window estimand for r3-P48 and its negative control,not computed until r3-P54 (waits for the owner's ethics act),,,,,
+L06,r3-P49 / r4-P18,concentration (phi) against matched placebos (the creator random-intercept excess),computed,0.508,0.034,0.796,no excess over matched placebos,A1 without coder-shared forms: no excess over matched placebos; coder-shared forms carry 0.87 of the count
+L07,r3-P51 / r4-P28,institutional against consciousness-based disclosure,not computed (too few terms),,,,,both disclosure classes are thin; the flagged share is not printed (fewer than 5 creators carry it)
+L01,r3-P43 / r4-P26,A3 gate audit: share of gate decisions with evidence inside another list's counted span,not printed (privacy rule),,,,,
+L05,r3-P48,A3 gate audit: share of gate decisions with evidence inside another list's counted span,not printed (privacy rule),,,,,
+L07,r3-P51 / r4-P28,A3 gate audit: share of gate decisions with evidence inside another list's counted span,not printed (privacy rule),,,,,
+L11,r3-P55,A3 gate audit: share of gate decisions with evidence inside another list's counted span,not printed (privacy rule),,,,,
+L13,r3-P60,A3 gate audit: share of gate decisions with evidence inside another list's counted span,not printed (privacy rule),,,,,
+L08,r4-P29,"RES-INNER: share of hits inside the base units, against placebo phrases",not computed (too few terms),,,,,
+L08,r4-P29,"RES-OUTSIDE: share of hits inside the base units, against placebo phrases",not computed (too few terms),,,,,
+L08,r4-P29,the base after the set-aside,computed,,,,,"held by 5 or more creators (units with an L05 ADV-NEG, ADV-AMB or CR-A hit of a term not set aside)"
+L09,r3-P52 / r4-P12,eligible creators (printed first),computed,11,,,,the 11 voice-eligible creators
+L09,r3-P52 / r4-P12,"first-person-plural share, claimed minus own, against function-word placebos",computed,0.214,-0.112,0.148,outside the band (above),margin 0.05: beyond (+)
+L09,r3-P52 / r4-P12,"the same against the own-voice noise band (own-voice recordings split in halves, 200)",computed,0.214,-0.078,0.081,outside the band (above),
+L09,r3-P52 / r4-P12,C2 (leave one form out) and C4,computed,,,,undetermined (term-dependent); same reading at every precision value,the form that decides: we
+L09,r3-P52 / r4-P12,reading,computed,,,,undetermined (term-dependent),
+L10,r3-P53 / r4-P30,modes by voice (fewer than 5 creators per mode is the expected reading),see data-r3-P42-classes.csv,,,,,
+L11,r3-P55,endorsement co-occurrence (REF-CREATOR with ENDORSE),not computed (too few terms),,,,,REF-CREATOR is thin by design
+L11,r3-P55,ENDORSE by voice without 'support this channel' (A2-083),not printed (fewer than 5 creators carry the estimate),,,,,
+L12,r3-P56,IDIOM reading,not computed (too few terms),,,,,"idiom hits occur in 5 or more creators, but fewer than 3 of its forms do (the thin rule)"
+L13,r3-P60,platform share of suppression talk against the permuted halves,not computed (too few terms),,,,,
+L13,r3-P60,DEST-UNRESOLVED share of links (rule: above 0.20 makes funnel depth undetermined),computed,below 0.20,,,funnel depth readable,the share is not printed (fewer than 5 creators carry it)
+L13,r3-P60,share of page links: DEST-ALTVID,not printed (fewer than 5 creators carry the estimate),,,,,
+L13,r3-P60,share of page links: DEST-AUDIO,not printed (fewer than 5 creators carry the estimate),,,,,
+L13,r3-P60,share of page links: DEST-EMAIL,not printed (fewer than 5 creators carry the estimate),,,,,
+L13,r3-P60,share of page links: DEST-LINKHUB,not printed (fewer than 5 creators carry the estimate),,,,,
+L13,r3-P60,share of page links: DEST-MEMB,computed,0.056,0.005,0.041,outside the band (above),
+L13,r3-P60,share of page links: DEST-MSG,not printed (fewer than 5 creators carry the estimate),,,,,
+L13,r3-P60,share of page links: DEST-OWNSITE,computed,0.642,,,the OWNSITE residual (no placebo),
+L13,r3-P60,share of page links: DEST-SELF,computed,0.129,0.005,0.041,outside the band (above),
+L13,r3-P60,share of page links: DEST-SERVICE,computed,0.034,0.005,0.041,no excess over host placebos,
+L13,r3-P60,share of page links: DEST-SHOP,not printed (fewer than 5 creators carry the estimate),,,,,
+L13,r3-P60,share of page links: DEST-SOCIAL,computed,0.094,0.005,0.041,outside the band (above),
+L13,r3-P60,share of page links: DEST-UNRESOLVED,not printed (fewer than 5 creators carry the estimate),,,,,
+L13,r3-P60,share of page links at funnel depth 0,computed,0.129,,,,
+L13,r3-P60,share of page links at funnel depth 1,not printed (privacy rule),,,,,
+L13,r3-P60,share of page links at funnel depth 2,not printed (privacy rule),,,,,
+L13,r3-P60,share of page links at funnel depth 3,not printed (privacy rule),,,,,
+L13,r3-P60,share of page links at funnel depth 4,computed,0.034,,,,
+L13,r3-P60,share of page links at funnel depth undetermined,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of AUTHORITY-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of COMMIT-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of COMMIT-D hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of DISCOUNT-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of GUARANTEE-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of RECIP-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of RECIP-D hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of SCARCITY-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of SCARCITY-D hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of SOCIAL-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of SOCIAL-D hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of UNITY-D hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of URGENCY-C hits,not printed (privacy rule),,,,,
+L14,r3-P61,priced share of URGENCY-D hits,not printed (privacy rule),,,,,
+L15,r3-P40 / r4-P25,FULFIL: share of cue hits inside target-year windows,not computed (too few terms),,,,,
+L15,r3-P40 / r4-P25,SPLIT: share of cue hits inside target-year windows,not computed (too few terms),,,,,
+L15,r3-P40 / r4-P25,DEFER: share of cue hits inside target-year windows,not computed (too few terms),,,,,
+L15,r3-P40 / r4-P25,target-year cue rates against the control-year band,"not computed (year roles not fixed: the ledger's passed years, the control-year rule and the contested year are not in deposit 3)",,,,,
+all,,C5 two-author test,not computed in this run (no second author's list was hashed before the run),,,,,r3-P43's would read as agreement only (decision 54 item 6)
+all,,placebo matches widened to a neighbouring band,computed,0.015,,,,
