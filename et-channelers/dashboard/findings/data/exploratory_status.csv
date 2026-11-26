@@ -1,0 +1,14 @@
+section,name,outputs,reported,not_run,superseded
+6.1,Paper-review build items,18,17,0,1
+6.2,"Second-round programme, built part",19,19,0,0
+6.3,"Second-round programme, parts not yet run",9,4,5,0
+6.4,ENTRY,8,8,0,0
+6.5,Verification layer,12,9,3,0
+6.6,Prediction timeline,12,8,4,0
+6.7,Accuracy anchor and re-decode,3,3,0,0
+6.8,First-round labels as model-coded descriptions,7,7,0,0
+6.9,H3 after its closure,2,2,0,0
+6.10,Registered exploratory questions E1 to E13,13,10,3,0
+6.11,The paper review's 'later' list,50,11,39,0
+8,Hold-out ids without a row of their own,19,13,6,0
+All,All outputs of the plan,172,111,60,1

@@ -2,11 +2,11 @@
 
 `index.html` shows the finished transcription run of 20 November 2026, the time without speech, the languages,
 the ten registered hypotheses with their registered tests (first round: from the public results file),
-the 28 designed experiments and the first, provisional findings. It reads the
-CSV files in `data/` in the browser; d3 7.9.0 is loaded from cdnjs, as on the prediction page.
+the 28 designed experiments, the exploratory release with its headline figures, and the first, provisional findings.
+It reads the CSV files in `data/` in the browser; d3 7.9.0 is loaded from cdnjs, as on the prediction page.
 
 Rules: counts, distributions and cohort-level estimates only. No file, chart or table has a row, mark or label
-per creator or per recording; there are no creator codes, video ids, titles, transcript text or local paths.
+per creator or per recording; there are no creator codes, video ids, video titles, quotations, transcript text or local paths.
 No row, bin or cell describes fewer than five creators; cells with fewer than five creators are pooled. The
 languages other than English, each spoken by fewer than five creators, are one pooled row; reasons for holding
 a recording back that concern fewer than five creators are one row; every bin of the binned plot and of the
@@ -41,9 +41,19 @@ language models and no person checked it, so every verdict is model-coded. Each 
 printed form, except where it would lie one to four from a count of hold-out creators of H3 printed here; such a
 count is stated against its minimum. Beyond the counts of the whole run, the hold-out creators enter only the
 registered tests.
-The same tab compares the two recognizer models on 36 recordings transcribed by both.
+The same tab compares the two recognizer models on 36 recordings transcribed by both, and links to the corrected
+first-round results file (corrections of 25 and 26 November 2026; no verdict changes).
+The tab "Exploratory round" shows the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10)
+from its public files only, read from the repository's main branch (37125bf): the
+outputs by status and by plan section (the status table's rows, counted; counts of outputs, never of creators), links to
+the release, its status table and its gallery, the third-round panel's programme, rulings and step-0 deposits, and a
+small set of headline figures picked by a printed rule: every released gallery figure whose place includes both M (the paper's main text) and W (this dashboard), read from the gallery's manifest.json, in the gallery's order. The figures in `figures/` are
+byte copies of the gallery's PNGs, with their titles and captions as the release prints them; a figure whose intervals
+rest on a method that the calibration entry (CAL) did not test for its estimate and creator count says so.
+Every view carries the sentence: "No measure in this study can tell whether a non-human source speaks; every measure
+describes the speech in these recordings and how the creators present it."
 The budget card shows the spend committed for model calls, read from the spend ledger when the page was built
-(2026-11-22T03:10:53Z), against the owner's hard stop, with the warning level.
+(2026-11-26T08:04:47Z), against the owner's hard stop, with the warning level.
 
 The page and its data are built outside the repository from the run's private records, by the same script
-that feeds the hosted copy of this dashboard. Built 2026-11-22T03:10:53Z.
+that feeds the hosted copy of this dashboard. Built 2026-11-26T08:04:47Z.

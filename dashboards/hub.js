@@ -15,7 +15,7 @@
           || ![selection.recordings, selection.creators, downloads.archived_with_verified_audio, downloads.final_failures].every(whole)
           || downloads.archived_with_verified_audio + downloads.final_failures !== selection.recordings) throw new Error('Unexpected record');
       const finished = run.state === 'finished' && whole(run.audio_files_transcribed) && whole(run.audio_files);
-      text('run-state', finished ? 'Downloads closed · transcription finished' : 'Downloads closed');
+      text('run-state', finished ? 'Latest-20 downloads closed · transcription finished' : 'Latest-20 downloads closed');
       text('run-date', number(selection.creators) + ' channels · closed by the owner ' + day(downloads.closed_at_utc)
         + (finished ? ' · transcription finished ' + day(run.finished_at_utc) + ', ' + clock(run.finished_at_utc) : '') + '.');
       text('archived-count', number(downloads.archived_with_verified_audio));

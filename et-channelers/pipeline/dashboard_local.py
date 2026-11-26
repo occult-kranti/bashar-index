@@ -473,11 +473,11 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
       const words = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
       const count = (n) => n < words.length ? words[n] : number(n);
       const stamp = (value) => day(value) + ', ' + clock(value);
-      put('cc-closure-heading', 'Downloads closed. ' + (finished ? 'Transcription finished.' : 'Transcription not finished.'));
+      put('cc-closure-heading', 'Latest-20 downloads closed. ' + (finished ? 'Transcription finished.' : 'Transcription not finished.'));
       put('cc-closure-summary', 'The owner closed the latest-20 download goal on ' + day(d.closed_at_utc) + ': ' + number(d.archived_with_verified_audio) + ' of the ' + number(selection.recordings) + ' selected recordings from ' + number(selection.creators) + ' channels are archived with verified audio. The other ' + number(d.final_failures) + ' are final failures and are not retried.' + (finished ? ' The local speech-to-text run finished ' + (day(t.finished_at_utc) === day(d.closed_at_utc) ? 'the same day' : 'on ' + day(t.finished_at_utc)) + ' at ' + clock(t.finished_at_utc) + ': ' + number(t.audio_files_transcribed) + ' of ' + number(t.audio_files) + ' audio files, ' + hours(t.hours_transcribed) + ' hours' + (languageCount ? ', in ' + count(languageCount) + ' languages' : '') + '.' : ''));
       put('cc-current-state', 'Downloads closed');
       const pill = document.getElementById('cc-current-state'); if (pill) pill.dataset.state = 'closed';
-      put('cc-current-explanation', 'Closed by the owner on ' + day(d.closed_at_utc) + ' at ' + clock(d.closed_at_utc) + '. ' + (reasons.length ? 'Of the ' + number(d.final_failures) + ' final failures, ' + reasons.join(' and ') + '. ' : '') + (d.drive_verification && whole(d.drive_verification.recordings_matching) ? 'The Drive check of ' + day(d.drive_verification.finished_at_utc) + ', ' + clock(d.drive_verification.finished_at_utc) + ', matched the audio and provenance objects of all ' + number(d.drive_verification.recordings_matching) + ' archived recordings. ' : '') + 'The collector stays stopped; no download is scheduled.');
+      put('cc-current-explanation', 'Closed by the owner on ' + day(d.closed_at_utc) + ' at ' + clock(d.closed_at_utc) + '. ' + (reasons.length ? 'Of the ' + number(d.final_failures) + ' final failures, ' + reasons.join(' and ') + '. ' : '') + (d.drive_verification && whole(d.drive_verification.recordings_matching) ? 'The Drive check of ' + day(d.drive_verification.finished_at_utc) + ', ' + clock(d.drive_verification.finished_at_utc) + ', matched the audio and provenance objects of all ' + number(d.drive_verification.recordings_matching) + ' archived recordings. ' : '') + 'The latest-20 goal stays closed; downloads reopened by the owner on 25 and 26 November for new uploads and the latest-50+ batch are descriptive material, outside the frozen corpus (counts above).');
       put('cc-verified', number(d.archived_with_verified_audio));
       put('cc-verified-label', 'of ' + number(selection.recordings) + ' selected recordings have audio verified on Drive');
       put('cc-awaiting', number(d.final_failures)); put('cc-awaiting-label', 'Final download failures, not retried');
@@ -489,7 +489,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         const stages = [
           ['Latest 20 per channel', number(selection.recordings) + ' recordings', number(d.archived_with_verified_audio) + ' archived · ' + number(d.final_failures) + ' final failures · closed', d.archived_with_verified_audio, selection.recordings],
           ['Speech to text', (whole(t.audio_files) ? number(t.audio_files) : '—') + ' audio files', finished ? number(t.audio_files_transcribed) + ' transcribed · finished ' + utc(t.finished_at_utc, {day:'numeric', month:'short'}) + ', ' + clock(t.finished_at_utc) : 'Not finished', finished ? t.audio_files_transcribed : 0, whole(t.audio_files) ? t.audio_files : 1],
-          ['Extend to 50', 'Not started', 'Later, after the analysis rounds; no download is scheduled', null, null],
+          ['Extend to 50', 'Downloading', 'Reopened by the owner on 26 Nov; descriptive material, outside the frozen corpus; counts above', null, null],
         ];
         stages.forEach(([label, total, caption, value, max], i) => {
           const item = document.createElement('li'); item.className = 'cc-stage'; item.dataset.state = value === null ? 'waiting' : 'complete';
