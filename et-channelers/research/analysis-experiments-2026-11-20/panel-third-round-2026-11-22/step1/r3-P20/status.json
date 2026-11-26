@@ -1,0 +1,99 @@
+{
+ "id": "r3-P20",
+ "title": "Why reliability did not transport: gate ladder, disagreement model; registered reliability prediction (class b, r4-P07)",
+ "class": "a.1",
+ "step": 1,
+ "status": "done (exploratory)",
+ "written_utc": "2026-11-26T07:07:15Z",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded labels, not checked by a person; agreement (consistency), never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec": {
+  "written_utc": "2026-11-26T06:31:30Z",
+  "hashed_utc": "2026-11-26T06:31:30Z",
+  "sha256": "the hash recorded at hashing time is kept privately"
+ },
+ "reading": "transport gap (seen outside G minus G) against 0.10: voice kappa claimed/own/other B (0.854 vs 0.890); voice embodied undetermined; asks K1 specific agreement B; checkability time window undetermined, named actor undetermined, observable outcome B; titles presentation A (higher outside G, 0.813 vs 0.64); titles family and P1 undetermined; quality counterfactual at the hold-out's SMD -0.8: voice kappa change -0.017 (90% -0.069 to +0.025), time window -0.011 (-0.061 to +0.046)",
+ "interval": "90% creator-cluster bootstrap, percentile; flagged: interval method not calibrated by r3-P30 for this design class",
+ "departures": [
+  "quality bins: terciles (prespecified fallback; deciles and quintiles failed the rules)",
+  "unclear and multi-presenter formats pooled as 'other formats' instead of joining mixed",
+  "G rows print 'published with GATES' for creators",
+  "prediction intervals capped at 1"
+ ],
+ "not_stored": [
+  "voice stability outside G",
+  "forecast class of record and commitment second readings outside G",
+  "sentence-code reruns and second readings outside G",
+  "the hold-out's quality distribution (published SMD only)"
+ ],
+ "contacts": "none (contacts.md)",
+ "privacy_scan": {
+  "zsolve.py": "0 rows to fix (0 rows tested)",
+  "qscan_all2.py": "0 rows to fix",
+  "identifier scan": "no identifier found",
+  "png_text_chunks": "none",
+  "pdf_document_information": "none"
+ },
+ "files_sha256": {
+  "code/p20_analyse.py": "e7b1c8463d3b9c913cded6a7c7765ffa584af1003ffd3dd9765b3b35a534462b",
+  "code/p20_publish.py": "0a29acf8266b5e4bd0dfc7c18d4c05916f6bbce3889b825a63be896480a5a281",
+  "code/p20_quality.py": "33c12b40f4991522411f0da96825b977bcb028d3c368b3efdde93012ae4ee084",
+  "code/qscan_all2.py": "c3368895ea475ff0e56bbe03c8c97b78c441f20052b010323533f2d9a8ef3bf2",
+  "code/quant.py": "a2478a09a37c3c759485fdfa3e0f98c6cd1d9a3094cc3b58c566588a9b1cae5c",
+  "code/quant2.py": "7421b55e42d6fd55880a4b44dbc42c89c5991f18ba652374a2a4e93865ce9248",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/zsolve.py": "301ccb16c41517d974a60acd212d9eae987ecf5f72e9f327fd176d0c69e0b7c1",
+  "public/data-r3-P20-disagreement-model.csv": "a2308493a4a63b783b3a9b8bc98e383b9ca7384cb1f3d5c06dd47d6c89484336",
+  "public/data-r3-P20-ladder.csv": "5e8b74c553b3d5b6a627ad1a9d9b5b49a2c9a0052fd66095345d8cc6ecb59acc",
+  "public/data-r3-P20-quality-bins.csv": "b2d214ee930dbc343e138a7a1cc59442060b2c72d8564a9275c51dab7d63d208",
+  "public/fig-r3-P20-ladder.pdf": "9e4a0cfdf2a10ffb4f3368680a8f62271d764cc0609256a50c43a8bd8f48eb44",
+  "public/fig-r3-P20-ladder.png": "071315fe8d2edcac0602ea5711649f181f41d0f22f30bd4e0d3a144878e65723",
+  "public/fig-r3-P20-quality.pdf": "7588eb11f6eb54c80a95f7485d654cb6c5fe60bc2851bfc535b9372096c6a5bc",
+  "public/fig-r3-P20-quality.png": "5170c7fbb1b3c815b0821cae79c2a779f2c5de0cca1f9a5504b20e17ca313320",
+  "public/r3-P20-registered-prediction.csv": "f5f88d86e2a5a9c643aa8ba284ba4fb9fa8bcea2405f0376c99f7431c03da71b",
+  "prespec.md": "the hash recorded at hashing time is kept privately",
+  "contacts.md": "6158764de2b2a9d676aadee0daa512ea789a9b35b87b40766db02773eb841714",
+  "private/prediction-hash.json": "65c9754905743c2911974982c973642357988b97cf89d0e9ebbfba085d97db0c",
+  "private/prespec-hash.json": "f50de297b765e6c123461e682774b6490548f3db890b923ebd168b26dda6b610",
+  "README.md": "6acc38d8af637b33a9a4a2e4961875b29f999fca3293b69dae4b3c7adb4dc891"
+ },
+ "registered_prediction": {
+  "file": "public/r3-P20-registered-prediction.csv",
+  "sha256": "f5f88d86e2a5a9c643aa8ba284ba4fb9fa8bcea2405f0376c99f7431c03da71b",
+  "hashed_utc": "2026-11-26T07:03:23Z",
+  "registered_with": "r4-P07 (class b, card b4)",
+  "tested": false
+ },
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "6acc38d8af637b33a9a4a2e4961875b29f999fca3293b69dae4b3c7adb4dc891",
+   "contacts.md": "a0860afaa4cd0031ad0675e924d122dc42da6976e7300940503f0e9765fd6def",
+   "prespec.md": "4dc759c88b94a592a2da6bf528f4c54128abf0c864d885b6f45e6e0536067c2a",
+   "public/data-r3-P20-disagreement-model.csv": "a2308493a4a63b783b3a9b8bc98e383b9ca7384cb1f3d5c06dd47d6c89484336",
+   "public/data-r3-P20-ladder.csv": "5e8b74c553b3d5b6a627ad1a9d9b5b49a2c9a0052fd66095345d8cc6ecb59acc",
+   "public/data-r3-P20-quality-bins.csv": "b2d214ee930dbc343e138a7a1cc59442060b2c72d8564a9275c51dab7d63d208",
+   "public/fig-r3-P20-ladder.pdf": "9e4a0cfdf2a10ffb4f3368680a8f62271d764cc0609256a50c43a8bd8f48eb44",
+   "public/fig-r3-P20-ladder.png": "071315fe8d2edcac0602ea5711649f181f41d0f22f30bd4e0d3a144878e65723",
+   "public/fig-r3-P20-quality.pdf": "7588eb11f6eb54c80a95f7485d654cb6c5fe60bc2851bfc535b9372096c6a5bc",
+   "public/fig-r3-P20-quality.png": "5170c7fbb1b3c815b0821cae79c2a779f2c5de0cca1f9a5504b20e17ca313320",
+   "public/r3-P20-registered-prediction.csv": "f5f88d86e2a5a9c643aa8ba284ba4fb9fa8bcea2405f0376c99f7431c03da71b"
+  },
+  "changed_for_publication": [
+   "contacts.md",
+   "prespec.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ],
+  "path_replacements": [
+   {
+    "file": "prespec.md",
+    "replaced_by": "the paper review's private cache file"
+   }
+  ],
+  "prespec_published_as": "redacted copy; the hash recorded at hashing time is kept privately"
+ }
+}

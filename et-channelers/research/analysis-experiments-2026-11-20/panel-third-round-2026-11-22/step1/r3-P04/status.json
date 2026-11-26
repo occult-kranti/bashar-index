@@ -1,0 +1,121 @@
+{
+ "id": "r3-P04",
+ "carries": [
+  "r4-P09"
+ ],
+ "title": "Position-matched contrasts, the registered negative controls, one null engine (span-structure transplants)",
+ "class": "a.1",
+ "step": "1",
+ "status": "reported (exploratory; not a test of H1-H10)",
+ "written_utc": "2026-11-26T03:12:13Z",
+ "utc_run": "prespec 2026-11-26T02:31:06Z; final analysis run 2026-11-26T02:52:38Z to 02:53:53Z (p04_run.py); publication 2026-11-26T03:00Z to 03:05Z (p04_publish.py); privacy scan 2026-11-26T03:05:09Z; sensitivity row added at the lead's decision, publication rerun completed before 2026-11-26T03:12:05Z (p04_publish.py; only r3-P04-readings.csv and the forest figure changed)",
+ "seen_only": true,
+ "model_or_api_calls": 0,
+ "contacts": "none",
+ "readings": {
+  "H1 (log rate ratio, margin 0.223)": "undetermined; some rows' readings are not printed for privacy",
+  "H4 (standardised drop, margin 0.20 SD)": "no reference holds size at this count",
+  "H6 (OE of pay-or-enrol asks, margin 0.05)": "not printed: it rests only on rows whose count is banded",
+  "H1 sensitivity (not the reading): the registry's H1 smallest effect, 0.05 on the log scale (hypotheses.md H1, ratio band 0.95 to 1.05)": "undetermined (XT fails the centring tolerance at 0.05); some rows' readings are not printed for privacy"
+ },
+ "departures": [
+  "planted effects at half and the full margin not simulated (size at a planted zero only)",
+  "plasmode on own-voice-only recordings (another occasion) with fewer creators than the analysis",
+  "H1 negative control with own-voice-only recordings' claimant admitted printed as a departure row",
+  "rows of one statistic restricted to one creator set after the first run (privacy)",
+  "E5 pause and filler rows not built (fillers not stored in feature files)",
+  "the deposit's second reference read as ST; the reading with the within-tenth matched contrast printed for the lead"
+ ],
+ "not_stored": [
+  "fillers per unit (not in the feature files)"
+ ],
+ "class_c_not_run": [],
+ "rule_b_fact": null,
+ "for_the_lead": [
+  "decided 2026-11-26: the H1 reading stays under deposit 2's margin; the registry's H1 smallest effect is a sensitivity row, not the reading",
+  "decided: the centring tolerance stays as prespecified; its resolution at the plasmode's creator counts (printed in data-r3-P04-size.csv) is printed as a limitation",
+  "decided: the second admissible reference is ST; the within-tenth matched contrast stays a described alternative"
+ ],
+ "interval_rule": "r3-P30 interval-choice.csv sha256 fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6",
+ "prespec_sha256": "the hash recorded at hashing time is kept privately",
+ "frozen_prompts_read": null,
+ "code_sha256": {
+  "code/common.py": "afb6dcf765d44997672e7341911a70990e889cd6407bf50145ebc41dc016874b",
+  "code/intervals.py": "f428af347014e1b390261794aa58fc6f573b612bb3148aac3db6883d965c599d",
+  "code/p04_publish.py": "3587577c774c21c1411bdb4e3df1ab64ee43ad00b941cd3e5172e81fccd42744",
+  "code/p04_run.py": "857a38cebdd587f38cd8c91e9bccdf5c909d82d712ef5b30fd1cfa62024b5435",
+  "code/prespec.json": "the hash recorded at hashing time is kept privately",
+  "code/probe_counts.py": "4692150268ae8985b35efe885830d99b6cd141885cdc356b6d88b4c7cfca1751",
+  "code/pubcommon.py": "b3a81fe31eee2e48d614ae72db333dbabaebef4a07fe38f52e52bffad0296d02",
+  "code/scan_public.py": "73bbe208ffa5e6ddadc59fa01173a4ae2b181ad748f325997087c723c1696ec9",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/write_status.py": "b24b1f356fbd180caef9dc8ccd3a591fcf3962d311f047b73717243d2071993f",
+  "code/write_status_p04.py": "c21d3c6697e6fb4460a2688ca87a57a0212ecbb13ddac4abfd61ef565e1aacc6"
+ },
+ "public_sha256": {
+  "public/data-r3-P04-forest.csv": "4b147a333396c41c5772a257dcead1d9b6abfdedad684f1aea7867802651fb83",
+  "public/data-r3-P04-null-bars.csv": "36510f18d4a481cfe83fcd8aed49db2d5770ab84af3ea8083a64788734e6b40f",
+  "public/data-r3-P04-size.csv": "5fde538466795106511a9e77527913c423786477d3ef4867ba11509e3eaf34e4",
+  "public/fig-r3-P04-forest.pdf": "822ebcb2cccf064e51f9166e61432ff7244c6d9bd0186bae0bebdf1bd7f268e4",
+  "public/fig-r3-P04-forest.png": "fcd6c904f1b5c339f923ba66ba76126c922840109d639086222eca7f7312a2ab",
+  "public/fig-r3-P04-null-bars.pdf": "1537ace9224ad0fab5246d0b8caf098b67d02eed504ad138f9f067b69d5efee7",
+  "public/fig-r3-P04-null-bars.png": "9eaacbb7c654e243dbd066f572086996b1f37bb5d757ec267f1f15758e706c61",
+  "public/fig-r3-P04-size.pdf": "59f93621a633f75e886f1992e30037d6dba2fec8eef445c94298f4b4314df028",
+  "public/fig-r3-P04-size.png": "9b54fbb074dda7b78b4073e6e9184618deb950449c732f7a129045d789b7a77f",
+  "public/fig-r3-P04-structure.pdf": "ca9ef883dbd8ba02ac7bc11f539a5296af6e0d1b2c06e9dd95f7be3bbdfabeef",
+  "public/fig-r3-P04-structure.png": "7155c703a94cbb534a872a0efcc175efebbd61a24dd48b79c710f07e71f38964",
+  "public/r3-P04-counts.csv": "8db0fa1478dc8d2baf7609b12cd4ffc8b212d59a8824bb32e19d0dee1160a662",
+  "public/r3-P04-h6-logmh.csv": "6bc6e141f49aa587c13b0a2a5373f81cc2669bae9b0423971dcee469933bbfe5",
+  "public/r3-P04-readings.csv": "e0d94f4df41b75426702ad4792c1e1c21cb1af055917ed26206261bf1838bac0"
+ },
+ "readme_sha256": "a81faab1d4759bf9cd787bf731f2b840b28e887a1531fbc8b7d0c49094cb0cac",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "note_2026-11-26_decision_44": "2026-11-26T08:39:01Z (UTC, from date -u): 'about 20 plasmode creators' restated as 'the plasmode's creator counts (printed in data-r3-P04-size.csv)' in README.md and for_the_lead (the lead's step-1 decision 44; wording only, no number changed); readme_sha256 refreshed (was 9bffb06225ec64f8aaefa8be4e17a1c950b384570754f7137c7861ddb3d78735).",
+ "note_2026-11-26_decision_49": "2026-11-26T09:23:30Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_50": "2026-11-26T09:36:09Z (UTC, from date -u): files changed by the lead's step-1 decision 50 (no number changed); their recorded hashes refreshed: README.md, code/p04_publish.py, public/data-r3-P04-forest.csv, public/data-r3-P04-null-bars.csv, public/r3-P04-counts.csv",
+ "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: README.md, code/p04_publish.py, public/data-r3-P04-forest.csv, public/r3-P04-counts.csv, public/r3-P04-readings.csv",
+ "note_2026-11-26_decision_56": "2026-11-26T10:53:54Z (UTC, from date -u): files changed by the lead's step-1 decision 56 (no number changed); their recorded hashes refreshed: README.md, code/p04_publish.py, public/data-r3-P04-forest.csv, public/fig-r3-P04-forest.pdf, public/fig-r3-P04-forest.png, public/fig-r3-P04-structure.pdf, public/fig-r3-P04-structure.png, public/r3-P04-readings.csv",
+ "note_2026-11-26_decision_59": "2026-11-26T11:05:42Z (UTC, from date -u): files changed by the lead's step-1 decision 59 (no number changed); their recorded hashes refreshed: README.md, code/p04_publish.py, public/fig-r3-P04-forest.pdf, public/fig-r3-P04-forest.png",
+ "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/p04_publish.py, public/data-r3-P04-forest.csv, public/fig-r3-P04-forest.pdf, public/fig-r3-P04-forest.png, public/fig-r3-P04-structure.pdf, public/fig-r3-P04-structure.png, public/r3-P04-readings.csv",
+ "note_2026-11-26_decision_63": "2026-11-26T12:07:28Z (UTC, from date -u): files changed by the lead's step-1 decision 63 (no number changed); their recorded hashes refreshed: README.md, code/p04_publish.py, public/fig-r3-P04-forest.pdf, public/fig-r3-P04-forest.png, public/r3-P04-readings.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "e979abb118b0e7036c199051ecd8439484b3b6b30541f0b8463248e3e386a812",
+   "contacts.md": "1ff88578ef430f2f8d76fb113fe6ce243f53c3ef79d0dfb392d550be61f3cab6",
+   "prespec.md": "1e22ed2afb3b0a2458e5790b64c0e2f178071709293a7e31dfb286a201e0474e",
+   "public/data-r3-P04-forest.csv": "4b147a333396c41c5772a257dcead1d9b6abfdedad684f1aea7867802651fb83",
+   "public/data-r3-P04-null-bars.csv": "36510f18d4a481cfe83fcd8aed49db2d5770ab84af3ea8083a64788734e6b40f",
+   "public/data-r3-P04-size.csv": "5fde538466795106511a9e77527913c423786477d3ef4867ba11509e3eaf34e4",
+   "public/fig-r3-P04-forest.pdf": "822ebcb2cccf064e51f9166e61432ff7244c6d9bd0186bae0bebdf1bd7f268e4",
+   "public/fig-r3-P04-forest.png": "fcd6c904f1b5c339f923ba66ba76126c922840109d639086222eca7f7312a2ab",
+   "public/fig-r3-P04-null-bars.pdf": "1537ace9224ad0fab5246d0b8caf098b67d02eed504ad138f9f067b69d5efee7",
+   "public/fig-r3-P04-null-bars.png": "9eaacbb7c654e243dbd066f572086996b1f37bb5d757ec267f1f15758e706c61",
+   "public/fig-r3-P04-size.pdf": "59f93621a633f75e886f1992e30037d6dba2fec8eef445c94298f4b4314df028",
+   "public/fig-r3-P04-size.png": "9b54fbb074dda7b78b4073e6e9184618deb950449c732f7a129045d789b7a77f",
+   "public/fig-r3-P04-structure.pdf": "ca9ef883dbd8ba02ac7bc11f539a5296af6e0d1b2c06e9dd95f7be3bbdfabeef",
+   "public/fig-r3-P04-structure.png": "7155c703a94cbb534a872a0efcc175efebbd61a24dd48b79c710f07e71f38964",
+   "public/r3-P04-counts.csv": "8db0fa1478dc8d2baf7609b12cd4ffc8b212d59a8824bb32e19d0dee1160a662",
+   "public/r3-P04-h6-logmh.csv": "6bc6e141f49aa587c13b0a2a5373f81cc2669bae9b0423971dcee469933bbfe5",
+   "public/r3-P04-readings.csv": "e0d94f4df41b75426702ad4792c1e1c21cb1af055917ed26206261bf1838bac0"
+  },
+  "changed_for_publication": [
+   "README.md",
+   "contacts.md",
+   "prespec.md"
+  ],
+  "prespec_source": "prespec.md is the entry's private code/prespec.json, published under the step's common name as a redacted copy (a header, then the JSON body; decisions 43 and 48)",
+  "added_for_publication": [
+   "README.md: prespecification timing paragraph",
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ],
+  "path_replacements": [
+   {
+    "file": "prespec.md",
+    "replaced_by": "the CHANGE group's private plotting code folder"
+   }
+  ],
+  "prespec_published_as": "redacted copy; the hash recorded at hashing time is kept privately"
+ }
+}

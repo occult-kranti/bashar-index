@@ -1,0 +1,16 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P28 (annotation protocol and priced funding ladder; it funds nothing).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Ledger anchors: measured spend rows of the seen-creator jobs named, summed (amounts only; purposes reduced to their instrument words). usd_per_request_standard: measured USD over completed requests, doubled for jobs measured at the batch interface.
+anchor,what,interface_measured,measured_usd,completed_requests,usd_per_request_standard
+"voice label, small model (seen)","the frozen voice label, small model, seen recordings",standard,1.5173,2290,0.000663
+"voice map, small model (seen)","the frozen voice map, small model, seen recordings",standard,1.3027,1573,0.000828
+"voice label, middle model (seen)","the frozen voice label, middle model, its seen subset",batch,0.7802,309,0.00505
+"asks find, small model (seen)","the frozen asks finder (two draws), seen recordings",standard,1.1147,3585,0.000311
+"asks check, middle model (seen)","the frozen asks check, middle model (record)",batch,1.3819,901,0.003068
+known-answer voice arms,the known-answer battery's voice arms (constructed texts),standard,3.0398,1321,0.002301
+large-model checkability reading,the large model's checkability reading of forecast statements,standard,0.9663,212,0.004558
+"third reader, guided (VER-3R)","a third reader of voice units (large model, guided)",standard,0.9434,199,0.004741
+list precision read (RXP),a middle-model precision read of cue-list hits,standard,0.4479,214,0.002093
+named-source pilot (NE),"the named-source reading of claimed-voice windows, middle model",standard,0.7817,204,0.003832
+second reading of FC (double read),a second reading of forecast checkability,standard,0.5014,300,0.001671
+"sentence codes, small model (seen)","the frozen sentence-code instrument, small model",standard,2.7015,54228,5e-05

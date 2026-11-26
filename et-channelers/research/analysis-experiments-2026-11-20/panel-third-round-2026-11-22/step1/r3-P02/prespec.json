@@ -1,0 +1,44 @@
+{
+ "entry": "r3-P02 / r4-P02 (input stability and grid marks in the labels)",
+ "written_utc": "2026-11-26T02:29:51Z (from date -u, before any boundary, punctuation or alignment value of this entry was computed; only the bundle's structure (keys and recording counts) had been probed)",
+ "written_by": "a step-1 agent (a model agent working for the project lead; not a person)",
+ "status": "Exploratory; not a test of H1-H10. Voice labels are model-coded and not checked by a person; transcripts are recognizer output, not checked by a person. Seen creators only; no model call.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "sources": "programme.md 2.1 step 1 r3-P02 and section 2.5 (r4-P02); programme-decisions.json r3-P02, r4-P02; round-3 pooled P02 and round-4 pooled N02 (method and plot wording); deposit 2 (margins by measure type, readings A/B/undetermined, 90% interval, half-effect disclosure).",
+ "grid": "The run's recognizer decodes in fixed 30-s windows from 0 s; a seam is a multiple of 30 s. BR-GS's re-decode has seams at 15 s and every 30 s after. rv-R3's bridge decode (the larger model) uses the same worker and settings, so the same seams as the record.",
+ "voice": "Label of record (small model) under the primary rule B; claimed voice = V2 or V3; own voice = V1; other labels are neither. The middle model is a row on the recordings it labelled in full. Labels attach to the sentence units of the filtered transcript of record (prep.build_units).",
+ "primary_I": {
+  "name": "Seam lock of claimed-voice boundaries",
+  "measure": "A boundary is a change between a claimed-voice unit and a unit that is not claimed voice (entries and exits pooled; apart as rows). Its time is the midpoint of the gap between the last word of the earlier unit and the first word of the later unit (unit times as stored in the feature files). Near seam: within 1 s of a run-grid seam (BR-GS's band; 2 s in 30, 6.7% under uniform placement). Creator value: near-seam share of the creator's boundaries (pooled over the creator's recordings) minus the reference share.",
+  "reference_R1_circular_shift": "Primary reference (N02). Each recording's unit label sequence is rotated by a random number of units (1 to U-1, wrap-around boundary dropped), 999 draws per recording, boundaries re-read on the fixed unit times; reference share = mean over draws of the creator's pooled near-seam share; the band = 5th to 95th percentile over draws of the creator-mean excess. Base: all seen labelled recordings (English, label of record complete) with one or more claimed-voice boundaries.",
+  "reference_R2_redecode": "Second reference. On BR-GS's 40 re-decoded recordings (one per creator): each labelled boundary is moved to the nearest sentence-unit boundary of the shifted-grid re-decode (units rebuilt by prep's rule on the re-decode's words after the same artefact filter and ellipsis rule); reference share = near-run-seam share of the moved boundaries.",
+  "sentence_unit_row": "Printed as the grid's effect on the reference, never as the null: near-seam share of all sentence-unit boundaries of the record minus 2/30; and the same for the re-decode's unit boundaries on the run grid.",
+  "margin": "5 percentage points (deposit 2: difference in shares)",
+  "direction": "positive (boundaries nearer seams than the reference)",
+  "named_rows_for_reading_A": "middle model; entries apart; exits apart (each must point the same way)",
+  "reading": "A: both reference-adjusted intervals (R1 on all seen, R2 on BR-GS's 40) lie wholly above 5 points and every named row points the same way. B: both lie wholly inside plus or minus 5 points. Otherwise undetermined. Fewer than 5 eligible creators on a base: not computed."
+ },
+ "primary_II": {
+  "name": "Punctuation agreement near seams",
+  "measure": "Words of the transcript of record (filtered, as labelled) matched to the second decode's words (same artefact filter and ellipsis rule) by identical normalised text and a start time within 0.5 s (one-to-one, nearest first). Sentence-mark agreement: among matched pairs where either decode ends the word with . ? or !, the share where both do. Zones by the record word's end time: real-seam zone within 1 s of a seam of either decode's grid; placebo zone within 1 s of a placebo seam (BR-GS: 7.5 s and 22.5 s past each run-grid seam, the points farthest from both real grids; bridge: 15 s past each seam). Creator value (one recording per creator): agreement in the placebo zone minus agreement in the real-seam zone.",
+  "reference": "The placebo zone is the circular shift of the seam zone (r4-P02's placebo grid).",
+  "rows": "IIa grid shift (BR-GS's 40, primary row); IIb model change (rv-R3's 35 seen bridge recordings, a named row); by-voice rows and the voice difference (claimed minus own) only on recordings holding both voices (10 or more units of each).",
+  "margin": "5 percentage points (difference in shares)",
+  "direction": "positive (less agreement at real seams)",
+  "reading": "A: IIa's interval wholly above 5 points and IIb in the same direction. B: IIa's and IIb's intervals wholly inside plus or minus 5 points. Otherwise undetermined. The voice difference is read on its own against the same margin (a contrast of the entry). Fewer than 5 creators: not computed."
+ },
+ "described_rows_not_read": [
+  "comma agreement and capital-letter agreement by zone (IIa, IIb)",
+  "unit-boundary agreement: share of record unit boundaries matched by a second-decode unit boundary at the same matched word, by zone",
+  "edits (record words with no match) by window phase, own grid against the placebo grid, by voice (BR-GS's 40)",
+  "segment starts and filter-removed thanks segments by window phase, own grid against placebo grid, by voice (all seen labelled recordings)",
+  "sentence marks per word by seam-distance band (0-1, 1-2, 2-5, 5-15 s), by voice (all seen labelled recordings)",
+  "D5 coupling: the chance that a word ends with a sentence mark by the class of the gap after it (under 0.3 s, 0.3 to 1 s, 1 s or more), by voice, and its voice difference",
+  "one- and two-unit own-voice islands inside claimed voice near seams, against the circular shift",
+  "the primary definition's recordings (claimants admitted: sole speaker or host)"
+ ],
+ "interval": "90%, by the method r3-P30's interval-choice.csv names for the class (B for creator means of recordings; B1 for one recording per creator) at the largest grid count at or below the base's creator count; the t interval on creator means if r3-P30 had not run.",
+ "multiplicity": "56 primaries in the register; half-effect disclosure printed (deposit 2). This entry reads 2 primaries (I, II) and 1 voice-difference contrast.",
+ "seam_zone_rule": "If primary I or II is not read B, the seam zone (within 1 s of a run-grid seam) is recommended as an exclusion row for r3-P01, r3-P06, r3-P07 and r3-P09; if both read B, the exclusion is a sensitivity row only. The seam distance of any word or boundary is a function of its stored time (seam.py), so no per-token file is written.",
+ "not_run": "relabelling the shifted-grid or bridge transcripts (class c, unfunded); a grid shift over the whole seen roster (needs the GPU re-decode, a.2); labels on the bridge's larger-model transcripts (rv-L2's 25 development pairs used a pre-freeze instrument snapshot; not used)."
+}

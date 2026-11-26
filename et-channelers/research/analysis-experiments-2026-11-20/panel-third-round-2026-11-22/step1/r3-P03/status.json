@@ -1,0 +1,79 @@
+{
+  "id": "r3-P03",
+  "class": "a.1",
+  "step": 1,
+  "status": "done (exploratory)",
+  "written_utc": "2026-11-26T03:00:36Z",
+  "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded voice labels, not checked by a person; agreement, never accuracy.",
+  "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+  "prespec": {
+    "written_utc": "2026-11-26T02:41:23Z",
+    "hashed_utc": "2026-11-26T02:41:57Z",
+    "sha256": "d14f89d7711be4863fb459dde68a11fe2a17d82a00749c09b15a75809ebf1365"
+  },
+  "reading": "told apart from register in these data (on these checks only); some rows' readings are not printed for privacy",
+  "reading_path": "R0 A (1.79 SD, 90% 1.41 to 2.16, 34 creators); R3 register-matched A (1.61, 1.17 to 2.05); F1 AUC estimators agree (beyond/beyond before r3-P30's cap, undetermined/undetermined after); K-F1 D not printed (the row's count is banded)",
+  "auc_ladder": "pooled within-creator AUC: F0 0.52, F1 0.73, F1c 0.77, F2 0.73; every rung at most undetermined under r3-P30 (no method holds below 71 creators); the median estimator and the quantiles over creators are not printed (D67; the lead's step-1 decision 18)",
+  "interval": "drop, benchmark and D rows: r3-P30's choice for C_standardised; AUC: creator bootstrap 90% (prespec) with r3-P30's cap",
+  "departures": [
+    "R3 without H4's form minimum (prespec named none): 44 creators against R0's 34",
+    "R1 class counts from transcript tokens by r3-P01's class rule; class B under 5 creators",
+    "The median AUC estimator is computed but not printed (privacy, D67; the lead's step-1 decision 18); no reading changes."
+  ],
+  "not_run": [
+    "register-normalised relabel (dropped by the programme)",
+    "punctuation-free relabel (class c)",
+    "masked-ask relabel (class c)",
+    "label run-to-run ceiling at creator level"
+  ],
+  "not_stored": [
+    "punctuation-stripped voice labels at unit level: not found among labels/seen instruments; reliability folders not opened"
+  ],
+  "contacts": "none (contacts.md)",
+  "files_sha256": {
+    "code/analyse_p03.py": "da77aa8cd56fdd27ed9b8a1df4ffa29e9504dff3fe46c004d28fe5d917752b50",
+    "code/extract_p03.py": "7d110cf73f4344f6e1b0af411f64d5382d65782ad3c0ef3802054bfc402b804c",
+    "code/plot_p03.py": "e04142a5a035e68a45327fde734fe3d0753c4231744fe05807f80d5b3b56581c",
+    "code/publish_p03.py": "5b4465afa8e10251b5b7aca2c7edf026a62b128e81eb48b51b19b97a9b855238",
+    "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+    "public/data-r3-P03-auc.csv": "b2eeff2f30964ac82996d4083713567c4e1b260ef9a033c989cefa807f5c7916",
+    "public/data-r3-P03-locators.csv": "3a57ee4c18052bc239433f3184726320643bd4a5a30d4fa599180fc377ff0c12",
+    "public/data-r3-P03-reading.csv": "ae66c1f09013e8697172d6cacc6c12e1ebe295aafe64680c27846606bda1a354",
+    "public/fig-r3-P03-locators.pdf": "f8b9dd9bf8a14c0351e955483d413bc060a473c4e6f6ae4c8872eb61356bb123",
+    "public/fig-r3-P03-locators.png": "191eb6a004d678804f3a70a7d360c5262bafc87c58c14655cc929966704289b0",
+    "README.md": "83990f0c6ad9146b46dfc9f2e6b43f37f080dd2e290cbf1a8f0b779791e17fdf",
+    "contacts.md": "471999ee43f4488ea4e1cd6f092fb25492af7a3f7dce2dd92b11cc7cc5d79fb8",
+    "prespec.md": "d14f89d7711be4863fb459dde68a11fe2a17d82a00749c09b15a75809ebf1365"
+  },
+  "release_d67": {
+    "written_utc": "2026-11-26T06:09:15Z",
+    "decision": "lead's step-1 decision 18 (the release's D67)",
+    "dropped": "median of creator AUCs with its interval; 10th, 50th and 90th percentiles over creators (CSV cells, README table, figure)",
+    "kept": "pooled within-creator AUC with interval; creator-equal mean; every reading",
+    "backup": "private/backup-before-d67-20261126/"
+  },
+  "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md, public/data-r3-P03-locators.csv",
+  "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: README.md, public/data-r3-P03-auc.csv, public/data-r3-P03-locators.csv, public/data-r3-P03-reading.csv",
+  "note_2026-11-26_decision_56": "2026-11-26T10:53:54Z (UTC, from date -u): files changed by the lead's step-1 decision 56 (no number changed); their recorded hashes refreshed: README.md, code/plot_p03.py, public/data-r3-P03-locators.csv, public/fig-r3-P03-locators.pdf, public/fig-r3-P03-locators.png",
+  "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/plot_p03.py, public/data-r3-P03-locators.csv, public/data-r3-P03-reading.csv, public/fig-r3-P03-locators.pdf, public/fig-r3-P03-locators.png",
+  "published_copy": {
+    "staged_utc": "2026-11-26T12:18:25Z",
+    "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+    "published_sha256": {
+      "README.md": "83990f0c6ad9146b46dfc9f2e6b43f37f080dd2e290cbf1a8f0b779791e17fdf",
+      "contacts.md": "3a6f84ec0b8290b9b07d58c64d393b6cd2abe32f67c4a409ee5d6844e14b9425",
+      "prespec.md": "d14f89d7711be4863fb459dde68a11fe2a17d82a00749c09b15a75809ebf1365",
+      "public/data-r3-P03-auc.csv": "b2eeff2f30964ac82996d4083713567c4e1b260ef9a033c989cefa807f5c7916",
+      "public/data-r3-P03-locators.csv": "3a57ee4c18052bc239433f3184726320643bd4a5a30d4fa599180fc377ff0c12",
+      "public/data-r3-P03-reading.csv": "ae66c1f09013e8697172d6cacc6c12e1ebe295aafe64680c27846606bda1a354",
+      "public/fig-r3-P03-locators.pdf": "f8b9dd9bf8a14c0351e955483d413bc060a473c4e6f6ae4c8872eb61356bb123",
+      "public/fig-r3-P03-locators.png": "191eb6a004d678804f3a70a7d360c5262bafc87c58c14655cc929966704289b0"
+    },
+    "changed_for_publication": [
+      "contacts.md"
+    ],
+    "added_for_publication": [
+      "contacts.md: label line and/or agnosticism sentence (decision 47)"
+    ]
+  }
+}

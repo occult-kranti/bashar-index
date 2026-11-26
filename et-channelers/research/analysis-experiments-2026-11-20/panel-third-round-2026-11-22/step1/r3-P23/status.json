@@ -1,0 +1,71 @@
+{
+ "id": "r3-P23",
+ "title": "Three-source capture-recapture for the finders' recall",
+ "class": "a.1",
+ "step": 1,
+ "status": "done (exploratory)",
+ "written_utc": "2026-11-26T07:07:15Z",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded labels, not checked by a person; agreement (consistency), never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec": {
+  "written_utc": "2026-11-26T06:31:30Z",
+  "hashed_utc": "2026-11-26T06:31:31Z",
+  "sha256": "d2672fd77c44a137afffd39efd4bc64c5b16b07b7ec06fbbea47b18e29a3bdc8"
+ },
+ "reading": "forecast F1 statements: admissible three-source range 0.786 to 0.876 (upper end 90% 0.650 to 0.927) against nlp-R13's 0.991: optimistic by at least the margin; forecast candidates: only the zero-df all-two-way model is admissible (0.097, unstable), reading by rule 'optimistic by at least the margin' with a caveat; asks any class: no admissible three-source model (two-capture Chapman 0.997); asks K1: described only (Chapman 1.000)",
+ "interval": "90% creator-cluster bootstrap, percentile; flagged: interval method not calibrated by r3-P30 for this design class",
+ "departures": [
+  "asks any-class row compared with nlp-R13's registered asks-of-record row (clarification 3, written before analysis)",
+  "small cells: only the ends of the admissible range and the two-capture recall printed (clarification 4)"
+ ],
+ "not_stored": [
+  "a third capture on the whole seen roster (the three-source estimate rests on set G)"
+ ],
+ "contacts": "none (contacts.md)",
+ "privacy_scan": {
+  "zsolve.py": "0 rows to fix (0 rows tested)",
+  "qscan_all2.py": "0 rows to fix",
+  "identifier scan": "no identifier found",
+  "png_text_chunks": "none",
+  "pdf_document_information": "none"
+ },
+ "files_sha256": {
+  "code/p23_analyse.py": "6fbdafc369629139d50dbaa24ad3448a2ba1090b8d672ec9025df87af0b0c24d",
+  "code/p23_publish.py": "b22b8c84dbcc29a172f603b1401f39665feb41b5455bc7f3dd8cb9b4571627eb",
+  "code/p23_rebuild_asks.py": "6e42f1218dcbbb62827b2422fb81f9acfa464c004962c00371e6d500a59f6d8d",
+  "code/p23_rebuild_forecasts.py": "10b2b49937981a4228ae98e2fdfea67c20d34277093e105f3e1341aac73b9a77",
+  "code/qscan_all2.py": "5b23104902f0e0e19b7d4d38096ef2f44df2f8ae4f6ebe56a77c979ae1aaf8af",
+  "code/quant.py": "a2478a09a37c3c759485fdfa3e0f98c6cd1d9a3094cc3b58c566588a9b1cae5c",
+  "code/quant2.py": "7421b55e42d6fd55880a4b44dbc42c89c5991f18ba652374a2a4e93865ce9248",
+  "code/readonly_env.py": "68c288a41f999c339af2e89cacb6234fdff564b7f14ed8ca58021be5c7896911",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/zsolve.py": "c59ec1843c0eefa36a1f607b8da8629046e67fb3de684244eb7e1b809449b600",
+  "public/data-r3-P23-recall.csv": "179ee1908102bec8dbbddd5a31e5c0601bc18076a4ca6e071c63c293a8423cd4",
+  "public/fig-r3-P23-recall.pdf": "f3d8b689b7d6a465d2f366ccad932a98f286326e82ce1b2179f452029af91a54",
+  "public/fig-r3-P23-recall.png": "385c20e37ef0a484bab8af650cf62b773aa922b1af59fc96d4e5e853bcfac62c",
+  "prespec.md": "d2672fd77c44a137afffd39efd4bc64c5b16b07b7ec06fbbea47b18e29a3bdc8",
+  "contacts.md": "045092166e01fa599aea06c0aea882d32f7051f956d9a7993002a2a51489523b",
+  "private/prespec-hash.json": "c8b8d358bb79190615bc71e2c4fb2e0df30920c0d9bc1574e1833a30ed3adf29",
+  "private/clarifications-before-analysis.md": "11bdd74b339901b2da343f6b4e294f2b8c72046177ea83c2d0b0018cfa8a54f3",
+  "README.md": "ff31aad91784860a8c38a76b85752071634c87bc1ae61b018bcf7b3e54410180"
+ },
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "ff31aad91784860a8c38a76b85752071634c87bc1ae61b018bcf7b3e54410180",
+   "contacts.md": "1470ad3c7ef3120dc5efd73acc9433acdd0855f9aa64c51da8f767cfe0ff88a2",
+   "prespec.md": "d2672fd77c44a137afffd39efd4bc64c5b16b07b7ec06fbbea47b18e29a3bdc8",
+   "public/data-r3-P23-recall.csv": "179ee1908102bec8dbbddd5a31e5c0601bc18076a4ca6e071c63c293a8423cd4",
+   "public/fig-r3-P23-recall.pdf": "f3d8b689b7d6a465d2f366ccad932a98f286326e82ce1b2179f452029af91a54",
+   "public/fig-r3-P23-recall.png": "385c20e37ef0a484bab8af650cf62b773aa922b1af59fc96d4e5e853bcfac62c"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

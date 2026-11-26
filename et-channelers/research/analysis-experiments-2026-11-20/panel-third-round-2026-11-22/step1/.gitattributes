@@ -1,0 +1,4 @@
+# Step 1's published files keep their exact bytes (line endings included): the SHA-256 in each entry's status.json
+# (published_copy.published_sha256) and r3-P20's registered prediction hash are hashes of these bytes. Hashes printed in
+# the READMEs and prespecification records are those of the private files as written.
+* -text

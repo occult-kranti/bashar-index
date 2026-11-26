@@ -1,0 +1,35 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy.
+# 90% intervals. Method per row by r3-P30's interval-choice.csv (the row of the largest simulated count at or below the row's creator count; where no method holds there, a reading is at most undetermined); cohort ratios carry a creator-cluster bootstrap percentile interval, a class r3-P30 did not calibrate.
+# Half-effect disclosure (56 primaries): if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table); a reading A is never called a finding.
+# Score (stat's two-stage, exactly centred score): per stratum O = items in the claimed voice, E = m p, V = m p (1 - p), p the claimed share of the stratum's claimed-or-own units; per creator z = (sum O - sum E)/sqrt(sum V); cohort ratio R = sum O / sum E. Informative strata only (an item, and p strictly between 0 and 1). If R and the mean score disagree in direction the class is undetermined. Mean-score intervals: r3-P30 class E_rank_correlation: the t interval on creator means at every simulated count (the lead's step-1 decision 64).
+# An item's voice: the side holding most of its words (H6's rule); items on neither side left out. Asks: the frozen asks instrument's final verdicts (middle model's check is the record). Frame formulas: units with a hit of RX's frozen greeting, devotional-address or community-address sub-patterns (cue counts), outside every ask. Recordings with both voices (300 words each side), H6's definition.
+# Margin (deposit 2): ratio 0.80 to 1.25; named direction: fewer claimed asks than position predicts. Creator counts 1 to 4 from a count printed elsewhere or earlier are stated against it ('all but fewer than 5 of N', 'N and fewer than 5 more'): N is a bound, not a claim that the groups are nested.
+# By tenth of running time (unit index), small model: per creator the claimed share of the words of both voices and the claimed share of the items of each class; creator-balanced means with t intervals on creator means (description). Adjacent tenths merged until 5 or more creators have items and the creators with a claimed item and with an own item are each 0 or 5 or more.
+series,first_tenth,last_tenth,creators,mean_claimed_share,lo90,hi90
+claimed share of words,0,0,all but fewer than 5 of 48,0.178,0.12,0.237
+claimed share of words,1,1,44 and fewer than 5 more,0.41,0.327,0.494
+claimed share of words,2,2,all but fewer than 5 of 48,0.554,0.461,0.646
+claimed share of words,3,3,all but fewer than 5 of 48,0.614,0.526,0.701
+claimed share of words,4,4,all but fewer than 5 of 48,0.652,0.564,0.74
+claimed share of words,5,5,all but fewer than 5 of 48,0.695,0.615,0.776
+claimed share of words,6,6,all but fewer than 5 of 48,0.704,0.619,0.788
+claimed share of words,7,7,44 and fewer than 5 more,0.685,0.602,0.768
+claimed share of words,8,8,44 and fewer than 5 more,0.602,0.513,0.691
+claimed share of words,9,9,44 and fewer than 5 more,0.373,0.292,0.454
+pay-or-enrol asks,0,4,17 and fewer than 5 more,0.198,0.043,0.353
+pay-or-enrol asks,5,6,9 and fewer than 5 more,0.467,0.21,0.723
+pay-or-enrol asks,7,9,all but fewer than 5 of 30,0.09,0.028,0.152
+platform asks,0,4,19 and fewer than 5 more,0.076,-0.013,0.165
+platform asks,5,8,all but fewer than 5 of 12,0.304,0.089,0.519
+platform asks,9,9,23 and fewer than 5 more,0.135,0.043,0.228
+frame formulas,0,0,34 and fewer than 5 more,0.089,0.026,0.152
+frame formulas,1,1,10 to 19,0.525,0.326,0.723
+frame formulas,2,2,all but fewer than 5 of 16,0.759,0.573,0.946
+frame formulas,3,3,11 and fewer than 5 more,0.713,0.499,0.926
+frame formulas,4,4,11 and fewer than 5 more,0.644,0.415,0.873
+frame formulas,5,5,10 to 19,0.781,0.62,0.943
+frame formulas,6,7,19 and fewer than 5 more,0.637,0.469,0.804
+frame formulas,8,8,17 and fewer than 5 more,0.885,0.79,0.979
+frame formulas,9,9,22 and fewer than 5 more,0.351,0.209,0.493

@@ -1,0 +1,32 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P26 (carries r4-P06).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# The method-dependence map (fixed in code/p26common.py before any outcome; prespec.md): one row per method, one column per input; 1 = the method reads that input. Coded from each method's definition (CROSS mtmm.py, the TL package's rows, RX patterns_v1.py, the title instrument and its word rule, PT part b, the frozen voice codebook). 'the brand' is the named source: self-naming formulas, source and family names. A shared vendor counts as a shared input (VER-DEP: same-vendor errors are correlated). The voiced-frames column is a.2 (r3-P08): no current method reads it. 'inputs' lists the exact tokens (lists, codebooks and models by identity).
+# No creator value enters this file.
+source,method,surface:transcript,punct_case,timing_units,audio,surface:title,surface:page,position,brand,lists,codebooks,model:small,model:middle,model:large,vendor:OpenAI,vendor:other,upstream,inputs
+MTMM,voice|small,1,1,1,0,0,0,1,1,0,1,1,0,0,1,0,0,brand; codebook:voice; model:small; position; punct_case; surface:transcript; timing_units; vendor:OpenAI
+MTMM,voice|middle,1,1,1,0,0,0,1,1,0,1,0,1,0,1,0,0,brand; codebook:voice; model:middle; position; punct_case; surface:transcript; timing_units; vendor:OpenAI
+MTMM,voice|rule,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,brand; list:RX-v1-framing; punct_case; surface:transcript
+MTMM,voice|page,0,0,0,0,1,0,0,1,1,1,0,1,1,1,0,0,brand; codebook:title-T; list:family-table; model:large; model:middle; surface:title; vendor:OpenAI
+MTMM,source family|small,0,0,0,0,1,0,0,1,1,1,1,0,0,1,0,0,brand; codebook:title-T; list:family-table; model:small; surface:title; vendor:OpenAI
+MTMM,source family|middle,0,0,0,0,1,0,0,1,1,1,0,1,0,1,0,0,brand; codebook:title-T; list:family-table; model:middle; surface:title; vendor:OpenAI
+MTMM,source family|rule,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,brand; list:RX-names-v0; surface:transcript
+MTMM,source family|page,0,0,0,0,1,0,0,1,1,0,0,0,0,0,0,0,brand; list:family-table; surface:title
+MTMM,asks|small,1,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,codebook:asks; model:small; surface:transcript; upstream:asks-small-finder; vendor:OpenAI
+MTMM,asks|middle,1,0,0,0,0,0,0,0,0,1,1,1,0,1,0,1,codebook:asks; model:middle; model:small; surface:transcript; upstream:asks-small-finder; vendor:OpenAI
+MTMM,asks|rule,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,list:RX-v1-price; surface:transcript
+MTMM,asks|page,0,0,0,0,0,1,0,0,1,1,1,0,0,1,0,0,codebook:PT-blocks; list:PT-mask-v2; model:small; surface:page; vendor:OpenAI
+TL-7.8,TIME_RE rule on the statement's sentence,1,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,list:TL-TIME_RE; model:small; surface:transcript; upstream:forecast-statements; vendor:OpenAI
+TL-7.8,FC time part YES (middle model),1,0,0,0,0,0,0,0,0,1,1,1,0,1,0,1,codebook:FC; model:middle; model:small; surface:transcript; upstream:forecast-statements; vendor:OpenAI
+TL-7.8,FE bounded time expression (small model),1,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,codebook:FE; gated-by:FC-or-TIME_RE; model:small; surface:transcript; upstream:forecast-statements; vendor:OpenAI
+TL-7.8,"TIME forecast-role bounded RX time hits per 1,000 words",1,0,0,0,0,0,0,0,1,0,1,0,0,1,0,0,list:RX-v1-time; model:small; surface:transcript; vendor:OpenAI
+TL-7.8,HEDGE_RE rule,1,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,list:TL-HEDGE_RE; model:small; surface:transcript; upstream:forecast-statements; vendor:OpenAI
+TL-7.8,FD hedge YES (small model),1,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,codebook:FD; model:small; surface:transcript; upstream:forecast-statements; vendor:OpenAI
+TL-7.8,CONDITION_RE rule,1,0,0,0,0,0,0,0,1,0,1,0,0,1,0,1,list:TL-CONDITION_RE; model:small; surface:transcript; upstream:forecast-statements; vendor:OpenAI
+TL-7.8,FD condition CL or CE (small model),1,0,0,0,0,0,0,0,0,1,1,0,0,1,0,1,codebook:FD; model:small; surface:transcript; upstream:forecast-statements; vendor:OpenAI
+RX-CB / VER-DEP / a.2,RX-CB: claimed-voice boundaries (small model),1,1,1,0,0,0,1,1,0,1,1,0,0,1,0,0,brand; codebook:voice; model:small; position; punct_case; surface:transcript; timing_units; vendor:OpenAI
+RX-CB / VER-DEP / a.2,"RX-CB: framing-cue hits (RX v1 J1, J2a, J2b, J3)",1,1,1,0,0,0,1,1,1,0,0,0,0,0,0,0,brand; list:RX-v1-framing; position; punct_case; surface:transcript; timing_units
+RX-CB / VER-DEP / a.2,"VER-DEP: voice reader, small model (record)",1,1,1,0,0,0,1,1,0,1,1,0,0,1,0,0,brand; codebook:voice; model:small; position; punct_case; surface:transcript; timing_units; vendor:OpenAI
+RX-CB / VER-DEP / a.2,"VER-DEP: voice reader, middle model",1,1,1,0,0,0,1,1,0,1,0,1,0,1,0,0,brand; codebook:voice; model:middle; position; punct_case; surface:transcript; timing_units; vendor:OpenAI
+RX-CB / VER-DEP / a.2,"VER-DEP: voice reader, third model of the same vendor",1,1,1,0,0,0,1,1,0,1,0,0,1,1,0,0,brand; codebook:voice; model:large; position; punct_case; surface:transcript; timing_units; vendor:OpenAI
+RX-CB / VER-DEP / a.2,VER-DEP: voice reader of another vendor,1,1,1,0,0,0,1,1,0,1,0,0,0,0,1,0,brand; codebook:voice; model:other-vendor; position; punct_case; surface:transcript; timing_units; vendor:other
+RX-CB / VER-DEP / a.2,"acoustic column (a.2, r3-P08; not computed)",0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,audio; position; timing_units

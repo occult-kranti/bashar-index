@@ -1,0 +1,88 @@
+{
+ "id": "r3-P05",
+ "carries": [
+  "r4-P05 (no-cost part)"
+ ],
+ "title": "Ask placement under position; who voices the ask",
+ "class": "a.1",
+ "step": "1",
+ "status": "reported (exploratory; not a test of H1-H10)",
+ "written_utc": "2026-11-26T03:08:21Z",
+ "utc_run": "inside r3-P04's prespecification (2026-11-26T02:31:06Z); final analysis run 2026-11-26T02:54:54Z to 02:55:15Z (p05_run.py, after r3-P06); publication 2026-11-26T03:00Z to 03:05Z",
+ "seen_only": true,
+ "model_or_api_calls": 0,
+ "contacts": "none",
+ "readings": {
+  "pay-or-enrol asks under tenth strata": "A (fewer claimed asks than position predicts, beyond the margin)",
+  "class": "undetermined (footing fails on frame formulas; commerce-specific fails on the score difference)"
+ },
+ "departures": [
+  "primary on the small model, all recordings (r3-P04's base), not LAB-A's middle-model subset",
+  "own-voice-only position curve and the page-only rung not built",
+  "tenths by sentence-unit index (the frozen H6 convention)"
+ ],
+ "not_stored": [
+  "dissemination asks (not a class of the frozen asks codebook)"
+ ],
+ "class_c_not_run": [
+  "r3-P22 arm A"
+ ],
+ "rule_b_fact": null,
+ "for_the_lead": [
+  "the commerce-minus-frame estimators disagree (ratio of ratios below 0.80; score difference crosses zero)",
+  "r3-P06's deictic arm would fire the gate if read on that statistic"
+ ],
+ "interval_rule": "r3-P30 interval-choice.csv sha256 fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6",
+ "prespec_sha256": "the hash recorded at hashing time is kept privately",
+ "frozen_prompts_read": null,
+ "code_sha256": {
+  "code/p05_publish.py": "503fa8ac22146843105a53c8434b52030075630db53fc9f7061674bf8cc794d7",
+  "code/p05_run.py": "68a975dbf629f0fa1cd4efd9e64ffc6896dcd08cf79fba9e808c6908f338685c",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "../r3-P04/code/common.py (shared)": "afb6dcf765d44997672e7341911a70990e889cd6407bf50145ebc41dc016874b",
+  "../r3-P04/code/intervals.py (shared)": "f428af347014e1b390261794aa58fc6f573b612bb3148aac3db6883d965c599d",
+  "../r3-P04/code/prespec.json (shared)": "the hash recorded at hashing time is kept privately",
+  "../r3-P04/code/pubcommon.py (shared)": "b3a81fe31eee2e48d614ae72db333dbabaebef4a07fe38f52e52bffad0296d02",
+  "../r3-P04/code/scan_public.py (shared)": "73bbe208ffa5e6ddadc59fa01173a4ae2b181ad748f325997087c723c1696ec9",
+  "../r3-P04/code/write_status.py (shared)": "b24b1f356fbd180caef9dc8ccd3a591fcf3962d311f047b73717243d2071993f"
+ },
+ "public_sha256": {
+  "public/data-r3-P05-by-tenth.csv": "b553bc041a73c403fa193742915949cd677a955003533857f7e17d9aa4d535ed",
+  "public/data-r3-P05-forest.csv": "532933f4851c54a4fa4e0bfd498e9315832cebe3d03f8005d309060d98ec7cfa",
+  "public/fig-r3-P05-by-tenth.pdf": "5f15cee49b0e77166cc414dd957534220f5418f75e0f643583814dcf5062843d",
+  "public/fig-r3-P05-by-tenth.png": "f166b6226683376a157b7ad99ad0079df6cbe0a587cee0b8d4760cd7b9f33bbd",
+  "public/fig-r3-P05-forest.pdf": "1d42801adec75fc4d3a9ad963267ce87b3eb55caee73b2d3fd212082916be87c",
+  "public/fig-r3-P05-forest.png": "c3217951559640c0fa52a950697875c60c8e326bfc5e3a3a0b718bb9c3a585ff",
+  "public/r3-P05-contrasts.csv": "c87824f6c76106a9a390fd7b02097d9cbee84bef20514c0be082f49bd9944ba2",
+  "public/r3-P05-reading.csv": "e2ea402d63894f2c3b00d044af2d3a9055220a2cc9f4639d1f8b726f1935f610"
+ },
+ "readme_sha256": "e3bfbdb87a7ffeb94bf652884b81eec4854c42212130613555ca88993c37bcb9",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_50": "2026-11-26T09:36:09Z (UTC, from date -u): files changed by the lead's step-1 decision 50 (no number changed); their recorded hashes refreshed: README.md, code/p05_publish.py, public/data-r3-P05-forest.csv",
+ "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: README.md, code/p05_publish.py, public/data-r3-P05-forest.csv",
+ "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/p05_publish.py, public/data-r3-P05-by-tenth.csv, public/data-r3-P05-forest.csv",
+ "note_2026-11-26_decision_64": "2026-11-26T12:18:25Z (UTC, from date -u): files changed by the lead's step-1 decision 64 (no number changed); their recorded hashes refreshed: README.md, code/p05_publish.py, public/data-r3-P05-by-tenth.csv, public/data-r3-P05-forest.csv, public/r3-P05-contrasts.csv, public/r3-P05-reading.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "e3bfbdb87a7ffeb94bf652884b81eec4854c42212130613555ca88993c37bcb9",
+   "contacts.md": "2931e6ecf852ad5f130fb1854a2b501bf4c9013633c541b7832f99f8d78ad528",
+   "public/data-r3-P05-by-tenth.csv": "b553bc041a73c403fa193742915949cd677a955003533857f7e17d9aa4d535ed",
+   "public/data-r3-P05-forest.csv": "532933f4851c54a4fa4e0bfd498e9315832cebe3d03f8005d309060d98ec7cfa",
+   "public/fig-r3-P05-by-tenth.pdf": "5f15cee49b0e77166cc414dd957534220f5418f75e0f643583814dcf5062843d",
+   "public/fig-r3-P05-by-tenth.png": "f166b6226683376a157b7ad99ad0079df6cbe0a587cee0b8d4760cd7b9f33bbd",
+   "public/fig-r3-P05-forest.pdf": "1d42801adec75fc4d3a9ad963267ce87b3eb55caee73b2d3fd212082916be87c",
+   "public/fig-r3-P05-forest.png": "c3217951559640c0fa52a950697875c60c8e326bfc5e3a3a0b718bb9c3a585ff",
+   "public/r3-P05-contrasts.csv": "c87824f6c76106a9a390fd7b02097d9cbee84bef20514c0be082f49bd9944ba2",
+   "public/r3-P05-reading.csv": "e2ea402d63894f2c3b00d044af2d3a9055220a2cc9f4639d1f8b726f1935f610"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

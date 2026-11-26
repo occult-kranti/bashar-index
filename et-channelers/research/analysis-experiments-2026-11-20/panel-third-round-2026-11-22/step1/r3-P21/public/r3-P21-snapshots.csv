@@ -1,0 +1,26 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P21 (drift audit of the frozen instruments).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Every label is model-coded and not checked by a person; agreement, never accuracy. Counts are answered requests (rows of the answer stores), not creators.
+# Read: run-ledger metadata and the seen-side answer stores (production seen, pilot and gate, second readings and PT, smoke, probe and self-test) and the discovery store's metadata. Never opened: the answer stores of hold-out, R-hold, other-group and reliability runs.
+# Part 1. For each alias asked for, the model string the API returned in each answered row (status completed, incomplete, refused or empty; rows copied by adoption left out), by interface and store group, with the first and last time (UTC).
+# Description: one returned string per alias throughout the stores read; every string is the bare alias, with no dated snapshot, so whether an alias resolved to one snapshot behind it cannot be told from stored runs.
+# Hold-out, R-hold, other-group and reliability runs: their returned strings were not read (their stores hold hold-out or other-group values); the ledgers show they ran on both interfaces (see r3-P21-interfaces.csv).
+alias_asked_for,role,returned_string,returned_string_is_dated_snapshot,interface,store_group,answered_rows,first_utc,last_utc
+gpt-6-luna,small model,gpt-6-luna,no,batch,"production, seen",7070,2026-11-21T06:04:03Z,2026-11-21T10:12:11Z
+gpt-6-luna,small model,gpt-6-luna,no,standard,discovery (outside the roster),12157,2026-11-21T01:02:04Z,2026-11-21T01:20:23Z
+gpt-6-luna,small model,gpt-6-luna,no,standard,pilot and gate (seen),22000,2026-11-20T21:07:37Z,2026-11-21T03:05:26Z
+gpt-6-luna,small model,gpt-6-luna,no,standard,"production, seen",133465,2026-11-21T06:44:34Z,2026-11-21T11:09:58Z
+gpt-6-luna,small model,gpt-6-luna,no,standard,second readings and PT (seen),12889,2026-11-21T00:03:07Z,2026-11-21T01:00:01Z
+gpt-6-luna,small model,gpt-6-luna,no,standard,"smoke, probe and self-test",280,2026-11-20T20:59:31Z,2026-11-21T01:12:13Z
+gpt-6-sol,large model,gpt-6-sol,no,batch,"production, seen",382,2026-11-21T07:12:24Z,2026-11-21T07:12:26Z
+gpt-6-sol,large model,gpt-6-sol,no,standard,second readings and PT (seen),300,2026-11-21T03:19:06Z,2026-11-21T03:20:08Z
+gpt-6-sol,large model,gpt-6-sol,no,standard,"smoke, probe and self-test",12,2026-11-21T02:42:06Z,2026-11-21T02:42:19Z
+gpt-6.1-terra,middle model,gpt-6.1-terra,no,batch,"production, seen",12152,2026-11-21T05:41:20Z,2026-11-21T10:06:51Z
+gpt-6.1-terra,middle model,gpt-6.1-terra,no,standard,discovery (outside the roster),12302,2026-11-20T23:27:17Z,2026-11-21T01:39:53Z
+gpt-6.1-terra,middle model,gpt-6.1-terra,no,standard,pilot and gate (seen),7099,2026-11-20T21:12:29Z,2026-11-21T03:08:01Z
+gpt-6.1-terra,middle model,gpt-6.1-terra,no,standard,"production, seen",71,2026-11-21T09:45:13Z,2026-11-21T09:45:58Z
+gpt-6.1-terra,middle model,gpt-6.1-terra,no,standard,second readings and PT (seen),616,2026-11-21T00:03:07Z,2026-11-21T03:18:52Z
+gpt-6.1-terra,middle model,gpt-6.1-terra,no,standard,"smoke, probe and self-test",4,2026-11-20T21:04:30Z,2026-11-21T01:12:01Z
+gpt-6.2-sol,"large model, newer alias",gpt-6.2-sol,no,standard,discovery (outside the roster),2023,2026-11-21T01:02:32Z,2026-11-21T02:13:21Z
+gpt-6.2-sol,"large model, newer alias",gpt-6.2-sol,no,standard,pilot and gate (seen),622,2026-11-21T00:09:30Z,2026-11-21T03:08:13Z
+gpt-6.2-sol,"large model, newer alias",gpt-6.2-sol,no,standard,"smoke, probe and self-test",12,2026-11-21T01:12:33Z,2026-11-21T01:12:37Z

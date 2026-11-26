@@ -1,0 +1,86 @@
+{
+  "id": "r3-P21",
+  "class": "a.1",
+  "step": 1,
+  "status": "done (exploratory; a tabulation); part 2 not computable from stored runs",
+  "written_utc": "2026-11-26T06:47:48Z",
+  "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded labels, not checked by a person; agreement, never accuracy.",
+  "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+  "prespec": {
+    "file": "prespec.md",
+    "sha256": "869d53e649efba94369f17ce080210b9d9060c35a45e4f1ed40883e6a1fe18e4",
+    "hashed_utc": "2026-11-26T06:34:50Z"
+  },
+  "readings": {
+    "part 1 (alias to snapshot)": "one returned string per alias throughout the stores read; every string is the bare alias (no dated snapshot), so whether an alias resolved to one snapshot cannot be told from stored runs",
+    "part 2 (interfaces alike)": "not computable from stored runs: no request was answered under both interfaces in any seen-side store; the seen record mixes interfaces by instrument and model, not by item"
+  },
+  "interval": "none (a tabulation of stored metadata)",
+  "departures": [
+    "programme's plot replaced by the alias-to-string timeline",
+    "run-to-run band not built (repeated gate runs are not matched item by item in the stores)"
+  ],
+  "not_run": [
+    "anchor re-read at a wave (class c, 3 to 6 USD)",
+    "returned strings of hold-out, R-hold, other-group and reliability runs (stores not opened)"
+  ],
+  "not_stored": [
+    "a dated snapshot name",
+    "an item key in answer rows",
+    "the returned model string in the spend ledger"
+  ],
+  "contacts": "none (contacts.md)",
+  "privacy_scans": "zsolve.py: 0 rows tested, 0 pinned, 0 narrowed; qscan_all2.py: 0 files with quantile columns, 0 rows with a hidden or banded base; identifier scan (creator codes, audio hashes, video ids): 0 hits; PNG text chunks and PDF document information: none. quant.py and quant2.py copied; they read the 'quantiles' column of one release file, and no public file of this entry has such a column, so they were not run on it.",
+  "runs_utc": {
+    "p21_run.py": "2026-11-26T06:35:24Z; reruns 06:35:54Z and 06:36:10Z (finer tabulations added, same sources)",
+    "p21_publish.py": "about 06:37Z to 06:38Z"
+  },
+  "files": {
+    "public/fig-r3-P21-snapshots.pdf": "f275e9e84211df5f826714fc40aecc665403caa3b3421b43848c40451493e5a4",
+    "public/fig-r3-P21-snapshots.png": "ccd9261cc276db9b2bbbf73018b4e87b20909b77834472e99a256a1347ad0e45",
+    "public/r3-P21-interfaces.csv": "e08b75d4f10cf7538e3d5cce4b71e402f8d5c4309ebb7e0807e29fba0d92251a",
+    "public/r3-P21-snapshots.csv": "ff4edd14fa0584337bb3655938777cb43a0e9d3265d6737ef692bd0072009474",
+    "code/finalize.py": "f3711f285ef2310f56383d4aa121c8cd25157913ab3d85edde2ce1ef91e3d7fe",
+    "code/p21_publish.py": "efbd2b71454ea7d5b49e5d4755d6187d43cad5095b72a233fd802a853d7416d4",
+    "code/p21_run.py": "c2726408c49c22d726433dd8e3da90bf1de4deda18d8b13d9c7e11e894a8f01e",
+    "code/pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+    "code/scan_ids.py": "8e13207c018538e592903f635f90c4bdce058848f8d9292bef3a2945fcaae14c",
+    "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+    "code/scans/qscan_all2.py": "f3c5f0ca854a68e143e306cb52083e9d0dc127859b495b252fc5ca4f33976b69",
+    "code/scans/quant.py": "a2478a09a37c3c759485fdfa3e0f98c6cd1d9a3094cc3b58c566588a9b1cae5c",
+    "code/scans/quant2.py": "7421b55e42d6fd55880a4b44dbc42c89c5991f18ba652374a2a4e93865ce9248",
+    "code/scans/zsolve.py": "85f81e9866da1fd527216198137927650fff6352b8b03f58bb118a58fecec864",
+    "prespec.md": "869d53e649efba94369f17ce080210b9d9060c35a45e4f1ed40883e6a1fe18e4",
+    "prespec-record.md": "7b253b45cc9e9a7ee3c149f90019856a25346a9e61dd10106929b15250e88ca7",
+    "contacts.md": "58dc4b4c377e3f4a6d579fb0cd13eab424be041522a2fe06b465366893037347"
+  },
+  "readme_sha256": "e1908539ac575111df537019ecc11f5638b3dd2bc7f4b30a0688eea7e01d7375",
+  "for_the_lead": [
+    "drift between the seen record (before 11:09 UTC, 21 Nov) and the hold-out record (after 16:06 UTC) cannot be excluded from stored data",
+    "listings of llm/answers and llm/logs showed run-tag names of hold-out runs (no file opened); ruling requested only if the lead treats such names as more than metadata"
+  ],
+  "contacts_note": "a listing that showed run-tag names only; no file of a hold-out or other-group run was opened (metadata under D31; the lead's step-1 decision 21)",
+  "note_2026-11-26_decision_49": "2026-11-26T09:23:30Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+  "published_copy": {
+    "staged_utc": "2026-11-26T12:18:25Z",
+    "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+    "published_sha256": {
+      "README.md": "e1908539ac575111df537019ecc11f5638b3dd2bc7f4b30a0688eea7e01d7375",
+      "contacts.md": "5f06ea6fa3b795eeafd18477f392a554afdf41f64a893d1752d74b7f1cd1fdcb",
+      "prespec-record.md": "01850549fa1435c031476be832b9740565892cbbc0de4ed699ccc23f6810d96c",
+      "prespec.md": "869d53e649efba94369f17ce080210b9d9060c35a45e4f1ed40883e6a1fe18e4",
+      "public/fig-r3-P21-snapshots.pdf": "f275e9e84211df5f826714fc40aecc665403caa3b3421b43848c40451493e5a4",
+      "public/fig-r3-P21-snapshots.png": "ccd9261cc276db9b2bbbf73018b4e87b20909b77834472e99a256a1347ad0e45",
+      "public/r3-P21-interfaces.csv": "e08b75d4f10cf7538e3d5cce4b71e402f8d5c4309ebb7e0807e29fba0d92251a",
+      "public/r3-P21-snapshots.csv": "ff4edd14fa0584337bb3655938777cb43a0e9d3265d6737ef692bd0072009474"
+    },
+    "changed_for_publication": [
+      "contacts.md",
+      "prespec-record.md"
+    ],
+    "added_for_publication": [
+      "contacts.md: label line and/or agnosticism sentence (decision 47)",
+      "prespec-record.md: label line and/or agnosticism sentence (decision 47)"
+    ]
+  }
+}

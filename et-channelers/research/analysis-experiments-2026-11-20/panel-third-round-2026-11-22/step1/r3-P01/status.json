@@ -1,0 +1,122 @@
+{
+ "id": "r3-P01",
+ "carries": [
+  "r4-P01"
+ ],
+ "class": "a.1",
+ "step": 1,
+ "status": "done (exploratory)",
+ "written_utc": "2026-11-26T03:00:36Z",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded voice labels, not checked by a person; agreement of decodes, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tolerance_arm": {
+  "ran_utc": "2026-11-26T02:28:30Z to 02:29:11Z",
+  "record_written_utc": "2026-11-26T02:29:19Z",
+  "record_sha256": "9fbce94b8f45ba5039ca5cc501ac8d9a932addefdf03880cc267c33d2e20a991",
+  "margins_sha256": "bd5a940aedc824b60d64346daf454d0ed9ccb0d494ba2dc160e4a5044994b455",
+  "voice_split_first_run_utc": "2026-11-26T02:32:24Z",
+  "voice_labels_opened_by_tolerance_arm": false
+ },
+ "readings": {
+  "stored fields, small model (59 creators, 443 recordings)": {
+   "A confidence": "no differential instability detected among Whisper-family decodes; shared normalisation untested; some rows' readings are not printed for privacy",
+   "B1 filter removals": "no differential instability detected among Whisper-family decodes; shared normalisation untested",
+   "B2 seam share": "undetermined (some rows' readings are not printed for privacy)",
+   "D transport (stable tokens)": "no differential instability detected among Whisper-family decodes; shared normalisation untested; some rows' readings are not printed for privacy"
+  },
+  "C1 bridge (10 to 19 recordings with both voices)": {
+   "C1 non-agreement": "undetermined; some rows' readings are not printed for privacy",
+   "D transport": "undetermined; some rows' readings are not printed for privacy"
+  },
+  "C2 grid shift (13 recordings with both voices)": {
+   "C2 non-agreement": "undetermined; some rows' readings are not printed for privacy",
+   "D transport": "undetermined; some rows' readings are not printed for privacy"
+  },
+  "overall": "No row whose reading is printed reads 'differential instability detected'; some rows' readings are not printed for privacy. On the stored fields A, B1 and D read 'no differential instability detected among Whisper-family decodes; shared normalisation untested'; B2, C1 and C2 are undetermined; archaic forms not computed (fewer than 5 creators)."
+ },
+ "seam_zone_exclusion_rows": "printed beside the unexcluded rows (r3-P02's rule), small model; never replacing the primary",
+ "interval": "r3-P30 interval-choice.csv (sha256 fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6) by design class and count; applied at publication (the file appeared 02:35:12Z, after the first voice split); random-effects rows on creators with 2+ recordings with a binomial variance floor",
+ "departures": [
+  "seam zone fixed from BR-GS before r3-P02 reported; r3-P02's exclusion rows added beside",
+  "r3-P30 interval choice applied after the first run; binomial variance floor for random-effects methods",
+  "archaic list written by this agent (30 forms), not the step-2 lexicon",
+  "E2 not set beside a gap in its own units",
+  "13 recordings left out (voice units did not match the cached words)"
+ ],
+ "not_run": [
+  "part E",
+  "GPU re-decode",
+  "another recognizer family",
+  "a person's word reference",
+  "splice census (r4-P03)",
+  "rendering direction of contractible pairs"
+ ],
+ "not_stored": [
+  "second decodes beyond rv-R3's 35 and BR-GS's 40 seen recordings",
+  "person-made word references",
+  "acoustic syllable counts"
+ ],
+ "contacts": "none (contacts.md)",
+ "files_sha256": {
+  "code/p01common.py": "6f545af4a4b442b2506fbf277d77638aef12dc8347605418b2046144adcce800",
+  "code/plot_p01.py": "376cc538e2249564020308fada8e543809d8ffa1bb32508923f3b27deb329202",
+  "code/probe_inputs.py": "9d5b09432520543527d67a8b9ac4250159aa3436f0de8f42f04eb0e329c13d7d",
+  "code/publish_p01.py": "bdb553b79270a2d138c826cc44f6205ff88bb1a1d95366cc2e6e4ff550c3d7e9",
+  "code/pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/test_p01common.py": "3c0b4aaca7a645bc39fe74a394b5a50ce46e05ee1e06f3668eec24e160b9f724",
+  "code/tolerance_arm.py": "b56f55aaeb2bd6714fcd94e9c9260de58d120661a078f10be9fde67662172f27",
+  "code/voice_split.py": "11aed4ddb0484d0a10426e116f1a0a5ad38382d274a1425cac16d575fc675e9f",
+  "public/data-r3-P01-headlines.csv": "3d965397618b326f1ecfd0613fdad6f82390327695fa80bdc594674572790df8",
+  "public/data-r3-P01-instability.csv": "b83dbfef5683513d136aa54a478037ba5931a08a4c5d3b553bc9f917910e236c",
+  "public/data-r3-P01-margins.csv": "5720e794bda5cfc7ea94044aed6154f84024bdcb3cfade6fbba762dab8593f3c",
+  "public/data-r3-P01-readings.csv": "909c14d5026b5d1e59de8ac5a24380879f8082ea142534003a309d5e705b9524",
+  "public/fig-r3-P01-headlines.pdf": "fb84982577bbf4e694ccb0895daa7ff15ed4b640bce8d62a6bdf570cb9932b6d",
+  "public/fig-r3-P01-headlines.png": "f85ba34f7bf3b8924c26373644c76acc9e7b028e96520cf1774b9c62dbc51fca",
+  "public/fig-r3-P01-instability.pdf": "5e3a14111923305434088d6c9b21e1a1052e6c7826e7d0b45bd68600093877b8",
+  "public/fig-r3-P01-instability.png": "b67aa42577db238ea78fc398ea99c72948f286d7c43a52f31e64b7f624b12ba8",
+  "public/fig-r3-P01-transport.pdf": "76be8d0bc4da0f7da037ec7d1b2ed66bfd9162cf0cd5efd799a3144c96f46509",
+  "public/fig-r3-P01-transport.png": "dee70dce1a01c966efee483e5de408ed4b6875ae203da73861e614526cc57511",
+  "README.md": "cdb26a6eb4fe3e8b2f3df74135d6c17c07a58f9e01238e98ad70b599dea9ac3b",
+  "contacts.md": "9b3321a8e8cf0420d5807683e28820fcc5b3c7501557f3c22750bf78bd369e88",
+  "tolerance-arm-record.md": "9fbce94b8f45ba5039ca5cc501ac8d9a932addefdf03880cc267c33d2e20a991"
+ },
+ "updated_utc": "2026-11-26T03:04:35Z",
+ "sensitivity_rows": "lead's decision of 2026-11-26: beside every row read with a random-effects (HKSJ) interval on creators with 2+ recordings, a row 'sensitivity (not the reading)' with the t interval on creator means over all of the row's creators (data-r3-P01-instability.csv; family summaries in data-r3-P01-readings.csv; MR-18c gap in data-r3-P01-headlines.csv); readings unchanged; under the sensitivity rows A, B1, D and the excluded A and B1 read the same, B2 stays undetermined",
+ "lead_decisions_2026_11_26": [
+  "two-sided reading of r3-P01 stands",
+  "random-effects rows stand as read, with t-interval sensitivity rows beside",
+  "stripped labels: not stored among the seen instruments; reliability folders stay closed"
+ ],
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: README.md, code/plot_p01.py, public/data-r3-P01-headlines.csv, public/data-r3-P01-instability.csv, public/fig-r3-P01-headlines.pdf, public/fig-r3-P01-headlines.png, public/fig-r3-P01-instability.pdf, public/fig-r3-P01-instability.png, public/fig-r3-P01-transport.pdf, public/fig-r3-P01-transport.png",
+ "note_2026-11-26_decision_56": "2026-11-26T10:53:54Z (UTC, from date -u): files changed by the lead's step-1 decision 56 (no number changed); their recorded hashes refreshed: README.md, code/plot_p01.py, public/data-r3-P01-instability.csv, public/data-r3-P01-readings.csv, public/fig-r3-P01-instability.pdf, public/fig-r3-P01-instability.png, public/fig-r3-P01-transport.pdf, public/fig-r3-P01-transport.png",
+ "note_2026-11-26_decision_59": "2026-11-26T11:05:42Z (UTC, from date -u): files changed by the lead's step-1 decision 59 (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/plot_p01.py, public/data-r3-P01-headlines.csv, public/data-r3-P01-instability.csv, public/data-r3-P01-readings.csv, public/fig-r3-P01-headlines.pdf, public/fig-r3-P01-headlines.png, public/fig-r3-P01-instability.pdf, public/fig-r3-P01-instability.png, public/fig-r3-P01-transport.pdf, public/fig-r3-P01-transport.png",
+ "note_2026-11-26_decision_63": "2026-11-26T12:07:28Z (UTC, from date -u): files changed by the lead's step-1 decision 63 (no number changed); their recorded hashes refreshed: README.md, public/data-r3-P01-readings.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "cdb26a6eb4fe3e8b2f3df74135d6c17c07a58f9e01238e98ad70b599dea9ac3b",
+   "contacts.md": "1b4157e79ae475c5330c61170b7223d1eaa3ea236823c98d430a590a6ce62778",
+   "public/data-r3-P01-headlines.csv": "3d965397618b326f1ecfd0613fdad6f82390327695fa80bdc594674572790df8",
+   "public/data-r3-P01-instability.csv": "b83dbfef5683513d136aa54a478037ba5931a08a4c5d3b553bc9f917910e236c",
+   "public/data-r3-P01-margins.csv": "5720e794bda5cfc7ea94044aed6154f84024bdcb3cfade6fbba762dab8593f3c",
+   "public/data-r3-P01-readings.csv": "909c14d5026b5d1e59de8ac5a24380879f8082ea142534003a309d5e705b9524",
+   "public/fig-r3-P01-headlines.pdf": "fb84982577bbf4e694ccb0895daa7ff15ed4b640bce8d62a6bdf570cb9932b6d",
+   "public/fig-r3-P01-headlines.png": "f85ba34f7bf3b8924c26373644c76acc9e7b028e96520cf1774b9c62dbc51fca",
+   "public/fig-r3-P01-instability.pdf": "5e3a14111923305434088d6c9b21e1a1052e6c7826e7d0b45bd68600093877b8",
+   "public/fig-r3-P01-instability.png": "b67aa42577db238ea78fc398ea99c72948f286d7c43a52f31e64b7f624b12ba8",
+   "public/fig-r3-P01-transport.pdf": "76be8d0bc4da0f7da037ec7d1b2ed66bfd9162cf0cd5efd799a3144c96f46509",
+   "public/fig-r3-P01-transport.png": "dee70dce1a01c966efee483e5de408ed4b6875ae203da73861e614526cc57511",
+   "tolerance-arm-record.md": "9fbce94b8f45ba5039ca5cc501ac8d9a932addefdf03880cc267c33d2e20a991"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

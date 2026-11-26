@@ -1,0 +1,70 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy.
+# 90% intervals. Method per row by r3-P30's interval-choice.csv (the row of the largest simulated count at or below the row's creator count; where no method holds there, a reading is at most undetermined); cohort ratios carry a creator-cluster bootstrap percentile interval, a class r3-P30 did not calibrate.
+# Half-effect disclosure (56 primaries): if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table); a reading A is never called a finding.
+# Score (stat's two-stage, exactly centred score): per stratum O = items in the claimed voice, E = m p, V = m p (1 - p), p the claimed share of the stratum's claimed-or-own units; per creator z = (sum O - sum E)/sqrt(sum V); cohort ratio R = sum O / sum E. Informative strata only (an item, and p strictly between 0 and 1). If R and the mean score disagree in direction the class is undetermined. Mean-score intervals: r3-P30 class E_rank_correlation: the t interval on creator means at every simulated count (the lead's step-1 decision 64).
+# An item's voice: the side holding most of its words (H6's rule); items on neither side left out. Asks: the frozen asks instrument's final verdicts (middle model's check is the record). Frame formulas: units with a hit of RX's frozen greeting, devotional-address or community-address sub-patterns (cue counts), outside every ask. Recordings with both voices (300 words each side), H6's definition.
+# Margin (deposit 2): ratio 0.80 to 1.25; named direction: fewer claimed asks than position predicts. Creator counts 1 to 4 from a count printed elsewhere or earlier are stated against it ('all but fewer than 5 of N', 'N and fewer than 5 more'): N is a bound, not a claim that the groups are nested.
+# The forest figure's data: scores and cohort ratios per view, strata and class.
+view,strata,class,creators_with_informative_strata,status,cohort_ratio,lo90,hi90,mean_score,score_lo90,score_hi90,signflip_p_two_sided,claimed_share_cb,claimed_share_lo90,claimed_share_hi90,position_predicted_share_cb
+"small model, all recordings with both voices",recording x tenth (primary),pay or enrol (K1),all but fewer than 5 of 30,printed,0.287,0.076,0.468,-1.291,-1.635,-0.947,0.0,0.065,0.017,0.113,0.359
+"small model, all recordings with both voices",recording x tenth (primary),platform (K3),23 and fewer than 5 more,printed,0.164,0.072,0.27,-2.115,-2.701,-1.528,0.0,0.045,0.015,0.075,0.494
+"small model, all recordings with both voices",recording x tenth (primary),off-platform (K4),17 and fewer than 5 more,printed,0.167,0.085,0.294,-1.728,-2.376,-1.08,0.0,0.072,0.015,0.129,0.429
+"small model, all recordings with both voices",recording x tenth (primary),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, all recordings with both voices",recording x tenth (primary),either-voice frame formulas,all but fewer than 5 of 34,printed,0.791,0.598,0.93,-0.845,-1.286,-0.405,0.003,0.295,0.188,0.403,0.493
+"small model, all recordings with both voices",recording x twentieth,pay or enrol (K1),17 and fewer than 5 more,printed,0.33,0.141,0.518,-1.103,-1.45,-0.756,0.0,0.121,0.034,0.208,0.412
+"small model, all recordings with both voices",recording x twentieth,platform (K3),20 and fewer than 5 more,printed,0.207,0.076,0.38,-1.485,-1.959,-1.01,0.0,0.06,0.01,0.109,0.438
+"small model, all recordings with both voices",recording x twentieth,off-platform (K4),all but fewer than 5 of 16,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, all recordings with both voices",recording x twentieth,money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, all recordings with both voices",recording x twentieth,either-voice frame formulas,23 and fewer than 5 more,printed,0.896,0.641,1.104,-0.54,-1.112,0.032,0.119,0.317,0.191,0.444,0.456
+"small model, all recordings with both voices",recording x 60-s bin,pay or enrol (K1),16 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, all recordings with both voices",recording x 60-s bin,platform (K3),18 and fewer than 5 more,printed,0.272,0.133,0.377,-1.208,-1.407,-1.009,0.0,0.057,0.014,0.1,0.39
+"small model, all recordings with both voices",recording x 60-s bin,off-platform (K4),12 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, all recordings with both voices",recording x 60-s bin,money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, all recordings with both voices",recording x 60-s bin,either-voice frame formulas,all but fewer than 5 of 30,printed,0.785,0.566,0.979,-0.57,-0.998,-0.142,0.033,0.319,0.194,0.444,0.483
+"small model, all recordings with both voices",recording (the frozen OE centring),pay or enrol (K1),all but fewer than 5 of 34,printed,0.206,0.094,0.341,-2.896,-3.691,-2.1,0.0,0.117,0.058,0.175,0.531
+"small model, all recordings with both voices",recording (the frozen OE centring),platform (K3),all but fewer than 5 of 34,printed,0.209,0.145,0.283,-2.834,-3.516,-2.151,0.0,0.138,0.063,0.213,0.564
+"small model, all recordings with both voices",recording (the frozen OE centring),off-platform (K4),all but fewer than 5 of 30,printed,0.172,0.09,0.297,-2.199,-2.962,-1.436,0.0,0.132,0.045,0.22,0.52
+"small model, all recordings with both voices",recording (the frozen OE centring),money gifts (K2),not published,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, all recordings with both voices",recording (the frozen OE centring),either-voice frame formulas,all but fewer than 5 of 44,printed,0.789,0.644,0.885,-1.477,-1.999,-0.955,0.0,0.323,0.236,0.411,0.518
+"small model, middle-model subset",recording x tenth (primary),pay or enrol (K1),all but fewer than 5 of 12,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, middle-model subset",recording x tenth (primary),platform (K3),all but fewer than 5 of 12,printed; no claimed item for any creator,0.0,,,-1.325,-1.719,-0.93,0.001,0.0,0.0,0.0,0.45
+"small model, middle-model subset",recording x tenth (primary),off-platform (K4),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset",recording x tenth (primary),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset",recording x tenth (primary),either-voice frame formulas,12 and fewer than 5 more,printed,0.837,0.654,1.038,-0.356,-0.847,0.136,0.218,0.451,0.246,0.656,0.556
+"small model, middle-model subset",recording (the frozen OE centring),pay or enrol (K1),17 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, middle-model subset",recording (the frozen OE centring),platform (K3),17 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, middle-model subset",recording (the frozen OE centring),off-platform (K4),7 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, middle-model subset",recording (the frozen OE centring),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset",recording (the frozen OE centring),either-voice frame formulas,all but fewer than 5 of 23,printed,0.879,0.702,1.007,-0.672,-1.121,-0.223,0.019,0.368,0.218,0.517,0.556
+"middle model, middle-model subset",recording x tenth (primary),pay or enrol (K1),7 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset",recording x tenth (primary),platform (K3),7 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset",recording x tenth (primary),off-platform (K4),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"middle model, middle-model subset",recording x tenth (primary),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"middle model, middle-model subset",recording x tenth (primary),either-voice frame formulas,12 and fewer than 5 more,printed,0.764,0.55,0.952,-0.499,-0.925,-0.072,0.059,0.394,0.208,0.58,0.529
+"middle model, middle-model subset",recording (the frozen OE centring),pay or enrol (K1),10 to 19,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset",recording (the frozen OE centring),platform (K3),16 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset",recording (the frozen OE centring),off-platform (K4),9 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset",recording (the frozen OE centring),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"middle model, middle-model subset",recording (the frozen OE centring),either-voice frame formulas,19 and fewer than 5 more,printed,0.82,0.595,0.977,-0.87,-1.365,-0.375,0.007,0.378,0.222,0.533,0.613
+"small model, middle-model subset, 180-s trims",recording x tenth (primary),pay or enrol (K1),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording x tenth (primary),platform (K3),not published,not published: values are withheld where they could narrow a banded count (the lead's step-1 decisions 50(b) and 53(b)),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording x tenth (primary),off-platform (K4),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording x tenth (primary),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording x tenth (primary),either-voice frame formulas,6 and fewer than 5 more,not published (misses from fewer than 5 creators),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording (the frozen OE centring),pay or enrol (K1),7 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording (the frozen OE centring),platform (K3),6 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording (the frozen OE centring),off-platform (K4),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording (the frozen OE centring),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"small model, middle-model subset, 180-s trims",recording (the frozen OE centring),either-voice frame formulas,11 and fewer than 5 more,printed; cohort ratio and mean score disagree in direction,1.037,0.858,1.158,-0.106,-0.635,0.423,0.721,0.609,0.372,0.847,0.677
+"middle model, middle-model subset, 180-s trims",recording x tenth (primary),pay or enrol (K1),not published,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording x tenth (primary),platform (K3),not published,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording x tenth (primary),off-platform (K4),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording x tenth (primary),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording x tenth (primary),either-voice frame formulas,6 and fewer than 5 more,not published (misses from fewer than 5 creators),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording (the frozen OE centring),pay or enrol (K1),7 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording (the frozen OE centring),platform (K3),6 and fewer than 5 more,not published: claimed items come from fewer than 5 creators (dominance rule),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording (the frozen OE centring),off-platform (K4),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording (the frozen OE centring),money gifts (K2),fewer than 5,not computed (fewer than 5 creators with an informative stratum),,,,,,,,,,,
+"middle model, middle-model subset, 180-s trims",recording (the frozen OE centring),either-voice frame formulas,11 and fewer than 5 more,printed,1.075,0.88,1.222,0.036,-0.522,0.594,0.901,0.704,0.479,0.93,0.7

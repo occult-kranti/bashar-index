@@ -1,0 +1,21 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Seen creators only. Every label is model-coded and not checked by a person; every figure here is consistency (agreement between readings), never accuracy.
+# Interval level: 90% (creator-cluster bootstrap, percentile, 2,000 draws; seed 2026112619); interval method not calibrated by r3-P30 for this design class; a reading is a description, never a finding.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings of A would be expected at the deposited 5% (up to about 6.1 for the share, standardised, AUC and rank-correlation classes; r3-P30).
+# No per-creator or per-recording value is published; no cell or group rests on fewer than 5 creators.
+# r3-P19 primary per instrument: the label-process share, (model + run components) / total variance of one reading of one recording.
+# Composite (voice and asks): creator and recording from design 1 (recording net of design 3's run residual), model, creator x model and recording x model (net of run noise) from design 2, run and recording x run from design 3. Other instruments: design 2 alone (model and within-reading components; no run main effect stored).
+# Margin 0.10 (deposit 2's margin for agreement coefficients; the share is one minus an absolute generalizability coefficient). Reading A: the 90% interval lies wholly above 0.10; B: wholly below; otherwise undetermined.
+# Prompt-form, input-form and map components are secondary (not facets of the frozen instrument): data-r3-P19-components.csv.
+instrument,quantity,kind,label_process_share,lo90,hi90,reading,creators,flag
+V-claimed,voice: claimed-voice share of words,"composite (roster, two-model, runs)",0.14,0.091,0.244,undetermined,71,interval method not calibrated by r3-P30 for this design class
+V-claimed,voice: claimed-voice share of words,sensitivity (not the reading): two-model design alone,0.147,0.072,0.258,,71,interval method not calibrated by r3-P30 for this design class
+V-own,voice: own-voice share of words,"composite (roster, two-model, runs)",0.129,0.087,0.197,undetermined,71,interval method not calibrated by r3-P30 for this design class
+V-own,voice: own-voice share of words,sensitivity (not the reading): two-model design alone,0.134,0.082,0.197,,71,interval method not calibrated by r3-P30 for this design class
+A-K1,asks: recording holds a pay-or-enrol ask,"composite (roster, two-model, runs)",0.105,0.077,0.165,undetermined,71,interval method not calibrated by r3-P30 for this design class
+A-K1,asks: recording holds a pay-or-enrol ask,sensitivity (not the reading): two-model design alone,0.107,0.076,0.146,,71,interval method not calibrated by r3-P30 for this design class
+F-time,"forecasts: checkability, time window YES share",two-model design only (model and within-reading components; no run main effect),0.245,0.201,0.296,A: the label process carries a share beyond the margin,all but fewer than 5 of 71,interval method not calibrated by r3-P30 for this design class
+F-outcome,"forecasts: checkability, observable outcome YES share",two-model design only (model and within-reading components; no run main effect),0.311,0.231,0.416,A: the label process carries a share beyond the margin,all but fewer than 5 of 71,interval method not calibrated by r3-P30 for this design class
+S-world,sentence codes: world-claim share of words,not computed: no second reading stored,,,,not computed,all but fewer than 5 of 71,
+T-P1,titles: presentation code P1,two-model design only (model and within-reading components; no run main effect),0.228,0.154,0.32,A: the label process carries a share beyond the margin,71,interval method not calibrated by r3-P30 for this design class

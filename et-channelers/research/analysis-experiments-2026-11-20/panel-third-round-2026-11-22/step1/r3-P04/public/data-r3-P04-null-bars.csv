@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy.
+# 90% intervals. Method per row by r3-P30's interval-choice.csv (the row of the largest simulated count at or below the row's creator count; where no method holds there, a reading is at most undetermined); cohort ratios carry a creator-cluster bootstrap percentile interval, a class r3-P30 did not calibrate.
+# Half-effect disclosure (56 primaries): if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table); a reading A is never called a finding.
+# Margins (deposit 2): H1 a log ratio of 0.223 (ratio 0.80 to 1.25); H4 0.20 between-creator SD; H6 OE 5 points (a difference in shares); H6 log MH 0.223. Named directions: H1 negative (claimed slower), H4 positive (fewer contractions in the claimed voice), H6 negative (fewer claimed asks).
+# Seen creators only; English-only recognizer (1,284 seen recordings). Rows of one statistic and model rest on one creator set (creators with an observed, an XT and an R0 value); the ST rows on its creators with own-voice-only recordings. Creator counts 1 to 4 from a creator count printed elsewhere (deposit 2, CAL-f, MR, the programme's fixed counts) or earlier in these entries are stated against it ('all but fewer than 5 of N', 'N and fewer than 5 more'): N is used as a bound, not as a claim that the groups are nested.
+# Null quantile bars: per reference, the 5th, 25th, 50th, 75th and 95th percentiles over 200 draws of the creator-balanced mean of the statistic under the reference's span maps; seen: the observed creator-balanced mean over the same creators (small model).
+statistic,reference,draws,q05,q25,q50,q75,q95,null_mean,seen,margin,creators
+H1 rate,R0,200,-0.0425,-0.0205,-0.0065,0.012,0.0278,-0.0055,-0.0703,0.2231435513142097,40 to 49
+H1 rate,XT,200,-0.022,-0.008,0.0073,0.0199,0.0345,0.0059,-0.0703,0.2231435513142097,40 to 49
+H1 rate,ST,200,-0.0515,-0.0321,-0.0181,-0.0072,0.0068,-0.0198,-0.073,0.2231435513142097,23 and fewer than 5 more
+H4 contraction,R0,200,0.0722,0.2776,0.367,0.4894,0.6443,0.3739,1.785,0.2,34
+H4 contraction,XT,200,0.0721,0.2105,0.3107,0.4132,0.527,0.3133,1.785,0.2,34
+H4 contraction,ST,200,-0.1733,-0.061,0.0343,0.1284,0.2748,0.0382,2.0034,0.2,all but fewer than 5 of 23
+H6 asks (OE),R0,200,-0.1815,-0.1343,-0.1058,-0.0733,-0.012,-0.102,-0.4253,0.05,all but fewer than 5 of 34
+H6 asks (OE),XT,200,-0.2502,-0.2094,-0.1753,-0.1458,-0.1018,-0.1763,-0.4253,0.05,all but fewer than 5 of 34
+H6 asks (OE),ST,200,-0.3584,-0.2942,-0.243,-0.1935,-0.1287,-0.2442,-0.3985,0.05,16 and fewer than 5 more

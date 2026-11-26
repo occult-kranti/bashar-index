@@ -1,0 +1,155 @@
+{
+ "id": "r3-P32",
+ "carries": [
+  "r4-P11"
+ ],
+ "title": "An error-aware hierarchical re-estimate on the controlled contrasts, with a boundary-restricted fragility analysis (r4-P11)",
+ "class": "a.1",
+ "step": "1 (last)",
+ "status": "reported (exploratory; not a test of H1-H10)",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded labels, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "novelty": "N09 kept in its deposited form ('not found in 4 member searches (9 attacker searches); the concept is not new. Not found means only that.'); no novelty sentence printed before the second attack pass (ruling 12)",
+ "prespec": {
+  "file": "prespec.md",
+  "sha256": "the hash recorded at hashing time is kept privately",
+  "hashed_utc": "2026-11-26T07:24:24Z"
+ },
+ "runs_utc": {
+  "probe_p32.py (outcome-free)": "2026-11-26T07:26:07Z to 07:26:55Z",
+  "p32_run.py H1": "2026-11-26T07:29:00Z to 07:42:34Z (run_locked.sh; 40 draws per point)",
+  "p32_run.py H4 H6": "2026-11-26T07:29:17Z to 07:44:51Z (run_locked.sh; 40 draws per point)",
+  "p32_zonecheck.py": "2026-11-26T07:42:44Z to 07:43:26Z (run_locked.sh; labels only)",
+  "p32_part1.py, p32_publish.py, p32_plot.py": "final runs 2026-11-26T07:50Z to 07:52Z",
+  "privacy scans": "2026-11-26T07:52:10Z (final); README, contacts and prespec identifier scan 07:54:08Z"
+ },
+ "readings": {
+  "part 1": "on every controlled row whose 90% t prediction interval for a new creator is printed, it crosses the smallest effect (interval class not calibrated by r3-P30); the error-aware hierarchical intervals differ little where no recording noise can be removed and are narrower where it can",
+  "part 2 (primary, per row)": {
+   "H1 unmatched (reference row)": "robust to at least the disagreement already measured; shared errors untested",
+   "H1 position-matched (within tenths)": "robust to at least the disagreement already measured; shared errors untested",
+   "H1 beyond the cross-creator transplant (XT-centred)": "robust to at least the disagreement already measured; shared errors untested",
+   "H1 beyond the same-creator transplant (ST-centred)": "robust to at least the disagreement already measured; shared errors untested",
+   "H4 unmatched (reference row)": "robust to at least the disagreement already measured; shared errors untested",
+   "H4 position-matched (within tenths)": "robust to at least the disagreement already measured; shared errors untested",
+   "H4 beyond the cross-creator transplant (XT-centred)": "robust to at least the disagreement already measured; shared errors untested",
+   "H4 beyond the same-creator transplant (ST-centred)": "robust to at least the disagreement already measured; shared errors untested",
+   "H6 unmatched (reference row)": "robust to at least the disagreement already measured; shared errors untested",
+   "H6 position-matched (within tenths)": "robust to at least the disagreement already measured; shared errors untested",
+   "H6 beyond the cross-creator transplant (XT-centred)": "robust to at least the disagreement already measured; shared errors untested",
+   "H6 beyond the same-creator transplant (ST-centred)": "robust to at least the disagreement already measured; shared errors untested",
+   "H6 pay-or-enrol asks under position (r3-P05 cohort ratio, tenth strata, log scale)": "robust to at least the disagreement already measured; shared errors untested"
+  }
+ },
+ "interval": "Part 1: 90% t prediction interval on creator values and the 90% error-aware hierarchical prediction interval (both: interval class not calibrated by r3-P30); means with the 90% t interval on creator means; Part 2: tipping points on point estimates (creator means; r3-P05 its cohort ratio), the 90% t interval's near bound described only",
+ "zones": {
+  "within-vendor (nlp-R7, mapped)": "H1/H6 0.136 to 0.192; H4 0.101 to 0.141",
+  "cross-vendor (VER-3R)": "0.033 to 0.301",
+  "VER-A ticks": "H1/H6 0.090, 0.127; H4 0.066, 0.093",
+  "meas outer anchor (not read)": "H1/H6 0.384; H4 0.282",
+  "direct check (described)": "H1/H6 0.148 and 0.197; H4 0.119 and 0.149"
+ },
+ "departures": [
+  "r3-P05's tipping row read on its cohort ratio (the quantity its reading uses), not a creator mean",
+  "a described 'closest approach' column added after the curves were seen (changes no reading)",
+  "columns named with 'q0' renamed after the quantile scan misread them (no value changed)",
+  "carried-forward creator values (prespecified) reach 0.35 of creator-points for H4 position-matched",
+  "shared label shift scaled to the creator spread (prespecified): zero where that spread is not detectable",
+  "XT and ST at q = 0 with 40 draws (curve starts differ slightly from r3-P04's 200-draw values)",
+  "greedy single flips can understate the worst case for multi-unit asks"
+ ],
+ "not_stored": [
+  "per-recording XT-/ST-centred and observed-minus-expected values (r3-P04 stores creator-level values only)",
+  "r3-P05 per-creator scores (recomputed with r3-P05's functions; its printed mean score and cohort ratio reproduced)",
+  "VER-3R's near-change stratum and direction rows (withheld in the release)",
+  "a person's boundary sample (class c, r3-P25)"
+ ],
+ "class_c_not_run": [
+  "a person's boundary sample inside r3-P25"
+ ],
+ "model_or_api_calls": 0,
+ "contacts": "none (contacts.md)",
+ "privacy_scans": "zsolve.py: 0 rows tested, 0 pinned, 0 narrowed; qscan_all2.py: 0 rows with a hidden or banded base, 0 files with quantiles over numeric bases; quant.py and quant2.py: 0 rows with a quantiles column; identifier scan: 0 hits in 13 public files and in README, contacts and prespec; PNG text chunks and PDF document information: none",
+ "seen_only": true,
+ "outside_this_folder": "bytecode caches written into r3-P04/code and r3-P05/code by importing their code were removed at 2026-11-26T07:55:16Z; nothing else written outside this folder (the run lock's temporary slot folders are the lock's own mechanism)",
+ "finalized_utc": "2026-11-26T07:55:26Z",
+ "files_sha256": {
+  "code/finalize.py": "457420e5946bec6085d6ed6186f678a7dc380aa2e88a8e43ab193c20fc2341cd",
+  "code/p32_part1.py": "01d2902ce61b7066bb1f7ac7486c929d90203b31d24f57636104f59f14311b85",
+  "code/p32_plot.py": "89fe3aaee27e9cd0d2b6ace01ec6cc3493824cfbe4bb17b45375d8588a8517e6",
+  "code/p32_publish.py": "9863490945bb2eee0f45a4ba389ac96ac17cdc5656dd15eba3d2099a17fc42fb",
+  "code/p32_run.py": "92a12e3c64127053d5e2985aadd1942228afb8289482895ec3cfe05df02d95cf",
+  "code/p32_zonecheck.py": "c06c2d86913ed911eccb09efccb0844747c776d7a3b07738b380bdf441ee3ad3",
+  "code/p32common.py": "5b0a8ade036e423626abe655c2ea741457f2560da78bd64a74cbe9d7d7721721",
+  "code/probe_p32.py": "4a2495ab94268c7a146cf65729641bbef0d76e170f60c83714e2f5fbed0e9ec8",
+  "code/pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "code/scan_ids.py": "0e7e88b5cbc60a5dc1970321b9bc531a5dfa0509cd2afc5aaba1ab3b4b08d42f",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/scans/qscan_all2.py": "6743f93feef1e05781ece0e7b6e3dc8efecd87f90e35a636ecb95c79e26363f1",
+  "code/scans/quant.py": "49a2ba273700163159c8b6e8376e9ff992503b14b7757afac1418ab2c8c904ca",
+  "code/scans/quant2.py": "9619f303977790264f7e29e03786a0df383d41ca329f3206cbf1b9037a005f11",
+  "code/scans/zsolve.py": "64db901077583dae961bd551883ce91c192325986b9e0841a14394cfcddc5324",
+  "public/data-r3-P32-prediction.csv": "63062f46eddda08ce7c6695a29b2af3198a6e0260010728d34d2b70338612cc1",
+  "public/data-r3-P32-tipping-curves.csv": "74d9e98b7b1646f41d35c55fdae78aad889e05e2856325365813e4d2cbbbd04b",
+  "public/fig-r3-P32-prediction.pdf": "3239727e58c5ff3f1b34a6bc16dcc35647f7f813e396d5ea2fd9f8d9fe26ce69",
+  "public/fig-r3-P32-prediction.png": "42f2be3144f875596591f39b2ff034a2e702a9c941f8b87f650507c2130f8c4a",
+  "public/fig-r3-P32-tipping-H1.pdf": "ed190921ff46be419c547accf8e4b51bd19936b347bea3b82fa7cc10e3349434",
+  "public/fig-r3-P32-tipping-H1.png": "a4799dd32fa53df5c65a7adf402b32a43823476a8647c4140c07047b44481790",
+  "public/fig-r3-P32-tipping-H4.pdf": "772987786ccb65fe41ea33f5004212d0e963618ad0f9560ac993365cd834d4cd",
+  "public/fig-r3-P32-tipping-H4.png": "9a9726b51d3d63ff1baac0370ad29dad3c6ac2c9dada2c2afe5c3c0f28d708a1",
+  "public/fig-r3-P32-tipping-H6.pdf": "f2b97f125dff2da9eb66c0bf41f18ee491d6d2fa78f3c003dfeb52d489b05880",
+  "public/fig-r3-P32-tipping-H6.png": "809b8aa3d5c3b80da64e6f3afd8466b8ce4c919584ac5d1fdbab82d01b723a10",
+  "public/r3-P32-readings.csv": "459f798295f836ffb43a7f0a4cd27b3d719223474b947f22e456ae89db678f11",
+  "public/r3-P32-tipping-points.csv": "6b4d8c83ea57120b5176a2eb68238ff692f9d47ef92127ee0a0d0d244a98ba1d",
+  "public/r3-P32-zones.csv": "66845feee095608d93c2ca02a6f836b4eb49962f73ab3e5e9643365d6abee794",
+  "prespec.md": "the hash recorded at hashing time is kept privately",
+  "prespec-record.md": "b9ba90bd2702f6138bf0b711560419fa801b1bcc64051e1cec542b2a3043d94f",
+  "README.md": "951af59f4a37fd4fbdd8cc19f864cc87e16f30762d7e3f6d36972f9282ef40a4",
+  "contacts.md": "b06a28551621a276a8e61bf0807f7db501ba702df99e8bd76afc80c8a727d10e"
+ },
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md, code/p32_plot.py, prespec-record.md, public/data-r3-P32-prediction.csv, public/data-r3-P32-tipping-curves.csv, public/fig-r3-P32-prediction.pdf, public/fig-r3-P32-prediction.png, public/fig-r3-P32-tipping-H4.pdf, public/fig-r3-P32-tipping-H4.png, public/r3-P32-readings.csv, public/r3-P32-tipping-points.csv",
+ "note_2026-11-26_decision_50": "2026-11-26T09:36:09Z (UTC, from date -u): files changed by the lead's step-1 decision 50 (no number changed); their recorded hashes refreshed: README.md, public/data-r3-P32-prediction.csv, public/data-r3-P32-tipping-curves.csv, public/fig-r3-P32-prediction.pdf, public/fig-r3-P32-prediction.png, public/fig-r3-P32-tipping-H1.pdf, public/fig-r3-P32-tipping-H1.png, public/r3-P32-readings.csv, public/r3-P32-tipping-points.csv",
+ "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: public/data-r3-P32-prediction.csv",
+ "note_2026-11-26_decision_56": "2026-11-26T10:53:54Z (UTC, from date -u): files changed by the lead's step-1 decision 56 (no number changed); their recorded hashes refreshed: README.md, code/p32_plot.py, public/data-r3-P32-prediction.csv, public/fig-r3-P32-prediction.pdf, public/fig-r3-P32-prediction.png",
+ "note_2026-11-26_decision_59": "2026-11-26T11:05:42Z (UTC, from date -u): files changed by the lead's step-1 decision 59 (no number changed); their recorded hashes refreshed: README.md, code/p32_plot.py, public/data-r3-P32-tipping-curves.csv, public/fig-r3-P32-prediction.pdf, public/fig-r3-P32-prediction.png, public/fig-r3-P32-tipping-H6.pdf, public/fig-r3-P32-tipping-H6.png, public/r3-P32-readings.csv",
+ "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: public/data-r3-P32-prediction.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "951af59f4a37fd4fbdd8cc19f864cc87e16f30762d7e3f6d36972f9282ef40a4",
+   "contacts.md": "c7f7ee868921cc9a5d204bab87f18a27a51676aebc9452cc7eb4d3e0cd555773",
+   "prespec-record.md": "c1bbf8e54a2e8c503b3bc4c6c58888c82e218e454a8aacc06fd5195e479f814c",
+   "prespec.md": "883cbe889b8aa8c725b9633cbb918b104f34238c737e73262efdbfab618044a9",
+   "public/data-r3-P32-prediction.csv": "63062f46eddda08ce7c6695a29b2af3198a6e0260010728d34d2b70338612cc1",
+   "public/data-r3-P32-tipping-curves.csv": "74d9e98b7b1646f41d35c55fdae78aad889e05e2856325365813e4d2cbbbd04b",
+   "public/fig-r3-P32-prediction.pdf": "3239727e58c5ff3f1b34a6bc16dcc35647f7f813e396d5ea2fd9f8d9fe26ce69",
+   "public/fig-r3-P32-prediction.png": "42f2be3144f875596591f39b2ff034a2e702a9c941f8b87f650507c2130f8c4a",
+   "public/fig-r3-P32-tipping-H1.pdf": "ed190921ff46be419c547accf8e4b51bd19936b347bea3b82fa7cc10e3349434",
+   "public/fig-r3-P32-tipping-H1.png": "a4799dd32fa53df5c65a7adf402b32a43823476a8647c4140c07047b44481790",
+   "public/fig-r3-P32-tipping-H4.pdf": "772987786ccb65fe41ea33f5004212d0e963618ad0f9560ac993365cd834d4cd",
+   "public/fig-r3-P32-tipping-H4.png": "9a9726b51d3d63ff1baac0370ad29dad3c6ac2c9dada2c2afe5c3c0f28d708a1",
+   "public/fig-r3-P32-tipping-H6.pdf": "f2b97f125dff2da9eb66c0bf41f18ee491d6d2fa78f3c003dfeb52d489b05880",
+   "public/fig-r3-P32-tipping-H6.png": "809b8aa3d5c3b80da64e6f3afd8466b8ce4c919584ac5d1fdbab82d01b723a10",
+   "public/r3-P32-readings.csv": "459f798295f836ffb43a7f0a4cd27b3d719223474b947f22e456ae89db678f11",
+   "public/r3-P32-tipping-points.csv": "6b4d8c83ea57120b5176a2eb68238ff692f9d47ef92127ee0a0d0d244a98ba1d",
+   "public/r3-P32-zones.csv": "66845feee095608d93c2ca02a6f836b4eb49962f73ab3e5e9643365d6abee794"
+  },
+  "changed_for_publication": [
+   "contacts.md",
+   "prespec-record.md",
+   "prespec.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)",
+   "prespec-record.md: label line and/or agnosticism sentence (decision 47)"
+  ],
+  "path_replacements": [
+   {
+    "file": "prespec.md",
+    "replaced_by": "the CHANGE group's private plotting code folder"
+   }
+  ],
+  "prespec_published_as": "redacted copy; the hash recorded at hashing time is kept privately"
+ }
+}

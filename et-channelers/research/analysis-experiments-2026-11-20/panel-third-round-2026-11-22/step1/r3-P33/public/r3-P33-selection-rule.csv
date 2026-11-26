@@ -1,0 +1,14 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P33 (headline robustness and informativeness audit).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Part 1: how the 17 'most informative descriptions' of a draft of the release README (not published; the published README carries no such list) were chosen. Part 2: this audit's own rule, printed in prespec.md (SHA-256 b67a0ab79e627078c3e732bf709c4aff6525a3d7230845f8cf464421571c6539) before it was applied.
+part,item,text
+1,answer,chosen after the results were seen: no rule that chose them is printed in any place searched; the README states only that each rests on 5 or more creators
+1,searched,exploratory-2026-11-21/public-README.md (the section holds no rule; it says only that each description rests on 5 or more creators)
+1,searched,status-table.csv
+1,searched,collect/code/*.py and collect/code/pass2/*.py (file by file)
+1,searched,collect/*.json and collect/*.md (file by file)
+1,searched,lead-decisions-2026-11-22.md
+1,searched,deviations-summary.md
+1,searched,addendum-3-draft.md
+1,searched,the published programme (it records the absence: A6)
+2,S1-S12,"see prespec.md: unit, hold-out, kind, class, detectable size, cascade panels and rows, row and cascade readings, envelopes as lower bounds, panel-wide band, rv-R4"

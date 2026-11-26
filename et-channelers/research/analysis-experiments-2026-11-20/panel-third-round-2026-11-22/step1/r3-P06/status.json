@@ -1,0 +1,91 @@
+{
+ "id": "r3-P06",
+ "carries": [
+  "r4-P04 (no-cost part)"
+ ],
+ "title": "The labeller's prior on asks: own-voice islands, codebook-induced association",
+ "class": "a.1",
+ "step": "1",
+ "status": "reported (exploratory; not a test of H1-H10)",
+ "written_utc": "2026-11-26T03:08:21Z",
+ "utc_run": "frame flags 2026-11-26T02:37:31Z to 02:37:49Z (extract_frames.py); final analysis run 2026-11-26T02:54:38Z to 02:54:54Z (p06_run.py, with r3-P02's seam-exclusion row); publication 2026-11-26T03:00Z to 03:05Z",
+ "seen_only": true,
+ "model_or_api_calls": 0,
+ "contacts": "none",
+ "readings": {
+  "island concentration of pay-or-enrol ask units": "undetermined (island asks from fewer than 5 creators; ratio and score disagree in direction)",
+  "gate (C24)": "did not fire",
+  "deictic arm (secondary)": "small model: lower bound 1.29 beyond the margin; middle model crosses it"
+ },
+ "departures": [
+  "deictic arm reported as a secondary row (llm had it co-primary); the gate reads the island statistic only",
+  "den-mat's plasmode of islands not built",
+  "span ends after asks against after frame formulas not built",
+  "r3-P02's seam-zone exclusion row added after the prespecification (the lead's note), printed beside the unexcluded row"
+ ],
+ "not_stored": [
+  "dissemination asks (not a class of the frozen asks codebook)"
+ ],
+ "class_c_not_run": [
+  "arm A (offers presented in the source's voice, minimal pairs)",
+  "name-swap arm"
+ ],
+ "rule_b_fact": "The frozen voice codebook counts a speaker naming a channel, show, website, offer, event or schedule as their own as own-voice evidence that can end a claimed-voice stretch; a bare request, link, price, date or event that names nothing as the speaker's own is no evidence either way, and selling alone neither starts nor ends a voice; whether an offer the claimed source names as its own counts is not specified by the frozen prompt; rule B (frozen label code) keeps the claimed voice over an offer-only own span directly after an unclosed claimed span; the asks prompts code every ask alike whoever speaks.",
+ "for_the_lead": [
+  "whether the gate should also read the deictic statistic (it would fire there)",
+  "arm A's scoring for an offer the source names as its own: not specified by the frozen prompt"
+ ],
+ "interval_rule": "r3-P30 interval-choice.csv sha256 fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6",
+ "prespec_sha256": "the hash recorded at hashing time is kept privately",
+ "frozen_prompts_read": {
+  "prompts/voice_codebook.txt": "6374d0e99b7262797093461000e2751d978e993e9a199a7effc21fe864ac11cf",
+  "prompts/voice_task_label.txt": "dd2a6e5bd828baf4f2843512b9736bbd99ff3a5314d2395fc0161a9d16948b7b",
+  "prompts/voice_task_map.txt": "966c82c388aa4230f4bda6e09a19e3969b91dc18c06ae786360cdbfe8303d620",
+  "prompts/asks_codebook.txt": "7ebffb596c621eb8b39efa2346437f21e3c0a9f7cb77bbd0548d3ce9d3142c6a",
+  "prompts/asks_task_find.txt": "fd7fa3b01e44ca1b632dedb4950055f6e1a9f9b746e566fbab9faa749f629393",
+  "prompts/asks_task_check.txt": "0027c0a301567d1e174aa64738a57e8132cf328412d39c02bc43b6a7603408d0",
+  "freeze.json (freeze 1)": "c57e64dbc0c812f673729af6d1b70677d73d1a11e6d322c0f88204229574ed00"
+ },
+ "code_sha256": {
+  "code/extract_frames.py": "c2b6256f495a7e35f3b76b3d9d8daa0755819aec18b6b1b5487f5192d55c1235",
+  "code/p06_publish.py": "acf43ec2f596d5d506da4d5b4c26e70c5df7cd39a7c19189db71125acd182a55",
+  "code/p06_run.py": "ac0bc4b26a5cb0ca3ab801cf3abae18e837c91919ddd682efe389bf5b9ba62dd",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "../r3-P04/code/common.py (shared)": "afb6dcf765d44997672e7341911a70990e889cd6407bf50145ebc41dc016874b",
+  "../r3-P04/code/intervals.py (shared)": "f428af347014e1b390261794aa58fc6f573b612bb3148aac3db6883d965c599d",
+  "../r3-P04/code/prespec.json (shared)": "the hash recorded at hashing time is kept privately",
+  "../r3-P04/code/pubcommon.py (shared)": "b3a81fe31eee2e48d614ae72db333dbabaebef4a07fe38f52e52bffad0296d02",
+  "../r3-P04/code/scan_public.py (shared)": "73bbe208ffa5e6ddadc59fa01173a4ae2b181ad748f325997087c723c1696ec9",
+  "../r3-P04/code/write_status.py (shared)": "b24b1f356fbd180caef9dc8ccd3a591fcf3962d311f047b73717243d2071993f"
+ },
+ "public_sha256": {
+  "public/data-r3-P06-concentration.csv": "624ca5fdd9655c97b4e6fea8617cce7fc045f363c25a3ce69906ef2e5e808416",
+  "public/fig-r3-P06-concentration.pdf": "96a7ca5741c7408fbcbd973c6cece46958903425112d7e80dad90b22413f86d7",
+  "public/fig-r3-P06-concentration.png": "7a4103f2c73a86f1bd38cba239dbd7b134f2dc92a852986588d41f89def226ce",
+  "public/r3-P06-footprint.csv": "5b24f1e95da7bf51adcebfd0b00609d39825a89d41697d37544c615fadd0e2e9",
+  "public/r3-P06-reading.csv": "617c56652ce4ba65ac7b1fe9637859dd7b9bb616eef430ca4934c7e772b6e29b"
+ },
+ "readme_sha256": "b5dbb7c76d18bd60bd08b762e758ee0c3f08d0b4cc25eceafc86b5f38b6c9723",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_64": "2026-11-26T12:18:25Z (UTC, from date -u): files changed by the lead's step-1 decision 64 (no number changed); their recorded hashes refreshed: README.md, code/p06_publish.py, public/data-r3-P06-concentration.csv, public/r3-P06-footprint.csv, public/r3-P06-reading.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "b5dbb7c76d18bd60bd08b762e758ee0c3f08d0b4cc25eceafc86b5f38b6c9723",
+   "contacts.md": "e3042c5d3c9bef1a43e18cccdb9fc44440cad0bfd57551751328ca63147c3bd6",
+   "public/data-r3-P06-concentration.csv": "624ca5fdd9655c97b4e6fea8617cce7fc045f363c25a3ce69906ef2e5e808416",
+   "public/fig-r3-P06-concentration.pdf": "96a7ca5741c7408fbcbd973c6cece46958903425112d7e80dad90b22413f86d7",
+   "public/fig-r3-P06-concentration.png": "7a4103f2c73a86f1bd38cba239dbd7b134f2dc92a852986588d41f89def226ce",
+   "public/r3-P06-footprint.csv": "5b24f1e95da7bf51adcebfd0b00609d39825a89d41697d37544c615fadd0e2e9",
+   "public/r3-P06-reading.csv": "617c56652ce4ba65ac7b1fe9637859dd7b9bb616eef430ca4934c7e772b6e29b"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

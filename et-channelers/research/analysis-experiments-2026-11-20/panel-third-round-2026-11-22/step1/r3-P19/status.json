@@ -1,0 +1,87 @@
+{
+ "id": "r3-P19",
+ "title": "Generalizability and decision study of the model labels (consistency)",
+ "class": "a.1",
+ "step": 1,
+ "status": "done (exploratory)",
+ "written_utc": "2026-11-26T07:07:14Z",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded labels, not checked by a person; agreement (consistency), never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec": {
+  "written_utc": "2026-11-26T06:30Z",
+  "hashed_utc": "2026-11-26T06:31:30Z",
+  "sha256": "c2dbc6297be6c49d875e8c43b4706bcac6dd33fb0c0af925557e0c4525b44989"
+ },
+ "reading": "label-process share of one reading of one recording against 0.10: voice claimed share 0.140 (90% 0.091 to 0.244) undetermined; voice own share 0.129 (0.087 to 0.197) undetermined; asks pay-or-enrol present 0.105 (0.077 to 0.165) undetermined; checkability time window 0.245 (0.201 to 0.296) A; checkability observable outcome 0.311 (0.231 to 0.416) A; titles presentation P1 0.228 (0.154 to 0.320) A; sentence codes not computed (one reading)",
+ "interval": "90% creator-cluster bootstrap, percentile; flagged: interval method not calibrated by r3-P30 for this design class",
+ "departures": [
+  "design 1 uses each instrument's reading of record (asks: middle check; checkability: middle; titles: middle primary reading)",
+  "a coding error in the decision-study curves of instruments without a run facet corrected before publication; no share or reading changed",
+  "asks run facet from r3-P23's read-only rebuild of the asks gate runs (prespec item 5)"
+ ],
+ "not_stored": [
+  "recognizer facet at the level of a label quantity (rv-L2 holds pairwise flip counts only); grid relabels (class c)",
+  "run facets of forecasts, sentence codes and titles on G: pooled gate summaries only",
+  "sentence codes and commitment: one reading in production"
+ ],
+ "contacts": "none (contacts.md)",
+ "privacy_scan": {
+  "zsolve.py": "0 rows to fix (0 rows tested)",
+  "qscan_all2.py": "0 rows to fix",
+  "identifier scan": "no identifier found",
+  "png_text_chunks": "none",
+  "pdf_document_information": "none"
+ },
+ "files_sha256": {
+  "code/finalize.py": "11240b1fd145fbbd8f0adb4e9b2a63205fe9ca67c34d117b119677c6be5b98f8",
+  "code/p19_analyse.py": "66a75dec55ac79d590371a0be185c36bcb291a12f06d42acb08ed5d175ceee2c",
+  "code/p19_extract_g.py": "f98628bdbbafcf4b6a43f2e1544ebe5cf514db1f15c179b371ef2797c4543781",
+  "code/p19_extract_roster.py": "155ead48dd55c09f8f13f19a73176345e3e319c6345af3660b03aa34894b1fb7",
+  "code/p19_publish.py": "317ae27db515b2502759e36a9ec082bb8cd5535c4347df8f289b86e8245f3f40",
+  "code/pcommon.py": "9889e97a49df599ce6b5ca89d6acf8da2979257443e020912858701a0630ec64",
+  "code/probe_structure.py": "47408c9b7cb2872241e5ad682740a559b84cebbee297d9b1ffdc3a4182bdf42c",
+  "code/qscan_all2.py": "188cae5b379df1eca5209f4b3fbb54a767ce407dab4197e057e979c1488c0cb4",
+  "code/quant.py": "a2478a09a37c3c759485fdfa3e0f98c6cd1d9a3094cc3b58c566588a9b1cae5c",
+  "code/quant2.py": "7421b55e42d6fd55880a4b44dbc42c89c5991f18ba652374a2a4e93865ce9248",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/zsolve.py": "e029e9c5497ef1ce809c248b6ea5b36a665c3abeff191d54fd35ed26b77f65eb",
+  "public/data-r3-P19-components.csv": "0473e7a9f9692e9aeb7a20a520bb3f67744338be21ccfb8748fa2458ecf22158",
+  "public/data-r3-P19-dstudy.csv": "08d088af91d0d188ac3bfa876ebf6897aba1a0917db9443647e8d99e1600f956",
+  "public/data-r3-P19-shares.csv": "13c293a404c539c6ed0bcb26f2d4c62cd04d94d3322eeb79ac68f3e17d110d4e",
+  "public/fig-r3-P19-components.pdf": "7a64c213e8a7513fc03cc19cc92a02680a2947b92de31f8b2137f442cd0307ed",
+  "public/fig-r3-P19-components.png": "14f5ad8be2ca7707d26240804d614c0cc6a15593f301f528fb5dfa81f34f8761",
+  "public/fig-r3-P19-dstudy-recordings.pdf": "4bd7960f6eac9053bd5f8800ac4762dac7e4caf15893e8a32dc3c611223f1cde",
+  "public/fig-r3-P19-dstudy-recordings.png": "378dc7ae2e2945a9f843d3dffd1cde658e94630ac18bb2996f38c8f7090eacf4",
+  "public/fig-r3-P19-dstudy-runs.pdf": "a2e0055db05e99ff5b6174b6d1e7d32ff9c0bd31bb7c86b272548f78c6110a79",
+  "public/fig-r3-P19-dstudy-runs.png": "d97250b221027b1ba2d1d4c679b53271c656d780781164e943ebca42fa95b9f8",
+  "prespec.md": "c2dbc6297be6c49d875e8c43b4706bcac6dd33fb0c0af925557e0c4525b44989",
+  "contacts.md": "929080cd9e2e43f1590bf6c98d8fadc259acdbe0ef6be57a3186d63f23e1de7a",
+  "private/prespec-hash.json": "719546ef93c9ec470688d59548b098ae298baee13884bda7a2e99e1929c04081",
+  "README.md": "268529c5a865f83e02632c585b032ee5670940137afafc968d79a6da5cd572ca"
+ },
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "268529c5a865f83e02632c585b032ee5670940137afafc968d79a6da5cd572ca",
+   "contacts.md": "2ba6b33cc48523614cf545555e5650797a589a8fe48f06db9406ea461b9fc3d1",
+   "prespec.md": "c2dbc6297be6c49d875e8c43b4706bcac6dd33fb0c0af925557e0c4525b44989",
+   "public/data-r3-P19-components.csv": "0473e7a9f9692e9aeb7a20a520bb3f67744338be21ccfb8748fa2458ecf22158",
+   "public/data-r3-P19-dstudy.csv": "08d088af91d0d188ac3bfa876ebf6897aba1a0917db9443647e8d99e1600f956",
+   "public/data-r3-P19-shares.csv": "13c293a404c539c6ed0bcb26f2d4c62cd04d94d3322eeb79ac68f3e17d110d4e",
+   "public/fig-r3-P19-components.pdf": "7a64c213e8a7513fc03cc19cc92a02680a2947b92de31f8b2137f442cd0307ed",
+   "public/fig-r3-P19-components.png": "14f5ad8be2ca7707d26240804d614c0cc6a15593f301f528fb5dfa81f34f8761",
+   "public/fig-r3-P19-dstudy-recordings.pdf": "4bd7960f6eac9053bd5f8800ac4762dac7e4caf15893e8a32dc3c611223f1cde",
+   "public/fig-r3-P19-dstudy-recordings.png": "378dc7ae2e2945a9f843d3dffd1cde658e94630ac18bb2996f38c8f7090eacf4",
+   "public/fig-r3-P19-dstudy-runs.pdf": "a2e0055db05e99ff5b6174b6d1e7d32ff9c0bd31bb7c86b272548f78c6110a79",
+   "public/fig-r3-P19-dstudy-runs.png": "d97250b221027b1ba2d1d4c679b53271c656d780781164e943ebca42fa95b9f8"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}
