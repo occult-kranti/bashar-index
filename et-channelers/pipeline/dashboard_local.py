@@ -489,7 +489,7 @@ table { border-collapse: collapse; } th, td { padding: 4px 8px; text-align: left
         const stages = [
           ['Latest 20 per channel', number(selection.recordings) + ' recordings', number(d.archived_with_verified_audio) + ' archived · ' + number(d.final_failures) + ' final failures · closed', d.archived_with_verified_audio, selection.recordings],
           ['Speech to text', (whole(t.audio_files) ? number(t.audio_files) : '—') + ' audio files', finished ? number(t.audio_files_transcribed) + ' transcribed · finished ' + utc(t.finished_at_utc, {day:'numeric', month:'short'}) + ', ' + clock(t.finished_at_utc) : 'Not finished', finished ? t.audio_files_transcribed : 0, whole(t.audio_files) ? t.audio_files : 1],
-          ['Extend to 50', 'Downloading', 'Reopened by the owner on 26 Nov; descriptive material, outside the frozen corpus; counts above', null, null],
+          ['Extend to 50', 'Downloading', 'Reopened by the owner on 26 Nov; descriptive material, outside the frozen corpus; transcription stopped by the owner on 26 Nov to complete the latest-20+ analysis first; counts above', null, null],
         ];
         stages.forEach(([label, total, caption, value, max], i) => {
           const item = document.createElement('li'); item.className = 'cc-stage'; item.dataset.state = value === null ? 'waiting' : 'complete';
