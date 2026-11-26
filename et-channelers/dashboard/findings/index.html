@@ -90,6 +90,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 .cs-stack td.cs-wide { min-width: 22ch; }
 .cs-stack code { font-size: var(--ui-font-size-caption); overflow-wrap: anywhere; }
 .cs-steps-now { font-size: var(--ui-font-size-body); font-weight: var(--ui-font-weight-medium); }
+#card-panel-steps3-5 h3 { margin-top: var(--ui-gap-md); }
 /* On a narrow screen each row of a long-text table becomes a block, each cell labelled by its column. */
 @media (max-width: 640px) {
   .cs-stack thead { display: none; }
@@ -114,7 +115,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hours" data-row="0" data-digits="1">—</b> hours, are transcribed.
       Among the creators seen before the registry freeze, <b class="cs-num" data-draw="fig" data-source="headline" data-field="percent_without_speech" data-row="0" data-digits="1" data-suffix="%">—</b> of the audio holds no speech.
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hypotheses" data-row="0">—</b> hypotheses are registered and
-      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed, and most have run as exploratory outputs, released on 26 November 2026 with a figure gallery (tab "Exploratory round"; exploratory, not a test of H1-H10). One hypothesis has been tested and withdrawn, and one was dropped before it ran. The third-round panel's step 1 is published, and its later steps run (tab "Third-round panel").
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed, and most have run as exploratory outputs, released on 26 November 2026 with a figure gallery (tab "Exploratory round"; exploratory, not a test of H1-H10). One hypothesis has been tested and withdrawn, and one was dropped before it ran. The third-round panel's steps 1 to 5 are published, and its entries that read the audio run (tab "Third-round panel").
       <span data-draw="round-lede" data-source="first_round"></span>
     </p>
     <p class="cs-banner" data-draw="round-banner" data-source="first_round" role="status"></p>
@@ -412,17 +413,17 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     </div>
     <div class="cs-card" id="card-panel">
       <h2>Third-round expert panel</h2>
-      <p>The panel's programme, step 0's deposits, step 1's 17 published entries and step 2's instruments, deposited before any count, are on the tab <a href="#panel" data-open="panel">Third-round panel</a>. Steps 2 to 5 run; outputs published after independent privacy checks.</p>
+      <p>The panel's programme, its deposits, r3-P35's corrections and the published entries of steps 1 to 5, each with its question and its reading in the entry's own words, are on the tab <a href="#panel" data-open="panel">Third-round panel</a>. The entries that read the audio run; their outputs are published after independent privacy checks.</p>
     </div>
   </section>
 
   <section class="cs-section" id="panel" hidden>
     <p><b>Exploratory; not a test of H1-H10.</b> The third-round expert panel: twelve model-agent members (not people) deliberated over four rounds, and its programme of 106 proposals was adopted with the lead's 13 rulings on 26 November 2026. The programme runs on the seen creators only. Its labels are model-coded and not checked by a person; agreement between models is called agreement, not a measure of correctness. Everything on this tab is copied from the programme's public files in the repository, and every item links to its folder there.</p>
     <p class="cs-note cs-agreed">No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.</p>
-    <p class="cs-steps-now">Steps 2 to 5 run; outputs published after independent privacy checks.</p>
+    <p class="cs-steps-now">Steps 1 to 5 are published (steps 3 to 5 on 26 November 2026, 18:00 UTC). The entries that read the audio (r3-P12, r3-P08, r3-P11, r3-P09, r4-P03, r4-P15 and r4-P16) run; their outputs are published after independent privacy checks.</p>
     <div class="cs-card" id="card-panel-programme">
       <h2>Where the programme stands</h2>
-      <p class="cs-note">Deposits 3 and 4 say they were written before any count of what they govern, and a deposit's public commit gives its time stamp. No number of steps 2 to 5 is printed on this page.</p>
+      <p class="cs-note">Deposits 3 and 4 say they were written before any count of what they govern, and a deposit's public commit gives its time stamp. No number of the entries that read the audio is printed on this page.</p>
       <div class="cs-scroll">
         <table class="cs-table cs-stack" data-source="panel_programme" data-row-key="order">
           <thead><tr><th data-field="step">Step</th><th data-field="item">Item</th><th data-field="state">State</th><th data-field="detail">What it is</th><th data-field="pull_request">Pull request</th></tr></thead>
@@ -442,6 +443,45 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <table class="cs-table cs-stack cs-entries" data-source="panel_step1" data-row-key="entry">
           <thead><tr><th data-field="entry">Entry</th><th data-field="carries">Carries</th><th data-field="question">Question</th><th data-field="reading">Reading, in the entry's own words</th></tr></thead>
           <tbody data-draw="rows-panel-step1"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cs-card" id="card-panel-step2">
+      <h2>Step 2, published: r3-P42's lexicon checks and the lexicon descriptions</h2>
+      <p class="cs-note">Copied from <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step2/README.md">the step-2 index</a> as step 1's entries are copied: each entry's question and its reading in the entry's own words, as the index prints them, and a link to its folder. <b>No headline is picked:</b> all 12 entries are shown, in the index's order, and where the index says that a value or a reading is not printed, this page does not print it either. In the index's words: every entry ran once, with no split, on tier L; every count is a cue count (sense not resolved, precision unknown, until a reader is funded); classes too thin on tier L print "not computed (too few terms or creators)", and classes emptied by terms set aside until r3-P54 print "not computed until r3-P54 (waits for the owner's ethics act)". Rows read against matched placebos, pseudo-strata or a null use the band's words; no reading A occurs in step 2. Every entry was written by a model agent working for the project lead (not a person), and no entry records a model or API call or any spend.</p>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="panel_steps" data-row-key="entry">
+          <thead><tr><th data-field="entry">Entry</th><th data-field="carries">Carries</th><th data-field="question">Question</th><th data-field="reading">Reading, in the entry's own words</th></tr></thead>
+          <tbody data-draw="rows-panel-steps" data-step="Step 2" data-tier="no"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="cs-card" id="card-panel-steps3-5">
+      <h2>Steps 3 to 5, published together</h2>
+      <p class="cs-note">Copied from the step-3, step-4 and step-5 indexes in the same way: each entry's tier, question and reading in the entry's own words, as the index prints them, and a link to its folder; all entries, in each index's order, with no headline picked and nothing added that an index withholds. The three steps were staged together, with one nesting check across them and independent checks before publication. In the indexes' words: rows that were not computed or are not printed read "not computed or not printed"; creator counts print as "fewer than 5", "all but fewer than 5 of N", "K and fewer than 5 more", or a band, and values that could narrow a banded count are not printed; a reading is never called a finding. Reading words and multiplicity are as in step 1's note above.</p>
+      <p class="cs-note"><b>Tiers</b> (<a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/deposits/deposit-2/split-policy.md">deposit 2's split policy</a>, assigned before any outcome is read): L, lists written blind from the literature and hashed before any count, run once on all non-development seen creators with no split; S, data-tuned rules with 20 or more eligible creators, built on the exploration half and run once on the sealed half; X, the same with 10 to 19, two-fold cross-fitting; D, fewer than 10, description only. Contrasts already computed on all seen creators are not split ("unsplit").</p>
+      <h3>Step 3: forecasts and time</h3>
+      <p class="cs-note">From <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step3/README.md">the step-3 index</a>: 5 entries.</p>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="panel_steps" data-row-key="entry">
+          <thead><tr><th data-field="entry">Entry</th><th data-field="carries">Carries</th><th data-field="tier">Tier</th><th data-field="question">Question</th><th data-field="reading">Reading, in the entry's own words</th></tr></thead>
+          <tbody data-draw="rows-panel-steps" data-step="Step 3" data-tier="yes"></tbody>
+        </table>
+      </div>
+      <h3>Step 4: the platform and the audience</h3>
+      <p class="cs-note">From <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step4/README.md">the step-4 index</a>: 5 entries. In the index's words, associations at capture are not causal.</p>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="panel_steps" data-row-key="entry">
+          <thead><tr><th data-field="entry">Entry</th><th data-field="carries">Carries</th><th data-field="tier">Tier</th><th data-field="question">Question</th><th data-field="reading">Reading, in the entry's own words</th></tr></thead>
+          <tbody data-draw="rows-panel-steps" data-step="Step 4" data-tier="yes"></tbody>
+        </table>
+      </div>
+      <h3>Step 5: voice, register and footing</h3>
+      <p class="cs-note">From <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step5/README.md">the step-5 index</a>: 6 entries. Agreement between coders is called agreement, not a measure of correctness.</p>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="panel_steps" data-row-key="entry">
+          <thead><tr><th data-field="entry">Entry</th><th data-field="carries">Carries</th><th data-field="tier">Tier</th><th data-field="question">Question</th><th data-field="reading">Reading, in the entry's own words</th></tr></thead>
+          <tbody data-draw="rows-panel-steps" data-step="Step 5" data-tier="yes"></tbody>
         </table>
       </div>
     </div>
@@ -475,7 +515,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
   <details id="notes">
     <summary>How to read this page</summary>
-    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover anything from a few days to many years, so nothing here is a trend. Each language other than English comes from fewer than five creators, so the languages other than English are shown only as one pooled row. No row, bin or cell describes fewer than five creators: cells with fewer than five creators are pooled, and two counts of creators of nested groups never differ by one to four. Figures on the first five tabs describe the finished run: counts of the whole run come from its ledger, and timing measures from the creators seen before the registry freeze only. The tab "Exploratory round" copies the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10). The tab "Third-round panel" copies the panel programme's public files: its deposits, and step 1's entries with each question and reading in the entry's own words (exploratory; not a test of H1-H10); steps 2 to 5 run, and their outputs are published after independent privacy checks. The last tab describes an earlier snapshot. The hypotheses of the first round are tested on the hold-out creators with labels made by language models, which no person has checked, so every verdict is model-coded; beyond the counts of the whole run, the hold-out creators enter only the registered tests.</p>
+    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover anything from a few days to many years, so nothing here is a trend. Each language other than English comes from fewer than five creators, so the languages other than English are shown only as one pooled row. No row, bin or cell describes fewer than five creators: cells with fewer than five creators are pooled, and two counts of creators of nested groups never differ by one to four. Figures on the first five tabs describe the finished run: counts of the whole run come from its ledger, and timing measures from the creators seen before the registry freeze only. The tab "Exploratory round" copies the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10). The tab "Third-round panel" copies the panel programme's public files: its deposits, r3-P35's corrections, and the entries of steps 1 to 5 with each question and reading in the entry's own words (exploratory; not a test of H1-H10); the entries that read the audio run, and their outputs are published after independent privacy checks. The last tab describes an earlier snapshot. The hypotheses of the first round are tested on the hold-out creators with labels made by language models, which no person has checked, so every verdict is model-coded; beyond the counts of the whole run, the hold-out creators enter only the registered tests.</p>
   </details>
 
   <details id="data">
@@ -506,8 +546,9 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="data/bridge.csv">The two recognizer models on the same audio</a> <span class="cs-note">(17 rows)</span></li>
         <li><a href="data/exploratory_status.csv">Exploratory round: outputs by plan section and status (from the release's status table)</a> <span class="cs-note">(13 rows)</span></li>
         <li><a href="data/exploratory_figures.csv">Exploratory round: headline figures by the printed rule (titles, captions and links from the gallery)</a> <span class="cs-note">(12 rows)</span></li>
-        <li><a href="data/panel_programme.csv">Third-round panel: where the programme stands (deposits, step 1, steps 2 to 5; no number of steps 2 to 5)</a> <span class="cs-note">(7 rows)</span></li>
+        <li><a href="data/panel_programme.csv">Third-round panel: where the programme stands (deposits, r3-P35, steps 1 to 5, the audio entries; no number of the audio entries)</a> <span class="cs-note">(12 rows)</span></li>
         <li><a href="data/panel_step1.csv">Third-round panel, step 1: the 17 entries, each question and reading in the entry's own words (from the step-1 index)</a> <span class="cs-note">(17 rows)</span></li>
+        <li><a href="data/panel_steps.csv">Third-round panel, steps 2 to 5: the entries, each tier, question and reading in the entry's own words (from the step indexes)</a> <span class="cs-note">(28 rows)</span></li>
     </ul>
   </details>
   <details id="methods">
@@ -523,7 +564,8 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/status-table.csv">The release's status table: one row per output</a></li>
         <li><a href="../../research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/gallery/">The release's figure gallery</a> (GitHub path <a href="https://github.com/occult-kranti/bashar-index/tree/main/et-channelers/research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/gallery"><code>research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/gallery/</code></a>)</li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/exploratory-reporting-plan-addendum-3.md">Exploratory reporting plan, addendum 3 (factual corrections)</a></li>
-        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/programme.md">Third-round panel: the programme</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/lead-rulings-2026-11-26.md">the lead's rulings</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step1/README.md">step 1's index and entries</a> and <a href="https://github.com/occult-kranti/bashar-index/tree/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/deposits">the deposits</a> (1 and 2 of step 0; 3 and 4, step 2's instruments, before any count)</li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/programme.md">Third-round panel: the programme</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/lead-rulings-2026-11-26.md">the lead's rulings</a>, the indexes of <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step1/README.md">step 1</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step2/README.md">step 2</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step3/README.md">step 3</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step4/README.md">step 4</a> and <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step5/README.md">step 5</a>, and <a href="https://github.com/occult-kranti/bashar-index/tree/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/deposits">the deposits</a> (1 and 2 of step 0; 3 and 4, step 2's instruments, before any count)</li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/exploratory-reporting-plan-addendum-4.md">Exploratory reporting plan, addendum 4: r3-P35's corrections that need no run (26 November 2026)</a></li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/ROADMAP.md">Roadmap</a></li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/paper/measurement-protocol-2026-11-21/main.pdf">Paper: auditing speech recognition without human transcripts, with lessons from a registered, then amended, protocol (anonymous draft, rewritten 22 November 2026, updated with the exploratory release)</a></li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/paper/measurement-protocol-2026-11-21/README.md">The paper's README: how it is built, its review rounds and the rewrite</a></li>
@@ -537,7 +579,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
 // A small stand-in for the hosted dashboard's data layer: loads the CSV files beside the page and runs the drawings.
 const dash = (() => {
-  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "creator_quantiles", "recordings", "length_share", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "first_round", "bridge", "exploratory_status", "exploratory_figures", "panel_programme", "panel_step1"];
+  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "creator_quantiles", "recordings", "length_share", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "first_round", "bridge", "exploratory_status", "exploratory_figures", "panel_programme", "panel_step1", "panel_steps"];
   const state = {}, calcs = {}, draws = {};
   const api = {
     colors: ['var(--series-1)'],
@@ -1246,6 +1288,17 @@ dash.draw('rows-panel-step1', (el) => {
   if (!got) return;
   cells(el, got[0], [{ field: 'entry', label: 'Entry', href: 'folder' }, { field: 'carries', label: 'Carries' },
     { field: 'question', label: 'Question', wide: true }, { field: 'reading', label: 'Reading, in the entry\'s own words', wide: true }]);
+});
+// Steps 2 to 5 (panel_steps, one dataset with a step column): each table draws its step's rows in the index's order;
+// the tier column is there where the step's index has one (steps 3 to 5), as the table's header says.
+dash.draw('rows-panel-steps', (el) => {
+  const got = need(el, ['panel_steps']);
+  if (!got) return;
+  const rows = got[0].filter((row) => row.step === el.dataset.step);
+  const columns = [{ field: 'entry', label: 'Entry', href: 'folder' }, { field: 'carries', label: 'Carries' }];
+  if (el.dataset.tier === 'yes') columns.push({ field: 'tier', label: 'Tier' });
+  columns.push({ field: 'question', label: 'Question', wide: true }, { field: 'reading', label: 'Reading, in the entry\'s own words', wide: true });
+  cells(el, rows, columns);
 });
 
 // Tabs: sections are stored in the page; the script only shows one and remembers it in the link.
