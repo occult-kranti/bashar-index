@@ -1,0 +1,43 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Exploratory pilot, before freeze 1.
+# Base: set W (32 recordings of 32 development creators, seen creators); recordings count creators. Constructed items: 10 boundary items built by the pilot's agent from fixed templates on transcript units both readers labelled own voice, in recordings of 10 creators; under D21 a share whose misses come from 1 to 4 host recordings is not published.
+# Interval level: none in this table (VER-A's own intervals are in ver-a-sides-on-disputed-words.csv).
+# Verdicts are the protocol's categorical outcomes for pairs with 5 or more recordings.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:04:21Z (UTC, from the clock) by lv_vera.py (sha256 9bf3361489f16f559f2fbc9af80af6a91709c3fd2d070085c9abd095e0addf89) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), span_audit.py (sha256 29643538c5bb18f8dcaa327496eb4aa21c69bd1ac6a20fb9cea7951ff952d3f1), release review B-LV (plan P10).
+figure,level,recordings,value,note
+per-pair verdict of the pilot (protocol rule),V0/V1,not published (fewer than 5 creators),,
+per-pair verdict of the pilot (protocol rule),V1/V3,11,indeterminate,which reader the third reader favoured is not published (it compares shares not published)
+per-pair verdict of the pilot (protocol rule),V1/V4,7,indeterminate,which reader the third reader favoured is not published (it compares shares not published)
+per-pair verdict of the pilot (protocol rule),V1/V6,not published (fewer than 5 creators),,
+per-pair verdict of the pilot (protocol rule),V2/V3,not published (fewer than 5 creators),,
+per-pair verdict of the pilot (protocol rule),V4/V6,not published (fewer than 5 creators),,
+per-pair verdict of the pilot (protocol rule),other,11,indeterminate,which reader the third reader favoured is not published (it compares shares not published)
+VG-5 (indeterminate pair and format),V1/V3 | solo,not published (a creator count 1 to 4 from a nested count),not indeterminate,neither 0.000; both in set 0.000
+VG-5 (indeterminate pair and format),every other pair and format,not published (fewer than 5 creators),,
+VG-4 (decoy departure and three-run stability),outcome,,fails (as published in VER/ver.md),its two figures are not published here: the creators behind decoy departures and repeat-run misses need the transcript pipeline to be recounted
+decoy departure (decoys of forms G and T),,,not published (the creators behind the departed words could not be counted in this review; form T's decoys rest on fewer than 5 creators),
+three-run stability on 10 repeat windows (disputed and labelled words),,,not published (the creators behind the repeat-run misses could not be counted in this review),
+"departure on agreed context units; tier side row (gpt-6.2-sol, 20 windows)",,,not published (the creators behind them could not be counted in this review),
+all labelled units of region windows (each once): kappa small against middle model,41833 words,,0.384,multi-code kappa; disagreements from 21 recordings
+all labelled units: kappa third reader against the small model,,,0.436,
+all labelled units: kappa third reader against the middle model,,,0.522,
+all labelled units: share of words on which all three readers agree,,,0.383,misses include every disputed word (21 recordings)
+heuristic: mean pairwise kappa (phi) and effective number of votes of three readers,,,0.447; 1.58,heuristic
+"constructed boundary items (10, built from templates on units both readers called own voice): form G",switch,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form G",switch back,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form G",recovered,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form G",start hit,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form G",end hit,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+constructed boundary items: form G,mean share of units placed right (constructed items),10,not published (misses from fewer than 5 creators),
+"constructed boundary items (10, built from templates on units both readers called own voice): form T",switch,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form T",switch back,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form T",recovered,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form T",start hit,10,not published (misses from fewer than 5 creators),D21: misses from fewer than 5 host recordings are not published
+"constructed boundary items (10, built from templates on units both readers called own voice): form T",end hit,10,1.000,
+constructed boundary items: form T,mean share of units placed right (constructed items),10,not published (misses from fewer than 5 creators),
+constructed items: recovery G minus T (paired),,10,not published (its discordant items come from fewer than 5 creators),
+form rule (T is the default; G replaces T only if constructed recovery under G is higher with a 90% interval excluding zero),outcome,,T (default; G not shown better on constructed items),
+effort rule,outcome,,not run: gpt-6.2-sol accepts no effort 'none' (lowest 'low'); the fallback gpt-6-sol ran at 'low' throughout; arm E moved to KA's effort arm (critique),
+"valid answers, form G",,,100 of 100 requests,
+"answers, form T",,,6 of 17 requests answered (the fallback stopped the arm),

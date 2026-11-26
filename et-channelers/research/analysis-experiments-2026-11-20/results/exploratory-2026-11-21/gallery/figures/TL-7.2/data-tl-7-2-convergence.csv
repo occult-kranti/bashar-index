@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-2-convergence.csv (TL package, public folder).
+# Interval level: reference distributions of 4,000 draws each; 95th percentile; share of draws at least as large as the observed count (no interval on the observed count).
+# observed_over_reference_mean is the package's printed ratio; reference_p95_over_reference_mean is computed from the package's printed 95th percentile and mean (rounded to 3 decimals).
+set,reference,window_units,channels,observed_over_reference_mean,reference_p95_over_reference_mean,share_of_draws_at_least_observed
+"positive control: calendar and sky windows, 92 days or less",,,,not released: matched pairs from fewer than 5 creators,,
+"Main: windows of 92 days or less, no calendar or sky windows",horizon-preserving redraw,488,50,1.15,1.343,0.1997
+"Main: windows of 92 days or less, no calendar or sky windows",circular shift,488,50,2.61,1.293,0.0002
+"Row: main, absolute windows only",horizon-preserving redraw,85,20-24,0.96,1.653,0.5059
+"Row: main, absolute windows only",circular shift,85,20-24,1.79,1.684,0.0365
+Row: windows equal to one calendar year,horizon-preserving redraw,145,30-34,1.63,1.243,0.0002
+Row: windows equal to one calendar year,circular shift,145,30-34,1.59,1.223,0.0002

@@ -1,0 +1,10 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: all 101 creators; recordings at listing ranks 1-5 against 6-20
+# Interval level: 95% creator-bootstrap intervals (2,000 draws) for the pooled and Mantel-Haenszel odds ratios; 95% Wald interval for the conditional logit
+# Pooled OR with 0.5 added to each cell; Mantel-Haenszel OR within creator; conditional logit with a creator intercept. Event counts and group sizes not published (beside the census counts some would give a cell of fewer than 5 creators by difference).
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:10Z.
+outcome,pooled_or,pooled_lo95,pooled_hi95,mh_or,mh_lo95,mh_hi95,conditional_logit_or,cl_wald_lo95,cl_wald_hi95,creators_with_variation
+not transcribed (any reason),4.12,2.70,6.95,5.47,3.34,9.75,7.15,5.11,10.00,84
+no text of any kind (download failed or not transcribed),1.04,0.52,1.92,1.04,0.50,1.95,1.04,0.57,1.89,not published (beside the census counts of download-failure and not-transcribed creators it gives a cell of fewer than 5 creators by difference)
+other text kind or language review,5.57,3.28,13.43,10.37,4.97,33.89,19.53,11.78,32.37,68

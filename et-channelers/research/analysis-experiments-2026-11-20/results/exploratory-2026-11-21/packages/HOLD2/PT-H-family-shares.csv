@@ -1,0 +1,117 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:31:30Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# PT-H: PT part (a) (frozen spec pt-v1, regular expressions only) on the page text of each group's recordings with a local metadata file; description without time-code lines and with web addresses replaced by a placeholder; seen, hold-out (all 23 creators, all languages) and other creators as separate groups, never pooled.
+# creator_mean_share: mean over creators of the share of the creator's recordings with a hit; 90% t interval, clipped to [0, 1] where the t bound falls outside. Cue counts: the precision columns are model-read on seen hits (small model, mask v2; not checked by a person) and carried unchanged; English patterns will miss asks written in other languages, which the hold-out contains.
+# The cloud-only objects (META-169) carry no page text for seen recordings, and the hold-out's that do rest on fewer than 5 creators, so no '+169' row is printed. PT (b), written asks, is model-coded: not run (no money left under the hard stop).
+# seen reproduction of PT's pt-a-family-counts creator means: 31 cells, largest absolute difference 0.0000
+# Release pass 2 of 2026-11-25 (2026-11-25T21:46:03Z; p2_d47_hold2.py, SHA-256 0c7c06be02c61fa9), lead's decision D47 with D21 and D53, for privacy only (values only withdrawn, never changed): the five seen page-cue precisions near 100% (payment, booking, newsletter, other platform, disclaimer) read 'not published (misses from fewer than 5 creators)' (D21); their per-row gate verdict (precision 0.80 or more) stays (D53).
+group,family,field,extra_family,status,creators,recordings,recordings_with_hit,creators_with_hit,creator_mean_share,t90_low,t90_high,seen_model_read_precision,seen_precision_passes_0_80
+seen,payment,description,0,shown,all but fewer than 5 of 71,1228,265,20,0.2139,0.1355,0.2922,not published (misses from fewer than 5 creators),1
+seen,payment,chapters,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,payment,tags,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,payment,title,0,withheld: fewer than 5 creators with a hit,all but fewer than 5 of 71,1228,,,,,,not published (misses from fewer than 5 creators),1
+seen,booking,description,0,shown,all but fewer than 5 of 71,1228,310,39,0.2523,0.1777,0.3269,not published (misses from fewer than 5 creators),1
+seen,booking,chapters,0,withheld: fewer than 5 creators with a hit,all but fewer than 5 of 71,1228,,,,,,not published (misses from fewer than 5 creators),1
+seen,booking,tags,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,booking,title,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,course,description,0,shown,all but fewer than 5 of 71,1228,438,51,0.3592,0.2854,0.433,0.75,0
+seen,course,chapters,0,shown,all but fewer than 5 of 71,1228,33,20,0.0284,0.0172,0.0396,0.75,0
+seen,course,tags,0,shown,all but fewer than 5 of 71,1228,51,14,0.0409,0.0117,0.0702,0.75,0
+seen,course,title,0,shown,all but fewer than 5 of 71,1228,25,6,0.0193,0.0014,0.0372,0.75,0
+seen,event,description,0,shown,all but fewer than 5 of 71,1228,479,56,0.393,0.3211,0.4649,0.735,0
+seen,event,chapters,0,shown,all but fewer than 5 of 71,1228,61,26,0.048,0.0298,0.0661,0.735,0
+seen,event,tags,0,shown,all but fewer than 5 of 71,1228,33,10,0.0255,0.0047,0.0462,0.735,0
+seen,event,title,0,shown,all but fewer than 5 of 71,1228,55,19,0.0419,0.0205,0.0633,0.735,0
+seen,shop,description,0,shown,all but fewer than 5 of 71,1228,312,44,0.2596,0.1853,0.3339,0.74,0
+seen,shop,chapters,0,shown,all but fewer than 5 of 71,1228,12,7,0.0095,0.0024,0.0166,0.74,0
+seen,shop,tags,0,shown,all but fewer than 5 of 71,1228,68,10,0.0538,0.0123,0.0954,0.74,0
+seen,shop,title,0,shown,all but fewer than 5 of 71,1228,5,5,0.0041,0.0011,0.0071,0.74,0
+seen,newsletter,description,0,shown,all but fewer than 5 of 71,1228,165,16,0.1379,0.0751,0.2007,not published (misses from fewer than 5 creators),1
+seen,newsletter,chapters,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,newsletter,tags,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,newsletter,title,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,other_platform,description,0,shown,all but fewer than 5 of 71,1228,497,44,0.4127,0.325,0.5003,not published (misses from fewer than 5 creators),1
+seen,other_platform,chapters,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,other_platform,tags,0,withheld: fewer than 5 creators with a hit,all but fewer than 5 of 71,1228,,,,,,not published (misses from fewer than 5 creators),1
+seen,other_platform,title,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,disclaimer,description,0,shown,all but fewer than 5 of 71,1228,182,17,0.142,0.0781,0.2059,not published (misses from fewer than 5 creators),1
+seen,disclaimer,chapters,0,withheld: fewer than 5 creators with a hit,all but fewer than 5 of 71,1228,,,,,,not published (misses from fewer than 5 creators),1
+seen,disclaimer,tags,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,disclaimer,title,0,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+seen,platform_engagement,description,1,shown,all but fewer than 5 of 71,1228,404,37,0.3335,0.2527,0.4143,0.84,1
+seen,platform_engagement,chapters,1,withheld: fewer than 5 creators with a hit,all but fewer than 5 of 71,1228,,,,,,0.84,1
+seen,platform_engagement,tags,1,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,0.84,1
+seen,platform_engagement,title,1,shown,all but fewer than 5 of 71,1228,0,0,0.0,0.0,0.0,0.84,1
+holdout,payment,description,0,shown,23,415,113,5 or more,0.2639,0.1183,0.4094,not published (misses from fewer than 5 creators),1
+holdout,payment,chapters,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,payment,tags,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,payment,title,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,booking,description,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,not published (misses from fewer than 5 creators),1
+holdout,booking,chapters,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,booking,tags,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,booking,title,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,not published (misses from fewer than 5 creators),1
+holdout,course,description,0,shown,23,415,140,5 or more,0.3535,0.2074,0.4996,0.75,0
+holdout,course,chapters,0,shown,23,415,11,5 or more,0.0317,0.0118,0.0517,0.75,0
+holdout,course,tags,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,0.75,0
+holdout,course,title,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,0.75,0
+holdout,event,description,0,shown,23,415,151,18,0.3819,0.2496,0.5143,0.735,0
+holdout,event,chapters,0,shown,23,415,14,5 or more,0.0468,0.0,0.0975,0.735,0
+holdout,event,tags,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,0.735,0
+holdout,event,title,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,0.735,0
+holdout,shop,description,0,shown,23,415,92,5 or more,0.2336,0.1101,0.3572,0.74,0
+holdout,shop,chapters,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,0.74,0
+holdout,shop,tags,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,0.74,0
+holdout,shop,title,0,shown,23,415,0,0,0.0,0.0,0.0,0.74,0
+holdout,newsletter,description,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,not published (misses from fewer than 5 creators),1
+holdout,newsletter,chapters,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,newsletter,tags,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,newsletter,title,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,other_platform,description,0,shown,23,415,198,5 or more,0.4796,0.3091,0.65,not published (misses from fewer than 5 creators),1
+holdout,other_platform,chapters,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,other_platform,tags,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,not published (misses from fewer than 5 creators),1
+holdout,other_platform,title,0,withheld: fewer than 5 creators with a hit,23,415,,,,,,not published (misses from fewer than 5 creators),1
+holdout,disclaimer,description,0,shown,23,415,40,5 or more,0.0945,0.0139,0.1751,not published (misses from fewer than 5 creators),1
+holdout,disclaimer,chapters,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,disclaimer,tags,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,disclaimer,title,0,shown,23,415,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+holdout,platform_engagement,description,1,shown,23,415,136,5 or more,0.3407,0.1775,0.5039,0.84,1
+holdout,platform_engagement,chapters,1,shown,23,415,0,0,0.0,0.0,0.0,0.84,1
+holdout,platform_engagement,tags,1,withheld: fewer than 5 creators with a hit,23,415,,,,,,0.84,1
+holdout,platform_engagement,title,1,shown,23,415,0,0,0.0,0.0,0.0,0.84,1
+other,payment,description,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,not published (misses from fewer than 5 creators),1
+other,payment,chapters,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,payment,tags,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,payment,title,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,booking,description,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,booking,chapters,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,booking,tags,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,booking,title,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,course,description,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.75,0
+other,course,chapters,0,shown,5 or more,55,0,0,0.0,0.0,0.0,0.75,0
+other,course,tags,0,shown,5 or more,55,0,0,0.0,0.0,0.0,0.75,0
+other,course,title,0,shown,5 or more,55,0,0,0.0,0.0,0.0,0.75,0
+other,event,description,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.735,0
+other,event,chapters,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.735,0
+other,event,tags,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.735,0
+other,event,title,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.735,0
+other,shop,description,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.74,0
+other,shop,chapters,0,shown,5 or more,55,0,0,0.0,0.0,0.0,0.74,0
+other,shop,tags,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.74,0
+other,shop,title,0,shown,5 or more,55,0,0,0.0,0.0,0.0,0.74,0
+other,newsletter,description,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,not published (misses from fewer than 5 creators),1
+other,newsletter,chapters,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,newsletter,tags,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,newsletter,title,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,other_platform,description,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,not published (misses from fewer than 5 creators),1
+other,other_platform,chapters,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,other_platform,tags,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,other_platform,title,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,disclaimer,description,0,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,not published (misses from fewer than 5 creators),1
+other,disclaimer,chapters,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,disclaimer,tags,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,disclaimer,title,0,shown,5 or more,55,0,0,0.0,0.0,0.0,not published (misses from fewer than 5 creators),1
+other,platform_engagement,description,1,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,,0.84,1
+other,platform_engagement,chapters,1,shown,5 or more,55,0,0,0.0,0.0,0.0,0.84,1
+other,platform_engagement,tags,1,shown,5 or more,55,0,0,0.0,0.0,0.0,0.84,1
+other,platform_engagement,title,1,shown,5 or more,55,0,0,0.0,0.0,0.0,0.84,1

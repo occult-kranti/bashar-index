@@ -1,0 +1,22 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): VER/public/ver-dep.csv
+# Interval level: 90% (creator bootstrap; voice sample weighted to its sampling frame)
+# VER-DEP: latent-class (Dawid-Skene) error rates of the four readers of the VER-3R sample (200 units of the 23 seen check creators; claimed, own or other voice) under three model forms, from the sealed VER-3R analysis (hashes checked by VER), and each reader's departure from the majority of the other three readers.
+# Heuristic: estimated under conditional independence, which readers of one vendor are known to break; never accuracy. Model-coded; not checked by a person. Pointwise intervals; no family-wise control.
+reader,form,estimate,low_90,high_90,status
+small model,independent readers,0.061,0.033,0.109,printed
+small model,OpenAI readers as one bloc,0.088,0.053,0.15,printed
+small model,one error rate per reader (one coin),0.067,0.033,0.114,printed
+small model,departure from the other three readers' majority,0.073,0.037,0.124,printed
+middle model,independent readers,0.015,0.011,0.037,printed
+middle model,OpenAI readers as one bloc,0.049,0.028,0.09,printed
+middle model,one error rate per reader (one coin),0.028,0.01,0.051,printed
+middle model,departure from the other three readers' majority,0.033,0.015,0.058,printed
+large model (gpt-6-sol),independent readers,0.115,0.047,0.204,printed
+large model (gpt-6-sol),OpenAI readers as one bloc,0.109,0.046,0.19,printed
+large model (gpt-6-sol),one error rate per reader (one coin),0.103,0.035,0.195,printed
+large model (gpt-6-sol),departure from the other three readers' majority,0.115,0.044,0.206,printed
+reader of another vendor (Anthropic),independent readers,0.037,0.015,0.078,printed
+reader of another vendor (Anthropic),OpenAI readers as one bloc,0.004,0.004,0.01,printed
+reader of another vendor (Anthropic),one error rate per reader (one coin),,,,withheld: its departures from the latent class come from fewer than 5 creators
+reader of another vendor (Anthropic),departure from the other three readers' majority,0.036,0.014,0.072,printed

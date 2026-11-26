@@ -1,0 +1,19 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-a-ask-classes.csv (printed cells only).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+# Per creator: share of the creator's recordings with at least one ask of the class; asks per hour of speech (speech time after voice-activity detection); among creators with any ask, the class's share of their asks.
+panel,row,mean,lo95,hi95
+recordings with the ask,K1 pay or enrol,0.424,0.353,0.498
+recordings with the ask,K2 give money or K5 advert (pooled),0.041,0.018,0.073
+recordings with the ask,K3 engage on the platform,0.387,0.309,0.470
+recordings with the ask,"K4 move off platform, no payment",0.319,0.251,0.390
+recordings with the ask,any ask (K1 to K5),0.637,0.562,0.713
+asks per hour of speech,K1 pay or enrol,2.81,2.07,3.65
+asks per hour of speech,K2 give money or K5 advert (pooled),0.16,0.07,0.27
+asks per hour of speech,K3 engage on the platform,2.75,1.71,4.23
+asks per hour of speech,"K4 move off platform, no payment",1.54,1.18,1.93
+asks per hour of speech,any ask (K1 to K5),7.25,5.65,9.10
+class's share of asks,K1 pay or enrol,0.416,0.356,0.477
+class's share of asks,K2 give money or K5 advert (pooled),0.020,0.010,0.031
+class's share of asks,K3 engage on the platform,0.309,0.248,0.372
+class's share of asks,"K4 move off platform, no payment",0.255,0.208,0.305

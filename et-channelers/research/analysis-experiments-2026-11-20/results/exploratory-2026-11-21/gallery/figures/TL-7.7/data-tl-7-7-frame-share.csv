@@ -1,0 +1,22 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-7-frame-share-by-month.csv (TL package, public folder).
+# Interval level: 90% creator-bootstrap interval (percentile, 2,000 draws of creators) for each pooled share; none for the month cells.
+# Each panel's earliest merged period is an open bin 'up to <its last month>' (year rule); the both-panel row is stated in the caption and not drawn.
+# Leave-one-creator-out: every share with one creator left out stays inside the 90% interval, in each panel and for both panels together (the package's statement; its numeric ends are not printed, plan section 3).
+panel,upload_months,share_weighted,creator_equal_share,pooled_interval_90_low,pooled_interval_90_high,dated_statements,creators
+Upload day confirmed,up to Aug 2025,0.651,,,,,
+Upload day confirmed,Sep 2025- Jan 2026,0.539,,,,,
+Upload day confirmed,Feb-Mar 2026,0.776,,,,,
+Upload day confirmed,Apr-May 2026,0.444,,,,,
+Upload day confirmed,Jun-Jul 2026,0.439,,,,,
+Upload day confirmed,Aug 2026,0.684,,,,,
+Upload day confirmed,Sep 2026,0.749,,,,,
+Upload day confirmed,Oct 2026,0.6,,,,,
+Upload day confirmed,Nov 2026,0.716,,,,,
+Upload day confirmed,all (pooled),0.649,0.544,0.604,0.691,1864,55-59
+Upload day estimated,up to Jul 2026,0.534,,,,,
+Upload day estimated,Aug-Sep 2026,0.576,,,,,
+Upload day estimated,Oct 2026,0.506,,,,,
+Upload day estimated,Nov 2026,0.721,,,,,
+Upload day estimated,all (pooled),0.598,0.486,0.435,0.803,275,20-24
+both panels,all (pooled),0.642,0.533,0.595,0.683,2139,59

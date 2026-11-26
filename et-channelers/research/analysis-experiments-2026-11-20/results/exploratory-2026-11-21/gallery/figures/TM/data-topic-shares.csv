@@ -1,0 +1,20 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# TM topic table, public form. share = creator-equal mean (recording = mean window share; creator = mean of recordings), percent, 90% creator-bootstrap percentile interval (2,000 draws). 14,152 windows of about 300 words from 1,185 recordings (300 or more words) of 71 seen creators; NMF, K = 16, on sublinear TF-IDF.
+# stable = matched topic-word cosine >= 0.8 against every one of 4 other seeds and 5 creator-resampled refits. effective number of creators = exp of the entropy of creator weights (gate 5); a diversity index, not a count of creators. Topics are recurring vocabulary clusters, never beliefs; labels are analyst-written from top words and not checked by a person; style topics, and topic 14 as in TM-H, carry neutral labels (lead's decision D62).
+kind,topic,label,share_pct,ci90_low_pct,ci90_high_pct,stable_all_9_refits,effective_number_of_creators_not_a_count
+subject,1,"topic 1: soul, higher self",7.95,6.93,8.93,no,58.4
+subject,3,"topic 3: energy shifts, change",9.21,7.79,10.8,no,54.3
+subject,5,"topic 5: planet, humanity, star beings",8.3,7.17,9.5,yes,54.3
+subject,6,"topic 6: religion, Christian faith",3.6,2.6,4.99,no,37.8
+subject,10,"topic 10: fear, truth, choice",6.68,5.44,8.01,no,52.0
+subject,11,"topic 11: divine love, compassion",6.05,5.31,6.89,no,58.4
+subject,14,topic 14 (neutral label),5.54,4.14,7.25,no,42.6
+segment,2,"topic 2: personal story, past",10.09,8.62,11.57,yes,53.7
+segment,4,"topic 4: guided breathing, body",7.04,5.83,8.51,no,50.4
+segment,7,"topic 7: channel logistics, links",6.23,5.08,7.59,no,49.8
+segment,12,"topic 12: session reports, sightings",3.48,2.64,4.62,no,44.2
+segment,15,topic 15: questions to guides,5.15,4.49,5.88,no,57.4
+style,8,topic 8 (style),5.82,4.45,7.5,no,46.5
+style,9,topic 9 (style),7.06,6.15,8.04,no,57.4
+style,13,topic 13 (style),4.24,3.26,5.55,yes,45.5
+style,16,topic 16 (style),3.56,2.51,5.1,no,38.2

@@ -1,0 +1,9 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# DIR pilot: creator-equal incidence by class, found and after critic; 65 seen creators, 200 windows; model-coded, not checked by a person
+# Source: the gallery's public file figures/DIR/data-dir-incidence.csv (build of 2026-11-22 03:33 UTC); the preparedness row is left out (its values solve for
+# single creators' shares).
+# Interval level: 90% t interval on creator means.
+class,label,creators_base,windows,found_creator_mean,found_t90_lo,found_t90_hi,after_critic_creator_mean,after_critic_t90_lo,after_critic_t90_hi
+practice_directive,Practice directive,65,200,0.5384,0.4649,0.6118,0.4694,0.3937,0.5451
+threat_statement,Threat statement about the world,65,200,0.2092,0.1426,0.2758,0.1662,0.1066,0.2258
+health_directive,Health directive,65,200,0.1919,0.1356,0.2482,0.1111,0.0711,0.1512

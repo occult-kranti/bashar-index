@@ -1,0 +1,20 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-9-due-calendar.csv (TL package, public folder).
+# Interval level: none (counts of window units).
+# '2031 or later' is the package's open bin of the periods from 2031 on (its window units are the sum over those periods; each of them holds 5-9 channels; no union channel count is printed).
+# All pending: 569 window units (sum of the rows).
+first_checkable,pending_window_units
+Dec 2026,51
+Jan 2027,156
+Feb-Mar 2027,14
+Apr 2027,14
+May-Jun 2027,16
+Jul 2027,14
+Aug-Sep 2027,11
+Oct-Dec 2027,7
+Jan 2028,40
+Feb-Dec 2028,15
+Jan 2029,46
+Feb-Oct 2029,10
+Nov 2029-Dec 2030,49
+2031 or later,126

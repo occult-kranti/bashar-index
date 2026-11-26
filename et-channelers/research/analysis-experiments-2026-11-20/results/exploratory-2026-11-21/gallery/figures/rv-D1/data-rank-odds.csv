@@ -1,0 +1,14 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D1-rank-odds.csv (package rv-D1)
+# Interval level: 95% creator bootstrap (pooled, Mantel-Haenszel); 95% Wald (conditional logit)
+# Exactly the numbers drawn in fig-rank-odds. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:14Z.
+outcome,estimator,odds_ratio,lo95,hi95
+not transcribed (any reason),pooled,4.12,2.70,6.95
+not transcribed (any reason),Mantel-Haenszel within creator,5.47,3.34,9.75
+not transcribed (any reason),conditional logit (Wald),7.15,5.11,10.00
+no text of any kind (download failed or not transcribed),pooled,1.04,0.52,1.92
+no text of any kind (download failed or not transcribed),Mantel-Haenszel within creator,1.04,0.50,1.95
+no text of any kind (download failed or not transcribed),conditional logit (Wald),1.04,0.57,1.89
+other text kind or language review,pooled,5.57,3.28,13.43
+other text kind or language review,Mantel-Haenszel within creator,10.37,4.97,33.89
+other text kind or language review,conditional logit (Wald),19.53,11.78,32.37

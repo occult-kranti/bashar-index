@@ -1,0 +1,11 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r7-artefact-card. Source public file: rv-r7-artefact-rules.csv (package rv-R7).
+# Interval level: 90% creator bootstrap (2,000 draws)
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+rule,rate_per_speech_hour,boot90_low,boot90_high,transcripts_with_one_share,precision_bound_from_phase_counts
+Stock or credit text,0.017,0.006,0.031,0.0062,>= 0.55
+Fourth and later repeat of one segment text,0.027,0.009,0.049,0.007,>= 0.29
+"Thanks phrase, low probability, not late",0.062,0.038,0.091,0.021,>= 0.80 (grid-tied share)
+"Thanks phrase, isolated (5 s silence each side), not late",0.147,0.078,0.235,0.0288,not bounded (shares the isolated rule)
+Isolated segment of <= 3 words (5 s silence each side),0.397,0.244,0.592,0.0685,>= 0.63 (grid-tied share)
+Thanks phrase starting 27-30 s into a window (positional),2.953,2.726,3.186,0.4992,not published (misses not recounted by creator)

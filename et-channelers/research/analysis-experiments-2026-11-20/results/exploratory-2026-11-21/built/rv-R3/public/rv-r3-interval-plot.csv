@@ -1,0 +1,23 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R3 interval-plot data (place M): mean paired difference (larger minus English-only model) for 17 measures on the 36 registered pairs, in between-creator SD units (registered) and within-creator SD units (this build).
+# Interval level: lo/hi = per-measure 90% t interval; slo/shi = simultaneous 90% (Bonferroni over 17). Margin +/-0.2 SD.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+measure,label,between_m,between_lo,between_hi,between_slo,between_shi,within_m,within_lo,within_hi,within_slo,within_shi
+short_pauses,Pauses 0.3-1 s per speech minute,-2.494,-2.9026,-2.0854,-3.2034,-1.7846,-2.1962,-2.556,-1.8364,-2.8209,-1.5715
+pause_share,Share of time in pauses >= 0.3 s,-0.6498,-0.7698,-0.5298,-0.8581,-0.4414,-0.6473,-0.7668,-0.5278,-0.8548,-0.4398
+thanks_inserted,"Thanks phrase removed, per hour",-0.5371,-1.0971,0.0229,-1.5093,0.4351,-0.1975,-0.4033,0.0084,-0.5549,0.16
+long_pauses,Pauses >= 1 s per speech minute,-0.4288,-0.5233,-0.3343,-0.5928,-0.2647,-0.4515,-0.5511,-0.352,-0.6243,-0.2788
+word_probability,Mean word probability,-0.2319,-0.5863,0.1224,-0.8471,0.3832,-0.1661,-0.42,0.0877,-0.6068,0.2745
+isolated_short,"Isolated short segments, per hour",-0.1964,-0.6367,0.2438,-0.9607,0.5679,-0.1243,-0.4029,0.1543,-0.608,0.3594
+looped_words,"Loop words removed /1,000",-0.1908,-0.4162,0.0346,-0.5821,0.2005,-0.0618,-0.1347,0.0112,-0.1884,0.0649
+variety,Distinct words in 100-word windows,-0.0603,-0.0886,-0.032,-0.1095,-0.0112,-0.0639,-0.0939,-0.0339,-0.1159,-0.0118
+first_singular,"First-person singular /1,000",-0.0232,-0.0465,0.0002,-0.0637,0.0173,-0.0151,-0.0303,0.0001,-0.0415,0.0113
+pace,Words per minute of speech,-0.0214,-0.091,0.0482,-0.1422,0.0994,-0.025,-0.1061,0.0562,-0.1659,0.1159
+contractions,"Contracted forms /1,000",-0.0071,-0.0284,0.0142,-0.044,0.0298,-0.007,-0.0282,0.0141,-0.0437,0.0296
+first_plural,"First-person plural /1,000",0.0113,-0.0158,0.0385,-0.0358,0.0585,0.0087,-0.0121,0.0294,-0.0273,0.0446
+second_person,"Second person /1,000",0.0288,0.0033,0.0544,-0.0156,0.0732,0.0263,0.003,0.0497,-0.0142,0.0668
+word_letters,Mean word length (letters),0.0589,-0.0122,0.1299,-0.0644,0.1822,0.0687,-0.0142,0.1517,-0.0753,0.2127
+word_seconds,Mean word duration (s),0.6484,0.5418,0.7549,0.4634,0.8333,0.8011,0.6695,0.9327,0.5726,1.0296
+segment_words,Words per recognizer segment,0.8664,0.5052,1.2277,0.2393,1.4936,0.6077,0.3543,0.861,0.1678,1.0475
+fillers,"Filled pauses /1,000",1.7731,0.9278,2.6183,0.3056,3.2405,1.6833,0.8808,2.4857,0.2901,3.0764

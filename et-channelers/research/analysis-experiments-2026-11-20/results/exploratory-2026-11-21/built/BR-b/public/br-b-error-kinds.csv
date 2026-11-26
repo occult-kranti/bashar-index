@@ -1,0 +1,28 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-b (plan 6.7), error kinds: substitutions, deletions and insertions as shares of reference words, for the printed rows of the anchor table (raw variant). Every row is agreement of two machines, not an error rate.
+# Base: seen creators only (counts per row in the table).
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap resamples, a seed per cell (word-pooled shares); creator means without interval, as built.
+# Normaliser: wa-norm-v2 (chosen after the result: fixed 2026-11-21 03:31 UTC after a check of confusions on the first re-made transcripts). Version-1 error kinds are not published (pairs rule, addendum 2 items 2 and 9).
+# A kind is printed only where 5 or more creators of the cell carry it (dominance rule, addendum 2 item 9).
+# Source: BR-b's run of 2026-11-21 on seen creators, public form by the release review (2026-11-22).
+# Written by br_public.py (release review, plan P10, 2026-11-22; revised after the release verification), SHA-256 a03e56ab5f6ff37c3ab1cefacba8f4ad51975a9d0aa71042bf49c0dd6170da66; cells checked by verify_br.py, SHA-256 592d9b7da6d4e9df228494036e5a0a48b3514fcd130679a80202986f4eb31efd.
+reference_class,variant,cell,recordings,creators,kind,creator_mean_share,word_pooled_share,word_pooled_lo95,word_pooled_hi95
+"platform automatic captions (agreement of two machines, not an error rate)",raw,whole row,11,11,substitutions,0.0157,0.0162,0.0108,0.0218
+"platform automatic captions (agreement of two machines, not an error rate)",raw,whole row,11,11,deletions,0.0111,0.0149,0.0074,0.0224
+"platform automatic captions (agreement of two machines, not an error rate)",raw,whole row,11,11,insertions,0.0109,0.0179,0.0058,0.0341
+"project's earlier speech-to-text, same recognizer and settings (reproducibility) (agreement of two machines, not an error rate)",raw,whole row,48,34,substitutions,0.0019,0.0010,0.0001,0.0024
+"project's earlier speech-to-text, same recognizer and settings (reproducibility) (agreement of two machines, not an error rate)",raw,whole row,48,34,deletions,0.0009,0.0006,0.0001,0.0014
+"project's earlier speech-to-text, same recognizer and settings (reproducibility) (agreement of two machines, not an error rate)",raw,whole row,48,34,insertions,0.0014,0.0008,0.0001,0.0020
+"project's earlier speech-to-text, larger multilingual model (added after the exploratory reporting plan, addendum 1) (agreement of two machines, not an error rate)",raw,whole row,5,5,substitutions,0.0203,0.0145,0.0069,0.0394
+"project's earlier speech-to-text, larger multilingual model (added after the exploratory reporting plan, addendum 1) (agreement of two machines, not an error rate)",raw,whole row,5,5,deletions,0.0147,0.0136,0.0122,0.0167
+"project's earlier speech-to-text, larger multilingual model (added after the exploratory reporting plan, addendum 1) (agreement of two machines, not an error rate)",raw,whole row,5,5,insertions,0.0171,0.0138,0.0104,0.0222
+"platform automatic captions (agreement of two machines, not an error rate)",raw,"length half: lower half (added after the exploratory reporting plan, addendum 1, 2026-11-21 05:30 UTC)",6,6,substitutions,0.0154,0.0153,0.0096,0.0217
+"platform automatic captions (agreement of two machines, not an error rate)",raw,"length half: lower half (added after the exploratory reporting plan, addendum 1, 2026-11-21 05:30 UTC)",6,6,deletions,0.0088,0.0118,0.0053,0.0184
+"platform automatic captions (agreement of two machines, not an error rate)",raw,"length half: lower half (added after the exploratory reporting plan, addendum 1, 2026-11-21 05:30 UTC)",6,6,insertions,0.0078,0.0086,0.0033,0.0191
+"platform automatic captions (agreement of two machines, not an error rate)",raw,"length half: upper half (added after the exploratory reporting plan, addendum 1, 2026-11-21 05:30 UTC)",5,5,substitutions,0.0160,0.0163,0.0101,0.0223
+"platform automatic captions (agreement of two machines, not an error rate)",raw,"length half: upper half (added after the exploratory reporting plan, addendum 1, 2026-11-21 05:30 UTC)",5,5,deletions,0.0138,0.0155,0.0064,0.0258
+"platform automatic captions (agreement of two machines, not an error rate)",raw,"length half: upper half (added after the exploratory reporting plan, addendum 1, 2026-11-21 05:30 UTC)",5,5,insertions,0.0146,0.0199,0.0065,0.0361
+"platform automatic captions (agreement of two machines, not an error rate)",filtered,,,,all kinds,not published (pairs rule: beside the raw row the difference rests on fewer than 5 creators),,,
+"platform automatic captions (agreement of two machines, not an error rate)",raw,"recognizer confidence halves (added after the exploratory reporting plan, addendum 1, 2026-11-21 05:30 UTC)",,,all kinds,"not published: the confidence halves are not published (strata table: beside the length halves, a second split of the same creators would bound cells of fewer than 5 creators)",,,
+every class,,,,,errors on numerals and years,not run in BR-b: the code does not compute them; BR-y covers years and numbers on the same pairs (addendum 1 item 3),,,
+every class,,,,,errors on capitalised names,not run: the normaliser lower-cases before alignment (addendum 1 item 3),,,

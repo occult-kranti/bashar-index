@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/pt-d-chapters.csv
+# Interval level: 90% creator bootstrap (observed share); 95% range of 999 circular shifts (reference)
+# PT part (d): share of creator-written chapter starts (after the first chapter) within 30 s of a model voice boundary, creator-balanced, against 999 circular shifts of each recording's chapter starts. Recordings that are not publisher audio editions, English-only recognizer, with a boundary under the labels named. Middle-model subset: 14 recordings of 10 creators (primary); small model: 105 recordings (claimed-voice boundaries) and 141 (every change of the voice label) of all but fewer than 5 of PT part a's 21 creators with creator-written chapters.
+# Voice boundaries are model-coded (kappa 0.79 against the readers' majority on the VER-3R sample (third model of the same vendor); kappa 0.91 with a reader of another vendor, VG-6); not checked by a person. Window, shift reference and rows: added after the exploratory reporting plan.
+boundaries,share_within_30s,low_90,high_90,shift_mean,shift_95_low,shift_95_high,against_shifts
+"middle-model subset, claimed-voice boundaries (primary)",0.2713,0.167,0.393,0.2549,0.199,0.313,inside
+"small model, claimed-voice boundaries",0.2542,0.186,0.328,0.1884,0.158,0.225,above
+"small model, every change of the voice label",0.2904,0.211,0.372,0.2195,0.191,0.251,above
+TC code changes,,,,,,,not run: TC stage 2 was not bought (registry 2026-11-21 03:08); TC codes exist on 386 stage-1 windows only

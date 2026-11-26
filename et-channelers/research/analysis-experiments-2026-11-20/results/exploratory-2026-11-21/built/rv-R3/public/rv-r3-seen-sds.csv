@@ -1,0 +1,25 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R3 (place S): between-creator SD (SD of creator means) and within-creator SD (pooled) of the bridge measures, seen creators with 3 or more English-only, non-publisher recordings of 200 or more tokens, filter v2 (this build); registered_between_sd from the published bridge summary (filter v1).
+# The creator count is printed against the 71 seen creators, as the published bridge summary prints it (the two groups are nested). Interval level: none (SDs).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+measure,between_sd,within_sd,creators,recordings,registered_between_sd
+pace,16.79893,14.40851,all but fewer than 5 of the 71 seen creators,1112,16.80926
+word_seconds,0.0433,0.03504,all but fewer than 5 of the 71 seen creators,1112,0.04329
+long_pauses,2.49664,2.37114,all but fewer than 5 of the 71 seen creators,1112,2.49696
+short_pauses,1.78526,2.02831,all but fewer than 5 of the 71 seen creators,1112,1.78609
+pause_share,0.08962,0.08998,all but fewer than 5 of the 71 seen creators,1112,0.08963
+first_singular,14.04252,21.54778,all but fewer than 5 of the 71 seen creators,1112,14.04326
+first_plural,8.46488,11.09495,all but fewer than 5 of the 71 seen creators,1112,8.46692
+second_person,18.04339,19.76807,all but fewer than 5 of the 71 seen creators,1112,18.0457
+contractions,7.83445,7.89098,all but fewer than 5 of the 71 seen creators,1112,7.83477
+fillers,1.23366,1.29967,all but fewer than 5 of the 71 seen creators,1112,1.23384
+variety,0.03334,0.03149,all but fewer than 5 of the 71 seen creators,1112,0.03334
+word_letters,0.2016,0.17313,all but fewer than 5 of the 71 seen creators,1112,0.20221
+segment_words,1.08,1.53971,all but fewer than 5 of the 71 seen creators,1112,1.07986
+word_probability,0.01488,0.02078,all but fewer than 5 of the 71 seen creators,1112,0.01489
+thanks_inserted,1.76154,4.79137,all but fewer than 5 of the 71 seen creators,1112,1.76154
+isolated_short,1.01799,1.60848,all but fewer than 5 of the 71 seen creators,1112,1.01799
+looped_words,3.24399,10.02297,all but fewer than 5 of the 71 seen creators,1112,3.24394
+mattr500,0.03832,0.03117,all but fewer than 5 of the 71 seen creators,1008,
+logp_word,0.02676,0.0451,all but fewer than 5 of the 71 seen creators,1112,

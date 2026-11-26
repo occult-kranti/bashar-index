@@ -1,0 +1,35 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file MR/public/mr-18c-timing-leak.csv (sha256 61eda24add65950a).
+# Interval level: 90% creator-cluster bootstrap percentile intervals (2,000 draws), as printed by the package.
+# Within recordings (every variable centred on its recording mean). Unit rate: syllables per minute of the unit's own time from the recognizer's words and word times, a recognizer-output measure, not a direct measure of speaking. Voice labels model-coded (small model of record; middle model on the seen recordings it labelled in full), not checked by a person.
+unit_set,base,quantity,feature,estimate,ci90_low,ci90_high
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with log unit rate,words in the unit,-0.1888,-0.2118,-0.1623
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with log unit rate,words in the unit,-0.1885,-0.2069,-0.1686
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with log unit rate,words in the unit,-0.1818,-0.2156,-0.1391
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with log unit rate,punctuation marks per word,-0.0902,-0.1144,-0.0649
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with log unit rate,punctuation marks per word,-0.0983,-0.1171,-0.0795
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with log unit rate,punctuation marks per word,-0.1031,-0.1427,-0.0597
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with log unit rate,sentence marks,-0.1484,-0.1716,-0.1266
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with log unit rate,sentence marks,-0.1624,-0.1841,-0.141
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with log unit rate,sentence marks,-0.1878,-0.2352,-0.1307
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with log unit rate,repeated-word share,-0.067,-0.0998,-0.0296
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with log unit rate,repeated-word share,-0.0545,-0.0815,-0.0288
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with log unit rate,repeated-word share,-0.0736,-0.1456,-0.0205
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with log unit rate,visible fillers per word,-0.0498,-0.074,-0.0355
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with log unit rate,visible fillers per word,-0.0566,-0.0798,-0.0419
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with log unit rate,visible fillers per word,-0.0542,-0.0976,-0.0179
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with the claimed-voice label,words in the unit,0.0263,0.0041,0.0455
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with the claimed-voice label,words in the unit,0.029,0.01,0.0433
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with the claimed-voice label,words in the unit,-0.0126,-0.0359,0.007
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with the claimed-voice label,punctuation marks per word,-0.0059,-0.0356,0.018
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with the claimed-voice label,punctuation marks per word,-0.0037,-0.0263,0.0167
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with the claimed-voice label,punctuation marks per word,0.0199,-0.022,0.0662
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with the claimed-voice label,sentence marks,-0.0182,-0.0411,0.0011
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with the claimed-voice label,sentence marks,-0.0359,-0.0557,-0.0167
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with the claimed-voice label,sentence marks,-0.0169,-0.0432,0.0114
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with the claimed-voice label,repeated-word share,0.0215,-0.004,0.0451
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with the claimed-voice label,repeated-word share,0.0134,-0.0042,0.0335
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with the claimed-voice label,repeated-word share,0.0108,-0.029,0.0448
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,partial correlation with the claimed-voice label,visible fillers per word,0.0101,-0.0302,0.0274
+"Small model, every claimed or own unit",59 creators; 443 recordings,partial correlation with the claimed-voice label,visible fillers per word,0.0078,-0.0218,0.0253
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,partial correlation with the claimed-voice label,visible fillers per word,0.0078,-0.0332,0.0217

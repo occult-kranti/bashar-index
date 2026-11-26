@@ -1,0 +1,7 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r1-u-histogram. Source public file: rv-r1-u-percentiles.csv (package rv-R1) and rv-r1-u-histogram.csv.
+# Interval level: 90% t interval on creator means (mean); percentiles over creators (no interval)
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+series,creators,p10,p25,p50,p75,p90,mean,t90_low,t90_high,creators_above_zero
+registered (raw) U,61,-0.56,-0.19,0.1,0.25,0.45,0.019,-0.121,0.16,36
+recentred U,61,-0.46,-0.06,0.15,0.31,0.51,0.083,-0.046,0.211,41

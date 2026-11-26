@@ -1,0 +1,16 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r5-pace-shrinkage. Source public file: rv-r5-pace-shrinkage.csv (package rv-R5).
+# Interval level: none (counts of creators; every bin 5 or more)
+# Bins 150-160 and 160-170 merged into 150-170 in both series (pairs rule: shrinkage is a near-constant contraction toward the mean, so raw and shrunken bins that differ would bound the pace of the creators that change bin).
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+series,bin,creators
+raw creator means,< 130,11
+raw creator means,130 to 140,8
+raw creator means,140 to 150,20
+raw creator means,150 to 170,23
+raw creator means,>= 170,9
+empirical-Bayes (shrunken) creator means,< 130,11
+empirical-Bayes (shrunken) creator means,130 to 140,8
+empirical-Bayes (shrunken) creator means,140 to 150,20
+empirical-Bayes (shrunken) creator means,150 to 170,23
+empirical-Bayes (shrunken) creator means,>= 170,9

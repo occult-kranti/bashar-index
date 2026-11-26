@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# META-H: META (c)'s core on local files (recordings aged 30 days or more with a view count and a known duration; creators with 3 or more such recordings); source HOLD2/META-H-engagement-core.csv (package HOLD2, public).
+# Interval level: 90% creator-bootstrap interval (2,000 draws). The other group's core is withheld by the package (fewer than 5 creators).
+# One snapshot; nothing causal.
+estimand,group,creators,recordings,estimate,boot90_low,boot90_high
+age at capture (slope),seen,64,913,-0.2173,-0.4015,-0.0422
+recording length (slope),seen,64,913,0.2247,0.1558,0.2937
+age at capture (slope),hold-out,all but fewer than 5 of 23,327,-0.0608,-0.2212,0.1095
+recording length (slope),hold-out,all but fewer than 5 of 23,327,0.2293,0.1664,0.3187
+log10 views,seen,64,913,0.841,0.7781,0.8856
+log10 likes per view,seen,5 or more,830,0.424,0.3203,0.5097
+log10 comments per view,seen,5 or more,784,0.5424,0.4054,0.6478
+log10 views,hold-out,all but fewer than 5 of 23,327,0.8828,0.7489,0.9351
+log10 likes per view,hold-out,5 or more,306,0.6664,0.3038,0.7936
+log10 comments per view,hold-out,5 or more,285,0.6004,0.4205,0.6986

@@ -1,0 +1,18 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R6 (places M and S): injected word error rate at which the creator-equal cohort mean, the median creator and the 90th-percentile creator move by 0.2 clean between-creator SD (the bridge margin), under the bridge's edit profile (_bridge) and a uniform profile (_uniform), the same rate for every creator; empty: not reached by 20%.
+# Also the cohort shift and the ratio to clean at 3.5% and the ICC at 10% and 20%. Linear interpolation on the grid 0, 1, 2, 3.5, 5, 7.5, 10, 15 and 20%. Base: 71 seen creators, 1,176 recordings (English-only model, 300 or more words, filter v2).
+# ICCs are one-way REML on the raw scale (not comparable with the latent-scale ICCs of VP-1). Interval level: none (means of 2 replicate injections). A tolerance, not a measured error rate: the recognizer's real error rate is unknown until a reference made by a person exists.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+measure,label,between_sd_clean,icc_clean,wer_cohort_shift_0.2sd_bridge,wer_median_creator_0.2sd_bridge,wer_p90_creator_0.2sd_bridge,shift_sd_at_3.5pct_bridge,ratio_at_3.5pct_bridge,icc_at_10pct_bridge,icc_at_20pct_bridge,wer_cohort_shift_0.2sd_uniform,wer_median_creator_0.2sd_uniform,wer_p90_creator_0.2sd_uniform,shift_sd_at_3.5pct_uniform,ratio_at_3.5pct_uniform,icc_at_10pct_uniform,icc_at_20pct_uniform
+log_words,log words,0.7043,0.453,,,,0.0031,1.0003,0.4531,0.4527,,,,0.0011,1.0001,0.4531,0.4527
+words_per_min,words per speech minute,17.3729,0.58,,,,0.0188,1.0022,0.5779,0.5787,,,,0.0067,1.0008,0.579,0.5768
+word_length,mean word length (letters),0.1982,0.5813,0.0496,0.0517,0.0382,-0.137,0.9937,0.5743,0.5739,,,,-0.0021,0.9999,0.5741,0.5709
+mattr1000,"MATTR (1,000)",0.0359,0.6369,0.0405,0.0422,0.032,0.1766,1.0188,0.6397,0.6406,,,0.0976,-0.0155,0.9983,0.6435,0.642
+contraction_rate,"contractions /1,000",13.9165,0.6087,,,0.1408,0.0171,1.0083,0.5982,0.5973,,,,-0.0007,0.9996,0.6023,0.6027
+fs_rate,"first-person singular /1,000",13.7037,0.2828,,,0.1344,0.0124,1.006,0.2804,0.2821,,,,0.0024,1.0012,0.2807,0.2802
+fp_rate,"first-person plural /1,000",8.7364,0.381,,,0.1989,-0.0104,0.9946,0.3781,0.3724,,,,-0.0003,0.9998,0.3793,0.3763
+sp_rate,"second person /1,000",17.2778,0.4337,,,0.1461,-0.0252,0.991,0.4314,0.4307,,,,0.0005,1.0002,0.431,0.4268
+qmark_rate,"question marks /1,000",2.5727,0.3002,,,0.1778,-0.0234,0.9855,0.298,0.2973,,,0.1841,-0.0182,0.9887,0.3007,0.2933
+filler_rate,"filled pauses /1,000",1.2149,0.4732,0.0491,0.0474,0.0106,-0.1323,0.8029,0.0189,0.0052,,,,0.0037,1.0055,0.4688,0.4716
+numeral_rate,"numerals /1,000",3.9692,0.2422,,,,-0.0013,0.9993,0.2399,0.2458,,,,0.0033,1.0017,0.2398,0.2292

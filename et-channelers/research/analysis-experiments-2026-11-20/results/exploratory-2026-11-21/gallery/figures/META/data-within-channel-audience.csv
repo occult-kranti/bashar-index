@@ -1,0 +1,55 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# META part (c), rerun after the PT mask-v2 fix: seen recordings aged 30+ days at capture with a view count and a known duration (913 recordings of 64 creators).
+# Views (engagement residual) is the primary outcome; like and comment rates per view are secondary outcomes (reach composition).
+# mean = creator mean of within-creator Spearman correlation (creators with 8+ recordings in the property's subset in which the property varies); 90% t interval.
+# Family-wise p: outcome permuted within creator, permutation maximum over the 15 properties of one outcome (1,999 draws; carries Monte Carlo error); the band is
+# built per outcome, not over the 45 cells.
+# Title and speech properties are pattern (cue) counts without a precision check for titles; description asks are model-coded by a small model and not checked by
+# a person. Snapshot; nothing causal.
+# Creator counts are given in bands of 10 and recordings rounded to tens, so that no two nested counts differing by 1 to 4 are printed.
+outcome,outcome_role,feature,mean_within_creator_spearman,t90_low,t90_high,familywise_p_permutation_max,familywise_band_scope,display_class,creators_band,recordings_rounded_to_10
+Views (adjusted for age and length),primary outcome,title: a year,-0.062,-0.174,0.049,0.98,per outcome (15 properties),crosses zero,20-29,440
+Views (adjusted for age and length),primary outcome,title: a date,-0.098,-0.196,-0.001,0.517,per outcome (15 properties),pointwise only,20-29,450
+Views (adjusted for age and length),primary outcome,title: a named being,0.065,-0.013,0.143,0.779,per outcome (15 properties),crosses zero,40-49,720
+Views (adjusted for age and length),primary outcome,title: a question,-0.027,-0.112,0.057,1.0,per outcome (15 properties),crosses zero,30-39,540
+Views (adjusted for age and length),primary outcome,title: an urgency cue,0.225,0.135,0.315,0.007,per outcome (15 properties),family-wise,10-19,280
+Views (adjusted for age and length),primary outcome,speech: framing phrases (RX A),0.046,-0.027,0.119,0.987,per outcome (15 properties),crosses zero,50-64,740
+Views (adjusted for age and length),primary outcome,speech: address to listeners (RX C),0.11,0.032,0.188,0.051,per outcome (15 properties),pointwise only,50-64,760
+Views (adjusted for age and length),primary outcome,speech: time words (RX D),0.062,-0.005,0.13,0.767,per outcome (15 properties),crosses zero,50-64,780
+Views (adjusted for age and length),primary outcome,speech: asks (RX F),-0.023,-0.097,0.051,1.0,per outcome (15 properties),crosses zero,40-49,740
+Views (adjusted for age and length),primary outcome,speech: names (RX G),0.118,0.045,0.191,0.032,per outcome (15 properties),family-wise,50-64,780
+Views (adjusted for age and length),primary outcome,speech: channelling cues (RX J),0.081,-0.001,0.163,0.639,per outcome (15 properties),crosses zero,30-39,540
+Views (adjusted for age and length),primary outcome,description: pay or enrol (K1),-0.005,-0.092,0.082,1.0,per outcome (15 properties),crosses zero,20-29,480
+Views (adjusted for age and length),primary outcome,description: give money (K2),0.021,-0.21,0.252,1.0,per outcome (15 properties),crosses zero,5-9,140
+Views (adjusted for age and length),primary outcome,description: platform engagement (K3),0.057,-0.025,0.139,0.97,per outcome (15 properties),crosses zero,30-39,550
+Views (adjusted for age and length),primary outcome,description: off-platform (K4),0.059,-0.047,0.166,0.967,per outcome (15 properties),crosses zero,30-39,510
+Likes per view (adjusted),secondary: reach composition,title: a year,0.033,-0.068,0.133,1.0,per outcome (15 properties),crosses zero,20-29,360
+Likes per view (adjusted),secondary: reach composition,title: a date,-0.092,-0.192,0.008,0.673,per outcome (15 properties),crosses zero,20-29,410
+Likes per view (adjusted),secondary: reach composition,title: a named being,-0.06,-0.129,0.009,0.907,per outcome (15 properties),crosses zero,40-49,660
+Likes per view (adjusted),secondary: reach composition,title: a question,0.067,-0.024,0.159,0.924,per outcome (15 properties),crosses zero,30-39,470
+Likes per view (adjusted),secondary: reach composition,title: an urgency cue,-0.044,-0.164,0.076,1.0,per outcome (15 properties),crosses zero,10-19,230
+Likes per view (adjusted),secondary: reach composition,speech: framing phrases (RX A),-0.005,-0.086,0.075,1.0,per outcome (15 properties),crosses zero,40-49,680
+Likes per view (adjusted),secondary: reach composition,speech: address to listeners (RX C),0.051,-0.033,0.135,0.964,per outcome (15 properties),crosses zero,40-49,680
+Likes per view (adjusted),secondary: reach composition,speech: time words (RX D),0.007,-0.079,0.092,1.0,per outcome (15 properties),crosses zero,40-49,700
+Likes per view (adjusted),secondary: reach composition,speech: asks (RX F),-0.028,-0.107,0.052,1.0,per outcome (15 properties),crosses zero,40-49,660
+Likes per view (adjusted),secondary: reach composition,speech: names (RX G),-0.025,-0.087,0.038,1.0,per outcome (15 properties),crosses zero,40-49,700
+Likes per view (adjusted),secondary: reach composition,speech: channelling cues (RX J),-0.083,-0.172,0.005,0.681,per outcome (15 properties),crosses zero,30-39,500
+Likes per view (adjusted),secondary: reach composition,description: pay or enrol (K1),-0.107,-0.217,0.002,0.388,per outcome (15 properties),crosses zero,20-29,410
+Likes per view (adjusted),secondary: reach composition,description: give money (K2),0.108,-0.105,0.32,0.991,per outcome (15 properties),crosses zero,5-9,120
+Likes per view (adjusted),secondary: reach composition,description: platform engagement (K3),-0.044,-0.147,0.06,0.999,per outcome (15 properties),crosses zero,30-39,490
+Likes per view (adjusted),secondary: reach composition,description: off-platform (K4),-0.08,-0.187,0.026,0.801,per outcome (15 properties),crosses zero,20-29,430
+Comments per view (adjusted),secondary: reach composition,title: a year,0.013,-0.097,0.124,1.0,per outcome (15 properties),crosses zero,20-29,360
+Comments per view (adjusted),secondary: reach composition,title: a date,-0.027,-0.153,0.099,1.0,per outcome (15 properties),crosses zero,20-29,320
+Comments per view (adjusted),secondary: reach composition,title: a named being,-0.046,-0.12,0.027,0.994,per outcome (15 properties),crosses zero,40-49,610
+Comments per view (adjusted),secondary: reach composition,title: a question,0.051,-0.035,0.136,0.997,per outcome (15 properties),crosses zero,30-39,440
+Comments per view (adjusted),secondary: reach composition,title: an urgency cue,-0.03,-0.149,0.088,1.0,per outcome (15 properties),crosses zero,10-19,230
+Comments per view (adjusted),secondary: reach composition,speech: framing phrases (RX A),-0.026,-0.113,0.061,1.0,per outcome (15 properties),crosses zero,40-49,630
+Comments per view (adjusted),secondary: reach composition,speech: address to listeners (RX C),0.073,-0.005,0.152,0.688,per outcome (15 properties),crosses zero,40-49,650
+Comments per view (adjusted),secondary: reach composition,speech: time words (RX D),0.02,-0.052,0.091,1.0,per outcome (15 properties),crosses zero,40-49,660
+Comments per view (adjusted),secondary: reach composition,speech: asks (RX F),-0.049,-0.141,0.042,0.988,per outcome (15 properties),crosses zero,40-49,620
+Comments per view (adjusted),secondary: reach composition,speech: names (RX G),-0.015,-0.086,0.056,1.0,per outcome (15 properties),crosses zero,40-49,660
+Comments per view (adjusted),secondary: reach composition,speech: channelling cues (RX J),-0.007,-0.112,0.097,1.0,per outcome (15 properties),crosses zero,30-39,430
+Comments per view (adjusted),secondary: reach composition,description: pay or enrol (K1),-0.206,-0.319,-0.093,0.001,per outcome (15 properties),family-wise,20-29,370
+Comments per view (adjusted),secondary: reach composition,description: give money (K2),0.072,-0.24,0.384,1.0,per outcome (15 properties),crosses zero,5-9,110
+Comments per view (adjusted),secondary: reach composition,description: platform engagement (K3),-0.054,-0.16,0.052,0.997,per outcome (15 properties),crosses zero,20-29,420
+Comments per view (adjusted),secondary: reach composition,description: off-platform (K4),-0.099,-0.208,0.01,0.625,per outcome (15 properties),crosses zero,20-29,400

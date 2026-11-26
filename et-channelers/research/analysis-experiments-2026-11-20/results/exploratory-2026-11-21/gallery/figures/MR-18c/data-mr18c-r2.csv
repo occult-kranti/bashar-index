@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file MR/public/mr-18c-timing-leak.csv (sha256 61eda24add65950a).
+# Interval level: 90% creator-cluster bootstrap percentile intervals (2,000 draws), as printed by the package.
+# Within recordings (every variable centred on its recording mean). Unit rate: syllables per minute of the unit's own time from the recognizer's words and word times, a recognizer-output measure, not a direct measure of speaking. Voice labels model-coded (small model of record; middle model on the seen recordings it labelled in full), not checked by a person.
+# Rows: the package's three unit sets; values exactly as printed in the source file.
+unit_set,base,regressed_variable,r_squared,ci90_low,ci90_high
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,log unit rate,0.0627,0.052,0.0752
+"Small model, H1's spans (primary)",the seen creators eligible for H1 (small model); 240 recordings,claimed-voice label,0.0022,0.0008,0.0075
+"Small model, every claimed or own unit",59 creators; 443 recordings,log unit rate,0.0655,0.0574,0.0757
+"Small model, every claimed or own unit",59 creators; 443 recordings,claimed-voice label,0.0037,0.0013,0.0085
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,log unit rate,0.0771,0.0604,0.0987
+"Middle model, H1's spans",the seen creators eligible for H1 (middle model); 30 recordings,claimed-voice label,0.001,0.0007,0.0087

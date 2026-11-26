@@ -1,0 +1,10 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r3-class-disagreement. Source public file: rv-r3-class-disagreement.csv (package rv-R3).
+# Interval level: 90% pair bootstrap (2,000 draws)
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+class,pairs_with_tokens,ratio_to_all_words,ratio_boot90_low,ratio_boot90_high
+numeral,35,1.4852,1.09,2.1
+first_singular,35,1.5271,1.03,2.02
+year,14,1.835,0.6,4.27
+capitalised,35,6.5712,4.97,8.41
+filler,21,15.0342,9.76,24.44

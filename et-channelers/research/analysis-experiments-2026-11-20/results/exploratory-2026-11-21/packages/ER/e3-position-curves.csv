@@ -1,0 +1,47 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# E3 and E3-H (plan section 6.10 and section 8; hypotheses.md 14.3): is articulation rate higher at the edges of a recording, and does second-person address rise from the first to the last tenth? Registered-exploratory siblings of H3, on H3's recordings and bins: English, English-only model, not publisher-feed audio, 180 s trimmed at each end, at least 600 s and 800 words left, ten bins of 50 words or more; edge tenths 1 and 10, middle tenths 3 to 8; tokens after the artefact filter v1 (H3's registered filter).
+# Position curves (added after the exploratory reporting plan): creator-balanced means per tenth of the trimmed running time, with pointwise 90% intervals (two-stage resampling, 9,999 draws); no family-wise control. Articulation rate is relative to each recording's rate over its trimmed running time (1 = the recording's own rate).
+# Limit: the tempo arm rests on the recognizer's word times and pauses, which the recognizer bridge (rv-R3; GRID's re-analysis) found model-dependent (pause measures and word length in seconds differ between the two models; words per minute of speech and second-person rates agree). The ratio compares a recording with itself under one model, so a constant model offset cancels, but not a position-dependent timing error (edges hold teasers, music and other speakers). It describes the recognizer's timing, not a measured speaking rate. The grid shift (BR-GS) moved the word-based articulation rate (the same pause rule) by -0.02 between-creator SD (95% -0.09 to +0.05) on 40 seen recordings.
+# Recognizer output, not checked by a person. Code added after the exploratory reporting plan (second wave, 2026-11-22; D4); the hold-out part departs from the plan's 'code frozen in the freeze-2 record' and was run once, after the seen run, as a logged contact. The hold-out is the tail of an English-first run and is not exchangeable with the seen creators: read it beside the balance table rv-D2 and rv-D2-H.
+# Written 2026-11-22T02:32:37Z.
+tenth,group,measure,value,ci90_low,ci90_high
+1,seen,articulation rate relative to the recording's trimmed mean,0.9990,0.9884,1.0101
+1,seen,"second-person forms per 1,000 words",43.02,37.69,48.84
+2,seen,articulation rate relative to the recording's trimmed mean,0.9964,0.9865,1.0062
+2,seen,"second-person forms per 1,000 words",44.81,39.34,50.59
+3,seen,articulation rate relative to the recording's trimmed mean,1.0062,0.9968,1.0166
+3,seen,"second-person forms per 1,000 words",46.11,40.65,51.86
+4,seen,articulation rate relative to the recording's trimmed mean,1.0021,0.9912,1.0134
+4,seen,"second-person forms per 1,000 words",46.26,40.68,52.09
+5,seen,articulation rate relative to the recording's trimmed mean,1.0003,0.9906,1.0103
+5,seen,"second-person forms per 1,000 words",46.32,40.96,51.84
+6,seen,articulation rate relative to the recording's trimmed mean,1.0021,0.9927,1.0113
+6,seen,"second-person forms per 1,000 words",48.69,43.44,54.18
+7,seen,articulation rate relative to the recording's trimmed mean,0.9983,0.9878,1.0084
+7,seen,"second-person forms per 1,000 words",48.46,43.09,53.92
+8,seen,articulation rate relative to the recording's trimmed mean,0.9981,0.9883,1.0076
+8,seen,"second-person forms per 1,000 words",49.72,44.36,55.28
+9,seen,articulation rate relative to the recording's trimmed mean,0.9999,0.9893,1.0102
+9,seen,"second-person forms per 1,000 words",51.84,46.08,57.78
+10,seen,articulation rate relative to the recording's trimmed mean,1.0038,0.9904,1.0165
+10,seen,"second-person forms per 1,000 words",53.04,48.06,58.14
+1,hold-out,articulation rate relative to the recording's trimmed mean,1.0189,0.9817,1.0671
+1,hold-out,"second-person forms per 1,000 words",39.53,30.73,49.41
+2,hold-out,articulation rate relative to the recording's trimmed mean,1.0259,0.9934,1.0661
+2,hold-out,"second-person forms per 1,000 words",39.26,30.81,48.34
+3,hold-out,articulation rate relative to the recording's trimmed mean,1.0026,0.9846,1.0247
+3,hold-out,"second-person forms per 1,000 words",38.12,30.39,46.10
+4,hold-out,articulation rate relative to the recording's trimmed mean,0.9876,0.9636,1.0103
+4,hold-out,"second-person forms per 1,000 words",39.43,32.45,46.29
+5,hold-out,articulation rate relative to the recording's trimmed mean,0.9827,0.9553,1.0073
+5,hold-out,"second-person forms per 1,000 words",42.42,34.96,50.06
+6,hold-out,articulation rate relative to the recording's trimmed mean,0.9934,0.9653,1.0187
+6,hold-out,"second-person forms per 1,000 words",43.07,36.04,50.03
+7,hold-out,articulation rate relative to the recording's trimmed mean,0.9937,0.9677,1.0147
+7,hold-out,"second-person forms per 1,000 words",43.31,35.53,51.26
+8,hold-out,articulation rate relative to the recording's trimmed mean,0.9844,0.9588,1.0070
+8,hold-out,"second-person forms per 1,000 words",47.64,40.06,55.44
+9,hold-out,articulation rate relative to the recording's trimmed mean,0.9926,0.9712,1.0116
+9,hold-out,"second-person forms per 1,000 words",49.42,41.50,57.20
+10,hold-out,articulation rate relative to the recording's trimmed mean,1.0177,0.9906,1.0455
+10,hold-out,"second-person forms per 1,000 words",47.45,39.74,55.50

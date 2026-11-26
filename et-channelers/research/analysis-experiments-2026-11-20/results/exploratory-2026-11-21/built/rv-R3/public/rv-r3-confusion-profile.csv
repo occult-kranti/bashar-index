@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R3 (place S): edit profile turning the larger model's transcript into the English-only transcript, by word class, 35 seen pairs (counts and shares only). Totals: 2,545 substitutions, 2,816 deletions and 2,975 insertions over 131,113 reference words. rv-R6 uses it as the 'bridge profile' of injected errors.
+# Interval level: none (pooled shares).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+class,words_in_larger_model,deleted_share,substituted_share,insertions_per_1000_reference_words
+first_singular,4295.0,0.02747,0.01769,1.05253
+first_plural,1865.0,0.01555,0.01662,0.22118
+second_person,5537.0,0.01969,0.01246,0.6788
+contraction,878.0,0.0205,0.0205,0.16017
+filler,589.0,0.82003,0.04075,0.35084
+numeral,1112.0,0.01709,0.04586,0.12966
+function,58641.0,0.0161,0.01163,8.59564
+content,58196.0,0.01883,0.02739,11.50153

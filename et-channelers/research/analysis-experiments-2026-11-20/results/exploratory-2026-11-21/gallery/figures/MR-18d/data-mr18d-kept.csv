@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file MR/public/mr-18d-post-hoc-diagnostic.csv (sha256 7bdb37400f2d5dbe).
+# Interval level: none (no intervals are printed for these shares in the source file). Post hoc diagnostic, chosen after MR-18d's result (plan P4): chosen after MR-18d's first permutation table (2026-11-22 02:29:40 UTC) and first written at 02:42:31 UTC; the single-claimed-run shares quoted were added after the correctness review (code last changed at 04:10:57 UTC); run of record 04:17:04 to 04:18:44 UTC.
+# The creators column is copied from the package file as printed.
+# Voice labels (and, for H6, ask labels) model-coded, not checked by a person. Seen creators only; English-only recognizer model.
+hypothesis,share_observed_claimed_units_staying_claimed,share_observed_own_and_other_units_turning_claimed,claimed_share_of_units,creators,recordings
+H1,0.543,0.3976,0.4949,the seen creators eligible for H1 (small model),240
+H4,0.5818,0.3676,0.5211,34,185
+H6,0.5571,0.4048,0.5139,the seen creators eligible for H6 (small model),278

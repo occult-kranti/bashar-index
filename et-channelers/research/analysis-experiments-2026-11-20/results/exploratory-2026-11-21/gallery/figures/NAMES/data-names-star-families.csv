@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10.
+family,mentions,creators_with_any_form,found_by_exact_spelling,exact_ci95_low,exact_ci95_high,found_by_round1_stems,left_by_capital_letter_mask
+star-people family 1,903,50,0.6855,0.5522,0.7783,0.691,not shown (panel shows the six together only)
+star-people family 2,586,37,0.6468,0.4683,0.7996,0.6502,not shown (panel shows the six together only)
+star-people family 3,371,36,0.372,0.2759,0.4833,0.372,not shown (panel shows the six together only)
+star-people family 4,230,25,0.3957,0.1953,0.516,0.3957,not shown (panel shows the six together only)
+star-people family 5,170,21,0.6824,0.5369,0.8055,0.7941,not shown (panel shows the six together only)
+star-people family 6,159,17,0.2075,0.0885,0.2857,0.1887,not shown (fewer than 5 creators)
+all six together,2419,,0.5688,,,0.5783,0.2208

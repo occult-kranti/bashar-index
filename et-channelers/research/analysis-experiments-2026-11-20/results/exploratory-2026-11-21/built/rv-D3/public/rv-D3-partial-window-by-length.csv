@@ -1,0 +1,10 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: seen creators' transcripts with a last partial 30-s decoding window
+# Interval level: 95% creator bootstrap
+# If the dip followed the end of the recording only, the window before would drop when the partial window is short.
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:11Z.
+partial_window_seconds,creators,transcripts,last_partial_coverage,last_lo95,last_hi95,window_before_coverage,before_lo95,before_hi95
+1 to 10,all but fewer than 5 of 71,380,0.316,0.251,0.384,0.720,0.664,0.769
+10 to 20,71,424,0.504,0.437,0.572,0.789,0.733,0.840
+20 to 30,71,404,0.588,0.522,0.655,0.831,0.784,0.874

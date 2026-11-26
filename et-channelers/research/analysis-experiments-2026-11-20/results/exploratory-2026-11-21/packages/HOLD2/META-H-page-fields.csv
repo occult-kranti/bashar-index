@@ -1,0 +1,39 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:31:12Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# META-H / META-169. Groups: seen (71 creators), hold-out (23 creators, all languages), other (the creators in neither group); never pooled. Snapshot captured 2026-11-16 to 2026-11-20 UTC; the cloud-only objects were captured with the same run and read from the archive drive once, read-only, after freeze 2 (registry 2026-11-21 03:08), each checked against the inventory's SHA-256.
+# Creator counts that would sit 1 to 4 from a nested public count are printed as a band; cells of fewer than 5 creators are withheld.
+# creator_balanced_share: mean over creators of the share of their recordings with metadata that carry the field; 90% t interval, clipped to [0, 1] where the t bound falls outside.
+# Release fix of 2026-11-22 (2026-11-22T06:14:18Z) by the plotting group X-HOLD's apply_release_fixes.py (sha256 a5c389b3f05b1084; dominance.py d96371e790ec2245), after the verifier's report, for privacy only (it hides values and chooses none): shares strictly between 0 and 1 whose misses cannot be shown from public numbers to come from 5 or more creators (the seen and hold-out non-empty description, near 100%; the other group's shares, a group of at most 7) read 'not published (misses may come from fewer than 5 creators; lead's decision D21)', with their recording counts; the seen +cloud row's count of recordings with a description, equal to the local count, is not printed either.
+# Release fix 2b of 2026-11-22 (2026-11-22T06:23:09Z) by the plotting group X-HOLD's apply_release_fixes_2b.py (sha256 6e063a7d2cb7ce45), for privacy only: the seen +cloud non-empty description share is not published, because with the +cloud view-count share it would give back the withheld local share (pairs rule).
+group,source,selected_recordings,recordings_with_metadata,creators_with_metadata,field,status,recordings_with_field,creator_balanced_share,t90_low,t90_high
+seen,local files,1411,1228,all but fewer than 5 of 71,view count present,shown,1228,1.0,1.0,1.0
+seen,local files,1411,1228,all but fewer than 5 of 71,non-empty description,not published (misses may come from fewer than 5 creators; lead's decision D21),,,,
+seen,local files,1411,1228,all but fewer than 5 of 71,a web link in the description,shown,1038,0.8488,0.7926,0.905
+seen,local files,1411,1228,all but fewer than 5 of 71,chapters,shown,589,0.4812,0.4188,0.5436
+seen,local files,1411,1228,all but fewer than 5 of 71,tags,shown,769,0.6317,0.5449,0.7185
+seen,local files,1411,1228,all but fewer than 5 of 71,a time-stamp list in the description,shown,198,0.1657,0.1052,0.2261
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",1411,1382,71,view count present,shown,1228,0.8907,0.8497,0.9317
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",1411,1382,71,non-empty description,"not published (with the view-count share of the same rows it would give back the local non-empty description share, whose misses may come from fewer than 5 creators; lead's decision D21, pairs rule)",,,,
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",1411,1382,71,a web link in the description,shown,1038,0.7513,0.6901,0.8125
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",1411,1382,71,chapters,shown,589,0.4291,0.3703,0.488
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",1411,1382,71,tags,shown,769,0.5509,0.4691,0.6327
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",1411,1382,71,a time-stamp list in the description,shown,198,0.1441,0.0904,0.1979
+holdout,local files,454,415,23,view count present,shown,415,1.0,1.0,1.0
+holdout,local files,454,415,23,non-empty description,not published (misses may come from fewer than 5 creators; lead's decision D21),,,,
+holdout,local files,454,415,23,a web link in the description,shown,329,0.787,0.6646,0.9094
+holdout,local files,454,415,23,chapters,shown,158,0.3828,0.2537,0.512
+holdout,local files,454,415,23,tags,shown,246,0.5966,0.4321,0.761
+holdout,local files,454,415,23,a time-stamp list in the description,shown,49,0.1101,0.01,0.2101
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",454,430,23,view count present,withheld: the added cloud objects that carry the field rest on fewer than 5 creators,,,,
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",454,430,23,non-empty description,withheld: the added cloud objects that carry the field rest on fewer than 5 creators,,,,
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",454,430,23,a web link in the description,withheld: the added cloud objects that carry the field rest on fewer than 5 creators,,,,
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",454,430,23,chapters,shown,158,0.3697,0.244,0.4954
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",454,430,23,tags,withheld: the added cloud objects that carry the field rest on fewer than 5 creators,,,,
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",454,430,23,a time-stamp list in the description,shown,49,0.1078,0.0084,0.2072
+other,local files,111,55,5 or more,view count present,shown,55,1.0,1.0,1.0
+other,local files,111,55,5 or more,non-empty description,shown,55,1.0,1.0,1.0
+other,local files,111,55,5 or more,a web link in the description,not published (misses may come from fewer than 5 creators; lead's decision D21),,,,
+other,local files,111,55,5 or more,chapters,not published (misses may come from fewer than 5 creators; lead's decision D21),,,,
+other,local files,111,55,5 or more,tags,not published (misses may come from fewer than 5 creators; lead's decision D21),,,,
+other,local files,111,55,5 or more,a time-stamp list in the description,withheld: fewer than 5 creators carry the field,,,,

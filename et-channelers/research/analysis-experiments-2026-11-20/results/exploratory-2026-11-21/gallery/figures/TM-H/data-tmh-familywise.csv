@@ -1,0 +1,21 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# TM-H: hold-out-minus-seen differences of creator-equal topic shares; source HOLD2/TM-H-topic-differences.csv (package HOLD2, public).
+# Interval level: the plotted statistic is read against the permutation-maximum band (95th percentile of the maximum |Welch t| over 16 topics, 999 permutations of group labels over the 89 creators); the difference columns carry pointwise 90% intervals (not plotted).
+# Band added after the shares were known (post hoc companion); a reading aid, not a test of a hypothesis.
+topic,kind,difference_holdout_minus_seen,ci90_low,ci90_high,welch_t,familywise_abs_t_threshold,beyond_familywise_band
+"1  soul, higher self",subject,-0.0011,-0.018,0.0147,-0.1041,3.3121,False
+"2  personal story, past",segment,0.0081,-0.0172,0.0338,0.5087,3.3121,False
+"3  energy shifts, change",subject,-0.023,-0.0422,-0.0037,-1.8538,3.3121,False
+"4  guided breathing, body",segment,-0.0031,-0.0238,0.0158,-0.2594,3.3121,False
+"5  planet, humanity, star beings",subject,0.0462,0.0167,0.0758,2.5469,3.3121,False
+"6  religion, Christian faith",subject,-0.0018,-0.0173,0.013,-0.1869,3.3121,False
+"7  channel logistics, links",segment,-0.0195,-0.0359,-0.0033,-1.9596,3.3121,False
+"8  style register, topic 8",style,-0.0095,-0.03,0.0083,-0.8295,3.3121,False
+"9  style register, topic 9",style,0.006,-0.0111,0.0248,0.5457,3.3121,False
+"10  fear, truth, choice",subject,0.0045,-0.0157,0.0281,0.3258,3.3121,False
+"11  divine love, compassion",subject,0.0013,-0.0186,0.0231,0.0978,3.3121,False
+"12  session reports, sightings",segment,0.0099,-0.0049,0.0224,1.1736,3.3121,False
+"13  style register, topic 13",style,-0.0009205,-0.0183,0.0164,-0.0843,3.3121,False
+14  topic 14 (neutral label),subject,-0.0006582,-0.024,0.0212,-0.0472,3.3121,False
+15  questions to guides,segment,-0.0118,-0.0217,-0.0018,-1.8805,3.3121,False
+"16  style register, topic 16",style,-0.0046,-0.0231,0.0104,-0.4502,3.3121,False

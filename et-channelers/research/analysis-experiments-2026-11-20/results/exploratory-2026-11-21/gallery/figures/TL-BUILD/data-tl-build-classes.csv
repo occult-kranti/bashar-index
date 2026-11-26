@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-build-classes.csv (TL package, public folder).
+# Interval level: none (shares of window units).
+group,class,share_of_window_units
+How the window is worded,Absolute (a year or an event day),0.347
+How the window is worded,Relative to the upload day,0.653
+Where the window comes from,The statement or its context,0.741
+Where the window comes from,The period of the talk alone,0.259
+How wide the window is,92 days or less,0.471
+How wide the window is,One calendar year,0.135
+How wide the window is,Wider than 3 years,0.118

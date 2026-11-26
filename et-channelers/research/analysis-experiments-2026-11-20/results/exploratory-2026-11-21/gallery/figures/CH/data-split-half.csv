@@ -1,0 +1,11 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# CH part (c): halves = a creator's recordings alternated in listing order; own = cosine between the creator's two half-profiles; different = mean cosine over the 4 cross-half pairs of two creators.
+# Profiles are deviations from the cohort average (topic log-ratios centred on the cohort mean; RX and word measures z-scored with cohort mean and SD), so 0 = unrelated deviations and the between-channel cosine is centred near 0 by construction.
+# Seen creators with 5+ recordings and both halves. Quantiles: 10th, 50th, 90th percentile.
+view,comparison,q10,q50,q90
+topic profile (16 topics),own two halves (over creators),0.617,0.851,0.947
+topic profile (16 topics),halves of two different channels (over creator pairs),-0.381,0.003,0.363
+RX cue profile (10 families),own two halves (over creators),0.369,0.815,0.942
+RX cue profile (10 families),halves of two different channels (over creator pairs),-0.392,-0.004,0.394
+word measures (9),own two halves (over creators),0.588,0.893,0.985
+word measures (9),halves of two different channels (over creator pairs),-0.473,-0.017,0.479

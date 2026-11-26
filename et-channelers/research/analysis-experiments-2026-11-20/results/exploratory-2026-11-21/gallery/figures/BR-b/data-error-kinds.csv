@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-b error kinds of the anchor rows (raw, wa-norm-v2 chosen after the result); agreement of two machines, not an error rate.
+# Source public file: BR-b/public/br-b-error-kinds.csv (whole rows). Base: seen creators; counts per row.
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap resamples (word-pooled). Values in %.
+# Drawn by plot_br.py (group B-BR), SHA-256 47a09ba3f3dbd224e2d4a4063353b70f9d72809bf090aa058eee039e5f151433.
+row,recordings,creators,kind,word_pooled_pct,lo95_pct,hi95_pct
+Platform automatic captions,11,11,substitutions,1.62,1.08,2.18
+Platform automatic captions,11,11,deletions,1.49,0.74,2.24
+Platform automatic captions,11,11,insertions,1.79,0.58,3.41
+"Earlier text, same recognizer (reproducibility)",48,34,substitutions,0.1,0.01,0.24
+"Earlier text, same recognizer (reproducibility)",48,34,deletions,0.06,0.01,0.14
+"Earlier text, same recognizer (reproducibility)",48,34,insertions,0.08,0.01,0.2
+"Earlier text, larger model",5,5,substitutions,1.45,0.69,3.94
+"Earlier text, larger model",5,5,deletions,1.36,1.22,1.67
+"Earlier text, larger model",5,5,insertions,1.38,1.04,2.22

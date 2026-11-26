@@ -1,0 +1,201 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:31:32Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# NAMES (hold-out forms): the NAMES store of record (v2; forms, types and families model-coded on seen creators, not checked by a person) applied by code to English transcripts (artefact filter v2, RX normalisation); seen 71 creators beside the 18 English hold-out creators, never pooled. No model read any hold-out form.
+# exact_share: mentions in the family's exact canonical spelling (with plural endings) over all mentions of the family's listed forms. A family is shown when 5 or more creators of the group mention it; others are pooled, as is any family whose name shares a word of 6 or more letters with a creator's folder name (NAMES' privacy pooling).
+# seen: store v2 by code against NAMES' table (store v1, model-adjudicated build): 156 families compared, median relative difference in mentions 0.0000, largest 0.000
+group,family,split,mentions_exact,mentions_with_variants,exact_share,creators_with_mentions,creators_exact_spelling,recordings_with_mentions,recordings_exact_spelling
+seen,jesus,shown,2554,2593,0.985,48,48,206,204
+seen,pleiadian,shown,619,903,0.6855,50,40,223,155
+seen,arcturian,shown,379,586,0.6468,37,31,118,92
+seen,atlantis,shown,476,489,0.9734,29,5 or more,110,107
+seen,mary,shown,484,484,1.0,29,29,77,77
+seen,sirian,shown,138,371,0.372,36,20,99,44
+seen,gaia,shown,346,366,0.9454,31,5 or more,147,141
+seen,lemuria,shown,200,289,0.692,31,23,86,59
+seen,mary magdalene,exact/variant split withheld: one side rests on fewer than 5 creators,,253,,20,,58,
+seen,united states,shown,14,246,0.0569,39,5,117,9
+seen,lyran,shown,91,230,0.3957,25,16,82,34
+seen,galactic federation,exact/variant split withheld: one side rests on fewer than 5 creators,,225,,18,,60,
+seen,reptilian,shown,211,223,0.9462,21,21,63,60
+seen,metatron,exact/variant split withheld: one side rests on fewer than 5 creators,,205,,14,,51,
+seen,egypt,shown,201,201,1.0,35,35,94,94
+seen,orion,exact/variant split withheld: one side rests on fewer than 5 creators,,179,,30,,61,
+seen,andromedan,shown,116,170,0.6824,21,5 or more,70,54
+seen,california,shown,162,162,1.0,36,36,93,93
+seen,india,shown,162,162,1.0,25,25,48,48
+seen,anunnaki,shown,33,159,0.2075,17,8,45,16
+seen,sasquatch,shown,147,147,1.0,5,5,11,11
+seen,archangel michael,shown,115,115,1.0,27,27,70,70
+seen,venus,shown,114,114,1.0,20,20,30,30
+seen,europe,shown,110,110,1.0,33,33,62,62
+seen,sedona,shown,99,99,1.0,20,20,43,43
+seen,saturn,shown,89,89,1.0,17,17,29,29
+seen,australia,shown,87,87,1.0,29,29,54,54
+seen,glastonbury,exact/variant split withheld: one side rests on fewer than 5 creators,,84,,6,,27,
+seen,mexico,shown,82,82,1.0,19,19,41,41
+seen,sophia,exact/variant split withheld: one side rests on fewer than 5 creators,,81,,12,,28,
+seen,draconian,exact/variant split withheld: one side rests on fewer than 5 creators,,81,,13,,28,
+seen,america,shown,79,79,1.0,28,28,54,54
+seen,africa,shown,76,76,1.0,27,27,43,43
+seen,mount shasta,exact/variant split withheld: one side rests on fewer than 5 creators,,75,,14,,35,
+seen,florida,shown,74,74,1.0,27,27,43,43
+seen,united kingdom,shown,0,74,0.0,19,0,46,0
+seen,archangel raphael,shown,72,72,1.0,9,9,35,35
+seen,enki,exact/variant split withheld: one side rests on fewer than 5 creators,,69,,5,,13,
+seen,milky way,shown,68,68,1.0,12,12,20,20
+seen,ohio,shown,66,66,1.0,8,8,15,15
+seen,mars,shown,62,62,1.0,12,12,22,22
+seen,thoth,exact/variant split withheld: one side rests on fewer than 5 creators,,62,,9,,17,
+seen,kuan yin,shown,23,60,0.3833,8,5 or more,10,7
+seen,antarctica,shown,59,59,1.0,12,12,16,16
+seen,iran,shown,56,56,1.0,15,15,26,26
+seen,saint germain,exact/variant split withheld: one side rests on fewer than 5 creators,,54,,10,,15,
+seen,jupiter,shown,53,53,1.0,13,13,21,21
+seen,ixchel,shown,0,53,0.0,12,0,32,0
+seen,canada,shown,52,52,1.0,19,19,32,32
+seen,arizona,shown,52,52,1.0,13,13,29,29
+seen,france,shown,51,51,1.0,19,19,31,31
+seen,himalayas,shown,51,51,1.0,8,8,14,14
+seen,hawaii,shown,50,50,1.0,15,15,20,20
+seen,elohim,exact/variant split withheld: one side rests on fewer than 5 creators,,50,,13,,26,
+seen,horus,exact/variant split withheld: one side rests on fewer than 5 creators,,46,,7,,19,
+seen,3i/atlas,shown,0,46,0.0,14,0,18,0
+seen,lion's gate portal,shown,0,45,0.0,14,0,22,0
+seen,greece,shown,44,44,1.0,14,14,26,26
+seen,texas,shown,44,44,1.0,15,15,24,24
+seen,new york city,shown,43,43,1.0,17,17,32,32
+seen,ra,shown,43,43,1.0,7,7,17,17
+seen,china,shown,42,42,1.0,18,18,29,29
+seen,england,shown,42,42,1.0,17,17,29,29
+seen,scotland,shown,40,40,1.0,7,7,17,17
+seen,japan,shown,39,39,1.0,21,21,27,27
+seen,neptune,shown,39,39,1.0,11,11,16,16
+seen,archangel gabriel,exact/variant split withheld: one side rests on fewer than 5 creators,,39,,12,,27,
+seen,giza,shown,39,39,1.0,8,8,18,18
+seen,uranus,shown,38,38,1.0,6,6,8,8
+seen,bashar,exact/variant split withheld: one side rests on fewer than 5 creators,,38,,13,,20,
+seen,iceland,shown,38,38,1.0,6,6,11,11
+seen,russia,shown,38,38,1.0,13,13,23,23
+seen,chicago,shown,37,37,1.0,8,8,13,13
+seen,hathor,shown,36,36,1.0,8,8,8,8
+seen,poseidon,shown,35,35,1.0,7,7,13,13
+seen,pluto,shown,35,35,1.0,8,8,14,14
+seen,new zealand,shown,32,32,1.0,16,16,25,25
+seen,lucifer,shown,32,32,1.0,6,6,11,11
+seen,ireland,shown,30,30,1.0,15,15,18,18
+seen,peru,shown,29,29,1.0,14,14,17,17
+seen,italy,shown,29,29,1.0,12,12,18,18
+seen,krishna,shown,29,29,1.0,7,7,13,13
+seen,germany,shown,28,28,1.0,20,20,25,25
+seen,oregon,shown,28,28,1.0,9,9,13,13
+seen,mercury,shown,28,28,1.0,9,9,14,14
+seen,satan,shown,27,27,1.0,5,5,9,9
+seen,venusian,shown,27,27,1.0,9,9,12,12
+seen,costa rica,shown,27,27,1.0,9,9,10,10
+seen,spain,shown,26,26,1.0,10,10,11,11
+seen,enlil,exact/variant split withheld: one side rests on fewer than 5 creators,,26,,5,,9,
+seen,avebury,exact/variant split withheld: one side rests on fewer than 5 creators,,25,,5,,8,
+seen,tara,shown,25,25,1.0,8,8,16,16
+seen,merlin,shown,24,24,1.0,7,7,17,17
+seen,nepal,shown,24,24,1.0,13,13,18,18
+seen,sassani,exact/variant split withheld: one side rests on fewer than 5 creators,,22,,8,,14,
+seen,las vegas,shown,22,22,1.0,5,5,11,11
+seen,abraham,exact/variant split withheld: one side rests on fewer than 5 creators,,21,,8,,11,
+seen,atlantic,shown,21,21,1.0,10,10,14,14
+seen,telos,shown,20,20,1.0,8,8,9,9
+seen,boston,shown,20,20,1.0,7,7,10,10
+seen,los alamos,shown,19,19,1.0,10,10,12,12
+seen,galactics,shown,19,19,1.0,15,15,16,16
+seen,denver,shown,19,19,1.0,6,6,9,9
+seen,sweden,shown,18,18,1.0,7,7,9,9
+seen,los angeles,shown,18,18,1.0,10,10,12,12
+seen,archangel uriel,exact/variant split withheld: one side rests on fewer than 5 creators,,18,,5,,12,
+seen,tibet,shown,18,18,1.0,8,8,13,13
+seen,nile,shown,18,18,1.0,5,5,7,7
+seen,pachamama,exact/variant split withheld: one side rests on fewer than 5 creators,,17,,5,,7,
+seen,seattle,shown,16,16,1.0,6,6,6,6
+seen,seraphim,shown,16,16,1.0,6,6,8,8
+seen,antarean,exact/variant split withheld: one side rests on fewer than 5 creators,,16,,6,,7,
+seen,brazil,shown,16,16,1.0,11,11,11,11
+seen,london,shown,15,15,1.0,7,7,11,11
+seen,british columbia,shown,15,15,1.0,7,7,12,12
+seen,nephilim,shown,14,14,1.0,7,7,11,11
+seen,phoenix,shown,14,14,1.0,6,6,11,11
+seen,portugal,shown,14,14,1.0,9,9,10,10
+seen,afghanistan,shown,14,14,1.0,6,6,7,7
+seen,rome,shown,13,13,1.0,6,6,11,11
+seen,washington,shown,13,13,1.0,11,11,12,12
+seen,stonehenge,shown,13,13,1.0,5,5,9,9
+seen,vietnam,shown,13,13,1.0,7,7,10,10
+seen,grace,shown,13,13,1.0,8,8,8,8
+seen,aphrodite,shown,12,12,1.0,6,6,6,6
+seen,paris,shown,12,12,1.0,6,6,9,9
+seen,morocco,shown,12,12,1.0,5,5,6,6
+seen,mother earth,shown,12,12,1.0,5,5,6,6
+seen,austin,shown,11,11,1.0,9,9,10,10
+seen,san francisco,shown,11,11,1.0,5,5,9,9
+seen,hollywood,shown,11,11,1.0,8,8,9,9
+seen,ukraine,shown,11,11,1.0,6,6,10,10
+seen,al an,shown,0,11,0.0,5,0,7,0
+seen,toronto,shown,11,11,1.0,7,7,11,11
+seen,san diego,shown,10,10,1.0,8,8,9,9
+seen,miami,shown,10,10,1.0,6,6,8,8
+seen,arctic,shown,10,10,1.0,7,7,8,8
+seen,persephone,shown,10,10,1.0,5,5,7,7
+seen,columbia,shown,9,9,1.0,5,5,7,7
+seen,colorado,shown,9,9,1.0,6,6,7,7
+seen,argentina,shown,9,9,1.0,6,6,7,7
+seen,connecticut,shown,8,8,1.0,6,6,8,8
+seen,el salvador,shown,0,8,0.0,6,0,6,0
+seen,netherlands,shown,8,8,1.0,6,6,6,6
+seen,zeta,exact/variant split withheld: one side rests on fewer than 5 creators,,8,,5,,5,
+seen,switzerland,shown,8,8,1.0,6,6,7,7
+seen,shiva,shown,7,7,1.0,7,7,7,7
+seen,iraq,shown,7,7,1.0,5,5,6,6
+seen,indonesia,shown,7,7,1.0,5,5,7,7
+seen,north carolina,shown,7,7,1.0,6,6,7,7
+seen,midwest,shown,6,6,1.0,5,5,6,6
+seen,missouri,shown,6,6,1.0,5,5,5,5
+seen,poland,shown,6,6,1.0,5,5,6,6
+seen,kali,shown,6,6,1.0,5,5,5,5
+seen,belgium,shown,5,5,1.0,5,5,5,5
+seen,thailand,shown,5,5,1.0,5,5,5,5
+seen,"(414 families pooled: fewer than 5 creators, or a name word shared with a creator folder)",shown,2912,3514,0.8287,,,,
+holdout,galactic federation,shown,428,428,1.0,5 or more,5 or more,69,69
+holdout,jesus,exact/variant split withheld: one side rests on fewer than 5 creators,,231,,all but fewer than 5 of 18,,46,
+holdout,arcturian,shown,128,159,0.805,5 or more,5 or more,45,40
+holdout,atlantis,exact/variant split withheld: one side rests on fewer than 5 creators,,150,,all but fewer than 5 of 18,,47,
+holdout,andromedan,exact/variant split withheld: one side rests on fewer than 5 creators,,97,,5 or more,,19,
+holdout,mars,shown,87,87,1.0,5 or more,5 or more,24,24
+holdout,reptilian,exact/variant split withheld: one side rests on fewer than 5 creators,,74,,5 or more,,19,
+holdout,sirian,shown,20,63,0.3175,5 or more,5 or more,35,8
+holdout,gaia,exact/variant split withheld: one side rests on fewer than 5 creators,,60,,5 or more,,25,
+holdout,japan,shown,49,49,1.0,5 or more,5 or more,15,15
+holdout,lemuria,exact/variant split withheld: one side rests on fewer than 5 creators,,48,,5 or more,,21,
+holdout,orion,exact/variant split withheld: one side rests on fewer than 5 creators,,45,,5 or more,,22,
+holdout,jupiter,shown,45,45,1.0,5 or more,5 or more,21,21
+holdout,united states,exact/variant split withheld: one side rests on fewer than 5 creators,,41,,5 or more,,23,
+holdout,egypt,shown,40,40,1.0,5 or more,5 or more,19,19
+holdout,venus,shown,39,39,1.0,5 or more,5 or more,18,18
+holdout,sedona,shown,39,39,1.0,5 or more,5 or more,8,8
+holdout,metatron,exact/variant split withheld: one side rests on fewer than 5 creators,,35,,5 or more,,8,
+holdout,archangel michael,shown,30,30,1.0,5 or more,5 or more,14,14
+holdout,lyran,shown,13,28,0.4643,5 or more,5 or more,21,11
+holdout,europe,shown,24,24,1.0,5 or more,5 or more,12,12
+holdout,galactics,shown,22,22,1.0,5 or more,5 or more,10,10
+holdout,3i/atlas,shown,0,20,0.0,5 or more,0,6,0
+holdout,australia,shown,18,18,1.0,5 or more,5 or more,14,14
+holdout,india,shown,17,17,1.0,5 or more,5 or more,11,11
+holdout,phoenix,shown,14,14,1.0,5 or more,5 or more,7,7
+holdout,america,shown,13,13,1.0,5 or more,5 or more,9,9
+holdout,arizona,shown,13,13,1.0,5 or more,5 or more,7,7
+holdout,africa,shown,13,13,1.0,5 or more,5 or more,9,9
+holdout,mexico,shown,11,11,1.0,5 or more,5 or more,8,8
+holdout,california,shown,11,11,1.0,5 or more,5 or more,9,9
+holdout,giza,shown,11,11,1.0,5 or more,5 or more,6,6
+holdout,bashar,exact/variant split withheld: one side rests on fewer than 5 creators,,10,,5 or more,,8,
+holdout,germany,shown,9,9,1.0,5 or more,5 or more,7,7
+holdout,new york city,shown,7,7,1.0,5 or more,5 or more,6,6
+holdout,mary,shown,7,7,1.0,5 or more,5 or more,7,7
+holdout,"(197 families pooled: fewer than 5 creators, or a name word shared with a creator folder)",shown,1092,1258,0.868,,,,

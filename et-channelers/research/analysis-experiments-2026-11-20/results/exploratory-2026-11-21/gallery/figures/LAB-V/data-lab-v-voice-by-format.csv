@@ -1,0 +1,38 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-v-voice-shares-by-format.csv (printed cells only).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+# Format of a recording: the voice map's format (small model). Formats with fewer than 5 creators in a view are pooled into 'other' by the plan's rule, so the pools differ by view (format_group gives the pool).
+view,row,format_group,side,mean,lo95,hi95
+"middle model, middle-model subset (178 recordings; primary)",solo,solo,claimed voice,0.399,0.307,0.487
+"middle model, middle-model subset (178 recordings; primary)",conversation,conversation,claimed voice,0.101,0.026,0.200
+"middle model, middle-model subset (178 recordings; primary)",mixed,mixed,claimed voice,0.233,0.089,0.402
+"middle model, middle-model subset (178 recordings; primary)",other formats (pooled),"other (audience session, multi presenter, unclear)",claimed voice,0.390,0.163,0.623
+"small model, same subset (beside)",solo,solo,claimed voice,0.344,0.257,0.438
+"small model, same subset (beside)",mixed,mixed,claimed voice,0.211,0.079,0.368
+"small model, same subset (beside)",other formats (pooled),"other (audience session, multi presenter, unclear)",claimed voice,0.342,0.115,0.569
+"small model, all 1,293 seen recordings (beside)",solo,solo,claimed voice,0.354,0.284,0.430
+"small model, all 1,293 seen recordings (beside)",conversation,conversation,claimed voice,0.057,0.031,0.090
+"small model, all 1,293 seen recordings (beside)",mixed,mixed,claimed voice,0.277,0.199,0.365
+"small model, all 1,293 seen recordings (beside)",audience session,audience session,claimed voice,0.448,0.282,0.607
+"middle model, middle-model subset (178 recordings; primary)",solo,solo,own voice,0.470,0.392,0.554
+"middle model, middle-model subset (178 recordings; primary)",conversation,conversation,own voice,0.020,0.008,0.033
+"middle model, middle-model subset (178 recordings; primary)",mixed,mixed,own voice,0.142,0.031,0.300
+"middle model, middle-model subset (178 recordings; primary)",other formats (pooled),"other (audience session, multi presenter, unclear)",own voice,0.240,0.059,0.471
+"small model, same subset (beside)",solo,solo,own voice,0.502,0.416,0.587
+"small model, same subset (beside)",mixed,mixed,own voice,0.107,0.018,0.241
+"small model, same subset (beside)",other formats (pooled),"other (audience session, multi presenter, unclear)",own voice,0.292,0.088,0.504
+"small model, all 1,293 seen recordings (beside)",solo,solo,own voice,0.518,0.442,0.587
+"small model, all 1,293 seen recordings (beside)",conversation,conversation,own voice,0.025,0.018,0.033
+"small model, all 1,293 seen recordings (beside)",mixed,mixed,own voice,0.226,0.156,0.297
+"small model, all 1,293 seen recordings (beside)",audience session,audience session,own voice,0.395,0.232,0.566
+"middle model, middle-model subset (178 recordings; primary)",solo,solo,neither,0.131,0.080,0.189
+"middle model, middle-model subset (178 recordings; primary)",conversation,conversation,neither,0.879,0.777,0.954
+"middle model, middle-model subset (178 recordings; primary)",mixed,mixed,neither,0.625,0.431,0.799
+"middle model, middle-model subset (178 recordings; primary)",other formats (pooled),"other (audience session, multi presenter, unclear)",neither,0.370,0.154,0.609
+"small model, same subset (beside)",solo,solo,neither,0.154,0.094,0.226
+"small model, same subset (beside)",mixed,mixed,neither,0.682,0.471,0.868
+"small model, same subset (beside)",other formats (pooled),"other (audience session, multi presenter, unclear)",neither,0.366,0.161,0.616
+"small model, all 1,293 seen recordings (beside)",solo,solo,neither,0.128,0.084,0.179
+"small model, all 1,293 seen recordings (beside)",conversation,conversation,neither,0.918,0.887,0.945
+"small model, all 1,293 seen recordings (beside)",mixed,mixed,neither,0.497,0.400,0.593
+"small model, all 1,293 seen recordings (beside)",audience session,audience session,neither,0.157,0.070,0.267

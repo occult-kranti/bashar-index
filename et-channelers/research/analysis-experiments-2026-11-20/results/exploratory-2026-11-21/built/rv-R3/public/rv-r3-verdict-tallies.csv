@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R3 (places M and W): counts of the 17 measures by verdict under each scale and interval, on the 36 registered pairs.
+# Interval level: 90% per measure or 90% simultaneous (Bonferroni over 17), as named. Counts of measures, not of creators.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+pairs,scale,interval,agrees,differs,not_settled,status
+all 36 (registered),between-creator SD,per-measure 90%,7,6,4,reported
+all 36 (registered),between-creator SD,simultaneous 90% (Bonferroni 17),7,6,4,reported
+all 36 (registered),within-creator SD,per-measure 90%,8,6,3,reported
+all 36 (registered),within-creator SD,simultaneous 90% (Bonferroni 17),7,5,5,reported
+35 seen pairs,both,both,,,,not published (beside the 36-pair rows it would give the other-group pair's effect by difference: pairs rule)
+without the outlying pair,both,both,,,,not published (beside the 36-pair rows it would give one recording's effect by difference: pairs rule)

@@ -1,0 +1,21 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# SD part (a), confirmed version B dates. ratio = observed / expected cross-creator same-date recording pairs under the pre-specified reference (each creator
+# keeps its number of uploads in every ISO week; weekday redrawn from its own habit; 4,000 draws).
+# reference95 = 95% range of the ratio under the reference; boot90 = creator bootstrap 90% percentile interval (2,000 draws; first three rows only). Last row:
+# round-2 reference, added after the first run, not pre-specified.
+# UTC dates; upload date, not date of speaking. Never read as contact, coordination, copying or influence.
+# Source: the gallery's public file figures/SD/data-copublication.csv (build of 2026-11-22 03:33 UTC) without its recordings column: the recording counts of the
+# two rows side by side gave the other groups' counts by subtraction. Interval levels: 95% reference range; 90% creator-bootstrap percentile interval.
+creator_group,row,ratio,reference95_low,reference95_high,boot90_low,boot90_high
+all creators with a confirmed date (dates only),same UTC date (primary),0.9835,0.9545,1.0081,0.9531,1.0147
+seen creators only,same UTC date (primary),0.9772,0.9412,1.0113,0.9392,1.0116
+all creators with a confirmed date (dates only),"same UTC date, last 30 days before capture",1.006,0.952,1.0594,0.9666,1.0456
+seen creators only,"same UTC date, last 30 days before capture",1.0001,0.9344,1.065,0.9447,1.049
+all creators with a confirmed date (dates only),"same UTC date, earlier dates",0.953,0.8914,1.0111,0.8979,1.0106
+seen creators only,"same UTC date, earlier dates",0.9462,0.8729,1.015,0.8786,1.0126
+all creators with a confirmed date (dates only),within one UTC day either way,1.0007,0.985,1.015,,
+seen creators only,within one UTC day either way,1.0013,0.9798,1.0198,,
+all creators with a confirmed date (dates only),within 12 hours (time stamps),1.0002,0.9716,1.0282,,
+seen creators only,within 12 hours (time stamps),0.9887,0.952,1.0243,,
+all creators with a confirmed date (dates only),"same UTC date, round-2 reference (not pre-specified)",1.0223,0.9971,1.0454,,
+seen creators only,"same UTC date, round-2 reference (not pre-specified)",1.0096,0.9765,1.0384,,

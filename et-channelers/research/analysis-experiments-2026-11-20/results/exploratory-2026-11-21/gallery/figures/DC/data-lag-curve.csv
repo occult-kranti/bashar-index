@@ -1,0 +1,43 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# DC lag curve, confirmed version B. value = mean over creators of the creator's mean centred TSIM cosine (pair cosine minus the creator's mean over all its pairs) at that gap; a creator enters with 2+ pairs.
+# interval = 90% simultaneous creator-bootstrap interval (sup-t, 2,000 draws), bands only; the day points carry no creator interval as built. shuffle = 95% simultaneous range under dates permuted among each creator's own recordings (2,000 draws). inside_shuffle_range = 1: drawn hollow (faded).
+# Inside the weeks a creator covers; upload date, not date of speaking; not a trend of the field.
+view,gap_days,value,creators,interval90_sim_low,interval90_sim_high,shuffle95_sim_low,shuffle95_sim_high,whole_week_gap,inside_shuffle_range
+by day,0,0.0604,14,,,-0.0526,0.0516,0,0
+by day,1,0.0537,18,,,-0.0484,0.0476,0,0
+by day,2,0.0077,23,,,-0.0271,0.0274,0,1
+by day,3,0.0131,25,,,-0.0289,0.0284,0,1
+by day,4,0.0079,25,,,-0.029,0.0281,0,1
+by day,5,0.0258,23,,,-0.0324,0.0318,0,1
+by day,6,0.0131,25,,,-0.0322,0.0329,0,1
+by day,7,0.0363,46,,,-0.0197,0.0195,1,0
+by day,8,0.0083,20,,,-0.0349,0.0339,0,1
+by day,9,0.0018,23,,,-0.0256,0.0258,0,1
+by day,10,-0.0081,19,,,-0.0319,0.0316,0,1
+by day,11,-0.0121,24,,,-0.028,0.0277,0,1
+by day,12,0.0106,17,,,-0.0359,0.0364,0,1
+by day,13,-0.007,20,,,-0.0336,0.0339,0,1
+by day,14,0.0274,41,,,-0.0183,0.0178,1,0
+by day,15,-0.0029,23,,,-0.0319,0.0323,0,1
+by day,16,-0.0151,21,,,-0.0314,0.0311,0,1
+by day,17,-0.0111,18,,,-0.0319,0.0327,0,1
+by day,18,-0.0114,21,,,-0.0337,0.0331,0,1
+by day,19,-0.0098,16,,,-0.0373,0.0374,0,1
+by day,20,-0.0019,16,,,-0.0327,0.0329,0,1
+by day,21,0.0281,36,,,-0.0207,0.0208,1,0
+by day,22,0.0006,20,,,-0.0305,0.0305,0,1
+by day,23,-0.0033,16,,,-0.0452,0.0458,0,1
+by day,24,-0.0306,16,,,-0.0391,0.0398,0,1
+by day,25,0.0072,14,,,-0.0388,0.0383,0,1
+by day,26,-0.0101,14,,,-0.0461,0.0448,0,1
+by day,27,0.018,14,,,-0.0415,0.0416,0,1
+by day,28,0.0129,38,,,-0.0196,0.0196,1,1
+by band,0-7,0.028,62,0.0111,0.0449,-0.0114,0.0113,,0
+by band,8-14,0.0132,60,0.0017,0.0247,-0.0123,0.0122,,0
+by band,15-21,0.002,56,-0.0122,0.0161,-0.0128,0.0128,,1
+by band,22-28,-0.0057,57,-0.0202,0.0088,-0.0121,0.0121,,1
+by band,29-61,-0.004,57,-0.0164,0.0083,-0.0084,0.0087,,1
+by band,62-92,-0.0066,49,-0.0166,0.0033,-0.013,0.013,,1
+by band,93-183,-0.0033,42,-0.0202,0.0136,-0.0111,0.011,,1
+by band,184-366,-0.0221,25,-0.0486,0.0045,-0.0165,0.017,,0
+by band,>366,-0.0066,15,-0.0196,0.0064,-0.0192,0.0187,,1

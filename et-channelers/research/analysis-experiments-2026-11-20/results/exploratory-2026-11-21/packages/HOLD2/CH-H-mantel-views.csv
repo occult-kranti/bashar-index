@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:35:17Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# CH-H (reduced): per-recording measures as COR/CH (English-only recognizer model, 300 or more words after artefact filter v2): 9 word measures, 10 RX family rates (cue counts), 16 topic shares under the frozen TM transform and the fixed topic balances; seen 71 creators and the 18 English hold-out creators side by side, never pooled.
+# Mantel: Spearman between the upper triangles of two creator-by-creator cosine matrices (views: topics = centred log-ratio profile; rx = z-scored log pooled family rates; wsm = z-scored creator means of the word measures), creators with 5 or more recordings; creator-label permutation (999), p = (b+1)/(m+1). A description of agreement between views, not a test of a hypothesis.
+group,view_a,view_b,status,creators,mantel_spearman,perm_p,permutations
+seen,topics,rx,shown,all but fewer than 5 of 71,0.3901,0.001,999
+seen,topics,wsm,shown,all but fewer than 5 of 71,0.4054,0.001,999
+seen,rx,wsm,shown,all but fewer than 5 of 71,0.3127,0.001,999
+holdout,topics,rx,shown,18,0.0934,0.257,999
+holdout,topics,wsm,shown,18,0.1318,0.102,999
+holdout,rx,wsm,shown,18,0.2699,0.001,999

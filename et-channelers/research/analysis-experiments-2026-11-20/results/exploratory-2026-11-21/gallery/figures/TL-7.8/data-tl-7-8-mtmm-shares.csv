@@ -1,0 +1,33 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-8-mtmm-rows.csv (TL package, public folder).
+# Interval level: 90% creator-bootstrap percentile interval (2,000 draws); pointwise; no family-wise control.
+# Shares view: each reading as a creator's share of coded statements; the cue hits as a rate per 1,000 words.
+cell_kind,pair_of_readings,spearman,interval_90_low,interval_90_high,note
+"Same construct, different methods: time window","time rule : time part, middle model",0.659,0.496,0.776,
+"Same construct, different methods: time window","time rule : time expression, small model",0.723,0.575,0.827,partly by construction
+"Same construct, different methods: time window",time rule : time cue hits,0.768,0.66,0.841,
+"Same construct, different methods: time window","time part, middle model : time expression, small model",0.957,0.923,0.974,partly by construction
+"Same construct, different methods: time window","time part, middle model : time cue hits",0.708,0.57,0.816,
+"Same construct, different methods: time window","time expression, small model : time cue hits",0.744,0.623,0.826,
+"Same construct, different methods: hedging, condition","hedge rule : hedge, small model",0.712,0.562,0.819,
+"Same construct, different methods: hedging, condition","condition rule : condition, small model",0.448,0.256,0.614,
+"Different constructs, same method",time rule : hedge rule,-0.1,-0.3,0.12,
+"Different constructs, same method",time rule : condition rule,-0.077,-0.304,0.162,
+"Different constructs, same method","time part, middle model : hedge, small model",-0.002,-0.206,0.202,
+"Different constructs, same method","time part, middle model : condition, small model",-0.21,-0.409,-0.004,
+"Different constructs, same method","time expression, small model : hedge, small model",-0.002,-0.207,0.208,
+"Different constructs, same method","time expression, small model : condition, small model",-0.186,-0.394,0.029,
+"Different constructs, same method",hedge rule : condition rule,0.277,0.083,0.45,
+"Different constructs, same method","hedge, small model : condition, small model",0.231,0.013,0.437,
+"Different constructs, different methods","time rule : hedge, small model",-0.025,-0.236,0.189,
+"Different constructs, different methods","time rule : condition, small model",0.003,-0.211,0.219,
+"Different constructs, different methods","time part, middle model : hedge rule",-0.13,-0.34,0.079,
+"Different constructs, different methods","time part, middle model : condition rule",-0.201,-0.396,0.012,
+"Different constructs, different methods","time expression, small model : hedge rule",-0.133,-0.341,0.074,
+"Different constructs, different methods","time expression, small model : condition rule",-0.204,-0.402,0.008,
+"Different constructs, different methods",time cue hits : hedge rule,-0.211,-0.393,-0.009,
+"Different constructs, different methods","time cue hits : hedge, small model",-0.173,-0.369,0.024,
+"Different constructs, different methods",time cue hits : condition rule,-0.13,-0.335,0.096,
+"Different constructs, different methods","time cue hits : condition, small model",-0.075,-0.286,0.146,
+"Different constructs, different methods","hedge rule : condition, small model",0.039,-0.183,0.254,
+"Different constructs, different methods","hedge, small model : condition rule",0.426,0.246,0.58,

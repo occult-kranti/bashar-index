@@ -1,0 +1,41 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R4 (place S): creator means of each headline in seven bins of 10 or 11 seen creators by the span of their newest 20 recordings, named by rank; only rounded inner edges are printed (two significant figures) and the end bins are open, so no creator's span is bounded.
+# Interval level: 90% t interval over the creators of a bin. In this roster, under the newest-20 quota.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+headline,bin,span_bin,span_days_band_rounded,creators,log10_span_bin_mean,mean,t90_low,t90_high
+pace_median,1.0,shortest seventh of spans,< 52 days,11.0,1.48417,144.47392,133.37819,155.56965
+pace_median,2.0,2nd seventh,52 days to 95 days,10.0,1.88102,147.17987,138.30884,156.05091
+pace_median,3.0,3rd seventh,95 days to 130 days,10.0,2.05837,147.23393,136.81531,157.65255
+pace_median,4.0,middle seventh,130 days to 200 days,10.0,2.1936,147.20978,133.69827,160.72128
+pace_median,5.0,5th seventh,200 days to 350 days,10.0,2.3944,148.5275,142.56425,154.49076
+pace_median,6.0,6th seventh,350 days to 570 days,10.0,2.66999,158.8912,146.54795,171.23445
+pace_median,7.0,longest seventh of spans,>= 570 days,10.0,3.03259,145.368,133.71755,157.01845
+nonspeech,1.0,shortest seventh of spans,< 52 days,11.0,1.48417,0.1186,0.05416,0.18304
+nonspeech,2.0,2nd seventh,52 days to 95 days,10.0,1.88102,0.19373,0.09618,0.29129
+nonspeech,3.0,3rd seventh,95 days to 130 days,10.0,2.05837,0.10046,0.04173,0.15919
+nonspeech,4.0,middle seventh,130 days to 200 days,10.0,2.1936,0.09678,0.04521,0.14834
+nonspeech,5.0,5th seventh,200 days to 350 days,10.0,2.3944,0.11075,0.0589,0.1626
+nonspeech,6.0,6th seventh,350 days to 570 days,10.0,2.66999,0.08107,0.03416,0.12797
+nonspeech,7.0,longest seventh of spans,>= 570 days,10.0,3.03259,0.12541,0.07955,0.17126
+end_coverage_15s,1.0,shortest seventh of spans,< 52 days,11.0,1.48417,0.70646,0.61661,0.79631
+end_coverage_15s,2.0,2nd seventh,52 days to 95 days,10.0,1.88102,0.41829,0.24668,0.58989
+end_coverage_15s,3.0,3rd seventh,95 days to 130 days,10.0,2.05837,0.37109,0.17003,0.57215
+end_coverage_15s,4.0,middle seventh,130 days to 200 days,10.0,2.1936,0.41617,0.22579,0.60655
+end_coverage_15s,5.0,5th seventh,200 days to 350 days,10.0,2.3944,0.5544,0.40729,0.70152
+end_coverage_15s,6.0,6th seventh,350 days to 570 days,10.0,2.66999,0.50698,0.32158,0.69238
+end_coverage_15s,7.0,longest seventh of spans,>= 570 days,10.0,3.03259,0.42597,0.29499,0.55695
+thanks_late,1.0,shortest seventh of spans,< 52 days,11.0,1.48417,0.37011,0.22654,0.51369
+thanks_late,2.0,2nd seventh,52 days to 95 days,10.0,1.88102,0.44097,0.30801,0.57393
+thanks_late,3.0,3rd seventh,95 days to 130 days,10.0,2.05837,0.59539,0.50698,0.6838
+thanks_late,4.0,middle seventh,130 days to 200 days,10.0,2.1936,0.55224,0.45756,0.64691
+thanks_late,5.0,5th seventh,200 days to 350 days,10.0,2.3944,0.58755,0.41705,0.75805
+thanks_late,6.0,6th seventh,350 days to 570 days,10.0,2.66999,0.50874,0.34612,0.67137
+thanks_late,7.0,longest seventh of spans,>= 570 days,10.0,3.03259,0.41484,0.29028,0.53939
+term_extraterrestrial,1.0,shortest seventh of spans,< 52 days,11.0,1.48417,0.12041,0.00073,0.2401
+term_extraterrestrial,2.0,2nd seventh,52 days to 95 days,10.0,1.88102,0.08853,0.02786,0.14921
+term_extraterrestrial,3.0,3rd seventh,95 days to 130 days,10.0,2.05837,0.16988,0.01604,0.32373
+term_extraterrestrial,4.0,middle seventh,130 days to 200 days,10.0,2.1936,0.16026,0.05766,0.26286
+term_extraterrestrial,5.0,5th seventh,200 days to 350 days,10.0,2.3944,0.20125,0.08577,0.31674
+term_extraterrestrial,6.0,6th seventh,350 days to 570 days,10.0,2.66999,0.17446,0.08317,0.26574
+term_extraterrestrial,7.0,longest seventh of spans,>= 570 days,10.0,3.03259,0.14126,0.05291,0.22961

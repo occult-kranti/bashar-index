@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/mtmm-pass-list.csv
+# Interval level: 90% creator bootstrap (2,000 draws)
+# MTMM pass list (Campbell and Fiske) on seen creators: convergent = median convergent rho above 0 with its 90% interval; discriminant = a convergent rho exceeds a heterotrait rho sharing one of its measures in 0.75 or more of such comparisons; beside them the median convergent rho over the pairs whose measures read different inputs. All three constructs pass both checks in the source.
+# Model cells are model-coded and not checked by a person; rule cells are cue counts; agreement between methods, never accuracy. Subject construct not run (TC stage 2 not bought).
+construct,measure,estimate,low_90,high_90
+voice,"median convergent rho, all 6 method pairs",0.566,0.449,0.668
+voice,"median convergent rho, the 3 pairs that cross inputs",0.574,0.428,0.703
+voice,share of Campbell and Fiske comparisons won,0.948,0.833,0.979
+source family,"median convergent rho, all 6 method pairs",0.683,0.59,0.761
+source family,"median convergent rho, the 3 pairs that cross inputs",0.443,0.274,0.596
+source family,share of Campbell and Fiske comparisons won,0.969,0.833,0.99
+asks,"median convergent rho, all 6 method pairs",0.419,0.3,0.528
+asks,"median convergent rho, the 3 pairs that cross inputs",0.317,0.114,0.483
+asks,share of Campbell and Fiske comparisons won,0.958,0.75,1.0

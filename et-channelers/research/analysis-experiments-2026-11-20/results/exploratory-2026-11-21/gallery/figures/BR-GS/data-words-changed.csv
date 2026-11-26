@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-GS: share of recognized words changed by the grid shift, and share of the changes within 1 s of a seam.
+# Source public file: BR-GS/public/br-gs-grid-shift-summary.csv. Base: 40 seen recordings of 40 creators (subsets as named).
+# Interval level: 95% percentile intervals from 2,000 resamples of the recordings. Values in %.
+# Drawn by plot_br.py (group B-BR), SHA-256 47a09ba3f3dbd224e2d4a4063353b70f9d72809bf090aa058eee039e5f151433.
+panel,row,recordings,value_pct,lo95_pct,hi95_pct
+words changed,Mean over recordings (40),40,3.71,2.87,4.9
+words changed,Word-pooled (40),40,4.16,3.08,5.38
+words changed,Same worker version as the record (31),31,4.28,3.14,5.64
+words changed,Control: run grid decoded again (10),10,0.0,0.0,0.0
+edits near a seam,Within 1 s of a run-grid seam,40,20.14,17.47,24.29
+edits near a seam,Within 1 s of a shifted-grid seam,40,18.64,15.89,22.99
+edits near a seam,even-spread reference,,6.67,,

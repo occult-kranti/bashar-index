@@ -1,0 +1,24 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# TIME roles of RX time-expression hits, model-coded, not checked by a person. Seen creators.
+# Source: the gallery's public file figures/TIME/data-time-roles.csv (build of 2026-11-22 03:33 UTC); values unchanged, the figure's title corrected.
+# Interval level: panel A 90% t interval on creator means with the 25th to 75th percentile of creators; panel B 95% creator-bootstrap interval (2,000 draws).
+panel,reader,role,estimate,interval,ci_low,ci_high,q25,q75,creators
+A,small model,forecast,0.1372,90% t,0.111,0.1635,0.031,0.1905,65
+A,small model,logistics,0.2526,90% t,0.2184,0.2868,0.1207,0.3579,65
+A,small model,calendar_sky,0.2055,90% t,0.1644,0.2466,0.0435,0.3333,65
+A,small model,biography,0.1849,90% t,0.1495,0.2203,0.0437,0.2968,65
+A,small model,deep_time,0.0102,90% t,0.0043,0.0162,0.0,0.0065,65
+A,small model,other,0.1865,90% t,0.1568,0.2161,0.1,0.2086,65
+A,small model,not_time,0.0231,90% t,0.0157,0.0305,0.0,0.0238,65
+B,small model,forecast,0.1417,95% creator bootstrap,0.1048,0.187,,,59
+B,small model,logistics,0.2567,95% creator bootstrap,0.2021,0.3194,,,59
+B,small model,calendar_sky,0.235,95% creator bootstrap,0.1607,0.3068,,,59
+B,small model,biography,0.1617,95% creator bootstrap,0.1168,0.2123,,,59
+B,small model,not_time,0.02,95% creator bootstrap,0.0076,0.0359,,,59
+B,small model,other_incl_deep_time,0.185,95% creator bootstrap,0.1451,0.2319,,,59
+B,middle model,forecast,0.1033,95% creator bootstrap,0.0688,0.1401,,,59
+B,middle model,logistics,0.2583,95% creator bootstrap,0.2076,0.3132,,,59
+B,middle model,calendar_sky,0.1667,95% creator bootstrap,0.1077,0.2256,,,59
+B,middle model,biography,0.1733,95% creator bootstrap,0.1278,0.2179,,,59
+B,middle model,not_time,0.0333,95% creator bootstrap,0.0185,0.0518,,,59
+B,middle model,other_incl_deep_time,0.265,95% creator bootstrap,0.2179,0.3156,,,59

@@ -1,0 +1,10 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# CODES fix: DIR after-critic incidence, pooled window share (first report) and creator-equal mean (headline after the fix); 65 seen creators, 200 windows; model-
+# coded, not checked by a person
+# Source: the gallery's public file figures/CODES/data-codes-dir-estimand.csv (build of 2026-11-22 03:33 UTC); the preparedness row is left out (its values solve
+# for single creators' shares).
+# Interval level: 90% t interval on creator means (creator-equal); 90% creator-bootstrap interval (pooled).
+class,label,creators_base,windows,pooled_window_share_first_report,pooled_boot90_lo,pooled_boot90_hi,creator_equal_mean_after_fix,creator_equal_t90_lo,creator_equal_t90_hi,difference
+practice_directive,Practice directive,65,200,0.525,0.4633,0.5856,0.4694,0.3937,0.5451,-0.0556
+threat_statement,Threat statement about the world,65,200,0.16,0.1117,0.2135,0.1662,0.1066,0.2258,0.0062
+health_directive,Health directive,65,200,0.13,0.0933,0.1685,0.1111,0.0711,0.1512,-0.0189

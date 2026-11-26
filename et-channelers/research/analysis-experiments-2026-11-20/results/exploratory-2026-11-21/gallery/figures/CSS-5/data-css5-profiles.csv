@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-5 (place S): a typology of the seen creators by the kinds of source their titles presented as carrying a source's words (P1) name (E11's lineage rule: star peoples S1 to S10 against angelic and devotional figures A1 to A6; other families G1 to G6, X1). Source: package CSS, public file css5-profiles-and-cooccurrence.csv. The five profiles add up to the 71 seen creators; the two groups are unions of profiles.
+# Co-occurrence: creators naming both groups against 999 independent shuffles of each group's creator labels (mean, and the 5th to 95th percentile of the shuffles: a 90% band; log2 observed over expected 0.42). A description, not a test. The 'other families' group and its co-occurrence rows are withheld by the package (privacy).
+# Titles: model-coded title codes (frozen title instrument; the middle model is the record; source family passed its gate on the gate sample and failed on the hold-out reliability sample on its lower bound; kept as records by the owner's decision); not checked by a person.
+table,row,creators,expected_mean,shuffle_p5,shuffle_p95
+source profile,star peoples only,18,,,
+source profile,angelic or devotional figures only,9,,,
+source profile,both star peoples and angelic or devotional figures,10,,,
+source profile,other source families only,6,,,
+source profile,no source family named,28,,,
+group (union of profiles),"star peoples, with or without angelic or devotional figures",28,,,
+group (union of profiles),"angelic or devotional figures, with or without star peoples",19,,,
+co-occurrence,creators naming both groups: observed; expected under 999 shuffles (5th to 95th percentile),10,7.5,4.0,10.0

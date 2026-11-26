@@ -1,0 +1,39 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# DR-2: second reading by another model (registry 2026-11-21 02:50; registry row of 04:55). Model-coded: the record and a second model of the same vendor (OpenAI) read the same units; agreement between two models is reliability, not validity; not checked by a person. Gate sample G (seen creators, check and development creators alike; not the 23 check creators of VER-3R) only; no hold-out or other-group file.
+# S (sentence codes): record gpt-6-luna (small), second gpt-6.1-terra (middle), same prompt and effort. FC (checkability parts of coded forecast statements; the plan's 'forecast candidates'): record gpt-6.1-terra (middle), second gpt-6-sol (large) at effort low.
+# S: 400 units of 34 recordings of 32 creators; FC: 300 coded statements of 27 recordings (27 creators, one recording each). Read 2026-11-21 03:15-03:21 UTC.
+# Intervals 90% (5th and 95th percentiles of 2,000 two-stage bootstrap draws: creators, then recordings).
+# Small cells: codes of fewer than 5 creators are pooled; a figure is printed only if no count resting on fewer than 5 creators can be solved from it and the other printed figures, including those of the registry (disclosure check; ver.md).
+instrument,table,record,second,units,status
+S,"H5 group, record by second reading",world_claim,world_claim,74,printed
+S,"H5 group, record by second reading",practice_and_feeling,neither,18,printed
+S,"H5 group, record by second reading",neither,practice_and_feeling,14,printed
+S,"H5 group, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"
+S,"primary code, record by second reading",Q0,Q0,5,printed
+S,"primary code, record by second reading",Q1,Q1,74,printed
+S,"primary code, record by second reading",Q3,Q3,15,printed
+S,"primary code, record by second reading",Q4,Q4,58,printed
+S,"primary code, record by second reading",Q5,Q5,24,printed
+S,"primary code, record by second reading",Q7,Q7,41,printed
+S,"primary code, record by second reading",Q8,Q8,20,printed
+S,"primary code, record by second reading",Q9,Q9,12,printed
+S,"primary code, record by second reading",QN,QN,5,printed
+S,"primary code, record by second reading",Q2,Q3,11,printed
+S,"primary code, record by second reading",Q2,Q4,7,printed
+S,"primary code, record by second reading",Q7,Q9,5,printed
+S,"primary code, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"
+FC,"time window: 3 values, record by second reading",YES,YES,61,printed
+FC,"time window: 3 values, record by second reading",NO,NO,204,printed
+FC,"time window: 3 values, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"
+FC,"place: 3 values, record by second reading",NO,NO,291,printed
+FC,"place: 3 values, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"
+FC,"named actor: 3 values, record by second reading",YES,YES,13,printed
+FC,"named actor: 3 values, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"
+FC,"observable outcome: 3 values, record by second reading",YES,YES,23,printed
+FC,"observable outcome: 3 values, record by second reading",NO,NO,266,printed
+FC,"observable outcome: 3 values, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"
+FC,"quantity: 3 values, record by second reading",NO,NO,286,printed
+FC,"quantity: 3 values, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"
+FC,"number of YES parts, record by second reading",0,0,152,printed
+FC,"number of YES parts, record by second reading",1,0,34,printed
+FC,"number of YES parts, record by second reading",other cells,,,"not printed: each other cell is empty, rests on fewer than 5 creators, or would let a count resting on fewer than 5 creators be solved from the printed figures (disclosure check); the code rows (each code against the rest) are the table's public form"

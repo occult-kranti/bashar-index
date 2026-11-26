@@ -1,0 +1,11 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: 71 seen creators, 1,293 transcripts of the closed run (549.6 h)
+# Interval level: 95%: creator bootstrap for the pooled share and the creator median; t and creator bootstrap for the creator-equal share
+# Pooled: hours-weighted; creator-equal: mean of creator shares; creator median. Time outside recognized speech is not 'no speech': music, meditation and silence cannot be told apart; long pauses count as non-speech. The leave-one-creator-out range is not printed: each of its ends beside the pooled share isolates a single creator.
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:10Z.
+definition,creators,transcripts,hours,hours_without_speech,pooled_share,pooled_lo95,pooled_hi95,leave_one_creator_out_range,creator_equal_share,ce_t_lo95,ce_t_hi95,ce_boot_lo95,ce_boot_hi95,creator_median,median_lo95,median_hi95,share_held_by_the_5_creators_with_the_most
+voice detector's non-speech (audio minus detector speech seconds),71,1293,549.6,66.4,0.121,0.077,0.175,not published (each end isolates one creator (pairs rule)),0.122,0.087,0.156,0.090,0.157,0.079,0.053,0.109,0.46
+"time outside recognizer segments, artefact filter v2",71,1293,549.6,81.3,0.148,0.109,0.199,not published (each end isolates one creator (pairs rule)),0.149,0.118,0.180,0.121,0.180,0.114,0.096,0.129,0.36
+"time outside recognizer segments, no filter",71,1293,549.6,81.1,0.148,0.109,0.199,not published (each end isolates one creator (pairs rule)),0.149,0.118,0.179,0.121,0.180,0.114,0.095,0.129,0.36
+of which before the first or after the last segment (filter v2),71,1293,549.6,24.4,0.044,0.012,0.098,not published (each end isolates one creator (pairs rule)),0.038,0.012,0.064,0.017,0.068,0.008,0.005,0.013,0.79

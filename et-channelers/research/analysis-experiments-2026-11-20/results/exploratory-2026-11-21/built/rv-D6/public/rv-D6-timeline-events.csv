@@ -1,0 +1,42 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: design events, run progress, hold-out contacts, results and public outputs, 19 to 21 November 2026
+# Interval level: none
+# Times from repository commit times (UTC) or the time stated in the project's record (the registry, the run's phase logs, the dashboard data); file names of private records are not printed. As built at 2026-11-21 01:10 UTC (34 events); the paper's timeline adds later events.
+# Event 15 is worded in recordings, as in the paper's timeline key (the built wording gave the run's audio-file total).
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:11Z.
+n,utc,lane,event,time_source
+1,2026-11-19 04:31,design events,roster table lists 74 channels,repository commit bf6eca6
+2,2026-11-19 20:03,design events,roster of 101 channels first committed,repository commit 8d54e2a
+3,2026-11-20 01:45,run progress,"downloads paused (1,946 of 1,976 archived)",time stated in the project's record
+4,2026-11-20 02:38,run progress,transcription starts (first progress row),time stated in the project's record
+5,2026-11-20 04:19,run progress,language fallback phase,time stated in the project's record
+6,2026-11-20 04:57,design events,owner closes the download goal (30 final failures),time stated in the project's record
+7,2026-11-20 05:52,run progress,English-first ordering starts (ledger line 251),time stated in the project's record
+8,2026-11-20 06:08,design events,English-first and creator-language rules committed,repository commit d99e36f
+9,2026-11-20 13:00,run progress,"snapshot of 1,213 finished transcripts (paper numbers)",time stated in the project's record
+10,2026-11-20 13:00,hold-out contacts,first panel tables include 32 hold-out files,time stated in the project's record
+11,2026-11-20 14:13,design events,experiment catalogue (28 experiments) committed,repository commit 533e654
+12,2026-11-20 18:00,design events,paper draft committed,repository commit 09809ad
+13,2026-11-20 19:36,design events,ten candidate hypotheses proposed,repository commit b0970fe
+14,2026-11-20 19:47,design events,registry frozen (hypotheses.md hash),repository commit 6f05e11
+15,2026-11-20 19:57,run progress,"run closes: 1,699 of 1,731 recordings transcribed",repository commit fe3aeff
+16,2026-11-20 20:09,hold-out contacts,run report with position heat map of every creator,repository commit fb188fb
+17,2026-11-20 20:26,public outputs,findings dashboard first published,site repository commit 21e302b
+18,2026-11-20 20:38,design events,H3 procedure frozen,repository commit 5b05499
+19,2026-11-20 20:39,hold-out contacts,H3 run opens every English hold-out transcript,repository commit ccbd62f
+20,2026-11-20 20:39,results,"H3 result: passes registered rule, interval includes 0",repository commit ccbd62f
+21,2026-11-20 20:39,design events,A5 stricter verdict added (after the H3 result),repository commit ccbd62f
+22,2026-11-20 20:49,design events,A6: H3 dropped by the owner,repository commit 493658b
+23,2026-11-20 21:26,results,"bridge result: word measures agree, timing differs",repository commit 2d020f4
+24,2026-11-20 21:28,public outputs,dashboard results tab (H3 'supported by the registered rule'),site repository commit 507a2e6
+25,2026-11-20 21:34,design events,A7: second-round panel gets control and budget,repository commit e17272c
+26,2026-11-20 22:00,hold-out contacts,panel coverage script loads ~415 hold-out metadata files,time stated in the project's record
+27,2026-11-20 22:32,design events,A3 change: budget 120 USD,repository commit 0b83f5a
+28,2026-11-20 22:45,design events,A8 no human check; A9 H8 dropped,time stated in the project's record; committed 6deecb8
+29,2026-11-20 22:50,design events,A11 verification by language models,time stated in the project's record; committed 06a4431
+30,2026-11-20 23:07,hold-out contacts,TABLE whitelisted metadata extraction (planned),time stated in the project's record
+31,2026-11-20 23:10,design events,selection rule stated; budget becomes a warning,time stated in the project's record; committed 85a4a7e
+32,2026-11-21 00:30,design events,freeze-1 decisions: two instruments failed gates,time stated in the project's record
+33,2026-11-21 00:36,public outputs,public outputs reduced to distributions,repository commit 9d2484d
+34,2026-11-21 00:50,design events,lead decides under the owner's delegation,time stated in the project's record

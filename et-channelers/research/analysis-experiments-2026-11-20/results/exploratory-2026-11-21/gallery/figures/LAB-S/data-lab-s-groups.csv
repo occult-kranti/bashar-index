@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-s-sentence-codes.csv (printed cells only).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+units,row,mean,lo95,hi95
+all coded units,world claim (Q1),0.234,0.198,0.273
+all coded units,practice and feeling (Q4 to Q6),0.301,0.268,0.336
+all coded units,neither,0.465,0.431,0.500
+units that end at a sentence mark,world claim (Q1),0.234,0.198,0.273
+units that end at a sentence mark,practice and feeling (Q4 to Q6),0.293,0.259,0.329
+units that end at a sentence mark,neither,0.473,0.439,0.510
+cut units (no sentence mark at the end),world claim (Q1),0.233,0.194,0.276
+cut units (no sentence mark at the end),practice and feeling (Q4 to Q6),0.325,0.288,0.362
+cut units (no sentence mark at the end),neither,0.441,0.404,0.480

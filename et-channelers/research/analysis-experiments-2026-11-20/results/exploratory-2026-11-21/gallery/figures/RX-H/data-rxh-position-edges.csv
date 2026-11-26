@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# RX-H position: relative rate of the frame sub-patterns in the first and the last tenth of running time; source HOLD2/RX-H-position-edges.csv (package HOLD2, public).
+# Interval level: 90% creator-bootstrap percentile interval (2,000 draws); pointwise, no family-wise control. Cue counts.
+# Hold-out creator counts are printed by the package as '5 or more'.
+sub_pattern,group,position,creators_5plus_hits,relative_rate,lo90,hi90,status
+A2 greeting,seen,first tenth,43,8.1854,7.4081,9.0196,
+A3 presenter sign-off,seen,first tenth,34,,,,not released (dominated by fewer than 5 creators)
+A1 own-name introduction,seen,first tenth,23,8.0631,6.8587,9.331,
+A2 greeting,hold-out,first tenth,5 or more,6.6162,4.7682,8.3788,
+A3 presenter sign-off,hold-out,first tenth,5 or more,0.0,0.0,0.0,
+A1 own-name introduction,hold-out,first tenth,,,,not released: fewer than 5 creators with 5 or more hits
+A2 greeting,seen,last tenth,43,0.5667,0.2311,1.0363,
+A3 presenter sign-off,seen,last tenth,34,9.8034,9.1484,10.4267,
+A1 own-name introduction,seen,last tenth,23,1.0104,0.3068,1.8596,
+A2 greeting,hold-out,last tenth,5 or more,1.6067,0.4813,3.1671,
+A3 presenter sign-off,hold-out,last tenth,5 or more,10.4902,9.4841,11.383,
+A1 own-name introduction,hold-out,last tenth,,,,not released: fewer than 5 creators with 5 or more hits

@@ -6,6 +6,9 @@
 %   Appendix B (writer's cut 2, outline cut 6), where its float now sits; H5's power left to Appendix B.
 % Every number is a macro. Projections are stated against the minimum in prose; the plotted values stay in the generated
 %   figure. tab:hypotheses is hand-written from registry design text and macros; tab:results is in Appendix B.
+% Release pass 2 (2026-11-25, lead's decision D54): the paragraph "Exploratory outputs" of 6.3 points to the round's
+%   outputs with a main-text place, by id (\ExpMainReported, \ExpMainNotRun, \ExpRelease from the builder, which reads
+%   the round's status table); the main text is not otherwise expanded.
 
 \section{The first round}
 \label{sec:tests}
@@ -98,5 +101,12 @@ Its registered rule says ``supported'' but holds creators fixed: under a creator
 \HThreePlaceboSeventeen\% of sets against a nominal 0.5\%. Power at its smallest effect is about
 \HThreePowerSeventeen\%; a passing estimate would exaggerate it about \HThreeTypeM{} times \cite{gelman2014beyond}. Its
 interval includes zero, which A5, adopted afterwards, rules out for any later ``supported''. Not determined at the
-creator level and exploratory, H3 was withdrawn by the owner (A6). It enters Holm at $p = 1$; its creator-level rerun is
-not yet produced.
+creator level and exploratory, H3 was withdrawn by the owner (A6). It enters Holm at $p = 1$; its creator-level rerun,
+H3-X, is exploratory (below).
+
+\paragraph{Exploratory outputs.} The reporting plan's exploratory round ran after these tests, on code written after
+freeze 2, and is published in its own release (\ExpRelease; Appendix~\ref{app:outputs}), not in this paper. Its outputs
+with a main-text place are \ExpMainReported; \ExpMainNotRun{} were not run, each with its reason there. They are
+exploratory and not tests of H1 to H10; those that use labels are model-coded and not checked by a person, and hold-out
+outputs stand beside the seen ones, never pooled. Leaving them out of the main text is a deviation (less prominent than
+registered).

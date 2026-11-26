@@ -1,0 +1,7 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# TC noise floors: Aitchison distance per window pair (median and quartiles, pooled over window pairs, not creator-balanced); seen creators, stage 1
+comparison,role,pairs,p25,median,p75,pooling
+"Same window, two runs of the small model",noise floor,386,0.465,4.431,7.206,pooled over window pairs (not creator-balanced)
+"Same window, small vs middle model",noise floor,386,4.402,6.639,31.418,pooled over window pairs (not creator-balanced)
+Two windows of the same creator,scale reference,894,7.667,9.517,32.306,pooled over window pairs (not creator-balanced)
+Two windows of different creators,scale reference,3961,8.782,9.991,33.577,pooled over window pairs (not creator-balanced)

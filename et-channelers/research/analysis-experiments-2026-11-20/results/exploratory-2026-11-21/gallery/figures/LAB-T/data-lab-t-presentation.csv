@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-t-title-codes.csv (printed cells only; rows the package withheld are marked in the figure, not drawn).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+base,row,mean,lo95,hi95
+"every listed title (1,411 titles; primary)",P1 carries a source's words or message,0.271,0.199,0.349
+"every listed title (1,411 titles; primary)",P2 a source named only as a topic,0.141,0.105,0.181
+"every listed title (1,411 titles; primary)","P0 no source named, no P1 cue",0.548,0.477,0.616
+"every listed title (1,411 titles; primary)",P9 cannot tell from the titles,0.041,0.013,0.076
+"titles of recordings with a transcript (1,293; beside)",P1 carries a source's words or message,0.268,0.200,0.343
+"titles of recordings with a transcript (1,293; beside)",P2 a source named only as a topic,0.144,0.107,0.185
+"titles of recordings with a transcript (1,293; beside)","P0 no source named, no P1 cue",0.547,0.478,0.615
+"titles of recordings with a transcript (1,293; beside)",P9 cannot tell from the titles,0.040,0.013,0.078

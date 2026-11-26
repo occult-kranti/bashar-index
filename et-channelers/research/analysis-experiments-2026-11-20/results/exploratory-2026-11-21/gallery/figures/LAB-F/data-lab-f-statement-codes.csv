@@ -1,0 +1,28 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-f-forecasts.csv, sections scope, checkability, commitment and time expressions (printed cells only; the 'cannot tell' rows of checkability and the single time-expression kinds D1 to D8 are in the source, not drawn here).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+# Bases: scope over F1 statements; checkability and commitment over coded statements; time expressions over statements read by the time-expression step.
+panel,row,mean,lo95,hi95
+Scope (share of F1 statements),"planet, humankind or cosmos",0.334,0.301,0.371
+Scope (share of F1 statements),"a named country, region or place",0.023,0.017,0.030
+Scope (share of F1 statements),"a named person, body or people",0.190,0.168,0.213
+Scope (share of F1 statements),non-human beings acting in public,0.107,0.085,0.132
+Scope (share of F1 statements),unnamed actors or systems,0.301,0.271,0.333
+Scope (share of F1 statements),cannot tell,0.044,0.036,0.053
+Checkability: part named (share of coded statements; middle model's record),a time window,0.259,0.207,0.309
+Checkability: part named (share of coded statements; middle model's record),a place,0.030,0.021,0.040
+Checkability: part named (share of coded statements; middle model's record),a named actor,0.046,0.033,0.060
+Checkability: part named (share of coded statements; middle model's record),an observable outcome,0.081,0.065,0.099
+Checkability: part named (share of coded statements; middle model's record),a quantity,0.022,0.016,0.028
+Checkability: part named (share of coded statements; middle model's record),at least one part,0.367,0.317,0.417
+Commitment (share of coded statements),bare,0.759,0.729,0.789
+Commitment (share of coded statements),hedged,0.146,0.120,0.175
+Commitment (share of coded statements),conditional,0.079,0.066,0.094
+Commitment (share of coded statements),of which on what people do,0.046,0.035,0.059
+Commitment (share of coded statements),of which on outside events,0.033,0.027,0.039
+Commitment (share of coded statements),boosted,0.011,0.007,0.015
+Commitment (share of coded statements),cannot tell,0.004,0.002,0.006
+Commitment (share of coded statements),committed (separate yes/no code),0.771,0.740,0.800
+Time expressions (share of statements read by the step),at least one bounded expression,0.324,0.271,0.376
+Time expressions (share of statements read by the step),only unbounded expressions,0.142,0.117,0.170
+Time expressions (share of statements read by the step),no time expression found,0.534,0.485,0.581

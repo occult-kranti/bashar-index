@@ -1,0 +1,15 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# TIME horizons, confirmed dates (TABLE panel B), model-coded, not checked by a person; bins merged to 5+ creators; creator-equal share (mean over creators of each creator's share) with 90% creator-bootstrap interval; one_creator_half_or_more flags a bar half or more of whose value comes from one creator.
+bin,creator_equal_share,ce_ci90_low,ce_ci90_high,one_creator_half_or_more
+−11 or earlier,0.0835,0.0418,0.1365,no
+−10 to −6,0.0113,0.0045,0.0195,no
+−5 to −3,0.0144,0.0049,0.0257,no
+−2 to −1,0.0306,0.0096,0.0576,no
+0,0.1862,0.1216,0.2539,no
+1,0.3211,0.2319,0.4138,no
+2,0.0945,0.0436,0.1527,no
+3,0.0365,0.0095,0.0686,no
+4,0.1181,0.0623,0.18,no
+5 to 6,0.0366,0.0112,0.0674,no
+7 to 23,0.0392,0.0075,0.0762,no
+24 or later,0.0277,0.0064,0.0543,no

@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package E, public table e6-formula-coverage-by-voice.csv (results/exploratory-2026-11-21/E/e6-formula-coverage-by-voice.csv after the release review).
+# Interval level: 90% t interval over creators and 90% creator bootstrap (2,000 draws, percentile), as in the source table.
+# E6: formula coverage by voice, within creator (claimed-voice span minus own-voice span), among creators with a scored span in both voices; seen creators; model-coded voice labels (voice revision 3), not checked by a person. No equivalence margin was set: the reading is 'no clear difference', not equivalence.
+# Coverage: share of a span's tokens inside a 4-word run found in 3 or more of the creator's other recordings (leave one recording out; names masked). Excess: coverage minus the median coverage by a matched other creator's inventory (200 draws). Own formulas: runs in the inventories of 10 or more creators removed.
+measure,row_group,creators,claimed_minus_own,t90_low,t90_high,boot90_low,boot90_high
+"Formula coverage, claimed minus own voice","Middle-model subset, own formulas (primary)",19,-0.01,-0.0374,0.0174,-0.0359,0.0122
+"Formula coverage, claimed minus own voice","Middle-model subset, all runs",19,-0.0124,-0.0423,0.0174,-0.04,0.0116
+"Formula coverage, claimed minus own voice","Small model, own formulas",45,-0.0025,-0.0144,0.0094,-0.0143,0.0085
+"Formula coverage, claimed minus own voice","Small model, all runs",45,-0.0063,-0.0204,0.0077,-0.0206,0.007
+"Excess over a matched other creator, claimed minus own voice","Middle-model subset, own formulas (primary)",19,-0.009,-0.0362,0.0181,-0.0366,0.0134
+"Excess over a matched other creator, claimed minus own voice","Middle-model subset, all runs",19,-0.0045,-0.0313,0.0223,-0.0317,0.0178
+"Excess over a matched other creator, claimed minus own voice","Small model, own formulas",45,-0.0019,-0.0137,0.0098,-0.0133,0.0095
+"Excess over a matched other creator, claimed minus own voice","Small model, all runs",45,-0.0013,-0.0126,0.0099,-0.0121,0.0094

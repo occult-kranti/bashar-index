@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-GS: where seams fall (share of seams inside a pause of 0.3 s or more, in a shorter gap, inside a word).
+# Source public file: BR-GS/public/br-gs-grid-shift-summary.csv. Base: 40 seen recordings of 40 creators.
+# Interval level: the 95% intervals (2,000 resamples of the recordings) are in the source file; the figure shows point values only.
+# Drawn by plot_br.py (group B-BR), SHA-256 47a09ba3f3dbd224e2d4a4063353b70f9d72809bf090aa058eee039e5f151433.
+decode and grid,inside_pause_0.3s_or_more,gap_under_0.3s,inside_a_word
+"run-grid decode, its own grid",0.3524,0.6476,0.0
+"shifted decode, its own grid",0.3561,0.6439,0.0
+"run-grid decode, other grid (placebo)",0.2227,0.0559,0.7214
+"shifted decode, other grid (placebo)",0.2247,0.0631,0.7122

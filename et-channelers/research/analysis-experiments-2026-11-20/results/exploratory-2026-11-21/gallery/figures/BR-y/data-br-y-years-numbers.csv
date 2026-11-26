@@ -1,0 +1,23 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/br-y-years-numbers.csv
+# Interval level: 95% Clopper-Pearson (pooled share of items matched)
+# BR-y: years and numbers of the run's recognizer text (raw variant) against other texts of the same seen recordings. Part c: BR-b pairs, every row an agreement of two machines, not an error rate. Part a: years of the page text (title, description, chapters, tags) found in the transcript. Exact match (the primary): the same digit string; normalised match through wa-norm-v2 (chosen after the result).
+# Rows not released or not run carry their public reason and no number. Creator counts as printed in the source.
+part,source,items,match,creators_with_items,items_n,matched,share_matched,low_95,high_95,creator_equal_share,status
+c (BR-b pairs),platform automatic captions,years,exact,fewer than 5,,,,,,,fewer than 5 creators
+c (BR-b pairs),platform automatic captions,years,normalised,fewer than 5,,,,,,,fewer than 5 creators
+c (BR-b pairs),platform automatic captions,numbers,exact,all but fewer than 5 of 11,,,,,,,not published (misses from fewer than 5 creators)
+c (BR-b pairs),platform automatic captions,numbers,normalised,all but fewer than 5 of 11,,,,,,,not published (misses from fewer than 5 creators)
+c (BR-b pairs),publisher transcripts of undeclared origin,,,,,,,,,,fewer than 5 creators
+c (BR-b pairs),"earlier text, same recognizer and settings",years,exact,16,,,,,,,not published (misses from fewer than 5 creators)
+c (BR-b pairs),"earlier text, same recognizer and settings",years,normalised,all but fewer than 5 of 16,,,,,,,not published (misses from fewer than 5 creators)
+c (BR-b pairs),"earlier text, same recognizer and settings",numbers,exact,24,270,270,1.0,0.986,1.0,1.0,reported
+c (BR-b pairs),"earlier text, same recognizer and settings",numbers,normalised,24,270,270,1.0,0.986,1.0,1.0,reported
+c (BR-b pairs),"earlier text, larger multilingual model",years,exact,fewer than 5,,,,,,,fewer than 5 creators
+c (BR-b pairs),"earlier text, larger multilingual model",years,normalised,fewer than 5,,,,,,,fewer than 5 creators
+c (BR-b pairs),"earlier text, larger multilingual model",numbers,exact,fewer than 5,,,,,,,fewer than 5 creators
+c (BR-b pairs),"earlier text, larger multilingual model",numbers,normalised,fewer than 5,,,,,,,fewer than 5 creators
+c (BR-b pairs),references made or edited by people,,,,,,,,,,not run: no seen reference known to be made by people
+a (page text),years written on the page,years,exact,57,505,159,0.3149,0.275,0.357,0.3314,reported
+a (page text),years written on the page,years,normalised,57,,,,,,,not released beside the exact row (differs from it in fewer than 5 creators)
+a (page text),page numbers other than years,,,,,,,,,,not run: no rule to tell spoken numbers

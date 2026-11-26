@@ -2,7 +2,9 @@
 % Complete rewrite of 2026-11-21 (PaperOrchestra-style section writer; clock: date -u 23:03 UTC), from outline.json
 %   (section_plan B.1 to B.12, plotting_plan, attack_response LOG-1, PEND-1, RES-1, SCOPE-1, LIT-1) and the raw
 %   materials; the earlier text of this file served as source only. Numbers only through findings/*.tex macros.
-% Pending macros (\Pend...) appear only in the second paragraph of B.10 and in floats/tab_outputs.tex.
+% Pending macros (\Pend...) appear only in the second paragraph of B.10. Release pass 2 (2026-11-25): the builder fills
+%   all twelve from the exploratory release (findings/pending.tex), and tab_outputs counts the status at report time from
+%   the release's status table; B.10 cites the release folder (\ExpRelease).
 % Floats (GENERATED bodies; captions and labels here): tab:freeze, tab:status, tab:status-labels, tab:gates,
 %   tab:gates-b, tab:ka, tab:ka-b, tab:doubleread, tab:crossvendor, tab:programme, tab:hthree, fig:hthree, fig:power,
 %   fig:plasmode, tab:results (moved here from tests.tex), tab:results-detail, tab:results-detail-b, tab:results-rows,
@@ -24,7 +26,7 @@ This appendix is the record behind Sections~\ref{sec:protocol} to~\ref{sec:devia
 (\ref{app:status} to~\ref{app:verification}); the programme and H3 (\ref{app:programme}); the first-round results
 (\ref{app:results}); deviations and hold-out contacts (\ref{app:deviations}); money (\ref{app:money}); exploratory
 outputs (\ref{app:outputs}); external processing (\ref{app:external}); and literature searches (\ref{app:searches}).
-Every label is model-coded and was not checked by a person (A8); agreement between models is agreement, not accuracy,
+Every label is model-coded and was not checked by a person (A8); agreement between models is agreement, not a measure of correctness,
 and shows reliability, not validity. All of it is exploratory (registry A2) except the registered rows of H3 and of the
 first round. Times are UTC on 20 or 21 November 2026; ``(registry 03:08)'' points to the registry row of that time.
 
@@ -225,7 +227,7 @@ reads none, rule, model or machine text), so no row supports a claim of accuracy
 model or machine text); reliability with $n$, interval and source item; bridge verdict between the two recognizer
 models; sensitivity to the decoding grid; uses allowed in this paper. Rows of the paper review's status table (D5),
 updated with the anchors, the grid shift, the gates, the known-answer battery, the cross-vendor reader and the second
-reading; every update is logged. No row was checked by a person; agreement between machines is not accuracy.}
+reading; every update is logged. No row was checked by a person; agreement between machines is not a measure of correctness.}
 \label{tab:status}
 \end{table*}
 
@@ -256,8 +258,8 @@ checkability part leaves the score; fewer than four passing parts leave the time
 
 \paragraph{Voice.} Revision 3 passes gates C (\VoiceGateC) and D (claimed, own and other, \VoiceGateDKappa; embodied,
 own and other, \VoiceGateDEmbodied). Its relayed row fails (\VoiceRelayedKappa, lower bound \VoiceRelayedLower, against
-0.60 and 0.50), and the declared merge, frame-only relay reported apart, does worse (\VoiceFrameOnlyKappa, lower bound
-\VoiceFrameOnlyLower), so by plan 3.4 H1, H4 and H6 would not run. At 02:55 the lead merged relayed into claimed voice
+0.60 and 0.50), and the declared merge, frame-only relay reported apart, fails too (\VoiceFrameOnlyKappa, lower bound
+\VoiceFrameOnlyLower; recounted by creator on the gate sample, whose creators are all seen), so by plan 3.4 H1, H4 and H6 would not run. At 02:55 the lead merged relayed into claimed voice
 instead: H1 and H6 use the merged voice, H4's primary stays embodied with the merged voice as a secondary row (registry
 04:55 (a)), and relayed-only rows carry no verdict. The deviation table classes the merge looser; A10's record calls it
 stricter and lists H1 and H4. The label moves more without punctuation and case than between runs
@@ -321,7 +323,7 @@ in the robustness block; a driver outside the freeze ran the frozen report body 
 accepted (19:30 (1); a contact in Table~\ref{tab:contacts}). The rewording arms of HR never ran. The large model also
 re-read \ChkHoldoutStatements{} hold-out statements for checkability (\ChkHoldoutStamp); the results file prints this
 agreement for the time window, named actor and observable outcome and withholds place and quantity under its
-five-creator rule. It is agreement between two models of one vendor, not accuracy.
+five-creator rule. It is agreement between two models of one vendor, not a measure of correctness.
 
 \begin{table*}[tp]
 \centering
@@ -336,7 +338,10 @@ on the hold-out reliability sample are in the results file (Appendix~\ref{app:ga
 E and the large model's re-reading) is printed only where its positive code comes from 5 or more creators in each
 reading (a figure over several codes: 5 or more creators in all) and the creators with an item the readings code
 differently are none or 5 or more (the lead's rule of 22:33); a figure that fails reads ``not published (fewer than 5
-creators)'', its verdict kept. Valid answers are given as shares. Model-coded; agreement, not accuracy.}
+creators)'', its verdict kept. Valid answers are given as shares. A gate A or B share is printed only where its misses
+come from no creator or from 5 or more (recount by creator of \RecountStamp; a share near 1 is never printed as a
+bound); a share that fails reads ``--'' and its measure says ``not published (misses from fewer than 5 creators)'', or
+that its misses were not recounted by creator, its verdict kept. Model-coded; agreement, not a measure of correctness.}
 \label{tab:gates}
 \end{table*}
 
@@ -347,7 +352,8 @@ creators)'', its verdict kept. Valid answers are given as shares. Model-coded; a
 \caption{Every gate on the gate sample G, part 2 (forecasts continued, sentence codes, titles; columns as in part 1).
 Checkability and the title codes are kept below their floors by the owner's exception (A10.5). Agreement figures follow
 the lead's rule of 22:33 as in part 1; a figure that fails it reads ``not published (fewer than 5 creators)'', its
-verdict kept. Model-coded; agreement, not accuracy.}
+verdict kept; gate A and B shares follow the recount by creator of \RecountStamp{} as in part 1. Model-coded; agreement,
+not a measure of correctness.}
 \label{tab:gates-b}
 \end{table*}
 
@@ -358,20 +364,24 @@ verdict kept. Model-coded; agreement, not accuracy.}
 registry does not record who wrote the planted passages. The register rewrites (K3) were made by a model of the
 labelling models' family and failed the code checks too often, so the elevated and plain register arms are void by
 their own rule. If constructed texts are easier than speech, which was not tested, recovery shares are an upper bound
-for the corpus, not accuracy on it, and error shares are lower bounds; only differences between cells are interpreted
-(Tables~\ref{tab:ka} and~\ref{tab:ka-b}). On voice revision 2 the small model recovered \KaKoneRSmall{} of planted
+for the corpus, not a measure of correctness on it, and error shares are lower bounds; only differences between cells are interpreted
+(Tables~\ref{tab:ka} and~\ref{tab:ka-b}). A share whose misses come from 1 to 4 creators of the constructed items is not
+published, and a rate of false keeps whose non-zero values do is not either (recount by creator of \RecountStamp); the
+tables name each such cell. On voice revision 2 the small model recovered \KaKoneRSmall{} of planted
 relayed passages; its claimed label spilled past returns to own voice by \KaSpillE{} after embodied and \KaSpillR{}
 after relayed frames (against base); it handled an own offer inside a claimed passage as required in a share of
-\KaKfourVSmall; and it labelled interviews as conversation in a share of \KaCvSixSmall, against \KaCvSixMiddle{} for the
-middle model. On revision 3, the frozen form (complete at 09:10), it recovers \KaKoneRSmallRevThree{} of relayed
-passages (90\% \KaKoneRSmallRevThreeLo{} to \KaKoneRSmallRevThreeHi), spills \KaSpillERevThree{} and
-\KaSpillRRevThree{} (90\% \KaSpillRRevThreeLo{} to \KaSpillRRevThreeHi), and reads \KaKfourVSmallRevThree{} on the
-own-offer arm, \KaCvSixSmallRevThree{} on the interview arm and \KaXFourSmallRevThree{} on the subject-change arm;
-constructed regions are matched at \KaRegionsSmallRevThree{} (middle model \KaRegionsMiddleRevThree). The middle model,
-the hold-out record, stays at \KaMiddleRevThreeLo{} to \KaMiddleRevThreeHi{} on the voice arms, and the small model
-still trails it on some arms. The canary gates (VG-3) pass for voice, asks and forecasts. Planted asks are found at
-\KaAsksFound{} and planted non-asks kept at \KaNonAsks{} (union find); forecast parts match the constructed answer at
-\KaFcPartsLo{} to \KaFcPartsHi; sentence codes and titles are at ceiling on prototypes, which carries no information.
+\KaKfourVSmall; and it labelled interviews as conversation in a share of \KaCvSixSmall{} (the middle model's share is
+not published: its misses come from fewer than 5 creators). On revision 3, the frozen form (complete at 09:10), it
+recovers \KaKoneRSmallRevThree{} of relayed passages (90\% \KaKoneRSmallRevThreeLo{} to \KaKoneRSmallRevThreeHi) and
+spills \KaSpillERevThree{} and \KaSpillRRevThree{} (90\% \KaSpillRRevThreeLo{} to \KaSpillRRevThreeHi); its shares on
+the own-offer, interview and subject-change arms are not published, as their misses come from fewer than 5 creators.
+Constructed regions are matched at \KaRegionsSmallRevThree{} (middle model \KaRegionsMiddleRevThree). The middle model,
+the hold-out record, is not given as a range over the voice arms, because some arms' misses come from fewer than 5
+creators, and the small model still trails it on some arms. The canary gates (VG-3) pass for voice, asks and
+forecasts. Planted asks are found at \KaAsksFound{} (union find); the rate at which planted non-asks were kept is not
+published, as its non-zero values come from fewer than 5 creators; forecast parts are given part by part, without a
+range, as some parts' misses come from fewer than 5 creators; sentence codes and titles are at ceiling on prototypes,
+which carries no information.
 Stated confidence is near ceiling, and the small model is over-confident. After the critic's revision the bare ``they
 say that'' relay frame is still mostly not a forecast of record (\KaBareFrameSmall{} and \KaBareFrameMiddle{} of
 \KaBareFrameN{} items, small and middle models); the known answer was not changed afterwards.
@@ -415,10 +425,12 @@ bought.
 \caption{Known-answer battery, part 1: share of planted answers recovered per arm by the small and the middle model,
 with creator-clustered 90\% intervals ($n$ items, $c$ creators of the constructed items). Texts constructed from
 development windows with planted answers; register rewrites made by a model of the labelling models' family. If
-constructed texts are easier than speech (not tested), recovery shares are an upper bound for the corpus, not accuracy
+constructed texts are easier than speech (not tested), recovery shares are an upper bound for the corpus, not a measure of correctness
 on it, and error shares (spill, non-asks kept, losses after cue deletion) are lower bounds; only differences between
-cells are interpreted. Voice rows on revision 3, the frozen form, then on revision 2, on the same items. Model-coded;
-not checked by a person.}
+cells are interpreted. Voice rows on revision 3, the frozen form, then on revision 2, on the same items. A share is
+printed only where its misses come from no creator or from 5 or more, and a rate of false keeps only where its non-zero
+values do (recount by creator of \RecountStamp); otherwise the cell reads ``not published'' with its reason. The spill,
+K2 and twin rows are differences between cells. Model-coded; not checked by a person.}
 \label{tab:ka}
 \end{table*}
 
@@ -427,7 +439,8 @@ not checked by a person.}
 \small
 \input{floats/tab_ka_b.tex}
 \caption{Known-answer battery, part 2 (voice on revision 2 continued, the void register arms, asks, forecast parts,
-sentence codes and titles; columns as in part 1). Arms at ceiling on prototypes carry no information.}
+sentence codes and titles; columns as in part 1, under the same recount). Arms at ceiling on prototypes carry no
+information. The made-up title lists belong to no creator, so their cells stay.}
 \label{tab:ka-b}
 \end{table*}
 
@@ -454,8 +467,9 @@ of \VtrFrameUnits{} units of \VtrRecordings{} recordings (sampling weights, not 
 Anthropic reader against each OpenAI reader and their stored majority, kappa with its 90\% creator-bootstrap interval
 (coverage not audited; such intervals covered below nominal at \MinCreatorsRegistered{} to \HThreeCreators{} creators
 in this project's audit) and unweighted kappa; the rule and its outcome; sensitivity rows, which decide nothing; the
-stratum where the small and middle models' first runs disagree; and where the frame weight sits. Model-coded; not
-checked by a person.}
+stratum where the small and middle models' first runs disagree; and where the frame weight sits. A cell that the public
+form of VER-3R in the exploratory release withholds (pairs rule and its joint audit) reads n.p., with its reason below
+the table. Model-coded; not checked by a person.}
 \label{tab:crossvendor}
 \end{table}
 
@@ -554,7 +568,8 @@ A10.5); the first-round result. Medians of projections, not counts of creators.}
 \input{floats/tab_hthree.tex}
 \caption{H3 restated at the creator level. A: the registered rule on the hold-out (\HThreeCreators{} creators,
 \HThreeRecordings{} recordings). B and D: arithmetic on the published hold-out summary, not the frozen code's
-creator-level rows, which wait for the creator-level rerun (not yet produced; Appendix~\ref{app:outputs}). C: seen
+creator-level rows, which the creator-level rerun (H3-X) gives in the exploratory release (Appendix~\ref{app:outputs}),
+beside the seen rows and never pooled with them. C: seen
 creators, recomputed with the frozen rules. E and F: calibration, coverage, power and exaggeration from the calibration
 study's placebo on seen creators; a passing estimate at the smallest effect would exaggerate it about \HThreeTypeM{}
 times (normal model). G: the restated verdict.}
@@ -647,8 +662,9 @@ depended on which model labelled.
 \paragraph{Wording of verification.} A supported or refuted verdict would read ``verified by a third model, on
 known-answer texts and by a reader of another vendor''. The file prints these figures per hypothesis because the
 wording rule requires them, though no verdict needs them in this round: the cross-vendor kappa \VtrKappa, the middle
-model's known-answer figures \KaRegionsMiddleRevThree{} (constructed regions) and \KaMiddleRevThreeLo{} to
-\KaMiddleRevThreeHi{} (voice arms), and, in the file only, the third model's voice figure and the arm-level recalls.
+model's region recovery on constructed texts \KaRegionsMiddleRevThree{} (the range over the voice arms is not
+published, as some arms' misses come from fewer than 5 creators), and, in the file only, the third model's voice figure
+and the arm-level recalls that pass the same recount (the file's correction of \RecountStamp).
 Uninformative results leave the headline claims; their rows stay (A2). The counts written before the outcomes: the
 recognizer rule applied as registered (English-only model); seen primary \NSeen{} creators and \NSeenFiles{}
 recordings, of which \NSeenEnglishOnly{} were kept and \NSeenOtherModel{} excluded (unknown model); hold-out primary
@@ -717,7 +733,9 @@ for every result not determinable or not run for want of an instrument) and the 
 \paragraph{The deviation table.} Tables~\ref{tab:deviations} to~\ref{tab:deviations-f} list \NDeviationRows{}
 deviations from the frozen registry, each with its time, scope, what was done, what was known then and its direction,
 from three sources with no row twice: the paper review's table (to 00:50), the registry's own table (A10 Part 8, rows
-from 01:10) and the registry rows written after that table was last brought up to date (16:06 to 23:34). Classes:
+from 01:10) and the registry rows written after that table was last brought up to date (16:06 to 23:34). The
+exploratory round's \NDevRoundRows{} rows, which the registry's table holds, concern outputs published in the
+exploratory release and not here, so they are one summary row, the last, classed exploratory. Classes:
 \emph{stricter}, a verdict can only become harder to reach; \emph{guarded}, a change that could move a result toward
 support, covered by A10's guard; \emph{neutral}, no effect on any verdict; \emph{looser}, a change that can make a
 verdict easier to reach, outside the guard; \emph{mixed}, stricter for some uses and looser for others, or of a
@@ -764,7 +782,11 @@ each count reached 5. Hold-out transcript windows went to the OpenAI
 API for the frozen instruments only. The registry records that no contact produced a statistic about a registered
 hypothesis on hold-out text other than the registered tests run by their frozen procedures, and the paper prints no
 number from the contacts. The \NCloudOnlyObjects{} cloud-only metadata objects are to be read once after freeze 2, in
-one logged read-only pass (registry 03:08); no such read is recorded.
+one logged read-only pass (registry 03:08); no such read is recorded. From 23:17 the exploratory round's hold-out
+runs, its reads of private derived files of the hold-out or the other group, and some text searches that scanned such
+files were contacts as well, each in the log with its time (some logged late, under the lead's rule that a read of any
+file holding such values is a contact); none fed a registered test, and an output made after one carries that flag in
+the release.
 
 \begin{table*}[tp]
 \centering
@@ -775,7 +797,8 @@ part 1 of 6: row; UTC of the change; scope; what was done against the registry; 
 Appendix~\ref{app:glossary}); direction as recorded; class (defined in Appendix~\ref{app:deviations}).
 \NDeviationRows{} rows: the paper review's table (to 00:50), the registry's deviation table (A10 Part 8, entered
 \ATenStamp; rows from 01:10, its rows of contacts, of the freeze-1 entry and of corrections of the record included) and
-the registry rows written after that table was last brought up to date (16:06 to 23:34), none twice. The relayed-voice
+the registry rows written after that table was last brought up to date (16:06 to 23:34), none twice; the last row
+stands for the \NDevRoundRows{} rows of the exploratory round in the registry's table. The relayed-voice
 merge of 02:55 is classed looser here, against A10's own record (stricter), and applies to H1 and H6 (registry 04:55
 (a)), where A10 lists H1 and H4.}
 \label{tab:deviations}
@@ -842,12 +865,15 @@ exploratory round included; the deviations are in Table~\ref{tab:deviations}.}
 \small
 \input{floats/tab_contacts.tex}
 \caption{Every contact with hold-out material outside a procedure frozen for it, before and after the analysis freeze,
-as the registry's contact log records it: time, what touched the hold-out, what was read or written, and status. Counts
-of recordings, durations, dates and languages from the run ledger are not contacts. The registry records that no
-contact produced a statistic about a registered hypothesis on hold-out text other than the registered tests run by
-their frozen procedures (H3; then H1, H2, H4, H5, H6 and H9).}
+the exploratory round's included, as the registry's contact log records it (part 1 of \NContactParts): time, what
+touched the hold-out, what was read or written, and status. Counts of recordings, durations, dates and languages from
+the run ledger are not contacts. The registry records that no contact produced a statistic about a registered
+hypothesis on hold-out text other than the registered tests run by their frozen procedures (H3; then H1, H2, H4, H5,
+H6 and H9).}
 \label{tab:contacts}
 \end{table*}
+% Release pass 2 (2026-11-25): parts 2 and on of tab:contacts, as many as fill a page each (GENERATED by the builder)
+\input{floats/tab_contacts_more.tex}
 
 \subsection{Money}
 \label{app:money}
@@ -883,18 +909,26 @@ whatever it shows. It was registered by hash at \PlanRegisteredStamp, after most
 built, as its addendum 1 states, naming them; addendum 2 records the choices made after results. Table~\ref{tab:outputs}
 counts the outputs by status and place. The prediction timeline reports what was predicted and whether an outcome is
 observable, never whether a prediction came true; sources outside the selection rule (deceased persons, a higher self)
-are separate rows. A first frozen version stays the version of record, and revisions are rows. The plan's exploratory
-round started at 23:17, after the registered tests, on code written after freeze 2 (Appendix~\ref{app:deviations}); no
-output of that round is reported here.
+are separate rows in the plan and are pooled into ``other'' in the release, as each rests on fewer than 5 creators. A
+first frozen version stays the version of record, and revisions are rows. The plan's exploratory round ran after the
+registered tests, from 23:17, on code written after freeze 2 (Appendix~\ref{app:deviations}). Its outputs are published
+in the exploratory release (\ExpRelease: a folder per package, the items built before the round, a figure gallery and
+the status table, one row per output with its status, reason, place, time of run and code hash), not in this paper; of
+the \ExpOutputs{} outputs in that table, \ExpReported{} are reported and \ExpNotRun{} were not run, each with its reason
+(Table~\ref{tab:outputs}). Outputs made after a hold-out contact carry that flag there, as plan section 5 requires.
 
-This paragraph alone names outputs that do not exist yet. Not yet produced: the seen-creator model-coded descriptions
-made under freeze 1, of voice (\PendLabV), asks (\PendLabA), forecasts with hedge rates by kind, lexical against modal
-(\PendLabF), sentence codes (\PendLabS), titles (\PendLabT) and recording kinds (\PendLabK); the effective number of
-readers, the all-same share and bounds on shared errors (\PendVerDep); a third reader on the gate samples
-(\PendVerAdjG); the word error rate against possibly human-made texts of hold-out and other-group creators, allowed
-after freeze 2 as a logged contact (\PendBrbH); years and numbers against the anchor references (\PendBrY); H3 at the
-creator level on the hold-out with the frozen code, with and without the recordings that overlap the pilot, which can
-never give a confirmatory verdict (\PendHThreeX); and the prediction timeline counts (\PendTlBuild).
+The twelve outputs that this paper's outline held as placeholders are now in the release, each under its id. All are
+exploratory, none is a test of H1 to H10, and those that use labels are model-coded descriptions of seen creators made
+under freeze 1 and not checked by a person. The shares of LAB-V to LAB-K are creator-balanced means with 95\%
+creator-bootstrap intervals; BR-y gives pooled item shares with exact (Clopper--Pearson) 95\% intervals; TL-BUILD gives
+a pooled median; the release gives each output's other rows, bases and withheld cells. Voice: \PendLabV.
+Asks: \PendLabA. Forecasts, with hedge rates by kind, lexical against modal: \PendLabF. Sentence codes: \PendLabS.
+Titles: \PendLabT. Recording kinds: \PendLabK. The effective number of readers, the all-same share and bounds on
+shared errors: \PendVerDep. A third reader on the gate samples: \PendVerAdjG. The word error rate against possibly
+human-made texts of hold-out and other-group creators, allowed after freeze 2 as a logged contact: \PendBrbH. Years
+and numbers against the anchor references: \PendBrY. H3 at the creator level on the hold-out with the frozen code, with
+and without the recordings that overlap the pilot, which can never give a confirmatory verdict: \PendHThreeX. The
+prediction timeline: \PendTlBuild.
 
 \begin{table}[t]
 \centering
@@ -902,9 +936,10 @@ never give a confirmatory verdict (\PendHThreeX); and the prediction timeline co
 \input{floats/tab_outputs.tex}
 \caption{Exploratory outputs of the reporting plan (SHA-256 prefix \PlanShaPrefix) and its addendum 1, counted by
 status (built and reported in full; waiting for first-round labels; waiting for freeze 2; will not run, with its
-reason; runs without labels; waiting for a decision or data; other) and by place (main text; appendix or supplement).
-The plan's status table at report time is not yet produced. The full status table, one row per output with its time of
-run and code hash, is an online supplement.}
+reason; runs without labels; waiting for a decision or data; other) and by place (main text; appendix or supplement),
+and by status at report time in the status table of the exploratory release (\ExpRelease), which also lists the items
+built before the round, the paper review's later list and the outputs that waited for freeze 2, one row per output with
+its time of run and code hash.}
 \label{tab:outputs}
 \end{table}
 

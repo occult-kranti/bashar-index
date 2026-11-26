@@ -1,0 +1,16 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Interim; development creators only.
+# Base: the 48 development creators (seen creators), two sampled recordings each. A count of creators with no sampled recording whose claimed-voice share (word-weighted band midpoints) reaches the threshold; it depends mostly on how many recordings each creator has (two here).
+# Interval level: none (counts).
+# A count is printed only where its set of creators differs from every printed set in 0 or 5 or more creators (nested counts never 1 to 4 apart).
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:02:03Z (UTC, from the clock) by lv_l1.py (sha256 f8b666b02c9ddc6766fa93f3b9c7f33c08c841d16b662df861b37a025e3c0c48) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), closure.py (sha256 6f86c8f0c66a8f0ad3d0c7c67df5d00715de4bd88a2562393a8a91163c549422), release review B-LV (plan P10).
+model,threshold,creators_without,note
+small model (modal kind of five runs; median band),10%,not published (a creator count 1 to 4 from a nested count),
+small model (modal kind of five runs; median band),25%,19 of 48,already public beside LAB-K (LAB/lab-k-beside-rv-l1.csv)
+small model (modal kind of five runs; median band),50%,26 of 48,
+middle model (one run),10%,not published (a creator count 1 to 4 from a nested count),
+middle model (one run),25%,19 of 48,already public beside LAB-K (LAB/lab-k-beside-rv-l1.csv)
+middle model (one run),50%,25 of 48,
+range over the six runs and the three thresholds,10% to 50%,not published (a creator count 1 to 4 from a nested count),
+"each small run, and the strict-quotation and band-edge variants",10% to 50%,not published (neighbouring runs and variants differ in fewer than 5 creators),

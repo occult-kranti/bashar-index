@@ -1,0 +1,46 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: GATES-gates.csv (package GATES)
+# Interval level: 90% intervals (dotted line: only the lower 90% bound is published)
+# Exactly the numbers drawn in fig-gates. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:22Z.
+sample,instrument,gate,measure,value,lo90,hi90,floor,verdict
+G,voice,C,share of words in one group over 3 runs,0.901,0.854,0.942,0.9,pass
+G,voice,D,"claimed / own / other, small v middle, kappa",0.89,0.834,0.933,0.6,pass
+G,voice,D,"embodied / own / other, kappa",0.921,0.869,0.954,0.6,pass
+G,voice,D,"relayed voice, specific agreement",0.762,0.488,0.887,0.6,fail: merged into claimed
+G,asks,C,find K1 (in all but one run),0.795,0.667,0.902,0.75,pass
+G,asks,C,find any class (in all but one run),0.829,0.757,0.901,0.75,pass
+G,asks,C,find K1 draw 0 alone (in all but one run),0.795,0.667,0.903,0.75,pass
+G,asks,D,"small v middle check, specific agreement",0.867,,,0.6,pass
+G,forecasts,C,"FB statement (F1) or not, same in 3 runs",0.93,0.9,0.95,0.85,pass
+G,forecasts,C,"FB class, 10 values, same in 3 runs",0.77,0.71,0.81,0.85,fail
+G,forecasts,C,FC record (middle): time window,0.91,0.84,0.97,0.85,pass
+G,forecasts,C,FC record: named actor,0.96,0.94,0.99,0.85,pass
+G,forecasts,C,FC record: observable outcome,0.96,0.93,0.99,0.85,pass
+G,forecasts,C,FD committed,0.9,0.87,0.93,0.85,pass
+G,forecasts,D,"FB F1 or not, small vs middle, kappa",0.64,0.503,0.75,0.6,pass (lower bound 0.503 against 0.50)
+G,forecasts,D,"FB F1 or not, check creators",0.64,0.43,0.76,0.6,fail
+G,forecasts,D,"FC time window, record vs small (3 values)",0.56,0.39,0.77,0.6,fail
+G,forecasts,D,FC named actor,0.38,0.13,0.48,0.6,fail
+G,forecasts,D,FC observable outcome,0.56,0.49,0.71,0.6,fail
+G,forecasts,D,"FD committed, small vs middle",0.7,0.64,0.82,0.6,pass
+G,sentence codes,C,"group of H5 (world claim, practice and feeling, neither), same in 3 runs",0.88,0.86,0.9,0.85,pass
+G,sentence codes,D,"group, small vs middle, kappa",0.8,0.74,0.86,0.6,pass
+G,sentence codes,D,"group, check creators",0.81,0.73,0.88,0.6,pass
+G,titles,D,"presentation (4 codes), middle vs small, kappa",0.64,0.53,0.74,0.7,fail
+G,titles,D,"source family, middle vs small, kappa",0.74,0.57,0.87,0.6,pass
+G,titles,D,presentation with P0 and P2 merged,0.63,0.49,0.75,0.7,fail
+G,titles,D,P1 or not,0.7,0.53,0.83,0.7,fail (lower bound)
+G,titles,D,"presentation, check creators only",0.53,0.36,0.68,0.7,fail
+R-hold,voice,C,claimed/own/other same in 5 runs,0.92,0.839,0.989,0.9,pass
+R-hold,voice,D,"kappa middle against small, claimed/own/other",0.832,0.692,0.929,0.6,pass
+R-hold,voice,D,"kappa middle against small, embodied/own/other",0.815,0.679,0.909,0.6,pass
+R-hold,asks,D,critics' specific agreement on pay-or-enrol,0.833,0.706,0.938,0.6,pass
+R-hold,forecasts,D,"class of record (F1 against the rest), kappa small against middle (weighted)",0.507,0.169,0.792,0.6,fail
+R-hold,forecasts,D,checkability: place,0.306,,,0.6,kept as the record (owner's 00:30 exception)
+R-hold,forecasts,D,checkability: named actor,0.419,,,0.6,kept as the record (owner's 00:30 exception)
+R-hold,forecasts,D,checkability: observable outcome,0.328,,,0.6,kept as the record (owner's 00:30 exception)
+R-hold,forecasts,D,checkability: time window,0.805,0.647,,0.6,kept as the record (owner's 00:30 exception)
+R-hold,sentence codes,C,H5 group kept in all 5 runs,0.816,0.757,0.867,0.85,fail
+R-hold,titles,C,presentation,0.87,0.805,0.93,0.9,fail; kept as the record (owner's 00:30 decision)
+R-hold,titles,D,presentation,0.63,0.453,0.787,0.7,fail; kept as the record (owner's 00:30 decision)
+R-hold,titles,D,source family,0.659,0.414,0.853,0.6,fail on the lower bound; kept as the record (owner's 00:30 decision)

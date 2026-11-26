@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# H3-SEEN (plan 6.9, place S): the published seen-creator H3 contrast (results/h3-seen-exploratory.json, frozen code, artefact filter v1) with CAL's recentred value beside it (CAL, filter v2), as rv-R1 prints it.
+# Base: 61 seen creators, 558 recordings (the published eligibility). Interval level: 90% (left: two-stage percentile bootstrap; right: t on creator means).
+# The frozen code's creator-level recentred row (filter v1) is printed in H3-X (package HOLD): 0.083, 90% t -0.045 to 0.211; the third decimal of the lower end differs because of the filter version.
+# The creator sign-flip p-values differ between rv-R1 and H3-X (recentred U 0.146 here against 0.1480; raw U 0.412 against 0.4131) by the filter version (v2 here, v1 in the frozen code) and by the Monte Carlo draws.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+quantity,published_registered_row,cal_recentred,note
+creators,61,61,
+recordings,558,558,
+estimate (U),0.0194,0.0826,"left: the registered contrast; right: recentred, each recording's U minus its mean over the ten circular shifts"
+interval,-0.129 to 0.1648,-0.0455 to 0.2107,left: 90% two-stage percentile bootstrap (registered); right: 90% t interval on creator means
+one-sided p,"0.1225 (circular shift within recordings, 9,999 draws)","0.146 (creator sign-flip, Monte Carlo)","neither is a test of H3 (closed, A6); H3-X (package HOLD) prints 0.1480 for the same creator sign-flip: the two differ by the artefact filter version (v2 here, v1 in the frozen code) and by the Monte Carlo draws"
+creators with U above 0,36 of 61,41 of 61,
+between-creator SD of creator U,0.6572,0.599,
+reference centre,-0.0633 (exact centre of the circular-shift reference),0 by construction,CAL
+verdict,undetermined (published),"no verdict (H3 closed, A6)",

@@ -1,0 +1,11 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D1-flow.csv (package rv-D1)
+# Interval level: none (census counts)
+# Exactly the numbers drawn in fig-flow. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:13Z.
+stage,recordings_kept,recordings_lost_at_this_stage,loss
+1 Selected (newest-20 quota),1976,0,
+"2 Archived, audio verified",1946,30,download failed (final)
+3 In the transcription run,1731,215,"set aside before the run
+(other English text, or language review)"
+4 Transcribed,1699,32,"not transcribed
+(most: no speech found)"

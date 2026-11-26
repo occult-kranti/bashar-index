@@ -1,0 +1,26 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# RX-H: frozen RX pattern families on hold-out transcripts beside the seen creators; source HOLD2/RX-H-pattern-rates.csv (package HOLD2, public).
+# Interval level: 90% t interval over creators (lower ends below 0 clipped to 0 by the package; drawn at the axis edge 0.02 on the log scale).
+# Cue counts; precision gates model-read on seen hits only (model-coded, not checked by a person); no hold-out hit was read.
+# Dominance: a rate is not drawn where its printed mean, interval and creator count would show that one creator holds half or more of the summed creator rates (status column).
+family,group,creators,recordings,creator_equal_rate_per_1000,t90_low,t90_high,status
+"A frames (greeting, own-name introduction, sign-off)",seen,71,1229,0.4143,0.3387,0.4899,
+"B reporting (source is showing, says, perceiving)",seen,71,1229,0.408,0.3019,0.514,
+C address to listeners,seen,71,1229,1.0924,0.87,1.3148,
+D time words,seen,71,1229,2.5841,2.1495,3.0187,
+"E stance (hedges, boosters, 'will')",seen,71,1229,12.4112,11.7443,13.078,
+F asks,seen,71,1229,0.8417,0.6295,1.0539,
+G names (list v0),seen,71,1229,3.8651,3.1148,4.6153,
+H numerals,seen,71,1229,5.1908,4.591,5.7907,
+I questions,seen,71,1229,6.009,5.3082,6.7098,
+J framing cues,seen,71,1229,0.1066,0.0517,0.1614,
+"A frames (greeting, own-name introduction, sign-off)",hold-out,18,263,0.2791,0.1831,0.3751,
+"B reporting (source is showing, says, perceiving)",hold-out,18,263,,,,not released (dominated by fewer than 5 creators)
+C address to listeners,hold-out,18,263,1.1117,0.8251,1.3984,
+D time words,hold-out,18,263,2.5856,1.2761,3.8952,
+"E stance (hedges, boosters, 'will')",hold-out,18,263,10.9863,9.5841,12.3884,
+F asks,hold-out,18,263,0.4168,0.242,0.5915,
+G names (list v0),hold-out,18,263,4.4003,3.1855,5.6151,
+H numerals,hold-out,18,263,5.6651,4.3976,6.9326,
+I questions,hold-out,18,263,6.9192,5.1437,8.6948,
+J framing cues,hold-out,18,263,0.0568,0.0302,0.0833,

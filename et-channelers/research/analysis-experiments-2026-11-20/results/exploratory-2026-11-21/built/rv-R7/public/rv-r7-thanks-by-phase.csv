@@ -1,0 +1,30 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R7 figure panel (b) data (place M): chance that a full 30-s decoding window holds a stand-alone two-word thanks segment starting in a 3-s stretch of the window, by the window's speech status (coverage by other recognizer segments: speech 0.5 or more; partial above 0 and below 0.5; none 0). Filter off.
+# Base: 1,284 English transcripts of the 71 seen creators; windows = full windows of that status (speech: all 71 creators; partial and none: the creators with such windows). Pooled over windows.
+# Public form (release review, 2026-11-22): 3-s bins resting on 1 to 4 creators with a non-zero count are merged by plan section 3's rule (a bin joins the non-empty neighbour that holds fewer creators, the inner one on a tie); a merged cell gives the mean chance per 3-s stretch (hits over windows x bins). Cells with no hit are 0 for every creator and are printed as 0 (addendum 2 item 9). Every printed non-zero cell rests on 5 or more creators. The speech row needs no merge; the partial and none rows are merged.
+# Interval level: 90% creator bootstrap (2,000 draws, seed 20261128, the build's procedure; the release review reproduced every build cell exactly). Leave-one-creator-out: only whether every omission keeps the point inside the interval is printed.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+speech_status,from_s,to_s,merged,windows,window_bin_hits,chance_per_window_per_3s,boot90_low,boot90_high,leave_one_creator_out_inside_interval
+speech,0,3,no,60164,9,0.00015,6.9e-05,0.000234,yes
+speech,3,6,no,60164,17,0.000283,0.000148,0.000425,yes
+speech,6,9,no,60164,18,0.000299,0.000181,0.00042,yes
+speech,9,12,no,60164,22,0.000366,0.000239,0.000506,yes
+speech,12,15,no,60164,26,0.000432,0.000232,0.000679,yes
+speech,15,18,no,60164,19,0.000316,0.000177,0.000472,yes
+speech,18,21,no,60164,12,0.000199,0.000104,0.000309,yes
+speech,21,24,no,60164,28,0.000465,0.000301,0.000631,yes
+speech,24,27,no,60164,26,0.000432,0.000289,0.000587,yes
+speech,27,30,no,60164,1408,0.023403,0.021571,0.025253,yes
+partial,0,9,yes,2045,5,0.000815,0.000259,0.001761,yes
+partial,9,15,yes,2045,11,0.002689,0.001095,0.005316,yes
+partial,15,27,yes,2045,11,0.001345,0.0006,0.002668,yes
+partial,27,30,no,2045,9,0.004401,0.001649,0.008599,yes
+none,0,9,yes,2893,75,0.008642,0.005445,0.021535,yes
+none,9,12,no,2893,0,0.0,0.0,0.0,yes
+none,12,15,no,2893,0,0.0,0.0,0.0,yes
+none,15,18,no,2893,0,0.0,0.0,0.0,yes
+none,18,21,no,2893,0,0.0,0.0,0.0,yes
+none,21,24,no,2893,0,0.0,0.0,0.0,yes
+none,24,27,no,2893,0,0.0,0.0,0.0,yes
+none,27,30,no,2893,0,0.0,0.0,0.0,yes

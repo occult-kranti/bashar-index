@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R3 Bland-Altman summaries (place S) for pace (words per speech minute), first-person singular and filled pauses (per 1,000 words) on the 36 registered bridge recordings (one per creator): the mean difference (larger minus English-only model), the SD of the differences and the normal limits of agreement (mean +/- 1.96 SD), as published in the bridge summary.
+# Filled pauses: no normal limits, because many English-only transcripts hold no filled pause and the differences pile up at zero.
+# Held (column bins_percentiles_and_size_counts: the five bins by the mean of the two models with their medians and quartiles, the percentiles over the 36 differences, the recordings by size of difference, the count outside the limits, and GRID's 90% intervals of the limits; and the figure rv-R3-b drawn from them): held: the lead's decision is pending (it rests on recording-level values of all 36 bridge recordings, the other-group creator's recording included; plan row rv-R3 allows only published numbers for that recording). Not published: the limits without the outlying recording (pairs rule). Interval level: none (the published summary's mean, SD and limits).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+measure,pairs,mean_difference,sd_difference,loa_low_normal,loa_high_normal,source,bins_percentiles_and_size_counts
+pace,36,-0.3597,4.1529,-8.4995,7.7801,published bridge summary (results/br-bridge.json),held
+first_singular,36,-0.3253,1.1631,-2.605,1.9544,published bridge summary (results/br-bridge.json),held
+fillers,36,2.1877,3.7036,not drawn (the differences pile up at zero),,published bridge summary (results/br-bridge.json),held

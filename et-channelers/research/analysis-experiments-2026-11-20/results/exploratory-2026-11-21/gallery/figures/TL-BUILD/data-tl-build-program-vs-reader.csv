@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-build-classes.csv (TL package, public folder).
+# Interval level: none (counts of statements).
+# A statement with several expressions counts once in each comparison its expressions fall in, so the rows overlap.
+comparison,statements_with_such_an_expression
+Same window,1460
+Windows overlap,547
+Program's window only,209
+Reader's window only,165
+Neither resolves a window,83
+Windows do not overlap,80

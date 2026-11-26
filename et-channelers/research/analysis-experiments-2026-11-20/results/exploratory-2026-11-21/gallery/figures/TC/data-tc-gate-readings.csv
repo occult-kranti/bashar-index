@@ -1,0 +1,6 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# TC stage 1: codes passing the gate under readings A (as run, stands), D and E (reporting plan P4)
+reading,description,single_codes_passing,merged_groups_passing,total_passing,merged_evaluated,status
+A,"A  as run: PSA for both, frozen before stage 1",2,4,6,True,"stands; chosen after the result (decided about 02:30 UTC, registry entry 2026-11-21 03:08 UTC)"
+D,"D  kappa for both, point estimates",2,0,2,False,sensitivity row; single codes only
+E,"E  programme wording: PSA between models, raw agreement between runs",12,2,14,True,added after the stage-1 results

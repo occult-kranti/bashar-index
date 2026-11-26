@@ -1,0 +1,12 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# NE pilot: creator-equal share of pilot windows with a verified entry, both models; seen creators; model-coded, not checked by a person
+# Source: the gallery's public file figures/NE/data-ne-pilot-shares.csv (build of 2026-11-22 03:33 UTC); values unchanged; the figure's not-run reason and caption
+# were corrected.
+# Interval level: 90% t interval on creator means.
+measure,label,creators_base,windows,small_creator_mean,small_t90_lo,small_t90_hi,middle_creator_mean,middle_t90_lo,middle_t90_hi
+any_source,A non-human source is mentioned (named or generic),71,200,0.7911,0.7296,0.8526,0.8451,0.7887,0.9014
+named_source,A named source (proper name or named kind of being),71,200,0.6995,0.6293,0.7697,0.6995,0.63,0.7691
+relayed_any,A source's message is relayed,71,200,0.4601,0.3844,0.5358,0.493,0.416,0.5699
+speaks_named,A named source is presented as speaking,71,200,0.23,0.1657,0.2944,0.2136,0.151,0.2762
+reference,A datable outside reference,71,200,0.4859,0.4153,0.5566,0.2817,0.2185,0.3449
+reference_dated,A datable reference with a date stated,71,200,0.4366,0.3652,0.5081,0.1878,0.1326,0.2429

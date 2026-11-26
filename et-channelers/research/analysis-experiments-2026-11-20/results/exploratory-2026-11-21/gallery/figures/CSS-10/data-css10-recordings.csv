@@ -1,0 +1,23 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-10 (place S): share of a creator's recordings with evidence of each offer class, by kind of evidence. Source: package CSS, public file css10-offer-classes.csv (column share_of_recordings_90; rerun of record of 2026-11-22, lead's decision D35; analysis step rerun in the release fix pass).
+# creator_equal_share: mean over the seen creators with page text (all but fewer than 5 of the 71) of the share of the creator's recordings with evidence of the class, over the recordings that can carry that kind (spoken: transcribed recordings; written: recordings with page text; either: their union), with its 90% creator-bootstrap percentile interval (2,000 draws). Empty cells: status as printed by the package.
+# Evidence: spoken asks are model-coded (frozen asks instrument; the middle model's check is the record; known-answer texts an upper bound); page cues are cue counts with model-read precision of 0.735 or more (precisions whose misses come from fewer than 5 creators are not published) (the payment cue also catches channel memberships); written asks are model-coded; not checked by a person. A description of offers, not of income.
+offer_class,evidence,creator_equal_share,ci90_low,ci90_high,status
+"courses, classes, events or retreats",spoken,0.282,0.229,0.336,
+"courses, classes, events or retreats",written,0.6,0.531,0.669,
+"courses, classes, events or retreats",either,0.615,0.55,0.676,
+products,spoken,0.072,0.052,0.092,
+products,written,0.376,0.298,0.458,
+products,either,0.377,0.303,0.455,
+sessions or readings,spoken,0.114,0.079,0.154,
+sessions or readings,written,,,,not printed (pairs rule)
+sessions or readings,either,0.295,0.227,0.369,
+donations,spoken,0.02,0.011,0.031,
+donations,written,0.241,0.164,0.322,
+donations,either,0.228,0.161,0.302,
+membership community,spoken,0.042,0.026,0.064,
+membership community,written,,,,not available (page cues do not separate memberships)
+membership community,either,,,,as spoken (no written evidence of this class)
+third-party adverts,spoken,,,,fewer than 5 creators with a non-zero value
+third-party adverts,written,0.041,0.014,0.075,
+third-party adverts,either,0.048,0.02,0.08,

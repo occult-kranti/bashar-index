@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# CH-H: Mantel agreement of the three views of a channel; source HOLD2/CH-H-mantel-views.csv (package HOLD2, public).
+# Interval level: no interval; creator-label permutation (999), p = (b+1)/(m+1), a description of agreement, not a test.
+# Views: topics = centred log-ratio profile; RX = z-scored log pooled family rates (cue counts); word measures = z-scored creator means.
+views,group,creators,mantel_spearman,perm_p,permutations
+topic profile with RX cue profile,seen,all but fewer than 5 of 71,0.3901,0.001,999
+topic profile with word measures,seen,all but fewer than 5 of 71,0.4054,0.001,999
+RX cue profile with word measures,seen,all but fewer than 5 of 71,0.3127,0.001,999
+topic profile with RX cue profile,hold-out,18,0.0934,0.257,999
+topic profile with word measures,hold-out,18,0.1318,0.102,999
+RX cue profile with word measures,hold-out,18,0.2699,0.001,999

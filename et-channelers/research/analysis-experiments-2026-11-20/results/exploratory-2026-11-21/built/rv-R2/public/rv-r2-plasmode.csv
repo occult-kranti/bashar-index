@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R2 (place S): plasmode under a population null with persistent creator effects at recording-level ICC 0 to 0.6: real seen cluster sizes (71 creators, 1,222 recordings) and real within-creator residuals of pace (standardised); 20,000 simulations per ICC.
+# A seen look at 0.05 one-sided suggests the direction; then the same creators' wave, the wave pooled with 17 simulated fresh creators, or the 17 fresh creators alone are tested at 0.005 one-sided (t on creator means). The simulated 'pooled' arm is a design simulation, not a pool of real hold-out results.
+# Interval level: Monte Carlo standard errors (*_mc_se); the figure draws 90% Monte Carlo intervals (rate +/- 1.645 SE). Erratum: the build's caption said 1,211 recordings; the plasmode used 1,222.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+icc,sims,seen_creators,holdout_creators,seen_look_passes_0.05,wave_passes_0.005_given_seen_passed,pooled_passes_0.005_given_seen_passed,holdout_alone_passes_0.005_given_seen_passed,wave_passes_0.005_unconditional,conditioning_cases,wave_passes_0.005_given_seen_passed_mc_se,pooled_passes_0.005_given_seen_passed_mc_se,holdout_alone_passes_0.005_given_seen_passed_mc_se
+0.0,20000.0,71.0,17.0,0.0503,0.00398,0.00199,0.00497,0.0053,1006.0,0.00198,0.0014,0.00222
+0.05,20000.0,71.0,17.0,0.05065,0.04738,0.0306,0.00592,0.00595,1013.0,0.00668,0.00541,0.00241
+0.1,20000.0,71.0,17.0,0.05145,0.04568,0.04762,0.00486,0.00435,1029.0,0.00651,0.00664,0.00217
+0.2,20000.0,71.0,17.0,0.05175,0.0744,0.07343,0.0058,0.00475,1035.0,0.00816,0.00811,0.00236
+0.4,20000.0,71.0,17.0,0.0502,0.10757,0.08665,0.00598,0.0055,1004.0,0.00978,0.00888,0.00243
+0.6,20000.0,71.0,17.0,0.0491,0.10591,0.08961,0.00815,0.0052,982.0,0.00982,0.00911,0.00287

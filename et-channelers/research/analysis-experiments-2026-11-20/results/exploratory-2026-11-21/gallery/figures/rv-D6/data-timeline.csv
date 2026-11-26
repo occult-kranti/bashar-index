@@ -1,0 +1,39 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D6-timeline-events.csv (package rv-D6)
+# Interval level: none
+# Exactly the numbers drawn in fig-timeline. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:19Z.
+n,utc,lane,event
+1,2026-11-19 04:31,design events,roster table lists 74 channels
+2,2026-11-19 20:03,design events,roster of 101 channels first committed
+3,2026-11-20 01:45,run progress,"downloads paused (1,946 of 1,976 archived)"
+4,2026-11-20 02:38,run progress,transcription starts (first progress row)
+5,2026-11-20 04:19,run progress,language fallback phase
+6,2026-11-20 04:57,design events,owner closes the download goal (30 final failures)
+7,2026-11-20 05:52,run progress,English-first ordering starts (ledger line 251)
+8,2026-11-20 06:08,design events,English-first and creator-language rules committed
+9,2026-11-20 13:00,run progress,"snapshot of 1,213 finished transcripts (paper numbers)"
+10,2026-11-20 13:00,hold-out contacts,first panel tables include 32 hold-out files
+11,2026-11-20 14:13,design events,experiment catalogue (28 experiments) committed
+12,2026-11-20 18:00,design events,paper draft committed
+13,2026-11-20 19:36,design events,ten candidate hypotheses proposed
+14,2026-11-20 19:47,design events,registry frozen (hypotheses.md hash)
+15,2026-11-20 19:57,run progress,"run closes: 1,699 of 1,731 recordings transcribed"
+16,2026-11-20 20:09,hold-out contacts,run report with position heat map of every creator
+17,2026-11-20 20:26,public outputs,findings dashboard first published
+18,2026-11-20 20:38,design events,H3 procedure frozen
+19,2026-11-20 20:39,hold-out contacts,H3 run opens every English hold-out transcript
+20,2026-11-20 20:39,results,"H3 result: passes registered rule, interval includes 0"
+21,2026-11-20 20:39,design events,A5 stricter verdict added (after the H3 result)
+22,2026-11-20 20:49,design events,A6: H3 dropped by the owner
+23,2026-11-20 21:26,results,"bridge result: word measures agree, timing differs"
+24,2026-11-20 21:28,public outputs,dashboard results tab (H3 'supported by the registered rule')
+25,2026-11-20 21:34,design events,A7: second-round panel gets control and budget
+26,2026-11-20 22:00,hold-out contacts,panel coverage script loads ~415 hold-out metadata files
+27,2026-11-20 22:32,design events,A3 change: budget 120 USD
+28,2026-11-20 22:45,design events,A8 no human check; A9 H8 dropped
+29,2026-11-20 22:50,design events,A11 verification by language models
+30,2026-11-20 23:07,hold-out contacts,TABLE whitelisted metadata extraction (planned)
+31,2026-11-20 23:10,design events,selection rule stated; budget becomes a warning
+32,2026-11-21 00:30,design events,freeze-1 decisions: two instruments failed gates
+33,2026-11-21 00:36,public outputs,public outputs reduced to distributions
+34,2026-11-21 00:50,design events,lead decides under the owner's delegation

@@ -1,0 +1,8 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package E, public table e9-shared-runs-by-family.csv (results/exploratory-2026-11-21/E/e9-shared-runs-by-family.csv after the release review).
+# Interval level: 90% t interval over creators and 90% creator bootstrap (2,000 draws, percentile); the permuted-label band is the 5th to 95th percentile of the statistic under permuted family labels (9,999 draws), a band, not a p-value.
+# E9: shared distinctive 5-word runs within and across claimed source families (H9's cells); seen creators; title families model-coded, not checked by a person; an exploratory count, not a test.
+# Hold-out part (E9-H): not computable on the hold-out creators (no family has cells of two or more hold-out creators); its base is fewer than 5 creators; no hold-out value is drawn or listed here.
+row,creators,same_family_pairs_of_cells,statistic,t90_low,t90_high,boot90_low,boot90_high,permuted_band_5th,permuted_band_95th
+Whole transcripts (primary),6,11,1.181,-0.5191,2.8811,-0.0758,2.4375,-1.347,2.278
+"Edge-trimmed, 180 s at each end",6,11,0.3801,-0.274,1.0342,-0.1014,0.8972,-0.841,1.289

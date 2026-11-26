@@ -1,0 +1,45 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r1-placebo-p. Source public file: rv-r1-placebo-p.csv (package rv-R1).
+# Interval level: 90% binomial band of a uniform p
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+procedure,p_from,p_to,ratio_to_uniform,band90_low,band90_high
+shift,0.0,0.05,1.365,0.89,1.115
+shift,0.05,0.1,1.14,0.89,1.115
+shift,0.1,0.15,1.07,0.89,1.115
+shift,0.15,0.2,0.975,0.89,1.115
+shift,0.2,0.25,0.925,0.89,1.115
+shift,0.25,0.3,0.895,0.89,1.115
+shift,0.3,0.35,0.975,0.89,1.115
+shift,0.35,0.4,0.95,0.89,1.115
+shift,0.4,0.45,0.96,0.89,1.115
+shift,0.45,0.5,0.805,0.89,1.115
+shift,0.5,0.55,0.85,0.89,1.115
+shift,0.55,0.6,0.94,0.89,1.115
+shift,0.6,0.65,0.835,0.89,1.115
+shift,0.65,0.7,0.86,0.89,1.115
+shift,0.7,0.75,0.895,0.89,1.115
+shift,0.75,0.8,0.99,0.89,1.115
+shift,0.8,0.85,1.02,0.89,1.115
+shift,0.85,0.9,1.075,0.89,1.115
+shift,0.9,0.95,1.055,0.89,1.115
+shift,0.95,1.0,1.42,0.89,1.115
+recentred_signflip,0.0,0.05,0.79,0.89,1.115
+recentred_signflip,0.05,0.1,0.84,0.89,1.115
+recentred_signflip,0.1,0.15,0.955,0.89,1.115
+recentred_signflip,0.15,0.2,1.09,0.89,1.115
+recentred_signflip,0.2,0.25,0.95,0.89,1.115
+recentred_signflip,0.25,0.3,1.025,0.89,1.115
+recentred_signflip,0.3,0.35,1.055,0.89,1.115
+recentred_signflip,0.35,0.4,1.065,0.89,1.115
+recentred_signflip,0.4,0.45,1.135,0.89,1.115
+recentred_signflip,0.45,0.5,0.92,0.89,1.115
+recentred_signflip,0.5,0.55,0.915,0.89,1.115
+recentred_signflip,0.55,0.6,0.9,0.89,1.115
+recentred_signflip,0.6,0.65,0.915,0.89,1.115
+recentred_signflip,0.65,0.7,1.015,0.89,1.115
+recentred_signflip,0.7,0.75,1.015,0.89,1.115
+recentred_signflip,0.75,0.8,1.04,0.89,1.115
+recentred_signflip,0.8,0.85,1.085,0.89,1.115
+recentred_signflip,0.85,0.9,1.005,0.89,1.115
+recentred_signflip,0.9,0.95,1.03,0.89,1.115
+recentred_signflip,0.95,1.0,1.255,0.89,1.115

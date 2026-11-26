@@ -1,0 +1,25 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package ER, public table e3-position-curves-seen-simultaneous.csv (results/exploratory-2026-11-21/ER/e3-position-curves-seen-simultaneous.csv after the release review).
+# Interval level: Pointwise 90% percentile interval and simultaneous 90% sup-t band over the ten tenths (plan section 4), from 9,999 two-stage resamples (creators, then recordings within each drawn creator); sup-t critical values 2.53 (articulation rate) and 2.30 (address).
+# E3 position curves, seen creators (61 creators, 558 recordings; H3's recordings and bins: English, English-only model, not publisher-feed audio, 180 s trimmed at each end, at least 600 s and 800 words left, ten bins of 50 words or more, artefact filter v1). Curves added after the exploratory reporting plan. Recognizer output, not checked by a person; no tenth is read on its own.
+curve,tenth,value,pointwise90_low,pointwise90_high,simultaneous90_low,simultaneous90_high
+"Articulation rate, relative to the recording's own rate",1,0.999,0.9884,1.0101,0.9824,1.0157
+"Articulation rate, relative to the recording's own rate",2,0.9964,0.9865,1.0062,0.9813,1.0116
+"Articulation rate, relative to the recording's own rate",3,1.0062,0.9968,1.0166,0.9909,1.0215
+"Articulation rate, relative to the recording's own rate",4,1.0021,0.9912,1.0134,0.9851,1.0191
+"Articulation rate, relative to the recording's own rate",5,1.0003,0.9906,1.0103,0.9851,1.0155
+"Articulation rate, relative to the recording's own rate",6,1.0021,0.9927,1.0113,0.9877,1.0164
+"Articulation rate, relative to the recording's own rate",7,0.9983,0.9878,1.0084,0.9824,1.0142
+"Articulation rate, relative to the recording's own rate",8,0.9981,0.9883,1.0076,0.9832,1.013
+"Articulation rate, relative to the recording's own rate",9,0.9999,0.9893,1.0102,0.9837,1.016
+"Articulation rate, relative to the recording's own rate",10,1.0038,0.9904,1.0165,0.9838,1.0237
+"Second-person forms per 1,000 words",1,43.02,37.69,48.84,35.15,50.9
+"Second-person forms per 1,000 words",2,44.81,39.34,50.59,36.91,52.71
+"Second-person forms per 1,000 words",3,46.11,40.65,51.86,38.23,53.99
+"Second-person forms per 1,000 words",4,46.26,40.68,52.09,38.37,54.15
+"Second-person forms per 1,000 words",5,46.32,40.96,51.84,38.77,53.87
+"Second-person forms per 1,000 words",6,48.69,43.44,54.18,41.21,56.18
+"Second-person forms per 1,000 words",7,48.46,43.09,53.92,40.94,55.97
+"Second-person forms per 1,000 words",8,49.72,44.36,55.28,42.06,57.39
+"Second-person forms per 1,000 words",9,51.84,46.08,57.78,43.66,60.02
+"Second-person forms per 1,000 words",10,53.04,48.06,58.14,46.01,60.06

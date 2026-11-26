@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# LAB-H: share of recordings with at least one ask (LAB-A); source HOLD/lab-h-descriptions.csv (package HOLD, public).
+# Interval level: 90% t interval over creators of creator-balanced means, clipped to [0, 1] by the package.
+# Model-coded labels, not checked by a person; agreement figures are agreement, not a measure of correctness. Hold-out beside seen, never pooled.
+figure,row,series,creators,mean,t90_low,t90_high,note
+LAB-H-fig-4,any ask,seen,71,0.637,0.572,0.702,
+LAB-H-fig-4,pay or enrol (K1),seen,71,0.424,0.362,0.487,
+LAB-H-fig-4,engage on the platform (K3),seen,71,0.387,0.32,0.453,
+LAB-H-fig-4,move off the platform (K4),seen,71,0.319,0.259,0.379,
+LAB-H-fig-4,give money (K2),seen,71,0.02,0.01,0.031,
+LAB-H-fig-4,third-party advert (K5),seen,71,,,,not released: rests on fewer than 5 creators with a non-zero value (or its complement does)
+LAB-H-fig-4,any ask,hold-out,18,0.476,0.341,0.61,
+LAB-H-fig-4,pay or enrol (K1),hold-out,18,0.281,0.15,0.412,
+LAB-H-fig-4,engage on the platform (K3),hold-out,18,0.226,0.107,0.346,
+LAB-H-fig-4,move off the platform (K4),hold-out,18,0.169,0.112,0.227,
+LAB-H-fig-4,give money (K2),hold-out,18,0.021,0.006,0.036,
+LAB-H-fig-4,third-party advert (K5),hold-out,18,,,,not released: rests on fewer than 5 creators with a non-zero value (or its complement does)

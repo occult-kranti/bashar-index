@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# META-H: audience counts on local metadata files, by group; source HOLD2/META-H-audience-counts.csv (package HOLD2, public).
+# Plotted: 10 ** mean_log10 with 10 ** the 90% t interval of the mean of log10 over creators. Quantiles (rounded to two significant figures by the package) are printed only for groups of 10 or more creators whose creator count is printed, not for a count printed as a band (lead's decision D67: a percentile's position among the sorted creator values can give the count back; release pass 2, fourth fix step, 2026-11-26); not plotted.
+# One snapshot (2026-11-16 to 2026-11-20 UTC); ages at capture differ by group.
+measure,group,creators,mean_log10,log10_t90_low,log10_t90_high,p10,median,p90
+views per recording,seen,5 or more,3.2293,3.0623,3.3963,,,
+likes per recording,seen,5 or more,2.055,1.8901,2.2199,,,
+comments per recording,seen,5 or more,1.2316,1.0974,1.3658,,,
+channel subscribers,seen,5 or more,4.1998,4.0426,4.3569,,,
+views per recording,hold-out,23,3.555,3.2728,3.8372,700.0,6700.0,22000.0
+likes per recording,hold-out,all but fewer than 5 of 23,2.3731,2.064,2.6821,,,
+comments per recording,hold-out,all but fewer than 5 of 23,1.4842,1.2661,1.7023,,,
+channel subscribers,hold-out,23,4.4556,4.1013,4.8099,6500.0,32000.0,240000.0
+views per recording,other group (creators in neither group),5 or more,3.7461,2.8289,4.6634,,,
+likes per recording,other group (creators in neither group),5 or more,2.6093,1.6547,3.5639,,,
+comments per recording,other group (creators in neither group),5 or more,1.7401,0.8531,2.6272,,,
+channel subscribers,other group (creators in neither group),5 or more,4.6634,3.9766,5.3502,,,

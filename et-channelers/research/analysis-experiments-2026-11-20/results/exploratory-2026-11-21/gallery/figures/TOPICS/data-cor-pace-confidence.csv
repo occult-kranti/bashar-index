@@ -1,0 +1,15 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# COR F24 after the TOPICS fix: six pairs of delivery and recognizer-confidence measures at two levels; 71 seen creators; 1,176 recordings of 300+ words. Words
+# per minute = recognized words per minute of speech (a recognizer-output measure, not a direct measure of speaking).
+# Across channels: Spearman on creator means; inside channels: ranks taken inside each creator (creators with 5+ recordings). passes_permutation_max: beyond the
+# permutation-maximum threshold over the six pairs (|r| 0.306 across, 0.078 inside).
+# Source: the gallery's public file figures/TOPICS/data-cor-pace-confidence.csv (build of 2026-11-22 03:33 UTC); values unchanged, pair names say words per minute
+# for pace (D12).
+# Interval level: 90% creator-bootstrap interval.
+pair,across_channels_spearman,across_ci90_low,across_ci90_high,across_passes_permutation_max,inside_channels_correlation,inside_ci90_low,inside_ci90_high,inside_passes_permutation_max
+words per minute with share of time without speech,-0.369,-0.538,-0.178,True,-0.339,-0.404,-0.273,True
+recognizer confidence with words per minute,0.11,-0.088,0.309,False,0.101,0.035,0.168,True
+recognizer confidence with time without speech,-0.193,-0.387,0.007,False,-0.069,-0.131,-0.006,False
+recognizer confidence with recording length,-0.117,-0.296,0.073,False,-0.094,-0.158,-0.032,True
+words per minute with recording length,0.241,0.033,0.427,False,0.257,0.19,0.322,True
+time without speech with recording length,-0.432,-0.595,-0.252,True,-0.23,-0.297,-0.158,True

@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R3 (place S): MATTR (500-word windows) and mean log word probability under both models, 35 seen pairs, filter v2; difference in units of the between-creator SD of the seen creators (this build). Log-probability is a recognizer measure: a difference is expected and says nothing about speech.
+# Interval level: 90% t per measure; simultaneous 90%.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+measure,pairs,mean_english_only,mean_larger,between_sd,diff_between_sd_units,t90,verdict,simultaneous90,verdict_simultaneous
+mattr500,35,0.424,0.4213,0.0383,-0.0722,-0.109 to -0.035,agrees,-0.137 to -0.008,agrees
+variety100,,not published (the same measure is published on the 36 registered pairs as 'variety'; a 35-pair row beside it would give the other-group pair by difference),,,,,,,
+logp_word,35,-0.056,-0.058,0.0268,-0.075,-0.616 to 0.466,not settled,-1.015 to 0.865,not settled

@@ -1,0 +1,5 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# NE pilot: entries listed by both models or by one only, pooled over 200 windows of 71 seen creators; each segment from 14 or more creators
+entry_kind,listed_by_both,only_small_model,only_middle_model,entries_listed_by_either,share_listed_by_both,share_only_small_model,share_only_middle_model,small_model_total,middle_model_total,share_of_small_entries_also_listed_by_middle,share_of_middle_entries_also_listed_by_small
+Sources,696,911,284,1891,0.3681,0.4818,0.1502,1607,980,0.433,0.71
+Datable references,98,327,26,451,0.2173,0.7251,0.0576,425,124,0.231,0.79

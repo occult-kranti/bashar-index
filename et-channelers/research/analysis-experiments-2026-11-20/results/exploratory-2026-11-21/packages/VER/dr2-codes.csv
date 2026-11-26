@@ -1,0 +1,41 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# DR-2: second reading by another model (registry 2026-11-21 02:50; registry row of 04:55). Model-coded: the record and a second model of the same vendor (OpenAI) read the same units; agreement between two models is reliability, not validity; not checked by a person. Gate sample G (seen creators, check and development creators alike; not the 23 check creators of VER-3R) only; no hold-out or other-group file.
+# S (sentence codes): record gpt-6-luna (small), second gpt-6.1-terra (middle), same prompt and effort. FC (checkability parts of coded forecast statements; the plan's 'forecast candidates'): record gpt-6.1-terra (middle), second gpt-6-sol (large) at effort low.
+# S: 400 units of 34 recordings of 32 creators; FC: 300 coded statements of 27 recordings (27 creators, one recording each). Read 2026-11-21 03:15-03:21 UTC.
+# Intervals 90% (5th and 95th percentiles of 2,000 two-stage bootstrap draws: creators, then recordings).
+# Small cells: codes of fewer than 5 creators are pooled; a figure is printed only if no count resting on fewer than 5 creators can be solved from it and the other printed figures, including those of the registry (disclosure check; ver.md).
+instrument,view,code,both,record_only,second_only,kappa_90,specific_agreement_90,prevalence_record_90,prevalence_second_90,record_only_share_of_disagreements,interval_source,status
+S,primary code (12 values),Q0 nothing to code,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+S,primary code (12 values),Q1 world claim,74,13,9,"0.836 [0.765, 0.895]","0.871 [0.811, 0.918]","0.217 [0.149, 0.293]","0.207 [0.147, 0.277]",0.591,driver (results.json),printed
+S,primary code (12 values),Q2 general principle,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+S,primary code (12 values),Q3 fact about the human person,15,5,24,"0.474 [0.311, 0.606]","0.508 [0.348, 0.635]","0.050 [0.028, 0.074]","0.098 [0.064, 0.135]",0.172,driver (results.json),printed
+S,primary code (12 values),Q4 instruction,58,18,17,"0.714 [0.637, 0.783]","0.768 [0.698, 0.828]","0.190 [0.140, 0.247]","0.188 [0.139, 0.237]",0.514,driver (results.json),printed
+S,primary code (12 values),Q5 feelings,24,13,13,"0.613 [0.469, 0.731]","0.649 [0.514, 0.759]","0.092 [0.065, 0.122]","0.092 [0.063, 0.127]",0.5,driver (results.json),printed
+S,primary code (12 values),Q6 reassurance,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+S,primary code (12 values),Q7 the speaker's life,41,11,16,"0.713 [0.596, 0.804]","0.752 [0.645, 0.834]","0.130 [0.082, 0.182]","0.142 [0.100, 0.188]",0.407,driver (results.json),printed
+S,primary code (12 values),Q8 the listener's circumstances,20,8,8,"0.693 [0.516, 0.802]","0.714 [0.537, 0.819]","0.070 [0.033, 0.114]","0.070 [0.031, 0.116]",0.5,driver (results.json),printed
+S,primary code (12 values),Q9 frame,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+S,primary code (12 values),QN private person or no definition,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+S,primary code (12 values),QX cannot choose,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+S,primary code (12 values),"other (pooled) (Q0 nothing to code, Q2 general principle, Q6 reassurance, Q9 frame, QN private person or no definition, QX cannot choose)",64,36,17,"0.623 [0.523, 0.709]","0.707 [0.624, 0.780]","0.250 [0.195, 0.309]","0.203 [0.156, 0.253]",,"this package's bootstrap (2,000 two-stage draws)",printed (pooled codes)
+S,"H5 group (Q2 in neither, the registered grouping)",world_claim,74,13,9,"0.836 [0.765, 0.895]","0.871 [0.811, 0.918]","0.217 [0.149, 0.293]","0.207 [0.147, 0.277]",0.591,driver (results.json),printed (the same units as Q1's row of the primary code)
+S,"H5 group (Q2 in neither, the registered grouping)",practice_and_feeling,,,,,,,,,,withheld: with the printed figures it would determine a count resting on fewer than 5 creators (disclosure check)
+S,"H5 group (Q2 in neither, the registered grouping)",neither,,,,,,,,,,withheld: with the printed figures it would determine a count resting on fewer than 5 creators (disclosure check)
+S,"H5 group, Q2 assigned to world claim",world_claim,,,,,,,,,,"not printed: for a variant grouping only the view-level figures are printed, as in the registry (2026-11-21 04:55); with the printed figures its code rows would also determine a count resting on fewer than 5 creators"
+S,"H5 group, Q2 assigned to world claim",practice_and_feeling,,,,,,,,,,"not printed: for a variant grouping only the view-level figures are printed, as in the registry (2026-11-21 04:55); with the printed figures its code rows would also determine a count resting on fewer than 5 creators"
+S,"H5 group, Q2 assigned to world claim",neither,,,,,,,,,,"not printed: for a variant grouping only the view-level figures are printed, as in the registry (2026-11-21 04:55); with the printed figures its code rows would also determine a count resting on fewer than 5 creators"
+S,"H5 group, Q2 assigned to practice and feeling",world_claim,,,,,,,,,,"not printed: for a variant grouping only the view-level figures are printed, as in the registry (2026-11-21 04:55)"
+S,"H5 group, Q2 assigned to practice and feeling",practice_and_feeling,,,,,,,,,,"not printed: for a variant grouping only the view-level figures are printed, as in the registry (2026-11-21 04:55)"
+S,"H5 group, Q2 assigned to practice and feeling",neither,,,,,,,,,,"not printed: for a variant grouping only the view-level figures are printed, as in the registry (2026-11-21 04:55)"
+FC,"time window, YES or not",YES,,,,,,,,,,withheld: fewer than 5 creators behind its YES codes or its disagreements
+FC,"place, YES or not",YES,,,,,,,,,,withheld: fewer than 5 creators behind its YES codes or its disagreements
+FC,"named actor, YES or not",YES,,,,,,,,,,withheld: fewer than 5 creators behind its YES codes or its disagreements
+FC,"observable outcome, YES or not",YES,,,,,,,,,,withheld: fewer than 5 creators behind its YES codes or its disagreements
+FC,"quantity, YES or not",YES,,,,,,,,,,withheld: fewer than 5 creators behind its YES codes or its disagreements
+FC,number of YES parts (0 to 5),0,152,13,34,"0.679 [0.505, 0.847]","0.866 [0.736, 0.948]","0.550 [0.387, 0.704]","0.620 [0.537, 0.702]",0.277,driver (results.json),printed
+FC,number of YES parts (0 to 5),1,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+FC,number of YES parts (0 to 5),2,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+FC,number of YES parts (0 to 5),3,,,,,,,,,,"pooled into 'other (pooled)': fewer than 5 creators behind its positive codes or its disagreements, or the disclosure check"
+FC,number of YES parts (0 to 5),4,,,,,,,,,,not coded by either reading on this sample
+FC,number of YES parts (0 to 5),5,,,,,,,,,,not coded by either reading on this sample
+FC,number of YES parts (0 to 5),"other (pooled) (1, 2, 3)",101,34,13,"0.679 [0.506, 0.844]","0.811 [0.749, 0.899]","0.450 [0.295, 0.618]","0.380 [0.296, 0.464]",,"this package's bootstrap (2,000 two-stage draws)",printed (pooled codes)

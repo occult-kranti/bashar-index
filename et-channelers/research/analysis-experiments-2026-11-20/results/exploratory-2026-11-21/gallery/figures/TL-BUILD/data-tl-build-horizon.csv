@@ -1,0 +1,21 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-build-measures.csv (TL package, public folder).
+# Interval level: none (descriptive percentiles of the observed windows; no minimum or maximum is printed).
+# Days. Year-only windows put the midpoint at 2 July, so some horizons are negative.
+set,weighting,horizon_days_p10,horizon_days_p25,horizon_days_p50,horizon_days_p75,horizon_days_p90
+All closed windows,over window units,0.0,12.0,68.5,358.5,1070.3
+All closed windows,each creator counted equally,0.0,8.0,88.0,393.0,1517.0
+Windows of 92 days or less,over window units,1.0,7.0,14.0,32.8,134.5
+Windows of 92 days or less,each creator counted equally,0.0,2.0,11.0,27.8,88.0
+Absolute (an explicit year or event day),over window units,-167.4,13.0,182.0,690.0,1375.8
+Absolute (an explicit year or event day),each creator counted equally,-160.0,5.8,198.0,592.4,1403.2
+Relative to the upload day,over window units,3.0,11.0,39.0,192.0,913.0
+Relative to the upload day,each creator counted equally,1.0,10.0,32.0,199.3,1825.8
+Window from the statement or its context,over window units,3.0,13.0,89.0,431.0,1421.5
+Window from the statement or its context,each creator counted equally,1.0,13.0,117.6,824.1,1826.0
+Window from the period of the talk alone,over window units,-105.9,6.0,18.0,166.0,474.2
+Window from the period of the talk alone,each creator counted equally,-106.7,5.0,36.9,184.7,640.3
+Upload day confirmed,over window units,0.0,13.0,88.0,365.5,985.0
+Upload day confirmed,each creator counted equally,-6.0,7.0,90.0,393.0,1488.3
+Upload day estimated,over window units,2.0,11.0,14.0,140.5,1132.0
+Upload day estimated,each creator counted equally,-108.0,6.9,14.2,247.6,1295.1

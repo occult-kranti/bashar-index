@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package E, public table e11-vocabulary-by-lineage.csv (results/exploratory-2026-11-21/E/e11-vocabulary-by-lineage.csv after the release review).
+# Interval level: Group shares: 90% t interval over creators. Difference: 90% Welch t interval and 90% creator bootstrap (2,000 draws, percentile). As in the source table.
+# E11: share of a creator's recordings (300 or more body words, middle 80% of running time) holding at least one term of a closed list; lineage groups from model-coded title families (star peoples against angels, the central figure of Christianity, holy women, ascended masters and sages, and deities), not checked by a person; creators whose titles name both kinds left out; cue counts, no precision check.
+# Equivalence margin 0.10 fixed before the run (none was registered).
+quantity,vocabulary,group,creators,estimate,t90_low,t90_high,boot90_low,boot90_high
+share of recordings,secret-control vocabulary,titled under star-people families,18,0.1163,0.044,0.1886,,
+share of recordings,secret-control vocabulary,titled under angelic or devotional figures,9,0.1284,0.0668,0.1899,,
+"difference, star-people minus angelic or devotional",secret-control vocabulary,both groups (18 + 9 creators),,-0.012,-0.1029,0.0788,-0.0899,0.0711
+share of recordings,consciousness-shift vocabulary,titled under star-people families,18,0.5831,0.4739,0.6924,,
+share of recordings,consciousness-shift vocabulary,titled under angelic or devotional figures,9,0.5881,0.4519,0.7242,,
+"difference, star-people minus angelic or devotional",consciousness-shift vocabulary,both groups (18 + 9 creators),,-0.0049,-0.1717,0.1618,-0.1454,0.1561

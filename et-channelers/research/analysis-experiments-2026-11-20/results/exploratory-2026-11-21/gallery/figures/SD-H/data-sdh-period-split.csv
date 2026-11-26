@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# SD-H: SD's primary (R00) and post hoc period split (R09, R10), hold-out channels against hold-out channels beside seen; source HOLD2/SD-H-period-split.csv (package HOLD2, public).
+# Interval level: 90% t interval over creators. L (28-day block) and G (within creator) date-permutation references, 999 draws: one-sided descriptions, not plotted, not tests.
+# Creator counts as printed by the package (bands for the hold-out).
+row,group,creators,anchors,recordings_in_panel,estimate,t90_low,t90_high,L_mean,L_p_one_sided,G_mean,G_p_one_sided,draws
+R00 primary: within 3 days minus 14 to 60 days,seen,66,908,1035,0.001,-0.0009429,0.003,0.0002136,0.117,-4.416e-05,0.279,999
+R09 anchors before 2026-10-17 (post hoc split),seen,61,652,1035,0.0017,-0.0004534,0.0039,5.532e-05,0.019,-5.665e-05,0.173,999
+R10 anchors on or after 2026-10-17 (post hoc split),seen,46,256,1035,-0.0001828,-0.0011,0.0007075,0.0003383,0.806,2.195e-05,0.563,999
+R00 primary: within 3 days minus 14 to 60 days,hold-out,all but fewer than 5 of 18,193,242,0.0021,-0.0079,0.012,0.0011,0.325,3.9e-05,0.254,999
+R09 anchors before 2026-10-17 (post hoc split),hold-out,all but fewer than 5 of 18,149,242,0.0045,-0.006,0.0151,0.0022,0.198,5.215e-05,0.093,999
+R10 anchors on or after 2026-10-17 (post hoc split),hold-out,5 or more,44,242,-0.0081,-0.0145,-0.0018,-0.0028,0.982,0.0001057,0.911,999

@@ -1,0 +1,17 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D8-paper-full-ledger.csv (package rv-D8) (copied from the paper's public table)
+# Interval level: none (counts)
+# Exactly the numbers drawn in fig-requests-full-ledger. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:21Z.
+category,requests
+untagged requests (no tag recorded),5
+tests (no corpus data),192
+name forms from seen transcripts,294
+"other-group transcript windows (production, after freeze 2)",2649
+page text of seen recordings,13234
+"hold-out transcript windows (reliability runs on R-hold, after freeze 2)",13420
+"seen transcript statements, with web search",17662
+constructed known-answer texts,18772
+"public channel metadata, web search (discovery)",26338
+"hold-out transcript windows (production, after freeze 2)",35815
+"seen transcript windows (pilots, gates, checks)",42881
+seen transcript windows (production),225346

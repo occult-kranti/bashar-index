@@ -1,0 +1,46 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:31:31Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# PT-H: PT part (a) (frozen spec pt-v1, regular expressions only) on the page text of each group's recordings with a local metadata file; description without time-code lines and with web addresses replaced by a placeholder; seen, hold-out (all 23 creators, all languages) and other creators as separate groups, never pooled.
+# Web addresses in descriptions classed by PT's fixed domain lookup; 'website' = any other domain. creator_mean_share as above.
+# Release fix of 2026-11-22 (2026-11-22T06:14:18Z) by the plotting group X-HOLD's apply_release_fixes.py (sha256 a5c389b3f05b1084; dominance.py d96371e790ec2245), after the verifier's report, for privacy only (it hides values and chooses none): the other group's shares strictly between 0 and 1 ('website', 'any link') read 'not published (misses may come from fewer than 5 creators; lead's decision D21)': in a group of at most 7 creators their complements cannot be shown to rest on 5 or more.
+group,link_class,status,creators,recordings,recordings_with_hit,creators_with_hit,creator_mean_share,t90_low,t90_high
+seen,payment,shown,all but fewer than 5 of 71,1228,208,14,0.1658,0.0937,0.2378
+seen,booking,shown,all but fewer than 5 of 71,1228,30,9,0.0337,0.0051,0.0624
+seen,course,shown,all but fewer than 5 of 71,1228,89,10,0.0737,0.0308,0.1165
+seen,event,withheld: fewer than 5 creators with a hit,all but fewer than 5 of 71,1228,,,,,
+seen,shop,shown,all but fewer than 5 of 71,1228,275,22,0.2267,0.148,0.3053
+seen,newsletter,shown,all but fewer than 5 of 71,1228,83,11,0.0652,0.0217,0.1088
+seen,social,shown,all but fewer than 5 of 71,1228,389,31,0.3222,0.2349,0.4094
+seen,same_platform,shown,all but fewer than 5 of 71,1228,293,40,0.2423,0.1751,0.3095
+seen,aggregator,shown,all but fewer than 5 of 71,1228,75,6,0.065,0.018,0.1121
+seen,shortener,shown,all but fewer than 5 of 71,1228,69,9,0.0554,0.0198,0.091
+seen,website,shown,all but fewer than 5 of 71,1228,992,64,0.8119,0.7498,0.8739
+seen,any link,shown,all but fewer than 5 of 71,1228,1077,5 or more,0.8805,0.8315,0.9294
+seen,time-stamp list (PT's line-start rule),shown,all but fewer than 5 of 71,1228,197,21,0.1653,0.1033,0.2273
+holdout,payment,shown,23,415,87,5 or more,0.1989,0.0689,0.3288
+holdout,booking,withheld: fewer than 5 creators with a hit,23,415,,,,,
+holdout,course,withheld: fewer than 5 creators with a hit,23,415,,,,,
+holdout,event,withheld: fewer than 5 creators with a hit,23,415,,,,,
+holdout,shop,shown,23,415,64,5 or more,0.1452,0.0322,0.2581
+holdout,newsletter,withheld: fewer than 5 creators with a hit,23,415,,,,,
+holdout,social,shown,23,415,137,5 or more,0.3399,0.1793,0.5005
+holdout,same_platform,shown,23,415,125,5 or more,0.3086,0.1704,0.4468
+holdout,aggregator,withheld: fewer than 5 creators with a hit,23,415,,,,,
+holdout,shortener,withheld: fewer than 5 creators with a hit,23,415,,,,,
+holdout,website,shown,23,415,296,5 or more,0.706,0.5689,0.8431
+holdout,any link,shown,23,415,331,5 or more,0.7922,0.6692,0.9151
+holdout,time-stamp list (PT's line-start rule),shown,23,415,49,5 or more,0.1101,0.01,0.2101
+other,payment,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,
+other,booking,shown,5 or more,55,0,0,0.0,0.0,0.0
+other,course,shown,5 or more,55,0,0,0.0,0.0,0.0
+other,event,shown,5 or more,55,0,0,0.0,0.0,0.0
+other,shop,shown,5 or more,55,0,0,0.0,0.0,0.0
+other,newsletter,shown,5 or more,55,0,0,0.0,0.0,0.0
+other,social,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,
+other,same_platform,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,
+other,aggregator,withheld: fewer than 5 creators with a hit,5 or more,55,,,,,
+other,shortener,shown,5 or more,55,0,0,0.0,0.0,0.0
+other,website,not published (misses may come from fewer than 5 creators; lead's decision D21),5 or more,55,,,,,
+other,any link,not published (misses may come from fewer than 5 creators; lead's decision D21),5 or more,55,,,,,
+other,time-stamp list (PT's line-start rule),withheld: fewer than 5 creators with a hit,5 or more,55,,,,,

@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package ER, public table e3-edges-and-address.csv (results/exploratory-2026-11-21/ER/e3-edges-and-address.csv after the release review) (seen rows).
+# Interval level: 90% and 95% percentile intervals from 9,999 two-stage resamples (creators, then recordings within each drawn creator).
+# E3, seen creators (61 creators, 558 recordings; H3's recordings and bins). Registered estimands: articulation rate in edge tenths (1 and 10) against middle tenths (3 to 8); second person in the last against the first tenth (H3's half-count rule). Rows marked 'added' were added after the exploratory reporting plan. Recognizer output, not checked by a person.
+arm,row,creators,recordings,ratio,ci90_low,ci90_high,ci95_low,ci95_high
+Articulation rate,"Edge tenths (1 and 10) against middle tenths (3 to 8), registered",61,558,1.0,0.993,1.007,0.991,1.009
+Articulation rate,"The same, recentred on the circular-shift centre (added)",61,558,1.001,0.994,1.009,0.992,1.01
+Articulation rate,First tenth against middle (added),61,558,0.995,0.984,1.008,0.981,1.01
+Articulation rate,Last tenth against middle (added),61,558,1.0,0.985,1.014,0.982,1.017
+Articulation rate,"Edge against middle, words instead of syllables (added)",61,558,1.002,0.994,1.011,0.993,1.012
+Second-person address,"Last tenth against first, registered",61,558,1.341,1.195,1.493,1.167,1.526

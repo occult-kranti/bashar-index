@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/cal-f-null-centre.csv
+# Interval level: none (null means from 999 draws; no interval printed)
+# CAL-f, label-based repeat of CAL part (a): null mean of each registered statistic under its reference on the seen first-round labels (a10_checks.null_means of the frozen code, 999 draws), divided by its tolerance (0.1 x the smallest effect of interest on the version's scale); 'recentring needed' when the ratio's absolute value exceeds 1. Rows without a printed tolerance are listed without a ratio.
+# creators: as printed in the source ('19 and fewer than 5 more' is the source's nested-count form). Model-coded first-round labels (voice, asks, forecasts, titles and sentence codes; their verification lines are in the package file); not checked by a person.
+hypothesis,version,null_mean,tolerance,ratio_drawn,flag,creators
+H2,registered,-0.0003,,,centred,56
+H2,amended,,,,two-sided sign-flip: null mean zero by construction,56
+H5,registered,-0.0114,0.04,-0.285,centred,19 and fewer than 5 more
+H5,amended,-0.0017,0.0037,-0.459,centred,19 and fewer than 5 more
+H6,registered,-0.1369,0.0693,-1.975,recentring needed,48
+H6,amended,0.0,0.0125,0.0,centred,48
+H1,registered and amended,,,,sign-flip of creator means: null mean zero by construction,
+H4,registered and amended,,,,sign-flip of creator means: null mean zero by construction,

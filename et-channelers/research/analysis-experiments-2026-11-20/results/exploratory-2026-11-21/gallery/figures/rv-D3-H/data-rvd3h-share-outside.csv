@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# rv-D3-H companion: share of audio outside recognized speech; source HOLD2/rv-D3-H-share-without-speech.csv (package HOLD2, public).
+# Interval level: creators weighted equally, 95% t interval over creators; pooled over hours, 95% creator-bootstrap interval.
+# Recognizer-output and voice-detector measures; nothing here is model-coded.
+definition,group,estimate,creators,recordings,value,lo95,hi95,interval
+audio outside recognizer segments,seen,creator-equal,71,1284,0.1491,0.1182,0.18,95% t interval over creators
+audio outside the voice detector's speech,seen,creator-equal,71,1284,0.1219,0.0873,0.1565,95% t interval over creators
+audio outside recognizer segments,seen,pooled,71,1284,0.148,0.1097,0.2016,95% creator-bootstrap interval
+audio outside the voice detector's speech,seen,pooled,71,1284,0.1208,0.0785,0.178,95% creator-bootstrap interval
+audio outside recognizer segments,hold-out,creator-equal,18,"not published (lead's decision D47: beside published counts the hold-out transcript total isolates one transcript, and the band counts add up to it)",0.1858,0.1158,0.2558,95% t interval over creators
+audio outside the voice detector's speech,hold-out,creator-equal,18,"not published (lead's decision D47: beside published counts the hold-out transcript total isolates one transcript, and the band counts add up to it)",0.1645,0.0878,0.2412,95% t interval over creators
+audio outside recognizer segments,hold-out,pooled,18,"not published (lead's decision D47: beside published counts the hold-out transcript total isolates one transcript, and the band counts add up to it)",0.1624,0.1264,0.2049,95% creator-bootstrap interval
+audio outside the voice detector's speech,hold-out,pooled,18,"not published (lead's decision D47: beside published counts the hold-out transcript total isolates one transcript, and the band counts add up to it)",0.1422,0.0919,0.2015,95% creator-bootstrap interval

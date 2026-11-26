@@ -1,0 +1,19 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# CH part (d): average-linkage partitions of creators on 1 - cosine; mean clusterwise Jaccard over 200 resamples of recordings within creators; drawn only if 0.75 or more. Seen creators with 5+ recordings.
+# Group sizes and memberships are not published.
+view,k,mean_clusterwise_jaccard,meets_0.75_rule
+topic profile (16 topics),2,0.759,yes
+topic profile (16 topics),3,0.59,no
+topic profile (16 topics),4,0.504,no
+topic profile (16 topics),5,0.484,no
+topic profile (16 topics),6,0.483,no
+RX cue profile (10 families),2,0.622,no
+RX cue profile (10 families),3,0.591,no
+RX cue profile (10 families),4,0.531,no
+RX cue profile (10 families),5,0.497,no
+RX cue profile (10 families),6,0.51,no
+word measures (9),2,0.653,no
+word measures (9),3,0.57,no
+word measures (9),4,0.487,no
+word measures (9),5,0.502,no
+word measures (9),6,0.487,no

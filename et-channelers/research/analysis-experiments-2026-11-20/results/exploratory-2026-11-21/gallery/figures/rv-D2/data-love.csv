@@ -1,0 +1,37 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D2-table-B-balance.csv (package rv-D2)
+# Interval level: 90% creator-bootstrap intervals (2,000 draws, stratified by group)
+# Exactly the numbers drawn in fig-love. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:15Z.
+covariate,series,smd,lo90,hi90,note
+share with English text of another kind,hold-out (23) minus seen (71),0.65,0.26,1.18,
+share with English text of another kind,other (fewer than 10) minus seen,3.69,3.16,5.70,drawn at the edge
+median length of selected recordings (min),hold-out (23) minus seen (71),0.02,-0.39,0.43,
+median length of selected recordings (min),other (fewer than 10) minus seen,0.08,-0.27,0.46,
+share native platform audio,hold-out (23) minus seen (71),0.74,0.46,1.02,
+share native platform audio,other (fewer than 10) minus seen,not published,,,
+share audio extracted from a video file,hold-out (23) minus seen (71),-0.53,-0.81,-0.24,
+share audio extracted from a video file,other (fewer than 10) minus seen,not published,,,
+share with a confirmed upload day (E1),hold-out (23) minus seen (71),0.69,0.32,1.07,
+share with a confirmed upload day (E1),other (fewer than 10) minus seen,-0.45,-1.20,0.31,
+share with a still-estimated date (E3),hold-out (23) minus seen (71),-0.30,-0.62,0.03,
+share with a still-estimated date (E3),other (fewer than 10) minus seen,0.77,0.10,1.59,
+"log(1 + window span of the newest 20, days)",hold-out (23) minus seen (71),0.16,-0.23,0.58,
+"log(1 + window span of the newest 20, days)",other (fewer than 10) minus seen,-0.45,-1.28,0.29,
+log posting rate (selected per 30 days),hold-out (23) minus seen (71),-0.17,-0.58,0.22,
+log posting rate (selected per 30 days),other (fewer than 10) minus seen,0.22,-0.49,1.18,
+"log(1 + median gap between confirmed uploads, days)",hold-out (23) minus seen (71),0.21,-0.20,0.66,
+"log(1 + median gap between confirmed uploads, days)",other (fewer than 10) minus seen,0.43,-0.49,1.37,
+"metadata capture (download batch proxy), days after 1 Nov",hold-out (23) minus seen (71),-0.64,-0.99,-0.30,
+"metadata capture (download batch proxy), days after 1 Nov",other (fewer than 10) minus seen,-0.71,-1.19,-0.26,
+share of transcripts not in English,hold-out (23) minus seen (71),0.74,0.44,1.03,
+share of transcripts not in English,other (fewer than 10) minus seen,not defined,,,
+share of language decisions by the creator rule,hold-out (23) minus seen (71),-0.83,-1.20,-0.48,
+share of language decisions by the creator rule,other (fewer than 10) minus seen,not published,,,
+share of selected files transcribed,hold-out (23) minus seen (71),-0.77,-1.23,-0.38,
+share of selected files transcribed,other (fewer than 10) minus seen,-3.64,-5.64,-3.07,drawn at the edge
+log transcribed audio hours,hold-out (23) minus seen (71),0.13,-0.26,0.49,
+log transcribed audio hours,other (fewer than 10) minus seen,-1.63,-2.92,-1.04,drawn at the edge
+first run-ledger line (share of the run's ledger lines),hold-out (23) minus seen (71),0.75,0.51,1.04,
+first run-ledger line (share of the run's ledger lines),other (fewer than 10) minus seen,0.71,0.62,1.61,
+last run-ledger line (share of the run's ledger lines),hold-out (23) minus seen (71),4.12,2.92,10.48,drawn at the edge
+last run-ledger line (share of the run's ledger lines),other (fewer than 10) minus seen,-0.40,-1.33,2.55,

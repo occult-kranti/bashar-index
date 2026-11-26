@@ -1,0 +1,12 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Model-coded (small model, an earlier voice instrument snapshot of 2026-11-20 19:45); not checked by a person. Interim, development creators only; superseded as the census by LAB-K.
+# Base: 96 recordings of 48 development creators (seen creators), two per creator. Interval level: 95% creator bootstrap.
+# Source: public table rv-l1-kinds-and-bands.csv (rows table=kind, weight=recordings, small model).
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+kind,share,lo95,hi95,recordings
+own-voice talk,0.323,0.221,0.427,31
+channelled (embodied) voice,0.262,0.167,0.366,25
+interview or podcast,0.148,0.074,0.231,14
+relayed message,0.115,0.042,0.209,11
+guided meditation or practice,0.102,0.04,0.176,10
+advert or other,0.051,0.011,0.093,5

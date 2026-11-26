@@ -1,0 +1,20 @@
+# Exploratory (registry A2); not a test of H1-H10. Added after the exploratory reporting plan only where marked.
+# TL-BUILD. Kept world-future (F1) statements of the seen creators by timeline lane. Shares weighted by 1 / inclusion probability (production valve). Lanes with fewer than 5 creators pooled into 'other' (plan section 3): none.
+# Model-coded (first-round forecast labels of the seen creators): world-future class F1 by the small model with a middle-model second reading (gate D passes on the seen gate sample on its lower bound, 0.643 [0.503]; on the hold-out reliability sample R-hold the F1 class fails gate D, kappa 0.507 [90% 0.169, 0.792]; its stability gate C passes, 0.903); time expressions by the small model (FE) with windows computed by code from its typed fields (known-answer year items: flags right on 30 constructed items); checkability parts by the middle model, kept as the record by the owner's decision (registry 00:30) although they fail their gates: on the development pilot the two-model gate failed for time window (kappa 0.55) and place (not published: fewer than 5 creators) against the floor 0.60; on R-hold, gate D (two models) passes for time window (0.805, lower 90% bound 0.647) and fails for place (0.306), named actor (0.419) and observable outcome (0.328; its stability gate C 0.826), quantity not published (fewer than 5 creators); a third model re-read 300 seen check statements: kappa time window 0.70, place not published (fewer than 5 creators), named actor 0.69, observable outcome 0.79, quantity not published (fewer than 5 creators) (agreement, not a measure of correctness); commitment by the small model (R-hold gate C 0.913, gate D 0.756). Not checked by a person.
+# What is dated and for when, and whether an outcome would be observable; never whether a prediction came true.
+# Recurring lane: not run (recurrence is coded by the TL-SPEC card, which needs model calls; no money left under the hard stop, registry 2026-11-21 18:41).
+# Source-type rows (non-human entity, deceased person, higher self; registry 2026-11-21 02:50): in tl-build-source-types.csv, by the source the recording's title announces (a recording-level proxy from the title codes, not the statement's own source; no first-round instrument codes the source of a single statement, which would need model calls; no money left under the hard stop, registry 2026-11-21 18:41).
+# Creator counts: 'fewer than 5' means 1 to 4; 'all but fewer than 5 of 71' means 67 to 70 of the 71 seen creators; a range such as 55-59 is a band shown where an exact count could fix a difference of 1 to 4 creators against a nested printed count (rule revised after the release review, 2026-11-22).
+lane,coded_statements,share_of_kept_weighted,creators
+"no time cue: FE not run (no time expression coded, no TIME_RE cue near, FC time window not YES)",3087,0.346,all but fewer than 5 of 71
+"FE run, no time expression",2697,0.299,all but fewer than 5 of 71
+undated future only (D8),767,0.085,60-64
+bounded: closed window,2139,0.232,59
+bounded: open window (start only),52,0.006,10-14
+bounded: no window by the program,232,0.025,35-39
+bounded: contradictory expressions,44,0.005,15-19
+bounded: implausible year,15,0.002,5-9
+no upload period,0,0.0,0
+FE answer failed,0,0.0,0
+FE missing,0,0.0,0
+all kept F1 statements,9033,1.0,all but fewer than 5 of 71

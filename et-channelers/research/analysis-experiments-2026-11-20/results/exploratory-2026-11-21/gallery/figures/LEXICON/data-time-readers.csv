@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10.
+role,reader,creator_equal_share,t90_low,t90_high,creators,hits,hits_total
+forecast (the future of the world),"small model, 600 hits",0.1717,0.1192,0.2242,59,85,600
+forecast (the future of the world),"middle model, same 600 hits",0.1031,0.0661,0.1401,59,62,600
+forecast (the future of the world),"small model, full pass",0.129,0.1039,0.1542,60 or more,1313,9354
+logistics (events and plans of the speaker or channel),"small model, 600 hits",0.2558,0.2025,0.3091,59,154,600
+logistics (events and plans of the speaker or channel),"middle model, same 600 hits",0.2635,0.2153,0.3118,59,155,600
+logistics (events and plans of the speaker or channel),"small model, full pass",0.2488,0.2139,0.2837,60 or more,2246,9354
+calendar and sky days,"small model, 600 hits",0.1509,0.1079,0.1938,59,141,600
+calendar and sky days,"middle model, same 600 hits",0.1244,0.0865,0.1624,59,100,600
+calendar and sky days,"small model, full pass",0.1908,0.1513,0.2303,60 or more,2481,9354
+biography (a person's past or present life),"small model, 600 hits",0.1745,0.1293,0.2196,59,97,600
+biography (a person's past or present life),"middle model, same 600 hits",0.1801,0.135,0.2252,59,104,600
+biography (a person's past or present life),"small model, full pass",0.1853,0.1513,0.2194,60 or more,1588,9354
+"other, deep time or not a time use","small model, 600 hits",0.2472,0.1919,0.3025,59,123,600
+"other, deep time or not a time use","middle model, same 600 hits",0.3288,0.2765,0.3811,59,179,600
+"other, deep time or not a time use","small model, full pass",0.246,0.2064,0.2856,60 or more,1726,9354

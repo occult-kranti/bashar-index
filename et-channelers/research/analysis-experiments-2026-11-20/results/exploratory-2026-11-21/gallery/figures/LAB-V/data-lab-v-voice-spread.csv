@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-v-voice-shares.csv (rows 'all formats'; quantiles printed there; blank = not printed, not drawn).
+# Interval level: none; quantiles over creators (10th, 25th, 50th, 75th, 90th percentile), no minimum or maximum.
+view,row,p10,p25,p50,p75,p90
+"middle model, middle-model subset (178 recordings; primary)",claimed voice (V2+V3),0.000,0.006,0.290,0.608,0.803
+"middle model, middle-model subset (178 recordings; primary)",of which embodied (V2),0.000,0.000,0.000,0.464,0.803
+"middle model, middle-model subset (178 recordings; primary)",of which relayed (V3; below reliability floor),0.000,0.000,,0.127,0.324
+"middle model, middle-model subset (178 recordings; primary)",own voice (primary definition),,0.047,0.317,0.665,0.910
+"middle model, middle-model subset (178 recordings; primary)",neither claimed nor own,0.000,,0.090,0.549,0.909
+"small model, same subset (beside)",claimed voice (V2+V3),0.000,0.000,0.132,0.541,0.805
+"small model, same subset (beside)",of which relayed (V3; below reliability floor),0.000,0.000,0.000,0.081,0.361
+"small model, all 1,293 seen recordings (beside)",claimed voice (V2+V3),,0.043,0.249,0.479,0.726
+"small model, all 1,293 seen recordings (beside)",own voice (primary definition),0.053,0.137,0.250,0.516,0.757

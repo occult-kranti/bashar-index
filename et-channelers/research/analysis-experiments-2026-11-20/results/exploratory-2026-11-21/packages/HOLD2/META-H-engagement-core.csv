@@ -1,0 +1,18 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:31:14Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# META-H / META-169. Groups: seen (71 creators), hold-out (23 creators, all languages), other (the creators in neither group); never pooled. Snapshot captured 2026-11-16 to 2026-11-20 UTC; the cloud-only objects were captured with the same run and read from the archive drive once, read-only, after freeze 2 (registry 2026-11-21 03:08), each checked against the inventory's SHA-256.
+# Creator counts that would sit 1 to 4 from a nested public count are printed as a band; cells of fewer than 5 creators are withheld.
+# META (c) core on local files: recordings aged 30 days or more at capture with a view count and a known duration; creators with 3 or more such recordings. Within a channel, one snapshot: 'went with more views at capture'; nothing causal. Creator bootstrap 90% (2,000 draws). META (c) feature rows (title cues, pattern families, written asks) not run here.
+group,estimand,status,creators,recordings,estimate,boot90_low,boot90_high
+seen,slope of log10 views on log10 age (within creator),shown,64,913,-0.2173,-0.4015,-0.0422
+seen,slope of log10 views on log10 length (within creator),shown,64,913,0.2247,0.1558,0.2937
+seen,"between-creator share of variance, log10 views",shown,64,913,0.841,0.7781,0.8856
+seen,"between-creator share of variance, log10 like rate",shown,5 or more,830,0.424,0.3203,0.5097
+seen,"between-creator share of variance, log10 comment rate",shown,5 or more,784,0.5424,0.4054,0.6478
+holdout,slope of log10 views on log10 age (within creator),shown,all but fewer than 5 of 23,327,-0.0608,-0.2212,0.1095
+holdout,slope of log10 views on log10 length (within creator),shown,all but fewer than 5 of 23,327,0.2293,0.1664,0.3187
+holdout,"between-creator share of variance, log10 views",shown,all but fewer than 5 of 23,327,0.8828,0.7489,0.9351
+holdout,"between-creator share of variance, log10 like rate",shown,5 or more,306,0.6664,0.3038,0.7936
+holdout,"between-creator share of variance, log10 comment rate",shown,5 or more,285,0.6004,0.4205,0.6986
+other,all,withheld: fewer than 5 creators with 3 or more recordings aged 30 days or more,,,,,

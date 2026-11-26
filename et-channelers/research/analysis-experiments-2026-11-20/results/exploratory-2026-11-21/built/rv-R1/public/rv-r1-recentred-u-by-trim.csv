@@ -1,0 +1,33 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R1 figure (c) data: recentred U and registered (raw) U against the seconds trimmed from each end, seen creators, frozen H3 eligibility at each trim, artefact filter v2.
+# Base: the fixed set eligible at a 300-s trim (55 creators, 477 recordings) at every trim; recordings eligible at each trim are printed at 0 s (64 creators, 746 recordings: the published untrimmed set) and at the registered 180 s (61, 558).
+# Interval level: 90% t intervals over creator means. Creator counts of positive recentred U by trim are not printed (counts 1 to 4 apart between neighbouring trims).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+recording_set,trim_seconds,creators,recordings,recentred_U,recentred_t90_low,recentred_t90_high,raw_U,raw_t90_low,raw_t90_high,shift_reference_centre
+eligible at each trim,0,64,746,0.5247,0.3366,0.7127,0.4265,0.2441,0.6089,-0.0982
+eligible at each trim,15,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,30,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,45,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,60,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,90,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,120,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,150,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,180,61,558,0.0826,-0.0455,0.2107,0.0193,-0.1212,0.1599,-0.0633
+eligible at each trim,210,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,240,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,270,"not published (the eligible set at this trim lies within 1 to 4 creators of a printed nested set, and its difference from the fixed-set row at the same trim was not shown to rest on 5 or more creators; the fixed set carries the curve)",,,,,,,,
+eligible at each trim,300,the same set and values as the fixed-set row at 300 s,,,,,,,,
+fixed set (eligible at 300 s),0,55,477,0.5195,0.3211,0.7179,0.4136,0.2312,0.596,-0.1059
+fixed set (eligible at 300 s),15,55,477,0.4658,0.2763,0.6554,0.3652,0.1899,0.5404,-0.1007
+fixed set (eligible at 300 s),30,55,477,0.4114,0.226,0.5968,0.3156,0.1443,0.4869,-0.0958
+fixed set (eligible at 300 s),45,55,477,0.401,0.2155,0.5866,0.3086,0.137,0.4802,-0.0924
+fixed set (eligible at 300 s),60,55,477,0.3901,0.2042,0.5761,0.2996,0.1271,0.472,-0.0906
+fixed set (eligible at 300 s),90,55,477,0.3151,0.1227,0.5075,0.2196,0.0365,0.4026,-0.0955
+fixed set (eligible at 300 s),120,55,477,0.2703,0.0954,0.4451,0.1833,0.0132,0.3534,-0.087
+fixed set (eligible at 300 s),150,55,477,0.2132,0.0623,0.3642,0.1359,-0.0158,0.2877,-0.0773
+fixed set (eligible at 300 s),180,55,477,0.139,0.022,0.2561,0.0728,-0.0506,0.1961,-0.0662
+fixed set (eligible at 300 s),210,55,477,0.0605,-0.0334,0.1543,0.006,-0.094,0.106,-0.0545
+fixed set (eligible at 300 s),240,55,477,0.0366,-0.0441,0.1174,-0.0102,-0.0959,0.0755,-0.0469
+fixed set (eligible at 300 s),270,55,477,0.0391,-0.0449,0.1231,-0.0046,-0.09,0.0808,-0.0437
+fixed set (eligible at 300 s),300,55,477,0.0197,-0.0651,0.1046,-0.0266,-0.1128,0.0597,-0.0463

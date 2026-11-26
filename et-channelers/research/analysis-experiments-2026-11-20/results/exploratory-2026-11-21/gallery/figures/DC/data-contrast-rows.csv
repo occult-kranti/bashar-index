@@ -1,0 +1,16 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# DC primary (pre-specified in prespec-dc.json) and rows. estimate = mean over creators of the creator's near-minus-far difference in centred TSIM cosine; 90% t interval over creators.
+# Rank-distance row: gap measured in listing ranks, not days. Estimated rows: pairs with at least one recording whose date is estimated (evidence level E3), never pooled with confirmed pairs.
+# creators 'not printed': the row rests on most creators of the estimated panel; its exact count is withheld (nested-count rule).
+# Inside the weeks a creator covers; upload date, not date of speaking; not a trend of the field.
+group,row,estimate,t90_low,t90_high,creators
+"Confirmed dates, version B",0-7 minus 31-183 days (primary),0.03689,0.0223,0.05148,56
+"Confirmed dates, version B",1-7 minus 31-183 days (same-day pairs left out),0.03018,0.01549,0.04486,56
+"Confirmed dates, version B",same weekday only: 0 or 7 minus 35-182 days,0.04187,0.0192,0.06453,43
+"Confirmed dates, version B",weekly beat: whole-week minus mid-week gaps,0.03039,0.01448,0.04631,47
+"Confirmed dates, version A",0-7 minus 31-183 days,0.03053,0.01502,0.04603,51
+"Confirmed dates, version A",1-7 minus 31-183 days (same-day pairs left out),0.02421,0.00844,0.03998,51
+"Confirmed dates, version A",same weekday only: 0 or 7 minus 35-182 days,0.03576,0.01063,0.06088,35
+"Confirmed dates, version A",weekly beat: whole-week minus mid-week gaps,0.03243,0.01484,0.05003,42
+Estimated dates (version B),"0-7 minus 31-183 days, pairs with an estimated date (range rule)",0.0021,-0.0532,0.05741,11
+Estimated dates (version B),"rank distance 1-2 minus 6-19, pairs with an estimated date",0.02945,0.0144,0.0445,not printed

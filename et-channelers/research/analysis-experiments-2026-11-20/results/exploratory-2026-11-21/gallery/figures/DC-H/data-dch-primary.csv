@@ -1,0 +1,7 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# DC-H: DC's pre-specified primary on hold-out channels beside the seen channels; source HOLD2/DC-H-primary.csv (package HOLD2, public).
+# Interval level: 90% t interval over creators. G columns: date-permutation reference within creator (one-sided description, not a test of a registered hypothesis); not plotted.
+# TSIM v1 (names v0, calendar words masked) with the seen vocabulary and IDF; English recordings of 300 or more words.
+contrast,group,creators,recordings_in_panel,estimate,t90_low,t90_high,G_mean,G_p_one_sided,G_draws
+recordings 0 to 7 days apart minus 31 to 183 days apart,seen,56,1035,0.0369,0.0223,0.0515,-5.479e-05,0.0004998,2000
+recordings 0 to 7 days apart minus 31 to 183 days apart,hold-out,5 or more,242,0.0257,0.003,0.0483,-0.0003627,0.0105,2000

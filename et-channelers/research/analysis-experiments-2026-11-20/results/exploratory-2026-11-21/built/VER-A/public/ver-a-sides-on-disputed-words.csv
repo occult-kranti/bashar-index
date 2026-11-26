@@ -1,0 +1,49 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Exploratory pilot, before freeze 1 (registry A2/A11). Cross-read by a third model of the same vendor (gpt-6-sol, blind, guided steps); agreement, not a measure of correctness; no person checked any label.
+# Base: set W, 32 recordings of 32 development creators (seen creators; one recording each, so recordings count creators). Disputed words: units where the small model's and the middle model's round-1 voice labels differ, in the 101 regions of the 21 recordings that hold such regions; words weighted by the inverse selection rate of their window (word_weighted), or each recording or region counted once.
+# Interval level: 90% creator-bootstrap intervals (VER-A's own); groups pooled in this review carry their own 90% creator-bootstrap interval (2,000 draws, seed 20261122).
+# Groups (label pairs, formats, region kinds) with fewer than 5 recordings are pooled (plan section 3). A share is printed only where 5 or more recordings carry the side and its misses come from 0 or 5 or more recordings, and only if no sum or difference of printed figures (the overall row being a word-weighted mix of the groups of each partition) isolates fewer than 5 creators and no withheld cell of fewer than 5 creators can be bounded within 0.10 (joint audit of this table and the per-label and round-2 table, added in the fix pass of 2026-11-22 after the verifier's findings; it hides values and chooses none).
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:04:21Z (UTC, from the clock) by lv_vera.py (sha256 9bf3361489f16f559f2fbc9af80af6a91709c3fd2d070085c9abd095e0addf89) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), span_audit.py (sha256 29643538c5bb18f8dcaa327496eb4aa21c69bd1ac6a20fb9cea7951ff952d3f1), release review B-LV (plan P10).
+group,third_reader,share_word_weighted,share_90,share_creator_weighted,share_region_weighted,note
+"all disputed words (21 recordings, 101 regions)",sides with the small model,0.341,"[0.086, 0.563]",0.281,0.252,
+"all disputed words (21 recordings, 101 regions)",sides with the middle model,0.489,"[0.251, 0.808]",0.638,0.589,
+"all disputed words (21 recordings, 101 regions)",sides with neither,0.170,"[0.075, 0.265]",0.081,0.160,
+"all disputed words (21 recordings, 101 regions)",both readers' labels in its set,not published (fewer than 5 creators),,not published (fewer than 5 creators),not published (fewer than 5 creators),
+"all disputed words (21 recordings, 101 regions)",sides with neither and says V0 (cannot tell),0.000,,,,
+recording format: solo,sides with the small model,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,13 recordings; 28 regions
+recording format: solo,sides with the middle model,0.878,,,,13 recordings; 28 regions
+recording format: solo,sides with neither,not published (fewer than 5 creators),,,,13 recordings; 28 regions
+recording format: solo,both readers' labels in its set,not published (fewer than 5 creators),,,,13 recordings; 28 regions
+recording format: audience_session + conversation + mixed (pooled in this review),sides with the small model,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,"8 recordings; 73 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+recording format: audience_session + conversation + mixed (pooled in this review),sides with the middle model,0.263,"[0.089, 0.649]",,,"8 recordings; 73 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+recording format: audience_session + conversation + mixed (pooled in this review),sides with neither,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,"8 recordings; 73 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+recording format: audience_session + conversation + mixed (pooled in this review),both readers' labels in its set,not published (fewer than 5 creators),,,,"8 recordings; 73 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+label pair: other,sides with the small model,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,11 recordings; 33 regions
+label pair: other,sides with the middle model,0.378,,,,11 recordings; 33 regions
+label pair: other,sides with neither,not published (fewer than 5 creators),,,,11 recordings; 33 regions
+label pair: other,both readers' labels in its set,0.000,,,,11 recordings; 33 regions
+label pair: V1/V3,sides with the small model,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,11 recordings; 26 regions
+label pair: V1/V3,sides with the middle model,0.901,,,,11 recordings; 26 regions
+label pair: V1/V3,sides with neither,not published (fewer than 5 creators),,,,11 recordings; 26 regions
+label pair: V1/V3,both readers' labels in its set,0.000,,,,11 recordings; 26 regions
+label pair: V1/V4,sides with the small model,not published (fewer than 5 creators),,,,7 recordings; 35 regions
+label pair: V1/V4,sides with the middle model,not published (fewer than 5 creators),,,,7 recordings; 35 regions
+label pair: V1/V4,sides with neither,not published (misses from fewer than 5 creators),,,,7 recordings; 35 regions
+label pair: V1/V4,both readers' labels in its set,not published (fewer than 5 creators),,,,7 recordings; 35 regions
+label pair: V0/V1 + V1/V6 + V2/V3 + V4/V6 (pooled in this review),sides with the small model,not published (fewer than 5 creators),,,,"7 recordings; 21 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+label pair: V0/V1 + V1/V6 + V2/V3 + V4/V6 (pooled in this review),sides with the middle model,not published (misses from fewer than 5 creators),,,,"7 recordings; 21 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+label pair: V0/V1 + V1/V6 + V2/V3 + V4/V6 (pooled in this review),sides with neither,not published (fewer than 5 creators),,,,"7 recordings; 21 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+label pair: V0/V1 + V1/V6 + V2/V3 + V4/V6 (pooled in this review),both readers' labels in its set,not published (fewer than 5 creators),,,,"7 recordings; 21 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+region kind: claimed_vs_own,sides with the small model,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,13 recordings; 29 regions
+region kind: claimed_vs_own,sides with the middle model,0.613,,,,13 recordings; 29 regions
+region kind: claimed_vs_own,sides with neither,not published (fewer than 5 creators),,,,13 recordings; 29 regions
+region kind: claimed_vs_own,both readers' labels in its set,0.000,,,,13 recordings; 29 regions
+region kind: involves_other,sides with the small model,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,12 recordings; 67 regions
+region kind: involves_other,sides with the middle model,0.359,,,,12 recordings; 67 regions
+region kind: involves_other,sides with neither,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)",,,,12 recordings; 67 regions
+region kind: involves_other,both readers' labels in its set,not published (fewer than 5 creators),,,,12 recordings; 67 regions
+region kind: claimed_internal + other_pair + own_vs_cannot_tell (pooled in this review),sides with the small model,not published (fewer than 5 creators),,,,"5 recordings; 5 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+region kind: claimed_internal + other_pair + own_vs_cannot_tell (pooled in this review),sides with the middle model,not published (fewer than 5 creators),,,,"5 recordings; 5 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+region kind: claimed_internal + other_pair + own_vs_cannot_tell (pooled in this review),sides with neither,not published (fewer than 5 creators),,,,"5 recordings; 5 regions; computed in this review (90% creator bootstrap, 2,000 draws)"
+region kind: claimed_internal + other_pair + own_vs_cannot_tell (pooled in this review),both readers' labels in its set,not published (fewer than 5 creators),,,,"5 recordings; 5 regions; computed in this review (90% creator bootstrap, 2,000 draws)"

@@ -1,0 +1,31 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# META part (a): all 101 creators, publication dates, UTC time stamps and durations only (not hold-out contacts); no group split. Version B confirmed days.
+# gap: median of the creator's gaps between adjacent listing ranks whose days are both confirmed; span: oldest to newest confirmed day; weekday: share of the
+# creator's time-stamped confirmed uploads on its most-used UTC weekday (creators with 10+ time stamps); length: median best-known duration of the creator's
+# selected recordings.
+# Each panel covers the creators for whom its measure is defined; each creator is counted in exactly one class. Classes are half-open: a value on a class edge
+# (for example a median gap of 9.5 days) counts in the higher class. Classes merged by the reporting plan's rule until every class holds 5 or more creators;
+# shares rounded to whole per cent, so a panel's shares can add up to 0.99 or 1.01.
+# uniform_reference_share_of_creators: expected share of creators in the class if each creator's time stamps fell on weekdays uniformly at random (2,000 draws,
+# seed 20261122).
+panel,bin,share_of_creators,uniform_reference_share_of_creators,bin_holds_5_or_more_creators
+gap,0-1,0.11,,True
+gap,2-4,0.22,,True
+gap,5-9,0.39,,True
+gap,10-31,0.23,,True
+gap,32 or more,0.05,,True
+span,0-60,0.19,,True
+span,61-180,0.35,,True
+span,181-730,0.37,,True
+span,731 or more,0.09,,True
+weekday,under 25%,0.16,0.29,True
+weekday,25-34%,0.3,0.58,True
+weekday,35-49%,0.25,0.12,True
+weekday,50-74%,0.16,0.0,True
+weekday,75% or more,0.12,0.0,True
+length,under 5,0.1,,True
+length,5-9,0.13,,True
+length,10-19,0.27,,True
+length,20-29,0.26,,True
+length,30-44,0.12,,True
+length,45 or more,0.12,,True

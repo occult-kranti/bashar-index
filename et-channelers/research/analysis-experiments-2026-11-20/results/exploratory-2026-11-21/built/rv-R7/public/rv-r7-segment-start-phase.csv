@@ -1,0 +1,96 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R7 figure panel (a) data (place M): share of recognizer segments starting in each second of the 30-s decoding window (full windows), pooled, unfiltered, filter v2, and filter v2 with the isolated rule off. Base: 1,284 English transcripts of the 71 seen creators.
+# Interval level: 90% creator bootstrap (2,000). Leave-one-creator-out: only whether every omission keeps the share inside its interval. Uniform share = 1/30.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+segments,second_of_window,count,share,boot90_low,boot90_high,leave_one_creator_out_inside_interval,uniform_share
+unfiltered,0,57726,0.16771,0.16403,0.1717,yes,0.03333
+unfiltered,1,3379,0.00982,0.00899,0.01078,yes,0.03333
+unfiltered,2,4270,0.01241,0.01175,0.01304,yes,0.03333
+unfiltered,3,5247,0.01524,0.01458,0.01589,yes,0.03333
+unfiltered,4,7873,0.02287,0.02168,0.02407,yes,0.03333
+unfiltered,5,11575,0.03363,0.03207,0.03517,yes,0.03333
+unfiltered,6,13295,0.03863,0.03748,0.03972,yes,0.03333
+unfiltered,7,12173,0.03537,0.03415,0.03659,yes,0.03333
+unfiltered,8,10435,0.03032,0.02926,0.03138,yes,0.03333
+unfiltered,9,9525,0.02767,0.02694,0.02843,yes,0.03333
+unfiltered,10,9791,0.02845,0.02764,0.02925,yes,0.03333
+unfiltered,11,10385,0.03017,0.02934,0.03099,yes,0.03333
+unfiltered,12,10916,0.03171,0.03097,0.03252,yes,0.03333
+unfiltered,13,10683,0.03104,0.03049,0.0316,yes,0.03333
+unfiltered,14,10467,0.03041,0.02981,0.03104,yes,0.03333
+unfiltered,15,10569,0.03071,0.03015,0.03128,yes,0.03333
+unfiltered,16,10581,0.03074,0.03022,0.03129,yes,0.03333
+unfiltered,17,10489,0.03047,0.02993,0.03106,yes,0.03333
+unfiltered,18,10744,0.03121,0.03072,0.03168,yes,0.03333
+unfiltered,19,10614,0.03084,0.03041,0.03127,yes,0.03333
+unfiltered,20,10686,0.03105,0.03066,0.03142,yes,0.03333
+unfiltered,21,10400,0.03021,0.02972,0.0307,yes,0.03333
+unfiltered,22,10570,0.03071,0.03024,0.03119,yes,0.03333
+unfiltered,23,10967,0.03186,0.03131,0.03237,yes,0.03333
+unfiltered,24,11051,0.03211,0.03156,0.03271,yes,0.03333
+unfiltered,25,10723,0.03115,0.03068,0.03164,yes,0.03333
+unfiltered,26,10354,0.03008,0.02953,0.03065,yes,0.03333
+unfiltered,27,10147,0.02948,0.02903,0.02997,yes,0.03333
+unfiltered,28,9832,0.02856,0.02789,0.02913,yes,0.03333
+unfiltered,29,8739,0.02539,0.02453,0.02619,yes,0.03333
+filter v2,0,57577,0.16811,0.16446,0.17212,yes,0.03333
+filter v2,1,3359,0.00981,0.00897,0.01078,yes,0.03333
+filter v2,2,4254,0.01242,0.01177,0.01306,yes,0.03333
+filter v2,3,5236,0.01529,0.01462,0.01594,yes,0.03333
+filter v2,4,7866,0.02297,0.02177,0.02417,yes,0.03333
+filter v2,5,11570,0.03378,0.03222,0.03532,yes,0.03333
+filter v2,6,13287,0.03879,0.03765,0.03989,yes,0.03333
+filter v2,7,12170,0.03553,0.0343,0.03677,yes,0.03333
+filter v2,8,10431,0.03046,0.02939,0.03152,yes,0.03333
+filter v2,9,9518,0.02779,0.02705,0.02856,yes,0.03333
+filter v2,10,9784,0.02857,0.02776,0.02937,yes,0.03333
+filter v2,11,10383,0.03032,0.02948,0.03113,yes,0.03333
+filter v2,12,10912,0.03186,0.03111,0.03267,yes,0.03333
+filter v2,13,10677,0.03117,0.03063,0.03173,yes,0.03333
+filter v2,14,10466,0.03056,0.02996,0.03119,yes,0.03333
+filter v2,15,10566,0.03085,0.03029,0.03143,yes,0.03333
+filter v2,16,10578,0.03089,0.03036,0.03144,yes,0.03333
+filter v2,17,10486,0.03062,0.03008,0.03121,yes,0.03333
+filter v2,18,10743,0.03137,0.03087,0.03183,yes,0.03333
+filter v2,19,10612,0.03098,0.03057,0.03142,yes,0.03333
+filter v2,20,10684,0.03119,0.03081,0.03158,yes,0.03333
+filter v2,21,10399,0.03036,0.02987,0.03085,yes,0.03333
+filter v2,22,10567,0.03085,0.03038,0.03134,yes,0.03333
+filter v2,23,10960,0.032,0.03145,0.03252,yes,0.03333
+filter v2,24,11049,0.03226,0.03171,0.03286,yes,0.03333
+filter v2,25,10720,0.0313,0.03082,0.03179,yes,0.03333
+filter v2,26,10349,0.03022,0.02967,0.03079,yes,0.03333
+filter v2,27,10135,0.02959,0.02914,0.03008,yes,0.03333
+filter v2,28,9775,0.02854,0.02787,0.02911,yes,0.03333
+filter v2,29,7382,0.02155,0.02072,0.02232,yes,0.03333
+"filter v2, isolated rule off",0,57715,0.16839,0.16468,0.17243,yes,0.03333
+"filter v2, isolated rule off",1,3379,0.00986,0.00903,0.01083,yes,0.03333
+"filter v2, isolated rule off",2,4270,0.01246,0.0118,0.0131,yes,0.03333
+"filter v2, isolated rule off",3,5245,0.0153,0.01464,0.01595,yes,0.03333
+"filter v2, isolated rule off",4,7872,0.02297,0.02177,0.02417,yes,0.03333
+"filter v2, isolated rule off",5,11574,0.03377,0.0322,0.03531,yes,0.03333
+"filter v2, isolated rule off",6,13294,0.03879,0.03764,0.03989,yes,0.03333
+"filter v2, isolated rule off",7,12172,0.03551,0.03428,0.03675,yes,0.03333
+"filter v2, isolated rule off",8,10434,0.03044,0.02937,0.03151,yes,0.03333
+"filter v2, isolated rule off",9,9524,0.02779,0.02705,0.02855,yes,0.03333
+"filter v2, isolated rule off",10,9790,0.02856,0.02776,0.02937,yes,0.03333
+"filter v2, isolated rule off",11,10384,0.0303,0.02945,0.03111,yes,0.03333
+"filter v2, isolated rule off",12,10915,0.03185,0.0311,0.03265,yes,0.03333
+"filter v2, isolated rule off",13,10679,0.03116,0.03061,0.03172,yes,0.03333
+"filter v2, isolated rule off",14,10467,0.03054,0.02994,0.03117,yes,0.03333
+"filter v2, isolated rule off",15,10569,0.03084,0.03028,0.03141,yes,0.03333
+"filter v2, isolated rule off",16,10579,0.03087,0.03034,0.03142,yes,0.03333
+"filter v2, isolated rule off",17,10488,0.0306,0.03006,0.0312,yes,0.03333
+"filter v2, isolated rule off",18,10744,0.03135,0.03085,0.03181,yes,0.03333
+"filter v2, isolated rule off",19,10614,0.03097,0.03054,0.0314,yes,0.03333
+"filter v2, isolated rule off",20,10686,0.03118,0.03079,0.03156,yes,0.03333
+"filter v2, isolated rule off",21,10400,0.03034,0.02985,0.03083,yes,0.03333
+"filter v2, isolated rule off",22,10570,0.03084,0.03036,0.03132,yes,0.03333
+"filter v2, isolated rule off",23,10966,0.03199,0.03144,0.03251,yes,0.03333
+"filter v2, isolated rule off",24,11051,0.03224,0.03169,0.03285,yes,0.03333
+"filter v2, isolated rule off",25,10722,0.03128,0.0308,0.03177,yes,0.03333
+"filter v2, isolated rule off",26,10350,0.0302,0.02965,0.03077,yes,0.03333
+"filter v2, isolated rule off",27,10135,0.02957,0.02912,0.03006,yes,0.03333
+"filter v2, isolated rule off",28,9775,0.02852,0.02785,0.02909,yes,0.03333
+"filter v2, isolated rule off",29,7382,0.02154,0.0207,0.02231,yes,0.03333

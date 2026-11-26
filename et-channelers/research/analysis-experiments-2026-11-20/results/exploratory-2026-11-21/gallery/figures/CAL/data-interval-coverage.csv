@@ -1,0 +1,60 @@
+# Coverage of nominal 90% intervals, 2,000 samples of 12 or 17 seen creators per estimand (drawn with replacement from the eligible pool); Monte Carlo SE about 0.007.
+# Estimands other than H3 are label-free analogues, not hypothesis quantities.
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+procedure,procedure_code,estimand,creators_per_sample,nominal,coverage
+t interval on creator means,t,H3_raw_U,12,0.9,0.913
+t interval on creator means,t,H3_recentred_U,12,0.9,0.915
+t interval on creator means,t,H1a_log_rate_ratio,12,0.9,0.906
+t interval on creator means,t,H4a_standardised_contraction,12,0.9,0.888
+t interval on creator means,t,P2a_second_person_rate,12,0.9,0.9005
+t interval on creator means,t,H2a_somers_D,12,0.9,0.9075
+t interval on creator means,t,H5a_log_ratio_difference,12,0.9,0.8995
+t interval on creator means,t,H3_raw_U,17,0.9,0.913
+t interval on creator means,t,H3_recentred_U,17,0.9,0.899
+t interval on creator means,t,H1a_log_rate_ratio,17,0.9,0.891
+t interval on creator means,t,H4a_standardised_contraction,17,0.9,0.885
+t interval on creator means,t,P2a_second_person_rate,17,0.9,0.9005
+t interval on creator means,t,H2a_somers_D,17,0.9,0.897
+t interval on creator means,t,H5a_log_ratio_difference,17,0.9,0.9035
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H3_raw_U,12,0.9,0.894
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H3_recentred_U,12,0.9,0.906
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H1a_log_rate_ratio,12,0.9,0.8815
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H4a_standardised_contraction,12,0.9,0.905
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,P2a_second_person_rate,12,0.9,0.9115
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H2a_somers_D,12,0.9,0.858
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H5a_log_ratio_difference,12,0.9,0.85
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H3_raw_U,17,0.9,0.889
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H3_recentred_U,17,0.9,0.8995
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H1a_log_rate_ratio,17,0.9,0.88
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H4a_standardised_contraction,17,0.9,0.9095
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,P2a_second_person_rate,17,0.9,0.9245
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H2a_somers_D,17,0.9,0.8665
+Two-stage percentile bootstrap (registered rule R1),two_stage_pct,H5a_log_ratio_difference,17,0.9,0.8815
+Percentile bootstrap over creators only,creators_pct,H3_raw_U,12,0.9,0.8355
+Percentile bootstrap over creators only,creators_pct,H3_recentred_U,12,0.9,0.8375
+Percentile bootstrap over creators only,creators_pct,H1a_log_rate_ratio,12,0.9,0.818
+Percentile bootstrap over creators only,creators_pct,H4a_standardised_contraction,12,0.9,0.842
+Percentile bootstrap over creators only,creators_pct,P2a_second_person_rate,12,0.9,0.8515
+Percentile bootstrap over creators only,creators_pct,H2a_somers_D,12,0.9,0.858
+Percentile bootstrap over creators only,creators_pct,H5a_log_ratio_difference,12,0.9,0.85
+Percentile bootstrap over creators only,creators_pct,H3_raw_U,17,0.9,0.835
+Percentile bootstrap over creators only,creators_pct,H3_recentred_U,17,0.9,0.832
+Percentile bootstrap over creators only,creators_pct,H1a_log_rate_ratio,17,0.9,0.827
+Percentile bootstrap over creators only,creators_pct,H4a_standardised_contraction,17,0.9,0.8535
+Percentile bootstrap over creators only,creators_pct,P2a_second_person_rate,17,0.9,0.868
+Percentile bootstrap over creators only,creators_pct,H2a_somers_D,17,0.9,0.8665
+Percentile bootstrap over creators only,creators_pct,H5a_log_ratio_difference,17,0.9,0.8815
+Bootstrap-t over creators,boot_t,H3_raw_U,12,0.9,0.8385
+Bootstrap-t over creators,boot_t,H3_recentred_U,12,0.9,0.845
+Bootstrap-t over creators,boot_t,H1a_log_rate_ratio,12,0.9,0.845
+Bootstrap-t over creators,boot_t,H4a_standardised_contraction,12,0.9,0.87
+Bootstrap-t over creators,boot_t,P2a_second_person_rate,12,0.9,0.8985
+Bootstrap-t over creators,boot_t,H2a_somers_D,12,0.9,0.9035
+Bootstrap-t over creators,boot_t,H5a_log_ratio_difference,12,0.9,0.91
+Bootstrap-t over creators,boot_t,H3_raw_U,17,0.9,0.815
+Bootstrap-t over creators,boot_t,H3_recentred_U,17,0.9,0.8215
+Bootstrap-t over creators,boot_t,H1a_log_rate_ratio,17,0.9,0.823
+Bootstrap-t over creators,boot_t,H4a_standardised_contraction,17,0.9,0.878
+Bootstrap-t over creators,boot_t,P2a_second_person_rate,17,0.9,0.901
+Bootstrap-t over creators,boot_t,H2a_somers_D,17,0.9,0.8965
+Bootstrap-t over creators,boot_t,H5a_log_ratio_difference,17,0.9,0.9095

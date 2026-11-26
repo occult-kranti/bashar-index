@@ -1,0 +1,30 @@
+# Exploratory (registry A2); not a test of H1-H10. H3 is closed (amendment A6): no verdict; no p here is a test of H3. H3-X (plan 6.9; meta-review MR-05 hold-out parts and V13): the frozen H3 code (h3_position.py d1cc2b2e, artefact filter v1 72bccae0) made every value; creator-level statistics added by h3x.py (c0b243db) and this writer (e5a74664350887cd), written after freeze 2. Hold-out run once, 2026-11-21 23:27:44 to 23:28:43 UTC, logged as a contact. The hold-out is the tail of an English-first run and is not exchangeable with the seen creators: read it beside the balance table (rv-D2). Written 2026-11-22T00:01:04Z.
+row,group,creators,recordings,value,ci90_low,ci90_high,note
+"registered row, frozen code (U; 90% percentile bootstrap, creators then recordings; one-sided circular-shift p)",hold-out,17,169,0.1691,-0.1304,0.4945,"shift p 0.0007 (the registered reference, as the frozen code prints it; CAL: under a creator-level placebo it rejects 1.32% at 17 creators at a nominal 0.5%, and it is not centred); creators with U above 0: 9"
+"creator-balanced U, 90% t interval on creator means",hold-out,17,169,0.169,-0.137,0.476,
+"exact centre of the circular-shift reference (mean U over the ten offsets of each recording, creator-balanced)",hold-out,17,,-0.184,,,
+"recentred U (U minus the exact centre, per creator), 90% t interval",hold-out,17,169,0.353,0.025,0.682,creators with recentred U above 0: not printed (it differs by 1 to 4 from the published count of creators with U above 0)
+one-sided creator sign-flip p of creator U,hold-out,17,,0.1927,,,exact (131072 patterns)
+one-sided creator sign-flip p of recentred creator U,hold-out,17,,0.0356,,,exact (131072 patterns); CAL (seen placebo): this reference rejects 0.20 to 0.35% at a nominal 0.5%
+20% trimmed mean of creator U,hold-out,17,,0.113,,,
+leave-one-creator-out: does every omission keep the sign?,hold-out,17,,U: yes; recentred U: yes,,,"numeric ends not released: with the creator count and mean public, an end of the range gives the most extreme creator's value (plan section 3)"
+"registered row, frozen code (U; 90% percentile bootstrap, creators then recordings; one-sided circular-shift p)",seen,61,558,0.0194,-0.1290,0.1648,"shift p 0.1225 (the registered reference, as the frozen code prints it; CAL: under a creator-level placebo it rejects 0.88% at 61 creators at a nominal 0.5%, and it is not centred); creators with U above 0: 36"
+"creator-balanced U, 90% t interval on creator means",seen,61,558,0.019,-0.121,0.160,
+"exact centre of the circular-shift reference (mean U over the ten offsets of each recording, creator-balanced)",seen,61,,-0.063,,,
+"recentred U (U minus the exact centre, per creator), 90% t interval",seen,61,558,0.083,-0.045,0.211,creators with recentred U above 0: 41
+one-sided creator sign-flip p of creator U,seen,61,,0.4131,,,"Monte Carlo (199999 draws, seed 20261121)"
+one-sided creator sign-flip p of recentred creator U,seen,61,,0.1480,,,"Monte Carlo (199999 draws, seed 20261121); CAL (seen placebo): this reference rejects 0.20 to 0.35% at a nominal 0.5%"
+20% trimmed mean of creator U,seen,61,,0.066,,,
+leave-one-creator-out: does every omission keep the sign?,seen,61,,U: no; recentred U: yes,,,"numeric ends not released: with the creator count and mean public, an end of the range gives the most extreme creator's value (plan section 3)"
+"registered row, frozen code (U; 90% percentile bootstrap, creators then recordings; one-sided circular-shift p) [V13]","hold-out, without pilot-era recordings",17,159,0.1611,-0.1534,0.4888,"shift p 0.0011 (the registered reference, as the frozen code prints it; CAL: under a creator-level placebo it rejects 1.32% at 17 creators at a nominal 0.5%, and it is not centred); creators with U above 0: 9"
+"creator-balanced U, 90% t interval on creator means [V13]","hold-out, without pilot-era recordings",17,159,0.161,-0.146,0.469,
+"exact centre of the circular-shift reference (mean U over the ten offsets of each recording, creator-balanced) [V13]","hold-out, without pilot-era recordings",17,,-0.181,,,
+"recentred U (U minus the exact centre, per creator), 90% t interval [V13]","hold-out, without pilot-era recordings",17,159,0.342,0.011,0.673,creators with recentred U above 0: not printed (it differs by 1 to 4 from the published count of creators with U above 0)
+one-sided creator sign-flip p of creator U [V13],"hold-out, without pilot-era recordings",17,,0.2060,,,exact (131072 patterns)
+one-sided creator sign-flip p of recentred creator U [V13],"hold-out, without pilot-era recordings",17,,0.0413,,,exact (131072 patterns); CAL (seen placebo): this reference rejects 0.20 to 0.35% at a nominal 0.5%
+20% trimmed mean of creator U [V13],"hold-out, without pilot-era recordings",17,,0.112,,,
+leave-one-creator-out: does every omission keep the sign? [V13],"hold-out, without pilot-era recordings",17,,U: yes; recentred U: yes,,,"numeric ends not released: with the creator count and mean public, an end of the range gives the most extreme creator's value (plan section 3)"
+pilot-era recordings removed (V13),hold-out,5 or more creators affected; none dropped,10,,,,"the 32 hold-out audio files in the run ledger's first 1253 lines (the first panel's pilot), found from ledger fields; 10 of them were eligible recordings"
+"hold-out minus seen, U (normal 90% interval from the two creator-level standard errors)",difference,,,0.150,-0.171,0.470,"z 0.77; a heterogeneity statement, not a pooled estimate"
+"hold-out minus seen, recentred U (normal 90% interval from the two creator-level standard errors)",difference,,,0.271,-0.064,0.605,"z 1.33; a heterogeneity statement, not a pooled estimate"
+random-effects pool of seen and hold-out creators,pooled,,,,,,"not run: plan section 5 rule 4 and the round's instruction (hold-out replications are printed beside the seen ones, never pooled); the difference row above takes its place"

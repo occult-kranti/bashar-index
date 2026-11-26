@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-build-lanes.csv (TL package, public folder).
+# Interval level: none (weighted point shares of all kept statements; the package prints no interval).
+# Three lanes that hold no statement (no upload period; time-expression answer failed; answer missing) are not drawn.
+# Bounded lanes together: 0.27 (sum of the drawn bounded shares).
+lane,bounded_time_expression,share_of_kept_weighted
+No time cue (time-expression reader not run),no,0.346
+"Reader run, no time expression found",no,0.299
+Undated future only,no,0.085
+Bounded: closed window,yes,0.232
+Bounded: open window (start only),yes,0.006
+Bounded: no window by the program,yes,0.025
+Bounded: contradictory expressions,yes,0.005
+Bounded: implausible year,yes,0.002

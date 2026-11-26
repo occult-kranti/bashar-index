@@ -1,0 +1,19 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file NLP/public/nlp-r10-self-presentation.csv (sha256 131da14a419046c6).
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap draws, as printed by the package.
+# Sections: A, H5's frozen rule on the coded sample (body = middle 80% of running time); A2, the paper review's wider cue set (added by the package); C, world-claim words by voice (rule B; the middle model on the middle-model subset is primary for voice); D, a census of every unit of all 1,293 seen recordings (no sentence code).
+# The creators column is copied from the package file as printed. Sentence codes and voice labels (with their self-naming cue field) model-coded, not checked by a person; the voice label marks one cue per span, so every share is a lower bound on self-presentation.
+section,row,mean,lo95,hi95,creators,status
+A,all coded units,0.002,0.0,0.003,all but fewer than 5 of 71,printed
+A,world-claim (Q1) words,0.002,0.0,0.004,all but fewer than 5 of 71,printed
+A,general-principle (Q2) words,,,,all but fewer than 5 of 71,not published (fewer than 5 creators with a non-zero value)
+A,practice-and-feeling words,,,,all but fewer than 5 of 71,not published (fewer than 5 creators with a non-zero value)
+A,the other codes,0.003,0.001,0.007,all but fewer than 5 of 71,printed
+A2,all coded units,0.004,0.002,0.006,all but fewer than 5 of 71,printed
+A2,world-claim (Q1) words,0.003,0.001,0.005,all but fewer than 5 of 71,printed
+C,"claimed voice, middle model (primary)",,,,withheld (within 4 of another printed count),not published (fewer than 5 creators with a non-zero value)
+C,"own voice, middle model (primary)",,,,withheld (within 4 of another printed count),not published (fewer than 5 creators with a non-zero value)
+C,"claimed voice, small model",0.003,0.001,0.007,withheld (within 4 of another printed count),printed
+C,"own voice, small model",0.0,0.0,0.0,withheld (within 4 of another printed count),printed
+D,all of a creator's words,0.003,0.001,0.005,71,printed
+D,a creator's body words,0.002,0.001,0.004,71,printed

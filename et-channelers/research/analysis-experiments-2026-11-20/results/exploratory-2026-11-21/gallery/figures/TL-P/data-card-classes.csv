@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded cards (a model wrote a card for each bounded statement; the class of record follows from the card fields by code); not checked by a person. A method pilot; methodological agnosticism: never whether a prediction came true.
+# Base: set W's forecast pilot (37 recordings of development creators, seen creators): 172 statements with a bounded time expression of 21 creators. Interval level: none (counts).
+# Classes with fewer than 5 creators pooled into 'other', and the smallest remaining class joined it until it held 5 or more creators (plan section 3). Source: public table tl-p-pilot.csv.
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+class_of_record,cards
+vague,60
+outcome not observable,48
+no checkable window,37
+cannot fail,18
+"other (withdrawn, out of scope)",9

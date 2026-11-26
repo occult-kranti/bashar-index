@@ -1,0 +1,45 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package ER, public table e3-position-curves.csv (results/exploratory-2026-11-21/ER/e3-position-curves.csv after the release review).
+# Interval level: Pointwise 90% percentile intervals from 9,999 two-stage resamples (creators, then recordings), each group on its own; no family-wise control (the hold-out curves have no simultaneous band, a declared deviation from plan section 4; the seen band is drawn in E3-fig-1).
+# E3 and E3-H position curves (added after the exploratory reporting plan), seen and hold-out side by side, never pooled; articulation rate relative to each recording's rate over its trimmed running time; recognizer output, not checked by a person; no tenth is read on its own.
+curve,group,tenth,value,ci90_low,ci90_high
+"Articulation rate, relative to the recording's own rate",Seen creators,1,0.999,0.9884,1.0101
+"Articulation rate, relative to the recording's own rate",Seen creators,2,0.9964,0.9865,1.0062
+"Articulation rate, relative to the recording's own rate",Seen creators,3,1.0062,0.9968,1.0166
+"Articulation rate, relative to the recording's own rate",Seen creators,4,1.0021,0.9912,1.0134
+"Articulation rate, relative to the recording's own rate",Seen creators,5,1.0003,0.9906,1.0103
+"Articulation rate, relative to the recording's own rate",Seen creators,6,1.0021,0.9927,1.0113
+"Articulation rate, relative to the recording's own rate",Seen creators,7,0.9983,0.9878,1.0084
+"Articulation rate, relative to the recording's own rate",Seen creators,8,0.9981,0.9883,1.0076
+"Articulation rate, relative to the recording's own rate",Seen creators,9,0.9999,0.9893,1.0102
+"Articulation rate, relative to the recording's own rate",Seen creators,10,1.0038,0.9904,1.0165
+"Articulation rate, relative to the recording's own rate",Hold-out creators,1,1.0189,0.9817,1.0671
+"Articulation rate, relative to the recording's own rate",Hold-out creators,2,1.0259,0.9934,1.0661
+"Articulation rate, relative to the recording's own rate",Hold-out creators,3,1.0026,0.9846,1.0247
+"Articulation rate, relative to the recording's own rate",Hold-out creators,4,0.9876,0.9636,1.0103
+"Articulation rate, relative to the recording's own rate",Hold-out creators,5,0.9827,0.9553,1.0073
+"Articulation rate, relative to the recording's own rate",Hold-out creators,6,0.9934,0.9653,1.0187
+"Articulation rate, relative to the recording's own rate",Hold-out creators,7,0.9937,0.9677,1.0147
+"Articulation rate, relative to the recording's own rate",Hold-out creators,8,0.9844,0.9588,1.007
+"Articulation rate, relative to the recording's own rate",Hold-out creators,9,0.9926,0.9712,1.0116
+"Articulation rate, relative to the recording's own rate",Hold-out creators,10,1.0177,0.9906,1.0455
+"Second-person forms per 1,000 words",Seen creators,1,43.02,37.69,48.84
+"Second-person forms per 1,000 words",Seen creators,2,44.81,39.34,50.59
+"Second-person forms per 1,000 words",Seen creators,3,46.11,40.65,51.86
+"Second-person forms per 1,000 words",Seen creators,4,46.26,40.68,52.09
+"Second-person forms per 1,000 words",Seen creators,5,46.32,40.96,51.84
+"Second-person forms per 1,000 words",Seen creators,6,48.69,43.44,54.18
+"Second-person forms per 1,000 words",Seen creators,7,48.46,43.09,53.92
+"Second-person forms per 1,000 words",Seen creators,8,49.72,44.36,55.28
+"Second-person forms per 1,000 words",Seen creators,9,51.84,46.08,57.78
+"Second-person forms per 1,000 words",Seen creators,10,53.04,48.06,58.14
+"Second-person forms per 1,000 words",Hold-out creators,1,39.53,30.73,49.41
+"Second-person forms per 1,000 words",Hold-out creators,2,39.26,30.81,48.34
+"Second-person forms per 1,000 words",Hold-out creators,3,38.12,30.39,46.1
+"Second-person forms per 1,000 words",Hold-out creators,4,39.43,32.45,46.29
+"Second-person forms per 1,000 words",Hold-out creators,5,42.42,34.96,50.06
+"Second-person forms per 1,000 words",Hold-out creators,6,43.07,36.04,50.03
+"Second-person forms per 1,000 words",Hold-out creators,7,43.31,35.53,51.26
+"Second-person forms per 1,000 words",Hold-out creators,8,47.64,40.06,55.44
+"Second-person forms per 1,000 words",Hold-out creators,9,49.42,41.5,57.2
+"Second-person forms per 1,000 words",Hold-out creators,10,47.45,39.74,55.5

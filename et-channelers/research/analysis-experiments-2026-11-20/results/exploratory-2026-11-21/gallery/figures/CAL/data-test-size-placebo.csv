@@ -1,0 +1,20 @@
+# Rejection rate at the first Holm step (p <= 0.005) under a creator-level placebo, random sets of 12 and 17 seen creators (H6: simulated creators).
+# mc95 = Wilson 95% Monte Carlo interval over the placebo sets; analogues carry no labels and are not hypothesis quantities.
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+hypothesis,procedure,creators_per_set,placebo_sets,reject_pct,mc95_low_pct,mc95_high_pct
+H1 analogue,registered sign-flip,12,4000,0.53,0.348,0.807
+H1 analogue,registered sign-flip,17,4000,0.4,0.246,0.649
+H2 analogue,registered within-creator permutation,12,4000,7.3,6.534,8.148
+H2 analogue,registered within-creator permutation,17,4000,6.83,6.089,7.654
+H2 analogue,creator sign-flip (A10 version),12,4000,0.57,0.379,0.855
+H2 analogue,creator sign-flip (A10 version),17,4000,0.63,0.428,0.927
+H3 (closed),registered shift per recording,12,4000,1.63,1.281,2.071
+H3 (closed),registered shift per recording,17,4000,1.32,1.01,1.723
+H3 (closed),"creator sign-flip, recentred (alternative)",12,4000,0.32,0.186,0.549
+H3 (closed),"creator sign-flip, recentred (alternative)",17,4000,0.35,0.209,0.587
+H4 analogue,registered sign-flip,12,4000,0.73,0.509,1.045
+H4 analogue,registered sign-flip,17,4000,0.63,0.428,0.927
+H6 simulation,registered half-count sign-flip,12,600,1.17,0.568,2.393
+H6 simulation,registered half-count sign-flip,17,600,2.0,1.148,3.463
+H6 simulation,conditional sign-flip (part of A10 version),12,600,0.33,0.09,1.202
+H6 simulation,conditional sign-flip (part of A10 version),17,600,0.67,0.261,1.706

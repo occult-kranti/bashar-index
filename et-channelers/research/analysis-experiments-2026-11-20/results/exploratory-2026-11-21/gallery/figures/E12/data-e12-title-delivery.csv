@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package E, public table e12-title-delivery.csv (results/exploratory-2026-11-21/E/e12-title-delivery.csv after the release review).
+# Interval level: 90% t interval over creators; for the cued delivery rate also the 90% creator bootstrap (2,000 draws, percentile). As in the source table. The pooled delivery rates of the source table are not drawn.
+# E12: delivery rate of recordings whose model-coded title carries a time cue: share holding a verified, non-duplicate model-coded statement about the world's future (forecast class of record) whose time window is YES; seen creators; an estimate, no test; labels not checked by a person.
+# The forecast class is below its reliability floor on the hold-out reliability sample R-hold, and the time-window part failed its two-model gate on the seen gate sample G (figures in the source table's verification line). Undated forecast candidates were read by a fixed-share draw, so the rate is a lower bound in that respect.
+cue_definition,quantity,creators,estimate,t90_low,t90_high,boot90_low,boot90_high
+Title names a calendar period or date (primary),"delivery rate, cued recordings (creator-balanced)",40,0.6438,0.5328,0.7548,0.5344,0.7452
+Title names a calendar period or date (primary),"base rate, same creators' uncued recordings (creator-balanced)",40,0.2158,0.1578,0.2737,,
+Title names a calendar period or date (primary),"within creator, delivery rate minus base rate (creators with 3 or more cued and 3 or more uncued recordings)",13,0.3594,0.2425,0.4762,,
+"Calendar period or date, or a portal or sky event","delivery rate, cued recordings (creator-balanced)",46,0.5695,0.4656,0.6733,0.4655,0.6621
+"Calendar period or date, or a portal or sky event","base rate, same creators' uncued recordings (creator-balanced)",46,0.2331,0.179,0.2873,,
+"Calendar period or date, or a portal or sky event","within creator, delivery rate minus base rate (creators with 3 or more cued and 3 or more uncued recordings)",18,0.317,0.2186,0.4153,,
+Primary cue; time windows from the period of the talk counted,"delivery rate, cued recordings (creator-balanced)",40,0.7372,0.6368,0.8377,0.6364,0.8294
+Primary cue; time windows from the period of the talk counted,"base rate, same creators' uncued recordings (creator-balanced)",40,0.2415,0.1778,0.3051,,
+Primary cue; time windows from the period of the talk counted,"within creator, delivery rate minus base rate (creators with 3 or more cued and 3 or more uncued recordings)",13,0.4834,0.3819,0.585,,

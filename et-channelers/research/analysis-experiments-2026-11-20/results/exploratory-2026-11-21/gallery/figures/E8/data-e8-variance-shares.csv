@@ -1,0 +1,16 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package E, public table e8-tempo-by-source-family.csv (results/exploratory-2026-11-21/E/e8-tempo-by-source-family.csv after the release review).
+# Interval level: 90% creator bootstrap (2,000 draws, percentile), as in the source table; no t interval is given for these shares.
+# E8: tempo and pause share by claimed source family (H9's title rule); seen creators; title families model-coded (instrument T, which failed its gates; codes kept by the owner's exception), not checked by a person; description only, no test.
+# Cells: a creator and a family with 2 or more recordings of 300 words or more. Between creators: one-way share of recording variance (method of moments). Between families: share of cell-mean variance (method of moments, truncated at 0). Family rows are not printed (each would rest on fewer than 5 creators or differ from another printed group in fewer than 5).
+measure,row,creators,share_of,estimate,boot90_low,boot90_high
+Articulation rate (syllables per minute of speaking time),Primary: family named in the title and in the opening or closing words,11,between creators (recordings),0.934,0.672,0.971
+Articulation rate (syllables per minute of speaking time),Primary: family named in the title and in the opening or closing words,11,between source families (cell means),0.55,0.0,0.999
+Articulation rate (syllables per minute of speaking time),Family named in the title only (no opening-or-closing rule),18,between creators (recordings),0.829,0.624,0.889
+Articulation rate (syllables per minute of speaking time),Family named in the title only (no opening-or-closing rule),18,between source families (cell means),0.444,0.0,0.905
+Pause share of the span (pauses of 0.3 s or more),Primary: family named in the title and in the opening or closing words,11,between creators (recordings),0.797,0.397,0.901
+Pause share of the span (pauses of 0.3 s or more),Primary: family named in the title and in the opening or closing words,11,between source families (cell means),0.0,0.0,0.965
+Pause share of the span (pauses of 0.3 s or more),"Primary cells, pauses counted without the seam rule",11,between creators (recordings),0.802,0.41,0.902
+Pause share of the span (pauses of 0.3 s or more),"Primary cells, pauses counted without the seam rule",11,between source families (cell means),0.0,0.0,0.961
+Pause share of the span (pauses of 0.3 s or more),Family named in the title only (no opening-or-closing rule),18,between creators (recordings),0.804,0.597,0.891
+Pause share of the span (pauses of 0.3 s or more),Family named in the title only (no opening-or-closing rule),18,between source families (cell means),0.0,0.0,0.778

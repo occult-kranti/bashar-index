@@ -1,0 +1,13 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D8-requests-by-category.csv (package rv-D8)
+# Interval level: none (counts)
+# Exactly the numbers drawn in fig-requests. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:20Z.
+category,requests,usd
+no corpus data (tests),190,0.00
+name forms extracted from seen transcripts,294,0.90
+"transcript statements of seen creators, with web searches for verification",899,3.58
+transcript windows of seen creators (paper-review items),1551,1.25
+public channel metadata and web search results (discovery of further channels),9913,7.23
+constructed known-answer texts (built for the test; may reuse corpus phrasing),11776,7.24
+"page text of seen recordings (titles, descriptions)",13233,0.71
+"transcript windows of seen creators (units, no time stamps)",31586,20.42

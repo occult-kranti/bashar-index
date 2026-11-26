@@ -1,0 +1,8 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# SD part (c), seen creators. Anchors with an estimated date (evidence level E3) use their version-B narrowed windows; range rule: near = whole possible gap within 30 days, far = whole possible gap 61+ days. Comparator: confirmed anchors and partners, within 30 days minus 61+ days.
+# 90% t interval over creators. G = date intervals permuted among each creator's own recordings; L = permuted inside 28-day blocks of their midpoints; 999 draws; ranges mean +/- 1.96 SD. Comparator creators: seen creators with confirmed version-B dates. 'not printed': the comparator rests on most seen creators with confirmed dates and the all-partners row on most creators of the estimated panel; exact counts withheld (nested-count rule).
+# UTC dates; upload date, not date of speaking. Never read as contact, coordination, copying or influence.
+row,estimate,t90_low,t90_high,G_low,G_high,L_low,L_high,creators
+confirmed dates: within 30 days minus 61+ days (comparator),0.0027,-0.00064,0.00604,-0.0033,0.00334,0.00156,0.00288,not printed
+"estimated dates, all partners (range rule; primary of part c)",0.00585,0.00363,0.00807,-0.00355,0.00346,0.00411,0.0062,not printed
+"estimated dates, estimated partners only",0.00592,0.0018,0.01004,-0.00545,0.00572,-0.00095,0.00788,27

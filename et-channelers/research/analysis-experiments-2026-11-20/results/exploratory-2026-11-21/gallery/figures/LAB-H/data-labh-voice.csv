@@ -1,0 +1,25 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# LAB-H: voice shares of a creator's words (LAB-V composite rows), each display naming its model; source HOLD/lab-h-descriptions.csv (package HOLD, public).
+# Interval level: 90% t interval over creators of creator-balanced means, clipped to [0, 1] by the package.
+# Model-coded labels, not checked by a person; agreement figures are agreement, not a measure of correctness. Hold-out beside seen, never pooled.
+figure,row,series,creators,mean,t90_low,t90_high,note
+LAB-H-fig-1,claimed voice V2+V3 (rule B; registered primary),"seen, middle model (middle-model subset; comparison)",71,0.338,0.274,0.402,
+LAB-H-fig-1,"own voice (rule B, broad; registered primary)","seen, middle model (middle-model subset; comparison)",71,0.373,0.308,0.439,
+LAB-H-fig-1,neither claimed nor own,"seen, middle model (middle-model subset; comparison)",71,0.288,0.219,0.358,
+LAB-H-fig-1,of which embodied source V2,"seen, middle model (middle-model subset; comparison)",71,0.236,0.173,0.3,
+LAB-H-fig-1,of which relayed source V3 (below its reliability floor),"seen, middle model (middle-model subset; comparison)",71,0.102,0.066,0.138,
+LAB-H-fig-1,claimed voice V2+V3 (rule B; registered primary),"hold-out, middle model (hold-out record)",18,0.334,0.231,0.437,
+LAB-H-fig-1,"own voice (rule B, broad; registered primary)","hold-out, middle model (hold-out record)",18,0.371,0.258,0.484,
+LAB-H-fig-1,neither claimed nor own,"hold-out, middle model (hold-out record)",18,0.295,0.196,0.395,
+LAB-H-fig-1,of which embodied source V2,"hold-out, middle model (hold-out record)",18,0.225,0.136,0.315,
+LAB-H-fig-1,of which relayed source V3 (below its reliability floor),"hold-out, middle model (hold-out record)",18,0.109,0.021,0.197,
+LAB-H-fig-1,claimed voice V2+V3 (rule B; registered primary),"seen, small model (seen record; beside)",71,0.306,0.251,0.361,
+LAB-H-fig-1,"own voice (rule B, broad; registered primary)","seen, small model (seen record; beside)",71,0.336,0.285,0.387,
+LAB-H-fig-1,neither claimed nor own,"seen, small model (seen record; beside)",71,0.358,0.298,0.418,
+LAB-H-fig-1,of which embodied source V2,"seen, small model (seen record; beside)",71,0.21,0.156,0.264,
+LAB-H-fig-1,of which relayed source V3 (below its reliability floor),"seen, small model (seen record; beside)",71,0.096,0.063,0.129,
+LAB-H-fig-1,claimed voice V2+V3 (rule B; registered primary),"hold-out, small model (beside; below its stability floor)",18,0.298,0.201,0.396,
+LAB-H-fig-1,"own voice (rule B, broad; registered primary)","hold-out, small model (beside; below its stability floor)",18,0.374,0.275,0.473,
+LAB-H-fig-1,neither claimed nor own,"hold-out, small model (beside; below its stability floor)",18,0.328,0.231,0.424,
+LAB-H-fig-1,of which embodied source V2,"hold-out, small model (beside; below its stability floor)",18,0.195,0.115,0.275,
+LAB-H-fig-1,of which relayed source V3 (below its reliability floor),"hold-out, small model (beside; below its stability floor)",18,0.103,0.021,0.186,

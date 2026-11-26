@@ -1,0 +1,16 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/pt-c-written-spoken.csv
+# Interval level: A: 90% creator bootstrap; B: 95% range of 999 within-creator permutations
+# PT part (c): association of written and spoken asks. A: Spearman rho across creators of each creator's written and spoken shares. B: excess of recordings with both a written and a spoken ask of the class over the within-creator expectation, per 100 recordings, with the 95% range of 999 permutations of the written flags within each creator. 1,134 seen recordings (English-only recognizer) with page text and ask labels, of all but fewer than 5 of the 71 seen creators.
+# Written asks: model-coded (small model, two runs, kappa 0.962 for any ask); spoken asks: model-coded first-round ask labels; neither checked by a person. K5: rho not released; fewer than 5 creators with variation in both. Shares, rho, excess and permutation were fixed in the script before its first run (added after the exploratory reporting plan).
+panel,class,measure,estimate,low_90,high_90,perm_95_low,perm_95_high
+A,K1 pay or enrol,between-creator Spearman rho of written and spoken shares,0.286,0.093,0.475,,
+B,K1 pay or enrol,"within-creator excess of recordings with both, per 100 recordings",1.912,,,-0.733,0.766
+A,K2 give money,between-creator Spearman rho of written and spoken shares,0.219,0.001,0.438,,
+B,K2 give money,"within-creator excess of recordings with both, per 100 recordings",0.279,,,-0.25,0.19
+A,K3 platform engagement,between-creator Spearman rho of written and spoken shares,0.492,0.306,0.647,,
+B,K3 platform engagement,"within-creator excess of recordings with both, per 100 recordings",1.252,,,-0.688,0.635
+A,K4 off-platform move,between-creator Spearman rho of written and spoken shares,0.333,0.128,0.515,,
+B,K4 off-platform move,"within-creator excess of recordings with both, per 100 recordings",1.237,,,-0.614,0.62
+A,K5 third-party advert,between-creator Spearman rho of written and spoken shares,,,,,
+B,K5 third-party advert,"within-creator excess of recordings with both, per 100 recordings",,,,,

@@ -1,0 +1,21 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/pt-c-written-spoken.csv
+# Interval level: 90% t intervals over creators (shares and paired difference)
+# PT part (c): creator-balanced share of a creator's recordings with an ask of each class written on the page or said in the recording, and the mean over creators of the written minus the spoken share. 1,134 seen recordings (English-only recognizer) with page text and ask labels, of all but fewer than 5 of the 71 seen creators.
+# Written asks: model-coded (small model, two runs, kappa 0.962 for any ask); spoken asks: model-coded first-round ask labels; neither checked by a person. K5's spoken share and its paired difference are not released (fewer than 5 creators); they are blank here and not drawn. The paired difference was added after the exploratory reporting plan.
+panel,class,measure,estimate,low_90,high_90
+A,K1 pay or enrol,written share,0.721,0.655,0.788
+A,K1 pay or enrol,spoken share,0.411,0.348,0.474
+B,K1 pay or enrol,"paired difference, written minus spoken",0.31,0.236,0.385
+A,K2 give money,written share,0.171,0.102,0.241
+A,K2 give money,spoken share,0.021,0.01,0.032
+B,K2 give money,"paired difference, written minus spoken",0.15,0.083,0.218
+A,K3 platform engagement,written share,0.437,0.357,0.517
+A,K3 platform engagement,spoken share,0.362,0.297,0.426
+B,K3 platform engagement,"paired difference, written minus spoken",0.075,-0.002,0.152
+A,K4 off-platform move,written share,0.706,0.634,0.778
+A,K4 off-platform move,spoken share,0.303,0.244,0.361
+B,K4 off-platform move,"paired difference, written minus spoken",0.403,0.329,0.477
+A,K5 third-party advert,written share,0.04,0.009,0.071
+A,K5 third-party advert,spoken share,,,
+B,K5 third-party advert,"paired difference, written minus spoken",,,

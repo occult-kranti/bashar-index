@@ -1,0 +1,4 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# rv-R7 abstract sentence (place M), as built, with the creator count put in its public form (the build printed a count within 1 to 4 of the 71). Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+# Edited on 2026-11-26 in release pass 2's third fix step (fix4, f52_edits.py, SHA-256 647ed82d76e723fa1c806a4d9c1215509c75f867f69b7963b3f2adaf35654556), for privacy and consistency only: the precision bound reads 'not published (misses not recounted by creator)' (lead's decision D58).
+A two-word thanks phrase appears at a decoding-window end (27-30 s into a 30-s window) in 49.9% of English transcripts (creator bootstrap 90% 45.2-54.5%; all but fewer than 5 of the 71 seen creators); a positional rule removes it; its precision bound from phase counts is not published (misses not recounted by creator), and it is not confirmed by listening.

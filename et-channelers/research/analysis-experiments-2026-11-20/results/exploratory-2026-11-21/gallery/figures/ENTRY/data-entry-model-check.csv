@@ -1,0 +1,10 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# ENTRY model check (version 1), model-coded, not checked by a person; 90% two-stage bootstrap; recall row is an upper bound.
+series,family,label,weighted,weighted_ci90_low,weighted_ci90_high,creator_balanced,cb_ci90_low,cb_ci90_high
+precision,SW,"SW  self-introduction, “we”",0.883,0.733,0.961,0.718,0.546,0.87
+precision,H,H  handover by the presenter,0.826,0.664,0.927,0.739,0.587,0.87
+precision,OWN,OWN  presenter's own introduction,0.819,0.69,0.916,0.625,0.5,0.75
+precision,SI,"SI  self-introduction, “I”",0.721,0.512,0.863,0.589,0.429,0.741
+precision,G,G  greeting framed as a source's,0.45,0.205,0.741,0.435,0.29,0.581
+precision,ENTRANCE,first-entrance rule (source framed as beginning),0.729,0.57,0.842,0.483,0.345,0.633
+recall upper bound,RECALL,"first-entrance rule, recall (upper bound)",0.212,0.163,0.285,,,
