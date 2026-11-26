@@ -1,0 +1,22 @@
+# Exploratory; not a test of H1-H10. Seen creators only; readings on the 23 non-development creators (deposit 2's split policy).
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P08; prespecification audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Per creator: clean interiors (10 s dropped inside each span end; primary definition; excluded formats out) of recordings passing the background gate, pooled by side across the creator's recordings; eligible with 60 s or more on each side. Contrasts are claimed over own (log ratio) or claimed minus own.
+# interval: 90% t interval on creator means, fixed in the prespecification (interval class not calibrated by r3-P30); margins from deposit 2 (log 0.223; 0.05 for shares; 0.20 SD for standardised rows).
+# Words: 'beyond the margin (<side>)', 'within the margin (B)', 'undetermined'; rows on fewer than 5 creators: 'not computed (too few terms or creators)'. Battery caps and A8 apply to the primary's reading (file data-r3-P08-reading.csv).
+# Eligible non-development creators after the gate: 12 or more.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T19:49:46Z by code/analyse_p08.py.
+row,value
+eligible non-development creators after the background gate,12 or more
+A8 (12 or more eligible creators),met
+"battery criterion 1, rate slope 0.9 to 1.1",not met
+"battery criterion 1, pitch parts",met
+"battery criterion 3, rate (differential bias under a third of the margin)",met
+"battery criterion 3, pitch range",not met
+primary I4 words before the conditions,within the margin (B)
+"reading of the primary (A1 with A4, A8 and the battery)",undetermined (battery criterion 1 (rate slope) not met)
+why,not met: battery criterion 1 (rate slope)

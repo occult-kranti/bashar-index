@@ -1,0 +1,17 @@
+# Exploratory; not a test of H1-H10. Seen creators only; readings on the 23 non-development creators (deposit 2's split policy).
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r4-P03; prespecification audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Voice boundaries (primary definition) with 10 s or more of span on each side, in every processed recording of the non-development creators (no rate gate); matched non-boundary edges of the same creator (tenth, punctuation class, pause bin, segment start; up to 5 per boundary).
+# Detected environment change: the per-band distance of the background spectrum (non-active frames, 10 s each side, 0.5 s left out) at or above the threshold fixed at the 95th percentile of the score at the development creators' non-boundary edges (5% false-positive rate on the null class; the threshold's value is kept private).
+# Undecidable: digital silence over half of either side, or under 0.3 s of background on either side.
+# interval: 90% t interval on creator means, fixed in the prespecification (interval class not calibrated by r3-P30); margin 0.05 (share difference).
+# Exclusion rule (hashed in the prespecification, section 9): a boundary with a detected change leaves the delivery rows of r3-P09 and r4-P15.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T19:49:37Z by code/analyse_p03.py.
+row,creators,estimate,lo90,hi90,margin,words
+share of decidable boundaries with a detected change (creator mean),10 to 19,0.09,0.03,0.15,,described
+share at matched non-boundary edges (creator mean),10 to 19,0.054,0.025,0.084,,described
+boundaries minus matched edges (primary),10 to 19,0.035,-0.028,0.098,0.05,undetermined

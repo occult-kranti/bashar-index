@@ -1,0 +1,16 @@
+# Exploratory; not a test of H1-H10. Seen creators only; readings on the 23 non-development creators (deposit 2's split policy).
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r4-P15; prespecification audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Own-range ladder (A7): per non-development creator with 60 s or more of gated claimed interiors and 2 or more gated recordings with 60 s or more of own-voice interior; profile = articulation rate (log), F0 range, intensity variability, long-pause share, each divided by the between-creator SD of own-voice recording values fitted on the development creators; Euclidean distances in those units.
+# interval: 90% t interval on creator means, fixed in the prespecification (interval class not calibrated by r3-P30); margin 0.20 SD. The closest acoustic work is a laboratory within-subject comparison of trance channellers reading one story (Wahbeh et al. 2019); this entry compares published recordings and claims no priority (N13: not found means only that).
+# A8 (a rule that does not depend on the data; the lead's decision 109.1): no estimate, interval or reading is printed, and the figure is not published.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T19:50:39Z by code/analyse_p15.py.
+row,value
+printed first,not measurable acoustically in this corpus (fewer than 12 eligible creators after the background gate: A8)
+eligible non-development creators (ladder),not printed (A8: fewer than 12 eligible creators after the background gate)
+A8,not measurable acoustically in this corpus (fewer than 12 eligible creators after the background gate: A8)
+reading of the primary (A7),not printed (A8: fewer than 12 eligible creators after the background gate)

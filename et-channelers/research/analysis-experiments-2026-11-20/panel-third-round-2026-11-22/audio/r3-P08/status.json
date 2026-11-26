@@ -1,0 +1,27 @@
+{
+ "entry": "r3-P08",
+ "title": "An acoustic instrument on label-located spans",
+ "class": "a.2 (lead's ruling 4: Tier 0 and Tier 1 audio)",
+ "status": "done",
+ "tier_by_count": "X",
+ "pool": "the 23 non-development creators (deposit 2); data-tuned parts fitted on the development creators only",
+ "prespecification": "audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i)",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "files_sha256": {
+  "code/analyse_p08.py": "33ff4d0f2ae17dab2d47f464628a4ed132d2f845907c7793cd7c7fc9f5f8ef4b",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "48fce4cfa2fc8c21d7617fbee209202f873d82bd009e9772a90ca3942694394d",
+  "public/data-r3-P08-battery.csv": "fd5050b4b39c50a45ea46aa81a4f501928f023c66fc5e1d5af9ddcc374ee71e6",
+  "public/data-r3-P08-contrasts.csv": "c14525b1690a4ea2fbfbe92cc602118e38a7025bb6738c823e270110879915e7",
+  "public/data-r3-P08-reading.csv": "6baf646d03f88d4f7137f4752485179665d6d987fd71c6041d39c3bcc0dcd38d",
+  "public/fig-r3-P08-five-instruments.pdf": "575c541ab655b67fa72c483e02b58c06f3745f9585071dcd253c292dc3f09807",
+  "public/fig-r3-P08-five-instruments.png": "ed121efb54466f89cb8a5d8e95bc1876f895ed13746091a2988a9fae5466e7d6",
+  "README.md": "84f6da96cc3f5960cb8f25673c2e54bf3bc86da6649f9ce0d80603eff24fdad6"
+ },
+ "written_utc": "2026-11-26T20:15:32Z",
+ "note_2026-11-26_decision_109": "2026-11-26T19:28:21Z (UTC, from the clock): files changed by the lead's decision 109 (after the independent privacy check of the seven audio entries; no number changed: values withheld, merged, re-banded or reworded); every recorded hash refreshed.",
+ "note_2026-11-26_decision_111": "2026-11-26T19:37:45Z (UTC, from the clock): the lead's decision 111: the tier by count prints as its letter only (the outcome-free band is not printed); the prespecification is published as the redacted copy audio/prespec.public.md, with its hash record as audio/prespec-hash-record.public.md; the recorded hash is that of the original, which stays private and unchanged; every recorded hash refreshed.",
+ "note_2026-11-26_decision_112": "2026-11-26T19:49:16Z (UTC, from the clock): the lead's decision 112: the original prespecification's hash is no longer printed in any published file (CSV headers, status files, the public hash record); every recorded hash refreshed.",
+ "note_2026-11-26_decision_114": "2026-11-26T20:13:50Z (UTC, from the clock): the lead's decision 114: the README says \"never accuracy\"; no number changed; recorded hashes refreshed."
+}

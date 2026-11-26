@@ -1,0 +1,35 @@
+{
+ "entry": "r3-P01",
+ "title": "r3-P01 / r4-P01 part E: recognized syllables per acoustic nucleus",
+ "class": "a.2 (audio addendum, the lead's decision 106.4)",
+ "prespecification": "audio/addendum/prespec.public.md (published redacted); hashed at 18:39:23Z (UTC), before any outcome; the hash is kept privately (step-1 decision 49 item i)",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "departure_106_1": "Departure from the split policy's wording, accepted as the lead's decision 106.1: data-tuned parts are fitted on the tuning pool T only (here r3-P15's feature scalings and r3-P13's exploration), not built on exploration half A, and each reading is made once on all eligible creators (r3-P01, r3-P15 and r3-P17 are unsplit by the policy itself). Reason: T sits on the exploration side and is never read for a split reading, so fitting on T alone keeps both halves out of every fit (decision 88's reading). Limitation: half B is no longer sealed for the acoustic measures described here.",
+ "files_sha256": {
+  "code/analyse_p01e.py": "8c97d829ae2376f8b2331681c7d51c0058e6c659d12be0fcb8c7bbd5de49e805",
+  "code/publish_p01e.py": "0c2d960923be2c8990c9046c92e9a95235e6dfcea2b9331de9aad853fcb9859a",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "public/data-r3-P01-partE-reading.csv": "738752f2ed8cca7a7cfc96b23d6424c44cc39e95de24e67078a1ebd584520238",
+  "public/data-r3-P01-partE.csv": "e3451b237e20813d1c348f262756a334a0e2793e45824f7160db1c4025d05a59",
+  "public/fig-r3-P01-partE.pdf": "a8e030ed4b3ab83bb6c9bb4dae20b300655040ad832ea3afdb8932927b88d79d",
+  "public/fig-r3-P01-partE.png": "e717f0bff8a195c27ae881adbda79eeee422a6b41f68485aeeb67a3ceffd7fd0",
+  "README.md": "05cdbc5ee267ccc39c8cbadd48c04dfcd896e146e5fd8dac219ea786e831c264",
+  "contacts.md": "6b3d21222e70c7bb06c0f1b48dafd5d189d054a71178cc516bf802501c492c4d"
+ },
+ "written_utc": "2026-11-26T20:14:17Z",
+ "status": "computed",
+ "reading": "undetermined",
+ "published_files_exclude": [
+  "code/",
+  "private/",
+  "__pycache__/"
+ ],
+ "not_published": [
+  "audio/addendum/prespec.md",
+  "audio/addendum/prespec-hash-record.md",
+  "audio/addendum/common/solver-results.md"
+ ],
+ "note_2026-11-26_decision_113": "2026-11-26T19:57:53Z (UTC, from the clock): the lead's decision 113: the addendum's prespecification is published as the redacted copy audio/addendum/prespec.public.md (the citation of the audio prespecification's hash replaced), with its hash record as audio/addendum/prespec-hash-record.public.md; the originals stay private and unchanged, and neither prespecification's hash is printed; CSV headers rewritten by rerunning the code for headers only (no number changed); every recorded hash refreshed.",
+ "note_2026-11-26_decision_114": "2026-11-26T20:13:50Z (UTC, from the clock): the lead's decision 114: r3-P15's reference rungs print no interval (a fixed rule); the public prespecification replaces a phrase quoting an estimate the audio entries do not print and words the standing rule generically; r3-P16's withheld row reads one label; unpublished files are named as such; every CSV header and contact log carries the half-B limitation of decision 106.1; no number changed; every recorded hash refreshed."
+}

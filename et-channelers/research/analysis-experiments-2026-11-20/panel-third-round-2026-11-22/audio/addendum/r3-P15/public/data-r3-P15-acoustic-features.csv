@@ -1,0 +1,36 @@
+# Exploratory; not a test of H1-H10. Seen creators only.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P15 (audio addendum, the lead's decision 106.4); prespecification audio/addendum/prespec.public.md (published redacted); hashed at 18:39:23Z (UTC), before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# r3-P15's acoustic rungs: the distance ladder on a scale-free delivery profile (articulation rate (log), F0 range (semitones relative to the recording), intensity variability (within-chunk SD of voiced-frame level), long-pause share; no timbre). Parts of exactly 120 s of gated clean interior (12 chunks of 10 s, 20 draws); Euclidean distance over the features in two scalings fitted on the tuning pool T only: S1 the between-creator SD, S2 the own voice's recording-to-recording SD.
+# Contrasts as r3-P15: P1 = CO - OO, P1b = CC - OO, P2 = CO_x - OO_x, P3 = CX - CO_p, P3b = OX - OO_p, each in units of the between-creator SD of the reference distance; margin 0.20. Primary: P1, P2, P3 on the composite profile; a row reads a direction only if S1 and S2 agree.
+# Unsplit (deposit 2's split policy names r3-P15): all seen creators. Departure from the split policy's wording, accepted as the lead's decision 106.1: data-tuned parts are fitted on the tuning pool T only (here r3-P15's feature scalings and r3-P13's exploration), not built on exploration half A, and each reading is made once on all eligible creators (r3-P01, r3-P15 and r3-P17 are unsplit by the policy itself). Reason: T sits on the exploration side and is never read for a split reading, so fitting on T alone keeps both halves out of every fit (decision 88's reading). Limitation: half B is no longer sealed for the acoustic measures described here.
+# The reference rungs of the standardised contrasts (OO, OO_x, CO_p, OO_p) print no interval, a fixed rule (the lead's decision 114): their interval cells read 'not printed (privacy rule)'.
+# Interval: 90%, r3-P30's choice for C_standardised at the row's count: the t interval on creator means, the same at every simulated count from 30 up; counts print as '30 or more'; a row under 30 reads 'not computed or not printed'.
+# Battery caps: the composite contains rate (criterion 1's slope not met) and F0 range (criterion 3 not met), so it reads at most undetermined in either direction; per-feature rows carry their own feature's cap (articulation rate: never B; F0 range: neither way; intensity variability and long-pause share: none).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Described rows: the same contrasts on each feature alone (one-dimensional distances; the scaling cancels), each with its own feature's battery cap. Not the entry's reading.
+# Made 2026-11-26T20:14:03Z by code/publish_p15a.py.
+row,row_text,feature,creators,estimate,lo90,hi90,margin,words_before_the_caps,words
+P1,same recording: claimed-own minus own-own,articulation rate,30 or more,0.08,-0.17,0.34,0.2,undetermined,undetermined
+P1b,same recording: claimed-claimed minus own-own,articulation rate,30 or more,-0.27,-0.62,0.09,0.2,undetermined,undetermined
+P2,across recordings: claimed-own minus own-own,articulation rate,30 or more,0.16,-0.03,0.36,0.2,undetermined,undetermined
+P3,pooled: claimed against other creators' claimed minus claimed-own,articulation rate,30 or more,1.31,0.97,1.64,0.2,beyond the margin (nearer the creator's own voice),beyond the margin (nearer the creator's own voice)
+P3b,pooled: own against other creators' own minus own-own,articulation rate,30 or more,1.38,1.13,1.64,0.2,beyond the margin (own voices of different creators farther apart than own-own halves),beyond the margin (own voices of different creators farther apart than own-own halves)
+P1,same recording: claimed-own minus own-own,F0 range,30 or more,0.39,0.01,0.76,0.2,undetermined,undetermined
+P1b,same recording: claimed-claimed minus own-own,F0 range,30 or more,-0.28,-0.61,0.05,0.2,undetermined,undetermined
+P2,across recordings: claimed-own minus own-own,F0 range,30 or more,-0.03,-0.18,0.12,0.2,within the margin (B),undetermined (battery criterion 3 (pitch range) not met)
+P3,pooled: claimed against other creators' claimed minus claimed-own,F0 range,30 or more,0.67,0.47,0.86,0.2,beyond the margin (nearer the creator's own voice),undetermined (battery criterion 3 (pitch range) not met)
+P3b,pooled: own against other creators' own minus own-own,F0 range,30 or more,0.84,0.67,1.02,0.2,beyond the margin (own voices of different creators farther apart than own-own halves),undetermined (battery criterion 3 (pitch range) not met)
+P1,same recording: claimed-own minus own-own,intensity variability,30 or more,0.42,0.03,0.82,0.2,undetermined,undetermined
+P1b,same recording: claimed-claimed minus own-own,intensity variability,30 or more,-0.37,-0.71,-0.02,0.2,undetermined,undetermined
+P2,across recordings: claimed-own minus own-own,intensity variability,30 or more,0.12,-0.06,0.3,0.2,undetermined,undetermined
+P3,pooled: claimed against other creators' claimed minus claimed-own,intensity variability,30 or more,0.94,0.65,1.24,0.2,beyond the margin (nearer the creator's own voice),beyond the margin (nearer the creator's own voice)
+P3b,pooled: own against other creators' own minus own-own,intensity variability,30 or more,1.44,1.04,1.85,0.2,beyond the margin (own voices of different creators farther apart than own-own halves),beyond the margin (own voices of different creators farther apart than own-own halves)
+P1,same recording: claimed-own minus own-own,long-pause share,30 or more,0.38,-0.0,0.76,0.2,undetermined,undetermined
+P1b,same recording: claimed-claimed minus own-own,long-pause share,30 or more,-0.26,-0.56,0.03,0.2,undetermined,undetermined
+P2,across recordings: claimed-own minus own-own,long-pause share,30 or more,0.1,-0.1,0.3,0.2,undetermined,undetermined
+P3,pooled: claimed against other creators' claimed minus claimed-own,long-pause share,30 or more,0.16,-0.09,0.41,0.2,undetermined,undetermined
+P3b,pooled: own against other creators' own minus own-own,long-pause share,30 or more,0.98,0.74,1.22,0.2,beyond the margin (own voices of different creators farther apart than own-own halves),beyond the margin (own voices of different creators farther apart than own-own halves)

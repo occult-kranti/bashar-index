@@ -1,0 +1,21 @@
+# Exploratory; not a test of H1-H10. Seen creators only; readings on the 23 non-development creators (deposit 2's split policy).
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P09; prespecification audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Boundaries: cue-free (no RX cue within 2 units), seam-free, 60 s of span on each side, in recordings passing the background gate; boundaries with a detected environment change (r4-P03's rule) or a music-like class share of 0.5 or more within 5 s leave these rows. Entries (own to claimed) and exits apart.
+# contrast: per creator, mean over its boundaries of the sustained shift (feature over 10 to 60 s after minus 60 to 10 s before) minus the mean shift of its matched non-boundary edges (tenth, punctuation class, pause bin, segment start); interval: 90% t interval on creator means, fixed in the prespecification (interval class not calibrated by r3-P30). F0 range in units of the between-creator SD of own-voice F0 range fitted on the development creators. Margins: log 0.223; 0.20 SD; 0.05.
+# leaves_band: whether any 10-s window of the feature's creator-mean curve leaves the permutation-maximum band of its boundary kind (200 null draws of local shifts within the same tenth; one band over features and windows; 90%).
+# shift_raw: the creator-mean sustained shift before the matched-edge subtraction; shift_5_30: the 30-s window row (5 to 30 s). Pause-tied features alone never yield O1.
+# The cue-opened column is not computed (tier D by count; prespec section 1).
+# A8 (a rule that does not depend on the data; the lead's decision 109.1): no estimate, interval or reading is printed, and the figure is not published.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T19:50:13Z by code/analyse_p09.py.
+kind,feature,feature_text,creators,contrast,lo90,hi90,margin,words,leaves_band,shift_raw,shift_5_30
+entry,art,articulation rate (log; voiced-frame),not printed (A8: fewer than 12 eligible creators after the background gate),,,,0.223,not printed (A8: fewer than 12 eligible creators after the background gate),,,
+entry,f0,F0 range (SD units; voiced-frame; Tier 1),not printed (A8: fewer than 12 eligible creators after the background gate),,,,0.2,not printed (A8: fewer than 12 eligible creators after the background gate),,,
+entry,lps,long-pause share (pause-tied; shared channel),not printed (A8: fewer than 12 eligible creators after the background gate),,,,0.05,not printed (A8: fewer than 12 eligible creators after the background gate),,,
+exit,art,articulation rate (log; voiced-frame),not printed (A8: fewer than 12 eligible creators after the background gate),,,,0.223,not printed (A8: fewer than 12 eligible creators after the background gate),,,
+exit,f0,F0 range (SD units; voiced-frame; Tier 1),not printed (A8: fewer than 12 eligible creators after the background gate),,,,0.2,not printed (A8: fewer than 12 eligible creators after the background gate),,,
+exit,lps,long-pause share (pause-tied; shared channel),not printed (A8: fewer than 12 eligible creators after the background gate),,,,0.05,not printed (A8: fewer than 12 eligible creators after the background gate),,,
