@@ -50,8 +50,7 @@ Consistency with published counts: LAB-A's "about four in ten of a creator's rec
 lies between this entry's two kinds (0.29 and 0.42). r3-P05 (step 1) found pay-or-enrol asks falling in the claimed voice
 0.29 times as often as position predicts, a span-level result; at recording level, a claimed-voice recording can carry an
 own-voice ask (r3-P05's occult row: most own-voice pay asks come after the last claimed offset), so the recording-level
-odds ratio is closer to 1 and undetermined. r3-P56 (step 2): pay-or-enrol asks per hour lower in the claimed voice; same
-direction. The units differ (span, hour, recording) and are not reconciled after the fact.
+odds ratio is closer to 1 and undetermined. r3-P56 (step 2): its per-hour contrast is not printed (privacy rule). The units differ (span, hour, recording) and are not reconciled after the fact.
 
 Multiplicity (deposit 2): no family-wise adjustment; 56 primaries; about 2.8 readings beyond a margin expected by chance at
 half-margin effects. A reading is never called a finding.
@@ -95,3 +94,10 @@ value carried by fewer than 5 creators is printed. Checks: see `../common/privac
 ## Change by the lead's decision 103 (2026-11-26T17:16:20Z, UTC from `date -u`)
 
 - The note to the lead is marked as settled. No number changed.
+
+## Correction by the lead's decision 107 (2026-11-26T18:45:18Z, UTC from `date -u`)
+
+- One sentence of this README and one phrase of the published prespecification described a value that another
+  entry does not print. Both now say that it is not printed (privacy rule). The published `prespec.md` is
+  therefore a redacted copy: the SHA-256 in `prespec-hash-record.md` is that of the original, which stays private
+  and unchanged (step-1 decision 49 item i). No number or reading changed.

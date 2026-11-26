@@ -9,4 +9,6 @@ Hashed 2026-11-26T14:07:09Z (UTC, from `date -u`), before any outcome of this en
 | `../common/eligibility.py` (outcome-free tiers) | `49b2f187c61c469d93c3377754a1b8a47fcbc6c13bb0b0a187c8a803acc8f474` |
 | `../common/s4common.py` (as at hashing) | `9c90ab4e3c85352564bc5f5aa9910602c1be08deded6f5c69a8de54d3bb8aa3a` |
 
+The published `prespec.md` is a redacted copy (the lead's decision 107); the hash above is the original's.
+
 Exploratory; not a test of H1-H10. No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
