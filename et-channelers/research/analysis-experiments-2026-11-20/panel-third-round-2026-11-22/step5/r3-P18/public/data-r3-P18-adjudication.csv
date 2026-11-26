@@ -1,0 +1,46 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P18: a transparent footing locator (a closed word-level codebook with a two-state rule) and a disagreement diagnostic; prespecification hashed 2026-11-26T14:11:38Z.
+# Tier X (deposit 2's split policy): the 11 voice-eligible non-development creators (r3-P42's set); the hold length L is fitted on the other half with T and read on each half; small model, primary voice definition, units outside H1's excluded formats. The codebook and the labeller read the same transcript: their agreement is by shared design, never validation, and never accuracy.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# Disagreement cells adjudicated by label-invisible features (meas's adjudication by correlates): s = (m_disputed - m_agreed_own) / (m_agreed_claimed - m_agreed_own), creator-balanced means over creators with 5 or more units in each of the three cells; 90% creator bootstrap (1,000 draws, percentile; interval class not calibrated by r3-P30). Position-stratified: features centred within creator and recording tenth.
+# Directions fixed before the cells were compared: syllable rate lower in the claimed voice (H1), contraction share lower (H4); long pause before the unit higher (E5's described direction, not registered: described only); recognizer confidence: none (described only). meas's condition 3 is not met (no feature validated outside the table; the acoustic instrument is audio, later): every reading is consistency of correlates, never evidence for either instrument.
+# Rows not computed or not printed read 'not computed or not printed'.
+# Made 2026-11-26T14:29:39Z by code/publish_p18.py.
+# Changed 2026-11-26T15:25:06Z (UTC, from date -u) by the lead's decision 92 item 1: some cells were changed (privacy rule). Edited by hand; no number changed.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: some cells were changed (privacy rule). Edited by hand; no number changed.
+locator,position,disputed_cell,feature,creators,mean_disputed,mean_agreed_claimed,mean_agreed_own,s,low90,high90,reading
+pronoun-blind codebook,unmatched,"label claimed, locator own",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,unmatched,"label claimed, locator own",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,unmatched,"label claimed, locator own",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,unmatched,"label claimed, locator own",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,unmatched,"label own, locator claimed",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,unmatched,"label own, locator claimed",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,unmatched,"label own, locator claimed",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,unmatched,"label own, locator claimed",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label claimed, locator own",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label claimed, locator own",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label claimed, locator own",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label claimed, locator own",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label own, locator claimed",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label own, locator claimed",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label own, locator claimed",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+pronoun-blind codebook,position-stratified,"label own, locator claimed",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label claimed, locator own",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label claimed, locator own",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label claimed, locator own",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label claimed, locator own",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label own, locator claimed",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label own, locator claimed",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label own, locator claimed",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+full codebook,unmatched,"label own, locator claimed",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label claimed, locator own",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label claimed, locator own",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label claimed, locator own",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label claimed, locator own",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label own, locator claimed",f1 syllable rate,not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label own, locator claimed",f2 recognizer confidence,not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label own, locator claimed",f3 contraction share (T0),not computed or not printed,,,,,,,not computed or not printed
+full codebook,position-stratified,"label own, locator claimed",f4 long pause before the unit,not computed or not printed,,,,,,,not computed or not printed

@@ -1,0 +1,14 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 3 (forecasts and time).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r4-P23: creator-balanced shares of the rule-based resolvability classes (R resolvable as worded; NE not resolvable, energetic predicate; NU not resolvable, no closed window; M mixed; NX other, a residual the coder adds) and of flags C (conditional) and D (date refusal), by stratum, over the tier-L creators with a statement in the stratum. A statement may sit in several contact strata. Class cells resting on fewer than 5 creators are pooled.
+# Creator counts: 'fewer than 5' means 0 to 4; 'all but fewer than 5 of N' means N-4 to N-1; '5 to 9' is a band; values that could narrow a banded count are not printed.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: a count form was changed (privacy rule). Edited by hand; no number changed.
+# Changed 2026-11-26T17:16:20Z (UTC, from date -u) by the lead's decision 103: every count below 5 reads 'fewer than 5' (0 to 4 creators). Edited by hand; no number changed.
+stratum,creators,note,share_NU,share_NE,share_R,share_M,share_NX,pooled_cell,flag_C_share,flag_D_share
+contact class (any of the five strata),10 to 19,not printed (a pooled class cell rests on fewer than 5 creators),,,,,,,,
+contact event,10 to 19,not printed (a pooled class cell rests on fewer than 5 creators),,,,,,,,
+intervention,5 to 9,not printed (a pooled class cell rests on fewer than 5 creators),,,,,,,,
+evacuation,fewer than 5,fewer than 5 creators,,,,,,,,
+technology release,5 to 9,not printed (a pooled class cell rests on fewer than 5 creators),,,,,,,,
+institutional disclosure,10 to 19,not printed (a pooled class cell rests on fewer than 5 creators),,,,,,,,
+world event,all but fewer than 5 of 23,not printed (a pooled class cell rests on fewer than 5 creators),,,,,,,,

@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10.
+# Voice, kind and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P57 / r4-P32: sample-to-offer congruence, a description on seen creators: 'a funnel, whatever its age'; 'offers, not income'; 'in this platform-surviving roster'. Tier X (eligible non-development creators: 10 to 19): two-fold cross-fitting over the deposited halves; no parameter is fitted, so the estimate is the pooled estimate of the fixed rules over the eligible creators of both folds.
+# Claimed-voice recordings: voice-map main kind 'claimed voice'; own-voice talks: main kind 'own-voice talk' (small model, production map). Asks: the frozen asks instrument's final asks, any voice, recording level. Client service: a pay-or-enrol ask whose object is a session or reading.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Creator-balanced share of recordings carrying an ask of the class, claimed-voice recordings and own-voice talks, and their difference (claimed minus own) with a creator-cluster percentile bootstrap 90% interval (B = 2,000; a fixed method; interval class not calibrated by r3-P30). Margin 0.05 (deposit 2); no direction deposited for these rows.
+# A share whose non-zero values come from fewer than 5 creators is not printed.
+# Made 2026-11-26T14:26:24Z by code/publish_p57.py.
+ask_class,creators,share_claimed_voice_recordings,share_own_voice_talks,difference,lo90,hi90,reading
+pay-or-enrol asks,11 and fewer than 5 more,0.288,0.422,-0.134,-0.33,0.058,undetermined
+platform asks,11 and fewer than 5 more,0.236,0.401,-0.165,-0.326,-0.028,undetermined
+off-platform asks,11 and fewer than 5 more,0.196,0.254,-0.058,-0.254,0.132,undetermined
+money gifts and third-party adverts (pooled),11 and fewer than 5 more,,,,,,not printed (fewer than 5 creators carry the estimate)
+any ask,11 and fewer than 5 more,0.415,0.695,-0.28,-0.492,-0.049,undetermined

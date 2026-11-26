@@ -1,0 +1,76 @@
+{
+ "id": "r3-P57",
+ "title": "Sample-to-offer congruence (carries r4-P32)",
+ "class": "a.1",
+ "tier": "X (10 to 19 eligible)",
+ "primaries": {
+  "P1 ask half (b6)": "undetermined (MH odds ratio 0.42, 90% 0.10 to 1.34; creator strata 0.64, 0.20 to 1.52)",
+  "P2 congruence half (b6)": "not computed (too few terms or creators)"
+ },
+ "predictions": {
+  "business account cell (as b6, on seen creators)": "ask half undetermined; congruence half not computed"
+ },
+ "not_computed": [
+  "P2 and its brackets",
+  "share-based P2 (carried by fewer than 5)",
+  "money gifts and adverts share",
+  "class-G creator t interval (banded count, decision 62)"
+ ],
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "made_by": "the step-4 agent, a model agent working for the project lead (not a person)",
+ "prespec_hashed_utc": "2026-11-26T14:07:09Z",
+ "common_code_sha256": {
+  "s4common.py": "a1fa19dba4a1c09eedb715f9215935d0fcbad14a796e009dd8fccc32a8e9bb86",
+  "eligibility.py": "49b2f187c61c469d93c3377754a1b8a47fcbc6c13bb0b0a187c8a803acc8f474",
+  "privacy_checks.py": "0b50da13dbe84096332b19dc098bdd67baa6908d9af5cda7d29fdb33468c1d18",
+  "write_status.py": "4e4dd2d0371cd44347649a85c1dbec96ef39d7369056eacf45c84d7c515c379e",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "prespec-shared.md": "1a108ed923035037657685923e660b329ac3666a2ee9689e2802cf6f6236c596"
+ },
+ "privacy_checks": {
+  "run_utc": "2026-11-26T14:26:47Z",
+  "identifier_hits": 0,
+  "png_text_chunks": 0,
+  "pdf_info_keys": 0,
+  "nest_check": {
+   "banded_sets_tested": 26,
+   "problems": 0
+  },
+  "decision_62": {
+   "rows_banded_with_interval": 25,
+   "count_chosen": 0
+  }
+ },
+ "private_results": "kept in the entry's private folder (not published)",
+ "files_sha256": {
+  "README.md": "438ef0b95047f078cae8f3dcf27c6dad4d2196a8d7240fd6a707974503c3aae9",
+  "code/p57.py": "1361fab6b2072a448a16e3c231d0a7d5b0634e8be6d8e463ed43e1f2d592a17b",
+  "code/publish_p57.py": "ec55cdcf96ee75934ae3a1d70db2d9b388339c4ebb00b8140e93706083ee293f",
+  "contacts.md": "166758e77502d2a713b34f78ddc104ffd2b5a1ef00ec2ed97ca1265a9f923dca",
+  "prespec-hash-record.md": "a5d63b639b42b5da9518b3e4941f3d29ad052122ebae156289e7808d29e84735",
+  "prespec.md": "f029fb7177022715b2d3ef07b62d19876bacc7d765ef3f8ce7c4d7d6b1b1f1c8",
+  "public/data-r3-P57-primaries.csv": "ced4db1a0087a48fc87eab6f6b71b87a060514c1b7d2b2c1937181c2aa4bffd0",
+  "public/data-r3-P57-shares.csv": "d9ed687b0021769e30996de170544f350ff575120b64979ea42cc5dcc1b937a7",
+  "public/fig-r3-P57-asks.pdf": "f5ded9631c1db1b1bcc681031f3e28a7f66f14ce4e9fd857b7cfba2770827af4",
+  "public/fig-r3-P57-asks.png": "ef9ae317d819e1733044701dfd5afc58f42491293a017107ff2258aeaa743093"
+ },
+ "written_utc": "2026-11-26T14:27:19Z",
+ "note_2026-11-26_decision_103": "2026-11-26T17:16:20Z (UTC, from date -u): files changed by the lead's decision 103 (after the second independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "438ef0b95047f078cae8f3dcf27c6dad4d2196a8d7240fd6a707974503c3aae9",
+   "contacts.md": "166758e77502d2a713b34f78ddc104ffd2b5a1ef00ec2ed97ca1265a9f923dca",
+   "prespec-hash-record.md": "a5d63b639b42b5da9518b3e4941f3d29ad052122ebae156289e7808d29e84735",
+   "prespec.md": "f029fb7177022715b2d3ef07b62d19876bacc7d765ef3f8ce7c4d7d6b1b1f1c8",
+   "public/data-r3-P57-primaries.csv": "ced4db1a0087a48fc87eab6f6b71b87a060514c1b7d2b2c1937181c2aa4bffd0",
+   "public/data-r3-P57-shares.csv": "d9ed687b0021769e30996de170544f350ff575120b64979ea42cc5dcc1b937a7",
+   "public/fig-r3-P57-asks.pdf": "f5ded9631c1db1b1bcc681031f3e28a7f66f14ce4e9fd857b7cfba2770827af4",
+   "public/fig-r3-P57-asks.png": "ef9ae317d819e1733044701dfd5afc58f42491293a017107ff2258aeaa743093"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/"
+ }
+}

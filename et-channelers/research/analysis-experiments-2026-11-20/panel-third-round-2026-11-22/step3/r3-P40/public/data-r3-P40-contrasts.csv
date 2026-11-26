@@ -1,0 +1,13 @@
+# Exploratory; not a test of H1-H10.
+# Entry r3-P40 / r4-P25 (third-round programme, step 3, class a.2): passed prophesied years against control years. Cue families near named years only (deposit 3's L15 through the shared matcher; 30-token window); only the first matching cue family would be printed, never a frame. No date is said to have failed.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Tier L: the 23 non-development seen creators of deposit 2's split, run once with no split. Year roles: deposit 4 (class 1: 2012 primary, 1987, 1999, 2000, 2003, 2011 secondary; class 2: family A 2001 and 2008, family B 2020, Holm across the two; class 3: ordinary years matched on creator, spoken form, voice and distance from the upload year; biographical reference rows; 1844 and 1954 described only). A year counts as passed if it lies before the upload year (TL-BUILD's upload dates). Voice labels and TIME's roles are model-coded, not checked by a person. Cue counts: sense not resolved, precision unknown.
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator value; 'fewer than 5' means 0 to 4; values that could narrow a banded count are not printed; counts near printed counts are banded.
+# Contrasts (prespecification 2.6): difference of creator-balanced any-cue shares, unpaired; creator-cluster bootstrap percentile interval (B = 1,000), fixed in advance ('interval class not calibrated by r3-P30'); margin 0.05; no deposited direction; Holm across the two control families (each read first at 95%). Checks C2, A1 (without the coder-shared forms), A6 (r3-P42's spoken-year variants) and r3-P42's control-year band check. Every contrast is not computed: the pooled cue set is thin and fewer than 5 creators hold a classified cue family in every class.
+# Multiplicity (deposit 2): the register holds 56 primaries; about 2.8 readings beyond a margin are expected by chance at half-margin effects. Predictions: the account-prediction cells of r3-P40 and r4-P25 are silent in every column (nothing scored).
+# Made 2026-11-26T14:19:58Z (UTC) by code/publish_p40.py.
+# Changed 2026-11-26T17:33:22Z (UTC, from date -u) by the lead's decision 104: the header states the count form '0 to 4'. Edited by hand; no number changed.
+contrast,what,status,estimate,low_90,high_90,reading,holm_level
+D_A,"class 1 minus class 2 family A (2001, 2008): primary control",not computed (too few terms or creators),,,,,
+D_B,class 1 minus class 2 family B (2020): second control family,not computed (too few terms or creators),,,,,
+D_3,class 1 minus class 3 (named control row),not computed (too few terms or creators),,,,,

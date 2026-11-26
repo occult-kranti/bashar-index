@@ -1,0 +1,71 @@
+{
+ "id": "r3-P65",
+ "title": "Survivorship and attrition (gap bound)",
+ "class": "a.1",
+ "tier": "S (20 or more eligible)",
+ "primaries": {
+  "sealed half B: excess long gaps": "no excess over the posting model (0.02; band -0.31 to 0.36)"
+ },
+ "predictions": {},
+ "not_computed": [
+  "histogram shape (one merged bin)",
+  "tab shares by audience band (class b)"
+ ],
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "made_by": "the step-4 agent, a model agent working for the project lead (not a person)",
+ "prespec_hashed_utc": "2026-11-26T14:07:09Z",
+ "common_code_sha256": {
+  "s4common.py": "a1fa19dba4a1c09eedb715f9215935d0fcbad14a796e009dd8fccc32a8e9bb86",
+  "eligibility.py": "49b2f187c61c469d93c3377754a1b8a47fcbc6c13bb0b0a187c8a803acc8f474",
+  "privacy_checks.py": "0b50da13dbe84096332b19dc098bdd67baa6908d9af5cda7d29fdb33468c1d18",
+  "write_status.py": "4e4dd2d0371cd44347649a85c1dbec96ef39d7369056eacf45c84d7c515c379e",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "prespec-shared.md": "1a108ed923035037657685923e660b329ac3666a2ee9689e2802cf6f6236c596"
+ },
+ "privacy_checks": {
+  "run_utc": "2026-11-26T14:26:47Z",
+  "identifier_hits": 0,
+  "png_text_chunks": 0,
+  "pdf_info_keys": 0,
+  "nest_check": {
+   "banded_sets_tested": 26,
+   "problems": 0
+  },
+  "decision_62": {
+   "rows_banded_with_interval": 25,
+   "count_chosen": 0
+  }
+ },
+ "private_results": "kept in the entry's private folder (not published)",
+ "files_sha256": {
+  "README.md": "66f6597cbe33c1873d76e126f5bcd5550ff8a34b84be290befe7ae9555200c69",
+  "code/p65.py": "95ef72c541fa6948fba376cad00668bc379471a9adf6f528c6507f0acd194aae",
+  "code/publish_p65.py": "c9ce739441a21c683e4a9ec638f2afbf19482450eedb7e8a407ae84d09bd00f5",
+  "contacts.md": "f244c8e8bb5c94a35324f5849b0536af174e8825438cd9d4e31d4352a0a3c887",
+  "prespec-hash-record.md": "d1f8ae1cec2abd000ac6f9f49169b957bc1246b67d9fbc382694ba5bf93c6e60",
+  "prespec.md": "98d7edf4406b12539034705a3d6fd53718468116799e84898179aae0749e7895",
+  "public/data-r3-P65-gaps.csv": "67cff2c6bf2a1a87b1eb36d5b64fbf597fbcc1f384a276906274a12ee14c7cdb",
+  "public/fig-r3-P65-gaps.pdf": "c6da19e555f641fdf39a6d12e3f7d3cade949cde0336310004f627462da3a71b",
+  "public/fig-r3-P65-gaps.png": "ff985f0d08609c7795afe208a90fec05777f54881425f4c1583f403dff280955"
+ },
+ "written_utc": "2026-11-26T14:27:19Z",
+ "note_2026-11-26_joint_staging_steps3to5": "2026-11-26T14:59:32Z (UTC, from date -u): files changed at the joint staging of steps 3 to 5 by the lead's decisions 72, 73, 78, 80 and the cross-step nesting check (no number changed); their recorded hashes refreshed: README.md, public/data-r3-P65-gaps.csv",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r3-P65-gaps.csv",
+ "note_2026-11-26_decision_103": "2026-11-26T17:16:20Z (UTC, from date -u): files changed by the lead's decision 103 (after the second independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "66f6597cbe33c1873d76e126f5bcd5550ff8a34b84be290befe7ae9555200c69",
+   "contacts.md": "f244c8e8bb5c94a35324f5849b0536af174e8825438cd9d4e31d4352a0a3c887",
+   "prespec-hash-record.md": "d1f8ae1cec2abd000ac6f9f49169b957bc1246b67d9fbc382694ba5bf93c6e60",
+   "prespec.md": "98d7edf4406b12539034705a3d6fd53718468116799e84898179aae0749e7895",
+   "public/data-r3-P65-gaps.csv": "67cff2c6bf2a1a87b1eb36d5b64fbf597fbcc1f384a276906274a12ee14c7cdb",
+   "public/fig-r3-P65-gaps.pdf": "c6da19e555f641fdf39a6d12e3f7d3cade949cde0336310004f627462da3a71b",
+   "public/fig-r3-P65-gaps.png": "ff985f0d08609c7795afe208a90fec05777f54881425f4c1583f403dff280955"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/"
+ }
+}

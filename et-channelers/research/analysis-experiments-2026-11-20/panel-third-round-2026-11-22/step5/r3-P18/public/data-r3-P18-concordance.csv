@@ -1,0 +1,27 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P18: a transparent footing locator (a closed word-level codebook with a two-state rule) and a disagreement diagnostic; prespecification hashed 2026-11-26T14:11:38Z.
+# Tier X (deposit 2's split policy): the 11 voice-eligible non-development creators (r3-P42's set); the hold length L is fitted on the other half with T and read on each half; small model, primary voice definition, units outside H1's excluded formats. The codebook and the labeller read the same transcript: their agreement is by shared design, never validation, and never accuracy.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# Four cells: creator-balanced shares of the words in units with a label side (claimed or own), by the label and the locator. The RX row's cells are not printed where fewer than 5 creators carry one of them (the cells sum to one).
+# Predictions deposited: none (deposit 2's cells for r3-P18 are silent).
+# Made 2026-11-26T14:29:39Z by code/publish_p18.py.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: the hold length L prints as one value. Edited by hand; no number changed.
+locator,statistic,creators,mean,t90_low,t90_high,status,hold_length_L
+full codebook,word share: agreed claimed,11,0.4235,0.2573,0.5897,described (t interval on creator means),no limit
+full codebook,word share: agreed own,11,0.2824,0.1682,0.3965,described (t interval on creator means),no limit
+full codebook,"word share: label claimed, locator own",11,0.0824,0.0451,0.1198,described (t interval on creator means),no limit
+full codebook,"word share: label own, locator claimed",11,0.2117,0.1161,0.3072,described (t interval on creator means),no limit
+full codebook,"Cohen's kappa, word-weighted, per creator",11,0.2833,0.1109,0.4557,"agreement by shared design (no reading); t interval on creator means, class E named as the nearest; interval class not calibrated by r3-P30",no limit
+pronoun-blind codebook,word share: agreed claimed,11,0.324,0.1479,0.5001,described (t interval on creator means),no limit
+pronoun-blind codebook,word share: agreed own,11,0.3225,0.2025,0.4426,described (t interval on creator means),no limit
+pronoun-blind codebook,"word share: label claimed, locator own",11,0.1819,0.0935,0.2703,described (t interval on creator means),no limit
+pronoun-blind codebook,"word share: label own, locator claimed",11,0.1715,0.0758,0.2672,described (t interval on creator means),no limit
+pronoun-blind codebook,"Cohen's kappa, word-weighted, per creator",11,0.1717,-0.0056,0.349,"agreement by shared design (no reading); t interval on creator means, class E named as the nearest; interval class not calibrated by r3-P30",no limit
+RX cue span (r3-P03's K-cue; reference),word share: agreed claimed,11,,,,not printed (fewer than 5 creators carry the estimate),
+RX cue span (r3-P03's K-cue; reference),word share: agreed own,11,,,,not printed (fewer than 5 creators carry the estimate),
+RX cue span (r3-P03's K-cue; reference),"word share: label claimed, locator own",11,,,,not printed (fewer than 5 creators carry the estimate),
+RX cue span (r3-P03's K-cue; reference),"word share: label own, locator claimed",11,,,,not printed (fewer than 5 creators carry the estimate),
+RX cue span (r3-P03's K-cue; reference),"Cohen's kappa, word-weighted, per creator",11,0.0794,-0.0252,0.1841,"agreement by shared design (no reading); t interval on creator means, class E named as the nearest; interval class not calibrated by r3-P30",

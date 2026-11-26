@@ -1,0 +1,25 @@
+# Exploratory; not a test of H1-H10.
+# Voice, kind and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy. Title and speech cues are cue counts.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P58: does the audience reward the claimed voice inside a channel? Association at capture: one snapshot cannot show audience capture (D11); nothing here is causal. Tier X (eligible non-development creators: 18, with 8 or more seen recordings aged 30 days or more at capture, with a view count, a duration and labels): two-fold cross-fitting over the deposited halves (each fold's outcomes residualised on log10 age and log10 length with slopes fitted on the other fold).
+# estimate: creator mean of the within-creator Spearman correlation of the row with the outcome residual (creators with 8 or more recordings in which both vary); 90% interval: r3-P30's class E (within-creator rank correlation): the t interval on creator means at every simulated count. Margin 0.10 (deposit 2); no direction deposited.
+# perm_band: the permutation-maximum band over the five rows of the outcome (outcome residual permuted within creator, 1,999 draws): a row outside it is outside the family-wise band.
+# Multiplicity (deposit 2): no family-wise adjustment across entries; 56 primaries; about 2.8 readings beyond a margin expected by chance at half-margin effects. A reading is never called a finding.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Made 2026-11-26T14:26:26Z by code/publish_p58.py.
+outcome,row,creators,estimate,lo90,hi90,perm_band,perm_band_reading,reading
+views,claimed-voice main kind (voice map),withheld (5 or more of the 18),0.151,0.004,0.298,0.179,inside the permutation-maximum band,undetermined
+views,claimed-voice share of words,withheld (5 or more of the 18),0.214,0.076,0.353,0.163,outside the permutation-maximum band,undetermined
+views,a title naming a being (rule-based cue),withheld (5 or more of the 18),-0.036,-0.183,0.111,0.172,inside the permutation-maximum band,undetermined
+views,a spoken pay-or-enrol ask,withheld (5 or more of the 18),-0.01,-0.181,0.161,0.158,inside the permutation-maximum band,undetermined
+views,control vocabulary present (CSS-12's secret-control list),withheld (5 or more of the 18),0.024,-0.164,0.212,0.245,inside the permutation-maximum band,undetermined
+likes per view,claimed-voice main kind (voice map),withheld (5 or more of the 18),0.078,-0.079,0.234,0.182,inside the permutation-maximum band,undetermined
+likes per view,claimed-voice share of words,withheld (5 or more of the 18),0.093,-0.041,0.227,0.17,inside the permutation-maximum band,undetermined
+likes per view,a title naming a being (rule-based cue),withheld (5 or more of the 18),-0.087,-0.254,0.08,0.188,inside the permutation-maximum band,undetermined
+likes per view,a spoken pay-or-enrol ask,withheld (5 or more of the 18),-0.092,-0.257,0.072,0.178,inside the permutation-maximum band,undetermined
+likes per view,control vocabulary present (CSS-12's secret-control list),withheld (5 or more of the 18),0.056,-0.192,0.303,0.244,inside the permutation-maximum band,undetermined
+comments per view,claimed-voice main kind (voice map),withheld (5 or more of the 18),0.012,-0.177,0.201,0.199,inside the permutation-maximum band,undetermined
+comments per view,claimed-voice share of words,withheld (5 or more of the 18),-0.053,-0.166,0.059,0.187,inside the permutation-maximum band,undetermined
+comments per view,a title naming a being (rule-based cue),withheld (5 or more of the 18),-0.13,-0.341,0.081,0.214,inside the permutation-maximum band,undetermined
+comments per view,a spoken pay-or-enrol ask,withheld (5 or more of the 18),-0.119,-0.27,0.033,0.194,inside the permutation-maximum band,undetermined
+comments per view,control vocabulary present (CSS-12's secret-control list),withheld (5 or more of the 18),0.118,-0.067,0.304,0.254,inside the permutation-maximum band,undetermined

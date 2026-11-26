@@ -1,0 +1,96 @@
+{
+ "id": "r3-P37",
+ "carries": [
+  "r4-P20 (two clocks)",
+  "r4-P21 (its anchor-class half: the four anchor classes)"
+ ],
+ "class": "a.1",
+ "step": 3,
+ "status": "done (exploratory)",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded statement candidates (LAB-F, TL-BUILD) and rule-based fields of the frozen ledger, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tier": "S (20 or more of the 23 non-development creators eligible); sealed half B read once; exploration side described; word-anchored row tier L",
+ "prespec_hashed_utc": "2026-11-26T14:11:40Z",
+ "reading": "primary (sealed half, 5 to 9 creators): off-habit share of sky-or-festival anchored uploads minus other uploads, E1 0.086 (90% -0.068 to 0.240), E2 0.097 (-0.069 to 0.263): undetermined",
+ "predictions_scored": "none deposited for the seen run (deposit 2's cells silent; the platform-format rider is for later uploads)",
+ "not_computed": [
+  "sealed half: sky-alone, festival, civil, numerological, eclipse-day, one-day-tolerance, lead-window and strong-habit rows (not computed or not printed)",
+  "exploration side: sky-alone, eclipse-day and one-day-tolerance rows (not computed or not printed)",
+  "word-anchored row (fewer than 5 creators)",
+  "et's announced-period class (no public date)"
+ ],
+ "inputs_sha256": {
+  "forecast ledger (deposit 1)": "d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a",
+  "split draw (deposit 2)": "85848e4cb78327c52163d254a16447b90581fd6e1a696c959237fc7d0ef077f2",
+  "rule coder (deposit 2)": "4fe41740974b88f76358a99bb970bab2c1847b2ca9e907c2e1be518c575aef71"
+ },
+ "contacts": "none (contacts.md)",
+ "model_or_api_calls": 0,
+ "spend_usd": 0,
+ "privacy": {
+  "rules": "the lead's common rules for steps 3 to 5; step 1's pubrules Register for counts; fixed interval methods (decision 62 does not apply)",
+  "solvers": "../ft-common/scan-record.md: 0 rows pinned or narrowed by any route; identifier scan 0 files; no PNG text chunks; no PDF document information"
+ },
+ "departures": "README.md, section Departures",
+ "shared_code_sha256": {
+  "ftload.py": "a6d0b9c2ec01348683bf2aab33139f855fa661b4ef983efa3c869b95ba6fa4c9",
+  "ftpub.py": "6337bdfc2e84ec2d8a5397d73896bb686bac2c71f7859ed470da8c0492cb3c14",
+  "pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "eligibility.py": "d31d2f489f52ec6c3f8d6ded6dcf27bfdf3820f57c9a3d48b9ff99da2e83763c",
+  "scan_step3.py": "5db5338465b394ec1eb5eacb7a38837c98c8c1572b5ff6584371eff68274df6d",
+  "write_status.py": "b2c9b3ef7210d95e60c03ebbc4f040a40bc4e11390c17a0837977c755e624550"
+ },
+ "files_sha256": {
+  "public/data-r3-P37-counts.csv": "77d2e5212065d1a2802a29d687f1d17854feef2338855c40fabfd4ca283de373",
+  "public/data-r3-P37-offhabit.csv": "09ea6383dd743ba2fcf414d6cc25ca8ab2e802984c3f14b994c36f8b9ae65a24",
+  "public/data-r3-P37-offsets.csv": "546f9093962d8ba7dc3ed67d344144b9dcdafbd9abcbab43f0a611432540b5b9",
+  "public/fig-r3-P37-offhabit.png": "5a94a37707a13e1dcd0043d92802585e5d78128099722be8f75da583f5f17d79",
+  "public/fig-r3-P37-offhabit.pdf": "245dff3c7e284248f6aabb6e3d8267b1cd48b99efc5ef022574b90ca24eb2333",
+  "public/fig-r3-P37-offsets.png": "c3e181abbaac647aef9ea85084dbeabb0d3eee27e79b0c42327a8895a30c62f0",
+  "public/fig-r3-P37-offsets.pdf": "5a98a1f3f1988284347e4bb46a25ca8c3be5a0bae511b0013d01a38bc658d4e8",
+  "code/anchors.py": "2291de35e208f94f460451dfb396ab85def8772112a3de24fbaab0a2319df199",
+  "code/p37_run.py": "bf3278b444171e47e83def4cbac514b88016e2a9c6fc5fdfcf228f8384153cdf",
+  "code/p37_publish.py": "9b85408bb67b13cbf0d73c262472f1771347ae38f36d214df2823d5257cc1f69",
+  "README.md": "4347bada1c148793316eabb3ffd0a434fd8af0bfae3539e5b41bc8924b29aca2",
+  "prespec.md": "e83fe3014fbb5a13e748b731b3ab7ba621bed9ec97f26cf2b81d4e52a4ad3a2b",
+  "prespec-hash-record.md": "6fe0365d357d85a402847f56d3f7e8e4ed63f8d308f5d3e50fa9e731afa9a209",
+  "run-record.md": "43d9551ef775bd7d7462a782ba77d52e239a01c152798793f81cb11f8f58bb83",
+  "contacts.md": "b25f7ac36fedaefcdfa0f465f94699122880012ffbe9a01c98a653c4ce452ea5"
+ },
+ "written_utc": "2026-11-26T14:31:40Z",
+ "anchor_table_sha256": "2222c21be109e7c379d16b0ee2cd13114b724bdebfd3f6d28d276b3548904a6d",
+ "note_2026-11-26_joint_staging_steps3to5": "2026-11-26T14:59:32Z (UTC, from date -u): files changed at the joint staging of steps 3 to 5 by the lead's decisions 72, 73, 78, 80 and the cross-step nesting check (no number changed); their recorded hashes refreshed: README.md, public/data-r3-P37-counts.csv",
+ "note_2026-11-26_decision_92": "2026-11-26T15:25:06Z (UTC, from date -u): files changed by the lead's decision 92 (privacy rule; no number changed); their recorded hashes refreshed: README.md, public/data-r3-P37-offhabit.csv, public/fig-r3-P37-offhabit.pdf, public/fig-r3-P37-offhabit.png",
+ "note_2026-11-26_decision_99_text": "2026-11-26T16:19:27Z (UTC, from date -u): text worded as the README by the lead's decision 99 (no number changed): not_computed",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r3-P37-offhabit.csv, public/data-r3-P37-offsets.csv, public/fig-r3-P37-offhabit.pdf, public/fig-r3-P37-offhabit.png",
+ "note_2026-11-26_decision_103": "2026-11-26T17:16:20Z (UTC, from date -u): files changed by the lead's decision 103 (after the second independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/p37_publish.py, public/data-r3-P37-offhabit.csv, public/data-r3-P37-offsets.csv, public/fig-r3-P37-offhabit.pdf, public/fig-r3-P37-offhabit.png",
+ "note_2026-11-26_decision_104_text": "2026-11-26T17:33:22Z (UTC, from date -u): not_computed worded as the README by the lead's decision 104 (no number changed)",
+ "note_2026-11-26_decision_104": "2026-11-26T17:33:22Z (UTC, from date -u): files changed by the lead's decision 104 (after the third independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/p37_publish.py, public/data-r3-P37-offhabit.csv, public/fig-r3-P37-offhabit.pdf, public/fig-r3-P37-offhabit.png",
+ "note_2026-11-26_decision_104_residual": "2026-11-26T17:44:30Z (UTC, from date -u): files changed by the lead's decision 104 (the residual of the fourth independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r3-P37-offhabit.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "4347bada1c148793316eabb3ffd0a434fd8af0bfae3539e5b41bc8924b29aca2",
+   "contacts.md": "b25f7ac36fedaefcdfa0f465f94699122880012ffbe9a01c98a653c4ce452ea5",
+   "prespec-hash-record.md": "6fe0365d357d85a402847f56d3f7e8e4ed63f8d308f5d3e50fa9e731afa9a209",
+   "prespec.md": "e83fe3014fbb5a13e748b731b3ab7ba621bed9ec97f26cf2b81d4e52a4ad3a2b",
+   "public/data-r3-P37-counts.csv": "77d2e5212065d1a2802a29d687f1d17854feef2338855c40fabfd4ca283de373",
+   "public/data-r3-P37-offhabit.csv": "09ea6383dd743ba2fcf414d6cc25ca8ab2e802984c3f14b994c36f8b9ae65a24",
+   "public/data-r3-P37-offsets.csv": "546f9093962d8ba7dc3ed67d344144b9dcdafbd9abcbab43f0a611432540b5b9",
+   "public/fig-r3-P37-offhabit.pdf": "245dff3c7e284248f6aabb6e3d8267b1cd48b99efc5ef022574b90ca24eb2333",
+   "public/fig-r3-P37-offhabit.png": "5a94a37707a13e1dcd0043d92802585e5d78128099722be8f75da583f5f17d79",
+   "public/fig-r3-P37-offsets.pdf": "5a98a1f3f1988284347e4bb46a25ca8c3be5a0bae511b0013d01a38bc658d4e8",
+   "public/fig-r3-P37-offsets.png": "c3e181abbaac647aef9ea85084dbeabb0d3eee27e79b0c42327a8895a30c62f0",
+   "run-record.md": "5dece6e4e5d54d2a9049b3782de9c693a9adb895dd29fe617781d41293bb5d7d"
+  },
+  "changed_for_publication": [
+   "run-record.md"
+  ],
+  "not_published": "code/, private/",
+  "added_or_changed_for_publication": [
+   "run-record.md: label line and/or agnosticism sentence added (step-1 decision 47)"
+  ]
+ }
+}

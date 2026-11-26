@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 3 (forecasts and time).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r4-P21: which calendar the dated windows keep. Tier L: closed-window statements of the 23 non-development creators with an upload day; creator-balanced shares (each creator with a closed window weighs equally). The typing is TimeML's anchored-against-absolute distinction applied by the ledger's rule coder (ling's form-and-function typing, against the upload day); it is not claimed as new. Cells on fewer than 5 creators are pooled; a pooled cell on fewer than 5 creators withholds its bar.
+# Windows, the absolute type and the frame-only flag are model-coded (LAB-F's FE; TL-BUILD); the deixis typing is the frozen ledger's rule coder (deposit 2), rule-based; nothing is checked by a person. The forecast class fell below its reliability floor on the hold-out reliability sample, and the time-window part failed its two-model gate on the development pilot.
+# Creator counts: 'fewer than 5' means 1 to 4; 'all but fewer than 5 of N' means N-4 to N-1; '5 to 9' is a band; values that could narrow a banded count are not printed.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: the month and decade shares of calendar-absolute forms are not printed (privacy rule). Edited by hand; no number changed.
+typing,creators,cell,creator_balanced_share,note
+rule-based deixis cell (form and function against the upload day),all but fewer than 5 of 23,,,not printed (a pooled cell rests on fewer than 5 creators)
+calendar unit of calendar-absolute forms (rule-based),10 to 19,year,0.613,
+calendar unit of calendar-absolute forms (rule-based),10 to 19,month,,not printed (privacy rule)
+calendar unit of calendar-absolute forms (rule-based),10 to 19,decade,,not printed (privacy rule)
+model-coded FE kind (share of closed-window statements holding it; not exclusive),all but fewer than 5 of 23,D1 calendar day,,not printed (fewer than 5 creators)
+model-coded FE kind (share of closed-window statements holding it; not exclusive),all but fewer than 5 of 23,D2 month,0.190,
+model-coded FE kind (share of closed-window statements holding it; not exclusive),all but fewer than 5 of 23,D3 year or range of years,0.235,
+model-coded FE kind (share of closed-window statements holding it; not exclusive),all but fewer than 5 of 23,D4 season or part of a year,0.164,
+model-coded FE kind (share of closed-window statements holding it; not exclusive),all but fewer than 5 of 23,D5 counted span from speaking,0.136,
+model-coded FE kind (share of closed-window statements holding it; not exclusive),all but fewer than 5 of 23,D6 named period relative to speaking,0.253,
+model-coded FE kind (share of closed-window statements holding it; not exclusive),all but fewer than 5 of 23,D7 time fixed by a public or sky event,,not printed (fewer than 5 creators)

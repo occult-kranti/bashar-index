@@ -1,0 +1,75 @@
+{
+ "id": "r4-P23",
+ "carries": [],
+ "class": "a.1 (registered test class b, card b8)",
+ "step": 3,
+ "status": "done (exploratory)",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded statement candidates (LAB-F, TL-BUILD) and rule-based fields of the frozen ledger, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tier": "L (the 23 non-development creators; the frozen rule coder's contact strata)",
+ "prespec_hashed_utc": "2026-11-26T14:11:40Z",
+ "reading": "primary (5 to 9 creators): bounded share, contact minus world event, -0.037 (90% t -0.125 to 0.051): undetermined",
+ "predictions_scored": "platform format, 'flat: contact and world-event statements bounded alike': not decided by this reading (undetermined)",
+ "not_computed": [
+  "rows 2, 3 and 4 (not computed or not printed)",
+  "resolvability classes by stratum (pooled cells on fewer than 5 creators)",
+  "histogram (one bin at most)"
+ ],
+ "inputs_sha256": {
+  "forecast ledger (deposit 1)": "d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a",
+  "split draw (deposit 2)": "85848e4cb78327c52163d254a16447b90581fd6e1a696c959237fc7d0ef077f2",
+  "rule coder (deposit 2)": "4fe41740974b88f76358a99bb970bab2c1847b2ca9e907c2e1be518c575aef71"
+ },
+ "contacts": "none (contacts.md)",
+ "model_or_api_calls": 0,
+ "spend_usd": 0,
+ "privacy": {
+  "rules": "the lead's common rules for steps 3 to 5; step 1's pubrules Register for counts; fixed interval methods (decision 62 does not apply)",
+  "solvers": "../ft-common/scan-record.md: 0 rows pinned or narrowed by any route; identifier scan 0 files; no PNG text chunks; no PDF document information"
+ },
+ "departures": "README.md, section Departures",
+ "shared_code_sha256": {
+  "ftload.py": "a6d0b9c2ec01348683bf2aab33139f855fa661b4ef983efa3c869b95ba6fa4c9",
+  "ftpub.py": "6337bdfc2e84ec2d8a5397d73896bb686bac2c71f7859ed470da8c0492cb3c14",
+  "pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "eligibility.py": "d31d2f489f52ec6c3f8d6ded6dcf27bfdf3820f57c9a3d48b9ff99da2e83763c",
+  "scan_step3.py": "5db5338465b394ec1eb5eacb7a38837c98c8c1572b5ff6584371eff68274df6d",
+  "write_status.py": "b2c9b3ef7210d95e60c03ebbc4f040a40bc4e11390c17a0837977c755e624550"
+ },
+ "files_sha256": {
+  "public/data-r4-P23-contrast.csv": "94d8cdf0e4ed8a79b0505636357e0d8828151f61580194f961ee0276b44ba934",
+  "public/data-r4-P23-strata.csv": "777ee6873ed08684656035fad1768819955da6fabd2c614045188953d7222789",
+  "public/fig-r4-P23-contact.png": "2010e3e3c46617b145a79f3810e179acd3a9b995b818744cd2436c14414fe246",
+  "public/fig-r4-P23-contact.pdf": "840b2595cea05147dc8eb9b0bd8fe3f9b15fa0f82dc7ccaf9266bbbf04fbf540",
+  "code/p23_run.py": "e4d538ebc7f0538842bf1e993b40f4060ae11930af748137fac8580546e51f17",
+  "README.md": "0b10c10d5501fa3cd8e0499d033cc630c558abd40bfad0ba5933fcd4232e5f89",
+  "prespec.md": "c206eb26162b808258fd05806cb9ffb59c80b6aad43c9d4989a38466b3e3e5d6",
+  "prespec-hash-record.md": "a81d731103dfdddf6d177c58c6d68e8e79c72a040110dca6fbaa65c45633f921",
+  "contacts.md": "b25f7ac36fedaefcdfa0f465f94699122880012ffbe9a01c98a653c4ce452ea5"
+ },
+ "written_utc": "2026-11-26T14:31:40Z",
+ "note_2026-11-26_joint_staging_steps3to5": "2026-11-26T14:59:32Z (UTC, from date -u): files changed at the joint staging of steps 3 to 5 by the lead's decisions 72, 73, 78, 80 and the cross-step nesting check (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_92": "2026-11-26T15:25:06Z (UTC, from date -u): files changed by the lead's decision 92 (privacy rule; no number changed); their recorded hashes refreshed: README.md, public/data-r4-P23-contrast.csv, public/fig-r4-P23-contact.pdf, public/fig-r4-P23-contact.png",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r4-P23-strata.csv",
+ "note_2026-11-26_decision_103": "2026-11-26T17:16:20Z (UTC, from date -u): files changed by the lead's decision 103 (after the second independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r4-P23-contrast.csv, public/data-r4-P23-strata.csv, public/fig-r4-P23-contact.pdf, public/fig-r4-P23-contact.png",
+ "note_2026-11-26_decision_104_text": "2026-11-26T17:33:22Z (UTC, from date -u): not_computed worded as the README by the lead's decision 104 (no number changed)",
+ "note_2026-11-26_decision_104": "2026-11-26T17:33:22Z (UTC, from date -u): files changed by the lead's decision 104 (after the third independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r4-P23-contrast.csv, public/fig-r4-P23-contact.pdf, public/fig-r4-P23-contact.png",
+ "note_2026-11-26_decision_104_residual": "2026-11-26T17:44:30Z (UTC, from date -u): files changed by the lead's decision 104 (the residual of the fourth independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r4-P23-contrast.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "0b10c10d5501fa3cd8e0499d033cc630c558abd40bfad0ba5933fcd4232e5f89",
+   "contacts.md": "b25f7ac36fedaefcdfa0f465f94699122880012ffbe9a01c98a653c4ce452ea5",
+   "prespec-hash-record.md": "a81d731103dfdddf6d177c58c6d68e8e79c72a040110dca6fbaa65c45633f921",
+   "prespec.md": "c206eb26162b808258fd05806cb9ffb59c80b6aad43c9d4989a38466b3e3e5d6",
+   "public/data-r4-P23-contrast.csv": "94d8cdf0e4ed8a79b0505636357e0d8828151f61580194f961ee0276b44ba934",
+   "public/data-r4-P23-strata.csv": "777ee6873ed08684656035fad1768819955da6fabd2c614045188953d7222789",
+   "public/fig-r4-P23-contact.pdf": "840b2595cea05147dc8eb9b0bd8fe3f9b15fa0f82dc7ccaf9266bbbf04fbf540",
+   "public/fig-r4-P23-contact.png": "2010e3e3c46617b145a79f3810e179acd3a9b995b818744cd2436c14414fe246"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/"
+ }
+}

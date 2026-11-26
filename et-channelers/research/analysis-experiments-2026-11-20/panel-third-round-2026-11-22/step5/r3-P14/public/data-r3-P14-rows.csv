@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P14: read aloud, recited or spontaneous? The text part: a read-like delivery profile from lexical slots, recognizer pauses and lexical repairs; prespecification hashed 2026-11-26T14:11:38Z.
+# Tier X (deposit 2's split policy): the 11 voice-eligible non-development creators (r3-P42's set), two-fold cross-fitting on the deposited halves with T on the fitting side; small model, primary voice definition, units outside H1's excluded formats.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# Slots (ling's clause-slot rule, closed lists in prespec.md): W inside a phrase, B a clause-boundary candidate, A ambiguous (never used). Pause events: gaps of 1 s or more between words of one voice run (GRID's seam rule). Within-phrase share Jeffreys-smoothed. Repairs: immediate one- and two-word repetitions as transcribed.
+# The score's poles are not named: no reference corpus anchors it (class b). Never read per creator or as a synthetic-voice screen; public name 'read-like delivery profile'. Reading a received text aloud is, in emic's reading (a reading by a non-holder), a respected mode.
+# Interval: r3-P30's choice for the row's class at 11 creators; where no method holds, a reading is at most 'undetermined'. Predictions deposited: none.
+# Made 2026-11-26T14:28:18Z by code/publish_p14.py.
+row,statistic,creators,estimate,low90,high90,interval,method_holds,margin,reading
+S,"read-like delivery profile score, claimed minus own (cross-fitted; higher: more within-phrase pauses and repairs)",11,0.0832,-0.5802,0.5802,r3-P30 C_standardised: Hodges-Lehmann with the exact signed-rank interval,no,0.2,undetermined
+W,"within-phrase pause share (W over W plus B slots), claimed minus own",11,-0.0662,-0.2105,0.0782,r3-P30 B_share_difference: t interval on creator means,yes,0.05,undetermined
+R,"lexical repairs per 1,000 words, log ratio claimed over own (0.5 added)",11,0.3231,0.095,0.5512,r3-P30 H_rare_counts: t interval on creator means,yes,0.223,undetermined
+G,"guided practice (claimed-voice and own-voice), by voice",,,,,,,,not computed (too few terms or creators)
+Attribution,creators who describe their practice as received text read aloud (L10 MODE-READALOUD; tier L),,,,,,,,not computed (too few terms or creators) (step 2)
+Acoustic part,within-phrase pauses and repairs from audio,,,,,,,,"not computed here (audio, later)"

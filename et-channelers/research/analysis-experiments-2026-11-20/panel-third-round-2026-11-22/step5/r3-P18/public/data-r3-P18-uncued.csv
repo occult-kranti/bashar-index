@@ -1,0 +1,16 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P18: a transparent footing locator (a closed word-level codebook with a two-state rule) and a disagreement diagnostic; prespecification hashed 2026-11-26T14:11:38Z.
+# Tier X (deposit 2's split policy): the 11 voice-eligible non-development creators (r3-P42's set); the hold length L is fitted on the other half with T and read on each half; small model, primary voice definition, units outside H1's excluded formats. The codebook and the labeller read the same transcript: their agreement is by shared design, never validation, and never accuracy.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# The uncued share says how much of the label's claimed voice rests on something other than the codebook's deixis and frames (continuity, content, register).
+# Made 2026-11-26T14:29:39Z by code/publish_p18.py.
+statistic,bin,creators,mean,t90_low,t90_high,status
+share of label-claimed words in units with no codebook hit within 2 units (full codebook),,11,0.6882,0.5935,0.7829,described (t interval on creator means; interval class not calibrated by r3-P30)
+"creators per bin of the uncued share (step 2's rule, width 0.1)",0.0 to 0.7,5,,,,
+"creators per bin of the uncued share (step 2's rule, width 0.1)",0.7 to 1.0,6,,,,
+agreement by source type,,,,,,not computed (as prespecified: too few creators per source type at 11)
+relayed spans apart,,,,,,not computed (relayed voice alone is below the reliability floor)
+two-coder check of 300 windows,,,,,,"not run (class c, unfunded)"

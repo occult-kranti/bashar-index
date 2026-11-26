@@ -1,0 +1,41 @@
+# Exploratory; not a test of H1-H10.
+# Entry r3-P40 / r4-P25 (third-round programme, step 3, class a.2): passed prophesied years against control years. Cue families near named years only (deposit 3's L15 through the shared matcher; 30-token window); only the first matching cue family would be printed, never a frame. No date is said to have failed.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Tier L: the 23 non-development seen creators of deposit 2's split, run once with no split. Year roles: deposit 4 (class 1: 2012 primary, 1987, 1999, 2000, 2003, 2011 secondary; class 2: family A 2001 and 2008, family B 2020, Holm across the two; class 3: ordinary years matched on creator, spoken form, voice and distance from the upload year; biographical reference rows; 1844 and 1954 described only). A year counts as passed if it lies before the upload year (TL-BUILD's upload dates). Voice labels and TIME's roles are model-coded, not checked by a person. Cue counts: sense not resolved, precision unknown.
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator value; 'fewer than 5' means 0 to 4; values that could narrow a banded count are not printed; counts near printed counts are banded.
+# Rows: the cue families' thin-rule status (3 or more forms each used by 5 or more creators inside the 30-token windows of passed class-1, class-2, class-3 and biographical mentions), then one row per year class and voice: the creators who name a year of the row, the creators with a classified cue family near it, and the status. The pooled set is thin, so no cue share is computed for any row (prespecification 2.4); the memory timeline is in data-r3-P40-timeline.csv.
+# Class 3: the deposited class-3 rule (1-year match) yields no controls on this roster (controls are possible only where a creator's uploads lie 2 or more calendar years apart: a defect of the lead's deposited rule, found on application); under the prespecified 4-year sensitivity window class 3 holds fewer than 5 creators. Biographical reference rows use TIME's stored small-model role 'biography' (model-coded, not checked by a person) where TIME's hits line up (all of TIME's year hits on these recordings lined up; a role was assigned to all but 5 of them). Passed ledger statements: ledger statements whose frozen window had ended before the upload day (deposit 4's placement).
+# Made 2026-11-26T14:19:58Z (UTC) by code/publish_p40.py.
+# Changed 2026-11-26T14:59:32Z (UTC, from date -u) at the joint staging of steps 3 to 5, by the lead's decision 73: the class-3 rows read 'not computed (the deposited class-3 rule yields no controls on this roster)'. Controls are possible only where a creator's uploads lie 2 or more calendar years apart; this is a defect of the lead's deposited rule (deposit 4), found on application. Edited by hand (the publication script was not rerun); no number changed.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: the class-3 condition is restated (here and in the line above) as the condition under which controls are possible. Edited by hand; no number changed.
+# Changed 2026-11-26T17:33:22Z (UTC, from date -u) by the lead's decision 104: the header states the count form '0 to 4'. Edited by hand; no number changed.
+kind,row,voice,creators_naming,status,forms_used_by_5_or_more_creators,forms_named_(5_or_more_creators),creators_with_a_classified_cue_family,first_matching_cue_shares,note
+cue family,FULFIL (fulfilment framing),all,,not computed (too few terms or creators),0,,,,
+cue family,SPLIT (timeline split),all,,not computed (too few terms or creators),0,,,,
+cue family,DEFER (deferral framing),all,,not computed (too few terms or creators),0,,,,
+cue family,any of the three (pooled set),all,,not computed (too few terms or creators),0,,,,
+year class,class 1,all voices,10 to 19,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 1,claimed voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 1,own voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 1 (2012 only),all voices,5 to 9,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 1 (2012 only),claimed voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 1 (2012 only),own voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 2A,all voices,5 to 9,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 2A,claimed voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 2A,own voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 2B,all voices,10 to 19,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 2B,claimed voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 2B,own voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 3,all voices,fewer than 5,not computed (the deposited class-3 rule yields no controls on this roster),,,fewer than 5,,
+year class,class 3,claimed voice (11 voice-eligible creators),fewer than 5,not computed (the deposited class-3 rule yields no controls on this roster),,,fewer than 5,,
+year class,class 3,own voice (11 voice-eligible creators),fewer than 5,not computed (the deposited class-3 rule yields no controls on this roster),,,fewer than 5,,
+year class,class 3 (4-year window),all voices,fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 3 (4-year window),claimed voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,class 3 (4-year window),own voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,biographical reference,all voices,10 to 19,not computed (too few terms or creators),,,fewer than 5,,
+year class,biographical reference,claimed voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,biographical reference,own voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,"literature years (1844, 1954)",all voices,fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,"literature years (1844, 1954)",claimed voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,"literature years (1844, 1954)",own voice (11 voice-eligible creators),fewer than 5,not computed (too few terms or creators),,,fewer than 5,,
+year class,passed ledger statements,all voices,5 to 9,not computed (too few terms or creators),,,fewer than 5,,

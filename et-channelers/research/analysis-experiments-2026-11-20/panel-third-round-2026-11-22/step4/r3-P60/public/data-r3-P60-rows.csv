@@ -1,0 +1,35 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts: sense not resolved, precision unknown (no reader). Links are read as settings: a link is a link, not a verdict (never allegiance, never routing).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P60: where audiences are sent off the platform, and suppression talk (deposit 3's L13, addendum 2b). Tier L: the 23 non-development seen creators, once, no split. Page links: web addresses in the descriptions of their seen recordings (rule G1c host matching; no link followed), counted by r3-P42 with the shared matcher.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Creators: count form by the step's register (exact where allowed; banded or stated against a printed count otherwise); share of the 23 printed only where the count is exact. share_of_links: creator-balanced share of a creator's page links in the class (r3-P42's statistic, recomputed: equal to its printed values).
+# Funnel depth (the list writer's order): 0 platform self-links; 1 follow elsewhere; 2 contact capture; 3 payment; 4 one-to-one service or paid teaching; undetermined: own site and shorteners.
+# Suppression talk is split (platform moderation talk; hidden-actor suppression talk) and never pooled; thin rule (addendum 2d): 3 or more expanded forms each used by 5 or more of the 23 creators.
+# Made 2026-11-26T14:26:21Z by code/p60.py.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: the share of page links at funnel depth 2 is not printed (a depth's share prints only where every class at that depth is printed, as in step 2's r3-P42 file). Edited by hand; no number changed.
+block,row,description,funnel_depth,creators,share_of_23,share_of_links,status_or_reading
+destination class,DEST-SELF,platform self-links,0,10 to 19,,0.129,"described (a link is a link, not a verdict)"
+destination class,DEST-ALTVID,alternative video platforms,1,fewer than 5,,,fewer than 5 creators
+destination class,DEST-AUDIO,podcast platforms,1,fewer than 5,,,fewer than 5 creators
+destination class,DEST-SOCIAL,other social platforms,1,10 to 19,,0.094,"described (a link is a link, not a verdict)"
+destination class,DEST-EMAIL,newsletter and email,2,fewer than 5,,,fewer than 5 creators
+destination class,DEST-LINKHUB,link aggregators,2,fewer than 5,,,fewer than 5 creators
+destination class,DEST-MSG,messaging-app broadcast,2,fewer than 5,,,fewer than 5 creators
+destination class,DEST-MEMB,membership and donation,3,6,0.261,0.056,"described (a link is a link, not a verdict)"
+destination class,DEST-SHOP,merchandise and affiliate,3,fewer than 5,,,fewer than 5 creators
+destination class,DEST-SERVICE,booking and courses,4,5 to 9,,0.034,"described (a link is a link, not a verdict)"
+destination class,DEST-OWNSITE,own site (residual),undetermined,all but fewer than 5 of 23,,0.642,"described (a link is a link, not a verdict)"
+destination class,DEST-UNRESOLVED,link shorteners,undetermined,fewer than 5,,,fewer than 5 creators
+share of page links by funnel depth,depth 0,,0,23,,0.129,described; funnel depth readable (unresolved share below 0.20)
+share of page links by funnel depth,depth 1,,1,23,,,not printed (values that could narrow a withheld value are not printed)
+share of page links by funnel depth,depth 2,,2,23,,,not printed (values that could narrow a withheld value are not printed)
+share of page links by funnel depth,depth 3,,3,23,,,not printed (values that could narrow a withheld value are not printed)
+share of page links by funnel depth,depth 4,,4,23,,0.034,described; funnel depth readable (unresolved share below 0.20)
+share of page links by funnel depth,depth undetermined,,undetermined,23,,,not printed (values that could narrow a withheld value are not printed)
+creators by funnel depth,a link at depth 3 or 4,"payment, or one-to-one service or paid teaching",3-4,10 to 19,,,described
+creators by funnel depth,a link at depth 4,one-to-one service or paid teaching,4,5 to 9,,,described
+suppression talk (split),SUPP-PLATFORM,platform moderation talk,,23,,,not computed (too few terms or creators)
+suppression talk (split),SUPP-HIDDEN,hidden-actor suppression talk,,23,,,not computed (too few terms or creators)
+paired-difference dot plot,platform-suppression recordings against others,,,,,,not computed (too few terms or creators); it rests on SUPP-PLATFORM
+between creators,alternative video platforms against control vocabulary,,,,,,not computed (too few terms or creators)

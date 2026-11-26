@@ -1,0 +1,29 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P16: who shifts? Register shift by self-described mode (description only; every account predicts the same dose, D23, so it retires none); prespecification hashed 2026-11-26T14:11:38Z.
+# Tier L: mode groups from deposit 3's L10 through the shared matcher on the 23 non-development creators (the groups equal r3-P53's); the shift on the 11 voice-eligible creators (r3-P42's set), small model, primary voice definition, units outside H1's excluded formats. Mode is self-presentation from cue counts: sense not resolved, precision unknown.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# S uses r3-P15's profiles (parts of 200 usable tokens, 20 draws, formula tokens removed) on pooled claimed and own tokens cut into halves; the noise band is the margin (0.20): a creator 'does not shift' below it. U1's interval: r3-P30's choice for C_standardised at 11 (no method holds there, so a reading is at most 'undetermined').
+# A group comparison needs 5 or more creators in the mode group and in the other creators of the 11; where either is smaller the row reads 'not computed (too few terms or creators)' and no group count or mean is printed.
+# Made 2026-11-26T14:30:37Z by code/publish_p16.py.
+row,statistic,profile,standardisation,creators,estimate_or_bin,low90,high90,interval,method_holds,reading
+U1,"standardised shift S = (claimed-own minus own-own) / SD of own-own, over the 11 (primary)",person-free,z-scored,11,0.492,0.11,1.265,r3-P30 C_standardised: Hodges-Lehmann with the exact signed-rank interval,no,undetermined
+U2,creators of the 11 who do not shift (S below 0.20),person-free,z-scored,fewer than 5,,,,,,described (count form only)
+U1 bins,"creators per bin of S (step 2's rule, width 0.5 over -3 to 3)",person-free,z-scored,5,-3.0 to 0.5,,,,,described
+U1 bins,"creators per bin of S (step 2's rule, width 0.5 over -3 to 3)",person-free,z-scored,6,0.5 to 3.0,,,,,described
+U3,creators who describe their practice as higher self or Source against the other creators of the 11: shift,person-free,z-scored,,,,,,,not computed (too few terms or creators)
+U3,creators who describe their practice as relay against the other creators of the 11: shift,person-free,z-scored,,,,,,,not computed (too few terms or creators)
+U1,"standardised shift S = (claimed-own minus own-own) / SD of own-own, over the 11",person-free,unstandardised,11,0.5,-0.094,1.003,r3-P30 C_standardised: Hodges-Lehmann with the exact signed-rank interval,no,undetermined
+U3,creators who describe their practice as higher self or Source against the other creators of the 11: shift,person-free,unstandardised,,,,,,,not computed (too few terms or creators)
+U3,creators who describe their practice as relay against the other creators of the 11: shift,person-free,unstandardised,,,,,,,not computed (too few terms or creators)
+U1,"standardised shift S = (claimed-own minus own-own) / SD of own-own, over the 11",full,z-scored,11,0.841,0.305,1.543,r3-P30 C_standardised: Hodges-Lehmann with the exact signed-rank interval,no,undetermined (r3-P30: no method holds at this count)
+U3,creators who describe their practice as higher self or Source against the other creators of the 11: shift,full,z-scored,,,,,,,not computed (too few terms or creators)
+U3,creators who describe their practice as relay against the other creators of the 11: shift,full,z-scored,,,,,,,not computed (too few terms or creators)
+U1,"standardised shift S = (claimed-own minus own-own) / SD of own-own, over the 11",full,unstandardised,11,2.184,1.255,3.038,r3-P30 C_standardised: Hodges-Lehmann with the exact signed-rank interval,no,undetermined (r3-P30: no method holds at this count)
+U3,creators who describe their practice as higher self or Source against the other creators of the 11: shift,full,unstandardised,,,,,,,not computed (too few terms or creators)
+U3,creators who describe their practice as relay against the other creators of the 11: shift,full,unstandardised,,,,,,,not computed (too few terms or creators)
+U3,"the six other modes (full trance, conscious or blended, dictation, received text read aloud, recitation of another receiver's message, light language)",,,,,,,,,not computed (too few terms or creators) (step 2)
+Delivery,rate and pauses by self-described mode,,,,,,,,,"not computed here (audio, later)"
+Predictions,deposit 2's cells for r3-P16 (every account: 'same as every other account (direction not stated)'),,,,,,,,,"scored: no account is retired, whatever the result (D23)"

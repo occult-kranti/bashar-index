@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P17: a calm-register control, text rows (recognizer word times; the acoustic primary is not computed here: audio, later); prespecification hashed 2026-11-26T14:11:38Z.
+# Unsplit (deposit 2's split policy names r3-P17): all 71 seen creators; small model (label of record); primary voice definition for the claimed voice, own-solo definition for own voice; units outside H1's excluded formats; a creator enters a group with 300 or more words in it. The recording's main kind is model-coded (voice map).
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# Creator-balanced means per group with 90% t intervals on creator means (described rows). No histogram is drawn over a group whose count prints as a band; no mean across groups is printed.
+# Made 2026-11-26T14:28:04Z by code/publish_p17.py.
+group,measure,creators,mean,t90_low,t90_high,status
+claimed voice outside guided practice,articulation rate (syllables per second),all but fewer than 5 of 56,3.8868,3.7748,3.9987,described (t interval on creator means)
+claimed voice outside guided practice,long-pause share (time in gaps of 1 s or more),all but fewer than 5 of 56,0.0998,0.0788,0.1208,described (t interval on creator means)
+claimed-voice guided practice,articulation rate (syllables per second),,,,,not computed (too few terms or creators)
+claimed-voice guided practice,long-pause share (time in gaps of 1 s or more),,,,,not computed (too few terms or creators)
+own-voice guided practice,articulation rate (syllables per second),25,3.6334,3.4854,3.7815,described (t interval on creator means)
+own-voice guided practice,long-pause share (time in gaps of 1 s or more),25,0.3803,0.3209,0.4397,described (t interval on creator means)
+own-voice talks (solo format),articulation rate (syllables per second),54,4.1231,4.0363,4.2099,described (t interval on creator means)
+own-voice talks (solo format),long-pause share (time in gaps of 1 s or more),54,0.0984,0.0772,0.1195,described (t interval on creator means)

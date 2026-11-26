@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P17: a calm-register control, text rows (recognizer word times; the acoustic primary is not computed here: audio, later); prespecification hashed 2026-11-26T14:11:38Z.
+# Unsplit (deposit 2's split policy names r3-P17): all 71 seen creators; small model (label of record); primary voice definition for the claimed voice, own-solo definition for own voice; units outside H1's excluded formats; a creator enters a group with 300 or more words in it. The recording's main kind is model-coded (voice map).
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# The entry's reading per measure follows prespec.md section 3: 'the calm-register account covers the claimed voice's difference' if C3 reads within the margin and C1 beyond it; 'the claimed voice differs from own-voice guided practice' if C3 reads beyond the margin; otherwise 'not informative at this size (undetermined)'.
+# Predictions deposited: none (deposit 2's cells for r3-P17 are silent).
+# Made 2026-11-26T14:28:04Z by code/publish_p17.py.
+measure,reading
+articulation rate,not informative at this size (undetermined)
+long-pause share,the claimed voice differs from own-voice guided practice
+acoustic primary,"not computed here (audio, later)"
+sensitivity rows without recitation-flagged recordings,"not computed (the recitation cue class is thin on tier L, step 2)"
