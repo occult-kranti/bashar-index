@@ -1,0 +1,93 @@
+gate_id,gate_list,gate_word,match,term_id,counted_form,form_list,relation
+G-SHIP,L01,ship,token inside form,T049,mother ship,L01,same list
+G-SHIP,L01,ships,token inside form,T049,mother ships,L01,same list
+G-SHIP,L01,mothership,exact,T049,mothership,L01,same list
+G-SHIP,L01,motherships,exact,T049,motherships,L01,same list
+G-SHIP,L01,mother ship,exact,T049,mother ship,L01,same list
+G-SHIP,L01,mother ships,exact,T049,mother ships,L01,same list
+G-2012,L01,mayan,token inside form,T067,mayan calendar,L01,same list
+G-2012,L01,mayan,token inside form,T067,mayan long count,L01,same list
+G-2012,L01,maya,token inside form,T067,maya calendar,L01,same list
+G-2012,L01,mayan calendar,exact,T067,mayan calendar,L01,same list
+G-2012,L01,maya calendar,exact,T067,maya calendar,L01,same list
+G-2012,L01,long count,token inside form,T067,mayan long count,L01,same list
+G-2012,L01,long count,exact,T067,long count,L01,same list
+G-DISC-INST,L07,government,token inside form,T084,government disclosure,L01,other list
+G-DISC-INST,L07,government,token inside form,T084,government disclosure,L07,same list
+G-DISC-INST,L07,government,token inside form,T108,one world government,L01,other list
+G-DISC-INST,L07,government,token inside form,T108,one world government,L05,other list
+G-DISC-INST,L07,government,token inside form,T137,shadow government,L05,other list
+G-DISC-INST,L07,government,token inside form,T137,secret government,L05,other list
+G-DISC-INST,L07,government,token inside form,T181,the government,L07,same list
+G-DISC-INST,L07,government,token inside form,T181,federal government,L07,same list
+G-DISC-INST,L07,governments,token inside form,T137,shadow governments,L05,other list
+G-DISC-INST,L07,governments,exact,T181,governments,L07,same list
+G-DISC-INST,L07,pentagon,exact,T171,pentagon,L07,same list
+G-DISC-INST,L07,pentagon,token inside form,T171,the pentagon,L07,same list
+G-DISC-INST,L07,congressional,token inside form,T185,congressional hearing,L07,same list
+G-DISC-INST,L07,congressional,token inside form,T185,congressional hearings,L07,same list
+G-DISC-INST,L07,senate,token inside form,T185,senate hearing,L07,same list
+G-DISC-INST,L07,senate,token inside form,T185,senate hearings,L07,same list
+G-DISC-INST,L07,hearing,token inside form,T185,congressional hearing,L07,same list
+G-DISC-INST,L07,hearing,token inside form,T185,senate hearing,L07,same list
+G-DISC-INST,L07,hearings,token inside form,T185,congressional hearings,L07,same list
+G-DISC-INST,L07,hearings,token inside form,T185,senate hearings,L07,same list
+G-DISC-INST,L07,official,token inside form,T084,official disclosure,L01,other list
+G-DISC-INST,L07,official,token inside form,T084,official disclosure,L07,same list
+G-DISC-INST,L07,military,token inside form,T188,military tribunal,L07,same list
+G-DISC-INST,L07,military,token inside form,T188,military tribunals,L07,same list
+G-DISC-INST,L07,military,token inside form,T188,military tribunal,L08,other list
+G-DISC-INST,L07,military,token inside form,T188,military tribunals,L08,other list
+G-DISC-INST,L07,nasa,exact,T172,nasa,L07,same list
+G-DISC-INST,L07,uap,exact,T081,uap,L01,other list
+G-DISC-INST,L07,uap,exact,T081,uap,L07,same list
+G-DISC-INST,L07,uap,token inside form,T084,uap disclosure,L01,other list
+G-DISC-INST,L07,uap,token inside form,T084,uap disclosure,L07,same list
+G-DISC-INST,L07,uaps,exact,T081,uaps,L01,other list
+G-DISC-INST,L07,uaps,exact,T081,uaps,L07,same list
+G-DISC-INST,L07,aaro,exact,T082,aaro,L01,other list
+G-DISC-INST,L07,aaro,exact,T082,aaro,L07,same list
+G-DISC-INST,L07,declassified,exact,T185,declassified,L07,same list
+G-DISC-INST,L07,declassify,exact,T185,declassify,L07,same list
+G-DISC-INST,L07,declassification,exact,T185,declassification,L07,same list
+G-DISC-CONSC,L07,inner,token inside form,T191,your inner power,L08,other list
+G-DISC-CONSC,L07,inner,token inside form,T199,inner dictation,L10,other list
+G-DISC-CONSC,L07,spiritual,token inside form,T164,spiritual awakening,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T040,christ consciousness,L01,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T127,3d consciousness,L03,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T163,shift in consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T163,shift of consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T163,consciousness shift,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T163,shift in human consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T167,higher consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T167,raise the consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T167,raise our consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T167,raise your consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T167,raising the consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T167,raising our consciousness,L06,other list
+G-DISC-CONSC,L07,consciousness,token inside form,T167,raising your consciousness,L06,other list
+G-DISC-CONSC,L07,soul,token inside form,T060,walk in soul,L01,other list
+G-DISC-CONSC,L07,soul,token inside form,T235,our soul family,L14,other list
+G-DISC-CONSC,L07,soul,token inside form,T235,your soul family,L14,other list
+G-DISC-CONSC,L07,souls,token inside form,T060,walk in souls,L01,other list
+G-DISC-CONSC,L07,souls,token inside form,T227,many souls are,L14,other list
+G-DISC-CONSC,L07,heart,token inside form,T191,stay in your heart,L08,other list
+G-DISC-CONSC,L07,self,token inside form,T064,service to self,L01,other list
+G-DISC-CONSC,L07,self,token inside form,T064,service to self,L05,other list
+G-DISC-CONSC,L07,self,token inside form,T090,probable self,L01,other list
+G-DISC-CONSC,L07,self,token inside form,T201,my higher self,L10,other list
+G-DISC-CONSC,L07,self,token inside form,T201,your higher self,L10,other list
+G-DISC-CONSC,L07,self,token inside form,T201,our higher self,L10,other list
+G-DISC-CONSC,L07,self,token inside form,T201,higher self,L10,other list
+G-PLATFORM,L11,video,token inside form,T209,share this video,L12,other list
+G-SUPP-PLATFORM,L13,video,token inside form,T209,share this video,L12,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T197,trance channel,L10,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T197,unconscious channel,L10,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T198,conscious channel,L10,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T205,this channel,L11,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T205,our channel,L11,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T207,support this channel,L11,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T207,trust this channel,L11,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T207,clear channel,L11,other list
+G-SUPP-PLATFORM,L13,channel,token inside form,T207,pure channel,L11,other list
+G-SUPP-PLATFORM,L13,algorithm,token inside form,T219,the algorithm,L13,same list

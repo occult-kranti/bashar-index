@@ -1,0 +1,9 @@
+gate_id,applies_in_list,window_tokens,gate_words
+G-SHIP,L01,15,ship|ships|craft|crafts|spacecraft|mothership|motherships|mother ship|mother ships|fleet|fleets|starship|starships|lift off|liftoff
+G-2012,L01,15,mayan|maya|mayans|mayan calendar|maya calendar|long count|end date|december 21st|21st of december|december twenty first|winter solstice
+G-DISC-INST,L07,10,government|governments|pentagon|congress|congressional|senate|hearing|hearings|official|officials|military|nasa|declassified|declassify|declassification
+G-DISC-CONSC,L07,10,inner|spiritual|consciousness|soul|souls|heart|hearts|self
+G-PLATFORM,L11,10,subscribe|subscribed|subscribing|subscriber|subscribers|video|videos|upload|uploads|notification|notifications|bell|playlist
+G-SUPP-PLATFORM,L13,10,youtube|platform|platforms|video|videos|channel|algorithm|instagram|tiktok
+G-DRACO-L01,L01,15,empire|empires|race|races|beings|alien|aliens|lizard|lizards|humanoid|humanoids|reptile|reptiles|overlord|overlords|invaders
+G-DRACO-L05,L05,15,empire|empires|race|races|beings|alien|aliens|lizard|lizards|humanoid|humanoids|reptile|reptiles|overlord|overlords|invaders

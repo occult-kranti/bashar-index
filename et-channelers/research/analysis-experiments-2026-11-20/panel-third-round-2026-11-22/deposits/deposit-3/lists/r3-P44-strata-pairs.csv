@@ -1,0 +1,123 @@
+list_id,pair_id,side_a,side_b,role,registered_predictions,rule,citations
+L02,P000,L01 strand=federation (S06 rows marked federation),L01 strand=adversarial (S07 and S15 rows marked adversarial),decisive pair,"et: at or below chance; occult and emic: at or above chance in the 2020s (programme r3-P44, as stated there; account attribution not stated in the programme)","Creator-level co-use against the blocked curveball null with fixed margins and against r3-P42's placebo pseudo-strata; a pair counts as structure only outside both; strata by audience size and economy type (den-soc's audience-capture reading, N26). Adversarial terms are subject to register G10 (decision D1).",PROGRAMME (r3-P44); WRSP2016; PARTRIDGE2004; LEWISKAHN2005
+L02,P001,"L05 (CR-A to CR-E, ADV-NEG, ADV-AMB; BRIDGE only where it passes its rule)",L06 (SHIFT),conspirituality pair,not registered in the programme (descriptive),As P000. Ward and Voas define conspirituality by these two convictions.,WARDVOAS2011; ASPREM2015
+L02,P002,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S02 (Spiritualist vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P003,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S03 (Theosophical and early Western esoteric vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P004,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S04 (New Thought vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P005,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S05 (Ascended-master (I AM) vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P006,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P007,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S07 (Abduction and ancient-astronaut vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P008,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P009,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P010,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P011,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P012,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P013,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P014,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P015,L01 S01 (Christian end-time (dispensational) vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P016,L01 S01 (Christian end-time (dispensational) vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P017,L01 S02 (Spiritualist vocabulary),L01 S03 (Theosophical and early Western esoteric vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P018,L01 S02 (Spiritualist vocabulary),L01 S04 (New Thought vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P019,L01 S02 (Spiritualist vocabulary),L01 S05 (Ascended-master (I AM) vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P020,L01 S02 (Spiritualist vocabulary),L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P021,L01 S02 (Spiritualist vocabulary),L01 S07 (Abduction and ancient-astronaut vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P022,L01 S02 (Spiritualist vocabulary),L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P023,L01 S02 (Spiritualist vocabulary),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P024,L01 S02 (Spiritualist vocabulary),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P025,L01 S02 (Spiritualist vocabulary),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P026,L01 S02 (Spiritualist vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P027,L01 S02 (Spiritualist vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P028,L01 S02 (Spiritualist vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P029,L01 S02 (Spiritualist vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P030,L01 S02 (Spiritualist vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P031,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S04 (New Thought vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P032,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S05 (Ascended-master (I AM) vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P033,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P034,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S07 (Abduction and ancient-astronaut vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P035,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P036,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P037,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P038,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P039,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P040,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P041,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P042,L01 S03 (Theosophical and early Western esoteric vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P043,L01 S03 (Theosophical and early Western esoteric vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P044,L01 S04 (New Thought vocabulary),L01 S05 (Ascended-master (I AM) vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P045,L01 S04 (New Thought vocabulary),L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P046,L01 S04 (New Thought vocabulary),L01 S07 (Abduction and ancient-astronaut vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P047,L01 S04 (New Thought vocabulary),L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P048,L01 S04 (New Thought vocabulary),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P049,L01 S04 (New Thought vocabulary),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P050,L01 S04 (New Thought vocabulary),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P051,L01 S04 (New Thought vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P052,L01 S04 (New Thought vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P053,L01 S04 (New Thought vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P054,L01 S04 (New Thought vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P055,L01 S04 (New Thought vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P056,L01 S05 (Ascended-master (I AM) vocabulary),L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P057,L01 S05 (Ascended-master (I AM) vocabulary),L01 S07 (Abduction and ancient-astronaut vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P058,L01 S05 (Ascended-master (I AM) vocabulary),L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P059,L01 S05 (Ascended-master (I AM) vocabulary),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P060,L01 S05 (Ascended-master (I AM) vocabulary),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P061,L01 S05 (Ascended-master (I AM) vocabulary),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P062,L01 S05 (Ascended-master (I AM) vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P063,L01 S05 (Ascended-master (I AM) vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P064,L01 S05 (Ascended-master (I AM) vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P065,L01 S05 (Ascended-master (I AM) vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P066,L01 S05 (Ascended-master (I AM) vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P067,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S07 (Abduction and ancient-astronaut vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P068,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P069,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P070,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P071,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P072,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P073,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P074,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P075,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P076,L01 S06 (Contact and federation vocabulary (with evacuation lore that needs ship collocates)),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P077,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P078,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P079,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P080,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P081,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P082,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P083,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P084,L01 S07 (Abduction and ancient-astronaut vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P085,L01 S07 (Abduction and ancient-astronaut vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P086,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),L01 S09 (2012 and ascension vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P087,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P088,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P089,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P090,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P091,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P092,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P093,L01 S08 (Channelling and New Age vocabulary of the 1970s-1980s),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P094,L01 S09 (2012 and ascension vocabulary),L01 S10a (Post-2012 non-political end-time hopes),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P095,L01 S09 (2012 and ascension vocabulary),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P096,L01 S09 (2012 and ascension vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P097,L01 S09 (2012 and ascension vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P098,L01 S09 (2012 and ascension vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P099,L01 S09 (2012 and ascension vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P100,L01 S09 (2012 and ascension vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P101,L01 S10a (Post-2012 non-political end-time hopes),L01 S10b (Post-2012 political fusion vocabulary),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P102,L01 S10a (Post-2012 non-political end-time hopes),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P103,L01 S10a (Post-2012 non-political end-time hopes),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P104,L01 S10a (Post-2012 non-political end-time hopes),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P105,L01 S10a (Post-2012 non-political end-time hopes),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P106,L01 S10a (Post-2012 non-political end-time hopes),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P107,L01 S10b (Post-2012 political fusion vocabulary),L01 S11 (Institutional disclosure (narrow layer)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P108,L01 S10b (Post-2012 political fusion vocabulary),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P109,L01 S10b (Post-2012 political fusion vocabulary),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P110,L01 S10b (Post-2012 political fusion vocabulary),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P111,L01 S10b (Post-2012 political fusion vocabulary),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P112,L01 S11 (Institutional disclosure (narrow layer)),L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P113,L01 S11 (Institutional disclosure (narrow layer)),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P114,L01 S11 (Institutional disclosure (narrow layer)),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P115,L01 S11 (Institutional disclosure (narrow layer)),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P116,L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),L01 S13 (Timeline language),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P117,L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P118,L01 S12 (Anti-Masonic and secret-society vocabulary (imported)),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P119,L01 S13 (Timeline language),L01 S14 (Devotional names (undated column)),layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P120,L01 S13 (Timeline language),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv
+L02,P121,L01 S14 (Devotional names (undated column)),"L01 S15 (UFO-conspiracy fusion of the 1990s (New World Order, adversary-being lore))",layer pair,none,As P000; heat-map cell.,register-strata.csv

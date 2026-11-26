@@ -1,0 +1,371 @@
+term_id,term,lists,list_classes,list_form,coder_family_label
+T020,chakra,L01,L01:S03,chakra,ENERGETIC
+T020,chakra,L01,L01:S03,chakras,ENERGETIC
+T021,kundalini,L01,L01:S03,kundalini,ENERGETIC
+T024,astral,L01,L01:S03,astral,ENERGETIC
+T024,astral,L01,L01:S03,astral plane,ENERGETIC
+T024,astral,L01,L01:S03,astral body,ENERGETIC
+T024,astral,L01,L01:S03,astral projection,ENERGETIC
+T024,astral,L01,L01:S03,astral travel,ENERGETIC
+T024,astral,L01,L01:S03,astral realm,ENERGETIC
+T024,astral,L01,L01:S03,astral realms,ENERGETIC
+T025,etheric,L01,L01:S03,etheric,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,vibrational,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,high vibration,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,high vibrations,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,higher vibration,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,higher vibrations,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,low vibration,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,low vibrations,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,lower vibration,ENERGETIC
+T035,vibration (spiritual),L01,L01:S04,lower vibrations,ENERGETIC
+T036,ascended master,L01|L04,L01:S05|L04:OPEN,ascended master,ENERGETIC
+T036,ascended master,L01|L04,L01:S05|L04:OPEN,ascended masters,ENERGETIC
+T040,christ consciousness,L01,L01:S05,christ consciousness,ENERGETIC
+T042,ufo,L01,L01:S06,ufo,CONTACT_STRATA contact event
+T042,ufo,L01,L01:S06,ufos,CONTACT_STRATA contact event
+T043,extraterrestrial,L01,L01:S06,extraterrestrial,CONTACT_STRATA contact event
+T043,extraterrestrial,L01,L01:S06,extraterrestrials,CONTACT_STRATA contact event
+T044,space brothers,L01,L01:S06,space brothers,CONTACT_STRATA contact event
+T044,space brothers,L01,L01:S06,space brothers and sisters,CONTACT_STRATA contact event
+T045,ashtar,L01|L04,L01:S06|L04:FRANCHISE,ashtar galactic command,CONTACT_STRATA contact event
+T047,galactic federation,L01|L04,L01:S06|L04:OPEN,galactic federation,CONTACT_STRATA contact event
+T047,galactic federation,L01|L04,L01:S06|L04:OPEN,galactic federation of light,CONTACT_STRATA contact event
+T047,galactic federation,L01|L04,L01:S06|L04:OPEN,federation of light,CONTACT_STRATA contact event
+T049,mothership,L01,L01:S06,mothership,CONTACT_STRATA contact event
+T049,mothership,L01,L01:S06,motherships,CONTACT_STRATA contact event
+T050,evacuation (contact lore),L01,L01:S06,evacuation,CONTACT_STRATA evacuation
+T050,evacuation (contact lore),L01,L01:S06,evacuations,CONTACT_STRATA evacuation
+T050,evacuation (contact lore),L01,L01:S06,world evacuation,CONTACT_STRATA evacuation
+T050,evacuation (contact lore),L01,L01:S06,planetary evacuation,CONTACT_STRATA evacuation
+T050,evacuation (contact lore),L01,L01:S06,mass evacuation,CONTACT_STRATA evacuation
+T051,alien abduction,L01,L01:S07,alien abduction,CONTACT_STRATA contact event
+T051,alien abduction,L01,L01:S07,alien abductions,CONTACT_STRATA contact event
+T053,greys (beings),L01|L04|L05,L01:S07|L04:OPEN|L05:ADV-AMB,the greys,CONTACT_STRATA contact event
+T053,greys (beings),L01|L04|L05,L01:S07|L04:OPEN|L05:ADV-AMB,the grays,CONTACT_STRATA contact event
+T053,greys (beings),L01|L04|L05,L01:S07|L04:OPEN|L05:ADV-AMB,grey alien,CONTACT_STRATA contact event
+T053,greys (beings),L01|L04|L05,L01:S07|L04:OPEN|L05:ADV-AMB,grey aliens,CONTACT_STRATA contact event
+T053,greys (beings),L01|L04|L05,L01:S07|L04:OPEN|L05:ADV-AMB,gray alien,CONTACT_STRATA contact event
+T053,greys (beings),L01|L04|L05,L01:S07|L04:OPEN|L05:ADV-AMB,gray aliens,CONTACT_STRATA contact event
+T054,anunnaki,L01|L05,L01:S07|L05:ADV-AMB,anunnaki,CONTACT_STRATA contact event
+T068,galactic alignment,L01,L01:S09,galactic alignment,CONTACT_STRATA contact event
+T071,ascension,L01|L06,L01:S09|L06:SHIFT,ascension,ENERGETIC
+T072,new earth,L01|L06,L01:S10a|L06:SHIFT,new earth,ENERGETIC
+T072,new earth,L01|L06,L01:S10a|L06:SHIFT,the new earth,ENERGETIC
+T075,deep state,L01|L05,L01:S10b|L05:CR-A,deep state,PREVENTION
+T077,med bed,L01,L01:S10b,med bed,CONTACT_STRATA technology release
+T077,med bed,L01,L01:S10b,med beds,CONTACT_STRATA technology release
+T077,med bed,L01,L01:S10b,medbed,CONTACT_STRATA technology release
+T077,med bed,L01,L01:S10b,medbeds,CONTACT_STRATA technology release
+T081,uap,L01|L07,L01:S11|L07:DISC-INST,uap,CONTACT_STRATA contact event
+T081,uap,L01|L07,L01:S11|L07:DISC-INST,uaps,CONTACT_STRATA contact event
+T083,disclosure project,L01,L01:S11,disclosure project,OBSERVABLE
+T083,disclosure project,L01,L01:S11,disclosure project,CONTACT_STRATA institutional disclosure
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,ufo disclosure,OBSERVABLE
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,ufo disclosure,CONTACT_STRATA contact event
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,ufo disclosure,CONTACT_STRATA institutional disclosure
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,uap disclosure,OBSERVABLE
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,uap disclosure,CONTACT_STRATA contact event
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,uap disclosure,CONTACT_STRATA institutional disclosure
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,alien disclosure,OBSERVABLE
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,alien disclosure,CONTACT_STRATA contact event
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,alien disclosure,CONTACT_STRATA institutional disclosure
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,government disclosure,OBSERVABLE
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,government disclosure,INSTITUTIONS
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,government disclosure,CONTACT_STRATA institutional disclosure
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,official disclosure,OBSERVABLE
+T084,ufo disclosure (phrase),L01|L07,L01:S11|L07:DISC-INST,official disclosure,CONTACT_STRATA institutional disclosure
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,timeline split,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,timelines split,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,split timeline,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,split timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,split of the timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,parallel timeline,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,parallel timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,alternate timeline,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,alternate timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,alternative timeline,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,alternative timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,timeline jump,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,timeline jumps,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,timeline jumping,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,jump timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,jumped timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,shifted timelines,ENERGETIC
+T088,timeline split,L01|L15,L01:S13|L15:SPLIT,timeline shift,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,new timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,new timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,old timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,old timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,higher timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,higher timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,lower timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,lower timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,positive timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,positive timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,negative timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,negative timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,best timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,best timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,original timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,original timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,collapsing timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,collapsing timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,collapsed timeline,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,collapsed timeline,OBSERVABLE
+T089,timeline (evaluative),L01,L01:S13,collapsed timelines,ENERGETIC
+T089,timeline (evaluative),L01,L01:S13,collapsed timelines,OBSERVABLE
+T090,parallel reality,L01,L01:S13,probable reality,PROBABILITY
+T090,parallel reality,L01,L01:S13,probable realities,PROBABILITY
+T090,parallel reality,L01,L01:S13,probable self,PROBABILITY
+T090,parallel reality,L01,L01:S13,probable selves,PROBABILITY
+T105,reptilians,L01|L05,L01:S15|L05:ADV-NEG,reptilian,CONTACT_STRATA contact event
+T105,reptilians,L01|L05,L01:S15|L05:ADV-NEG,reptilians,CONTACT_STRATA contact event
+T105,reptilians,L01|L05,L01:S15|L05:ADV-NEG,reptilian race,CONTACT_STRATA contact event
+T105,reptilians,L01|L05,L01:S15|L05:ADV-NEG,reptilian agenda,CONTACT_STRATA contact event
+T108,one world government,L01|L05,L01:S15|L05:CR-A,one world government,INSTITUTIONS
+T125,density (ordinal),L03,L03:DEN,first density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,first densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,second density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,second densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,third density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,third densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,fourth density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,fourth densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,fifth density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,fifth densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,sixth density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,sixth densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,seventh density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,seventh densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,eighth density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,eighth densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,1st density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,1st densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,2nd density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,2nd densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,3rd density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,3rd densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,4th density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,4th densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,5th density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,5th densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,6th density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,6th densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,7th density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,7th densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,8th density,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,8th densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,higher densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,lower densities,ENERGETIC
+T125,density (ordinal),L03,L03:DEN,the densities,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,third dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,third dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,fourth dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,fourth dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,fifth dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,fifth dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,sixth dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,sixth dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,seventh dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,seventh dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,eighth dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,eighth dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,ninth dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,ninth dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,twelfth dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,twelfth dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,3rd dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,3rd dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,4th dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,4th dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,5th dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,5th dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,6th dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,6th dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,7th dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,7th dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,8th dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,8th dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,9th dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,9th dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,12th dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,12th dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,third dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,fourth dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,fifth dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,sixth dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,seventh dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,eighth dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,ninth dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,twelfth dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,3rd dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,4th dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,5th dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,6th dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,7th dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,8th dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,9th dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,12th dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,higher dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,higher dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,lower dimension,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,lower dimensions,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,higher dimensional,ENERGETIC
+T126,dimension (ordinal),L03,L03:DIM,multi dimensional,ENERGETIC
+T127,numeral-D,L03,L03:DIM,5d,ENERGETIC
+T127,numeral-D,L03,L03:DIM,4d,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d reality,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d world,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d earth,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d realm,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d consciousness,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d plane,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d existence,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d experience,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d density,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d level,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d body,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d human,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d humans,ENERGETIC
+T127,numeral-D,L03,L03:DIM,3d life,ENERGETIC
+T128,pleiadians,L04,L04:OPEN,pleiadian,CONTACT_STRATA contact event
+T128,pleiadians,L04,L04:OPEN,pleiadians,CONTACT_STRATA contact event
+T129,arcturians,L04,L04:OPEN,arcturian,CONTACT_STRATA contact event
+T129,arcturians,L04,L04:OPEN,arcturians,CONTACT_STRATA contact event
+T130,sirians,L04,L04:OPEN,sirian,CONTACT_STRATA contact event
+T130,sirians,L04,L04:OPEN,sirians,CONTACT_STRATA contact event
+T134,cabal,L05,L05:CR-A,cabal,PREVENTION
+T134,cabal,L05,L05:CR-A,the cabal,PREVENTION
+T134,cabal,L05,L05:CR-A,dark cabal,PREVENTION
+T135,elites,L05,L05:CR-A,the elite,PREVENTION
+T135,elites,L05,L05:CR-A,the elites,PREVENTION
+T136,powers that be,L05,L05:CR-A,the powers that be,PREVENTION
+T137,shadow government,L05,L05:CR-A,shadow government,INSTITUTIONS
+T137,shadow government,L05,L05:CR-A,secret government,INSTITUTIONS
+T137,shadow government,L05,L05:CR-A,shadow governments,INSTITUTIONS
+T138,the controllers,L05,L05:CR-A,the controllers,PREVENTION
+T140,mainstream media,L05,L05:CR-B,mainstream media,INSTITUTIONS
+T152,the matrix,L05,L05:CR-D,3d matrix,ENERGETIC
+T155,dark forces,L05,L05:ADV-NEG,dark forces,PREVENTION
+T155,dark forces,L05,L05:ADV-NEG,negative aliens,CONTACT_STRATA contact event
+T155,dark forces,L05,L05:ADV-NEG,the dark ones,PREVENTION
+T163,shift in consciousness,L06,L06:SHIFT,shift in consciousness,ENERGETIC
+T163,shift in consciousness,L06,L06:SHIFT,shift of consciousness,ENERGETIC
+T163,shift in consciousness,L06,L06:SHIFT,consciousness shift,ENERGETIC
+T163,shift in consciousness,L06,L06:SHIFT,shift in human consciousness,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise your vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise your vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise our vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise our vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise the vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise the vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise their vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise their vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise my vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raise my vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising your vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising your vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising our vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising our vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising the vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising the vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising their vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising their vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising my vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raising my vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised your vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised your vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised our vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised our vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised the vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised the vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised their vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised their vibrations,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised my vibration,ENERGETIC
+T166,raise vibration,L06|L08,L06:SHIFT|L08:RES-INNER,raised my vibrations,ENERGETIC
+T167,higher consciousness,L06,L06:SHIFT,higher consciousness,ENERGETIC
+T167,higher consciousness,L06,L06:SHIFT,raise the consciousness,ENERGETIC
+T167,higher consciousness,L06,L06:SHIFT,raise our consciousness,ENERGETIC
+T167,higher consciousness,L06,L06:SHIFT,raise your consciousness,ENERGETIC
+T167,higher consciousness,L06,L06:SHIFT,raising the consciousness,ENERGETIC
+T167,higher consciousness,L06,L06:SHIFT,raising our consciousness,ENERGETIC
+T167,higher consciousness,L06,L06:SHIFT,raising your consciousness,ENERGETIC
+T171,pentagon,L07,L07:INST-SEC,pentagon,INSTITUTIONS
+T171,pentagon,L07,L07:INST-SEC,the pentagon,INSTITUTIONS
+T173,united nations,L07,L07:INST-INTL,united nations,INSTITUTIONS
+T174,world health organization,L07,L07:INST-INTL,world health organization,INSTITUTIONS
+T174,world health organization,L07,L07:INST-INTL,world health organisation,INSTITUTIONS
+T177,world bank,L07,L07:INST-INTL,world bank,INSTITUTIONS
+T178,vatican,L07,L07:INST-RELIG,vatican,INSTITUTIONS
+T178,vatican,L07,L07:INST-RELIG,the vatican,INSTITUTIONS
+T178,vatican,L07,L07:INST-RELIG,catholic church,INSTITUTIONS
+T181,the government,L07,L07:INST-GOV,the government,INSTITUTIONS
+T181,the government,L07,L07:INST-GOV,governments,INSTITUTIONS
+T181,the government,L07,L07:INST-GOV,federal government,INSTITUTIONS
+T183,disclosure (institutional),L07,L07:DISC-INST,disclosure,OBSERVABLE
+T183,disclosure (institutional),L07,L07:DISC-INST,disclosure,CONTACT_STRATA institutional disclosure
+T184,disclosure (consciousness-based),L07,L07:DISC-CONSC,disclosure,OBSERVABLE
+T184,disclosure (consciousness-based),L07,L07:DISC-CONSC,disclosure,CONTACT_STRATA institutional disclosure
+T185,declassified,L07,L07:DISC-INST,declassified,CONTACT_STRATA institutional disclosure
+T185,declassified,L07,L07:DISC-INST,declassify,CONTACT_STRATA institutional disclosure
+T185,declassified,L07,L07:DISC-INST,declassification,CONTACT_STRATA institutional disclosure
+T185,declassified,L07,L07:DISC-INST,congressional hearing,OBSERVABLE
+T185,declassified,L07,L07:DISC-INST,congressional hearings,OBSERVABLE
+T185,declassified,L07,L07:DISC-INST,senate hearing,OBSERVABLE
+T185,declassified,L07,L07:DISC-INST,senate hearing,INSTITUTIONS
+T185,declassified,L07,L07:DISC-INST,senate hearings,OBSERVABLE
+T185,declassified,L07,L07:DISC-INST,senate hearings,INSTITUTIONS
+T187,pandemic,L07,L07:CONTEST-PH,pandemic,OBSERVABLE
+T187,pandemic,L07,L07:CONTEST-PH,pandemic,MASS_OBSERVABLE
+T187,pandemic,L07,L07:CONTEST-PH,lockdown,OBSERVABLE
+T187,pandemic,L07,L07:CONTEST-PH,lockdowns,OBSERVABLE
+T188,promised arrests,L07|L08,L07:LEGAL|L08:RES-OUTSIDE,mass arrest,OBSERVABLE
+T188,promised arrests,L07|L08,L07:LEGAL|L08:RES-OUTSIDE,mass arrests,OBSERVABLE
+T188,promised arrests,L07|L08,L07:LEGAL|L08:RES-OUTSIDE,military tribunal,OBSERVABLE
+T188,promised arrests,L07|L08,L07:LEGAL|L08:RES-OUTSIDE,military tribunal,INSTITUTIONS
+T188,promised arrests,L07|L08,L07:LEGAL|L08:RES-OUTSIDE,military tribunals,OBSERVABLE
+T188,promised arrests,L07|L08,L07:LEGAL|L08:RES-OUTSIDE,military tribunals,INSTITUTIONS
+T189,criminal-law process,L07,L07:LEGAL,indictment,OBSERVABLE
+T189,criminal-law process,L07,L07:LEGAL,indictments,OBSERVABLE
+T189,criminal-law process,L07,L07:LEGAL,indicted,OBSERVABLE
+T191,inner-means resolution,L08,L08:RES-INNER,do not give them your energy,ENERGETIC
+T191,inner-means resolution,L08,L08:RES-INNER,do not give it your energy,ENERGETIC
+T191,inner-means resolution,L08,L08:RES-INNER,don't give them your energy,ENERGETIC
+T191,inner-means resolution,L08,L08:RES-INNER,don't give it your energy,ENERGETIC
+T192,outside-agent resolution,L08,L08:RES-OUTSIDE,being arrested,OBSERVABLE
+T208,exchange idiom,L12,L12:IDIOM,energy exchange,ENERGETIC
+T208,exchange idiom,L12,L12:IDIOM,exchange of energy,ENERGETIC
+T219,platform moderation talk,L13,L13:SUPP-PLATFORM,community guidelines strike,OBSERVABLE
+T219,platform moderation talk,L13,L13:SUPP-PLATFORM,copyright strike,OBSERVABLE
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed knowledge,PREVENTION
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed information,PREVENTION
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed technology,PREVENTION
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed technology,CONTACT_STRATA technology release
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed technologies,PREVENTION
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed technologies,CONTACT_STRATA technology release
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed truth,PREVENTION
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,suppressed history,PREVENTION
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,cover up,PREVENTION
+T221,hidden-actor suppression talk,L13,L13:SUPP-HIDDEN,coverup,PREVENTION
+T222,urgency (commercial),L14,L14:URGENCY-C,ends tonight,DEICTIC
+T222,urgency (commercial),L14,L14:URGENCY-C,ends today,DEICTIC
+T222,urgency (commercial),L14,L14:URGENCY-C,ends soon,TIME_HEDGE
+T222,urgency (commercial),L14,L14:URGENCY-C,ends soon,UNBOUNDED
+T231,commitment (commercial),L14,L14:COMMIT-C,register today,DEICTIC
+T235,unity (devotional),L14,L14:UNITY-D,our star family,CONTACT_STRATA contact event
+T235,unity (devotional),L14,L14:UNITY-D,our galactic family,CONTACT_STRATA contact event
+T235,unity (devotional),L14,L14:UNITY-D,your star family,CONTACT_STRATA contact event
+T235,unity (devotional),L14,L14:UNITY-D,your galactic family,CONTACT_STRATA contact event
+T241,fulfilment framing,L15,L15:FULFIL,it happened energetically,ENERGETIC
+T241,fulfilment framing,L15,L15:FULFIL,it happened energetically,BOOSTER
+T241,fulfilment framing,L15,L15:FULFIL,it happened on an energetic level,ENERGETIC
+T241,fulfilment framing,L15,L15:FULFIL,it already happened,BOOSTER
+T242,deferral framing,L15,L15:DEFER,was postponed,PREVENTION
+T242,deferral framing,L15,L15:DEFER,was delayed,PREVENTION
+T242,deferral framing,L15,L15:DEFER,has been postponed,PREVENTION
+T242,deferral framing,L15,L15:DEFER,has been delayed,PREVENTION
+T242,deferral framing,L15,L15:DEFER,has been pushed back,PREVENTION
+T242,deferral framing,L15,L15:DEFER,got postponed,PREVENTION
+T242,deferral framing,L15,L15:DEFER,got delayed,PREVENTION
+T242,deferral framing,L15,L15:DEFER,divine timing,TIME_HEDGE
