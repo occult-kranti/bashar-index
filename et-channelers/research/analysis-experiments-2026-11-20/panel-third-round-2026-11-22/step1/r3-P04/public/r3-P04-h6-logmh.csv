@@ -1,0 +1,13 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy.
+# 90% intervals. Method per row by r3-P30's interval-choice.csv (the row of the largest simulated count at or below the row's creator count; where no method holds there, a reading is at most undetermined); cohort ratios carry a creator-cluster bootstrap percentile interval, a class r3-P30 did not calibrate.
+# Half-effect disclosure (56 primaries): if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table); a reading A is never called a finding.
+# Margins (deposit 2): H1 a log ratio of 0.223 (ratio 0.80 to 1.25); H4 0.20 between-creator SD; H6 OE 5 points (a difference in shares); H6 log MH 0.223. Named directions: H1 negative (claimed slower), H4 positive (fewer contractions in the claimed voice), H6 negative (fewer claimed asks).
+# Seen creators only; English-only recognizer (1,284 seen recordings). Rows of one statistic and model rest on one creator set (creators with an observed, an XT and an R0 value); the ST rows on its creators with own-voice-only recordings. Creator counts 1 to 4 from a creator count printed elsewhere (deposit 2, CAL-f, MR, the programme's fixed counts) or earlier in these entries are stated against it ('all but fewer than 5 of N', 'N and fewer than 5 more'): N is used as a bound, not as a claim that the groups are nested.
+# H6 on the log Mantel-Haenszel scale (small model), a row beside the OE primary: centred rows carry a creator-cluster bootstrap 90% interval (2,000 draws) of observed minus the mean over 200 draws; margin 0.223.
+row,log_ratio,lo90,hi90
+"unmatched: log MH (frozen, registered amended estimate)",-2.745,,
+position-stratified log MH (recording-by-tenth strata),-2.597,,
+XT-centred log MH,-2.107,-3.034,-1.355
+R0-centred log MH (benchmark),-2.352,-3.136,-1.689

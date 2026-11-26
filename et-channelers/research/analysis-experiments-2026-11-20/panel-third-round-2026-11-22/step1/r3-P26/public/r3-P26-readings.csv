@@ -1,0 +1,13 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P26 (carries r4-P06).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# The entry's primary: per construct, the median convergent rho over input-disjoint (C5) pairs, read against deposit 2's correlation margin of 0.10 (named direction: positive). A: the lower bound above +0.10 ('convergent with a method of another family, beyond the margin', the ceiling wording); B: the interval inside -0.10 to +0.10; otherwise undetermined. A construct with no C5 pair reads 'no input-disjoint pair' (a permitted result). Beside it: the class-C4 median (pairs that share only the brand) and MTMM's published median over pairs that read different inputs (its coarser 'cross-input' rule). 90% creator-bootstrap percentile intervals (2,000 draws, MTMM's own seeded draws; a class r3-P30 did not calibrate).
+# Half-effect disclosure (deposit 2, r3-P30): 56 primaries; if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes. A reading A is never a finding. Model cells are model-coded and not checked by a person; rule cells are cue counts; agreement between methods is agreement, never accuracy.
+construct,source,input_disjoint_pairs,creators,convergence_over_pairs,lo90,hi90,reading,shares_only_the_brand_C4,published_cross_input_median_MTMM
+voice,MTMM,0,,,,,no input-disjoint pair,"0.381 (0.204 to 0.546), 1 pair(s)","0.574 (0.428 to 0.703), 3 pairs"
+source family,MTMM,0,,,,,no input-disjoint pair,"0.443 (0.274 to 0.596), 3 pair(s)","0.443 (0.274 to 0.596), 3 pairs"
+asks,MTMM,1,all but fewer than 5 of 71,0.1098,-0.085,0.2926,undetermined (the interval crosses the margin),no pair,"0.317 (0.114 to 0.483), 3 pairs"
+time window,TL-7.8,0,,,,,no input-disjoint pair,no pair,not printed by TL
+hedging,TL-7.8,0,,,,,no input-disjoint pair,no pair,not printed by TL
+condition,TL-7.8,0,,,,,no input-disjoint pair,no pair,not printed by TL
+subject,MTMM,0,,,,,not computable (the construct was not run: TC stage 2 not bought),,
+acoustic column,a.2,0,,,,,not computable here (a.2: r3-P08's acoustic instrument),,

@@ -1,0 +1,49 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P02 / r4-P02 (input stability and grid marks in the labels).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Voice labels are model-coded (the small model of record, rule B; the middle model as a row) and not checked by a person; agreement between two decodes is agreement of two machine outputs, not accuracy.
+# Intervals: 90%, by the method r3-P30's interval-choice.csv names for the design class at the base's creator count (read primaries); described rows use the t interval on creator means. Exploratory; not a test of H1-H10.
+# Half-effect disclosure (deposit 2): the register holds 56 primaries; if every true effect sat at half its margin, about 0.05 x 56 = 2.8 readings would pass the floor rule by chance at the 90% level's one-sided 5%. A reading A is never called a finding.
+# Seen creators only; no per-creator row; creator counts follow the nested-count rule (counts 1 to 4 away from a nested printed group are stated against it).
+# Margin: 5 percentage points (deposit 2: difference in shares). Readings: A = interval wholly beyond the margin in the named direction (positive: nearer seams, or less agreement at seams); B = interval wholly inside plus or minus the margin; otherwise undetermined; capped at undetermined where r3-P30 finds no method that holds coverage at the count.
+# Data of fig-r3-P02-punctuation-profile: sentence-mark agreement (both decodes mark the word, among matched words either marks) by distance of the record word's end from the nearest seam (grid shift: seams of either grid; model change: the common grid), creator means with 90% t intervals; placebo series: distance from the placebo seams.
+comparison,series,band_s,creators,agreement,low,high,note
+grid shift,all voices,0-1,40,0.3885,0.3562,0.4208,
+grid shift,all voices,1-2,40,0.6365,0.5888,0.6842,
+grid shift,all voices,2-3,all but fewer than 5 of 40,0.7008,0.6569,0.7447,
+grid shift,all voices,3-5,40,0.7003,0.6553,0.7453,
+grid shift,all voices,5-7.5,40,0.721,0.6804,0.7616,
+grid shift,claimed voice,0-1,between 5 and 9,0.3372,0.2398,0.4346,
+grid shift,claimed voice,1-2,between 5 and 9,0.6103,0.5317,0.6889,
+grid shift,claimed voice,2-3,between 5 and 9,0.6841,0.5561,0.812,
+grid shift,claimed voice,3-5,between 5 and 9,0.742,0.6374,0.8467,
+grid shift,claimed voice,5-7.5,between 5 and 9,0.6652,0.5343,0.7962,
+grid shift,own voice,0-1,between 5 and 9,0.3342,0.2052,0.4632,
+grid shift,own voice,1-2,between 5 and 9,0.604,0.3689,0.8391,
+grid shift,own voice,2-3,between 5 and 9,0.5292,0.3596,0.6987,
+grid shift,own voice,3-5,between 5 and 9,0.694,0.4605,0.9275,
+grid shift,own voice,5-7.5,between 5 and 9,0.6195,0.4316,0.8073,
+grid shift,"all voices, placebo seams",0-1,40,0.7136,0.6665,0.7607,
+grid shift,"all voices, placebo seams",1-2,40,0.7188,0.6749,0.7626,
+grid shift,"all voices, placebo seams",2-3,40,0.699,0.6478,0.7502,
+grid shift,"all voices, placebo seams",3-5,40,0.7061,0.6568,0.7554,
+grid shift,"all voices, placebo seams",5-7.5,40,0.5179,0.4851,0.5506,
+model change,all voices,0-1,35,0.5505,0.4897,0.6114,
+model change,all voices,1-2,35,0.5901,0.5167,0.6635,
+model change,all voices,2-3,35,0.594,0.5184,0.6696,
+model change,all voices,3-5,35,0.5832,0.5083,0.6581,
+model change,all voices,5-15,35,0.5625,0.5021,0.623,
+model change,claimed voice,0-1,11 and fewer than 5 more,0.6512,0.5159,0.7865,
+model change,claimed voice,1-2,"all but fewer than 5 of model change recordings holding both voices, claimed",0.6636,0.5178,0.8095,
+model change,claimed voice,2-3,11 and fewer than 5 more,0.6527,0.4641,0.8413,
+model change,claimed voice,3-5,11 and fewer than 5 more,0.6888,0.536,0.8417,
+model change,claimed voice,5-15,11 and fewer than 5 more,0.6256,0.4978,0.7533,
+model change,own voice,0-1,11 and fewer than 5 more,0.4972,0.3097,0.6848,
+model change,own voice,1-2,"all but fewer than 5 of model change recordings holding both voices, claimed",0.5792,0.3575,0.801,
+model change,own voice,2-3,all but fewer than 5 of model change profile own voice 1,0.5968,0.4134,0.7801,
+model change,own voice,3-5,11 and fewer than 5 more,0.5637,0.4192,0.7083,
+model change,own voice,5-15,11 and fewer than 5 more,0.5771,0.4255,0.7286,
+model change,"all voices, placebo seams",0-1,35,0.5269,0.4495,0.6042,
+model change,"all voices, placebo seams",1-2,35,0.5486,0.4657,0.6315,
+model change,"all voices, placebo seams",2-3,35,0.5608,0.4845,0.6371,
+model change,"all voices, placebo seams",3-5,35,0.5581,0.4919,0.6243,
+model change,"all voices, placebo seams",5-15,35,0.5696,0.5118,0.6274,

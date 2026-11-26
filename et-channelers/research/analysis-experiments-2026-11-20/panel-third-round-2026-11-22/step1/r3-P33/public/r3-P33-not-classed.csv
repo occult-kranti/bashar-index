@@ -1,0 +1,22 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P33 (headline robustness and informativeness audit).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# The README's descriptions and cited outputs that carry no classed seen contrast (prespec S2, S3): levels, agreement figures, checks, contrasts printed without an interval of the difference, and hold-out statements (not audited: seen creators only).
+# Labels are model-coded and not checked by a person; agreement between models is agreement, never accuracy; cue counts are cue counts; recognizer output is not checked by a person.
+readme_item,output,kind,what
+1,"LAB-V, LAB-K",level,voice shares of a creator's words and recordings (model-coded)
+2,LAB-A,level (the contrast behind it is the H6 cascade panel),"claimed-voice share of a creator's pay-or-enrol asks; two-model envelope 0.061 (small model, all seen recordings; 95% 0.034 to 0.092) to 0.078 (middle model on its subset; 95% 0.013 to 0.164), different bases: a lower bound on label uncertainty"
+3,PT-cd,contrast without an interval of the difference,"within-creator excess of a spoken ask where a written ask stands, against a permutation range (above it for every class with enough creators)"
+4,RX-CB,contrast without an interval of the difference,framing-cue hits nearer to model boundaries than shifted hits (above the shift band); spans opened by a cue: 0.068 (small model; 90% 0.037 to 0.104) against shifted 0.011 (95% band 0.006 to 0.019); partly agreement by construction (r3-P26)
+5,"TL-BUILD, TL-7.7",level,"dated shares, window offsets, frame shares (model-coded forecasts; below their floor on the hold-out reliability sample)"
+8,"MTMM, TL-7.8",agreement level,agreement between methods; read over input-disjoint pairs by r3-P26 (voice and source family: no input-disjoint pair; asks: undetermined)
+9,"DR-2, VER-DEP",agreement level,agreement between models and readers; shared errors (heuristic)
+10,"rv-D2-H, rv-D3-H",hold-out: not audited (seen creators only),
+11,"DC-H, TM-H, SD-H, CH-H",hold-out: not audited (seen creators only); the seen comparator (DC) is audited,
+12,H3-X,hold-out: not audited (seen creators only),
+14,E3-H,hold-out: not audited (seen creators only); the seen rows of E3 are audited,
+15,"MR-18c (R-squared), MR-18d, nlp-R7",checks of the voice labels (levels and null centres),"the claimed-minus-own unit rate of MR-18c is audited as a contrast; the H1, H4 and H6 contrasts carry the cascade"
+16,"nlp-R10, nlp-R11, nlp-R13",level,"shares and recall of finders (agreement of two captures, not accuracy)"
+17,"CSS-5, CSS-10, CSS-12 census",level,"source kinds, offers, vocabulary occurrence (cue counts; offers, not income)"
+cited output,VER-MV,hold-out: not audited (seen creators only),the registered tests' robustness rows; no registered result was determinable or run
+cited output,rv-R4,survival column,"weighting and window specifications of pace, time without speech, the thanks phrase and term-cue shares (rv-R4's own margins); used beside item 13"
+cited output,"TL-7.1, PT-cd, E5, LAB-A, LAB-V",see their rows,

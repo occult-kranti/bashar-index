@@ -1,0 +1,87 @@
+{
+ "id": "r3-P27",
+ "class": "a.1",
+ "step": 1,
+ "status": "done (exploratory)",
+ "written_utc": "2026-11-26T06:47:48Z",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded labels, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec": {
+  "file": "prespec.md",
+  "sha256": "40dc7e2f34109b299b5c87081673ed7939b61fc63fc32dac213825360739f0b1",
+  "hashed_utc": "2026-11-26T06:39:57Z"
+ },
+ "readings": {
+  "groups": "development = the registry's development set (48 seen creators); check = the other 23 seen creators; both seen, so the entry ran",
+  "G1 voice agreement": "undetermined (difference -0.065, Welch 90% -0.110 to -0.021: crosses the margin, pointing opposite to the named direction)",
+  "C1 H1": "undetermined (difference -0.156, -0.279 to -0.033)",
+  "C2 H4": "undetermined",
+  "C3 H6": "undetermined (difference -0.111, -0.311 to 0.089)"
+ },
+ "interval": "group estimates: r3-P30 interval-choice.csv by class at the group's count; difference: Welch t on creator means (two-group class not simulated by r3-P30; deposit 2's t fallback) with a stratified creator bootstrap beside",
+ "departures": [
+  "Welch t for the difference (not simulated by r3-P30)",
+  "C1 prints no plain creator mean (an earlier output's base cannot be reconstructed)",
+  "G1 group points are Hodges-Lehmann estimates (r3-P30's choice)"
+ ],
+ "not_run": [
+  "agreement figures stored for check creators only (gate sample G, VER-3R, DBL) on development creators"
+ ],
+ "not_stored": [
+  "frozen-prompt agreement figures on development creators other than the two models' voice labels"
+ ],
+ "contacts": "none (contacts.md)",
+ "privacy_scans": "zsolve.py: 0 rows tested, 0 pinned, 0 narrowed; qscan_all2.py: 0 files with quantile columns, 0 rows with a hidden or banded base; identifier scan (creator codes, audio hashes, video ids): 0 hits; PNG text chunks and PDF document information: none. quant.py and quant2.py copied; they read the 'quantiles' column of one release file, and no public file of this entry has such a column, so they were not run on it.",
+ "runs_utc": {
+  "p27_run.py": "2026-11-26T06:40:59Z to 06:41:35Z",
+  "p27_publish.py": "06:42:37Z; figure redrawn about 06:44Z (layout only)"
+ },
+ "files": {
+  "public/fig-r3-P27-paired-forest.pdf": "fc2f752d757297ddccad877b643d0940b3f0c134e45024202bf1abcb941a1272",
+  "public/fig-r3-P27-paired-forest.png": "58cbec12b3ff5eeee3ae866dd8770f3480452f23f4d87f6b66379fc9b9039214",
+  "public/r3-P27-paired-forest.csv": "a60beb922f5baf835f0be1442f75e54073ef235d321681d463ade1399afe6361",
+  "code/finalize.py": "f3711f285ef2310f56383d4aa121c8cd25157913ab3d85edde2ce1ef91e3d7fe",
+  "code/p27_publish.py": "5ac5eaf1c73a6053d0886ddcb717eadbc35d042823b4d85040af2df6594467c3",
+  "code/p27_run.py": "55443d6303f0a3f4c46548c736b6da00984050603170e84dd4c5c57858a08cf5",
+  "code/pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "code/scan_ids.py": "8e13207c018538e592903f635f90c4bdce058848f8d9292bef3a2945fcaae14c",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/scans/qscan_all2.py": "2110295383173e4ab29d06a2c5cb677c74942c105ac6338bdd5e5f0c9532dcae",
+  "code/scans/quant.py": "a2478a09a37c3c759485fdfa3e0f98c6cd1d9a3094cc3b58c566588a9b1cae5c",
+  "code/scans/quant2.py": "7421b55e42d6fd55880a4b44dbc42c89c5991f18ba652374a2a4e93865ce9248",
+  "code/scans/zsolve.py": "45a7b23d4a38522855b982aecb85989280e48c6e82ad2a0069dbea590a1ddc0b",
+  "prespec.md": "40dc7e2f34109b299b5c87081673ed7939b61fc63fc32dac213825360739f0b1",
+  "prespec-record.md": "4f0992c716418c0db882c2979c12cedf526f4b634663744d32626a87d809401c",
+  "contacts.md": "18c3730db9d32bb2d7f659c9165413f003362add6a77ebef9ac832d75b49277d"
+ },
+ "readme_sha256": "feaaaffecd1b3e32dd6f643511d9d7936af974dcca64f3b4a59d641d5ad8f5d3",
+ "for_the_lead": [
+  "G1 points against the tuning direction",
+  "shrinkage factors and group estimates on C1 to C3 are not printed (decision 50(a))"
+ ],
+ "note_2026-11-26_decision_49": "2026-11-26T09:23:30Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_50": "2026-11-26T09:36:09Z (UTC, from date -u): files changed by the lead's step-1 decision 50 (no number changed); their recorded hashes refreshed: README.md, code/p27_publish.py, public/fig-r3-P27-paired-forest.pdf, public/fig-r3-P27-paired-forest.png, public/r3-P27-paired-forest.csv",
+ "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: README.md, code/p27_publish.py, public/r3-P27-paired-forest.csv",
+ "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/p27_publish.py, public/r3-P27-paired-forest.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "feaaaffecd1b3e32dd6f643511d9d7936af974dcca64f3b4a59d641d5ad8f5d3",
+   "contacts.md": "995469f2719297951683a1f145c91acdbeb86a6fa37d4c7dbffb6506d69f30ff",
+   "prespec-record.md": "eebd8937b0ac9d74d645d49741beeb7e7b61be3358cc25a8715e5a0aa0bcd1eb",
+   "prespec.md": "40dc7e2f34109b299b5c87081673ed7939b61fc63fc32dac213825360739f0b1",
+   "public/fig-r3-P27-paired-forest.pdf": "fc2f752d757297ddccad877b643d0940b3f0c134e45024202bf1abcb941a1272",
+   "public/fig-r3-P27-paired-forest.png": "58cbec12b3ff5eeee3ae866dd8770f3480452f23f4d87f6b66379fc9b9039214",
+   "public/r3-P27-paired-forest.csv": "a60beb922f5baf835f0be1442f75e54073ef235d321681d463ade1399afe6361"
+  },
+  "changed_for_publication": [
+   "contacts.md",
+   "prespec-record.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)",
+   "prespec-record.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

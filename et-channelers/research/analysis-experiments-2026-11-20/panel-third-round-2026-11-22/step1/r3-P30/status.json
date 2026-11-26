@@ -1,0 +1,108 @@
+{
+ "id": "r3-P30",
+ "carries": [
+  "r4-P10 (residual: size-and-power table of the register's fixed procedures)"
+ ],
+ "title": "Calibration battery for interval methods",
+ "class": "a",
+ "condition": "a.1",
+ "step": "1 (method card in deposit 2)",
+ "status": "reported",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "written_by": "a step-1 agent (a model agent working for the project lead; not a person)",
+ "written_utc": "2026-11-26T02:52:43Z",
+ "utc_run": {
+  "prespec": "2026-11-26T02:24:29Z",
+  "build_pools": "2026-11-26T02:26Z (about)",
+  "battery": "2026-11-26T02:27:13Z to 02:31:57Z",
+  "interval_choice_written": "2026-11-26T02:33:11Z"
+ },
+ "base": "label-free analogues from CAL's seen-only cache; nine design classes, pools of between 60 and 71 of the 71 seen creators",
+ "reading": "not applicable: a method card's run (register kind 'act'); it picks interval methods and reads no contrast",
+ "key_results": [
+  "t interval on recordings ignoring creators covers 39% to 71% in every class and count",
+  "TL-7.1-type slope pooling (DerSimonian-Laird, its bootstrap, HKSJ) covers 0.5% to 57%; t on slopes 0.73 (5) to 0.89 (71); no method holds below 71",
+  "t on creator means holds for E at every count; H and B1 at 8+; G at 12+; C at 30+; not for A at any count (HKSJ instead at most counts)",
+  "D (probability of superiority): no method holds below 71 creators",
+  "floor-rule pass at half the margin: 0.0005 to 0.109 per primary (the disclosure's 2.8 of 56 is approximate; up to about 6.1 in the worst cell)"
+ ],
+ "public_outputs": {
+  "public/data-r3-P30-classes.csv": "314d359d6ddb8006d13ebbceab0b6dd6e5b2b8058e22243edc3a2802215cf283",
+  "public/data-r3-P30-coverage-grid.csv": "4a4412acd8befa4ceda22d7da63044bb197c161effe9d4d4e7534f4a3fe99930",
+  "public/data-r3-P30-readings.csv": "29c7583af74bda194acecebea37b88ba9fa3449069b33f8bc6874ae1d24b177e",
+  "public/data-r3-P30-size.csv": "f6496eab5ba96e1ac5b5af324a954829e77c219a560affd0f6064b7c46d72afc",
+  "public/fig-r3-P30-coverage-grid.pdf": "e6a1c99d97a07ff78674e650fcfe7d419775c3052d81c42d75e1ea0681130e77",
+  "public/fig-r3-P30-coverage-grid.png": "667ac026af6ec95b21f0aed762e8b47b62ad9df039693fc4e8eaedfc87d98772",
+  "public/fig-r3-P30-readings.pdf": "633cd905f055de41976edb29495182937b380cea1a6f99c0d65d4ebd1a811a96",
+  "public/fig-r3-P30-readings.png": "576cb99826c98713f321ed8fceee68f0bd5b147f98e7244220e97dbc6e704b12",
+  "public/interval-choice.csv": "fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6"
+ },
+ "code_sha256": {
+  "code/battery.py": "24367d512882a2dde275ad035605a0c233eb377ce50cd10ec0e2b274bf5688cf",
+  "code/build_pools.py": "01facd62f515e6a289d62a734577a2f2182a85561497649b59c487062e339f56",
+  "code/plot_p30.py": "3a5c3d177838009db74b94efae490d492b0ee12e0377b338d055fe70048659c4",
+  "code/prespec.json": "the hash recorded at hashing time is kept privately",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/write_public.py": "f847f4000b2711f4e356569310be02089d3b7c9cd8f36f7815cf5da9cd135d89"
+ },
+ "readme_sha256": "bc2c9b6a9212b47f5194f80e3eb336de028bb6cb566fbad0eebe6d9ee9863d36",
+ "contacts": "none (contacts.md)",
+ "contacts_sha256": "debf318019dd60a87b9626e6dca5d0f9ba20bccf294fd2e988604cf6747d2b5c",
+ "model_calls": 0,
+ "spent_usd": 0,
+ "departures": [
+  "classes, methods, counts, draws, holds and choice rules fixed by the agent in code/prespec.json before the run (the method card left them open)",
+  "label-free analogues only; CAL-f parts (b), (c) and the registered tests not re-run",
+  "not run: circular/local-block/unit-shuffle references, curveball, rewired-dyad permutation, Freedman-Lane, pooled-ratio estimands",
+  "999 bootstrap resamples (CAL used 2,000)",
+  "class F margin not deposited: 0.20 between-creator SD of slopes (flagged)",
+  "AUC shift model without clipping"
+ ],
+ "for_the_lead": [
+  "the choice rule flips between neighbouring methods within Monte Carlo error of the tolerance (A, B); whether to fix one method per class is the lead's decision",
+  "random-effects choices can move the estimand away from the creator mean in real data (seen in r3-P02's primary I)",
+  "cells where no method holds (D below 71, F below 71, A at 23 and 71, B at 30, C at 5 to 12): readings at most undetermined",
+  "the half-effect disclosure's 2.8 understates chance passes for classes B to E"
+ ],
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "1161389cb1c3f51bdb3e9f160f0bd7ad24ab6b8da75aff712576808bfe9b897f",
+   "contacts.md": "1f9f388ce00b7eef8c955be3bc271f761d4ea3f610ca2001e1c2edb98ecf1728",
+   "prespec.md": "5194026af97d2836dca69ba36012235d4e759d9d5d6025c83db3379a78967763",
+   "public/data-r3-P30-classes.csv": "314d359d6ddb8006d13ebbceab0b6dd6e5b2b8058e22243edc3a2802215cf283",
+   "public/data-r3-P30-coverage-grid.csv": "4a4412acd8befa4ceda22d7da63044bb197c161effe9d4d4e7534f4a3fe99930",
+   "public/data-r3-P30-readings.csv": "29c7583af74bda194acecebea37b88ba9fa3449069b33f8bc6874ae1d24b177e",
+   "public/data-r3-P30-size.csv": "f6496eab5ba96e1ac5b5af324a954829e77c219a560affd0f6064b7c46d72afc",
+   "public/fig-r3-P30-coverage-grid.pdf": "e6a1c99d97a07ff78674e650fcfe7d419775c3052d81c42d75e1ea0681130e77",
+   "public/fig-r3-P30-coverage-grid.png": "667ac026af6ec95b21f0aed762e8b47b62ad9df039693fc4e8eaedfc87d98772",
+   "public/fig-r3-P30-readings.pdf": "633cd905f055de41976edb29495182937b380cea1a6f99c0d65d4ebd1a811a96",
+   "public/fig-r3-P30-readings.png": "576cb99826c98713f321ed8fceee68f0bd5b147f98e7244220e97dbc6e704b12",
+   "public/interval-choice.csv": "fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6"
+  },
+  "changed_for_publication": [
+   "README.md",
+   "contacts.md",
+   "prespec.md"
+  ],
+  "prespec_source": "prespec.md is the entry's private code/prespec.json, published under the step's common name as a redacted copy (a header, then the JSON body; decisions 43 and 48)",
+  "added_for_publication": [
+   "README.md: prespecification timing paragraph",
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ],
+  "path_replacements": [
+   {
+    "file": "README.md",
+    "replaced_by": "copied unchanged from the CHANGE group's private plotting code folder"
+   },
+   {
+    "file": "prespec.md",
+    "replaced_by": "a file in round 2's private CAL folder"
+   }
+  ],
+  "prespec_published_as": "redacted copy; the hash recorded at hashing time is kept privately"
+ }
+}

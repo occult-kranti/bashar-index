@@ -1,0 +1,17 @@
+# Exploratory; not a test of H1-H10. r3-P01 / r4-P01 tolerance arm: consequence-based margins, computed before any voice split (no voice label opened).
+# Margins are claimed-minus-own differences in the share of a class's tokens that are unstable (families A, B, C) or changes of a by-voice contrast on its own scale (family D). Binding: the targeted-error model.
+# Recognizer output; agreement of decodes, never accuracy; not checked by a person.
+# Calibration (voice-free, not binding): q_A = 0.3486 (bridge pairs: creator mean of the excess non-reproduction of low-confidence tokens); q_S = 0.0650 (grid shift: the same for the seam zone).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+row,instability_margin_targeted,basis,instability_margin_calibrated_confidence,instability_margin_calibrated_seam,transport_margin,transport_scale
+"contractible pairs, all (H4's closed list)",0.0295,"min(0.05, 0.20 x H4's frozen yardstick)",0.0846,0.4538,0.0295,share
+"contractible pairs, class A (syllable-loss pairs: 'm, 're, 'll, 've; do, will, can, shall and are + n't; let's, y'all)",0.0382,"min(0.05, 0.20 x between-creator SD of the class's contraction share)",0.1096,0.5884,0.0382,share
+"contractible pairs, class B (syllable-neutral negatives: the other n't hosts)",0.0448,"min(0.05, 0.20 x between-creator SD of the class's contraction share)",0.1286,0.6902,0.0448,share
+"contractible pairs, class C (ambiguous 's and 'd, ain't, reduced forms)",0.0278,"min(0.05, 0.20 x between-creator SD of the class's contraction share)",0.0797,0.4276,0.0278,share
+archaic pronoun and verb forms (closed list of 30 forms),0.2,"min(0.20, 0.20 x between-creator CV of the class rate)",0.5738,3.0791,0.2231,log ratio
+"first-person plurals (we, us, our, ours, ourselves; host of a contraction)",0.0857,"min(0.20, 0.20 x between-creator CV of the class rate)",0.2457,1.3187,0.0857,log ratio
+names (capitalised forms the recording never writes in lower case),0.0967,"min(0.20, 0.20 x between-creator CV of the class rate)",0.2774,1.4884,0.0967,log ratio
+function words (H9's closed list),0.0095,"min(0.20, 0.20 x between-creator CV of the class rate)",0.0271,0.1456,0.0095,log ratio
+filled pauses (prep's filler list),0.2,"min(0.20, 0.20 x between-creator CV of the class rate)",0.5738,3.0791,0.2231,log ratio
+all words,0.0222,"min(0.20, 0.20 x between-creator SD of log syllable rate)",0.0636,0.3413,0.0222,log ratio
+filter removals,0.0222,as all words: each removed word paired with one residual insertion (detection rate unknown),,,,

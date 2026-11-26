@@ -1,0 +1,42 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P21 (drift audit of the frozen instruments).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Every label is model-coded and not checked by a person; agreement, never accuracy. Counts are answered requests (rows of the answer stores), not creators.
+# Read: run-ledger metadata and the seen-side answer stores (production seen, pilot and gate, second readings and PT, smoke, probe and self-test) and the discovery store's metadata. Never opened: the answer stores of hold-out, R-hold, other-group and reliability runs.
+# Part 2. Items coded under both interfaces: a request id answered (completed) under both batch and standard in one seen-side store. Found: none, in every store read. Description: not computable from stored runs.
+# Section A: the seen production record by instrument, alias and interface (answered rows): which interface coded which part of the seen record. The two interfaces coded different requests, assigned by run order and model, so a comparison of their codings would compare different items, models and times; it is not made.
+# Section B: interface use by run group from the spend ledger and the batch-job ledger (metadata only), including the hold-out runs, whose returned strings were not read.
+section,what,alias_or_model,interface,answered_rows_or_ledger_rows,first_utc,last_utc,note
+part 2,requests answered under both interfaces in one seen-side store,,batch and standard,0,,,not computable from stored runs
+A,seen production: asks (find and check),gpt-6-luna (small model),batch,1000,,,
+A,seen production: asks (find and check),gpt-6-luna (small model),standard,4486,,,
+A,seen production: asks (find and check),gpt-6.1-terra (middle model),batch,901,,,
+A,"seen production: forecasts, part A",gpt-6-luna (small model),standard,4581,,,
+A,"seen production: forecasts, part B",gpt-6-luna (small model),standard,43299,,,
+A,"seen production: forecasts, part B",gpt-6.1-terra (middle model),batch,1838,,,
+A,"seen production: forecasts, part B",gpt-6.1-terra (middle model),standard,71,,,
+A,"seen production: forecasts, part C",gpt-6-luna (small model),batch,1000,,,
+A,"seen production: forecasts, part C",gpt-6-luna (small model),standard,8063,,,
+A,"seen production: forecasts, part C",gpt-6.1-terra (middle model),batch,9033,,,
+A,"seen production: forecasts, part D",gpt-6-luna (small model),standard,9039,,,
+A,"seen production: forecasts, part E",gpt-6-luna (small model),standard,5949,,,
+A,seen production: sentence codes,gpt-6-luna (small model),batch,4999,,,
+A,seen production: sentence codes,gpt-6-luna (small model),standard,54183,,,
+A,seen production: titles,gpt-6-luna (small model),batch,71,,,
+A,seen production: titles,gpt-6-luna (small model),standard,1,,,
+A,seen production: titles,gpt-6.1-terra (middle model),batch,71,,,
+A,"seen production: titles, adjudication",gpt-6-sol (large model),batch,382,,,
+A,seen production: voice (map and labels),gpt-6-luna (small model),standard,3864,,,
+A,seen production: voice (map and labels),gpt-6.1-terra (middle model),batch,309,,,
+B,spend ledger: discovery (outside the roster),not stated,standard,288,2026-11-20T23:27:27Z,2026-11-21T02:13:21Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"spend ledger: hold-out, R-hold, other or reliability runs (ledger only)",not stated,batch,5,2026-11-21T16:22:09Z,2026-11-21T18:16:33Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"spend ledger: hold-out, R-hold, other or reliability runs (ledger only)",not stated,standard,849,2026-11-21T00:04:02Z,2026-11-21T18:40:42Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,spend ledger: pilot and gate (seen),not stated,standard,509,2026-11-20T21:56:42Z,2026-11-21T03:08:13Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"spend ledger: production, seen",not stated,batch,100,2026-11-21T05:41:20Z,2026-11-21T10:40:09Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"spend ledger: production, seen",not stated,standard,1356,2026-11-21T06:44:41Z,2026-11-21T11:09:58Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,spend ledger: second readings and PT (seen),not stated,standard,159,2026-11-21T00:03:07Z,2026-11-21T03:20:08Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"spend ledger: smoke, probe and self-test",not stated,batch,10,2026-11-21T04:13:50Z,2026-11-21T13:34:59Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"spend ledger: smoke, probe and self-test",not stated,not stored,46,2026-11-20T23:24:01Z,2026-11-21T00:59:04Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"spend ledger: smoke, probe and self-test",not stated,standard,2400,2026-11-20T21:38:04Z,2026-11-21T09:09:05Z,"ledger rows (one per 100 answers or per batch job), not requests"
+B,"batch-job ledger: hold-out, R-hold, other or reliability runs (ledger only)",,batch,5,2026-11-21T16:16:37Z,2026-11-21T18:05:44Z,batch jobs; final states: collected 5
+B,"batch-job ledger: production, seen",,batch,100,2026-11-21T05:04:21Z,2026-11-21T10:08:00Z,batch jobs; final states: collected 100
+B,"batch-job ledger: smoke, probe and self-test",,batch,2,2026-11-20T20:59:40Z,2026-11-21T12:53:14Z,batch jobs; final states: collected 1; open 1

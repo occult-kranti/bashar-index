@@ -1,0 +1,16 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy.
+# 90% intervals. Method per row by r3-P30's interval-choice.csv (the row of the largest simulated count at or below the row's creator count; where no method holds there, a reading is at most undetermined); cohort ratios carry a creator-cluster bootstrap percentile interval, a class r3-P30 did not calibrate.
+# Half-effect disclosure (56 primaries): if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table); a reading A is never called a finding.
+# Score (stat's two-stage, exactly centred score): per stratum O = items in the claimed voice, E = m p, V = m p (1 - p), p the claimed share of the stratum's claimed-or-own units; per creator z = (sum O - sum E)/sqrt(sum V); cohort ratio R = sum O / sum E. Informative strata only (an item, and p strictly between 0 and 1). If R and the mean score disagree in direction the class is undetermined. Mean-score intervals: r3-P30 class E_rank_correlation: the t interval on creator means at every simulated count (the lead's step-1 decision 64).
+# An item's voice: the side holding most of its words (H6's rule); items on neither side left out. Asks: the frozen asks instrument's final verdicts (middle model's check is the record). Frame formulas: units with a hit of RX's frozen greeting, devotional-address or community-address sub-patterns (cue counts), outside every ask. Recordings with both voices (300 words each side), H6's definition.
+# Margin (deposit 2): ratio 0.80 to 1.25; named direction: fewer claimed asks than position predicts. Creator counts 1 to 4 from a count printed elsewhere or earlier are stated against it ('all but fewer than 5 of N', 'N and fewer than 5 more'): N is a bound, not a claim that the groups are nested.
+# Small model, all recordings with both voices, tenth strata.
+row,creators,estimate,lo90,hi90
+commerce minus frame: mean score difference z(K1) - z(frame),23 and fewer than 5 more,-0.385,-1.002,0.233
+"commerce minus frame: ratio of cohort ratios R(K1)/R(frame), paired creator bootstrap",34 and fewer than 5 more,0.363,0.101,0.648
+occult's row: share of own-voice pay-or-enrol asks after the last claimed offset (of before or after),all but fewer than 5 of 30,0.72,0.596,0.844
+ladder: labelled claimed share of pay-or-enrol asks (creator-balanced),all but fewer than 5 of 34,0.117,0.058,0.175
+ladder: rule-reversal end,all but fewer than 5 of 34,same as the labelled share except in fewer than 5 creators (not printed),,
+ladder: position-predicted claimed share (tenths),all but fewer than 5 of 30,0.359,0.305,0.413

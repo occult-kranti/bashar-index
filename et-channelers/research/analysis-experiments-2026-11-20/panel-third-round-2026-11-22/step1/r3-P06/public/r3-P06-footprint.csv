@@ -1,0 +1,19 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy.
+# 90% intervals. Method per row by r3-P30's interval-choice.csv (the row of the largest simulated count at or below the row's creator count; where no method holds there, a reading is at most undetermined); cohort ratios carry a creator-cluster bootstrap percentile interval, a class r3-P30 did not calibrate.
+# Half-effect disclosure (56 primaries): if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table); a reading A is never called a finding.
+# Margin (deposit 2): ratio 0.80 to 1.25. Gate (C24): the lower 90% bound of the log cohort ratio of pay-or-enrol island concentration above zero withholds r3-P05's commerce reading. Island: a run of 1 or 2 own-voice units with a claimed-voice unit immediately before and after; region: claimed units and island units. Score per creator (O - E)/sqrt(V) (stat's exactly centred score); cohort ratio sum O / sum E. Mean-score intervals: r3-P30 class E_rank_correlation: the t interval on creator means at every simulated count (the lead's step-1 decision 64).
+# Frame formulas: units with a hit of RX's frozen greeting, devotional-address or community-address sub-patterns (cue counts; their precision is RX's), outside every ask. Seen creators only; recordings with both voices (300 words each side), H6's definition.
+# Creator counts 1 to 4 from a count printed elsewhere or earlier are stated against it ('all but fewer than 5 of N', 'N and fewer than 5 more'): N is a bound, not a claim that the groups are nested.
+# Island footprint per view and rule (counts of units are pooled over creators).
+view,rule,recordings,creators,creators_with_islands,island_share_of_region_units,creators_with_pay_ask_units_in_region,pay_ask_units_in_region
+"small model, all recordings with both voices",rule B (primary definition),278,44 and fewer than 5 more,16 and fewer than 5 more,0.0042,11 and fewer than 5 more,155
+"small model, all recordings with both voices",rule A (labels as given; row),279,44 and fewer than 5 more,16 and fewer than 5 more,0.0042,9 and fewer than 5 more,78
+"small model, all recordings with both voices","rule B, units within 1 s of a run-grid seam excluded (r3-P02's exclusion row)",278,44 and fewer than 5 more,16 and fewer than 5 more,0.0042,11 and fewer than 5 more,110
+"small model, middle-model subset",rule B (primary definition),35,23 and fewer than 5 more,all but fewer than 5 of 6,0.0037,fewer than 5,not published
+"small model, middle-model subset",rule A (labels as given; row),34,23 and fewer than 5 more,all but fewer than 5 of 6,0.0037,fewer than 5,not published
+"small model, middle-model subset","rule B, units within 1 s of a run-grid seam excluded (r3-P02's exclusion row)",35,23 and fewer than 5 more,all but fewer than 5 of 6,0.0037,fewer than 5,not published
+"middle model, middle-model subset",rule B (primary definition),35,all but fewer than 5 of 23,fewer than 5,not published (islands in fewer than 5 creators),fewer than 5,not published
+"middle model, middle-model subset",rule A (labels as given; row),35,all but fewer than 5 of 23,fewer than 5,not published (islands in fewer than 5 creators),fewer than 5,not published
+"middle model, middle-model subset","rule B, units within 1 s of a run-grid seam excluded (r3-P02's exclusion row)",35,all but fewer than 5 of 23,fewer than 5,not published (islands in fewer than 5 creators),fewer than 5,not published

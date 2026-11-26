@@ -1,0 +1,29 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P26 (carries r4-P06).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Convergence by input class: for each construct (and pooled over MTMM's three), the median over the class's convergent method pairs of the pairs' Spearman rho (a median over method pairs, never over creators), with its 90% creator-bootstrap percentile interval: in each of MTMM's 2,000 seeded draws of creators every pair's rho is recomputed and the class median taken. Rows for TL-7.8 are medians of TL's published cells (no interval). Margin 0.10 (deposit 2, correlation). 90% creator-bootstrap percentile intervals (2,000 draws, MTMM's own seeded draws; a class r3-P30 did not calibrate).
+# Model cells are model-coded and not checked by a person; rule cells are cue counts; agreement between methods is agreement, never accuracy.
+construct,class,class_name,convergent_pairs,creators,convergence_over_pairs,lo90,hi90,note
+voice,C1,"same text, same instrument",1,71,0.8501,0.7935,0.8866,
+voice,C2,shares a surface,2,71,0.5204,0.3667,0.6433,
+voice,C3,shares a model or list,2,71,0.6165,0.4831,0.7295,
+voice,C4,shares only the brand,1,71,0.381,0.2036,0.5461,
+voice,C5,input-disjoint,0,,,,,no pair in this class
+source family,C1,"same text, same instrument",3,71,0.8407,0.7383,0.9174,
+source family,C2,shares a surface,0,,,,,no pair in this class
+source family,C3,shares a model or list,0,,,,,no pair in this class
+source family,C4,shares only the brand,3,71,0.4434,0.2743,0.5965,
+source family,C5,input-disjoint,0,,,,,no pair in this class
+asks,C1,"same text, same instrument",1,71; pairs with the page asks measure: all but fewer than 5 of 71,0.9644,0.9277,0.987,
+asks,C2,shares a surface,2,71; pairs with the page asks measure: all but fewer than 5 of 71,0.5281,0.3675,0.6528,
+asks,C3,shares a model or list,2,71; pairs with the page asks measure: all but fewer than 5 of 71,0.3269,0.1282,0.4985,
+asks,C4,shares only the brand,0,,,,,no pair in this class
+asks,C5,input-disjoint,1,71; pairs with the page asks measure: all but fewer than 5 of 71,0.1098,-0.085,0.2926,
+pooled,C1,"same text, same instrument",5,71; pairs with the page asks measure: all but fewer than 5 of 71,0.8501,0.8099,0.9173,
+pooled,C2,shares a surface,4,71; pairs with the page asks measure: all but fewer than 5 of 71,0.5281,0.414,0.6221,
+pooled,C3,shares a model or list,4,71; pairs with the page asks measure: all but fewer than 5 of 71,0.455,0.3342,0.5656,
+pooled,C4,shares only the brand,4,71; pairs with the page asks measure: all but fewer than 5 of 71,0.4213,0.2928,0.5773,
+pooled,C5,input-disjoint,1,71; pairs with the page asks measure: all but fewer than 5 of 71,0.1098,-0.085,0.2926,
+condition (TL-7.8),C1,"same text, same instrument",1,65-69,0.448,,,"published cells only; TL's creator values not rebuilt, so no interval"
+hedging (TL-7.8),C1,"same text, same instrument",1,65-69,0.712,,,"published cells only; TL's creator values not rebuilt, so no interval"
+time window (TL-7.8),C1,"same text, same instrument",3,65-69,0.723,,,"published cells only; TL's creator values not rebuilt, so no interval"
+time window (TL-7.8),C2,shares a surface,3,65-69,0.744,,,"published cells only; TL's creator values not rebuilt, so no interval"

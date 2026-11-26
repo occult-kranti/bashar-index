@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy.
+# 90% intervals. Method per row by r3-P30's interval-choice.csv (the row of the largest simulated count at or below the row's creator count; where no method holds there, a reading is at most undetermined); cohort ratios carry a creator-cluster bootstrap percentile interval, a class r3-P30 did not calibrate.
+# Half-effect disclosure (56 primaries): if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table); a reading A is never called a finding.
+# Margins (deposit 2): H1 a log ratio of 0.223 (ratio 0.80 to 1.25); H4 0.20 between-creator SD; H6 OE 5 points (a difference in shares); H6 log MH 0.223. Named directions: H1 negative (claimed slower), H4 positive (fewer contractions in the claimed voice), H6 negative (fewer claimed asks).
+# Seen creators only; English-only recognizer (1,284 seen recordings). Rows of one statistic and model rest on one creator set (creators with an observed, an XT and an R0 value); the ST rows on its creators with own-voice-only recordings. Creator counts 1 to 4 from a creator count printed elsewhere (deposit 2, CAL-f, MR, the programme's fixed counts) or earlier in these entries are stated against it ('all but fewer than 5 of N', 'N and fewer than 5 more'): N is used as a bound, not as a claim that the groups are nested.
+# Size panel: plasmode at a planted zero (own-voice-only recordings of creators with 2 or more of them; the creator's own real span maps on half the hosts as pseudo-observed labels, the references built as in the analysis; 400 replicates resampling creators). size: share of replicates whose 90% t interval of the mean centred part excludes zero (nominal 0.10); centre: mean over replicates of the mean centred part; centre_sd: its spread over replicates (the plasmode's resolution at this count). Planted effects at half and the full margin were not simulated (a departure).
+statistic,reference,replicates,size,mc_band_lo,mc_band_hi,centre,centre_over_margin,centre_sd_over_replicates,centre_tolerance,admissible,why,plasmode_creators
+H1 rate,XT,400,0.08,0.071,0.129,-0.0058,-0.026,0.0215,0.0223,yes,holds size and centre,all but fewer than 5 of 30
+H1 rate,ST,400,0.107,0.071,0.129,0.004,0.018,0.0267,0.0223,yes,holds size and centre,all but fewer than 5 of 30
+H1 rate,R0,400,0.1,0.071,0.129,-0.0172,-0.077,0.0244,0.0223,yes,holds size and centre,all but fewer than 5 of 30
+H4 contraction,XT,400,0.105,0.071,0.129,0.1208,0.604,0.2652,0.02,no,null centre more than 0.10 x the margin from zero,19 and fewer than 5 more
+H4 contraction,ST,398,0.123,0.071,0.129,-0.0388,-0.194,0.3601,0.02,no,null centre more than 0.10 x the margin from zero,19 and fewer than 5 more
+H4 contraction,R0,400,0.113,0.071,0.129,0.0369,0.184,0.2092,0.02,no,null centre more than 0.10 x the margin from zero,19 and fewer than 5 more
+H6 asks (OE),XT,400,0.115,0.071,0.129,-0.0141,-0.282,0.1021,0.005,no,null centre more than 0.10 x the margin from zero,all but fewer than 5 of 34
+H6 asks (OE),ST,397,0.091,0.071,0.129,-0.0014,-0.027,0.1019,0.005,yes,holds size and centre,all but fewer than 5 of 34
+H6 asks (OE),R0,400,0.305,0.071,0.129,-0.1292,-2.584,0.1136,0.005,no,size outside the Monte Carlo band; null centre more than 0.10 x the margin from zero,all but fewer than 5 of 34

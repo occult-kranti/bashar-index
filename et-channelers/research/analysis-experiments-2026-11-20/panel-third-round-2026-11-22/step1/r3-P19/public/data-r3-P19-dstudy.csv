@@ -1,0 +1,595 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Seen creators only. Every label is model-coded and not checked by a person; every figure here is consistency (agreement between readings), never accuracy.
+# Interval level: 90% (creator-cluster bootstrap, percentile, 2,000 draws; seed 2026112619); interval method not calibrated by r3-P30 for this design class; a reading is a description, never a finding.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings of A would be expected at the deposited 5% (up to about 6.1 for the share, standardised, AUC and rank-correlation classes; r3-P30).
+# No per-creator or per-recording value is published; no cell or group rests on fewer than 5 creators.
+# r3-P19 decision study: generalizability coefficients for a creator's mean of a label quantity, by recordings per creator (1 to 20, design constants) and runs (1 to 5).
+# E rho^2 = creator / (creator + recording / n_r + recording x run / (n_r n_run)); Phi adds run / n_run; model random adds creator x model + recording x model / n_r (and the model main effect to Phi).
+# Where no run facet is stored (forecast checkability, titles) the curves are for one reading (n_run = 1) and the recording component includes that reading's noise.
+instrument,curve,x_axis,x,runs,coefficient,lo90,hi90
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,1,1,0.514,0.422,0.596
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,2,1,0.679,0.594,0.747
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,3,1,0.76,0.687,0.816
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,4,1,0.809,0.745,0.855
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,5,1,0.841,0.785,0.881
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,6,1,0.864,0.814,0.899
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,7,1,0.881,0.836,0.912
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,8,1,0.894,0.854,0.922
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,9,1,0.905,0.868,0.93
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,10,1,0.913,0.88,0.937
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,11,1,0.921,0.889,0.942
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,12,1,0.927,0.898,0.947
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,13,1,0.932,0.905,0.95
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,14,1,0.937,0.911,0.954
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,15,1,0.941,0.916,0.957
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,16,1,0.944,0.921,0.959
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,17,1,0.947,0.925,0.962
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,18,1,0.95,0.929,0.964
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,19,1,0.953,0.933,0.966
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,20,1,0.955,0.936,0.967
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,1,2,0.54,0.445,0.628
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,2,2,0.701,0.616,0.772
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,3,2,0.779,0.706,0.835
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,4,2,0.824,0.762,0.871
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,5,2,0.854,0.8,0.894
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,6,2,0.876,0.828,0.91
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,7,2,0.892,0.849,0.922
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,8,2,0.904,0.865,0.931
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,9,2,0.914,0.878,0.938
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,10,2,0.922,0.889,0.944
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,11,2,0.928,0.898,0.949
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,12,2,0.934,0.906,0.953
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,13,2,0.939,0.912,0.957
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,14,2,0.943,0.918,0.959
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,15,2,0.946,0.923,0.962
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,16,2,0.949,0.928,0.964
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,17,2,0.952,0.932,0.966
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,18,2,0.955,0.935,0.968
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,19,2,0.957,0.938,0.97
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,20,2,0.959,0.941,0.971
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,1,3,0.549,0.451,0.645
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,2,3,0.709,0.622,0.784
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,3,3,0.785,0.712,0.845
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,4,3,0.83,0.767,0.879
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,5,3,0.859,0.804,0.901
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,6,3,0.88,0.831,0.916
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,7,3,0.895,0.852,0.927
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,8,3,0.907,0.868,0.936
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,9,3,0.916,0.881,0.942
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,10,3,0.924,0.892,0.948
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,11,3,0.931,0.9,0.952
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,12,3,0.936,0.908,0.956
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,13,3,0.941,0.914,0.959
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,14,3,0.945,0.92,0.962
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,15,3,0.948,0.925,0.965
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,16,3,0.951,0.929,0.967
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,17,3,0.954,0.933,0.969
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,18,3,0.956,0.937,0.97
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,19,3,0.959,0.94,0.972
+V-claimed,"E rho^2 (relative), model fixed at the record",recordings per creator,20,3,0.961,0.943,0.973
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,1,1,0.514,0.422,0.596
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,2,1,0.679,0.593,0.745
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,3,1,0.76,0.686,0.814
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,4,1,0.809,0.745,0.854
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,5,1,0.841,0.784,0.879
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,6,1,0.864,0.813,0.897
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,7,1,0.881,0.835,0.911
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,8,1,0.894,0.852,0.921
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,9,1,0.905,0.866,0.929
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,10,1,0.913,0.878,0.935
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,11,1,0.921,0.887,0.941
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,12,1,0.927,0.895,0.946
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,13,1,0.932,0.902,0.95
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,14,1,0.937,0.908,0.953
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,15,1,0.941,0.913,0.956
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,16,1,0.944,0.918,0.959
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,17,1,0.947,0.922,0.961
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,18,1,0.95,0.925,0.963
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,19,1,0.953,0.929,0.965
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,20,1,0.955,0.932,0.966
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,1,2,0.54,0.445,0.628
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,2,2,0.701,0.616,0.772
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,3,2,0.779,0.706,0.835
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,4,2,0.824,0.762,0.871
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,5,2,0.854,0.8,0.894
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,6,2,0.876,0.827,0.91
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,7,2,0.892,0.848,0.922
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,8,2,0.904,0.864,0.93
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,9,2,0.914,0.877,0.937
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,10,2,0.922,0.888,0.943
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,11,2,0.928,0.897,0.948
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,12,2,0.934,0.905,0.952
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,13,2,0.939,0.912,0.956
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,14,2,0.943,0.917,0.959
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,15,2,0.946,0.922,0.961
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,16,2,0.949,0.927,0.964
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,17,2,0.952,0.93,0.966
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,18,2,0.955,0.934,0.968
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,19,2,0.957,0.937,0.969
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,20,2,0.959,0.94,0.971
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,1,3,0.549,0.451,0.645
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,2,3,0.709,0.622,0.784
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,3,3,0.785,0.712,0.844
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,4,3,0.83,0.767,0.878
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,5,3,0.859,0.804,0.9
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,6,3,0.88,0.831,0.915
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,7,3,0.895,0.852,0.926
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,8,3,0.907,0.868,0.935
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,9,3,0.916,0.881,0.942
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,10,3,0.924,0.891,0.947
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,11,3,0.931,0.9,0.951
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,12,3,0.936,0.908,0.955
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,13,3,0.941,0.914,0.959
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,14,3,0.945,0.92,0.961
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,15,3,0.948,0.925,0.964
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,16,3,0.951,0.929,0.966
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,17,3,0.954,0.933,0.968
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,18,3,0.956,0.936,0.97
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,19,3,0.959,0.939,0.971
+V-claimed,"Phi (absolute), model fixed at the record",recordings per creator,20,3,0.961,0.942,0.973
+V-claimed,"E rho^2 (relative) against runs, 1 recordings per creator",runs,1,1,0.514,0.422,0.596
+V-claimed,"E rho^2 (relative) against runs, 1 recordings per creator",runs,2,2,0.54,0.445,0.628
+V-claimed,"E rho^2 (relative) against runs, 1 recordings per creator",runs,3,3,0.549,0.451,0.645
+V-claimed,"E rho^2 (relative) against runs, 1 recordings per creator",runs,4,4,0.554,0.454,0.655
+V-claimed,"E rho^2 (relative) against runs, 1 recordings per creator",runs,5,5,0.557,0.455,0.66
+V-claimed,"E rho^2 (relative) against runs, 5 recordings per creator",runs,1,1,0.841,0.785,0.881
+V-claimed,"E rho^2 (relative) against runs, 5 recordings per creator",runs,2,2,0.854,0.8,0.894
+V-claimed,"E rho^2 (relative) against runs, 5 recordings per creator",runs,3,3,0.859,0.804,0.901
+V-claimed,"E rho^2 (relative) against runs, 5 recordings per creator",runs,4,4,0.861,0.806,0.905
+V-claimed,"E rho^2 (relative) against runs, 5 recordings per creator",runs,5,5,0.863,0.807,0.907
+V-claimed,"E rho^2 (relative) against runs, 20 recordings per creator",runs,1,1,0.955,0.936,0.967
+V-claimed,"E rho^2 (relative) against runs, 20 recordings per creator",runs,2,2,0.959,0.941,0.971
+V-claimed,"E rho^2 (relative) against runs, 20 recordings per creator",runs,3,3,0.961,0.943,0.973
+V-claimed,"E rho^2 (relative) against runs, 20 recordings per creator",runs,4,4,0.961,0.943,0.974
+V-claimed,"E rho^2 (relative) against runs, 20 recordings per creator",runs,5,5,0.962,0.944,0.975
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,1,1,0.494,0.381,0.567
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,2,1,0.661,0.544,0.721
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,3,1,0.745,0.636,0.794
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,4,1,0.796,0.694,0.837
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,5,1,0.83,0.733,0.865
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,6,1,0.854,0.757,0.884
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,7,1,0.872,0.776,0.899
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,8,1,0.886,0.792,0.91
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,9,1,0.898,0.804,0.919
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,10,1,0.907,0.813,0.926
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,11,1,0.915,0.82,0.933
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,12,1,0.921,0.826,0.938
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,13,1,0.927,0.831,0.942
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,14,1,0.932,0.837,0.946
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,15,1,0.936,0.84,0.95
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,16,1,0.94,0.843,0.953
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,17,1,0.943,0.847,0.955
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,18,1,0.946,0.85,0.958
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,19,1,0.949,0.852,0.96
+V-claimed,"E rho^2 (relative), model random (one model)",recordings per creator,20,1,0.951,0.855,0.962
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,1,1,0.333,0.263,0.398
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,2,1,0.5,0.417,0.569
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,3,1,0.6,0.517,0.664
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,4,1,0.667,0.588,0.725
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,5,1,0.714,0.641,0.767
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,6,1,0.75,0.682,0.798
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,7,1,0.778,0.714,0.822
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,8,1,0.8,0.741,0.841
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,9,1,0.818,0.763,0.856
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,10,1,0.833,0.781,0.868
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,11,1,0.846,0.797,0.879
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,12,1,0.857,0.811,0.888
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,13,1,0.867,0.823,0.896
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,14,1,0.875,0.833,0.902
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,15,1,0.882,0.843,0.908
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,16,1,0.889,0.851,0.914
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,17,1,0.895,0.859,0.918
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,18,1,0.9,0.865,0.922
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,19,1,0.905,0.871,0.926
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,20,1,0.909,0.877,0.93
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,1,2,0.346,0.273,0.415
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,2,2,0.515,0.429,0.587
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,3,2,0.614,0.53,0.681
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,4,2,0.679,0.6,0.74
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,5,2,0.726,0.652,0.78
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,6,2,0.761,0.693,0.81
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,7,2,0.788,0.724,0.833
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,8,2,0.809,0.75,0.85
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,9,2,0.827,0.772,0.865
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,10,2,0.841,0.79,0.877
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,11,2,0.854,0.805,0.887
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,12,2,0.864,0.818,0.895
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,13,2,0.873,0.83,0.902
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,14,2,0.881,0.84,0.909
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,15,2,0.888,0.849,0.914
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,16,2,0.895,0.857,0.919
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,17,2,0.9,0.865,0.924
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,18,2,0.905,0.871,0.927
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,19,2,0.91,0.877,0.931
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,20,2,0.914,0.882,0.934
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,1,3,0.351,0.276,0.422
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,2,3,0.52,0.433,0.593
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,3,3,0.619,0.534,0.686
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,4,3,0.684,0.604,0.745
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,5,3,0.73,0.656,0.785
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,6,3,0.764,0.696,0.814
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,7,3,0.791,0.727,0.836
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,8,3,0.812,0.753,0.854
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,9,3,0.83,0.774,0.868
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,10,3,0.844,0.792,0.879
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,11,3,0.856,0.807,0.889
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,12,3,0.867,0.821,0.897
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,13,3,0.875,0.832,0.905
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,14,3,0.883,0.842,0.911
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,15,3,0.89,0.851,0.916
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,16,3,0.896,0.859,0.921
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,17,3,0.902,0.866,0.925
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,18,3,0.907,0.873,0.929
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,19,3,0.911,0.879,0.933
+V-own,"E rho^2 (relative), model fixed at the record",recordings per creator,20,3,0.915,0.884,0.936
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,1,1,0.333,0.262,0.397
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,2,1,0.499,0.414,0.568
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,3,1,0.599,0.514,0.662
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,4,1,0.665,0.583,0.722
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,5,1,0.712,0.635,0.764
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,6,1,0.748,0.675,0.795
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,7,1,0.776,0.707,0.818
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,8,1,0.798,0.733,0.837
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,9,1,0.816,0.754,0.852
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,10,1,0.831,0.771,0.865
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,11,1,0.844,0.787,0.876
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,12,1,0.855,0.801,0.885
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,13,1,0.864,0.812,0.892
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,14,1,0.872,0.821,0.899
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,15,1,0.88,0.83,0.905
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,16,1,0.886,0.839,0.91
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,17,1,0.892,0.846,0.915
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,18,1,0.897,0.853,0.919
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,19,1,0.902,0.859,0.923
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,20,1,0.906,0.864,0.926
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,1,2,0.346,0.273,0.414
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,2,2,0.514,0.428,0.584
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,3,2,0.613,0.528,0.677
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,4,2,0.679,0.599,0.736
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,5,2,0.725,0.651,0.776
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,6,2,0.76,0.69,0.806
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,7,2,0.787,0.721,0.829
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,8,2,0.808,0.747,0.847
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,9,2,0.826,0.768,0.861
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,10,2,0.84,0.786,0.873
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,11,2,0.852,0.802,0.883
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,12,2,0.863,0.815,0.892
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,13,2,0.872,0.826,0.899
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,14,2,0.88,0.836,0.906
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,15,2,0.887,0.845,0.911
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,16,2,0.893,0.853,0.916
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,17,2,0.899,0.86,0.921
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,18,2,0.904,0.867,0.925
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,19,2,0.908,0.872,0.928
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,20,2,0.912,0.878,0.931
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,1,3,0.351,0.275,0.421
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,2,3,0.519,0.432,0.592
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,3,3,0.618,0.532,0.685
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,4,3,0.683,0.603,0.743
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,5,3,0.729,0.654,0.783
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,6,3,0.764,0.694,0.812
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,7,3,0.79,0.726,0.834
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,8,3,0.812,0.751,0.851
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,9,3,0.829,0.773,0.865
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,10,3,0.843,0.791,0.876
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,11,3,0.855,0.806,0.886
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,12,3,0.866,0.818,0.895
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,13,3,0.875,0.83,0.902
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,14,3,0.882,0.84,0.908
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,15,3,0.889,0.849,0.914
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,16,3,0.896,0.857,0.918
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,17,3,0.901,0.864,0.923
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,18,3,0.906,0.87,0.927
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,19,3,0.91,0.876,0.93
+V-own,"Phi (absolute), model fixed at the record",recordings per creator,20,3,0.914,0.882,0.933
+V-own,"E rho^2 (relative) against runs, 1 recordings per creator",runs,1,1,0.333,0.263,0.398
+V-own,"E rho^2 (relative) against runs, 1 recordings per creator",runs,2,2,0.346,0.273,0.415
+V-own,"E rho^2 (relative) against runs, 1 recordings per creator",runs,3,3,0.351,0.276,0.422
+V-own,"E rho^2 (relative) against runs, 1 recordings per creator",runs,4,4,0.353,0.278,0.426
+V-own,"E rho^2 (relative) against runs, 1 recordings per creator",runs,5,5,0.355,0.279,0.428
+V-own,"E rho^2 (relative) against runs, 5 recordings per creator",runs,1,1,0.714,0.641,0.767
+V-own,"E rho^2 (relative) against runs, 5 recordings per creator",runs,2,2,0.726,0.652,0.78
+V-own,"E rho^2 (relative) against runs, 5 recordings per creator",runs,3,3,0.73,0.656,0.785
+V-own,"E rho^2 (relative) against runs, 5 recordings per creator",runs,4,4,0.732,0.658,0.787
+V-own,"E rho^2 (relative) against runs, 5 recordings per creator",runs,5,5,0.733,0.659,0.789
+V-own,"E rho^2 (relative) against runs, 20 recordings per creator",runs,1,1,0.909,0.877,0.93
+V-own,"E rho^2 (relative) against runs, 20 recordings per creator",runs,2,2,0.914,0.882,0.934
+V-own,"E rho^2 (relative) against runs, 20 recordings per creator",runs,3,3,0.915,0.884,0.936
+V-own,"E rho^2 (relative) against runs, 20 recordings per creator",runs,4,4,0.916,0.885,0.937
+V-own,"E rho^2 (relative) against runs, 20 recordings per creator",runs,5,5,0.917,0.886,0.937
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,1,1,0.309,0.235,0.37
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,2,1,0.469,0.376,0.538
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,3,1,0.566,0.47,0.635
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,4,1,0.632,0.535,0.698
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,5,1,0.68,0.584,0.742
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,6,1,0.716,0.623,0.774
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,7,1,0.744,0.654,0.799
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,8,1,0.766,0.678,0.819
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,9,1,0.785,0.698,0.835
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,10,1,0.8,0.715,0.848
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,11,1,0.813,0.73,0.86
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,12,1,0.824,0.743,0.87
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,13,1,0.834,0.755,0.878
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,14,1,0.843,0.763,0.886
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,15,1,0.85,0.771,0.892
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,16,1,0.857,0.779,0.898
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,17,1,0.863,0.786,0.903
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,18,1,0.868,0.792,0.908
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,19,1,0.873,0.797,0.912
+V-own,"E rho^2 (relative), model random (one model)",recordings per creator,20,1,0.878,0.802,0.916
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,1,1,0.37,0.295,0.432
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,2,1,0.54,0.456,0.604
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,3,1,0.638,0.557,0.696
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,4,1,0.701,0.626,0.753
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,5,1,0.746,0.677,0.792
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,6,1,0.779,0.715,0.82
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,7,1,0.804,0.746,0.842
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,8,1,0.824,0.77,0.859
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,9,1,0.841,0.79,0.873
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,10,1,0.854,0.807,0.884
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,11,1,0.866,0.822,0.893
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,12,1,0.876,0.834,0.901
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,13,1,0.884,0.845,0.908
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,14,1,0.891,0.854,0.914
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,15,1,0.898,0.863,0.92
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,16,1,0.904,0.87,0.924
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,17,1,0.909,0.877,0.928
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,18,1,0.913,0.883,0.932
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,19,1,0.918,0.888,0.935
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,20,1,0.921,0.893,0.938
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,1,2,0.382,0.306,0.451
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,2,2,0.553,0.469,0.622
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,3,2,0.65,0.57,0.711
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,4,2,0.712,0.638,0.767
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,5,2,0.755,0.688,0.804
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,6,2,0.788,0.726,0.831
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,7,2,0.812,0.755,0.852
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,8,2,0.832,0.779,0.868
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,9,2,0.848,0.799,0.881
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,10,2,0.861,0.815,0.891
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,11,2,0.872,0.829,0.9
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,12,2,0.881,0.841,0.908
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,13,2,0.889,0.852,0.914
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,14,2,0.896,0.861,0.92
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,15,2,0.903,0.869,0.925
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,16,2,0.908,0.876,0.929
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,17,2,0.913,0.882,0.933
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,18,2,0.918,0.888,0.937
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,19,2,0.922,0.893,0.94
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,20,2,0.925,0.898,0.943
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,1,3,0.386,0.309,0.459
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,2,3,0.557,0.473,0.629
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,3,3,0.654,0.573,0.718
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,4,3,0.716,0.642,0.772
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,5,3,0.759,0.691,0.809
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,6,3,0.791,0.729,0.836
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,7,3,0.815,0.758,0.856
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,8,3,0.834,0.782,0.872
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,9,3,0.85,0.801,0.884
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,10,3,0.863,0.818,0.895
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,11,3,0.874,0.831,0.903
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,12,3,0.883,0.843,0.911
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,13,3,0.891,0.853,0.917
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,14,3,0.898,0.862,0.922
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,15,3,0.904,0.87,0.927
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,16,3,0.91,0.878,0.931
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,17,3,0.914,0.884,0.935
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,18,3,0.919,0.89,0.939
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,19,3,0.923,0.895,0.942
+A-K1,"E rho^2 (relative), model fixed at the record",recordings per creator,20,3,0.926,0.9,0.944
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,1,1,0.369,0.294,0.432
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,2,1,0.538,0.452,0.602
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,3,1,0.636,0.55,0.693
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,4,1,0.699,0.618,0.75
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,5,1,0.743,0.668,0.789
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,6,1,0.776,0.705,0.817
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,7,1,0.801,0.734,0.839
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,8,1,0.821,0.758,0.856
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,9,1,0.838,0.778,0.87
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,10,1,0.851,0.794,0.881
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,11,1,0.862,0.807,0.89
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,12,1,0.872,0.819,0.899
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,13,1,0.881,0.83,0.906
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,14,1,0.888,0.839,0.912
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,15,1,0.894,0.847,0.917
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,16,1,0.9,0.854,0.921
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,17,1,0.905,0.86,0.925
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,18,1,0.91,0.866,0.929
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,19,1,0.914,0.87,0.932
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,20,1,0.918,0.874,0.936
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,1,2,0.382,0.306,0.45
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,2,2,0.552,0.468,0.618
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,3,2,0.649,0.568,0.707
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,4,2,0.711,0.636,0.762
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,5,2,0.754,0.685,0.8
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,6,2,0.786,0.723,0.827
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,7,2,0.811,0.752,0.847
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,8,2,0.83,0.775,0.863
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,9,2,0.846,0.794,0.876
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,10,2,0.859,0.81,0.887
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,11,2,0.87,0.824,0.896
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,12,2,0.879,0.836,0.904
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,13,2,0.888,0.846,0.91
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,14,2,0.895,0.855,0.916
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,15,2,0.901,0.863,0.921
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,16,2,0.906,0.87,0.925
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,17,2,0.911,0.876,0.929
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,18,2,0.916,0.882,0.933
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,19,2,0.92,0.887,0.936
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,20,2,0.923,0.891,0.939
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,1,3,0.386,0.309,0.458
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,2,3,0.557,0.472,0.627
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,3,3,0.653,0.573,0.714
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,4,3,0.715,0.641,0.769
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,5,3,0.758,0.69,0.805
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,6,3,0.79,0.727,0.832
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,7,3,0.814,0.756,0.852
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,8,3,0.833,0.78,0.867
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,9,3,0.849,0.799,0.88
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,10,3,0.862,0.815,0.89
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,11,3,0.873,0.829,0.899
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,12,3,0.882,0.841,0.907
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,13,3,0.89,0.851,0.913
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,14,3,0.897,0.86,0.918
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,15,3,0.903,0.867,0.923
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,16,3,0.908,0.874,0.927
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,17,3,0.913,0.881,0.931
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,18,3,0.918,0.886,0.935
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,19,3,0.922,0.891,0.938
+A-K1,"Phi (absolute), model fixed at the record",recordings per creator,20,3,0.925,0.896,0.941
+A-K1,"E rho^2 (relative) against runs, 1 recordings per creator",runs,1,1,0.37,0.295,0.432
+A-K1,"E rho^2 (relative) against runs, 1 recordings per creator",runs,2,2,0.382,0.306,0.451
+A-K1,"E rho^2 (relative) against runs, 1 recordings per creator",runs,3,3,0.386,0.309,0.459
+A-K1,"E rho^2 (relative) against runs, 1 recordings per creator",runs,4,4,0.388,0.311,0.463
+A-K1,"E rho^2 (relative) against runs, 1 recordings per creator",runs,5,5,0.39,0.311,0.466
+A-K1,"E rho^2 (relative) against runs, 5 recordings per creator",runs,1,1,0.746,0.677,0.792
+A-K1,"E rho^2 (relative) against runs, 5 recordings per creator",runs,2,2,0.755,0.688,0.804
+A-K1,"E rho^2 (relative) against runs, 5 recordings per creator",runs,3,3,0.759,0.691,0.809
+A-K1,"E rho^2 (relative) against runs, 5 recordings per creator",runs,4,4,0.76,0.693,0.812
+A-K1,"E rho^2 (relative) against runs, 5 recordings per creator",runs,5,5,0.761,0.693,0.813
+A-K1,"E rho^2 (relative) against runs, 20 recordings per creator",runs,1,1,0.921,0.893,0.938
+A-K1,"E rho^2 (relative) against runs, 20 recordings per creator",runs,2,2,0.925,0.898,0.943
+A-K1,"E rho^2 (relative) against runs, 20 recordings per creator",runs,3,3,0.926,0.9,0.944
+A-K1,"E rho^2 (relative) against runs, 20 recordings per creator",runs,4,4,0.927,0.9,0.945
+A-K1,"E rho^2 (relative) against runs, 20 recordings per creator",runs,5,5,0.927,0.9,0.946
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,1,1,0.35,0.275,0.416
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,2,1,0.516,0.429,0.586
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,3,1,0.613,0.528,0.678
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,4,1,0.676,0.596,0.736
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,5,1,0.721,0.645,0.775
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,6,1,0.754,0.683,0.804
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,7,1,0.78,0.713,0.826
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,8,1,0.8,0.737,0.844
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,9,1,0.817,0.756,0.858
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,10,1,0.831,0.772,0.87
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,11,1,0.842,0.786,0.879
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,12,1,0.852,0.798,0.888
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,13,1,0.861,0.809,0.895
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,14,1,0.868,0.818,0.901
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,15,1,0.875,0.826,0.907
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,16,1,0.881,0.834,0.912
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,17,1,0.886,0.84,0.916
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,18,1,0.891,0.846,0.92
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,19,1,0.895,0.851,0.924
+A-K1,"E rho^2 (relative), model random (one model)",recordings per creator,20,1,0.899,0.857,0.927
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,1,1 (run facet not stored),0.245,0.128,0.343
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,2,1 (run facet not stored),0.393,0.226,0.51
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,3,1 (run facet not stored),0.493,0.305,0.61
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,4,1 (run facet not stored),0.564,0.369,0.676
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,5,1 (run facet not stored),0.618,0.422,0.723
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,6,1 (run facet not stored),0.66,0.467,0.758
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,7,1 (run facet not stored),0.694,0.506,0.785
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,8,1 (run facet not stored),0.721,0.539,0.807
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,9,1 (run facet not stored),0.744,0.568,0.824
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,10,1 (run facet not stored),0.764,0.594,0.839
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,11,1 (run facet not stored),0.781,0.617,0.851
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,12,1 (run facet not stored),0.795,0.637,0.862
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,13,1 (run facet not stored),0.808,0.655,0.871
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,14,1 (run facet not stored),0.819,0.672,0.879
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,15,1 (run facet not stored),0.829,0.687,0.887
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,16,1 (run facet not stored),0.838,0.701,0.893
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,17,1 (run facet not stored),0.846,0.713,0.899
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,18,1 (run facet not stored),0.853,0.725,0.904
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,19,1 (run facet not stored),0.86,0.735,0.908
+F-time,"E rho^2 (relative), model fixed at the record",recordings per creator,20,1 (run facet not stored),0.866,0.745,0.912
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,1,1,0.217,0.095,0.33
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,2,1,0.351,0.17,0.489
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,3,1,0.441,0.231,0.585
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,4,1,0.507,0.282,0.649
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,5,1,0.556,0.323,0.693
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,6,1,0.595,0.36,0.726
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,7,1,0.626,0.392,0.752
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,8,1,0.652,0.419,0.775
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,9,1,0.673,0.442,0.791
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,10,1,0.692,0.462,0.805
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,11,1,0.707,0.48,0.817
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,12,1,0.721,0.497,0.827
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,13,1,0.733,0.511,0.836
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,14,1,0.743,0.524,0.845
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,15,1,0.753,0.537,0.852
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,16,1,0.761,0.547,0.859
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,17,1,0.769,0.557,0.864
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,18,1,0.775,0.567,0.869
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,19,1,0.782,0.575,0.874
+F-time,"E rho^2 (relative), model random (one model)",recordings per creator,20,1,0.787,0.583,0.878
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,1,1 (run facet not stored),0.146,0.092,0.196
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,2,1 (run facet not stored),0.255,0.169,0.328
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,3,1 (run facet not stored),0.339,0.234,0.422
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,4,1 (run facet not stored),0.406,0.289,0.494
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,5,1 (run facet not stored),0.461,0.337,0.549
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,6,1 (run facet not stored),0.507,0.379,0.594
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,7,1 (run facet not stored),0.545,0.416,0.63
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,8,1 (run facet not stored),0.578,0.448,0.661
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,9,1 (run facet not stored),0.606,0.478,0.687
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,10,1 (run facet not stored),0.631,0.504,0.709
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,11,1 (run facet not stored),0.653,0.528,0.728
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,12,1 (run facet not stored),0.673,0.55,0.745
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,13,1 (run facet not stored),0.69,0.569,0.76
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,14,1 (run facet not stored),0.706,0.587,0.773
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,15,1 (run facet not stored),0.72,0.604,0.785
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,16,1 (run facet not stored),0.733,0.619,0.796
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,17,1 (run facet not stored),0.744,0.633,0.806
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,18,1 (run facet not stored),0.755,0.647,0.814
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,19,1 (run facet not stored),0.765,0.659,0.822
+F-outcome,"E rho^2 (relative), model fixed at the record",recordings per creator,20,1 (run facet not stored),0.774,0.67,0.83
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,1,1,0.123,0.071,0.17
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,2,1,0.218,0.132,0.288
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,3,1,0.294,0.185,0.376
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,4,1,0.355,0.232,0.443
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,5,1,0.406,0.272,0.498
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,6,1,0.449,0.308,0.542
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,7,1,0.485,0.34,0.578
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,8,1,0.517,0.37,0.609
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,9,1,0.545,0.396,0.635
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,10,1,0.569,0.42,0.658
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,11,1,0.59,0.442,0.679
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,12,1,0.61,0.461,0.697
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,13,1,0.627,0.479,0.713
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,14,1,0.643,0.495,0.727
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,15,1,0.657,0.51,0.739
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,16,1,0.67,0.524,0.751
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,17,1,0.682,0.537,0.761
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,18,1,0.692,0.549,0.771
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,19,1,0.703,0.561,0.78
+F-outcome,"E rho^2 (relative), model random (one model)",recordings per creator,20,1,0.712,0.571,0.789
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,1,1 (run facet not stored),0.494,0.393,0.581
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,2,1 (run facet not stored),0.661,0.564,0.735
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,3,1 (run facet not stored),0.745,0.66,0.806
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,4,1 (run facet not stored),0.796,0.721,0.847
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,5,1 (run facet not stored),0.83,0.764,0.874
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,6,1 (run facet not stored),0.854,0.795,0.893
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,7,1 (run facet not stored),0.872,0.819,0.907
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,8,1 (run facet not stored),0.886,0.838,0.917
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,9,1 (run facet not stored),0.898,0.853,0.926
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,10,1 (run facet not stored),0.907,0.866,0.933
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,11,1 (run facet not stored),0.915,0.877,0.938
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,12,1 (run facet not stored),0.921,0.886,0.943
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,13,1 (run facet not stored),0.927,0.894,0.947
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,14,1 (run facet not stored),0.932,0.9,0.951
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,15,1 (run facet not stored),0.936,0.906,0.954
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,16,1 (run facet not stored),0.94,0.912,0.957
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,17,1 (run facet not stored),0.943,0.917,0.959
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,18,1 (run facet not stored),0.946,0.921,0.961
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,19,1 (run facet not stored),0.949,0.925,0.963
+T-P1,"E rho^2 (relative), model fixed at the record",recordings per creator,20,1 (run facet not stored),0.951,0.928,0.965
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,1,1,0.369,0.261,0.462
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,2,1,0.508,0.376,0.612
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,3,1,0.581,0.436,0.687
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,4,1,0.626,0.474,0.734
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,5,1,0.656,0.501,0.768
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,6,1,0.678,0.523,0.793
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,7,1,0.695,0.538,0.81
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,8,1,0.708,0.548,0.825
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,9,1,0.718,0.556,0.837
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,10,1,0.727,0.566,0.846
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,11,1,0.734,0.571,0.855
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,12,1,0.74,0.577,0.862
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,13,1,0.746,0.581,0.868
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,14,1,0.75,0.585,0.874
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,15,1,0.754,0.588,0.879
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,16,1,0.758,0.591,0.883
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,17,1,0.761,0.593,0.887
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,18,1,0.764,0.595,0.891
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,19,1,0.766,0.597,0.893
+T-P1,"E rho^2 (relative), model random (one model)",recordings per creator,20,1,0.768,0.599,0.896

@@ -1,0 +1,111 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Seen creators only. Every label is model-coded and not checked by a person; every figure here is consistency (agreement between readings), never accuracy.
+# Interval level: 90% (creator-cluster bootstrap, percentile, 2,000 draws; seed 2026112619); interval method not calibrated by r3-P30 for this design class; a reading is a description, never a finding.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings of A would be expected at the deposited 5% (up to about 6.1 for the share, standardised, AUC and rank-correlation classes; r3-P30).
+# No per-creator or per-recording value is published; no cell or group rests on fewer than 5 creators.
+# r3-P19: variance components (moment estimates; variances on each quantity's own scale: shares 0 to 1, or 0/1) by design.
+# Design 1: each instrument's reading of record on every seen recording (creator; recording within creator, including one reading's noise). Design 2: two readings of the same items (sum and difference decomposition). Design 3: set G (41 seen recordings, revision 3 of the voice instrument; recording is the object, most creators have one recording there).
+# The recognizer facet: the relabelled shifted-grid transcripts are not stored (class c); rv-L2's per-pair record holds pairwise flip counts only, so no label quantity per recognizer reading is stored (rv-L2's published flip shares stand as published).
+# Sentence codes have one reading in production (no model facet). Forecast class of record, commitment, sentence-code and title runs on G: only pooled gate summaries are stored (not rebuilt here).
+# creators: printed through the nested-count rule (counts within 4 of a published count are banded).
+instrument,design,readings,creators,items,component,variance,note
+V-claimed,1 roster,small model (record),71,1271,creator,0.07336,
+V-claimed,1 roster,small model (record),71,1271,recording within creator (one reading),0.0695,
+V-claimed,2 two readings,small against middle model (recordings the middle model labelled in full),71,177,creator,0.07073,
+V-claimed,2 two readings,small against middle model (recordings the middle model labelled in full),71,177,recording within creator,0.0508,
+V-claimed,2 two readings,small against middle model (recordings the middle model labelled in full),71,177,model (main effect),0.00118,
+V-claimed,2 two readings,small against middle model (recordings the middle model labelled in full),71,177,creator x model,0.0,
+V-claimed,2 two readings,small against middle model (recordings the middle model labelled in full),71,177,"recording x model, with one reading's run noise",0.01977,
+V-claimed,3 set G,runs of the whole instrument (map and label repeated),30 to 39,41,recording,0.14942,
+V-claimed,3 set G,runs of the whole instrument (map and label repeated),30 to 39,41,run (main effect),0.0,set to 0 (negative moment estimate)
+V-claimed,3 set G,runs of the whole instrument (map and label repeated),30 to 39,41,"recording x run, residual",0.01401,
+V-claimed,3 set G,runs of the label call (one map),30 to 39,41,recording,0.15018,
+V-claimed,3 set G,runs of the label call (one map),30 to 39,41,run (main effect),0.00015,
+V-claimed,3 set G,runs of the label call (one map),30 to 39,41,"recording x run, residual",0.00941,
+V-claimed,3 set G,"small against middle model, two runs each",30 to 39,41,recording,0.1509,
+V-claimed,3 set G,"small against middle model, two runs each",30 to 39,41,model,0.00047,
+V-claimed,3 set G,"small against middle model, two runs each",30 to 39,41,recording x model,0.00443,
+V-claimed,3 set G,"small against middle model, two runs each",30 to 39,41,run within model,0.00015,
+V-claimed,3 set G,"small against middle model, two runs each",30 to 39,41,"recording x run, residual",0.00765,
+V-claimed,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,recording,0.16504,
+V-claimed,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,prompt form,0.0,set to 0 (negative moment estimate)
+V-claimed,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,recording x prompt form,0.00422,
+V-claimed,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,run within prompt form,1e-05,
+V-claimed,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,"recording x run, residual",0.00041,
+V-claimed,3 set G,input form: contractions visible (T0),30 to 39,41,"recording x condition, raw",0.00728,
+V-claimed,3 set G,input form: contractions visible (T0),30 to 39,41,"recording x condition, net of run noise",0.0,run reference: label-call runs
+V-claimed,3 set G,input form: punctuation removed (T5),30 to 39,41,"recording x condition, raw",0.00405,
+V-claimed,3 set G,input form: punctuation removed (T5),30 to 39,41,"recording x condition, net of run noise",0.0,run reference: label-call runs
+V-claimed,3 set G,input form: positions hidden,30 to 39,41,"recording x condition, raw",0.00295,
+V-claimed,3 set G,input form: positions hidden,30 to 39,41,"recording x condition, net of run noise",0.0,run reference: label-call runs
+V-claimed,3 set G,input form: artefact filter off (own map),30 to 39,41,"recording x condition, raw",0.01333,
+V-claimed,3 set G,input form: artefact filter off (own map),30 to 39,41,"recording x condition, net of run noise",0.0,run reference: whole-instrument runs
+V-claimed,3 set G,middle model's own map against the shared map,30 to 39,41,"recording x condition, raw",0.00042,
+V-claimed,3 set G,middle model's own map against the shared map,30 to 39,41,"recording x condition, net of run noise",5e-05,run reference: terra run residual
+V-own,1 roster,small model (record),71,1271,creator,0.05384,
+V-own,1 roster,small model (record),71,1271,recording within creator (one reading),0.10772,
+V-own,2 two readings,same,71,177,creator,0.06149,
+V-own,2 two readings,same,71,177,recording within creator,0.07914,
+V-own,2 two readings,same,71,177,model (main effect),0.0002,
+V-own,2 two readings,same,71,177,creator x model,0.00152,
+V-own,2 two readings,same,71,177,"recording x model, with one reading's run noise",0.02012,
+V-own,3 set G,runs of the whole instrument (map and label repeated),30 to 39,41,recording,0.14222,
+V-own,3 set G,runs of the whole instrument (map and label repeated),30 to 39,41,run (main effect),0.00018,
+V-own,3 set G,runs of the whole instrument (map and label repeated),30 to 39,41,"recording x run, residual",0.01227,
+V-own,3 set G,runs of the label call (one map),30 to 39,41,recording,0.1561,
+V-own,3 set G,runs of the label call (one map),30 to 39,41,run (main effect),5e-05,
+V-own,3 set G,runs of the label call (one map),30 to 39,41,"recording x run, residual",0.00383,
+V-own,3 set G,"small against middle model, two runs each",30 to 39,41,recording,0.14274,
+V-own,3 set G,"small against middle model, two runs each",30 to 39,41,model,4e-05,
+V-own,3 set G,"small against middle model, two runs each",30 to 39,41,recording x model,0.01247,
+V-own,3 set G,"small against middle model, two runs each",30 to 39,41,run within model,7e-05,
+V-own,3 set G,"small against middle model, two runs each",30 to 39,41,"recording x run, residual",0.00307,
+V-own,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,recording,0.15405,
+V-own,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,prompt form,2e-05,
+V-own,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,recording x prompt form,0.00062,
+V-own,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,run within prompt form,0.0,set to 0 (negative moment estimate)
+V-own,3 set G,"middle model, prompt form B (effort low) against A (effort none), two runs each",30 to 39,41,"recording x run, residual",0.00036,
+V-own,3 set G,input form: contractions visible (T0),30 to 39,41,"recording x condition, raw",0.01961,
+V-own,3 set G,input form: contractions visible (T0),30 to 39,41,"recording x condition, net of run noise",0.01578,run reference: label-call runs
+V-own,3 set G,input form: punctuation removed (T5),30 to 39,41,"recording x condition, raw",0.01571,
+V-own,3 set G,input form: punctuation removed (T5),30 to 39,41,"recording x condition, net of run noise",0.01188,run reference: label-call runs
+V-own,3 set G,input form: positions hidden,30 to 39,41,"recording x condition, raw",0.01487,
+V-own,3 set G,input form: positions hidden,30 to 39,41,"recording x condition, net of run noise",0.01104,run reference: label-call runs
+V-own,3 set G,input form: artefact filter off (own map),30 to 39,41,"recording x condition, raw",0.04056,
+V-own,3 set G,input form: artefact filter off (own map),30 to 39,41,"recording x condition, net of run noise",0.02829,run reference: whole-instrument runs
+V-own,3 set G,middle model's own map against the shared map,30 to 39,41,"recording x condition, raw",0.00036,
+V-own,3 set G,middle model's own map against the shared map,30 to 39,41,"recording x condition, net of run noise",0.0,run reference: terra run residual
+A-K1,1 roster,middle check (record),71,1284,creator,0.09103,
+A-K1,1 roster,middle check (record),71,1284,recording within creator (one reading),0.15526,
+A-K1,2 two readings,small against middle check (recordings whose every range both checks read),71,1284,creator,0.0862,
+A-K1,2 two readings,small against middle check (recordings whose every range both checks read),71,1284,recording within creator,0.13553,
+A-K1,2 two readings,small against middle check (recordings whose every range both checks read),71,1284,model (main effect),0.00037,
+A-K1,2 two readings,small against middle check (recordings whose every range both checks read),71,1284,creator x model,0.00183,
+A-K1,2 two readings,small against middle check (recordings whose every range both checks read),71,1284,"recording x model, with one reading's run noise",0.02431,
+A-K1,3 set G,"runs r1 to r3 of the whole asks instrument (rebuilt from stored answers, r3-P23)",30 to 39,41,recording,0.18089,
+A-K1,3 set G,"runs r1 to r3 of the whole asks instrument (rebuilt from stored answers, r3-P23)",30 to 39,41,run (main effect),0.00041,
+A-K1,3 set G,"runs r1 to r3 of the whole asks instrument (rebuilt from stored answers, r3-P23)",30 to 39,41,"recording x run, residual",0.01585,
+F-time,1 roster,middle model (record),all but fewer than 5 of 71,866,creator,0.0319,
+F-time,1 roster,middle model (record),all but fewer than 5 of 71,866,recording within creator (one reading),0.09857,
+F-time,2 two readings,record (middle) against small reading (recordings with a statement coded by both),all but fewer than 5 of 71,866,creator,0.02304,
+F-time,2 two readings,record (middle) against small reading (recordings with a statement coded by both),all but fewer than 5 of 71,866,recording within creator,0.05818,
+F-time,2 two readings,record (middle) against small reading (recordings with a statement coded by both),all but fewer than 5 of 71,866,model (main effect),0.00135,
+F-time,2 two readings,record (middle) against small reading (recordings with a statement coded by both),all but fewer than 5 of 71,866,creator x model,0.00217,
+F-time,2 two readings,record (middle) against small reading (recordings with a statement coded by both),all but fewer than 5 of 71,866,"recording x model, with one reading's run noise",0.02282,
+F-outcome,1 roster,middle model (record),all but fewer than 5 of 71,866,creator,0.00511,
+F-outcome,1 roster,middle model (record),all but fewer than 5 of 71,866,recording within creator (one reading),0.02987,
+F-outcome,2 two readings,same,all but fewer than 5 of 71,866,creator,0.00404,
+F-outcome,2 two readings,same,all but fewer than 5 of 71,866,recording within creator,0.01852,
+F-outcome,2 two readings,same,all but fewer than 5 of 71,866,model (main effect),0.0,set to 0 (negative moment estimate)
+F-outcome,2 two readings,same,all but fewer than 5 of 71,866,creator x model,0.00021,
+F-outcome,2 two readings,same,all but fewer than 5 of 71,866,"recording x model, with one reading's run noise",0.00996,
+S-world,1 roster,the one reading (small model),all but fewer than 5 of 71,961,creator,0.01974,
+S-world,1 roster,the one reading (small model),all but fewer than 5 of 71,961,recording within creator (one reading),0.02414,
+T-P1,1 roster,middle model (primary reading),71,1411,creator,0.09898,
+T-P1,1 roster,middle model (primary reading),71,1411,recording within creator (one reading),0.10154,
+T-P1,2 two readings,middle against small reading (titles with both readings),71,1411,creator,0.07495,
+T-P1,2 two readings,middle against small reading (titles with both readings),71,1411,recording within creator,0.08171,
+T-P1,2 two readings,middle against small reading (titles with both readings),71,1411,model (main effect),3e-05,
+T-P1,2 two readings,middle against small reading (titles with both readings),71,1411,creator x model,0.01704,
+T-P1,2 two readings,middle against small reading (titles with both readings),71,1411,"recording x model, with one reading's run noise",0.02922,

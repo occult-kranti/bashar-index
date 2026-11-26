@@ -1,0 +1,23 @@
+# Exploratory; not a test of H1-H10. r3-P03: label circularity -- register, cues and the contraction contrast ('one contrast, several locators').
+# Seen creators only. Voice labels are model-coded (voice revision 3; H4's claimed side V2, rule B, broad own voice) and not checked by a person; every agreement figure is agreement, never accuracy.
+# Contrast: H4's contraction-share drop (own minus claimed share over H4's closed list) in between-creator SD units (H4's frozen yardstick 0.1474); margin 0.20 SD (deposit 2's default; the entry states none). AUC margin: 0.10 from 0.50.
+# Intervals: 90%. Contrast, benchmark and D rows by the method r3-P30's interval-choice.csv selects for design class C_standardised at the row's creator count (column interval_method); where r3-P30 finds that no method holds, a reading is at most undetermined. AUC estimators: 90% creator bootstrap percentile (2,000 draws), as fixed in prespec.md; r3-P30 finds no method that holds for its AUC class at these counts, so AUC readings are at most undetermined.
+# Readings fixed in prespec.md (hashed before any quantity was computed). The only words of the entry's reading: 'cannot be told apart from register in these data', 'told apart from register in these data (on these checks only)' or 'undetermined'; never 'tautology'.
+# No row, cell or bar on fewer than 5 creators; counts nested within 1 to 4 of another printed group are stated against it or as a band; no point per creator.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, the readings of A expected by chance are about 2.8 at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# r3-P02 (described, not read): the coupling of pauses with sentence marks is weaker in the claimed voice; the formatting features (punctuation marks, sentence marks) of F0 and F1 read punctuation that pauses make.
+# A row wholly beyond the margin in the direction opposite to the named one is described as 'beyond the margin, opposite to the named direction' (a label added after r3-P02's results); it is not reading A.
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Changed 2026-11-26T10:09:37Z (UTC, from date -u) by the lead's step-1 decision 53: where a row's creator count is banded or withheld, the interval method is given as r3-P30's choice at the row's count, without its name, grid row or 'no method holds' flag; reading words stay; values are withheld where they could narrow a banded count. No number changed.
+# Changed 2026-11-26T11:36:14Z (UTC, from date -u) by the lead's step-1 decision 62: values that could narrow a banded count are not printed. No number changed.
+item,value
+R0 reading (label of record),A (beyond the margin: fewer contractions in the claimed voice)
+R3 reading (register-matched),A (beyond the margin: fewer contractions in the claimed voice)
+F1 rung: median estimator,undetermined
+F1 rung: pooled estimator,undetermined
+F1 rung reading,undetermined
+F1 rung before r3-P30's cap (median / pooled),beyond / beyond
+K-F1 D,not printed: the row's count is banded
+path through prespec.md's rule,"R0 and R3 read A; the F1 estimators agree (beyond / beyond before r3-P30's cap, undetermined / undetermined after it); K-F1's D not printed (the row's count is banded)"
+entry reading,told apart from register in these data (on these checks only); some rows' readings are not printed for privacy

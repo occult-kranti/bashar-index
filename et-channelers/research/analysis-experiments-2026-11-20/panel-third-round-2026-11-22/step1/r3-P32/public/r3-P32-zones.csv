@@ -1,0 +1,25 @@
+# Exploratory; not a test of H1-H10.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Third-round programme, step 1, entry r3-P32 (carries r4-P11): an error-aware hierarchical re-estimate on the controlled contrasts and a boundary-restricted fragility analysis.
+# Labels model-coded, not checked by a person; agreement between models is agreement, never accuracy; recognizer output is not checked by a person.
+# Disagreement zones on the axis of the tipping curves: the share of the 3-unit boundary zone's units whose side differs. Zones from the released public aggregates only (prespec section 5); the direct check from the seen labels of both models is described, never read. Agreement between models is agreement, never accuracy; under correlated errors (VER-DEP) disagreement bounds error only from below.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings A would be expected at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30); this entry reads no A or B, and no reading is a finding.
+statistic,zone,share_low,share_high,source,role
+H1,within-vendor zone (the two OpenAI models),0.136,0.192,"nlp-R7 nlp-r7-boundary-disagreement.csv, mapped to the 3-unit zone (prespec section 5)",read
+H1,VER-A tick: the record outvoted by a third model of the same vendor,0.09,0.127,VER-A ver-a-sides-on-disputed-words.csv (0.659 x the zone's ends),described
+H1,cross-vendor zone (reader of another vendor against the OpenAI majority),0.033,0.301,VER-3R ver3r-strata-and-packets.csv (agreed strata to split units),read
+H1,meas's outer anchor (twice the within-vendor upper end; VER-DEP's correlated errors),0.384,0.384,VER-DEP ver-dep.csv (phi about 0.5),"described, never read"
+H1,"direct check: record zone, middle differs (seen labels, recordings the middle model labelled in full; 35 and fewer than 5 more creators)",0.1482,0.1482,seen labels of both models (p32_zonecheck.py),"described, never read"
+H1,"direct check: middle zone, record differs (seen labels, recordings the middle model labelled in full; 34 and fewer than 5 more creators)",0.197,0.197,seen labels of both models (p32_zonecheck.py),"described, never read"
+H4,within-vendor zone (the two OpenAI models),0.101,0.141,"nlp-R7 nlp-r7-boundary-disagreement.csv, mapped to the 3-unit zone (prespec section 5)",read
+H4,VER-A tick: the record outvoted by a third model of the same vendor,0.066,0.093,VER-A ver-a-sides-on-disputed-words.csv (0.659 x the zone's ends),described
+H4,cross-vendor zone (reader of another vendor against the OpenAI majority),0.033,0.301,VER-3R ver3r-strata-and-packets.csv (agreed strata to split units),read
+H4,meas's outer anchor (twice the within-vendor upper end; VER-DEP's correlated errors),0.282,0.282,VER-DEP ver-dep.csv (phi about 0.5),"described, never read"
+H4,"direct check: record zone, middle differs (seen labels, recordings the middle model labelled in full; 22 and fewer than 5 more creators)",0.1193,0.1193,seen labels of both models (p32_zonecheck.py),"described, never read"
+H4,"direct check: middle zone, record differs (seen labels, recordings the middle model labelled in full; 22 and fewer than 5 more creators)",0.1492,0.1492,seen labels of both models (p32_zonecheck.py),"described, never read"
+H6,within-vendor zone (the two OpenAI models),0.136,0.192,"nlp-R7 nlp-r7-boundary-disagreement.csv, mapped to the 3-unit zone (prespec section 5)",read
+H6,VER-A tick: the record outvoted by a third model of the same vendor,0.09,0.127,VER-A ver-a-sides-on-disputed-words.csv (0.659 x the zone's ends),described
+H6,cross-vendor zone (reader of another vendor against the OpenAI majority),0.033,0.301,VER-3R ver3r-strata-and-packets.csv (agreed strata to split units),read
+H6,meas's outer anchor (twice the within-vendor upper end; VER-DEP's correlated errors),0.384,0.384,VER-DEP ver-dep.csv (phi about 0.5),"described, never read"
+H6,"direct check: record zone, middle differs (seen labels, recordings the middle model labelled in full; 35 and fewer than 5 more creators)",0.1482,0.1482,seen labels of both models (p32_zonecheck.py),"described, never read"
+H6,"direct check: middle zone, record differs (seen labels, recordings the middle model labelled in full; 34 and fewer than 5 more creators)",0.197,0.197,seen labels of both models (p32_zonecheck.py),"described, never read"

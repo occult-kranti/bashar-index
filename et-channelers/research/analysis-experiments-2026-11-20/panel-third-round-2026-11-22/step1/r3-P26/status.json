@@ -1,0 +1,107 @@
+{
+ "id": "r3-P26",
+ "carries": [
+  "r4-P06 (MTMM over input-disjoint pairs; novelty log N05)"
+ ],
+ "title": "A method-dependence map and an MTMM read over input-disjoint pairs",
+ "class": "a.1",
+ "step": "1",
+ "utc_run": {
+  "prespec_hashed": "2026-11-26T06:29:28Z",
+  "p26_run": "2026-11-26T06:30:07Z to 06:30:48Z (run_locked.sh)",
+  "publication": "2026-11-26T06:31Z to 06:35Z",
+  "privacy_scans": "2026-11-26T06:49:29Z"
+ },
+ "prespec_sha256": "e0bebf115bec5049924acf61b330ec638a6a63f145da6593c17eab363b416b35",
+ "readings": {
+  "voice (MTMM)": "no input-disjoint pair",
+  "source family (MTMM)": "no input-disjoint pair",
+  "asks (MTMM)": "undetermined: one input-disjoint pair, rho 0.110 (90% creator bootstrap -0.085 to 0.293) against the 0.10 margin",
+  "time window, hedging, condition (TL-7.8)": "no input-disjoint pair",
+  "subject": "not computable (not run in MTMM)",
+  "acoustic column": "not computable here (a.2)"
+ },
+ "described": {
+  "pooled median convergent rho by class": "C1 0.85, C2 0.53, C3 0.45, C4 0.42, C5 0.11",
+  "reproduction": "all 66 published MTMM cells reproduced exactly (points and intervals)"
+ },
+ "interval": "creator bootstrap percentile, 90%, MTMM's seeded draws; a design class r3-P30 did not calibrate",
+ "departures": [
+  "the map's codings are this agent's (voice models read the brand; a shared vendor counts as a shared input; the upstream statement set carries the small model)",
+  "TL-7.8 not rebuilt: classes from the map, values from TL's published cells, no interval for its class medians",
+  "RX-CB and VER-DEP placed on the map and classed only; no correlation recomputed",
+  "acoustic column (a.2) and the subject construct not computable"
+ ],
+ "not_stored": [
+  "per-creator subject measure (TC stage 2 not bought)",
+  "acoustic measure (a.2)",
+  "speech-based source-family label (NE full pass not run)"
+ ],
+ "for_the_lead": [
+  "whether a between-creator correlation on an uncalibrated creator bootstrap may read A (moot here)",
+  "whether the vendor counts as a shared input (changes no primary)",
+  "MTMM's published cross-input median mixes pairs sharing a model or the brand"
+ ],
+ "contacts": "none (contacts.md)",
+ "status": "reported (exploratory; not a test of H1-H10)",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "written_by": "a step-1 agent (a model agent working for the project lead; not a person)",
+ "written_utc": "2026-11-26T06:50:37Z",
+ "seen_only": true,
+ "model_or_api_calls": 0,
+ "interval_rule": "r3-P30 interval-choice.csv sha256 fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6",
+ "privacy_scan": "zsolve.py, qscan_all2.py, quant.py and quant2.py (copied from the release's pass-2 scans, pointed at public/): 0 rows to fix; identifier scan (r3-P01's pubrules.scan_identifiers): 0 files; PNG 200 dpi without text chunks; PDF without document information",
+ "code_sha256": {
+  "code/p26_publish.py": "7c68348bf8b5efbe0ef379ac3020ad0d23b8d2326c9ef175487bfeaab1dae61b",
+  "code/p26_run.py": "868248b0e72effe38a47755db02721f0fd2660bbe568d2d6163b736511579c88",
+  "code/p26common.py": "a66c5f072d7bb33d3dc602fab40957541c4305175bbcaebca20828ec310b4921",
+  "code/qscan_all2.py": "b3e14c739f6d8e8abefd35dfb225a7c6bc08fc2f4127762632a1376b40cf3291",
+  "code/quant.py": "21f7639a5d62a600d613408ce8bbc2d6c28223642fb680b81d277363e5f146a4",
+  "code/quant2.py": "fa7e9633bb8b104e0300cce928684846c6124aaa94ec2fd6d1c866008544836c",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/write_status.py": "d86af5833da847ef2b7ea299b7f0f49e4588b31d2632bc7744914c03b2242b09",
+  "code/zsolve.py": "3de25978890ba92b96d4a9418c2ed3c6084af612439961cbd228ce6603d4ec89"
+ },
+ "public_sha256": {
+  "public/data-r3-P26-convergence-by-class.csv": "1682b9c0ff4f6cfe4776cf019e16c9eef14800a896981bea028bbabb04dd4798",
+  "public/data-r3-P26-dependence-map.csv": "e16ea871619062c29a9df712417c28c4f31ef551b68456b4b31f26025d24a786",
+  "public/data-r3-P26-pair-classes.csv": "3b2ab64923dbb4990cdfb12e17c8ff4c436f198e810d5f88d9319c36b76ad8d4",
+  "public/fig-r3-P26-convergence-by-class.pdf": "988f2014d876ce2adc6cfc3fba567a5ca8771c1076d45f5a56e644a8dd300334",
+  "public/fig-r3-P26-convergence-by-class.png": "283ea8f08bb8f41753d4849414544c9c63ca9083d16a556712461202d45bb474",
+  "public/fig-r3-P26-dependence-map.pdf": "3f82773dc7bc2f8415ace132efb50b234275630329621b8ad3722383ab7e0276",
+  "public/fig-r3-P26-dependence-map.png": "0aab128d8d3a7bb33552bebb34703d7b0ee08014b911139bbb03dc4d4af89222",
+  "public/fig-r3-P26-mtmm-hatched.pdf": "032c70d32ba4b7c35e457ee5ea91f83457898e96bfc11752eabeaafa581e8f0c",
+  "public/fig-r3-P26-mtmm-hatched.png": "3f2536327719ae9c7e6dc10f4de6c9a1e9c401f8dd0e61f17b1a58a4628331a0",
+  "public/r3-P26-readings.csv": "76e146d4ca6909e4ef47dbb2aedda670ea85ff347660218dad5cfe0d88fb1b16"
+ },
+ "prespec_file_sha256": "e0bebf115bec5049924acf61b330ec638a6a63f145da6593c17eab363b416b35",
+ "readme_sha256": "755317a26f143f7b16f059d5f7c25c8a798d8470cc901fcc9b7aa78336a7ed00",
+ "contacts_sha256": "fa6af7113b59536e0bcc7cd78008162d4e9aabd44d19e075a5c0c9b965c08c85",
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "755317a26f143f7b16f059d5f7c25c8a798d8470cc901fcc9b7aa78336a7ed00",
+   "contacts.md": "e7650500ea948bb724ed8fa72899437931f524581be1624e15a4fd253386572d",
+   "prespec.md": "e0bebf115bec5049924acf61b330ec638a6a63f145da6593c17eab363b416b35",
+   "public/data-r3-P26-convergence-by-class.csv": "1682b9c0ff4f6cfe4776cf019e16c9eef14800a896981bea028bbabb04dd4798",
+   "public/data-r3-P26-dependence-map.csv": "e16ea871619062c29a9df712417c28c4f31ef551b68456b4b31f26025d24a786",
+   "public/data-r3-P26-pair-classes.csv": "3b2ab64923dbb4990cdfb12e17c8ff4c436f198e810d5f88d9319c36b76ad8d4",
+   "public/fig-r3-P26-convergence-by-class.pdf": "988f2014d876ce2adc6cfc3fba567a5ca8771c1076d45f5a56e644a8dd300334",
+   "public/fig-r3-P26-convergence-by-class.png": "283ea8f08bb8f41753d4849414544c9c63ca9083d16a556712461202d45bb474",
+   "public/fig-r3-P26-dependence-map.pdf": "3f82773dc7bc2f8415ace132efb50b234275630329621b8ad3722383ab7e0276",
+   "public/fig-r3-P26-dependence-map.png": "0aab128d8d3a7bb33552bebb34703d7b0ee08014b911139bbb03dc4d4af89222",
+   "public/fig-r3-P26-mtmm-hatched.pdf": "032c70d32ba4b7c35e457ee5ea91f83457898e96bfc11752eabeaafa581e8f0c",
+   "public/fig-r3-P26-mtmm-hatched.png": "3f2536327719ae9c7e6dc10f4de6c9a1e9c401f8dd0e61f17b1a58a4628331a0",
+   "public/r3-P26-readings.csv": "76e146d4ca6909e4ef47dbb2aedda670ea85ff347660218dad5cfe0d88fb1b16"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

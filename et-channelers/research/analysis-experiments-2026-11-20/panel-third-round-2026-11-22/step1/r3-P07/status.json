@@ -1,0 +1,104 @@
+{
+ "id": "r3-P07",
+ "class": "a.1",
+ "step": 1,
+ "status": "done (exploratory; a description)",
+ "written_utc": "2026-11-26T06:47:48Z",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded labels, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec": {
+  "file": "prespec.md",
+  "sha256": "703ec5ead596873469b5f42486b1d326caf4749784542c9af971963be79878db",
+  "hashed_utc": "2026-11-26T06:26:35Z"
+ },
+ "readings": {
+  "kind": "description (no reading A or B)",
+  "F1 time outside recognized speech, solo (55 creators)": "entries: step +2.2 points (90% -0.6 to 4.9) wholly inside the margin; ramp before not printed (the row's count is banded); ramp after -8.8 (-12.3 to -5.3) wholly beyond the margin, below. Exits: ramp before +8.4 (5.0 to 11.7) crosses; step and ramp after not printed (the rows' counts are banded). A local excess of time outside recognized speech next to claimed-voice boundaries, beyond position-matched shifted sentence-unit boundaries; placebo and seam-excluded rows whose descriptions are printed agree; some rows' descriptions are not printed for privacy.",
+  "F1, audience sessions (13 creators)": "exits: ramp after -16.3 points (-22.4 to -9.0) wholly beyond, below; step +9.2 (4.9 to 14.7) crosses; entries: every row whose description is printed inside or crossing the margin; some rows' descriptions are not printed for privacy.",
+  "other features": "first-person singular steps up after an exit (audience +0.68: wholly beyond, above; the solo row is not printed: its count is banded) and falls in the half-minute after an entry (solo -0.66: wholly beyond, below); second person in audience sessions: ramp before an entry -0.50 (wholly beyond, below); words per minute and low-probability words: every row whose description is printed inside or crossing the margin; some rows' descriptions are not printed for privacy."
+ },
+ "interval": "90%, r3-P30 interval-choice.csv by class (F1, F3 B_share_difference; F2 A_log_ratio; F4-F6 H_rare_counts) at the row's count; every method named at an exact count holds; t interval beside as sensitivity (not printed on rows whose count is banded; decision 53)",
+ "departures": [
+  "edited recordings read as the voice map's format 'solo' (no edited field stored)",
+  "pooled all-formats row not published (privacy: overlapping creator sets)",
+  "one creator base per panel, boundary type and statistic for all features (privacy)",
+  "dominance rule applied to profile bins",
+  "no middle-model rows; voice-detector timeline not used"
+ ],
+ "not_run": [
+  "middle-model rows",
+  "acoustic features (a.2)",
+  "a person's boundary sample (class c)"
+ ],
+ "not_stored": [
+  "whether a recording was edited",
+  "a per-recording voice-detector timeline (not used; rv-D3 has no positional figure for it)"
+ ],
+ "contacts": "none (contacts.md)",
+ "privacy_scans": "zsolve.py: 0 rows tested, 0 pinned, 0 narrowed; qscan_all2.py: 0 files with quantile columns, 0 rows with a hidden or banded base; identifier scan (creator codes, audio hashes, video ids): 0 hits; PNG text chunks and PDF document information: none. quant.py and quant2.py copied; they read the 'quantiles' column of one release file, and no public file of this entry has such a column, so they were not run on it.",
+ "runs_utc": {
+  "p07_run.py": "2026-11-26T06:28:27Z to 06:28:57Z",
+  "p07_publish.py": "06:30:18Z to 06:30:34Z; rerun with the dominance rule for profile bins about 06:33Z",
+  "p07_plot.py": "06:31Z to 06:33Z"
+ },
+ "files": {
+  "public/data-r3-P07-profiles.csv": "ac9db409524aeec98dadc874e0c78e64b051ec6a9e94ec3eec31dcaa5b33d09d",
+  "public/fig-r3-P07-profiles-audience.pdf": "f88324e98d55351bb14c5eed6b398fb5e83151e27e1058cd29952d9350093fda",
+  "public/fig-r3-P07-profiles-audience.png": "fdc5b3dc31fb2269632e916be39801c1b91e950a54712ca5c1f6aee6109e9b7d",
+  "public/fig-r3-P07-profiles-solo.pdf": "738bddf8263b2b467a4243b40490113ebfb789776fafa016179b4916061f8279",
+  "public/fig-r3-P07-profiles-solo.png": "7c6f5e89cbeb5ec15049fdb7767b69fa18ec813b63c1bce3d9ab32712cedf6ec",
+  "public/fig-r3-P07-steps.pdf": "48e37ab1e7cdda8fd77eacbf8372869ff80b7275c3bc51d25b43c041f0a31b73",
+  "public/fig-r3-P07-steps.png": "5546b4ffa03878050399d733730d597f532325fcf19bb2726f8fa68bc4c30c5b",
+  "public/r3-P07-described-rows.csv": "069858d1821c47633ed2ad1995dcc1ff0e77f789f67cf769e61073f7c1320ab0",
+  "code/finalize.py": "f3711f285ef2310f56383d4aa121c8cd25157913ab3d85edde2ce1ef91e3d7fe",
+  "code/p07_plot.py": "e183f42a4f6f66f622ed11656f1cde43889837469369943f53d2161d124384b3",
+  "code/p07_publish.py": "45e225d49246fac9f859ed240a125a213ece94e4d6628294e6bfe316a538c00d",
+  "code/p07_run.py": "cd228233d1e547d4945cdfd8c683fb91c183e85668452bf29bcfb2694ebc1f45",
+  "code/probe_p07.py": "18947627780c1d421aff7ca2adc7bf6b2c9fbeaeab2bc4b61dd00e1d00f2b473",
+  "code/pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "code/scan_ids.py": "8e13207c018538e592903f635f90c4bdce058848f8d9292bef3a2945fcaae14c",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/scans/qscan_all2.py": "78afbcf9dfe5bdc5d534f063598bb7cffb5c964bed782a54f43fac49e64d3846",
+  "code/scans/quant.py": "a2478a09a37c3c759485fdfa3e0f98c6cd1d9a3094cc3b58c566588a9b1cae5c",
+  "code/scans/quant2.py": "7421b55e42d6fd55880a4b44dbc42c89c5991f18ba652374a2a4e93865ce9248",
+  "code/scans/zsolve.py": "14ef03d1fbe5d43d391cc763ddbb5cbb5382bef3c4194a698aa963d0f5bc277a",
+  "prespec.md": "703ec5ead596873469b5f42486b1d326caf4749784542c9af971963be79878db",
+  "prespec-record.md": "df9d4646d671c7f8a9fa094348bb2adba718e8f451629a6e0eaca67a9d096139",
+  "contacts.md": "f2a44d6634a929cbfe3e3b3f130a4104bfe150d09ad9994d3cd93fe773148208"
+ },
+ "readme_sha256": "8f47bac2fb282096fd9eaae84c980e648d2bee872f1d1b32a87a7a3e7dc2ec84",
+ "for_the_lead": [
+  "the pooled all-formats row was withheld for privacy; say if it should be built on disjoint formats instead",
+  "edited recordings are read as the map's solo format"
+ ],
+ "note_2026-11-26_decision_49": "2026-11-26T09:23:30Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: README.md, public/r3-P07-described-rows.csv",
+ "note_2026-11-26_decision_56": "2026-11-26T10:53:54Z (UTC, from date -u): files changed by the lead's step-1 decision 56 (no number changed); their recorded hashes refreshed: README.md, code/p07_plot.py, public/fig-r3-P07-steps.pdf, public/fig-r3-P07-steps.png, public/r3-P07-described-rows.csv",
+ "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/p07_plot.py, public/fig-r3-P07-steps.pdf, public/fig-r3-P07-steps.png, public/r3-P07-described-rows.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "8f47bac2fb282096fd9eaae84c980e648d2bee872f1d1b32a87a7a3e7dc2ec84",
+   "contacts.md": "e21cfcb24426355c1d20cddfb9f69f0c6627672eee77bf04c928802467a1ebea",
+   "prespec-record.md": "b772658084fa01e24301999c4121c4b58d64277b546a7fc5a2dab15666596054",
+   "prespec.md": "703ec5ead596873469b5f42486b1d326caf4749784542c9af971963be79878db",
+   "public/data-r3-P07-profiles.csv": "ac9db409524aeec98dadc874e0c78e64b051ec6a9e94ec3eec31dcaa5b33d09d",
+   "public/fig-r3-P07-profiles-audience.pdf": "f88324e98d55351bb14c5eed6b398fb5e83151e27e1058cd29952d9350093fda",
+   "public/fig-r3-P07-profiles-audience.png": "fdc5b3dc31fb2269632e916be39801c1b91e950a54712ca5c1f6aee6109e9b7d",
+   "public/fig-r3-P07-profiles-solo.pdf": "738bddf8263b2b467a4243b40490113ebfb789776fafa016179b4916061f8279",
+   "public/fig-r3-P07-profiles-solo.png": "7c6f5e89cbeb5ec15049fdb7767b69fa18ec813b63c1bce3d9ab32712cedf6ec",
+   "public/fig-r3-P07-steps.pdf": "48e37ab1e7cdda8fd77eacbf8372869ff80b7275c3bc51d25b43c041f0a31b73",
+   "public/fig-r3-P07-steps.png": "5546b4ffa03878050399d733730d597f532325fcf19bb2726f8fa68bc4c30c5b",
+   "public/r3-P07-described-rows.csv": "069858d1821c47633ed2ad1995dcc1ff0e77f789f67cf769e61073f7c1320ab0"
+  },
+  "changed_for_publication": [
+   "contacts.md",
+   "prespec-record.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)",
+   "prespec-record.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

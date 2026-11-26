@@ -1,0 +1,86 @@
+{
+ "id": "r3-P28",
+ "carries": [],
+ "title": "One annotation protocol and a priced funding ladder (it funds nothing)",
+ "class": "a.1",
+ "step": "1",
+ "utc_run": {
+  "prespec_hashed": "2026-11-26T06:46:19Z",
+  "p28_run": "2026-11-26T06:47:42Z (final figure rerun about 06:48Z)",
+  "privacy_scans": "2026-11-26T06:49:29Z"
+ },
+ "prespec_sha256": "cd8d4ffd4a8dfd54800b5c82bd39effa3636a652dece4ae18a31d0e39cfb8c75",
+ "readings": {
+  "kind": "act (writing; no margin, no reading)",
+  "budget": "ledger sum 126.70 USD; hard stop 130; headroom 3.30 USD; warning level 120 passed",
+  "ladder": "few arms fit under the headroom (precision reads, quotation faithfulness, tie check, low ends of scope and recall reads, the shifted-grid relabel of BR-GS's 40 recordings); the person check is the only accuracy purchase (about 750 to 1,200 USD minimal)"
+ },
+ "departures": [
+  "TL-SPEC's and VER-ADJ-G's sizes are this agent's estimates",
+  "the high end's 1.25 buffer is a choice",
+  "human-coder arms not priced from the ledger",
+  "HR priced from the registry and its tag cap"
+ ],
+ "not_stored": [
+  "members' token counts per arm",
+  "sizes of arms not yet designed",
+  "a price per person-hour beyond the members' USD ranges"
+ ],
+ "for_the_lead": [
+  "the panel's first rung does not fit whole under 3.30 USD",
+  "the shifted-grid relabel costs cents at the measured rate",
+  "every arm above 2 USD needs the report-first step; none is requested"
+ ],
+ "contacts": "none (contacts.md); the cost ledger was read for amounts only, as the brief directs",
+ "model_calls": 0,
+ "spent_usd": 0,
+ "status": "reported (exploratory; not a test of H1-H10)",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "written_by": "a step-1 agent (a model agent working for the project lead; not a person)",
+ "written_utc": "2026-11-26T06:50:37Z",
+ "seen_only": true,
+ "model_or_api_calls": 0,
+ "interval_rule": "r3-P30 interval-choice.csv sha256 fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6",
+ "privacy_scan": "zsolve.py, qscan_all2.py, quant.py and quant2.py (copied from the release's pass-2 scans, pointed at public/): 0 rows to fix; identifier scan (r3-P01's pubrules.scan_identifiers): 0 files; PNG 200 dpi without text chunks; PDF without document information",
+ "code_sha256": {
+  "code/p28_run.py": "c85bd59e30eebe54fc1e137841e3f7e43f945df70c33b5241428a607d0feab61",
+  "code/qscan_all2.py": "5bd2be65905ce488b3e0df909c8da9336d883828dde2dd9a5241aff3d10b4fe9",
+  "code/quant.py": "c2983d5d86184faad64485f35c3075e247ab007e90eb0124c1b7f474e2c1c5ca",
+  "code/quant2.py": "7a420cf88f4d200ab02a0277edea957414699b62edf8a4d3eb7844920d029577",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "code/write_status.py": "d86af5833da847ef2b7ea299b7f0f49e4588b31d2632bc7744914c03b2242b09",
+  "code/zsolve.py": "518a558293a8658ec34caf7ea3f4f305c83562382f2ed8c275c75de2ddff3e99"
+ },
+ "public_sha256": {
+  "public/fig-r3-P28-funding-ladder.pdf": "f56285e164f5c3a4a7c3957eccfb75ed8b6e69fbf1328d24ec206c23c69589fa",
+  "public/fig-r3-P28-funding-ladder.png": "a37c651306d073f5ebd8a19647478432a91b091c6e6ea356d3ef7b26c68caa88",
+  "public/r3-P28-budget.csv": "4f7e64ecefa85590bdf890583e18b3d30f397a4799884ae977cac9286a64f4c4",
+  "public/r3-P28-funding-ladder.csv": "06a29b6a93e3bde31b5fc5a377a3b18c095e70d13b261b22bb0cc08bd5667a14",
+  "public/r3-P28-ledger-anchors.csv": "446a7c944d28b05c92d722ba031aaa09d3c7daa5ab018b6182f43e1dd2ba4875"
+ },
+ "prespec_file_sha256": "cd8d4ffd4a8dfd54800b5c82bd39effa3636a652dece4ae18a31d0e39cfb8c75",
+ "readme_sha256": "395afc89c59b4c9788af157adc57a2eb007103038c8b7bbe64c8a3aa8bbd440a",
+ "contacts_sha256": "f3a3b3dd0af7a0757d2db7b17a42b0d05d984dab00b1976eced378978a8f6a98",
+ "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T12:18:25Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "395afc89c59b4c9788af157adc57a2eb007103038c8b7bbe64c8a3aa8bbd440a",
+   "contacts.md": "6cd46d915694390c9dc4bbe66b27aa2d6c6d015268f4479845b49d5df19799fb",
+   "prespec.md": "cd8d4ffd4a8dfd54800b5c82bd39effa3636a652dece4ae18a31d0e39cfb8c75",
+   "public/fig-r3-P28-funding-ladder.pdf": "f56285e164f5c3a4a7c3957eccfb75ed8b6e69fbf1328d24ec206c23c69589fa",
+   "public/fig-r3-P28-funding-ladder.png": "a37c651306d073f5ebd8a19647478432a91b091c6e6ea356d3ef7b26c68caa88",
+   "public/r3-P28-budget.csv": "4f7e64ecefa85590bdf890583e18b3d30f397a4799884ae977cac9286a64f4c4",
+   "public/r3-P28-funding-ladder.csv": "06a29b6a93e3bde31b5fc5a377a3b18c095e70d13b261b22bb0cc08bd5667a14",
+   "public/r3-P28-ledger-anchors.csv": "446a7c944d28b05c92d722ba031aaa09d3c7daa5ab018b6182f43e1dd2ba4875"
+  },
+  "changed_for_publication": [
+   "contacts.md"
+  ],
+  "added_for_publication": [
+   "contacts.md: label line and/or agnosticism sentence (decision 47)"
+  ]
+ }
+}

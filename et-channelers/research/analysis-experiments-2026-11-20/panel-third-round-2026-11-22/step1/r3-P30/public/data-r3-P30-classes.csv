@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 1, entry r3-P30 (calibration battery for interval methods; carries r4-P10's residual).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Calibration on label-free analogues built from the seen creators' recognizer output (counts per sentence unit; CAL's seen-only cache); no label is read, so no model-coded value enters; recognizer output is not checked by a person. Each simulated data set draws creators with replacement from a pool of between 60 and 71 of the 71 seen creators (the pool is the population); coverage is read at the pool's creator-balanced mean.
+# sd_in_margins: the between-creator SD of the class's creator values, divided by its margin (a property of the seen pool; describes how wide creator heterogeneity is against the margin).
+# Pool sizes are given as a band only (nested-count rule).
+design_class,what_it_is,margin,pool,sd_in_margins
+A_log_ratio,log ratio of a rate between two parts of a recording; creator means of recordings,0.223 (log ratio; deposited),between 60 and 71 of the 71 seen creators,0.459
+C_standardised,standardised difference (between-creator SD units); creator means of recordings,0.20 SD (deposited),between 60 and 71 of the 71 seen creators,2.038
+B_share_difference,difference in shares between two parts of a recording; creator means of recordings,0.05 (5 points; deposited),between 60 and 71 of the 71 seen creators,0.977
+B1_share_one_recording,difference in shares; one recording per creator (BR-GS and bridge design),0.05 (5 points; deposited),between 60 and 71 of the 71 seen creators,0.977
+D_superiority,probability of superiority (AUC) within a recording; creator means of recordings,0.10 from 0.50 (deposited),between 60 and 71 of the 71 seen creators,0.603
+E_rank_correlation,within-creator rank correlation (Somers' D); one value per creator,0.10 (deposited),between 60 and 71 of the 71 seen creators,1.301
+F_slope,"within-creator slopes on 3 to 8 points, each with its own variance (TL-7.1's design class)",0.20 between-creator SD of slopes (no slope margin deposited; flagged),between 60 and 71 of the 71 seen creators,5.0
+G_few_recordings,per-creator difference between two classes of 2 to 5 recordings each (log ratio),0.223 (log ratio; deposited),between 60 and 71 of the 71 seen creators,1.471
+H_rare_counts,"log rate ratio of rare counts (0.5 added), counts summed within creator",0.223 (log ratio; deposited),between 60 and 71 of the 71 seen creators,3.72
