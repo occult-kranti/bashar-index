@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-build-status.csv (TL package, public folder).
+# Interval level: none (counts of statements).
+# Check date 2026-11-21 (the 30-day cut of H10).
+status,closed_window,statements
+Pending: window ends on or after the check date,yes,1202
+Too recent: ended less than 30 days before,yes,150
+Matured: ended 30 days or more before,yes,787
+Open window (start only),no,52
+No window by the program,no,232
+Contradictory expressions,no,44
+Implausible year,no,15

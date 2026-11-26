@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-8-statement-agreement.csv (TL package, public folder).
+# Interval level: 90% creator-bootstrap interval (2,000 draws); pointwise.
+pair_of_readings,statements,kappa,interval_90_low,interval_90_high
+"time rule : time part, middle model",all coded world-future statements,0.265,0.232,0.3
+"time rule : time part, middle model",statements where the time-expression reader was due,0.205,0.174,0.241
+"time rule : time expression, small model",all coded world-future statements,0.298,0.267,0.331
+"time rule : time expression, small model",statements where the time-expression reader was due,0.244,0.214,0.276
+"time part, middle model : time expression, small model",all coded world-future statements,0.79,0.759,0.816
+"time part, middle model : time expression, small model",statements where the time-expression reader was due,0.732,0.697,0.765
+"hedge rule : hedge, small model",all coded world-future statements,0.578,0.547,0.605
+"hedge rule : hedge, small model",statements where the time-expression reader was due,0.587,0.546,0.623
+"condition rule : condition, small model",all coded world-future statements,0.492,0.442,0.536
+"condition rule : condition, small model",statements where the time-expression reader was due,0.46,0.405,0.511

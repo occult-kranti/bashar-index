@@ -1,0 +1,11 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# PT part (b): written asks, creator-balanced share of recordings; model-coded (small model run 1, mask v2), not checked by a person
+# Source: the gallery's public file figures/PT/data-pt-written-asks.csv (build of 2026-11-22 03:33 UTC); values unchanged; the figure's statement on part (c) was
+# corrected.
+# Interval level: 90% t interval on creator means.
+ask_class,base,recordings_base,any_block_creator_mean,any_block_t90_lo,any_block_t90_hi,one_off_block_creator_mean,one_off_block_t90_lo,one_off_block_t90_hi
+K1 Pay or enrol,seen creators with page metadata,1228,0.718,0.6515,0.7846,0.3608,0.3014,0.4203
+K2 Give money,seen creators with page metadata,1228,0.1714,0.1019,0.2409,0.0328,0.0086,0.057
+K3 Engage on the platform,seen creators with page metadata,1228,0.4363,0.3565,0.5161,0.2664,0.2084,0.3244
+K4 Move off the platform,seen creators with page metadata,1228,0.7062,0.6349,0.7775,0.3579,0.2993,0.4165
+K5 Third-party advert,seen creators with page metadata,1228,0.0408,0.0097,0.0718,0.0112,0.0015,0.0209

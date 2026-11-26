@@ -1,0 +1,8 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T00:21:15Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# Text representation: TSIM v1 (names v0, calendar words masked) with the seen corpus's vocabulary and IDF, recomputed with tsim.py (seen vectors reproduced exactly); English recordings of the English-only model with 300 or more words; seen 71 creators, the 18 English hold-out creators; seen and hold-out side by side, never pooled. Reference p values are one-sided descriptions against the item's own reference, not tests of a registered hypothesis; seen p values differ slightly from DC's and SD's own runs (other seeds).
+# DC-H: change inside each channel; centred cosine of within-creator pairs (each pair minus the creator's mean pair similarity); creators with 2 or more pairs in each band.
+group,row,status,creators,creators_positive,recordings_in_panel,estimate,t90_low,t90_high,G_mean,G_p_one_sided,G_draws
+seen,"DC primary: 0-7 days minus 31-183 days, confirmed version B",shown,56,41,1035,0.0369,0.0223,0.0515,-5.479e-05,0.0004998,2000
+holdout,"DC primary: 0-7 days minus 31-183 days, confirmed version B",shown,5 or more,5 or more,242,0.0257,0.003,0.0483,-0.0003627,0.0105,2000

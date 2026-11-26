@@ -1,0 +1,10 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# Text-analysis base, recordings whose day is still estimated under version B: 141 recordings of 37 seen creators.
+# Width = possible publication days, counted inclusively; raw = the published dates file's window; narrowed = after rank order and neighbours' confirmed days
+# (version B).
+# Bins merged so that every non-empty bin holds 5 or more creators: 32 or more.
+window_possible_days,recordings_raw_window,recordings_narrowed_window,share_raw,share_narrowed
+1-7,17,34,0.1206,0.2411
+8-14,28,31,0.1986,0.2199
+15-31,0,26,0.0,0.1844
+32 or more,96,50,0.6809,0.3546

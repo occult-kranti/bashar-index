@@ -23,8 +23,8 @@ and weighting.
 
 Table~\ref{tab:anchors} (Appendix~\ref{app:measure}) gives the ladder of anchors, each a comparison of two machines on
 its own scale. With no reference known to be made by people, the usual check against human text
-\cite{proksch2019testing} is not run; anchors on possibly human-made texts of non-seen creators are not yet produced
-(Appendix~\ref{app:protocol}).
+\cite{proksch2019testing} is not run; the anchor on possibly human-made texts of non-seen creators was not run either,
+as fewer than 5 creators in each group have one (Appendix~\ref{app:outputs}).
 
 On \AnchorCaptionRecordings{} seen recordings, one per creator (about \AnchorCaptionWords{} caption words), a re-decode
 with the run's settings differs from platform automatic captions on \AnchorCaptionMeanPct\% of caption words (creator
@@ -111,8 +111,8 @@ audio time (no share printed; privacy rule).
 
 The positional rule removes \ThanksLateSegments{} of \ThanksStandalone{} stand-alone thanks segments in full windows;
 closings in the last, partial window escape it. If spoken thanks phrases were spread evenly over window phase, their
-rate in the other 3-s bins would bound its precision at \ThanksPrecisionPoint{} (at least \ThanksPrecisionLow{} at a
-conservative 95\% bound). The isolated-segment and loop rules are weaker, and the loop rule may remove genuine
+rate in the other 3-s bins would bound its precision; that bound, a share near 100\% whose misses were not counted
+by creator, is not published. The isolated-segment and loop rules are weaker, and the loop rule may remove genuine
 repetition such as chanting (Appendix~\ref{app:artefacts}).
 
 \subsection{Time without speech, and what the run covers}
@@ -162,4 +162,4 @@ creator crosses earlier, below the bridge's median-pair disagreement for filled 
 injection understates systematic loss of fillers and contractions, so between-creator comparisons of these three
 measures are not supported for creators in the upper tail. At a median error of 10\%, error that differs between
 creators and tracks the share without speech can move their correlation with that share by up to \RSixAssocMax{}
-(\RSixFillerAssoc{} for filled pauses). Tolerance, not accuracy.
+(\RSixFillerAssoc{} for filled pauses). Tolerance, not a measure of correctness.

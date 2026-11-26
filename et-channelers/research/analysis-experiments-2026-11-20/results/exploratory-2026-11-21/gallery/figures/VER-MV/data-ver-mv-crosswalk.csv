@@ -1,0 +1,91 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): VER/public/ver-mv-crosswalk.csv
+# Interval level: none (statuses only)
+# Made after a hold-out contact on 2026-11-21 (an unplanned planning read of the frozen report, accepted as a contact logged late, lead's decision D7).
+# VER-MV crosswalk: status of each verification row M1 to M13 (verification protocol section 5) and of the tipping-point table for each registered hypothesis run in the first round; verdicts and statuses copied from the published first-round results (2026-11-21 22:33 UTC); this file adds no estimate. Model-coded labels; not checked by a person.
+# code: R reported; D reported as a description (asks, seen recordings only) or within the primary; <5 listed in the first-round results, not published (fewer than 5 creators); - not run; NR not released; n/a does not apply as a separate row; nc not computed by the frozen code; empty: the protocol does not feed the row to the hypothesis.
+hypothesis,row,code,status_class
+H1,M1,R,reported
+H1,M2,R,reported
+H1,M3,-,not run (reason in the crosswalk)
+H1,M4,-,not run (reason in the crosswalk)
+H1,M5,-,not run (reason in the crosswalk)
+H1,M6,,not fed to this hypothesis by the protocol
+H1,M7,-,not run (reason in the crosswalk)
+H1,M8,n/a,does not apply as a separate row
+H1,M9,,not fed to this hypothesis by the protocol
+H1,M10,-,not run (reason in the crosswalk)
+H1,M11,-,not run (reason in the crosswalk)
+H1,M12,-,not run (reason in the crosswalk)
+H1,M13,-,not run (reason in the crosswalk)
+H1,tipping-point table,NR,not released (arithmetic on an unpublished estimate)
+H2,M1,R,reported
+H2,M2,R,reported
+H2,M3,-,not run (reason in the crosswalk)
+H2,M4,-,not run (reason in the crosswalk)
+H2,M5,-,not run (reason in the crosswalk)
+H2,M6,-,not run (reason in the crosswalk)
+H2,M7,,not fed to this hypothesis by the protocol
+H2,M8,,not fed to this hypothesis by the protocol
+H2,M9,-,not run (reason in the crosswalk)
+H2,M10,,not fed to this hypothesis by the protocol
+H2,M11,,not fed to this hypothesis by the protocol
+H2,M12,,not fed to this hypothesis by the protocol
+H2,M13,-,not run (reason in the crosswalk)
+H2,tipping-point table,NR,not released (arithmetic on an unpublished estimate)
+H4,M1,R,reported
+H4,M2,R,reported
+H4,M3,-,not run (reason in the crosswalk)
+H4,M4,-,not run (reason in the crosswalk)
+H4,M5,-,not run (reason in the crosswalk)
+H4,M6,,not fed to this hypothesis by the protocol
+H4,M7,-,not run (reason in the crosswalk)
+H4,M8,n/a,does not apply as a separate row
+H4,M9,,not fed to this hypothesis by the protocol
+H4,M10,-,not run (reason in the crosswalk)
+H4,M11,-,not run (reason in the crosswalk)
+H4,M12,-,not run (reason in the crosswalk)
+H4,M13,-,not run (reason in the crosswalk)
+H4,tipping-point table,NR,not released (arithmetic on an unpublished estimate)
+H5,M1,R,reported
+H5,M2,R,reported
+H5,M3,-,not run (reason in the crosswalk)
+H5,M4,-,not run (reason in the crosswalk)
+H5,M5,D,reported as a description or within the primary
+H5,M6,,not fed to this hypothesis by the protocol
+H5,M7,,not fed to this hypothesis by the protocol
+H5,M8,,not fed to this hypothesis by the protocol
+H5,M9,,not fed to this hypothesis by the protocol
+H5,M10,,not fed to this hypothesis by the protocol
+H5,M11,-,not run (reason in the crosswalk)
+H5,M12,,not fed to this hypothesis by the protocol
+H5,M13,-,not run (reason in the crosswalk)
+H5,tipping-point table,NR,not released (arithmetic on an unpublished estimate)
+H6,M1,R,reported
+H6,M2,R,reported
+H6,M3,-,not run (reason in the crosswalk)
+H6,M4,-,not run (reason in the crosswalk)
+H6,M5,-,not run (reason in the crosswalk)
+H6,M6,-,not run (reason in the crosswalk)
+H6,M7,-,not run (reason in the crosswalk)
+H6,M8,n/a,does not apply as a separate row
+H6,M9,-,not run (reason in the crosswalk)
+H6,M10,-,not run (reason in the crosswalk)
+H6,M11,D,reported as a description or within the primary; several rows (asks reported as a description; voice sample not run)
+H6,M12,-,not run (reason in the crosswalk)
+H6,M13,-,not run (reason in the crosswalk)
+H6,tipping-point table,NR,not released (arithmetic on an unpublished estimate)
+H9,M1,R,reported
+H9,M2,<5,"listed, not published (fewer than 5 creators)"
+H9,M3,-,not run (reason in the crosswalk)
+H9,M4,-,not run (reason in the crosswalk)
+H9,M5,D,reported as a description or within the primary
+H9,M6,,not fed to this hypothesis by the protocol
+H9,M7,,not fed to this hypothesis by the protocol
+H9,M8,,not fed to this hypothesis by the protocol
+H9,M9,,not fed to this hypothesis by the protocol
+H9,M10,,not fed to this hypothesis by the protocol
+H9,M11,-,not run (reason in the crosswalk)
+H9,M12,,not fed to this hypothesis by the protocol
+H9,M13,-,not run (reason in the crosswalk)
+H9,tipping-point table,nc,not computed by the frozen code

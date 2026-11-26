@@ -1,0 +1,19 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-k-kinds-and-bands.csv, section 'claimed-voice band (share of the recording's words in V2+V3, rule B)' (all bands printed).
+# Interval level: none drawn (the figure stacks the shares); the 95% creator-bootstrap intervals (2,000 draws) are in the source file. label = the segment's printed label (shares of 15% or more, rounded to whole percent).
+view,band,share,label
+"middle model, middle-model subset (178 recordings; primary)",no claimed voice,0.412,41%
+"middle model, middle-model subset (178 recordings; primary)",under 10% of words,0.097,
+"middle model, middle-model subset (178 recordings; primary)",10% to under 25%,0.048,
+"middle model, middle-model subset (178 recordings; primary)",25% to under 50%,0.062,
+"middle model, middle-model subset (178 recordings; primary)",50% or more,0.380,38%
+"small model, same subset",no claimed voice,0.502,50%
+"small model, same subset",under 10% of words,0.065,
+"small model, same subset",10% to under 25%,0.053,
+"small model, same subset",25% to under 50%,0.063,
+"small model, same subset",50% or more,0.317,32%
+"small model, all 1,293 seen recordings",no claimed voice,0.497,50%
+"small model, all 1,293 seen recordings",under 10% of words,0.068,
+"small model, all 1,293 seen recordings",10% to under 25%,0.043,
+"small model, all 1,293 seen recordings",25% to under 50%,0.075,
+"small model, all 1,293 seen recordings",50% or more,0.317,32%

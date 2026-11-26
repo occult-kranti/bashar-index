@@ -1,0 +1,19 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package E, public table e5-hesitation-by-voice.csv (results/exploratory-2026-11-21/E/e5-hesitation-by-voice.csv after the release review).
+# Interval level: 90% t interval over creators and 90% creator bootstrap (2,000 draws, percentile), as in the source table.
+# E5: silent against filled hesitation by voice, within creator (claimed-voice rate minus own-voice rate); seen creators; model-coded voice labels (voice revision 3), not checked by a person; description only.
+# Pauses: gaps between words inside a span, GRID's capped seam rule. Fillers: um, uh, uhm, umm, er, erm, ah, hmm, mm, mhm. The 'no seam rule' rows and the levels by voice are in the source table, not drawn.
+# 12 cells: pointwise intervals; no family-wise control. Of the 24 intervals at 90%, about 2 (about 1 of the 12 of each kind) would exclude zero by chance alone if there were no difference; the intervals are correlated.
+measure,row_group,creators,claimed_minus_own,t90_low,t90_high,boot90_low,boot90_high
+Pauses of 2 s or more per 100 words,"Middle-model subset, H1's span rule (primary)",20,0.402,-0.1206,0.9246,-0.0322,0.9133
+Pauses of 2 s or more per 100 words,"Middle-model subset, all spans",28,0.1938,-0.3262,0.7138,-0.2892,0.6863
+Pauses of 2 s or more per 100 words,"Small model, H1's span rule",44,0.2038,-0.0997,0.5073,-0.0607,0.5145
+Pauses of 2 s or more per 100 words,"Small model, all spans",56,0.0801,-0.2131,0.3734,-0.2041,0.3649
+Pauses of 1 s or more per 100 words,"Middle-model subset, H1's span rule (primary)",20,0.9063,-0.0323,1.8449,0.0953,1.8131
+Pauses of 1 s or more per 100 words,"Middle-model subset, all spans",28,0.7321,-0.0985,1.5628,-0.0516,1.5339
+Pauses of 1 s or more per 100 words,"Small model, H1's span rule",44,0.415,-0.0754,0.9054,-0.0207,0.9176
+Pauses of 1 s or more per 100 words,"Small model, all spans",56,0.348,-0.128,0.8239,-0.1115,0.8129
+"Filler words per 1,000 words","Middle-model subset, H1's span rule (primary)",20,-0.5735,-1.6041,0.4572,-1.4868,0.3826
+"Filler words per 1,000 words","Middle-model subset, all spans",28,-0.2309,-0.8415,0.3796,-0.8316,0.3457
+"Filler words per 1,000 words","Small model, H1's span rule",44,-0.1338,-0.5455,0.2778,-0.513,0.2903
+"Filler words per 1,000 words","Small model, all spans",56,-0.1804,-0.5123,0.1515,-0.4761,0.1558

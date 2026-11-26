@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R5 (place S): does the earlier paper draft's Table 7 log-probability ICC carry over to the closed run? Table 7's measure (the recognizer's segment avg_logprob, duration-weighted per recording) re-extracted for the 1,211 recordings of the 71 seen creators; the ln word-probability rows are a different quantity, listed only to show the difference.
+# Interval level: 95% creator-resampling bootstrap (1,000 draws). The two snapshot rows are the earlier draft's own figures (snapshot of the run).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+source,measure,variant,estimator,creators,recordings,icc,creator_boot95_low,creator_boot95_high,median_recording_value
+this build (R5 set),seg_avg_logprob (duration-weighted segment avg_logprob),filter off (Table 7's definition),ANOVA ICC(1),71.0,1211.0,0.4184,0.1486,0.6597,-0.1173
+this build (R5 set),seg_avg_logprob (duration-weighted segment avg_logprob),filter off (Table 7's definition),REML,71.0,1211.0,0.4015,0.148,0.6358,-0.1173
+this build (R5 set),seg_avg_logprob (duration-weighted segment avg_logprob),filter v2,ANOVA ICC(1),71.0,1211.0,0.4191,0.1481,0.6623,-0.1171
+this build (R5 set),seg_avg_logprob (duration-weighted segment avg_logprob),filter v2,REML,71.0,1211.0,0.4021,0.1473,0.6365,-0.1171
+this build (R5 set),logp_word (mean ln word probability; NOT Table 7's measure),filter v2,REML,71.0,1211.0,0.2117,,,-0.0341
+this build (R5 set),logp_seg (mean ln word probability; NOT Table 7's measure),filter v2,REML,71.0,1211.0,0.2674,,,-0.0464
+"paper Table 7 (snapshot, all creators with 2+ recordings)",Mean segment log-probability,filter off,ICC(1),79.0,1138.0,0.423,,,-0.119
+"paper fig3 CSV (seen creators, snapshot)",Mean segment log-probability,filter off,ICC(1),71.0,1117.0,0.409,0.133,0.651,

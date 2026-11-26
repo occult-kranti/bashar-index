@@ -1,0 +1,78 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Made after a hold-out contact on 2026-11-21 (unplanned planning read of the frozen report at about 23:19 UTC; contacts.md item 1).
+# VER-MV: multiverse rows M1 to M13 (verification protocol section 5) and the frozen code's robustness rows of every registered hypothesis run in the first round (H1, H2, H4, H5, H6, H9), and the tipping-point table. Model-coded; not checked by a person.
+# Verdicts are copied from the published first-round results (2026-11-21 22:33 UTC); this file adds no estimate.
+# Every registered primary of the first round is not determinable or not run; the rows carry no verdict of their own.
+# Hold-out contact: the frozen report was loaded for row names and the presence of the tipping tables only, in one run and one logged repeat (contacts.md items 2 and 3); this file was then corrected from public files only (ver_mv_fix.py).
+# Edited on 2026-11-22 by the release pass (plotting group X-VERCROSS, verifier_fix_apply.py, sha256 46f7112745568a34) after the release verifier's report: the counts of units that the RX frames rule codes on the voice sample are withheld, because they rest on fewer than 5 creators; only that wording changed.
+hypothesis,row,content,carried_by,status
+H1,M1,primary frozen configuration,the primary verdict (first-round results),reported
+H1,M2,second model where it covers,frozen row 'second model (small against middle)',reported (its verdict in ver-mv-rows.csv)
+H1,M3,rewordings (HR c),-,"not run: HR (b, c) was not bought and its rewording arms never ran on R-hold (registry 2026-11-21 16:26, 17:29, 19:30 (1))"
+H1,M4,three-reader majority on adjudicated units (only if VG-4 passed),-,"not run: no third reader read the hold-out (VER-ADJ-H not run, no money under the hard stop, registry 18:41); in the voice pilot VG-4 failed (decoy departure above 10%), which drops M4 and M5 for voice (protocol 4.3)"
+H1,M5,large tier final where it read,-,not run: dropped with M4 (no third reader on the hold-out; VG-4 not passed in the pilot)
+H1,M7,units whose response set holds both contrasted classes removed,-,"not run: response sets come from the third reader, which did not read the hold-out"
+H1,M8,merged codes after VG-5,relayed voice merged into claimed voice by plan 3.4 (registry 02:55),does not apply as a separate row: VG-5 made no merge proposal (fewer than 5 creators or 10 regions per region type in the pilot); the plan 3.4 merge is the primary itself
+H1,M10,the reasoning effort not chosen (voice),-,not run: labelling the hold-out at the other effort needs model calls (no money)
+H1,M11 (voice sample),DMM correction where three groups exist (voice sample),VER-DEP,"not run: the RX frames rule codes too few of the 200 units of the voice sample for a latent-class model (primary rule: units of fewer than 5 creators; secondary rule: too few units) (VER-DEP)"
+H1,M12,"cross-vendor reader on the HUMAN sample (estimate on the sample only, descriptive)","VG-6 agreement beside H1, H4, H6 (kappa 0.91)",not run as an estimate: the 200 units of the HUMAN sample (each read with ten units of context on each side) carry no contrast of the registered form; the cross-vendor agreement is printed beside the verdicts
+H1,M13,next-model rerun (optional),-,not run: VER-NEXT is unfunded and optional
+H1,tipping-point table,how far the two error rates must differ before the verdict changes,frozen report (private),"not released: computed by the frozen code (tipping.py) on the pooled raw tables of the eligible hold-out creators, but it is arithmetic on the estimate of a result that is not determinable, and the first-round results do not publish that estimate; H1: eligible creators below the minimum of 12, as published"
+H2,M1,primary frozen configuration,the primary verdict (first-round results),reported
+H2,M2,second model where it covers,frozen row 'checkability: small',reported (its verdict in ver-mv-rows.csv)
+H2,M3,rewordings (HR c),-,"not run: HR (b, c) was not bought and its rewording arms never ran on R-hold (registry 2026-11-21 16:26, 17:29, 19:30 (1))"
+H2,M4,three-reader majority on adjudicated units (only if VG-4 passed),-,"not run: no third reader read the hold-out (VER-ADJ-H not run, no money under the hard stop, registry 18:41); in the voice pilot VG-4 failed (decoy departure above 10%), which drops M4 and M5 for voice (protocol 4.3)"
+H2,M5,large tier final where it read,"the large model's re-reading of 300 hold-out statements, printed beside H2 (not a row)","not run as a row: H2 is not run for want of an instrument, and the frozen code has no 'large tier final' row"
+H2,M6,minority-veto positives (two factored critics),-,not run: the frozen code has no minority-veto row; it would need a factored-critic pass on the hold-out (model calls; no money)
+H2,M9,the guided form not chosen (free text or typed),-,"not run: the free-text guided form was not chosen (VER-GC, registry 03:21) and labelling the hold-out in it needs model calls (no money)"
+H2,M13,next-model rerun (optional),-,not run: VER-NEXT is unfunded and optional
+H2,tipping-point table,how far the two error rates must differ before the verdict changes,frozen report (private),"not released: computed by the frozen code (tipping.py), but H2 is not run for want of an instrument (the forecast class is below its reliability floor on R-hold), and the first-round results publish no estimate of it; its eligible creators are at least the minimum of 9, as published"
+H4,M1,primary frozen configuration,the primary verdict (first-round results),reported
+H4,M2,second model where it covers,frozen row 'second model (small against middle)',reported (its verdict in ver-mv-rows.csv)
+H4,M3,rewordings (HR c),-,"not run: HR (b, c) was not bought and its rewording arms never ran on R-hold (registry 2026-11-21 16:26, 17:29, 19:30 (1))"
+H4,M4,three-reader majority on adjudicated units (only if VG-4 passed),-,"not run: no third reader read the hold-out (VER-ADJ-H not run, no money under the hard stop, registry 18:41); in the voice pilot VG-4 failed (decoy departure above 10%), which drops M4 and M5 for voice (protocol 4.3)"
+H4,M5,large tier final where it read,-,not run: dropped with M4 (no third reader on the hold-out; VG-4 not passed in the pilot)
+H4,M7,units whose response set holds both contrasted classes removed,-,"not run: response sets come from the third reader, which did not read the hold-out"
+H4,M8,merged codes after VG-5,relayed voice merged into claimed voice by plan 3.4 (registry 02:55),does not apply as a separate row: VG-5 made no merge proposal (fewer than 5 creators or 10 regions per region type in the pilot); the plan 3.4 merge is the primary itself
+H4,M10,the reasoning effort not chosen (voice),-,not run: labelling the hold-out at the other effort needs model calls (no money)
+H4,M11 (voice sample),DMM correction where three groups exist (voice sample),VER-DEP,"not run: the RX frames rule codes too few of the 200 units of the voice sample for a latent-class model (primary rule: units of fewer than 5 creators; secondary rule: too few units) (VER-DEP)"
+H4,M12,"cross-vendor reader on the HUMAN sample (estimate on the sample only, descriptive)","VG-6 agreement beside H1, H4, H6 (kappa 0.91)",not run as an estimate: the 200 units of the HUMAN sample (each read with ten units of context on each side) carry no contrast of the registered form; the cross-vendor agreement is printed beside the verdicts
+H4,M13,next-model rerun (optional),-,not run: VER-NEXT is unfunded and optional
+H4,tipping-point table,how far the two error rates must differ before the verdict changes,frozen report (private),"not released: computed by the frozen code (tipping.py) on the pooled raw tables of the eligible hold-out creators, but it is arithmetic on the estimate of a result that is not determinable, and the first-round results do not publish that estimate; H4: eligible creators below the minimum of 12, as published"
+H5,M1,primary frozen configuration,the primary verdict (first-round results),reported
+H5,M2,second model where it covers,frozen row 'titles: small model without adjudication' (titles only: the sentence codes have no second-model pass on the hold-out),reported (its verdict in ver-mv-rows.csv)
+H5,M3,rewordings (HR c),-,"not run: HR (b, c) was not bought and its rewording arms never ran on R-hold (registry 2026-11-21 16:26, 17:29, 19:30 (1))"
+H5,M4,three-reader majority on adjudicated units (only if VG-4 passed),-,"not run: no third reader read the hold-out (VER-ADJ-H not run, no money under the hard stop, registry 18:41); in the voice pilot VG-4 failed (decoy departure above 10%), which drops M4 and M5 for voice (protocol 4.3)"
+H5,M5,large tier final where it read,"the adjudicated title record is the primary (owner, about 00:30 UTC)",reported (within the primary)
+H5,M11 (title family),"DMM correction where three groups exist (title family, H9 groups)",VER-DEP,not run: the title family DMM was not run (VER-DEP)
+H5,M13,next-model rerun (optional),-,not run: VER-NEXT is unfunded and optional
+H5,tipping-point table,how far the two error rates must differ before the verdict changes,frozen report (private),"not released: computed by the frozen code (tipping.py) on the pooled raw tables of the eligible hold-out creators, but it is arithmetic on the estimate of a result that is not determinable, and the first-round results do not publish that estimate; H5: eligible creators below the minimum of 12, as published"
+H6,M1,primary frozen configuration,the primary verdict (first-round results),reported
+H6,M2,second model where it covers,frozen row 'second model (small against middle)',reported (its verdict in ver-mv-rows.csv)
+H6,M3,rewordings (HR c),-,"not run: HR (b, c) was not bought and its rewording arms never ran on R-hold (registry 2026-11-21 16:26, 17:29, 19:30 (1))"
+H6,M4,three-reader majority on adjudicated units (only if VG-4 passed),-,"not run: no third reader read the hold-out (VER-ADJ-H not run, no money under the hard stop, registry 18:41); in the voice pilot VG-4 failed (decoy departure above 10%), which drops M4 and M5 for voice (protocol 4.3)"
+H6,M5,large tier final where it read,-,not run: dropped with M4 (no third reader on the hold-out; VG-4 not passed in the pilot)
+H6,M6,minority-veto positives (two factored critics),-,not run: the frozen code has no minority-veto row; it would need a factored-critic pass on the hold-out (model calls; no money)
+H6,M7,units whose response set holds both contrasted classes removed,-,"not run: response sets come from the third reader, which did not read the hold-out"
+H6,M8,merged codes after VG-5,relayed voice merged into claimed voice by plan 3.4 (registry 02:55),does not apply as a separate row: VG-5 made no merge proposal (fewer than 5 creators or 10 regions per region type in the pilot); the plan 3.4 merge is the primary itself
+H6,M9,the guided form not chosen (free text or typed),-,"not run: the free-text guided form was not chosen (VER-GC, registry 03:21) and labelling the hold-out in it needs model calls (no money)"
+H6,M10,the reasoning effort not chosen (voice),-,not run: labelling the hold-out at the other effort needs model calls (no money)
+H6,"M11 (asks, description)","DMM correction where three groups exist (asks, description)","VER-DEP (seen recordings, description)","reported as a description on seen recordings only (VER-DEP; boundary solution, not informative); not a row of H6, whose result is not determinable"
+H6,M11 (voice sample),DMM correction where three groups exist (voice sample),VER-DEP,"not run: the RX frames rule codes too few of the 200 units of the voice sample for a latent-class model (primary rule: units of fewer than 5 creators; secondary rule: too few units) (VER-DEP)"
+H6,M12,"cross-vendor reader on the HUMAN sample (estimate on the sample only, descriptive)","VG-6 agreement beside H1, H4, H6 (kappa 0.91)",not run as an estimate: the 200 units of the HUMAN sample (each read with ten units of context on each side) carry no contrast of the registered form; the cross-vendor agreement is printed beside the verdicts
+H6,M13,next-model rerun (optional),-,not run: VER-NEXT is unfunded and optional
+H6,tipping-point table,how far the two error rates must differ before the verdict changes,frozen report (private),"not released: computed by the frozen code (tipping.py) on the pooled raw tables of the eligible hold-out creators, but it is arithmetic on the estimate of a result that is not determinable, and the first-round results do not publish that estimate; H6: eligible creators below the minimum of 12, as published"
+H9,M1,primary frozen configuration,the primary verdict (first-round results),reported
+H9,M2,second model where it covers,frozen row 'titles: small model without adjudication',"listed in the first-round results, not published: rests on fewer than 5 creators"
+H9,M3,rewordings (HR c),-,"not run: HR (b, c) was not bought and its rewording arms never ran on R-hold (registry 2026-11-21 16:26, 17:29, 19:30 (1))"
+H9,M4,three-reader majority on adjudicated units (only if VG-4 passed),-,"not run: no third reader read the hold-out (VER-ADJ-H not run, no money under the hard stop, registry 18:41); in the voice pilot VG-4 failed (decoy departure above 10%), which drops M4 and M5 for voice (protocol 4.3)"
+H9,M5,large tier final where it read,"the adjudicated title record is the primary (owner, about 00:30 UTC)",reported (within the primary)
+H9,M11 (title family),"DMM correction where three groups exist (title family, H9 groups)",VER-DEP,not run: the title family DMM was not run (VER-DEP)
+H9,M13,next-model rerun (optional),-,not run: VER-NEXT is unfunded and optional
+H9,tipping-point table,how far the two error rates must differ before the verdict changes,frozen report (private),not computed by the frozen code for this hypothesis (no table of its kind in the report); not released
+all,beside the tipping-point table (a),"(a) KA differential cue response (K3 register leak for H1, H4; K4 recovery in claimed against own voice for H6; K5 time-by-hedge for H2)","KA tables (plan id KA, place S); not reprinted here",pointer
+all,beside the tipping-point table (b),(b) direction in which the third reader resolved disputed words,"VER-A pilot on set W only (plan id VER-A); not run on the gate samples or the hold-out (VER-ADJ-G, VER-ADJ-H)",pointer
+all,beside the tipping-point table (c),(c) decoy departure rate (noise floor of the third reader),VER-A pilot only (plan id VER-A); VG-4 not passed for voice,pointer
+all,beside the tipping-point table (d),(d) latent-class error rates (heuristic),"VER-DEP (voice, HUMAN sample of seen check creators)",pointer
+all,beside the tipping-point table (e),(e) direction of the cross-vendor reader's disagreements,VER-3R (plan id VER-3R),pointer
+all,beside the tipping-point table (f),(f) partial-identification set and threshold distance,not released (VER-DEP): they stand beside unpublished estimates,pointer

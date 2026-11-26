@@ -1,0 +1,20 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# PT part (b), channel level: the 71 seen creators by the share of their recordings with a written ask of the class; the first bin also holds the seen creators with no page metadata, so each class adds up to 71; bins of 5 or more creators, merged by the reporting plan rule (section 3)
+ask_class,base,share_of_pages_bin,merged,creators
+K1 Pay or enrol,all 71 seen creators,"none, or no page metadata",0,7
+K1 Pay or enrol,all 71 seen creators,under half,0,13
+K1 Pay or enrol,all 71 seen creators,"half or more, not all",0,25
+K1 Pay or enrol,all 71 seen creators,all,0,26
+K2 Give money,all 71 seen creators,"none, or no page metadata",0,52
+K2 Give money,all 71 seen creators,under half,0,7
+K2 Give money,all 71 seen creators,"half or more, not all",0,5
+K2 Give money,all 71 seen creators,all,0,7
+K3 Engage on the platform,all 71 seen creators,"none, or no page metadata",0,15
+K3 Engage on the platform,all 71 seen creators,under half,0,29
+K3 Engage on the platform,all 71 seen creators,"half or more, not all",0,14
+K3 Engage on the platform,all 71 seen creators,all,0,13
+K4 Move off the platform,all 71 seen creators,"none, no page metadata, or under half",1,23
+K4 Move off the platform,all 71 seen creators,"half or more, not all",0,21
+K4 Move off the platform,all 71 seen creators,all,0,27
+K5 Third-party advert,all 71 seen creators,"none, or no page metadata",0,63
+K5 Third-party advert,all 71 seen creators,any,1,8

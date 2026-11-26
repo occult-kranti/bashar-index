@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# ENTRY-H E3: change in the 10 minutes after the first entrance cue against before, version 1 (record); source HOLD/entry-h.csv (package HOLD, public).
+# Interval level: 90% t interval over creators. Leave-one-out sign stability as printed by the package (column note).
+# Recognized words per minute is a recognizer-output measure, not a direct measure of speaking. Version-2 rows are withheld on the hold-out by the pair rule.
+measure,group,version,creators,change,ci90_low,ci90_high,note
+"I forms per 1,000 words",seen,v1,16,-10.11,-21.04,0.83,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean holds"
+"we forms per 1,000 words",seen,v1,16,-1.72,-10.57,7.13,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean changes for some creator left out"
+"you forms per 1,000 words",seen,v1,16,10.29,-0.75,21.32,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean holds"
+"I forms per 1,000 words",hold-out,v1,5 or more,-14.62,-28.81,-0.43,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean holds"
+"we forms per 1,000 words",hold-out,v1,5 or more,-14.89,-29.08,-0.7,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean holds"
+"you forms per 1,000 words",hold-out,v1,5 or more,16.35,-1.45,34.15,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean holds"
+recognized words per minute (recognizer output),seen,v1,16,-5.13,-16.96,6.7,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean holds"
+recognized words per minute (recognizer output),hold-out,v1,5 or more,-6.11,-18.48,6.26,"a description, not a finding (plan 6.4); leave-one-creator-out: the sign of the mean holds"

@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# H3-X: H3 at the creator level on the hold-out beside the seen creators; source HOLD/h3x-creator-level.csv (package HOLD, public).
+# Interval level: group rows 90% t interval on creator means; difference rows normal 90% interval from the two creator-level standard errors.
+# Never pooled (lead's decision D1); H3 is closed (amendment A6): no verdict, no test.
+quantity,group,creators,recordings,value,ci90_low,ci90_high,interval
+creator-balanced U,seen,61,558,0.019,-0.121,0.16,90% t interval on creator means
+recentred U (U minus the exact centre of the shift reference),seen,61,558,0.083,-0.045,0.211,90% t interval on creator means
+creator-balanced U,hold-out,17,169,0.169,-0.137,0.476,90% t interval on creator means
+recentred U (U minus the exact centre of the shift reference),hold-out,17,169,0.353,0.025,0.682,90% t interval on creator means
+creator-balanced U,"hold-out, without pilot-era recordings",17,159,0.161,-0.146,0.469,90% t interval on creator means
+recentred U (U minus the exact centre of the shift reference),"hold-out, without pilot-era recordings",17,159,0.342,0.011,0.673,90% t interval on creator means
+creator-balanced U,"hold-out minus seen (a heterogeneity statement, not a pooled estimate)",,,0.15,-0.171,0.47,normal 90% interval from the two creator-level standard errors
+recentred U (U minus the exact centre of the shift reference),"hold-out minus seen (a heterogeneity statement, not a pooled estimate)",,,0.271,-0.064,0.605,normal 90% interval from the two creator-level standard errors

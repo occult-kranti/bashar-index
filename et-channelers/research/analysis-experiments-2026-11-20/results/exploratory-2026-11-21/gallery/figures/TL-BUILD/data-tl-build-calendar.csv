@@ -1,0 +1,68 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-build-calendar.csv (TL package, public folder).
+# Interval level: none (counts of channels; banded where an exact count could fix a difference of 1 to 4 creators).
+# Release form of the package: periods that start before 2025 are pooled into one open bin with no start month, periods from 2031 on into one open bin, and the last period of the 92-day calendar prints no end month; the pooled bins print no union count (each merged period in them holds 5-9 channels).
+windows,period,channels
+windows of 366 days or less,up to Jan 2025 (pooled open bin),5-9 in each merged period
+windows of 366 days or less,Feb 2025,5-9
+windows of 366 days or less,Mar 2025,5-9
+windows of 366 days or less,Apr 2025,5-9
+windows of 366 days or less,May 2025,5-9
+windows of 366 days or less,Jun 2025 to Jul 2025,5-9
+windows of 366 days or less,Aug 2025,5-9
+windows of 366 days or less,Sep 2025,5-9
+windows of 366 days or less,Oct 2025,5-9
+windows of 366 days or less,Nov 2025,5-9
+windows of 366 days or less,Dec 2025,10-14
+windows of 366 days or less,Jan 2026,15-19
+windows of 366 days or less,Feb 2026,15-19
+windows of 366 days or less,Mar 2026,20-24
+windows of 366 days or less,Apr 2026,20-24
+windows of 366 days or less,May 2026,20-24
+windows of 366 days or less,Jun 2026,25-29
+windows of 366 days or less,Jul 2026,25-29
+windows of 366 days or less,Aug 2026,29
+windows of 366 days or less,Sep 2026,30-34
+windows of 366 days or less,Oct 2026,35-39
+windows of 366 days or less,Nov 2026,35-39
+windows of 366 days or less,Dec 2026,30-34
+windows of 366 days or less,Jan 2027,25-29
+windows of 366 days or less,Feb 2027,23
+windows of 366 days or less,Mar 2027,20-24
+windows of 366 days or less,Apr 2027,20-24
+windows of 366 days or less,May 2027,20-24
+windows of 366 days or less,Jun 2027,20-24
+windows of 366 days or less,Jul 2027,15-19
+windows of 366 days or less,Aug 2027,15-19
+windows of 366 days or less,Sep 2027,15-19
+windows of 366 days or less,Oct 2027,15-19
+windows of 366 days or less,Nov 2027,15-19
+windows of 366 days or less,Dec 2027,15-19
+windows of 366 days or less,Jan 2028 to Nov 2028,5-9
+windows of 366 days or less,Dec 2028 to Dec 2029,5-9
+windows of 366 days or less,Jan 2030,5-9
+windows of 366 days or less,Feb 2030,5-9
+windows of 366 days or less,Mar 2030,5-9
+windows of 366 days or less,Apr 2030,5-9
+windows of 366 days or less,May 2030,5-9
+windows of 366 days or less,Jun 2030,5-9
+windows of 366 days or less,Jul 2030,5-9
+windows of 366 days or less,Aug 2030,5-9
+windows of 366 days or less,Sep 2030,5-9
+windows of 366 days or less,Oct 2030,5-9
+windows of 366 days or less,Nov 2030,5-9
+windows of 366 days or less,Dec 2030,5-9
+windows of 366 days or less,2031 or later (pooled open bin),5-9 in each merged period
+windows of 92 days or less,up to Mar 2025 (pooled open bin),5-9 in each merged period
+windows of 92 days or less,Apr 2025 to Dec 2025,5-9
+windows of 92 days or less,Jan 2026 to Mar 2026,5-9
+windows of 92 days or less,Apr 2026 to May 2026,5-9
+windows of 92 days or less,Jun 2026,5-9
+windows of 92 days or less,Jul 2026,10-14
+windows of 92 days or less,Aug 2026,15-19
+windows of 92 days or less,Sep 2026,15-19
+windows of 92 days or less,Oct 2026,23
+windows of 92 days or less,Nov 2026,20-24
+windows of 92 days or less,Dec 2026,10-14
+windows of 92 days or less,Jan 2027 to Mar 2027,5-9
+windows of 92 days or less,Apr 2027 or later (open bin; end not printed),10-14

@@ -1,6 +1,19 @@
 # Roadmap: audio and transcripts for the rest of the channels
 
-## November 25: registered tests done, exploratory round being released, third panel running
+## November 26: exploratory round released, panel programme adopted, new recordings collected
+
+| Stage | State and next action |
+| --- | --- |
+| Exploratory round, released | 172 outputs listed: 111 reported, 60 not run (most need model calls), 1 superseded. Each has public tables and figures; a gallery shows 231 figures. Two release passes and five fix steps checked privacy and consistency, and an independent privacy check, run four times, found the release publishable on its fourth verdict. Agreement figures that could not be recounted by creator were withheld. Quantiles that could narrow a withheld count were dropped. Addendum 3 records the factual corrections. [Release](research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/README.md) · [Gallery](research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/gallery/index.html) |
+| Paper, updated | The exploratory round is reported from the release. The twelve placeholders are generated from it, and appendix B.10 and the results section point to it. Not to be submitted before an ethics or exemption determination exists. [Paper](paper/measurement-protocol-2026-11-21/) |
+| Third-round panel, programme adopted | Twelve model-agent members, four rounds. 106 proposals: 88 no-cost, 9 for a future confirmation wave, 4 unfunded, 5 set aside. 31 novelty wordings, each "not found in N searches". The lead's 13 rulings. Step 0 is deposited: the forecast ledger's hash first and alone, then the register with default margins and readings. Step 1 has run 17 of its entries on the seen creators (recognizer and label checks, position and transplant references, circularity, boundary anatomy, label variance, reliability transport, recall, method dependence, tuning leak, a headline audit and a priced funding ladder). The last one, the error-aware re-estimate, is running. Step 1's outputs are published once a privacy scan has passed. [Programme](research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/programme.md) |
+| New recordings, outside the frozen corpus | The owner reopened downloads on 25 and 26 November. 102 new uploads (since 19 November) are archived, and 84 of them are transcribed in English with the corpus settings. The latest-50+ batch (2,681 further recordings within each channel's latest 50) is downloading with the owner's own YouTube session, under a watchdog that stops on any refusal. Its English transcription is paused while the step-1 analyses run, because both together exceed this machine's memory headroom. These are descriptive material: a same-roster wave tests persistence, not confirmation. |
+
+**Next.** Publish step 1's outputs with their plots, then run the programme's later steps (lexicon checks after their sense register is hashed, forecasts and time, economy and audience, the claimed voice as speech). Update both
+dashboards with the release, the gallery, the programme and the collection counts. Finish the latest-50+ download.
+Owner items: an ethics or exemption determination; revoking the OpenAI key; whether to fund any class-c arm or a confirmation wave of fresh creators.
+
+## November 25 (superseded): registered tests done, exploratory round being released, third panel running
 
 The registered tests of the first round ran on 21 November and gave no verdict that could be determined. The
 exploratory round ran on 22 November. Its release, the paper update and the third-round expert panel stopped on

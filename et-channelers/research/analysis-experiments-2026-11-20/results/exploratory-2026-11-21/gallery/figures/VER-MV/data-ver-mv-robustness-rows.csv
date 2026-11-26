@@ -1,0 +1,36 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): VER/public/ver-mv-rows.csv
+# Interval level: none (counts of rows)
+# Made after a hold-out contact on 2026-11-21 (an unplanned planning read of the frozen report, accepted as a contact logged late, lead's decision D7).
+# VER-MV: the 48 robustness rows that the frozen code computed for H1, H2, H4, H5, H6 and H9 (the six primaries not counted), by the class of the verdict the published first-round results (2026-11-21 22:33 UTC) give them. Counts of rows, not of creators. Verdicts copied; this file adds no estimate. H4's 'supported (model-coded)' row is flagged 'labels below the reliability floor' and is not a result of H4.
+hypothesis,verdict_class,rows
+H1,not determinable: too few eligible creators,5
+H1,not run for want of an instrument,0
+H1,"listed, not published: fewer than 5 creators",0
+H1,not determined (Holm step and registered conditions),1
+H1,"'supported (model-coded)', flagged: labels below the reliability floor",0
+H2,not determinable: too few eligible creators,0
+H2,not run for want of an instrument,11
+H2,"listed, not published: fewer than 5 creators",0
+H2,not determined (Holm step and registered conditions),0
+H2,"'supported (model-coded)', flagged: labels below the reliability floor",0
+H4,not determinable: too few eligible creators,5
+H4,not run for want of an instrument,0
+H4,"listed, not published: fewer than 5 creators",0
+H4,not determined (Holm step and registered conditions),0
+H4,"'supported (model-coded)', flagged: labels below the reliability floor",1
+H5,not determinable: too few eligible creators,10
+H5,not run for want of an instrument,0
+H5,"listed, not published: fewer than 5 creators",1
+H5,not determined (Holm step and registered conditions),0
+H5,"'supported (model-coded)', flagged: labels below the reliability floor",0
+H6,not determinable: too few eligible creators,6
+H6,not run for want of an instrument,0
+H6,"listed, not published: fewer than 5 creators",0
+H6,not determined (Holm step and registered conditions),0
+H6,"'supported (model-coded)', flagged: labels below the reliability floor",0
+H9,not determinable: too few eligible creators,0
+H9,not run for want of an instrument,0
+H9,"listed, not published: fewer than 5 creators",8
+H9,not determined (Holm step and registered conditions),0
+H9,"'supported (model-coded)', flagged: labels below the reliability floor",0

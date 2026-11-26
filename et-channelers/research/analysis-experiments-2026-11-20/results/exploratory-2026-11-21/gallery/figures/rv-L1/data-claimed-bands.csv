@@ -1,0 +1,16 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Model-coded (earlier voice instrument snapshot of 2026-11-20 19:45); not checked by a person. Interim; development creators only.
+# Base: 96 recordings of 48 development creators (seen creators). Interval level: 95% creator bootstrap.
+# Source: public table rv-l1-kinds-and-bands.csv (rows table=claimed-voice band).
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+model,band,share,lo95,hi95,recordings
+small,0%,0.266,0.163,0.371,26
+small,under 10%,0.211,0.128,0.303,20
+small,10% to under 25%,0.073,0.021,0.134,7
+small,25% to under 50%,0.126,0.062,0.195,12
+small,50% or more,0.325,0.219,0.432,31
+middle,0%,0.382,0.267,0.496,37
+middle,under 10%,0.117,0.044,0.197,11
+middle,10% to under 25%,0.083,0.021,0.156,8
+middle,25% to under 50%,0.106,0.042,0.181,10
+middle,50% or more,0.312,0.218,0.417,30

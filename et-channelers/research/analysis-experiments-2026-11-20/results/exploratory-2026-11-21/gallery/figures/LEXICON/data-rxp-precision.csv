@@ -1,0 +1,31 @@
+# Exploratory (registry A2); not a test of H1-H10.
+sub_pattern,version,hits_read,creators_read,precision_hit_weighted,hw_ci95_low,hw_ci95_high,precision_creator_equal,ce_ci95_low,ce_ci95_high,gate_hit_weighted,gate_creator_equal,status
+A1 own-name introduction,frozen v1 (version of record),100,30 to 49,0.9462,0.884,0.9844,0.8636,0.7727,0.9432,count,count,count
+A2 greeting of the audience,frozen v1 (version of record),100,65 or more,0.8226,0.7119,0.9157,0.7923,0.7077,0.8769,count,cue,cue count (estimator-sensitive)
+A3 presenter's sign-off,frozen v1 (version of record),100,50 to 64,0.9216,0.8402,0.9812,0.9182,0.8396,0.978,count,count,count
+B1 source-shows-me frame,frozen v1 (version of record),90,30 to 49,0.727,0.559,0.8544,0.594,0.4701,0.7179,cue,below,cue count (estimator-sensitive)
+B2 third person says,frozen v1 (version of record),100,50 to 64,0.7441,0.6089,0.853,0.6721,0.5656,0.7623,cue,cue,cue count
+B3 perceiving frame,frozen v1 (version of record),98,30 to 49,0.8839,0.6553,0.9533,0.5909,0.4697,0.7121,count,below,cue count (estimator-sensitive)
+C1 devotional address,frozen v1 (version of record),100,50 to 64,0.9438,0.878,0.9753,0.695,0.5818,0.8082,count,cue,cue count (estimator-sensitive)
+C2 community address,frozen v1 (version of record),100,50 to 64,0.8911,0.8002,0.9631,0.8729,0.7966,0.9407,count,count,count
+C3 address to outsiders,frozen v1 (version of record),100,30 to 49,0.9493,0.8841,0.9834,0.7992,0.6932,0.8977,count,cue,cue count (estimator-sensitive)
+D6 digit-date portal,frozen v1 (version of record),59,14 to 29,0.8219,0.5692,0.9788,0.7529,0.6092,0.8793,count,cue,cue count (estimator-sensitive)
+D7 portal word,frozen v1 (version of record),100,50 to 64,0.786,0.6757,0.8941,0.7925,0.6981,0.8679,cue,cue,cue count
+D8 vague future,frozen v1 (version of record),100,50 to 64,0.8618,0.7604,0.9384,0.8475,0.7542,0.9153,count,count,count
+E1 lexical hedge,frozen v1 (version of record),100,65 or more,0.9131,0.8478,0.96,0.8451,0.7676,0.9155,count,count,count
+E2 modal hedge,frozen v1 (version of record),100,65 or more,0.6867,0.5746,0.7884,0.6929,0.6,0.7786,cue,cue,cue count
+E3 booster,frozen v1 (version of record),100,65 or more,0.5443,0.4135,0.6719,0.6143,0.5143,0.7143,below,cue,cue count (estimator-sensitive)
+F1 price,frozen v1 (version of record),97,30 to 49,0.9137,0.8253,0.9925,0.9298,0.8596,0.9825,count,count,count
+F2 platform,frozen v1 (version of record),100,50 to 64,0.5486,0.3986,0.6905,0.4821,0.375,0.5982,below,below,below 0.60 under both
+F3 off-platform,frozen v1 (version of record),100,65 or more,0.9464,0.8583,0.9923,0.8485,0.7652,0.9318,count,count,count
+F4 money gift,frozen v1 (version of record),53,14 to 29,0.3728,0.2008,0.5591,0.2949,0.1538,0.4487,below,below,below 0.60 under both
+G1 star peoples,frozen v1 (version of record),100,50 to 64,0.8797,0.6928,0.9959,0.8909,0.8091,0.9545,count,count,count
+I2 tag question,frozen v1 (version of record),100,65 or more,0.8584,0.7067,0.9698,0.8077,0.7231,0.8846,count,count,count
+J1 announcement,frozen v1 (version of record),30,14 to 29,0.8039,0.5161,0.9359,0.6548,0.4286,0.8571,count,cue,cue count (estimator-sensitive)
+J2a I-am + name,frozen v1 (version of record),47,14 to 29,0.6966,0.4886,0.8319,0.4487,0.2821,0.6154,cue,below,cue count (estimator-sensitive)
+J2b we-are + group,frozen v1 (version of record),34,14 to 29,0.9189,0.7826,0.9746,0.7315,0.5278,0.9167,count,cue,cue count (estimator-sensitive)
+J3 a being's leave-taking,frozen v1 (version of record),28,14 to 29,0.8384,0.6207,0.9452,0.6333,0.4,0.8333,count,cue,cue count (estimator-sensitive)
+"E3 booster, revision v2","revision v2, re-scored on fresh hits",100,65 or more,0.6996,0.5624,0.8277,0.7391,0.6449,0.8261,cue,cue,cue count
+"F2 platform, revision v2","revision v2, re-scored on fresh hits",100,30 to 49,0.8646,0.7535,0.9539,0.8,0.6917,0.9,count,count,count
+"F4 money gift, revision v2","revision v2, re-scored on fresh hits",fewer than 20,,,,,,,,,,not determinable (fewer than 20 fresh hits)
+"J2a I-am + name, revision v2","revision v2, re-scored on fresh hits",fewer than 20,,,,,,,,,,not determinable (fewer than 20 fresh hits)

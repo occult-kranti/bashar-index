@@ -1,0 +1,16 @@
+# Smallest effect detected with 80% power at the first Holm step (p <= 0.005), planted-shift simulation on seen-creator values of label-free analogues.
+# Test: exact creator sign-flip on every row; registered for H1 and H4, registered form for H5, A10's amended version for H2, an alternative (not a registered rule) for H3. Under A10's guard and A5 these are upper bounds on the power of the rules as applied.
+# Interpolated linearly between grid steps of 1,500 simulated sets; no Monte Carlo interval. Plotted: multiple. Reference columns: detectable_effect, smallest_effect_of_interest.
+# multiple = detectable effect / registered smallest effect of interest; analogues carry no labels and are not hypothesis quantities.
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+rule,test,creators,sided,detectable_effect,smallest_effect_of_interest,multiple
+"H1 analogue: pace, middle against edges",creator sign-flip (registered),12,one-sided,0.091,log rate ratio 0.051,1.774
+"H1 analogue: pace, middle against edges",creator sign-flip (registered),17,one-sided,0.084,log rate ratio 0.051,1.637
+H2 analogue: Somers' D (A10 version),creator sign-flip (A10 amended version; registered: within-creator permutation),12,two-sided,0.177,|D| 0.10,1.77
+H2 analogue: Somers' D (A10 version),creator sign-flip (A10 amended version; registered: within-creator permutation),17,two-sided,0.137,|D| 0.10,1.37
+H4 analogue: contraction share,creator sign-flip (registered),12,one-sided,0.533,0.5 between-creator SD,1.066
+H4 analogue: contraction share,creator sign-flip (registered),17,one-sided,0.413,0.5 between-creator SD,0.826
+H5 analogue: world against practice log-ratio,creator sign-flip (registered form),12,one-sided,0.725,0.4 log units,1.812
+H5 analogue: world against practice log-ratio,creator sign-flip (registered form),17,one-sided,0.571,0.4 log units,1.427
+H3 (closed): recentred contrast (alternative),"creator sign-flip on the recentred contrast (alternative, not a registered rule; registered: shift per recording)",12,one-sided,0.814,U 0.10,8.14
+H3 (closed): recentred contrast (alternative),"creator sign-flip on the recentred contrast (alternative, not a registered rule; registered: shift per recording)",17,one-sided,0.594,U 0.10,5.94

@@ -1,0 +1,16 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/cal-f-eligibility.csv
+# Interval level: none (counts of creators)
+# CAL-f part (f): eligible seen creators per registered rule from the seen first-round labels by the frozen eligibility functions (run on seen creators in memory); small model of record (1,284 seen recordings) and middle model (the 190 seen recordings it labelled in full). Of 71 seen creators. H9 not counted (its cells pair hold-out with seen creators). H2's count describes forecast labels only (its forecast class fails gate D on the hold-out reliability sample); H5's count is under the amended hit rule.
+# A count printed in the source only as 'all but fewer than 5 of N' is drawn at N as a leftward mark and carries no number of its own here. Minimum: the amended (A10) minimum; H2's registered minimum is 8 (amended 9). Model-coded first-round labels (voice, asks, forecasts, titles and sentence codes; their verification lines are in the package file); not checked by a person.
+labels,rule,eligible_seen_creators,printed_as,minimum,drawn_as
+small,H4,44,,12,count
+small,"H6, of these with T >= 1",30,,8,count
+small,H6,48,,12,count
+small,H1,,drawn at 48 as a leftward mark: printed as 'all but fewer than 5 of 48',12,text
+small,H2,56,,9,count
+small,H5,19,,12,count
+middle,H4,20,,12,count
+middle,"H6, of these with T >= 1",16,,8,count
+middle,H6,22,,12,count
+middle,H1,,drawn at 22 as a leftward mark: printed as 'all but fewer than 5 of 22',12,text

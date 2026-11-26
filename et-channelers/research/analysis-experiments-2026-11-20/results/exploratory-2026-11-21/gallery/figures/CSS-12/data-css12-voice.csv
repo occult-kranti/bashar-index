@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-12 (place S): within-creator difference, claimed minus own voice, in terms per 10,000 words. Source: package CSS, public file css12-census.csv (rows 'within-creator difference, claimed minus own'; rerun of record of 2026-11-22, lead's decision D35; analysis step rerun in the release fix pass).
+# Creators with 1,000 or more words in each voice of the view; a term counts in the voice of the unit holding its first token. Mean with its 90% creator-bootstrap percentile interval (2,000 draws). Views: middle model on its subset (primary for voice, registry 2026-11-21 02:53); small model on all recordings (beside; weaker than the middle model on known-answer relayed voice).
+# Voice: model-coded voice labels (frozen voice instrument, revision 3; rule B; claimed voice = embodied and relayed voice), verified by a third model of the same vendor, a reader of another vendor and known-answer texts (agreement, not a measure of correctness); not checked by a person. Terms: E11's two closed term lists (written by package E before any E11 count; names of beings and lineage-specific terms left out) and RX's frozen pattern for numbered dimensions or densities; cue counts with no precision check. Vocabulary, not belief, intent or harm.
+view,class,mean_difference,ci90_low,ci90_high,status
+"middle model, middle-model subset (primary); 24 creators",consciousness-shift vocabulary,2.73,-3.79,9.06,
+"middle model, middle-model subset (primary); 24 creators",numbered dimensions or densities,2.69,-0.88,7.11,
+"middle model, middle-model subset (primary); 24 creators",secret-control vocabulary,,,,not printed: a voice row behind it rests on fewer than 5 creators with a non-zero value
+"small model, all recordings (beside); 59 creators",consciousness-shift vocabulary,2.45,0.08,4.81,
+"small model, all recordings (beside); 59 creators",numbered dimensions or densities,2.24,1.09,3.5,
+"small model, all recordings (beside); 59 creators",secret-control vocabulary,0.1,-0.29,0.49,

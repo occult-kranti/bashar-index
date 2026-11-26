@@ -1,0 +1,19 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-k-kinds-and-bands.csv, section 'main kind (voice map, small model)' (printed cells only).
+# Interval level: 95% creator-bootstrap interval of the creator-weighted share (2,000 draws).
+# Kinds with fewer than 5 creators are pooled into 'other', and the smallest remaining kinds join it until it holds 5 or more creators (plan section 3); 'other' = announcement or promotion, music or noise, reading.
+measure,row,mean,lo95,hi95
+share of recordings,own-voice talk,0.293,0.230,0.361
+share of speech hours,own-voice talk,0.257,0.192,0.323
+share of recordings,claimed voice (embodied or relayed),0.295,0.218,0.375
+share of speech hours,claimed voice (embodied or relayed),0.290,0.213,0.365
+share of recordings,conversation,0.185,0.131,0.248
+share of speech hours,conversation,0.265,0.192,0.343
+share of recordings,guided practice,0.077,0.042,0.122
+share of speech hours,guided practice,0.063,0.027,0.106
+share of recordings,unclear,0.066,0.039,0.096
+share of speech hours,unclear,0.040,0.019,0.064
+share of recordings,mixed,0.046,0.031,0.064
+share of speech hours,mixed,0.070,0.047,0.095
+share of recordings,other (pooled),0.038,0.023,0.056
+share of speech hours,other (pooled),0.015,0.007,0.026

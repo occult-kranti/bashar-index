@@ -1,0 +1,7 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# DIR go rule 3: prefilter recall against the middle model's entries, pooled and creator-equal (90% t); preparedness not drawn alone (fewer than 5 creators)
+class,label,pooled_recall,creator_equal_recall,creator_equal_t90_lo,creator_equal_t90_hi,required_by_go_rule
+all,All classes,0.415,0.402,0.3313,0.4727,0.7
+practice_directive,Practice directive,0.389,0.3572,0.268,0.4463,0.7
+threat_statement,Threat statement,0.431,0.4803,0.3636,0.5971,0.7
+health_directive,Health directive,0.438,0.4907,0.2144,0.767,0.7

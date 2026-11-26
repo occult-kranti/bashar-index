@@ -1,0 +1,17 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Model-read (model-coded; two OpenAI models cannot tell glossolalia from misrecognised speech without audio); not checked by a person. The share is the models' reading, not a check against a truth.
+# Base: 200 flagged windows (56 seen creators) of the seen creators' 30-s windows (71 creators). Interval level: 95% creator bootstrap.
+# Bins and bands are post hoc; bins of a creator's flagged windows and out-of-vocabulary bands merged until each holds non-language and other reads from 5 or more creators.
+# Source: public tables rv-l3-precision.csv, rv-l3-precision-by-creator-load.csv, rv-l3-precision-by-oov-band.csv.
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+group,reader,window_level,lo95,hi95
+all flagged windows,small,0.586,0.272,0.741
+creators with 1 to 9 flagged windows,small,0.184,0.094,0.284
+creators with 10 or more flagged windows,small,0.752,0.431,0.892
+out-of-vocabulary share over 1/6 (16.7%) to 25%,small,0.237,0.076,0.426
+out-of-vocabulary share over 25% to 100%,small,0.797,0.5,0.9
+all flagged windows,middle,0.516,0.205,0.69
+creators with 1 to 9 flagged windows,middle,0.127,0.046,0.222
+creators with 10 or more flagged windows,middle,0.676,0.334,0.861
+out-of-vocabulary share over 1/6 (16.7%) to 25%,middle,0.214,0.037,0.414
+out-of-vocabulary share over 25% to 100%,middle,0.698,0.329,0.856

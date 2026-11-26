@@ -1,0 +1,25 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# TM split-half ceiling. Halves: a creator's recordings alternated in listing order. ratio = mean Aitchison distance between two creators' half-profiles (4 half pairs) / mean of their own split-half distances.
+# Share of creator pairs per bin, percent, 1 decimal; plotted bar height = share x 0.25 / bin width (percent per 0.25 of ratio; merged bins are wider). Bins of width 0.25 merged so that every bin holds 10 or more pairs (therefore 5 or more creators). Seen creators with recordings in both halves. Topics are recurring vocabulary clusters, never beliefs; labels are analyst-written from top words and not checked by a person; style topics, and topic 14 as in TM-H, carry neutral labels (lead's decision D62).
+ratio_bin_low,ratio_bin_high,share_of_pairs_pct
+0.75,1.25,1.6
+1.25,1.5,5.0
+1.5,1.75,7.9
+1.75,2.0,10.6
+2.0,2.25,13.0
+2.25,2.5,13.1
+2.5,2.75,10.5
+2.75,3.0,8.2
+3.0,3.25,7.7
+3.25,3.5,6.4
+3.5,3.75,4.1
+3.75,4.0,3.2
+4.0,4.25,1.8
+4.25,4.5,1.8
+4.5,4.75,1.4
+4.75,5.0,1.1
+5.0,5.25,0.6
+5.25,5.5,0.5
+5.5,5.75,0.5
+5.75,6.25,0.4
+6.25,7.75,0.5

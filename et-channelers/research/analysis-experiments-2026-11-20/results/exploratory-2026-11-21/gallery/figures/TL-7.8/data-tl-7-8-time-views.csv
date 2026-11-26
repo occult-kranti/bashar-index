@@ -1,0 +1,22 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-8-mtmm-rows.csv (TL package, public folder).
+# Interval level: 90% creator-bootstrap percentile interval (2,000 draws); pointwise; no family-wise control.
+pair_of_readings,view,creators,spearman,interval_90_low,interval_90_high,note
+"time rule : time part, middle model",shares of coded statements,65-69,0.659,0.496,0.776,
+"time rule : time part, middle model","statements per 1,000 words",65-69,0.869,0.788,0.923,
+"time rule : time part, middle model",shares on statements where the time-expression reader was due,58,0.451,0.233,0.638,
+"time rule : time expression, small model",shares of coded statements,65-69,0.723,0.575,0.827,partly by construction
+"time rule : time expression, small model","statements per 1,000 words",65-69,0.888,0.815,0.934,partly by construction
+"time rule : time expression, small model",shares on statements where the time-expression reader was due,58,0.524,0.316,0.689,
+time rule : time cue hits,shares of coded statements,65-69,0.768,0.66,0.841,
+time rule : time cue hits,"statements per 1,000 words",65-69,0.889,0.815,0.931,
+time rule : time cue hits,shares on statements where the time-expression reader was due,58,0.608,0.452,0.73,
+"time part, middle model : time expression, small model",shares of coded statements,65-69,0.957,0.923,0.974,partly by construction
+"time part, middle model : time expression, small model","statements per 1,000 words",65-69,0.983,0.967,0.989,partly by construction
+"time part, middle model : time expression, small model",shares on statements where the time-expression reader was due,58,0.921,0.856,0.959,
+"time part, middle model : time cue hits",shares of coded statements,65-69,0.708,0.57,0.816,
+"time part, middle model : time cue hits","statements per 1,000 words",65-69,0.87,0.788,0.92,
+"time part, middle model : time cue hits",shares on statements where the time-expression reader was due,58,0.594,0.418,0.74,
+"time expression, small model : time cue hits",shares of coded statements,65-69,0.744,0.623,0.826,
+"time expression, small model : time cue hits","statements per 1,000 words",65-69,0.878,0.801,0.923,
+"time expression, small model : time cue hits",shares on statements where the time-expression reader was due,58,0.675,0.528,0.781,

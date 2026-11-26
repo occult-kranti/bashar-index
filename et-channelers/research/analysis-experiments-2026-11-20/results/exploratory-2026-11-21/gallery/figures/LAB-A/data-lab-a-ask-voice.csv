@@ -1,0 +1,28 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-a-ask-voice.csv (printed cells only; cells the package pooled are marked in the figure, not drawn).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+# Voice of an ask: the side holding the majority of the words of the ask's units (claimed V2+V3 under rule B; own voice under the primary definition; otherwise neither). Claimed + own + neither = 1 per creator.
+view,side,row,mean,lo95,hi95
+"middle model, middle-model subset (178 recordings; primary)",claimed voice (V2+V3),K1 pay or enrol,0.078,0.013,0.164
+"middle model, middle-model subset (178 recordings; primary)",claimed voice (V2+V3),K2 give money or K5 advert (pooled),0.000,0.000,0.000
+"middle model, middle-model subset (178 recordings; primary)",claimed voice (V2+V3),K3 engage on the platform,0.121,0.036,0.214
+"middle model, middle-model subset (178 recordings; primary)",claimed voice (V2+V3),any ask (K1 to K5),0.098,0.039,0.168
+"small model, same subset (beside)",claimed voice (V2+V3),K2 give money or K5 advert (pooled),0.000,0.000,0.000
+"small model, same subset (beside)",claimed voice (V2+V3),any ask (K1 to K5),0.061,0.022,0.111
+"small model, all 1,293 seen recordings (beside)",claimed voice (V2+V3),K1 pay or enrol,0.061,0.034,0.092
+"small model, all 1,293 seen recordings (beside)",claimed voice (V2+V3),K3 engage on the platform,0.093,0.044,0.150
+"small model, all 1,293 seen recordings (beside)",claimed voice (V2+V3),"K4 move off platform, no payment",0.081,0.036,0.135
+"small model, all 1,293 seen recordings (beside)",claimed voice (V2+V3),any ask (K1 to K5),0.072,0.039,0.115
+"middle model, middle-model subset (178 recordings; primary)",own voice (primary definition),K1 pay or enrol,0.596,0.454,0.732
+"middle model, middle-model subset (178 recordings; primary)",own voice (primary definition),K3 engage on the platform,0.706,0.578,0.824
+"middle model, middle-model subset (178 recordings; primary)",own voice (primary definition),"K4 move off platform, no payment",0.515,0.361,0.673
+"middle model, middle-model subset (178 recordings; primary)",own voice (primary definition),any ask (K1 to K5),0.615,0.509,0.720
+"small model, same subset (beside)",own voice (primary definition),K1 pay or enrol,0.676,0.545,0.796
+"small model, same subset (beside)",own voice (primary definition),K3 engage on the platform,0.787,0.676,0.895
+"small model, same subset (beside)",own voice (primary definition),"K4 move off platform, no payment",0.567,0.422,0.718
+"small model, same subset (beside)",own voice (primary definition),any ask (K1 to K5),0.687,0.591,0.774
+"small model, all 1,293 seen recordings (beside)",own voice (primary definition),K1 pay or enrol,0.623,0.537,0.702
+"small model, all 1,293 seen recordings (beside)",own voice (primary definition),K2 give money or K5 advert (pooled),0.450,0.250,0.650
+"small model, all 1,293 seen recordings (beside)",own voice (primary definition),K3 engage on the platform,0.716,0.634,0.788
+"small model, all 1,293 seen recordings (beside)",own voice (primary definition),"K4 move off platform, no payment",0.586,0.490,0.675
+"small model, all 1,293 seen recordings (beside)",own voice (primary definition),any ask (K1 to K5),0.648,0.574,0.718

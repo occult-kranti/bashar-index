@@ -1,0 +1,5 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# RXP revisions rxp-rev-v1 re-scored on fresh hits (LEXICON re-gating), model-coded, not checked by a person. 95% creator-bootstrap intervals.
+sub_pattern,label,hw_original,hw_original_ci95_low,hw_original_ci95_high,hw_revised,hw_revised_ci95_low,hw_revised_ci95_high,ce_original,ce_original_ci95_low,ce_original_ci95_high,ce_revised,ce_revised_ci95_low,ce_revised_ci95_high,decision
+E3,E3  booster,0.5443,0.4135,0.6719,0.6996,0.5624,0.8277,0.6143,0.5143,0.7143,0.7391,0.6449,0.8261,kept as cue count printed with precision
+F2,F2  platform ask,0.5486,0.3986,0.6905,0.8646,0.7535,0.9539,0.4821,0.375,0.5982,0.8,0.6917,0.9,kept as count

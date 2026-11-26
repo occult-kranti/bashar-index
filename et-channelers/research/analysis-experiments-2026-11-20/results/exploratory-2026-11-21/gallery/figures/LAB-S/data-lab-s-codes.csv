@@ -1,0 +1,40 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-s-sentence-codes.csv (printed cells only).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+units,row,mean,lo95,hi95
+all coded units,Q1 world claim,0.234,0.198,0.273
+all coded units,Q2 general principle,0.138,0.114,0.162
+all coded units,Q3 fact about the human person,0.038,0.032,0.044
+all coded units,Q4 instruction,0.189,0.164,0.218
+all coded units,Q5 feelings,0.080,0.066,0.097
+all coded units,Q6 reassurance,0.032,0.027,0.039
+all coded units,Q7 the speaker's life,0.139,0.113,0.167
+all coded units,Q8 the listener's circumstances,0.033,0.023,0.046
+all coded units,Q9 frame,0.060,0.048,0.073
+all coded units,"QN private person, or fits no definition",0.032,0.025,0.039
+all coded units,Q0 nothing to code,0.024,0.020,0.028
+all coded units,QX cannot choose,0.001,0.001,0.002
+units that end at a sentence mark,Q1 world claim,0.234,0.198,0.273
+units that end at a sentence mark,Q2 general principle,0.140,0.116,0.166
+units that end at a sentence mark,Q3 fact about the human person,0.039,0.033,0.045
+units that end at a sentence mark,Q4 instruction,0.180,0.154,0.206
+units that end at a sentence mark,Q5 feelings,0.078,0.064,0.093
+units that end at a sentence mark,Q6 reassurance,0.034,0.028,0.040
+units that end at a sentence mark,Q7 the speaker's life,0.141,0.114,0.168
+units that end at a sentence mark,Q8 the listener's circumstances,0.033,0.023,0.045
+units that end at a sentence mark,Q9 frame,0.061,0.050,0.073
+units that end at a sentence mark,"QN private person, or fits no definition",0.033,0.026,0.041
+units that end at a sentence mark,Q0 nothing to code,0.025,0.022,0.030
+units that end at a sentence mark,QX cannot choose,0.002,0.001,0.003
+cut units (no sentence mark at the end),Q1 world claim,0.233,0.194,0.276
+cut units (no sentence mark at the end),Q2 general principle,0.135,0.110,0.167
+cut units (no sentence mark at the end),Q3 fact about the human person,0.038,0.028,0.049
+cut units (no sentence mark at the end),Q4 instruction,0.214,0.185,0.247
+cut units (no sentence mark at the end),Q5 feelings,0.086,0.069,0.105
+cut units (no sentence mark at the end),Q6 reassurance,0.025,0.020,0.032
+cut units (no sentence mark at the end),Q7 the speaker's life,0.134,0.105,0.164
+cut units (no sentence mark at the end),Q8 the listener's circumstances,0.033,0.021,0.050
+cut units (no sentence mark at the end),Q9 frame,0.057,0.042,0.075
+cut units (no sentence mark at the end),"QN private person, or fits no definition",0.027,0.019,0.036
+cut units (no sentence mark at the end),Q0 nothing to code,0.017,0.012,0.021
+cut units (no sentence mark at the end),QX cannot choose,0.001,0.000,0.001

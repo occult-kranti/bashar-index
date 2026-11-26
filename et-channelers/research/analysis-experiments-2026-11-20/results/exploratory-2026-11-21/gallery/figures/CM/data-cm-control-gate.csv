@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+admission,panel,month_name_control_p,calendar_word_control_p,gate_p,verdict,smallest_attainable_p
+"programme rule (F25), primary","version B, all admitted creators",0.0005,0.1309,0.05,not interpretable,0.0005
+"programme rule (F25), primary","version A, all admitted creators",0.0005,0.6222,0.05,not interpretable,0.0005
+"programme rule (F25), primary","version B, present in 4+ of the 6 months",0.0005,0.3753,0.05,not interpretable,0.0005
+"programme rule (F25), primary","version B, present in Aug, Sep and Oct",0.0005,0.4148,0.05,not interpretable,0.0005
+"programme rule (F25), primary","version B, ISO weeks 31-47 (week level)",0.068,0.7716,0.05,description only (week level),0.0005
+"first-run rule, sensitivity","version B, all admitted creators",0.0005,0.027,0.05,interpretable,0.0005
+"first-run rule, sensitivity","version A, all admitted creators",0.0005,0.1309,0.05,not interpretable,0.0005
+"first-run rule, sensitivity","version B, present in 4+ of the 6 months",0.0005,0.033,0.05,interpretable,0.0005
+"first-run rule, sensitivity","version B, present in Aug, Sep and Oct",0.0005,0.1559,0.05,not interpretable,0.0005
+"first-run rule, sensitivity","version B, ISO weeks 31-47 (week level)",0.0005,0.6182,0.05,description only (week level),0.0005

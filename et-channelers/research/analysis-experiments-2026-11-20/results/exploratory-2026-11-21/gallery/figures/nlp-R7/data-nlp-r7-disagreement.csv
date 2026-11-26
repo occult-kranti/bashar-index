@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file MR/public/nlp-r7-boundary-disagreement.csv (sha256 1468765c795ad903).
+# Interval level: none (the source prints no intervals for these shares). Agreement of two models of one vendor, not a measure of correctness. The H6 rows of the source equal the H1 rows (the same claimed side) and are not repeated.
+# Voice labels model-coded, not checked by a person.
+claimed_side,boundaries_of,recordings,boundaries,share_same_place,share_within_1,share_within_3,share_within_10,median_abs_distance_matched
+claimed voice V2 + V3 (H1 and H6),small model of record's boundaries,70,336,0.6548,0.7381,0.7917,0.8601,0.0000
+claimed voice V2 + V3 (H1 and H6),"middle model, seen recordings it labelled in full's boundaries",70,388,0.567,0.6392,0.683,0.7577,0.0000
+embodied voice V2 (H4),small model of record's boundaries,70,197,0.7259,0.8122,0.8579,0.8832,0.0000
+embodied voice V2 (H4),"middle model, seen recordings it labelled in full's boundaries",70,215,0.6651,0.7442,0.786,0.8419,0.0000

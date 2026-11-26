@@ -1,0 +1,68 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# RX relative rate by tenth of running time (cue counts); seen creators with 5+ hits of the sub-pattern (23+ per sub-pattern); tenths merged to 5+ creators with a hit; pointwise 90% creator-bootstrap intervals.
+sub_pattern,label,tenth_from,tenth_to,relative_rate,ci90_low,ci90_high
+A2,greeting,1,1,8.1854,7.4519,8.9705
+A2,greeting,2,2,0.4234,0.1791,0.6983
+A2,greeting,3,3,0.1953,0.089,0.3227
+A2,greeting,4,5,0.0621,0.0205,0.1124
+A2,greeting,6,6,0.1746,0.0792,0.2924
+A2,greeting,7,7,0.0812,0.0316,0.1394
+A2,greeting,8,9,0.0785,0.0421,0.1186
+A2,greeting,10,10,0.5667,0.2269,1.0314
+A1,own-name introduction,1,1,8.0631,6.8708,9.3427
+A1,own-name introduction,2,2,0.4695,0.1187,0.8902
+A1,own-name introduction,3,9,0.0786,0.0441,0.1151
+A1,own-name introduction,10,10,1.0104,0.3268,1.8429
+C2,community vocative,1,1,5.1098,4.3047,6.0508
+C2,community vocative,2,2,0.5023,0.2855,0.7354
+C2,community vocative,3,3,0.2226,0.1277,0.3368
+C2,community vocative,4,4,0.2124,0.1244,0.3087
+C2,community vocative,5,5,0.2733,0.1285,0.4407
+C2,community vocative,6,6,0.2608,0.1489,0.3847
+C2,community vocative,7,7,0.2332,0.1348,0.3408
+C2,community vocative,8,8,0.3981,0.1878,0.654
+C2,community vocative,9,9,0.3787,0.2147,0.5654
+C2,community vocative,10,10,2.9412,2.3553,3.555
+E1,lexical hedge,1,1,0.9014,0.8201,0.9856
+E1,lexical hedge,2,2,0.9546,0.8778,1.0371
+E1,lexical hedge,3,3,1.0293,0.9441,1.1146
+E1,lexical hedge,4,4,1.0077,0.924,1.0888
+E1,lexical hedge,5,5,0.9509,0.8697,1.0322
+E1,lexical hedge,6,6,0.8924,0.823,0.9631
+E1,lexical hedge,7,7,1.0021,0.8878,1.1416
+E1,lexical hedge,8,8,1.0848,0.997,1.1777
+E1,lexical hedge,9,9,1.0683,0.9798,1.1621
+E1,lexical hedge,10,10,1.0575,0.9319,1.1819
+A3,presenter sign-off,1,4,0.0856,0.0235,0.1647
+A3,presenter sign-off,5,9,0.0894,0.0341,0.1581
+A3,presenter sign-off,10,10,9.8034,9.1635,10.396
+F3,off-platform pointer,1,1,1.4625,1.1337,1.8099
+F3,off-platform pointer,2,2,0.4889,0.2652,0.7692
+F3,off-platform pointer,3,3,0.3712,0.2403,0.5064
+F3,off-platform pointer,4,4,0.4026,0.2274,0.6302
+F3,off-platform pointer,5,5,0.282,0.1628,0.4215
+F3,off-platform pointer,6,6,0.3222,0.1947,0.4552
+F3,off-platform pointer,7,7,0.5178,0.3542,0.7048
+F3,off-platform pointer,8,8,0.6304,0.4494,0.826
+F3,off-platform pointer,9,9,0.9269,0.6917,1.1614
+F3,off-platform pointer,10,10,4.7789,4.135,5.4176
+F2,platform ask,1,1,1.6401,1.0512,2.3117
+F2,platform ask,2,2,0.5069,0.2497,0.8132
+F2,platform ask,3,3,0.4335,0.2722,0.6171
+F2,platform ask,4,4,0.4336,0.227,0.6601
+F2,platform ask,5,5,0.331,0.1653,0.5067
+F2,platform ask,6,6,0.3663,0.1848,0.5856
+F2,platform ask,7,7,0.3909,0.2154,0.5834
+F2,platform ask,8,8,0.4959,0.3074,0.6995
+F2,platform ask,9,9,0.6389,0.4151,0.8805
+F2,platform ask,10,10,5.0359,4.0858,5.9858
+D8,vague future,1,1,0.9337,0.6726,1.2207
+D8,vague future,2,2,1.1128,0.7807,1.4713
+D8,vague future,3,3,0.5753,0.4026,0.7597
+D8,vague future,4,4,0.8053,0.5773,1.0321
+D8,vague future,5,5,0.6342,0.3865,0.9044
+D8,vague future,6,6,0.5855,0.3903,0.7826
+D8,vague future,7,7,0.671,0.4548,0.9091
+D8,vague future,8,8,0.6051,0.3907,0.8551
+D8,vague future,9,9,1.0556,0.7641,1.3653
+D8,vague future,10,10,3.1828,2.5333,3.8429

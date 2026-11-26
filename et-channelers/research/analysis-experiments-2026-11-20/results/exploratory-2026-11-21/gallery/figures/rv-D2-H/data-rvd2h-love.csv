@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# rv-D2-H: transcript-derived balance covariates of the hold-out's English creators beside the seen creators; source HOLD2/rv-D2-H-transcript-covariates.csv (package HOLD2, public).
+# Interval level: 90% creator-bootstrap interval of the SMD (2,000 draws, stratified by group). Reading lines 0.1 and 0.25, no test.
+# Pace and segment log-probability are recognizer-output measures (recognized words, recognizer confidence), not direct measures of speaking; nothing here is model-coded.
+# Medians are over creators (drawn only as context in the caption, not plotted).
+covariate,creators_seen,median_seen,creators_holdout,median_holdout,smd_holdout_minus_seen,smd_lo90,smd_hi90
+recognizer confidence (mean segment log-probability),71,-0.1221,18,-0.1402,-0.8273,-1.2572,-0.456
+recognized words per minute inside the recognizer's segments (recognizer output),71,154.508,18,142.0943,-0.8064,-1.2578,-0.4019
+mean log words per recording,71,7.664,18,7.4823,-0.265,-0.6577,0.2015
+"vocabulary variety (mean MATTR, 500-token window)",71,0.4145,18,0.4146,0.0398,-0.3835,0.4491
+share of audio in stretches of 30 s or more without a segment,71,0.004,18,0.0236,0.2411,-0.1786,0.6757
+share of audio outside recognizer segments,71,0.1145,18,0.1374,0.2699,-0.1557,0.6954
+share of audio outside the voice detector's speech,71,0.079,18,0.1014,0.2834,-0.1407,0.7251
+seconds after the last recognized segment (median),71,4.6004,18,10.1157,0.4469,0.1129,0.7921
+seconds before the first recognized segment (median),71,0.27,18,0.895,0.4534,0.0188,0.7781

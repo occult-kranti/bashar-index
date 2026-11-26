@@ -1,0 +1,16 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file MR/public/mr-18d-permutation-null.csv (sha256 8cb0fa2be28d4aa6).
+# Interval level: none; low and high are the 2.5th and 97.5th percentiles of the 999 permutation draws (the spread of the reference), as printed by the package; not confidence intervals. Centred means |null mean| <= tolerance.
+# The creators column is copied from the package file as printed (groups named in words where the package does so).
+# Voice labels (and, for H6, ask labels) model-coded, not checked by a person. Seen creators only; English-only recognizer model.
+statistic,model,draws,null_mean,draws_p2_5,draws_p97_5,tolerance,flag,creators,recordings
+"H1 pooled log rate ratio, claimed to own (log scale)",small model of record,999,-0.0212,-0.0544,0.0123,0.0050,not centred (recentring would be needed),the seen creators eligible for H1 (small model),240
+"H1 pooled log rate ratio, claimed to own (log scale)",middle model,999,-0.0097,-0.0937,0.082,0.0050,not centred (recentring would be needed),the seen creators eligible for H1 (middle model),30
+H4 pooled standardised drop in contraction share (SD units),small model of record,999,0.4778,0.2186,0.7326,0.0500,not centred (recentring would be needed),34,185
+H4 pooled standardised drop in contraction share (SD units),middle model,999,0.4486,-0.0812,1.001,0.0500,not centred (recentring would be needed),all but fewer than 5 of the seen creators eligible for H4 (middle model) (20),26
+H6 log Mantel-Haenszel rate ratio of pay-or-enrol asks (amended),small model of record,999,-0.3921,-0.7163,-0.0788,0.0693,not centred (recentring would be needed),the seen creators eligible for H6 (small model),278
+H6 log Mantel-Haenszel rate ratio of pay-or-enrol asks (amended),middle model,999,,,,,not printed (dominance rule),the seen creators eligible for H6 (middle model),35
+H6 mean OE over creators with an ask (amended),small model of record,999,-0.1004,-0.1988,-0.0025,0.0125,not centred (recentring would be needed),the seen creators eligible for H6 (small model),278
+H6 mean OE over creators with an ask (amended),middle model,999,,,,,not printed (dominance rule),the seen creators eligible for H6 (middle model),35
+H6 mean half-count log rate ratio (registered statistic),small model of record,999,-0.3524,-0.5722,-0.1186,0.0693,not centred (recentring would be needed),the seen creators eligible for H6 (small model),278
+H6 mean half-count log rate ratio (registered statistic),middle model,999,,,,,not printed (dominance rule),the seen creators eligible for H6 (middle model),35

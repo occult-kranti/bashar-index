@@ -1,0 +1,9 @@
+# Grid-made share of pauses between words (gaps of 0.3 s or more), English-only recognizer, artefact filter v2, seen creators.
+# pooled = (on seam - expected on seam) / pauses, pooled over creators; boot90 = creator bootstrap 90% (2,000 draws, seed 20261120); percentiles over creators with 100 or more pauses in the band.
+# Plotted: pooled_pct, boot90_low_pct, boot90_high_pct, p10_pct, p25_pct, p75_pct, p90_pct. Reference column (not plotted, printed in the caption): creators_in_spread.
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+pause_band,pooled_pct,boot90_low_pct,boot90_high_pct,creators_in_spread,p10_pct,p25_pct,p75_pct,p90_pct
+Pauses of 0.3 to 1 s,2.799,2.635,2.99,71,1.605,2.404,3.451,4.179
+Pauses of 1 to 2 s,3.415,3.144,3.703,65,1.618,2.64,4.28,5.384
+Pauses of 2 to 5 s,3.919,3.528,4.32,55,1.651,2.783,5.426,6.874
+All pauses of 0.3 to 30 s,2.976,2.809,3.163,71,2.05,2.598,3.373,3.983

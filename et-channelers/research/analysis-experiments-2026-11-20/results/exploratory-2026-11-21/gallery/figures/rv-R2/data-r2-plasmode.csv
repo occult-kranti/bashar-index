@@ -1,0 +1,23 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r2-plasmode. Source public file: rv-r2-plasmode.csv (package rv-R2).
+# Interval level: 90% Monte Carlo interval (rate +/- 1.645 Monte Carlo SE)
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+arm,icc,passes_pct,mc90_low_pct,mc90_high_pct
+a new wave of the same 71 creators,0.0,0.398,0.072,0.724
+a new wave of the same 71 creators,0.05,4.738,3.639,5.837
+a new wave of the same 71 creators,0.1,4.568,3.497,5.639
+a new wave of the same 71 creators,0.2,7.44,6.098,8.782
+a new wave of the same 71 creators,0.4,10.757,9.148,12.366
+a new wave of the same 71 creators,0.6,10.591,8.976,12.206
+that wave pooled with 17 fresh creators,0.0,0.199,-0.031,0.429
+that wave pooled with 17 fresh creators,0.05,3.06,2.17,3.95
+that wave pooled with 17 fresh creators,0.1,4.762,3.67,5.854
+that wave pooled with 17 fresh creators,0.2,7.343,6.009,8.677
+that wave pooled with 17 fresh creators,0.4,8.665,7.204,10.126
+that wave pooled with 17 fresh creators,0.6,8.961,7.462,10.46
+17 fresh creators alone,0.0,0.497,0.132,0.862
+17 fresh creators alone,0.05,0.592,0.196,0.988
+17 fresh creators alone,0.1,0.486,0.129,0.843
+17 fresh creators alone,0.2,0.58,0.192,0.968
+17 fresh creators alone,0.4,0.598,0.198,0.998
+17 fresh creators alone,0.6,0.815,0.343,1.287

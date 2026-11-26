@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded; no person checked any label; agreement between readers, not a measure of correctness. Exploratory, VER-3R analysis (registry A2/A11).
+# Base: 200 units of the four-stratum sample of 23 check creators (seen creators), weighted to 5,896 frame units. Interval level: 90% creator bootstrap (4,999 draws).
+# Source: public table ver3r-reader-pairs.csv (rows with the reader of another vendor).
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+against,kappa_weighted,lo90,hi90
+"three-model majority (small 1, middle 1, third model)",0.93,0.86,0.97
+middle model run 1 (hold-out record model),0.92,0.85,0.95
+OpenAI readers' majority (VG-6 comparator),0.91,0.84,0.95
+small model run 2,0.90,0.83,0.94
+small model run 3,0.87,0.76,0.92
+"small model run 1, label repeat 2",0.86,0.75,0.92
+"small model run 1, label repeat 1",0.86,0.76,0.92
+small model run 1 (seen record),0.84,0.74,0.9
+third model of the same vendor (guided steps),0.81,0.64,0.93

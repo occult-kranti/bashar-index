@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory pilot, before freeze 1. Operational figures of the OpenAI calls (no creator value).
+# Base: the pilot's requests (arms G guided, T typed, S stability repeats, C constructed items).
+# Interval level: none.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:04:21Z (UTC, from the clock) by lv_vera.py (sha256 9bf3361489f16f559f2fbc9af80af6a91709c3fd2d070085c9abd095e0addf89) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), span_audit.py (sha256 29643538c5bb18f8dcaa327496eb4aa21c69bd1ac6a20fb9cea7951ff952d3f1), release review B-LV (plan P10).
+arm_and_model,answers,usd,usd_per_call,input_tokens_per_call,cached_share,output_tokens_per_call
+G gpt-6-sol,100,0.9155,0.00915,4851,0.709,564
+G gpt-6.2-sol,20,0.2955,0.01477,5008,0.000,476
+S gpt-6-sol,20,0.1725,0.00863,4602,0.893,682
+C gpt-6-sol,21,0.2121,0.01010,5017,0.644,588
+T gpt-6-sol,6,0.0456,0.00760,4899,0.744,436
+all arms (committed),,1.7894,,,,

@@ -1,0 +1,23 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-k-beside-rv-l1.csv (values as printed there; rv-L1's values as published in its L1 outputs).
+# Interval level: 95% intervals as each source printed them (rv-L1: as published; LAB-K: 95% creator-bootstrap, 2,000 draws).
+# rv-L1 small = modal reading of five small-model runs; rv-L1 middle = one middle-model run, on rv-L1's own sample.
+source,reading,row,mean,lo95,hi95
+rv-L1,middle model,holds a claimed voice (any words),0.618,0.504,0.733
+rv-L1,middle model,claimed voice in 10% or more,0.502,0.378,0.618
+rv-L1,middle model,claimed voice in 25% or more,0.418,0.311,0.524
+rv-L1,middle model,main kind is a claimed voice,0.365,0.262,0.469
+rv-L1,"small model, same sample",holds a claimed voice (any words),0.734,0.629,0.837
+rv-L1,"small model, same sample",claimed voice in 10% or more,0.523,0.406,0.639
+rv-L1,"small model, same sample",claimed voice in 25% or more,0.450,0.336,0.564
+rv-L1,"small model, same sample",main kind is a claimed voice,0.377,0.261,0.491
+LAB-K,middle model,holds a claimed voice (any words),0.588,0.504,0.675
+LAB-K,middle model,claimed voice in 10% or more,0.491,0.394,0.587
+LAB-K,middle model,claimed voice in 25% or more,0.442,0.358,0.535
+LAB-K,"small model, same sample",holds a claimed voice (any words),0.498,0.404,0.594
+LAB-K,"small model, same sample",claimed voice in 10% or more,0.433,0.338,0.535
+LAB-K,"small model, same sample",claimed voice in 25% or more,0.380,0.282,0.481
+LAB-K,"small model, all seen recordings",holds a claimed voice (any words),0.503,0.427,0.579
+LAB-K,"small model, all seen recordings",claimed voice in 10% or more,0.435,0.355,0.514
+LAB-K,"small model, all seen recordings",claimed voice in 25% or more,0.392,0.318,0.470
+LAB-K,"small model, all seen recordings",main kind is a claimed voice,0.295,0.218,0.375

@@ -1,0 +1,21 @@
+# KA known-answer battery: differences between paired cells, percentage points, 90% creator-clustered bootstrap (2,000 draws).
+# Model-coded labels on constructed texts from seen development creators; not checked by a person; upper bounds for the corpus.
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+contrast,series,difference_pp,boot90_low_pp,boot90_high_pp,status
+"Voice: cited cue units deleted, after minus before (K2)",small model,-14.07,-20.09,-9.01,plotted
+"Voice: cited cue units deleted, after minus before (K2)",middle model,-3.99,-7.98,-0.95,plotted
+Voice: own speech after an embodied frame (C),small model,-5.23,-11.28,0.31,plotted
+Voice: own speech after an embodied frame (C),middle model,-5.52,-10.57,-0.82,plotted
+Voice: own speech after a relayed frame (C),small model,3.5,-2.12,8.79,plotted
+Voice: own speech after a relayed frame (C),middle model,-1.78,-7.16,2.53,plotted
+Voice: units next to an own offer (K4V),small model,0.0,0.0,0.0,plotted
+Voice: units next to an own offer (K4V),middle model,,,,withheld: fewer than 5 creators with a non-zero value
+Voice: codes renamed to neutral letters minus original (KA-L),small model,1.67,-3.07,6.65,plotted
+Voice: codes renamed to neutral letters minus original (KA-L),middle model,-2.64,-6.8,0.32,plotted
+Voice: named being shown minus masked (KA-E),small model,-5.62,-16.19,5.11,plotted
+Voice: named being shown minus masked (KA-E),middle model,2.82,-2.62,9.54,plotted
+"Asks: claimed-voice minus own-voice context, kept as ask",ask pipeline (both models),3.0,0.42,5.73,plotted
+"Forecasts: time window coded, hedged minus bare statement",small model,0.0,0.0,0.0,plotted
+"Forecasts: time window coded, hedged minus bare statement",middle model,0.0,0.0,0.0,plotted
+"Forecasts: commitment by coded time window, from coding error",small model,-0.26,-1.2,0.66,plotted
+"Forecasts: commitment by coded time window, from coding error",middle model,-1.03,-2.3,0.21,plotted

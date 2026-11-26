@@ -1,0 +1,9 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r3-bridge-card. Source public file: rv-r3-verdict-tallies.csv (package rv-R3).
+# Interval level: 90% per measure or 90% simultaneous (Bonferroni over 17), as named
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+scale,interval,agrees,differs,not_settled
+between-creator SD,per-measure 90%,7,6,4
+between-creator SD,simultaneous 90% (Bonferroni 17),7,6,4
+within-creator SD,per-measure 90%,8,6,3
+within-creator SD,simultaneous 90% (Bonferroni 17),7,5,5

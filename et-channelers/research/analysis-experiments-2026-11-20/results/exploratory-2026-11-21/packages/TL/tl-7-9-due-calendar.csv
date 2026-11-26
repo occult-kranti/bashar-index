@@ -1,0 +1,22 @@
+# Exploratory (registry A2); not a test of H1-H10. Added after the exploratory reporting plan only where marked.
+# TL-7.9. Due-date calendar: pending closed windows by the month in which they first become checkable (window end plus 30 days), check date 2026-11-21; consecutive months merged until every cell holds 5 or more channels (plan section 3); months without a window left out. Window units count frame-only windows once per recording, frame and window. This plans when outcomes would become observable; no resolution is run (TL-RES not run, methodological agnosticism).
+# Release form (added after the release review, 2026-11-22; privacy only, no count changed): every merged period that starts before 2025-01 is pooled into one open bin with no start month ('earlier (open bin)'), every period that starts in 2031 or later into one open bin '2031-01 or later' with no end month (window units and statements of the pooled periods summed: each unit and statement falls in one period, so the rows add up to the total); a pooled bin of several periods prints no union channel count, only the band of each merged period in it (no year before 2026 unless the earliest periods are pooled into one open bin, D28; no minimum or maximum, plan section 3).
+# Model-coded (first-round forecast labels of the seen creators): world-future class F1 by the small model with a middle-model second reading (gate D passes on the seen gate sample on its lower bound, 0.643 [0.503]; on the hold-out reliability sample R-hold the F1 class fails gate D, kappa 0.507 [90% 0.169, 0.792]; its stability gate C passes, 0.903); time expressions by the small model (FE) with windows computed by code from its typed fields (known-answer year items: flags right on 30 constructed items); checkability parts by the middle model, kept as the record by the owner's decision (registry 00:30) although they fail their gates: on the development pilot the two-model gate failed for time window (kappa 0.55) and place (not published: fewer than 5 creators) against the floor 0.60; on R-hold, gate D (two models) passes for time window (0.805, lower 90% bound 0.647) and fails for place (0.306), named actor (0.419) and observable outcome (0.328; its stability gate C 0.826), quantity not published (fewer than 5 creators); a third model re-read 300 seen check statements: kappa time window 0.70, place not published (fewer than 5 creators), named actor 0.69, observable outcome 0.79, quantity not published (fewer than 5 creators) (agreement, not a measure of correctness); commitment by the small model (R-hold gate C 0.913, gate D 0.756). Not checked by a person.
+# What is dated and for when, and whether an outcome would be observable; never whether a prediction came true.
+# Creator counts: 'fewer than 5' means 1 to 4; 'all but fewer than 5 of 71' means 67 to 70 of the 71 seen creators; a range such as 55-59 is a band shown where an exact count could fix a difference of 1 to 4 creators against a nested printed count (rule revised after the release review, 2026-11-22).
+first_checkable_from,first_checkable_to,window_units,statements,channels
+2026-12,2026-12,51,115,15-19
+2027-01,2027-01,156,336,25-29
+2027-02,2027-03,14,18,5-9
+2027-04,2027-04,14,24,5-9
+2027-05,2027-06,16,29,5-9
+2027-07,2027-07,14,46,5-9
+2027-08,2027-09,11,19,5-9
+2027-10,2027-12,7,47,5-9
+2028-01,2028-01,40,87,20-24
+2028-02,2028-12,15,22,5-9
+2029-01,2029-01,46,60,5-9
+2029-02,2029-10,10,14,5-9
+2029-11,2030-12,49,163,10-14
+2031-01,later (open bin),126,222,5-9 in each merged period
+all pending,,569,1202,50

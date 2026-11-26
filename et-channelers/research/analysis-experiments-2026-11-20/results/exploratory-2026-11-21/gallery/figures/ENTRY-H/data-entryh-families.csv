@@ -1,0 +1,19 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# ENTRY-H E2: cue families over the whole recording, version 1 (record); source HOLD/entry-h.csv (package HOLD, public).
+# Interval level: 90% t interval over creators. Cue counts; precision from the model check of version 1 on seen creators (model-coded, not checked by a person) is in the package table.
+# Not drawn (status column): rates resting on fewer than 5 creators with a hit, and rates dominated by fewer than 5 creators (the printed mean, interval and creator count would show one creator holding half or more of the summed creator rates).
+family,group,version,creators,hits_per_1000_words,ci90_low,ci90_high,status
+handover by the creator,seen,v1,71,0.034,0.012,0.057,
+"self-introduction, I",seen,v1,71,0.045,0.019,0.072,
+"self-introduction, we",seen,v1,71,0.033,0.014,0.052,
+creator's own introduction (negative),seen,v1,71,0.176,0.129,0.224,
+greeting without a name,seen,v1,71,0.045,0.018,0.072,
+leave-taking by the source,seen,v1,71,0.022,0.005,0.039,
+creator's return,seen,v1,71,0.033,0.0,0.071,
+handover by the creator,hold-out,v1,18,,,,hold-out: not released (fewer than 5 creators with a hit)
+"self-introduction, I",hold-out,v1,18,0.014,0.0,0.029,
+"self-introduction, we",hold-out,v1,18,,,,hold-out: not released (dominated by fewer than 5 creators)
+creator's own introduction (negative),hold-out,v1,18,0.121,0.056,0.187,
+greeting without a name,hold-out,v1,18,0.03,0.014,0.047,
+leave-taking by the source,hold-out,v1,18,,,,hold-out: not released (fewer than 5 creators with a hit)
+creator's return,hold-out,v1,18,0.013,0.003,0.024,

@@ -1,0 +1,15 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# ENTRY E3, change around the first entrance cue; version 1 (of record) and version 2 (revised after the model check, P5); sign stability when any one creator is
+# left out (no leave-one-out range: invertible); cue counts.
+# Recognized words per minute: a recognizer-output measure, not a direct measure of speaking.
+# Source: the gallery's public file figures/ENTRY/data-entry-around-cue.csv (build of 2026-11-22 03:33 UTC); values unchanged, the measure's label renamed to D12's wording.
+# Interval level: 90% two-stage bootstrap interval (creators, then recordings; 2,000 draws).
+version,measure,unit,before,after_minus_before,ci90_low,ci90_high,sign_holds_leaving_out_any_one_creator,recordings,creators
+1,“I” forms,"forms per 1,000 words",32.9,-8.04,-20.85,2.55,yes,25,16
+1,“we” forms,"forms per 1,000 words",23.5,-2.29,-10.1,5.71,yes,25,16
+1,“you” forms,"forms per 1,000 words",47.7,6.86,-5.98,19.64,yes,25,16
+1,recognized words per minute,recognized words per minute of speech,173.8,-3.63,-15.83,7.91,no,25,16
+2,“I” forms,"forms per 1,000 words",18.7,-2.13,-15.34,9.6,no,17,11
+2,“we” forms,"forms per 1,000 words",25.7,-6.02,-15.16,2.82,yes,17,11
+2,“you” forms,"forms per 1,000 words",58.3,3.74,-14.49,22.29,no,17,11
+2,recognized words per minute,recognized words per minute of speech,163.4,-6.34,-24.26,11.12,yes,17,11

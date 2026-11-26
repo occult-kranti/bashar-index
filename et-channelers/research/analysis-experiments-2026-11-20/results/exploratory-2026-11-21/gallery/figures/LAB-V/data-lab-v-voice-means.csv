@@ -1,0 +1,32 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-v-voice-shares.csv (rows 'all formats'; printed cells only).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+# Rows: claimed + own + neither = 1 per creator; embodied + relayed = claimed; V6 + V0 + V4 + V5 = neither.
+view,row,mean,lo95,hi95
+"middle model, middle-model subset (178 recordings; primary)",claimed voice (V2+V3),0.338,0.263,0.413
+"middle model, middle-model subset (178 recordings; primary)",of which embodied (V2),0.236,0.163,0.311
+"middle model, middle-model subset (178 recordings; primary)",of which relayed (V3; below reliability floor),0.102,0.062,0.149
+"middle model, middle-model subset (178 recordings; primary)",own voice (primary definition),0.373,0.300,0.451
+"middle model, middle-model subset (178 recordings; primary)",neither claimed nor own,0.288,0.209,0.371
+"middle model, middle-model subset (178 recordings; primary)",of which conversation (V6),0.207,0.128,0.292
+"middle model, middle-model subset (178 recordings; primary)",of which cannot tell (V0),0.052,0.024,0.086
+"middle model, middle-model subset (178 recordings; primary)",of which other participant (V4),0.015,0.007,0.025
+"middle model, middle-model subset (178 recordings; primary)",of which other material (V5),0.015,0.004,0.030
+"small model, same subset (beside)",claimed voice (V2+V3),0.286,0.213,0.359
+"small model, same subset (beside)",of which embodied (V2),0.198,0.132,0.271
+"small model, same subset (beside)",of which relayed (V3; below reliability floor),0.087,0.050,0.127
+"small model, same subset (beside)",own voice (primary definition),0.395,0.318,0.475
+"small model, same subset (beside)",neither claimed nor own,0.319,0.243,0.404
+"small model, same subset (beside)",of which conversation (V6),0.212,0.136,0.301
+"small model, same subset (beside)",of which cannot tell (V0),0.079,0.041,0.123
+"small model, same subset (beside)",of which other participant (V4),0.016,0.007,0.026
+"small model, same subset (beside)",of which other material (V5),0.012,0.002,0.026
+"small model, all 1,293 seen recordings (beside)",claimed voice (V2+V3),0.306,0.243,0.372
+"small model, all 1,293 seen recordings (beside)",of which embodied (V2),0.210,0.150,0.274
+"small model, all 1,293 seen recordings (beside)",of which relayed (V3; below reliability floor),0.096,0.061,0.135
+"small model, all 1,293 seen recordings (beside)",own voice (primary definition),0.336,0.276,0.400
+"small model, all 1,293 seen recordings (beside)",neither claimed nor own,0.358,0.288,0.430
+"small model, all 1,293 seen recordings (beside)",of which conversation (V6),0.264,0.196,0.335
+"small model, all 1,293 seen recordings (beside)",of which cannot tell (V0),0.069,0.041,0.101
+"small model, all 1,293 seen recordings (beside)",of which other participant (V4),0.020,0.012,0.030
+"small model, all 1,293 seen recordings (beside)",of which other material (V5),0.005,0.003,0.009

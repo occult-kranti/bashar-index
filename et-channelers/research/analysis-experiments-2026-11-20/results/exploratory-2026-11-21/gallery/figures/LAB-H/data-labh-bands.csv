@@ -1,0 +1,25 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# LAB-H: claimed-voice bands of a recording (LAB-K), each display naming its model; source HOLD/lab-h-descriptions.csv (package HOLD, public).
+# Interval level: 90% t interval over creators of creator-balanced means, clipped to [0, 1] by the package.
+# Model-coded labels, not checked by a person; agreement figures are agreement, not a measure of correctness. Hold-out beside seen, never pooled.
+figure,row,series,creators,mean,t90_low,t90_high,note
+LAB-H-fig-2,no claimed voice,"seen, middle model (middle-model subset; comparison)",71,0.412,0.337,0.487,
+LAB-H-fig-2,under 10% of words,"seen, middle model (middle-model subset; comparison)",71,0.097,0.06,0.135,
+LAB-H-fig-2,10% to under 25%,"seen, middle model (middle-model subset; comparison)",71,0.048,0.022,0.074,
+LAB-H-fig-2,25% to under 50%,"seen, middle model (middle-model subset; comparison)",71,0.062,0.025,0.1,
+LAB-H-fig-2,50% or more,"seen, middle model (middle-model subset; comparison)",71,0.38,0.303,0.457,
+LAB-H-fig-2,no claimed voice,"hold-out, middle model (hold-out record)",18,0.441,0.308,0.575,
+LAB-H-fig-2,under 10% of words,"hold-out, middle model (hold-out record)",18,0.051,0.023,0.08,
+LAB-H-fig-2,10% to under 25%,"hold-out, middle model (hold-out record)",18,0.071,0.022,0.119,
+LAB-H-fig-2,25% to under 50%,"hold-out, middle model (hold-out record)",18,0.119,0.069,0.17,
+LAB-H-fig-2,50% or more,"hold-out, middle model (hold-out record)",18,0.317,0.213,0.421,
+LAB-H-fig-2,no claimed voice,"seen, small model (seen record; beside)",71,0.497,0.432,0.561,
+LAB-H-fig-2,under 10% of words,"seen, small model (seen record; beside)",71,0.068,0.052,0.084,
+LAB-H-fig-2,10% to under 25%,"seen, small model (seen record; beside)",71,0.043,0.029,0.058,
+LAB-H-fig-2,25% to under 50%,"seen, small model (seen record; beside)",71,0.075,0.054,0.096,
+LAB-H-fig-2,50% or more,"seen, small model (seen record; beside)",71,0.317,0.251,0.382,
+LAB-H-fig-2,no claimed voice,"hold-out, small model (beside; below its stability floor)",18,0.506,0.374,0.637,
+LAB-H-fig-2,under 10% of words,"hold-out, small model (beside; below its stability floor)",18,0.048,0.023,0.073,
+LAB-H-fig-2,10% to under 25%,"hold-out, small model (beside; below its stability floor)",18,0.048,0.015,0.081,
+LAB-H-fig-2,25% to under 50%,"hold-out, small model (beside; below its stability floor)",18,0.134,0.08,0.187,
+LAB-H-fig-2,50% or more,"hold-out, small model (beside; below its stability floor)",18,0.264,0.171,0.357,

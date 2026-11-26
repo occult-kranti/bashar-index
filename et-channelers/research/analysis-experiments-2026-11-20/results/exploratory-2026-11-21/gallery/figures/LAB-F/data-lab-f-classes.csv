@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-f-forecasts.csv, section 'class (share of read candidates, weighted; ten-class label is a description only)' (printed cells only).
+# Interval level: 95% creator-bootstrap interval of the creator-balanced mean (2,000 draws).
+# The ten classes add up to 1 per creator; candidates without a valid answer rest on fewer than 5 creators and are pooled with the smallest class (F8) by the plan's rule.
+row,mean,lo95,hi95
+F1 world-future statement (class of record),0.195,0.168,0.224
+F2 listener-directed,0.257,0.227,0.287
+F3 logistics or own plans,0.061,0.047,0.076
+F4 calendar or sky statement,0.020,0.014,0.027
+F5 inside a practice,0.067,0.052,0.085
+F6 general rule,0.122,0.106,0.139
+F7 not about the future,0.256,0.234,0.279
+F9 not the speaker's content,0.006,0.004,0.009
+F0 cannot tell F1 from one other,0.009,0.007,0.011
+"F8 reported only, or no valid answer (pooled)",0.006,0.004,0.007

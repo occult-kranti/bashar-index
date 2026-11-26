@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory hold-out description (balance and positional display, not a replication), run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled.
+# One sentence for every transcript-derived covariate with |SMD| > 0.25.
+The hold-out differs from the seen creators in share of audio outside recognizer segments: SMD 0.27 (90% -0.16 to 0.70); median 0.137 against 0.114.
+The hold-out differs from the seen creators in share of audio outside the voice detector's speech: SMD 0.28 (90% -0.14 to 0.73); median 0.101 against 0.079.
+The hold-out differs from the seen creators in words per minute inside recognizer segments: SMD -0.81 (90% -1.26 to -0.40); median 142 against 155.
+The hold-out differs from the seen creators in mean log words per recording: SMD -0.27 (90% -0.66 to 0.20); median 7.48 against 7.66.
+The hold-out differs from the seen creators in mean segment log-probability (duration-weighted): SMD -0.83 (90% -1.26 to -0.46); median -0.14 against -0.122.
+The hold-out differs from the seen creators in median seconds before the first segment: SMD 0.45 (90% 0.02 to 0.78); median 0.895 against 0.27.
+The hold-out differs from the seen creators in median seconds after the last segment: SMD 0.45 (90% 0.11 to 0.79); median 10.1 against 4.6.

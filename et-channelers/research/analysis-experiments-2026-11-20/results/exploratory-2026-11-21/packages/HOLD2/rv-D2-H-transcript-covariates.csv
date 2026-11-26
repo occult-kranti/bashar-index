@@ -1,0 +1,18 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# package HOLD2; written 2026-11-22T01:22:13Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# Exploratory hold-out description (balance and positional display, not a replication), run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled.
+# rv-D2-H: transcript-derived balance covariates of the hold-out, beside rv-D2's ledger and inventory table (Table B).
+# Base: English transcripts of the English-only recognizer model (plan section 7), segments after artefact filter v2; seen 71 creators, hold-out 18 English creators (the hold-out creators whose recordings are mostly not in English are not in this base). Timing and wording measured from the recognizer's output only; nothing here is model-coded.
+# Creator-level values; medians and quartiles over creators; SMD hold-out minus seen (pooled SD) with 90% creator-bootstrap intervals stratified by group (2,000 draws, seed 20261121); read against the fixed lines 0.1 and 0.25 (no test).
+# Wording: 'the hold-out differs from the seen creators in ...'; never 'replication'. Pace and segment log-probability are recognizer-output measures (recognized words, recognizer confidence), not direct measures of speaking.
+# Release fix of 2026-11-22 (2026-11-22T06:14:18Z) by the plotting group X-HOLD's apply_release_fixes.py (sha256 a5c389b3f05b1084; dominance.py d96371e790ec2245), after the verifier's report, for privacy only (it hides values and chooses none): the base note uses the lead's decision D32 wording ('the hold-out creators whose recordings are mostly not in English'); nothing else changed.
+covariate,creators_seen,median_seen,q1_seen,q3_seen,creators_holdout,median_holdout,q1_holdout,q3_holdout,smd_holdout_minus_seen,smd_lo90,smd_hi90,beyond_0_1,beyond_0_25
+share of audio outside recognizer segments,71,0.1145,0.0809,0.1595,18,0.1374,0.1084,0.2052,0.2699,-0.1557,0.6954,True,True
+share of audio outside the voice detector's speech,71,0.079,0.0395,0.1375,18,0.1014,0.0672,0.1948,0.2834,-0.1407,0.7251,True,True
+share of audio in stretches of 30 s or more without a segment,71,0.004,0.0,0.0283,18,0.0236,0.0056,0.0572,0.2411,-0.1786,0.6757,True,False
+words per minute inside recognizer segments,71,154.508,143.631,168.6209,18,142.0943,130.0427,147.7535,-0.8064,-1.2578,-0.4019,True,True
+mean log words per recording,71,7.664,7.1088,8.1192,18,7.4823,7.0813,7.8411,-0.265,-0.6577,0.2015,True,True
+mean MATTR (500-token window),71,0.4145,0.396,0.4327,18,0.4146,0.4074,0.4344,0.0398,-0.3835,0.4491,False,False
+mean segment log-probability (duration-weighted),71,-0.1221,-0.1401,-0.113,18,-0.1402,-0.1925,-0.1295,-0.8273,-1.2572,-0.456,True,True
+median seconds before the first segment,71,0.27,0.0,1.41,18,0.895,0.1875,5.8925,0.4534,0.0188,0.7781,True,True
+median seconds after the last segment,71,4.6004,1.5331,11.7292,18,10.1157,3.0858,34.6338,0.4469,0.1129,0.7921,True,True

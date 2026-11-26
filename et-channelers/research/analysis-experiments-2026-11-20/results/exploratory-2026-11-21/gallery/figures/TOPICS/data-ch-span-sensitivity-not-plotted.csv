@@ -1,0 +1,82 @@
+# Exploratory (registry A2); not a test of H1-H10.
+measure,measure_id,date_panel,spearman_with_log_span,ci90_low,ci90_high,interval_excludes_0
+recording length (log words),log_words,"NOT PLOTTED, sensitivity: B with estimated",-0.037,-0.246,0.17,False
+pace (words per speech minute),pace_wpm,"NOT PLOTTED, sensitivity: B with estimated",-0.015,-0.209,0.177,False
+word length (letters),word_length,"NOT PLOTTED, sensitivity: B with estimated",0.113,-0.092,0.314,False
+vocabulary variety (MATTR),mattr1000,"NOT PLOTTED, sensitivity: B with estimated",0.081,-0.126,0.28,False
+contractions,contraction_rate,"NOT PLOTTED, sensitivity: B with estimated",0.015,-0.201,0.221,False
+first-person singular,first_singular_rate,"NOT PLOTTED, sensitivity: B with estimated",-0.083,-0.277,0.121,False
+first-person plural,first_plural_rate,"NOT PLOTTED, sensitivity: B with estimated",0.118,-0.078,0.314,False
+second person,second_person_rate,"NOT PLOTTED, sensitivity: B with estimated",-0.084,-0.285,0.124,False
+question marks,question_rate,"NOT PLOTTED, sensitivity: B with estimated",0.143,-0.061,0.335,False
+RX A greetings and sign-offs,rx_A_frames,"NOT PLOTTED, sensitivity: B with estimated",0.031,-0.175,0.24,False
+RX B reported speech,rx_B_reporting,"NOT PLOTTED, sensitivity: B with estimated",0.015,-0.186,0.214,False
+RX C forms of address,rx_C_address,"NOT PLOTTED, sensitivity: B with estimated",0.083,-0.125,0.281,False
+RX D time expressions,rx_D_time,"NOT PLOTTED, sensitivity: B with estimated",0.121,-0.078,0.309,False
+RX E hedges and boosters,rx_E_stance,"NOT PLOTTED, sensitivity: B with estimated",-0.264,-0.455,-0.07,True
+RX F asks,rx_F_asks,"NOT PLOTTED, sensitivity: B with estimated",-0.103,-0.314,0.118,False
+RX G named beings and places,rx_G_names_v0,"NOT PLOTTED, sensitivity: B with estimated",-0.007,-0.197,0.19,False
+RX H numerals,rx_H_numerals,"NOT PLOTTED, sensitivity: B with estimated",0.1,-0.125,0.304,False
+RX I questions,rx_I_questions,"NOT PLOTTED, sensitivity: B with estimated",0.163,-0.029,0.352,False
+RX J framing cues,rx_J_framing_cues,"NOT PLOTTED, sensitivity: B with estimated",-0.147,-0.364,0.091,False
+topic 1,tm_01,"NOT PLOTTED, sensitivity: B with estimated",0.016,-0.209,0.233,False
+topic 2,tm_02,"NOT PLOTTED, sensitivity: B with estimated",0.116,-0.101,0.323,False
+topic 3,tm_03,"NOT PLOTTED, sensitivity: B with estimated",0.046,-0.155,0.229,False
+topic 4,tm_04,"NOT PLOTTED, sensitivity: B with estimated",0.042,-0.168,0.255,False
+topic 5,tm_05,"NOT PLOTTED, sensitivity: B with estimated",0.226,0.031,0.406,True
+topic 6,tm_06,"NOT PLOTTED, sensitivity: B with estimated",0.123,-0.088,0.322,False
+topic 7,tm_07,"NOT PLOTTED, sensitivity: B with estimated",0.098,-0.105,0.301,False
+topic 8,tm_08,"NOT PLOTTED, sensitivity: B with estimated",-0.011,-0.233,0.204,False
+topic 9,tm_09,"NOT PLOTTED, sensitivity: B with estimated",0.024,-0.184,0.221,False
+topic 10,tm_10,"NOT PLOTTED, sensitivity: B with estimated",0.167,-0.02,0.334,False
+topic 11,tm_11,"NOT PLOTTED, sensitivity: B with estimated",0.027,-0.165,0.224,False
+topic 12,tm_12,"NOT PLOTTED, sensitivity: B with estimated",-0.098,-0.319,0.12,False
+topic 13,tm_13,"NOT PLOTTED, sensitivity: B with estimated",0.056,-0.141,0.247,False
+topic 14,tm_14,"NOT PLOTTED, sensitivity: B with estimated",0.076,-0.126,0.274,False
+topic 15,tm_15,"NOT PLOTTED, sensitivity: B with estimated",-0.061,-0.269,0.145,False
+topic 16,tm_16,"NOT PLOTTED, sensitivity: B with estimated",0.011,-0.187,0.2,False
+topic balance B1,tm_B1,"NOT PLOTTED, sensitivity: B with estimated",0.103,-0.102,0.311,False
+topic balance B2,tm_B2,"NOT PLOTTED, sensitivity: B with estimated",0.083,-0.104,0.263,False
+topic balance B3,tm_B3,"NOT PLOTTED, sensitivity: B with estimated",0.007,-0.195,0.207,False
+topic balance B4,tm_B4,"NOT PLOTTED, sensitivity: B with estimated",0.053,-0.15,0.247,False
+topic balance B5,tm_B5,"NOT PLOTTED, sensitivity: B with estimated",-0.007,-0.237,0.214,False
+recording length (log words),log_words,"NOT PLOTTED, sensitivity: A with estimated",-0.037,-0.246,0.17,False
+pace (words per speech minute),pace_wpm,"NOT PLOTTED, sensitivity: A with estimated",-0.016,-0.209,0.176,False
+word length (letters),word_length,"NOT PLOTTED, sensitivity: A with estimated",0.114,-0.091,0.314,False
+vocabulary variety (MATTR),mattr1000,"NOT PLOTTED, sensitivity: A with estimated",0.081,-0.128,0.279,False
+contractions,contraction_rate,"NOT PLOTTED, sensitivity: A with estimated",0.014,-0.203,0.22,False
+first-person singular,first_singular_rate,"NOT PLOTTED, sensitivity: A with estimated",-0.085,-0.28,0.12,False
+first-person plural,first_plural_rate,"NOT PLOTTED, sensitivity: A with estimated",0.118,-0.081,0.314,False
+second person,second_person_rate,"NOT PLOTTED, sensitivity: A with estimated",-0.085,-0.287,0.124,False
+question marks,question_rate,"NOT PLOTTED, sensitivity: A with estimated",0.142,-0.062,0.334,False
+RX A greetings and sign-offs,rx_A_frames,"NOT PLOTTED, sensitivity: A with estimated",0.033,-0.171,0.241,False
+RX B reported speech,rx_B_reporting,"NOT PLOTTED, sensitivity: A with estimated",0.016,-0.186,0.216,False
+RX C forms of address,rx_C_address,"NOT PLOTTED, sensitivity: A with estimated",0.084,-0.124,0.282,False
+RX D time expressions,rx_D_time,"NOT PLOTTED, sensitivity: A with estimated",0.121,-0.077,0.309,False
+RX E hedges and boosters,rx_E_stance,"NOT PLOTTED, sensitivity: A with estimated",-0.264,-0.456,-0.07,True
+RX F asks,rx_F_asks,"NOT PLOTTED, sensitivity: A with estimated",-0.103,-0.313,0.118,False
+RX G named beings and places,rx_G_names_v0,"NOT PLOTTED, sensitivity: A with estimated",-0.007,-0.197,0.191,False
+RX H numerals,rx_H_numerals,"NOT PLOTTED, sensitivity: A with estimated",0.1,-0.124,0.304,False
+RX I questions,rx_I_questions,"NOT PLOTTED, sensitivity: A with estimated",0.162,-0.032,0.351,False
+RX J framing cues,rx_J_framing_cues,"NOT PLOTTED, sensitivity: A with estimated",-0.149,-0.368,0.089,False
+topic 1,tm_01,"NOT PLOTTED, sensitivity: A with estimated",0.016,-0.209,0.233,False
+topic 2,tm_02,"NOT PLOTTED, sensitivity: A with estimated",0.115,-0.102,0.321,False
+topic 3,tm_03,"NOT PLOTTED, sensitivity: A with estimated",0.047,-0.154,0.23,False
+topic 4,tm_04,"NOT PLOTTED, sensitivity: A with estimated",0.043,-0.167,0.255,False
+topic 5,tm_05,"NOT PLOTTED, sensitivity: A with estimated",0.227,0.031,0.406,True
+topic 6,tm_06,"NOT PLOTTED, sensitivity: A with estimated",0.123,-0.088,0.322,False
+topic 7,tm_07,"NOT PLOTTED, sensitivity: A with estimated",0.099,-0.104,0.304,False
+topic 8,tm_08,"NOT PLOTTED, sensitivity: A with estimated",-0.011,-0.233,0.204,False
+topic 9,tm_09,"NOT PLOTTED, sensitivity: A with estimated",0.024,-0.184,0.22,False
+topic 10,tm_10,"NOT PLOTTED, sensitivity: A with estimated",0.167,-0.021,0.335,False
+topic 11,tm_11,"NOT PLOTTED, sensitivity: A with estimated",0.027,-0.165,0.224,False
+topic 12,tm_12,"NOT PLOTTED, sensitivity: A with estimated",-0.098,-0.318,0.119,False
+topic 13,tm_13,"NOT PLOTTED, sensitivity: A with estimated",0.055,-0.142,0.246,False
+topic 14,tm_14,"NOT PLOTTED, sensitivity: A with estimated",0.076,-0.127,0.275,False
+topic 15,tm_15,"NOT PLOTTED, sensitivity: A with estimated",-0.06,-0.268,0.145,False
+topic 16,tm_16,"NOT PLOTTED, sensitivity: A with estimated",0.01,-0.187,0.199,False
+topic balance B1,tm_B1,"NOT PLOTTED, sensitivity: A with estimated",0.103,-0.102,0.311,False
+topic balance B2,tm_B2,"NOT PLOTTED, sensitivity: A with estimated",0.083,-0.104,0.264,False
+topic balance B3,tm_B3,"NOT PLOTTED, sensitivity: A with estimated",0.007,-0.194,0.209,False
+topic balance B4,tm_B4,"NOT PLOTTED, sensitivity: A with estimated",0.053,-0.149,0.247,False
+topic balance B5,tm_B5,"NOT PLOTTED, sensitivity: A with estimated",-0.006,-0.237,0.216,False

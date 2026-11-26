@@ -1,0 +1,41 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# RX sub-pattern D1 (calendar years named in digits or spoken twenty-twenty forms), a cue count; model-read precision not taken for D1. Seen creators only: 1,229 recordings of 150 words or more of the 71 seen creators.
+# Value: share of all 71 seen creators who name a year in the bin at least once (a creator can count in several bins). Census of creators; no interval.
+# Bins (lead decision D28, the DATES-2 form): the earliest years pooled into one open bin 'up to 1989' (no start year printed), the latest into '2031 or later'; years 1990-2030 binned one by one and adjacent bins merged until every bin holds 5 or more creators (reporting-plan rule). several_years = 1 for a bin that pools several years.
+# Source public file: the PATTERNS group's public count file data-rx-years.csv before the D28 rebuild (sha256 e86818d58e02f43414b181cf4f030762529966faea67014502bc7ec8c6305173); only the first bin's label changed (was '1989 or earlier').
+years,several_years,share_of_seen_creators
+up to 1989,1,0.3662
+1990 to 1992,1,0.0986
+1993 to 1994,1,0.1268
+1995 to 1997,1,0.0704
+1998 to 1999,1,0.1268
+2000,0,0.2254
+2001,0,0.0845
+2002 to 2003,1,0.1127
+2004,0,0.0986
+2005,0,0.0986
+2006,0,0.2113
+2007,0,0.1549
+2008,0,0.1972
+2009,0,0.1268
+2010,0,0.2254
+2011,0,0.1268
+2012,0,0.3239
+2013,0,0.1549
+2014,0,0.1268
+2015,0,0.169
+2016,0,0.1549
+2017,0,0.169
+2018,0,0.2254
+2019,0,0.2394
+2020,0,0.507
+2021,0,0.2113
+2022,0,0.169
+2023,0,0.1972
+2024,0,0.169
+2025,0,0.338
+2026,0,0.5352
+2027,0,0.4648
+2028 to 2029,1,0.2254
+2030,0,0.1972
+2031 or later,1,0.2254

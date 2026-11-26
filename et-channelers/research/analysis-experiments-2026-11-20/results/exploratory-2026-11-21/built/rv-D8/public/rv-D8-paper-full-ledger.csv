@@ -1,0 +1,22 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: the paper's ethics table (generated 2026-11-22 01:51 UTC from the whole request ledger; D8's rule rerun on counts only)
+# Interval level: 95% creator bootstrap for the pilot third-party share; none for counts
+# Copied from the paper's public table on main (floats/tab_external.tex) so that the release shows the revision beside the version of record; words = 0.75 x uncached input tokens, an estimate; each word was sent several times across instruments and runs.
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:11Z.
+service_and_data_category,requests,tokens_millions,words_millions_estimate,third_party_share,retention_and_deletion
+"OpenAI API: seen transcript windows (pilots, gates, checks)","42,881",114.9,29.39,"14.1% [4.5, 24.1] (pilot)",vendor logs up to 30 days; store=false sent
+OpenAI API: seen transcript windows (production),"225,346",302.6,46.05,"14.1% [4.5, 24.1] (pilot)",as above
+"OpenAI API: hold-out transcript windows (production, after freeze 2)","35,815",73.7,12.15,"14.1% [4.5, 24.1] (pilot)",as above
+"OpenAI API: hold-out transcript windows (reliability runs on R-hold, after freeze 2)","13,420",32.2,4.18,"14.1% [4.5, 24.1] (pilot)",as above
+"OpenAI API: other-group transcript windows (production, after freeze 2)","2,649",5.5,0.87,"14.1% [4.5, 24.1] (pilot)",as above
+"OpenAI API: seen transcript statements, with web search","17,662",27.4,3.23,-,as above
+OpenAI API: name forms from seen transcripts,294,1.4,0.75,-,as above
+OpenAI API: page text of seen recordings,"13,234",23.6,-,-,as above
+OpenAI API: constructed known-answer texts,"18,772",60.7,-,-,as above
+"OpenAI API: public channel metadata, web search (discovery)","26,338",89.4,-,-,as above
+OpenAI API: tests (no corpus data),192,0.1,-,-,as above
+OpenAI API: untagged requests (no tag recorded),5,0.0,-,-,as above
+OpenAI Files and Batch: request files,116 jobs,-,-,-,kept until deleted; deleted for 115 of 116 jobs
+"Anthropic agents: seen transcript windows (panels, review, cross-vendor reader)",not logged,-,not logged,as in the pilot,terms not read
+"Cloud drive: audio and provenance records, all creators",-,-,-,clients and audience in the audio,terms not read; owner holds

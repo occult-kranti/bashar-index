@@ -1,0 +1,70 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:19:18Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# TM-H: the frozen topic model of TM (NMF K = 16 on sublinear TF-IDF, model sha256 26af3da1c2402dc7; vocabulary and IDF of the seen windows) applied unchanged to 300-word windows of English recordings of 300 or more words (artefact filter v2), seen 71 creators and the 18 English hold-out creators; seen and hold-out side by side, never pooled. Topics are vocabulary clusters, never beliefs; labels by the analyst from seen top words, neutral for style topics and for topics whose top creator holds 0.20 or more of the topic's creator weight (registry 2026-11-21 03:08), the rule applied on each group's own weights; labels join by topic number, so a topic neutral in either group is neutral in both.
+# Share of each topic in windows whose midpoint lies in the first or last tenth of running time; creators weighted equally; 90% creator bootstrap; pointwise intervals, no family-wise control (32 cells per group).
+group,position,topic,label,creators,creator_equal_share,ci90_low,ci90_high
+seen,first tenth,1,"soul, higher self",65,0.0675,0.0563,0.0794
+seen,first tenth,2,"personal story, past",65,0.1575,0.136,0.179
+seen,first tenth,3,"energy shifts, change",65,0.0983,0.0779,0.1207
+seen,first tenth,4,"guided breathing, body",65,0.048,0.037,0.0603
+seen,first tenth,5,"planet, humanity, star beings",65,0.0792,0.067,0.0919
+seen,first tenth,6,"religion, Christian faith",65,0.0318,0.0219,0.0442
+seen,first tenth,7,"channel logistics, links",65,0.0928,0.0793,0.1075
+seen,first tenth,8,"style register, topic 8",65,0.0413,0.0277,0.0593
+seen,first tenth,9,"style register, topic 9",65,0.0591,0.049,0.0702
+seen,first tenth,10,"fear, truth, choice",65,0.0445,0.0327,0.0586
+seen,first tenth,11,"divine love, compassion",65,0.0451,0.0379,0.053
+seen,first tenth,12,"session reports, sightings",65,0.0515,0.0334,0.0751
+seen,first tenth,13,"style register, topic 13",65,0.0337,0.0221,0.0497
+seen,first tenth,14,topic 14 (neutral label),65,0.0449,0.0321,0.0607
+seen,first tenth,15,questions to guides,65,0.0704,0.0604,0.0814
+seen,first tenth,16,"style register, topic 16",65,0.0346,0.0214,0.0557
+seen,last tenth,1,"soul, higher self",65,0.0612,0.0484,0.0748
+seen,last tenth,2,"personal story, past",65,0.0823,0.0692,0.0962
+seen,last tenth,3,"energy shifts, change",65,0.0668,0.0544,0.0793
+seen,last tenth,4,"guided breathing, body",65,0.0529,0.0417,0.065
+seen,last tenth,5,"planet, humanity, star beings",65,0.0484,0.04,0.0577
+seen,last tenth,6,"religion, Christian faith",65,0.0336,0.0219,0.0485
+seen,last tenth,7,"channel logistics, links",65,0.1469,0.1246,0.1707
+seen,last tenth,8,"style register, topic 8",65,0.0578,0.0429,0.077
+seen,last tenth,9,"style register, topic 9",65,0.0735,0.0614,0.0869
+seen,last tenth,10,"fear, truth, choice",65,0.0503,0.0381,0.0653
+seen,last tenth,11,"divine love, compassion",65,0.1007,0.0878,0.1149
+seen,last tenth,12,"session reports, sightings",65,0.0474,0.0328,0.0685
+seen,last tenth,13,"style register, topic 13",65,0.0355,0.0241,0.0525
+seen,last tenth,14,topic 14 (neutral label),65,0.0499,0.0349,0.0691
+seen,last tenth,15,questions to guides,65,0.0592,0.049,0.0696
+seen,last tenth,16,"style register, topic 16",65,0.0336,0.0197,0.056
+holdout,first tenth,1,"soul, higher self",18,0.0775,0.0583,0.0974
+holdout,first tenth,2,"personal story, past",18,0.1427,0.1134,0.1716
+holdout,first tenth,3,"energy shifts, change",18,0.0796,0.0631,0.0986
+holdout,first tenth,4,"guided breathing, body",18,0.0581,0.04,0.0794
+holdout,first tenth,5,"planet, humanity, star beings",18,0.1399,0.1098,0.1727
+holdout,first tenth,6,"religion, Christian faith",18,0.0273,0.0162,0.0402
+holdout,first tenth,7,"channel logistics, links",18,0.0757,0.0508,0.1043
+holdout,first tenth,8,"style register, topic 8",18,0.0362,0.0264,0.0471
+holdout,first tenth,9,"style register, topic 9",18,0.0525,0.0401,0.0655
+holdout,first tenth,10,"fear, truth, choice",18,0.0521,0.0306,0.0829
+holdout,first tenth,11,"divine love, compassion",18,0.0442,0.0275,0.0626
+holdout,first tenth,12,"session reports, sightings",18,0.0466,0.0342,0.0592
+holdout,first tenth,13,"style register, topic 13",18,0.0412,0.0232,0.0647
+holdout,first tenth,14,topic 14 (neutral label),18,0.0475,0.0321,0.0642
+holdout,first tenth,15,questions to guides,18,0.0379,0.0288,0.0471
+holdout,first tenth,16,"style register, topic 16",18,0.041,0.0239,0.0604
+holdout,last tenth,1,"soul, higher self",all but fewer than 5 of 18,0.0615,0.0504,0.0742
+holdout,last tenth,2,"personal story, past",all but fewer than 5 of 18,0.0786,0.0586,0.0973
+holdout,last tenth,3,"energy shifts, change",all but fewer than 5 of 18,0.063,0.0502,0.0778
+holdout,last tenth,4,"guided breathing, body",all but fewer than 5 of 18,0.0683,0.05,0.0876
+holdout,last tenth,5,"planet, humanity, star beings",all but fewer than 5 of 18,0.109,0.0862,0.1357
+holdout,last tenth,6,"religion, Christian faith",all but fewer than 5 of 18,0.0334,0.0218,0.0467
+holdout,last tenth,7,"channel logistics, links",all but fewer than 5 of 18,0.1053,0.086,0.1245
+holdout,last tenth,8,"style register, topic 8",all but fewer than 5 of 18,0.0474,0.0386,0.0567
+holdout,last tenth,9,"style register, topic 9",all but fewer than 5 of 18,0.0754,0.0601,0.0907
+holdout,last tenth,10,"fear, truth, choice",all but fewer than 5 of 18,0.0616,0.0434,0.0821
+holdout,last tenth,11,"divine love, compassion",all but fewer than 5 of 18,0.0959,0.0695,0.1255
+holdout,last tenth,12,"session reports, sightings",all but fewer than 5 of 18,0.0467,0.0348,0.0581
+holdout,last tenth,13,"style register, topic 13",all but fewer than 5 of 18,0.0403,0.0286,0.0549
+holdout,last tenth,14,topic 14 (neutral label),all but fewer than 5 of 18,0.0514,0.0373,0.0679
+holdout,last tenth,15,questions to guides,all but fewer than 5 of 18,0.0375,0.0281,0.0476
+holdout,last tenth,16,"style register, topic 16",all but fewer than 5 of 18,0.0247,0.0152,0.0353

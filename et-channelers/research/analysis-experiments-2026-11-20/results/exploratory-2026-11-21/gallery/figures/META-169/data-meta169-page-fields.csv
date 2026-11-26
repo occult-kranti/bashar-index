@@ -1,0 +1,25 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# META-169: page-field shares on local files and on local files plus the cloud-only metadata objects; sources HOLD2/META-H-page-fields.csv and HOLD2/META-169-objects.csv (package HOLD2, public).
+# Interval level: 90% t interval over creators, clipped to [0, 1] by the package.
+# Seen objects read: 154 of 39 creators, none carrying a view count or page field; hold-out objects: 15 of 5 or more creators. The object table's hold-out row is not reproduced here.
+field,series,recordings_with_metadata,creator_balanced_share,t90_low,t90_high,status
+view count present,"seen, local files only",1228,1.0,1.0,1.0,shown
+a web link in the description,"seen, local files only",1228,0.8488,0.7926,0.905,shown
+tags,"seen, local files only",1228,0.6317,0.5449,0.7185,shown
+chapters,"seen, local files only",1228,0.4812,0.4188,0.5436,shown
+a time-stamp list in the description,"seen, local files only",1228,0.1657,0.1052,0.2261,shown
+view count present,"seen, local files plus 154 cloud-only objects",1382,0.8907,0.8497,0.9317,shown
+a web link in the description,"seen, local files plus 154 cloud-only objects",1382,0.7513,0.6901,0.8125,shown
+tags,"seen, local files plus 154 cloud-only objects",1382,0.5509,0.4691,0.6327,shown
+chapters,"seen, local files plus 154 cloud-only objects",1382,0.4291,0.3703,0.488,shown
+a time-stamp list in the description,"seen, local files plus 154 cloud-only objects",1382,0.1441,0.0904,0.1979,shown
+view count present,"hold-out, local files only",415,1.0,1.0,1.0,shown
+a web link in the description,"hold-out, local files only",415,0.787,0.6646,0.9094,shown
+tags,"hold-out, local files only",415,0.5966,0.4321,0.761,shown
+chapters,"hold-out, local files only",415,0.3828,0.2537,0.512,shown
+a time-stamp list in the description,"hold-out, local files only",415,0.1101,0.01,0.2101,shown
+view count present,"hold-out, local files plus 15 cloud-only objects",430,,,,withheld: the added cloud objects that carry the field rest on fewer than 5 creators
+a web link in the description,"hold-out, local files plus 15 cloud-only objects",430,,,,withheld: the added cloud objects that carry the field rest on fewer than 5 creators
+tags,"hold-out, local files plus 15 cloud-only objects",430,,,,withheld: the added cloud objects that carry the field rest on fewer than 5 creators
+chapters,"hold-out, local files plus 15 cloud-only objects",430,0.3697,0.244,0.4954,shown
+a time-stamp list in the description,"hold-out, local files plus 15 cloud-only objects",430,0.1078,0.0084,0.2072,shown

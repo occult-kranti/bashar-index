@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:19:18Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# TM-H: the frozen topic model of TM (NMF K = 16 on sublinear TF-IDF, model sha256 26af3da1c2402dc7; vocabulary and IDF of the seen windows) applied unchanged to 300-word windows of English recordings of 300 or more words (artefact filter v2), seen 71 creators and the 18 English hold-out creators; seen and hold-out side by side, never pooled. Topics are vocabulary clusters, never beliefs; labels by the analyst from seen top words, neutral for style topics and for topics whose top creator holds 0.20 or more of the topic's creator weight (registry 2026-11-21 03:08), the rule applied on each group's own weights; labels join by topic number, so a topic neutral in either group is neutral in both.
+# Normalised mutual information of each window's (recording's) dominant topic with its creator, against creator labels shuffled over windows (recordings); a description of how far topics track channels, not a test. NMI depends on the number of creators, so seen and hold-out values are read each against its own shuffles.
+group,level,creators,nmi_dominant_topic_with_creator,shuffle_mean,shuffle_p95,shuffle_max,shuffles
+seen,window,71,0.2148,0.0117,0.0125,0.0132,999
+seen,recording,71,0.4276,0.137,0.1446,0.1529,999
+holdout,window,18,0.1737,0.0147,0.0169,0.0196,999
+holdout,recording,18,0.3709,0.1768,0.1957,0.2123,999

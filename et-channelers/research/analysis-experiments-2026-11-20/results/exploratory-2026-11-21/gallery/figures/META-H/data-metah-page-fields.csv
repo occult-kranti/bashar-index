@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# META-H: page-field presence on local metadata files, seen beside hold-out; source HOLD2/META-H-page-fields.csv (package HOLD2, public).
+# Interval level: 90% t interval over creators, clipped to [0, 1] by the package.
+# Not drawn: view count (every page carries it); non-empty description (near 100%: public numbers cannot show that its misses come from 5 or more creators, lead's decision D21); the other group (5 to 7 creators).
+field,group,creators_with_metadata,recordings_with_metadata,creator_balanced_share,t90_low,t90_high
+a web link in the description,seen,all but fewer than 5 of 71,1228,0.8488,0.7926,0.905
+tags,seen,all but fewer than 5 of 71,1228,0.6317,0.5449,0.7185
+chapters,seen,all but fewer than 5 of 71,1228,0.4812,0.4188,0.5436
+a time-stamp list in the description,seen,all but fewer than 5 of 71,1228,0.1657,0.1052,0.2261
+a web link in the description,hold-out,23,415,0.787,0.6646,0.9094
+tags,hold-out,23,415,0.5966,0.4321,0.761
+chapters,hold-out,23,415,0.3828,0.2537,0.512
+a time-stamp list in the description,hold-out,23,415,0.1101,0.01,0.2101

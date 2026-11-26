@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-GS (plan 6.7): check of the positional precision bound. The filter's positional rule removes thanks-phrase segments that start in the last 3 s of a window of the decode's own grid; each removal is searched for in the other decode ('thank you' with 'thank' starting within the tolerance of the removed segment's start).
+# Base: 40 seen recordings, one per creator (40 creators), re-decoded with the 30-s window grid moved by 15 s; 10 of them also re-decoded on the run's own grid as controls.
+# Public form fixed by addendum 2 item 4: the count of removals and 'fewer than 5 creators with a recurring removal'; no recurring share, precision band or detection rate is printed.
+# Interval level: none (counts).
+# Recognizer output, not checked by a person. Positional rule on each decode's own grid: added after the exploratory reporting plan (addendum 2 item 5).
+# Source: BR-GS's run of 2026-11-21 on seen creators, public form by the release review (2026-11-22).
+# Written by br_public.py (release review, plan P10, 2026-11-22; revised after the release verification), SHA-256 a03e56ab5f6ff37c3ab1cefacba8f4ad51975a9d0aa71042bf49c0dd6170da66; cells checked by verify_br.py, SHA-256 592d9b7da6d4e9df228494036e5a0a48b3514fcd130679a80202986f4eb31efd.
+removals_of,searched_in,tolerance_s,recordings,removed_segments,recurring_removals,recurring_share_and_precision,detection_rate_on_kept_segments
+run grid (transcript of record),shifted decode,1.0,40,55,fewer than 5 creators with a recurring removal,not published (the recurring removals come from fewer than 5 creators; addendum 2 item 4),not estimable (addendum 2 item 4)
+run grid (transcript of record),shifted decode,2.0,40,55,fewer than 5 creators with a recurring removal,not published (the recurring removals come from fewer than 5 creators; addendum 2 item 4),not estimable (addendum 2 item 4)
+shifted grid (re-decode),run decode,1.0,40,37,fewer than 5 creators with a recurring removal,not published (the recurring removals come from fewer than 5 creators; addendum 2 item 4),not estimable (addendum 2 item 4)
+shifted grid (re-decode),run decode,2.0,40,37,fewer than 5 creators with a recurring removal,not published (the recurring removals come from fewer than 5 creators; addendum 2 item 4),not estimable (addendum 2 item 4)

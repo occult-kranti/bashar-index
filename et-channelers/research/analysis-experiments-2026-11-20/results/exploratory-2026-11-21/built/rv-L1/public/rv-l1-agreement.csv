@@ -1,0 +1,31 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Interim; development creators only; an earlier voice instrument (snapshot of 2026-11-20 19:45). Agreement between two models, or between five runs of one model, is agreement, not a measure of correctness.
+# Base: 96 recordings of the 48 development creators (seen creators), the sample of rv-L1-kinds-and-bands.csv.
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap draws (rv-L1's own); rows without an interval were built without one.
+# Agreement figures are printed only where the recordings two readings code differently come from 0 or 5 or more creators, and, for a two-code figure, where the code comes from 5 or more creators in each reading.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:02:03Z (UTC, from the clock) by lv_l1.py (sha256 f8b666b02c9ddc6766fa93f3b9c7f33c08c841d16b662df861b37a025e3c0c48) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), closure.py (sha256 6f86c8f0c66a8f0ad3d0c7c67df5d00715de4bd88a2562393a8a91163c549422), release review B-LV (plan P10).
+figure,recordings,value,interval_95
+"Cohen's kappa, main kind (six kinds): small model (modal of five runs) against middle model",96,0.80,"[0.69, 0.89]"
+Cohen's kappa of each small run against the middle model (five figures),96,not published (differs from a printed figure in fewer than 5 creators),
+"Fleiss' kappa over the five small runs, main kind (recordings)",96,0.93,"[0.89, 0.97]"
+"Fleiss' kappa over the five small runs, main kind (windows)",164,0.93,
+share of recordings on which all five small runs give the same main kind,96,0.885,
+"specific agreement, small against middle: channelled (embodied) voice",96,0.792,
+"specific agreement, small against middle: relayed message",96,not published (items coded differently come from fewer than 5 creators),
+"specific agreement, small against middle: interview or podcast",96,0.815,
+"specific agreement, small against middle: guided meditation or practice",96,not published (items coded differently come from fewer than 5 creators),
+"specific agreement, small against middle: own-voice talk",96,0.889,
+"specific agreement, small against middle: advert or other",96,not published (items coded differently come from fewer than 5 creators),
+"five-run stability (mean share of runs giving the modal kind), recordings of modal kind: channelled (embodied) voice",25,not published (items coded differently come from fewer than 5 creators),
+"five-run stability (mean share of runs giving the modal kind), recordings of modal kind: relayed message",11,not published (items coded differently come from fewer than 5 creators),
+"five-run stability (mean share of runs giving the modal kind), recordings of modal kind: interview or podcast",14,not published (items coded differently come from fewer than 5 creators),
+"five-run stability (mean share of runs giving the modal kind), recordings of modal kind: guided meditation or practice",10,1.000,
+"five-run stability (mean share of runs giving the modal kind), recordings of modal kind: own-voice talk",31,0.955,
+"five-run stability (mean share of runs giving the modal kind), recordings of modal kind: advert or other",5,not published (items coded differently come from fewer than 5 creators),
+"specific agreement, small against middle: claimed voice in any part",96,0.899,
+share of recordings on which all five small runs agree: claimed voice in any part,96,0.906,
+"specific agreement, small against middle: claimed voice in 10% or more of words",96,0.878,
+share of recordings on which all five small runs agree: claimed voice in 10% or more of words,96,0.927,
+"specific agreement, small against middle: claimed voice in 25% or more of words",96,0.867,
+share of recordings on which all five small runs agree: claimed voice in 25% or more of words,96,0.938,

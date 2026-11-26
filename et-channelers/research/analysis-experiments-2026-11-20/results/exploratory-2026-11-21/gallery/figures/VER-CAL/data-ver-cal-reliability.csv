@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): VER/public/ver-cal-bins.csv
+# Interval level: none per bin (the package publishes no interval per bin)
+# VER-CAL reliability bins of the two rows with more than one bin after the merge rule (every bin holds 5 or more clusters, and its wrong and its right answers each come from 0 or 5 or more clusters): the small model's stated confidence on the checkability parts (KA confidence arm) and its two-run consistency on the voice label (revision 2, variant A; units weighted by words).
+# Every other row collapses to one bin (see data-ver-cal-confidence.csv). Constructed known-answer items; agreement with the constructed answer is an upper bound for the corpus, not a measure of correctness; model-coded; not checked by a person.
+arm,instrument,model,confidence_bin,units,mean_confidence,agreement
+stated confidence,checkability: five parts,small,0-90 (upper end open),18,0.827,0.667
+stated confidence,checkability: five parts,small,90-100,582,0.981,0.943
+consistency over two runs,"voice: claimed against own (KA paired-runs units), words",small,runs split (1/2),649,0.5,0.438
+consistency over two runs,"voice: claimed against own (KA paired-runs units), words",small,runs agree (1),1725,1.0,0.913

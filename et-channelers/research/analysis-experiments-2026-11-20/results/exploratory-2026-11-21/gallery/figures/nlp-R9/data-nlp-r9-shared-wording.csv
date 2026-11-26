@@ -1,0 +1,7 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded, not checked by a person.
+# Source: LAB package public file lab-f-forecasts.csv, section 'shared-wording rule (share of coded statements, weighted)' (printed cells only).
+# Interval level: mean with 95% creator-bootstrap interval (2,000 draws). No quantiles: the base of these rows (the seen creators with coded statements) is withheld, and a quantile's position among the sorted creator values could give it back (lead's decision D67; redrawn in release pass 2's fourth fix step, 2026-11-26).
+# The withdrawal-wording row is not released by the package (pairs rule) and is not drawn.
+row,mean,lo95,hi95
+flagged (any pattern),0.014,0.010,0.019
+of which scenario wording,0.007,0.004,0.010

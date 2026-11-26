@@ -1,0 +1,9 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# Codebook items TC, NE, DIR: windows coded in the gate or pilot sample and windows of the planned next step not run; seen creators
+# Source: the gallery's public file figures/CODES/data-codes-coverage.csv (build of 2026-11-22 03:33 UTC); NE's not-run reason replaced by the recorded one (row
+# NE-F).
+# Interval level: none (counts of windows).
+item,creators,coded_stage,windows_coded,window_pool,windows_not_run,not_run_reason
+TC topic codes,71,"stage 1 (gate), 3 reads; 386 of 400 coded by all three runs",400,2283,1883,stage 2 not bought (gate reading A)
+NE sources and references,71,"pilot, 2 models",200,2232,2032,needs model calls; no money left under the hard stop
+DIR directives,65,"pilot, find + critic; middle model on 100",200,2232,2032,"no-go: prefilter recall 0.415, rule 0.70"

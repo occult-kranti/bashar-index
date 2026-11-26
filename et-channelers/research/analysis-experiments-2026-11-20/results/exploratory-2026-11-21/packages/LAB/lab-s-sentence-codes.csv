@@ -1,0 +1,54 @@
+# Exploratory (registry A2); not a test of H1-H10. Model-coded descriptions of first-round labels on seen creators (exploratory reporting plan, section 6.8).
+# Model-coded sentence codes (frozen instrument S: the small model, one unit per call, contraction-neutral text, names masked). Verification that exists (G figures as in the paper's measurement table (rv-D5) or recounted under the rule for agreement figures (registry 2026-11-21 22:33; 2026-11-22 00:13)): on G, the H5 group (world claim, practice and feeling, neither) same in three runs 0.88 [90% 0.86, 0.90], small against middle kappa 0.80 [0.74, 0.86] on the group and 0.67 [0.61, 0.74] on the primary code (no floor; recounted: disagreements from 5 or more creators); a second reading by the middle model of 400 seen units: group kappa 0.79 [0.73, 0.83] (registry 04:55); on the hold-out reliability sample the group's stability was below its floor (0.816 [0.757, 0.867] against 0.85; results file); known-answer texts: primary code exact 1.00 on 310 planted prototypes (a ceiling). No third-model or other-vendor reading. Not checked by a person.
+# Seen recordings with coded units (recordings whose body is under the instrument's minimum have none). Each creator's value is the estimated share of the creator's body words (middle 80% of running time) in the group or code: a sampled unit stands for body words / points words, a unit of a recording coded whole for its own words; mean = creator-balanced mean.
+# Cut units are shown apart (plan 6.8): a unit is cut when it does not end at a sentence mark (rule F41 of item RX), so its boundary came from the unit rule's length limit or a comma rather than the recognizer's punctuation. The H5 groups are the registered primary groups (world claim Q1; practice and feeling Q4, Q5, Q6). Descriptions, no tests.
+# Made 2026-11-22T01:37:19Z by LAB/code/lab_s.py (sha256 1ba513a751f906db; labcommon.py 91e32abeffa3e9fb). Intervals: 95% percentile intervals from 2000 creator-bootstrap draws. Quantiles p10 to p90 are over creators; p10 and p90 are printed only for rows of 20 or more creators and p25 and p75 for rows of 10 or more, and a quantile only where it is 0 with 5 or more creators at 0 or has 5 or more creators with a non-zero value at or below it and 5 or more at or above it. Cells that add up to a known total are pooled, never suppressed one by one (plan section 3); a row whose difference from a printed row rests on fewer than 5 creators is not printed (addendum 2, item 9).
+# Edited on 2026-11-22 by X-LAB/code/lab_release_fix2.py (sha256 e24712e73e65f396) in the release review, under addendum 1 item 13 (one cell, one interval; P8): the code row 'Q1 world claim' is the same quantity as the group row 'group: world claim (Q1)' (the group holds Q1 alone), so in each unit set it now carries the group row's 95% interval instead of a second, separately seeded one (interval ends moved by 0.001 or less); no other cell, count or row changed.
+# Edited on 2026-11-26 in release pass 2's fourth fix step (fix5, f71_d67_quantiles.py, SHA-256 d1242dd9f19465a7f4ee24f76ae5fbe88475b752b354f0044dc963d2487c86fa), for privacy only (lead's decision D67): in the 46 rows whose creator count (column creators) is withheld or printed as a band, the quantiles p10 to p90 are not printed (blank), because a quantile of creator values sits on a position of the sorted values, and that position can give the withheld count back. Means, their intervals and every other cell are unchanged.
+units,row,creators,creators_nonzero,mean,lo95,hi95,p10,p25,p50,p75,p90,status
+all coded units,group: world claim (Q1),all but fewer than 5 of 71,all,0.234,0.198,0.273,,,,,,printed
+all coded units,"group: practice and feeling (Q4, Q5, Q6)",all but fewer than 5 of 71,all,0.301,0.268,0.336,,,,,,printed
+all coded units,group: neither,all but fewer than 5 of 71,all,0.465,0.431,0.500,,,,,,printed
+all coded units,Q1 world claim,all but fewer than 5 of 71,all,0.234,0.198,0.273,,,,,,printed
+all coded units,Q2 general principle,all but fewer than 5 of 71,all,0.138,0.114,0.162,,,,,,printed
+all coded units,Q3 fact about the human person,all but fewer than 5 of 71,all but fewer than 5,0.038,0.032,0.044,,,,,,printed
+all coded units,Q4 instruction,all but fewer than 5 of 71,all,0.189,0.164,0.218,,,,,,printed
+all coded units,Q5 feelings,all but fewer than 5 of 71,all,0.080,0.066,0.097,,,,,,printed
+all coded units,Q6 reassurance,all but fewer than 5 of 71,all,0.032,0.027,0.039,,,,,,printed
+all coded units,Q7 the speaker's life,all but fewer than 5 of 71,all but fewer than 5,0.139,0.113,0.167,,,,,,printed
+all coded units,Q8 the listener's circumstances,all but fewer than 5 of 71,all but fewer than 5,0.033,0.023,0.046,,,,,,printed
+all coded units,Q9 frame,all but fewer than 5 of 71,all but fewer than 5,0.060,0.048,0.073,,,,,,printed
+all coded units,"QN a particular private person, or an assertion that fits no definition",all but fewer than 5 of 71,all but fewer than 5,0.032,0.025,0.039,,,,,,printed
+all coded units,Q0 nothing to code,all but fewer than 5 of 71,all,0.024,0.020,0.028,,,,,,printed
+all coded units,QX cannot choose,all but fewer than 5 of 71,39,0.001,0.001,0.002,,,,,,printed
+units that end at a sentence mark,group: world claim (Q1),all but fewer than 5 of 71,all,0.234,0.198,0.273,,,,,,printed
+units that end at a sentence mark,"group: practice and feeling (Q4, Q5, Q6)",all but fewer than 5 of 71,all,0.293,0.259,0.329,,,,,,printed
+units that end at a sentence mark,group: neither,all but fewer than 5 of 71,all,0.473,0.439,0.510,,,,,,printed
+units that end at a sentence mark,Q1 world claim,all but fewer than 5 of 71,all,0.234,0.198,0.273,,,,,,printed
+units that end at a sentence mark,Q2 general principle,all but fewer than 5 of 71,all,0.140,0.116,0.166,,,,,,printed
+units that end at a sentence mark,Q3 fact about the human person,all but fewer than 5 of 71,all but fewer than 5,0.039,0.033,0.045,,,,,,printed
+units that end at a sentence mark,Q4 instruction,all but fewer than 5 of 71,all,0.180,0.154,0.206,,,,,,printed
+units that end at a sentence mark,Q5 feelings,all but fewer than 5 of 71,all,0.078,0.064,0.093,,,,,,printed
+units that end at a sentence mark,Q6 reassurance,all but fewer than 5 of 71,all,0.034,0.028,0.040,,,,,,printed
+units that end at a sentence mark,Q7 the speaker's life,all but fewer than 5 of 71,all but fewer than 5,0.141,0.114,0.168,,,,,,printed
+units that end at a sentence mark,Q8 the listener's circumstances,all but fewer than 5 of 71,all but fewer than 5,0.033,0.023,0.045,,,,,,printed
+units that end at a sentence mark,Q9 frame,all but fewer than 5 of 71,all but fewer than 5,0.061,0.050,0.073,,,,,,printed
+units that end at a sentence mark,"QN a particular private person, or an assertion that fits no definition",all but fewer than 5 of 71,all but fewer than 5,0.033,0.026,0.041,,,,,,printed
+units that end at a sentence mark,Q0 nothing to code,all but fewer than 5 of 71,all,0.025,0.022,0.030,,,,,,printed
+units that end at a sentence mark,QX cannot choose,all but fewer than 5 of 71,39,0.002,0.001,0.003,,,,,,printed
+cut units (no sentence mark at the end),group: world claim (Q1),all but fewer than 5 of 71,all but fewer than 5,0.233,0.194,0.276,,,,,,printed
+cut units (no sentence mark at the end),"group: practice and feeling (Q4, Q5, Q6)",all but fewer than 5 of 71,all but fewer than 5,0.325,0.288,0.362,,,,,,printed
+cut units (no sentence mark at the end),group: neither,all but fewer than 5 of 71,all,0.441,0.404,0.480,,,,,,printed
+cut units (no sentence mark at the end),Q1 world claim,all but fewer than 5 of 71,all but fewer than 5,0.233,0.194,0.276,,,,,,printed
+cut units (no sentence mark at the end),Q2 general principle,all but fewer than 5 of 71,all but fewer than 5,0.135,0.110,0.167,,,,,,printed
+cut units (no sentence mark at the end),Q3 fact about the human person,all but fewer than 5 of 71,60,0.038,0.028,0.049,,,,,,printed
+cut units (no sentence mark at the end),Q4 instruction,all but fewer than 5 of 71,all but fewer than 5,0.214,0.185,0.247,,,,,,printed
+cut units (no sentence mark at the end),Q5 feelings,all but fewer than 5 of 71,withheld (within 4 of another printed count),0.086,0.069,0.105,,,,,,printed
+cut units (no sentence mark at the end),Q6 reassurance,all but fewer than 5 of 71,withheld (within 4 of another printed count),0.025,0.020,0.032,,,,,,printed
+cut units (no sentence mark at the end),Q7 the speaker's life,all but fewer than 5 of 71,withheld (within 4 of another printed count),0.134,0.105,0.164,,,,,,printed
+cut units (no sentence mark at the end),Q8 the listener's circumstances,all but fewer than 5 of 71,55,0.033,0.021,0.050,,,,,,printed
+cut units (no sentence mark at the end),Q9 frame,all but fewer than 5 of 71,withheld (within 4 of another printed count),0.057,0.042,0.075,,,,,,printed
+cut units (no sentence mark at the end),"QN a particular private person, or an assertion that fits no definition",all but fewer than 5 of 71,49,0.027,0.019,0.036,,,,,,printed
+cut units (no sentence mark at the end),Q0 nothing to code,all but fewer than 5 of 71,withheld (within 4 of another printed count),0.017,0.012,0.021,,,,,,printed
+cut units (no sentence mark at the end),QX cannot choose,all but fewer than 5 of 71,6,0.001,0.000,0.001,,,,,,printed
+all coded units,share of the creator's coded body words that lie in cut units,all but fewer than 5 of 71,all,0.227,0.208,0.248,,,,,,printed

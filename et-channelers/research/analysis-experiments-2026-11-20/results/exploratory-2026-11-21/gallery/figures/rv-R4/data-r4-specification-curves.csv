@@ -1,0 +1,275 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r4-specification-curves. Source public file: rv-r4-specifications.csv (package rv-R4).
+# Interval level: 90% creator bootstrap, expressed in margins
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+headline,weighting,window,length_floor,diff_over_margin,boot90_low_over_margin,boot90_high_over_margin
+pace_median,creator-equal,all,none,0.0,-0.7339,0.7947
+pace_median,creator-equal,all,5 min,0.0288,-0.6642,0.7715
+pace_median,creator-equal,own newest 120 days,none,0.2075,-0.6396,1.1341
+pace_median,creator-equal,own newest 120 days,5 min,0.169,-0.6779,1.0898
+pace_median,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.0901,-0.7826,1.0898
+pace_median,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.0901,-0.7826,1.0855
+pace_median,recording-equal,all,none,-0.0345,-0.7339,0.7599
+pace_median,recording-equal,all,5 min,-0.1083,-0.8135,0.7261
+pace_median,recording-equal,own newest 120 days,none,0.0,-0.8137,0.9963
+pace_median,recording-equal,own newest 120 days,5 min,-0.105,-0.9168,0.9272
+pace_median,recording-equal,calendar 2026-08-01 to 2026-11-19,none,0.1663,-0.6642,1.0432
+pace_median,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,-0.021,-0.8172,0.9957
+pace_median,hour-pooled,all,none,0.923,0.1006,1.588
+pace_median,hour-pooled,all,5 min,0.923,0.1074,1.6192
+pace_median,hour-pooled,own newest 120 days,none,1.0539,-0.1101,1.8007
+pace_median,hour-pooled,own newest 120 days,5 min,1.0432,-0.105,1.9762
+pace_median,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,0.9272,-0.2043,1.8007
+pace_median,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,0.9272,-0.1725,1.6898
+pace_median,precision-weighted,all,none,0.0627,-0.6646,0.8193
+pace_median,precision-weighted,all,5 min,0.0,-0.6642,0.7599
+pace_median,precision-weighted,own newest 120 days,none,0.2075,-0.6383,1.1062
+pace_median,precision-weighted,own newest 120 days,5 min,0.1435,-0.6642,1.0621
+pace_median,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,0.1394,-0.6779,1.0855
+pace_median,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,-0.0416,-0.7826,1.0014
+pace_median,inverse-span,all,none,-0.2705,-1.466,0.8646
+pace_median,inverse-span,all,5 min,-0.3531,-1.7495,0.7776
+pace_median,inverse-span,own newest 120 days,none,-0.1515,-1.3514,0.9272
+pace_median,inverse-span,own newest 120 days,5 min,-0.344,-1.8226,0.8646
+pace_median,inverse-span,calendar 2026-08-01 to 2026-11-19,none,-0.1276,-1.5014,0.9957
+pace_median,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,-0.3131,-1.6505,0.8646
+nonspeech,creator-equal,all,none,0.0,-0.7832,0.9108
+nonspeech,creator-equal,all,5 min,-0.0407,-0.86,0.9048
+nonspeech,creator-equal,own newest 120 days,none,0.153,-0.9352,1.4228
+nonspeech,creator-equal,own newest 120 days,5 min,0.0399,-1.1324,1.4072
+nonspeech,creator-equal,calendar 2026-08-01 to 2026-11-19,none,-0.4963,-1.4304,0.5556
+nonspeech,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,-0.4839,-1.448,0.5576
+nonspeech,recording-equal,all,none,-0.0594,-0.8496,0.8844
+nonspeech,recording-equal,all,5 min,-0.2185,-1.0724,0.7676
+nonspeech,recording-equal,own newest 120 days,none,0.1145,-0.9144,1.2792
+nonspeech,recording-equal,own newest 120 days,5 min,0.0253,-1.1372,1.2876
+nonspeech,recording-equal,calendar 2026-08-01 to 2026-11-19,none,0.05,-1.0644,1.3404
+nonspeech,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.0015,-1.2112,1.3268
+nonspeech,hour-pooled,all,none,0.1058,-1.4308,1.9136
+nonspeech,hour-pooled,all,5 min,0.0988,-1.4748,1.94
+nonspeech,hour-pooled,own newest 120 days,none,0.7992,-1.4208,3.4452
+nonspeech,hour-pooled,own newest 120 days,5 min,0.804,-1.4644,3.496
+nonspeech,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,1.0389,-1.3556,3.8952
+nonspeech,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,1.0485,-1.4108,3.9872
+nonspeech,precision-weighted,all,none,-0.0143,-0.7952,0.8976
+nonspeech,precision-weighted,all,5 min,-0.0682,-0.8928,0.8796
+nonspeech,precision-weighted,own newest 120 days,none,-0.0447,-0.994,0.9912
+nonspeech,precision-weighted,own newest 120 days,5 min,-0.0805,-1.1372,1.0804
+nonspeech,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,-0.3621,-1.3292,0.738
+nonspeech,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,-0.3774,-1.3976,0.6912
+nonspeech,inverse-span,all,none,0.2027,-1.28,1.9332
+nonspeech,inverse-span,all,5 min,0.5833,-1.01,2.2496
+nonspeech,inverse-span,own newest 120 days,none,0.14,-1.276,1.8468
+nonspeech,inverse-span,own newest 120 days,5 min,0.5153,-1.0812,2.2716
+nonspeech,inverse-span,calendar 2026-08-01 to 2026-11-19,none,0.0496,-1.4628,1.81
+nonspeech,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,0.4418,-1.2508,2.1604
+end_coverage_15s,creator-equal,all,none,0.0,-1.147,1.1042
+end_coverage_15s,creator-equal,all,5 min,-0.2951,-1.5114,0.8426
+end_coverage_15s,creator-equal,own newest 120 days,none,0.3746,-0.871,1.5788
+end_coverage_15s,creator-equal,own newest 120 days,5 min,0.1085,-1.165,1.3678
+end_coverage_15s,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.6121,-0.7056,1.937
+end_coverage_15s,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.3442,-0.9562,1.5936
+end_coverage_15s,recording-equal,all,none,-0.0903,-1.2448,1.0426
+end_coverage_15s,recording-equal,all,5 min,-0.1986,-1.4788,1.0374
+end_coverage_15s,recording-equal,own newest 120 days,none,-0.0632,-1.436,1.2782
+end_coverage_15s,recording-equal,own newest 120 days,5 min,-0.1202,-1.5746,1.355
+end_coverage_15s,recording-equal,calendar 2026-08-01 to 2026-11-19,none,0.2642,-1.1866,1.7044
+end_coverage_15s,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.1772,-1.2624,1.6034
+end_coverage_15s,hour-pooled,all,none,-0.4698,-1.783,0.8482
+end_coverage_15s,hour-pooled,all,5 min,-0.4841,-1.82,0.8324
+end_coverage_15s,hour-pooled,own newest 120 days,none,-0.3172,-1.8728,1.2402
+end_coverage_15s,hour-pooled,own newest 120 days,5 min,-0.3213,-1.9344,1.3138
+end_coverage_15s,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,-0.3687,-2.1316,1.381
+end_coverage_15s,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,-0.378,-2.0676,1.288
+end_coverage_15s,precision-weighted,all,none,-0.0164,-1.1666,1.082
+end_coverage_15s,precision-weighted,all,5 min,-0.2695,-1.4846,0.8694
+end_coverage_15s,precision-weighted,own newest 120 days,none,0.3439,-0.8778,1.542
+end_coverage_15s,precision-weighted,own newest 120 days,5 min,0.1138,-1.1634,1.3794
+end_coverage_15s,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,0.5451,-0.7776,1.8744
+end_coverage_15s,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,0.3111,-0.9854,1.5824
+end_coverage_15s,inverse-span,all,none,2.0661,0.148,3.5444
+end_coverage_15s,inverse-span,all,5 min,1.706,0.0244,3.2174
+end_coverage_15s,inverse-span,own newest 120 days,none,2.1524,0.3524,3.561
+end_coverage_15s,inverse-span,own newest 120 days,5 min,1.7967,0.0178,3.2606
+end_coverage_15s,inverse-span,calendar 2026-08-01 to 2026-11-19,none,2.2998,0.4842,3.7204
+end_coverage_15s,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,1.9514,0.2326,3.4092
+thanks_late,creator-equal,all,none,0.0,-0.9506,0.9084
+thanks_late,creator-equal,all,5 min,1.2248,0.2396,2.1594
+thanks_late,creator-equal,own newest 120 days,none,-0.402,-1.422,0.674
+thanks_late,creator-equal,own newest 120 days,5 min,1.1011,-0.07,2.3052
+thanks_late,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.3893,-0.707,1.4886
+thanks_late,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,1.2996,0.1136,2.4252
+thanks_late,recording-equal,all,none,0.106,-0.8396,1.028
+thanks_late,recording-equal,all,5 min,1.4659,0.537,2.3698
+thanks_late,recording-equal,own newest 120 days,none,-0.0547,-1.0982,0.9472
+thanks_late,recording-equal,own newest 120 days,5 min,0.9795,-0.1232,2.0398
+thanks_late,recording-equal,calendar 2026-08-01 to 2026-11-19,none,0.1746,-0.987,1.3188
+thanks_late,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.9982,-0.143,2.1392
+thanks_late,hour-pooled,all,none,4.059,2.9498,5.0666
+thanks_late,hour-pooled,all,5 min,4.225,3.1168,5.2458
+thanks_late,hour-pooled,own newest 120 days,none,3.2178,1.8332,4.4952
+thanks_late,hour-pooled,own newest 120 days,5 min,3.3223,1.9232,4.5698
+thanks_late,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,3.0329,1.4964,4.3544
+thanks_late,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,3.1097,1.6754,4.5068
+thanks_late,precision-weighted,all,none,0.0221,-0.9224,0.92
+thanks_late,precision-weighted,all,5 min,1.3615,0.4318,2.264
+thanks_late,precision-weighted,own newest 120 days,none,-0.1229,-1.1056,0.857
+thanks_late,precision-weighted,own newest 120 days,5 min,1.1576,0.0668,2.1842
+thanks_late,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,0.3889,-0.7296,1.4728
+thanks_late,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,1.2279,0.1606,2.2936
+thanks_late,inverse-span,all,none,-0.9894,-2.6214,0.6972
+thanks_late,inverse-span,all,5 min,1.2315,-0.6916,3.0792
+thanks_late,inverse-span,own newest 120 days,none,-1.0529,-2.6178,0.6106
+thanks_late,inverse-span,own newest 120 days,5 min,1.2058,-0.7574,3.233
+thanks_late,inverse-span,calendar 2026-08-01 to 2026-11-19,none,-0.9445,-2.551,0.8266
+thanks_late,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,1.2579,-0.7882,3.1288
+term_soul,creator-equal,all,none,0.0,-1.1302,1.1168
+term_soul,creator-equal,all,5 min,0.9137,-0.2366,2.0412
+term_soul,creator-equal,own newest 120 days,none,0.1306,-1.208,1.4184
+term_soul,creator-equal,own newest 120 days,5 min,1.1845,-0.1154,2.4592
+term_soul,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.8825,-0.39,2.2466
+term_soul,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,1.7659,0.457,3.0242
+term_soul,recording-equal,all,none,0.2946,-0.836,1.4248
+term_soul,recording-equal,all,5 min,1.2815,0.1932,2.3776
+term_soul,recording-equal,own newest 120 days,none,1.1099,-0.141,2.3904
+term_soul,recording-equal,own newest 120 days,5 min,1.9697,0.7866,3.11
+term_soul,recording-equal,calendar 2026-08-01 to 2026-11-19,none,1.4177,0.095,2.8046
+term_soul,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,2.1881,0.8676,3.3506
+term_soul,hour-pooled,all,none,3.0833,1.9166,4.1034
+term_soul,hour-pooled,all,5 min,3.2244,2.1144,4.2522
+term_soul,hour-pooled,own newest 120 days,none,3.686,2.5922,4.6928
+term_soul,hour-pooled,own newest 120 days,5 min,3.7946,2.72,4.7826
+term_soul,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,3.8563,2.6906,4.9314
+term_soul,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,3.9525,2.7728,5.022
+term_soul,precision-weighted,all,none,0.1324,-0.9678,1.2412
+term_soul,precision-weighted,all,5 min,0.9861,-0.1302,2.1046
+term_soul,precision-weighted,own newest 120 days,none,0.5734,-0.6818,1.7936
+term_soul,precision-weighted,own newest 120 days,5 min,1.4721,0.286,2.6664
+term_soul,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,1.0715,-0.1686,2.3826
+term_soul,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,1.854,0.6022,3.048
+term_soul,inverse-span,all,none,-0.007,-2.3772,2.3036
+term_soul,inverse-span,all,5 min,0.456,-1.842,2.8036
+term_soul,inverse-span,own newest 120 days,none,-0.0105,-2.4006,2.247
+term_soul,inverse-span,own newest 120 days,5 min,0.5019,-1.9912,2.8276
+term_soul,inverse-span,calendar 2026-08-01 to 2026-11-19,none,0.1834,-2.3256,2.6742
+term_soul,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,0.6562,-1.9952,3.0254
+term_frequency_vibration,creator-equal,all,none,0.0,-1.0566,1.1336
+term_frequency_vibration,creator-equal,all,5 min,0.7789,-0.2606,1.8614
+term_frequency_vibration,creator-equal,own newest 120 days,none,0.0689,-1.273,1.2776
+term_frequency_vibration,creator-equal,own newest 120 days,5 min,1.2434,-0.081,2.4908
+term_frequency_vibration,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.8357,-0.4666,2.1686
+term_frequency_vibration,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,1.2888,-0.0146,2.598
+term_frequency_vibration,recording-equal,all,none,0.3213,-0.7592,1.4234
+term_frequency_vibration,recording-equal,all,5 min,1.1795,0.1002,2.2796
+term_frequency_vibration,recording-equal,own newest 120 days,none,0.2942,-0.977,1.5112
+term_frequency_vibration,recording-equal,own newest 120 days,5 min,0.9123,-0.4072,2.2442
+term_frequency_vibration,recording-equal,calendar 2026-08-01 to 2026-11-19,none,0.5601,-0.7582,1.833
+term_frequency_vibration,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,1.1036,-0.1232,2.2996
+term_frequency_vibration,hour-pooled,all,none,2.5764,1.4166,3.662
+term_frequency_vibration,hour-pooled,all,5 min,2.6958,1.573,3.7946
+term_frequency_vibration,hour-pooled,own newest 120 days,none,2.2768,1.0586,3.4272
+term_frequency_vibration,hour-pooled,own newest 120 days,5 min,2.3602,1.0442,3.5644
+term_frequency_vibration,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,2.2166,0.942,3.4222
+term_frequency_vibration,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,2.2892,0.9902,3.5362
+term_frequency_vibration,precision-weighted,all,none,0.1445,-0.908,1.2398
+term_frequency_vibration,precision-weighted,all,5 min,0.9384,-0.095,2.0158
+term_frequency_vibration,precision-weighted,own newest 120 days,none,0.3598,-0.8648,1.4874
+term_frequency_vibration,precision-weighted,own newest 120 days,5 min,1.2259,0.0272,2.402
+term_frequency_vibration,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,0.7726,-0.4886,2.0482
+term_frequency_vibration,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,1.2888,0.1108,2.4466
+term_frequency_vibration,inverse-span,all,none,-0.8515,-3.025,1.387
+term_frequency_vibration,inverse-span,all,5 min,-0.6305,-2.8182,1.6846
+term_frequency_vibration,inverse-span,own newest 120 days,none,-0.8164,-3.017,1.4334
+term_frequency_vibration,inverse-span,own newest 120 days,5 min,-0.5312,-2.8668,1.7608
+term_frequency_vibration,inverse-span,calendar 2026-08-01 to 2026-11-19,none,-0.559,-2.9216,1.762
+term_frequency_vibration,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,-0.4078,-2.8238,1.9042
+term_breath,creator-equal,all,none,0.0,-1.0886,1.1428
+term_breath,creator-equal,all,5 min,0.7244,-0.3698,1.8732
+term_breath,creator-equal,own newest 120 days,none,0.7813,-0.4914,2.069
+term_breath,creator-equal,own newest 120 days,5 min,0.8479,-0.5166,2.203
+term_breath,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.9066,-0.4726,2.3346
+term_breath,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,1.2363,-0.1174,2.6046
+term_breath,recording-equal,all,none,0.0634,-1.0358,1.1776
+term_breath,recording-equal,all,5 min,0.8472,-0.3502,2.0458
+term_breath,recording-equal,own newest 120 days,none,0.2586,-1.0102,1.4854
+term_breath,recording-equal,own newest 120 days,5 min,0.809,-0.5222,2.1402
+term_breath,recording-equal,calendar 2026-08-01 to 2026-11-19,none,0.2984,-0.9346,1.6572
+term_breath,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.817,-0.4984,2.0842
+term_breath,hour-pooled,all,none,2.9857,1.7884,4.1898
+term_breath,hour-pooled,all,5 min,3.103,1.9088,4.2586
+term_breath,hour-pooled,own newest 120 days,none,3.2758,2.0376,4.375
+term_breath,hour-pooled,own newest 120 days,5 min,3.3631,2.157,4.548
+term_breath,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,3.1956,1.9136,4.4162
+term_breath,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,3.2741,2.06,4.4532
+term_breath,precision-weighted,all,none,-0.0846,-1.1462,1.0162
+term_breath,precision-weighted,all,5 min,0.7289,-0.3978,1.8678
+term_breath,precision-weighted,own newest 120 days,none,0.3763,-0.7942,1.5948
+term_breath,precision-weighted,own newest 120 days,5 min,0.8563,-0.4202,2.1234
+term_breath,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,0.5178,-0.7232,1.857
+term_breath,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,1.0015,-0.2576,2.262
+term_breath,inverse-span,all,none,0.5531,-1.5908,2.706
+term_breath,inverse-span,all,5 min,1.0922,-1.0726,3.254
+term_breath,inverse-span,own newest 120 days,none,0.7047,-1.5462,2.8166
+term_breath,inverse-span,own newest 120 days,5 min,1.1647,-1.0348,3.3448
+term_breath,inverse-span,calendar 2026-08-01 to 2026-11-19,none,0.8138,-1.363,2.9658
+term_breath,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,1.3311,-0.8698,3.4672
+term_ascension,creator-equal,all,none,0.0,-0.979,1.0046
+term_ascension,creator-equal,all,5 min,0.3691,-0.7204,1.5292
+term_ascension,creator-equal,own newest 120 days,none,0.4949,-0.7602,1.715
+term_ascension,creator-equal,own newest 120 days,5 min,0.9745,-0.3186,2.3602
+term_ascension,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.7929,-0.4734,2.2442
+term_ascension,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.9924,-0.3626,2.3904
+term_ascension,recording-equal,all,none,0.182,-0.8308,1.1934
+term_ascension,recording-equal,all,5 min,0.6844,-0.4298,1.851
+term_ascension,recording-equal,own newest 120 days,none,-0.2315,-1.2434,0.8176
+term_ascension,recording-equal,own newest 120 days,5 min,0.1215,-0.941,1.2182
+term_ascension,recording-equal,calendar 2026-08-01 to 2026-11-19,none,-0.1955,-1.196,0.9738
+term_ascension,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.1195,-0.9284,1.2584
+term_ascension,hour-pooled,all,none,2.5229,1.195,3.7788
+term_ascension,hour-pooled,all,5 min,2.6067,1.262,3.9482
+term_ascension,hour-pooled,own newest 120 days,none,1.8922,0.5928,3.1286
+term_ascension,hour-pooled,own newest 120 days,5 min,1.9482,0.6912,3.1144
+term_ascension,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,1.7217,0.5262,2.9768
+term_ascension,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,1.7701,0.6012,2.9888
+term_ascension,precision-weighted,all,none,0.0761,-0.9206,1.0912
+term_ascension,precision-weighted,all,5 min,0.5166,-0.5872,1.6844
+term_ascension,precision-weighted,own newest 120 days,none,0.2923,-0.8222,1.4428
+term_ascension,precision-weighted,own newest 120 days,5 min,0.6562,-0.4522,1.8254
+term_ascension,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,0.3088,-0.7796,1.5548
+term_ascension,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,0.5177,-0.5906,1.6976
+term_ascension,inverse-span,all,none,-0.8753,-2.0512,0.4596
+term_ascension,inverse-span,all,5 min,-0.6017,-1.842,0.7704
+term_ascension,inverse-span,own newest 120 days,none,-0.7293,-1.961,0.5512
+term_ascension,inverse-span,own newest 120 days,5 min,-0.4659,-1.825,0.9008
+term_ascension,inverse-span,calendar 2026-08-01 to 2026-11-19,none,-0.6389,-1.9184,0.7464
+term_ascension,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,-0.3942,-1.7542,1.0912
+term_extraterrestrial,creator-equal,all,none,0.0,-0.6774,0.7782
+term_extraterrestrial,creator-equal,all,5 min,0.2568,-0.4984,1.0806
+term_extraterrestrial,creator-equal,own newest 120 days,none,0.1945,-0.7022,1.0876
+term_extraterrestrial,creator-equal,own newest 120 days,5 min,0.7825,-0.3096,1.9126
+term_extraterrestrial,creator-equal,calendar 2026-08-01 to 2026-11-19,none,0.0904,-0.8294,1.1272
+term_extraterrestrial,creator-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.3575,-0.6248,1.5048
+term_extraterrestrial,recording-equal,all,none,0.0181,-0.6702,0.8022
+term_extraterrestrial,recording-equal,all,5 min,0.2445,-0.5024,1.0716
+term_extraterrestrial,recording-equal,own newest 120 days,none,0.0909,-0.7868,1.0364
+term_extraterrestrial,recording-equal,own newest 120 days,5 min,0.2214,-0.6874,1.2478
+term_extraterrestrial,recording-equal,calendar 2026-08-01 to 2026-11-19,none,-0.0253,-0.915,0.9918
+term_extraterrestrial,recording-equal,calendar 2026-08-01 to 2026-11-19,5 min,0.0911,-0.8274,1.2142
+term_extraterrestrial,hour-pooled,all,none,1.3249,0.4142,2.3112
+term_extraterrestrial,hour-pooled,all,5 min,1.3676,0.4678,2.3612
+term_extraterrestrial,hour-pooled,own newest 120 days,none,1.2156,0.149,2.315
+term_extraterrestrial,hour-pooled,own newest 120 days,5 min,1.2399,0.1696,2.3266
+term_extraterrestrial,hour-pooled,calendar 2026-08-01 to 2026-11-19,none,0.7865,-0.2,1.8122
+term_extraterrestrial,hour-pooled,calendar 2026-08-01 to 2026-11-19,5 min,0.8051,-0.1412,1.8258
+term_extraterrestrial,precision-weighted,all,none,0.034,-0.6562,0.8092
+term_extraterrestrial,precision-weighted,all,5 min,0.3121,-0.4322,1.1268
+term_extraterrestrial,precision-weighted,own newest 120 days,none,0.2593,-0.6026,1.1794
+term_extraterrestrial,precision-weighted,own newest 120 days,5 min,0.5302,-0.4046,1.51
+term_extraterrestrial,precision-weighted,calendar 2026-08-01 to 2026-11-19,none,0.0131,-0.8544,0.9676
+term_extraterrestrial,precision-weighted,calendar 2026-08-01 to 2026-11-19,5 min,0.1744,-0.7018,1.1984
+term_extraterrestrial,inverse-span,all,none,-0.3369,-1.4086,1.0402
+term_extraterrestrial,inverse-span,all,5 min,-0.1177,-1.2704,1.306
+term_extraterrestrial,inverse-span,own newest 120 days,none,-0.2678,-1.3896,1.1508
+term_extraterrestrial,inverse-span,own newest 120 days,5 min,0.0091,-1.188,1.418
+term_extraterrestrial,inverse-span,calendar 2026-08-01 to 2026-11-19,none,-0.2554,-1.4116,1.168
+term_extraterrestrial,inverse-span,calendar 2026-08-01 to 2026-11-19,5 min,-0.0337,-1.209,1.485

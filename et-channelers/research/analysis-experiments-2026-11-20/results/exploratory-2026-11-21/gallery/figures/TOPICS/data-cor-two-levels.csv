@@ -1,0 +1,278 @@
+# Exploratory (registry A2); not a test of H1-H10.
+measure_a,measure_b,between_creators_spearman,within_creators_correlation,between_passes_permutation_max,within_passes_permutation_max,category,levels_differ_90
+recording length (log words),pace (words per speech minute),0.241,0.257,False,True,passes at one level,False
+recording length (log words),word length (letters),-0.269,-0.228,False,True,passes at one level,False
+recording length (log words),vocabulary variety (MATTR),0.191,-0.016,False,False,passes at neither level,True
+recording length (log words),contractions,0.234,0.271,False,True,passes at one level,False
+recording length (log words),first-person singular,0.307,0.19,False,True,passes at one level,False
+recording length (log words),first-person plural,0.301,0.045,False,False,passes at neither level,True
+recording length (log words),second person,-0.396,-0.021,False,False,passes at neither level,True
+recording length (log words),question marks,0.238,0.206,False,True,passes at one level,False
+recording length (log words),RX A greetings and sign-offs,-0.012,-0.178,False,True,passes at one level,False
+recording length (log words),RX B reported speech,0.376,0.268,False,True,passes at one level,False
+recording length (log words),RX C forms of address,-0.109,0.012,False,False,passes at neither level,False
+recording length (log words),RX D time expressions,0.041,0.003,False,False,passes at neither level,False
+recording length (log words),RX E hedges and boosters,-0.078,0.091,False,False,passes at neither level,False
+recording length (log words),RX F asks,0.208,-0.074,False,False,passes at neither level,True
+recording length (log words),RX G named beings and places,-0.059,0.073,False,False,passes at neither level,False
+recording length (log words),RX H numerals,0.069,0.126,False,True,passes at one level,False
+recording length (log words),RX I questions,0.266,0.207,False,True,passes at one level,False
+recording length (log words),RX J framing cues,0.137,0.06,False,False,passes at neither level,False
+recording length (log words),topic balance B1,-0.127,-0.057,False,False,passes at neither level,False
+recording length (log words),topic balance B2,0.054,-0.072,False,False,passes at neither level,False
+recording length (log words),topic balance B3,0.384,0.055,False,False,passes at neither level,True
+recording length (log words),topic balance B4,-0.231,-0.15,False,True,passes at one level,False
+recording length (log words),topic balance B5,-0.081,-0.034,False,False,passes at neither level,False
+pace (words per speech minute),word length (letters),-0.415,-0.423,False,True,passes at one level,False
+pace (words per speech minute),vocabulary variety (MATTR),-0.121,-0.166,False,True,passes at one level,False
+pace (words per speech minute),contractions,0.385,0.341,False,True,passes at one level,False
+pace (words per speech minute),first-person singular,0.321,0.322,False,True,passes at one level,False
+pace (words per speech minute),first-person plural,-0.033,0.019,False,False,passes at neither level,False
+pace (words per speech minute),second person,-0.056,-0.017,False,False,passes at neither level,False
+pace (words per speech minute),question marks,0.238,0.204,False,True,passes at one level,False
+pace (words per speech minute),RX A greetings and sign-offs,-0.055,-0.08,False,False,passes at neither level,False
+pace (words per speech minute),RX B reported speech,0.23,0.12,False,True,passes at one level,False
+pace (words per speech minute),RX C forms of address,-0.196,-0.099,False,False,passes at neither level,False
+pace (words per speech minute),RX D time expressions,0.065,0.032,False,False,passes at neither level,False
+pace (words per speech minute),RX E hedges and boosters,0.11,0.062,False,False,passes at neither level,False
+pace (words per speech minute),RX F asks,0.071,0.11,False,False,passes at neither level,False
+pace (words per speech minute),RX G named beings and places,0.018,-0.051,False,False,passes at neither level,False
+pace (words per speech minute),RX H numerals,0.257,0.131,False,True,passes at one level,False
+pace (words per speech minute),RX I questions,0.294,0.215,False,True,passes at one level,False
+pace (words per speech minute),RX J framing cues,-0.14,0.003,False,False,passes at neither level,False
+pace (words per speech minute),topic balance B1,-0.127,-0.155,False,True,passes at one level,False
+pace (words per speech minute),topic balance B2,-0.026,-0.084,False,False,passes at neither level,False
+pace (words per speech minute),topic balance B3,0.345,0.131,False,True,passes at one level,True
+pace (words per speech minute),topic balance B4,-0.532,-0.294,True,True,passes at both levels,True
+pace (words per speech minute),topic balance B5,-0.279,-0.139,False,True,passes at one level,False
+word length (letters),vocabulary variety (MATTR),0.452,0.335,True,True,passes at both levels,False
+word length (letters),contractions,-0.501,-0.209,True,True,passes at both levels,True
+word length (letters),first-person singular,-0.532,-0.474,True,True,passes at both levels,False
+word length (letters),first-person plural,-0.034,0.022,False,False,passes at neither level,False
+word length (letters),second person,-0.069,0.016,False,False,passes at neither level,False
+word length (letters),question marks,-0.287,-0.143,False,True,passes at one level,False
+word length (letters),RX A greetings and sign-offs,0.125,0.087,False,False,passes at neither level,False
+word length (letters),RX B reported speech,-0.266,-0.107,False,False,passes at neither level,False
+word length (letters),RX C forms of address,0.338,0.087,False,False,passes at neither level,True
+word length (letters),RX D time expressions,0.13,0.023,False,False,passes at neither level,False
+word length (letters),RX E hedges and boosters,-0.19,-0.025,False,False,passes at neither level,False
+word length (letters),RX F asks,-0.013,-0.002,False,False,passes at neither level,False
+word length (letters),RX G named beings and places,0.275,0.104,False,False,passes at neither level,False
+word length (letters),RX H numerals,-0.046,-0.038,False,False,passes at neither level,False
+word length (letters),RX I questions,-0.3,-0.146,False,True,passes at one level,False
+word length (letters),RX J framing cues,0.055,-0.036,False,False,passes at neither level,False
+word length (letters),topic balance B1,0.395,0.174,False,True,passes at one level,True
+word length (letters),topic balance B2,0.203,0.176,False,True,passes at one level,False
+word length (letters),topic balance B3,-0.456,-0.164,True,True,passes at both levels,True
+word length (letters),topic balance B4,0.52,0.191,True,True,passes at both levels,True
+word length (letters),topic balance B5,-0.09,0.031,False,False,passes at neither level,False
+vocabulary variety (MATTR),contractions,-0.076,-0.043,False,False,passes at neither level,False
+vocabulary variety (MATTR),first-person singular,-0.159,0.016,False,False,passes at neither level,False
+vocabulary variety (MATTR),first-person plural,-0.027,0.058,False,False,passes at neither level,False
+vocabulary variety (MATTR),second person,-0.224,-0.211,False,True,passes at one level,False
+vocabulary variety (MATTR),question marks,-0.074,0.035,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX A greetings and sign-offs,0.191,0.048,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX B reported speech,0.106,-0.053,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX C forms of address,0.196,0.095,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX D time expressions,0.401,0.09,False,False,passes at neither level,True
+vocabulary variety (MATTR),RX E hedges and boosters,0.037,0.051,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX F asks,0.262,0.071,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX G named beings and places,0.237,0.098,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX H numerals,0.33,0.076,False,False,passes at neither level,True
+vocabulary variety (MATTR),RX I questions,-0.089,0.044,False,False,passes at neither level,False
+vocabulary variety (MATTR),RX J framing cues,-0.009,-0.035,False,False,passes at neither level,False
+vocabulary variety (MATTR),topic balance B1,0.108,0.024,False,False,passes at neither level,False
+vocabulary variety (MATTR),topic balance B2,0.26,0.066,False,False,passes at neither level,False
+vocabulary variety (MATTR),topic balance B3,-0.031,0.055,False,False,passes at neither level,False
+vocabulary variety (MATTR),topic balance B4,0.056,-0.001,False,False,passes at neither level,False
+vocabulary variety (MATTR),topic balance B5,-0.399,-0.094,False,False,passes at neither level,True
+contractions,first-person singular,0.573,0.239,True,True,passes at both levels,True
+contractions,first-person plural,0.043,0.11,False,False,passes at neither level,False
+contractions,second person,-0.26,0.005,False,False,passes at neither level,True
+contractions,question marks,0.261,0.283,False,True,passes at one level,False
+contractions,RX A greetings and sign-offs,0.099,-0.088,False,False,passes at neither level,False
+contractions,RX B reported speech,0.403,0.201,False,True,passes at one level,True
+contractions,RX C forms of address,-0.337,-0.063,False,False,passes at neither level,True
+contractions,RX D time expressions,0.127,0.022,False,False,passes at neither level,False
+contractions,RX E hedges and boosters,-0.06,0.106,False,False,passes at neither level,False
+contractions,RX F asks,0.146,0.003,False,False,passes at neither level,False
+contractions,RX G named beings and places,-0.214,-0.017,False,False,passes at neither level,False
+contractions,RX H numerals,0.317,0.061,False,False,passes at neither level,True
+contractions,RX I questions,0.299,0.288,False,True,passes at one level,False
+contractions,RX J framing cues,-0.355,-0.112,False,False,passes at neither level,True
+contractions,topic balance B1,-0.414,-0.136,False,True,passes at one level,True
+contractions,topic balance B2,-0.051,-0.082,False,False,passes at neither level,False
+contractions,topic balance B3,0.302,0.105,False,False,passes at neither level,False
+contractions,topic balance B4,-0.611,-0.321,True,True,passes at both levels,True
+contractions,topic balance B5,-0.256,-0.091,False,False,passes at neither level,False
+first-person singular,first-person plural,0.091,-0.131,False,True,passes at one level,False
+first-person singular,second person,-0.376,-0.209,False,True,passes at one level,False
+first-person singular,question marks,0.261,0.137,False,True,passes at one level,False
+first-person singular,RX A greetings and sign-offs,0.124,-0.043,False,False,passes at neither level,False
+first-person singular,RX B reported speech,0.267,0.122,False,True,passes at one level,False
+first-person singular,RX C forms of address,-0.441,-0.068,True,False,passes at one level,True
+first-person singular,RX D time expressions,-0.016,-0.035,False,False,passes at neither level,False
+first-person singular,RX E hedges and boosters,-0.081,0.006,False,False,passes at neither level,False
+first-person singular,RX F asks,0.158,0.06,False,False,passes at neither level,False
+first-person singular,RX G named beings and places,-0.128,-0.022,False,False,passes at neither level,False
+first-person singular,RX H numerals,0.152,0.054,False,False,passes at neither level,False
+first-person singular,RX I questions,0.272,0.139,False,True,passes at one level,False
+first-person singular,RX J framing cues,-0.292,0.013,False,False,passes at neither level,True
+first-person singular,topic balance B1,-0.37,-0.189,False,True,passes at one level,False
+first-person singular,topic balance B2,-0.236,-0.202,False,True,passes at one level,False
+first-person singular,topic balance B3,0.472,0.215,True,True,passes at both levels,True
+first-person singular,topic balance B4,-0.333,-0.156,False,True,passes at one level,False
+first-person singular,topic balance B5,-0.125,-0.095,False,False,passes at neither level,False
+first-person plural,second person,-0.424,-0.173,False,True,passes at one level,True
+first-person plural,question marks,0.078,0.035,False,False,passes at neither level,False
+first-person plural,RX A greetings and sign-offs,0.092,0.041,False,False,passes at neither level,False
+first-person plural,RX B reported speech,-0.01,-0.013,False,False,passes at neither level,False
+first-person plural,RX C forms of address,0.192,0.099,False,False,passes at neither level,False
+first-person plural,RX D time expressions,0.101,0.109,False,False,passes at neither level,False
+first-person plural,RX E hedges and boosters,-0.147,-0.005,False,False,passes at neither level,False
+first-person plural,RX F asks,0.16,0.01,False,False,passes at neither level,False
+first-person plural,RX G named beings and places,-0.133,0.026,False,False,passes at neither level,False
+first-person plural,RX H numerals,0.048,0.084,False,False,passes at neither level,False
+first-person plural,RX I questions,0.078,0.05,False,False,passes at neither level,False
+first-person plural,RX J framing cues,0.193,-0.082,False,False,passes at neither level,True
+first-person plural,topic balance B1,0.101,0.082,False,False,passes at neither level,False
+first-person plural,topic balance B2,0.032,0.058,False,False,passes at neither level,False
+first-person plural,topic balance B3,0.081,-0.033,False,False,passes at neither level,False
+first-person plural,topic balance B4,0.018,-0.068,False,False,passes at neither level,False
+first-person plural,topic balance B5,-0.082,-0.03,False,False,passes at neither level,False
+second person,question marks,0.057,0.071,False,False,passes at neither level,False
+second person,RX A greetings and sign-offs,-0.162,-0.024,False,False,passes at neither level,False
+second person,RX B reported speech,-0.323,-0.074,False,False,passes at neither level,True
+second person,RX C forms of address,0.119,-0.012,False,False,passes at neither level,False
+second person,RX D time expressions,-0.192,-0.075,False,False,passes at neither level,False
+second person,RX E hedges and boosters,0.305,0.053,False,False,passes at neither level,True
+second person,RX F asks,-0.106,-0.01,False,False,passes at neither level,False
+second person,RX G named beings and places,-0.081,-0.049,False,False,passes at neither level,False
+second person,RX H numerals,-0.109,-0.154,False,True,passes at one level,False
+second person,RX I questions,0.068,0.077,False,False,passes at neither level,False
+second person,RX J framing cues,0.335,0.069,False,False,passes at neither level,True
+second person,topic balance B1,0.11,0.005,False,False,passes at neither level,False
+second person,topic balance B2,-0.195,-0.075,False,False,passes at neither level,False
+second person,topic balance B3,-0.343,-0.179,False,True,passes at one level,False
+second person,topic balance B4,0.169,0.116,False,False,passes at neither level,False
+second person,topic balance B5,0.359,0.261,False,True,passes at one level,False
+question marks,RX A greetings and sign-offs,-0.28,-0.045,False,False,passes at neither level,True
+question marks,RX B reported speech,0.152,0.183,False,True,passes at one level,False
+question marks,RX C forms of address,-0.095,0.024,False,False,passes at neither level,False
+question marks,RX D time expressions,-0.272,-0.039,False,False,passes at neither level,True
+question marks,RX E hedges and boosters,-0.024,0.048,False,False,passes at neither level,False
+question marks,RX F asks,-0.241,-0.009,False,False,passes at neither level,True
+question marks,RX G named beings and places,-0.234,0.008,False,False,passes at neither level,True
+question marks,RX H numerals,0.021,0.036,False,False,passes at neither level,False
+question marks,RX I questions,0.989,0.962,True,True,passes at both levels,True
+question marks,RX J framing cues,-0.089,0.086,False,False,passes at neither level,False
+question marks,topic balance B1,-0.193,-0.085,False,False,passes at neither level,False
+question marks,topic balance B2,-0.433,-0.133,True,True,passes at both levels,True
+question marks,topic balance B3,0.029,0.014,False,False,passes at neither level,False
+question marks,topic balance B4,-0.15,-0.127,False,True,passes at one level,False
+question marks,topic balance B5,0.033,0.008,False,False,passes at neither level,False
+RX A greetings and sign-offs,RX B reported speech,-0.049,-0.027,False,False,passes at neither level,False
+RX A greetings and sign-offs,RX C forms of address,0.253,0.119,False,False,passes at neither level,False
+RX A greetings and sign-offs,RX D time expressions,0.462,0.077,True,False,passes at one level,True
+RX A greetings and sign-offs,RX E hedges and boosters,0.015,-0.046,False,False,passes at neither level,False
+RX A greetings and sign-offs,RX F asks,0.524,0.165,True,True,passes at both levels,True
+RX A greetings and sign-offs,RX G named beings and places,-0.005,-0.006,False,False,passes at neither level,False
+RX A greetings and sign-offs,RX H numerals,0.4,0.022,False,False,passes at neither level,True
+RX A greetings and sign-offs,RX I questions,-0.262,-0.044,False,False,passes at neither level,False
+RX A greetings and sign-offs,RX J framing cues,0.082,0.06,False,False,passes at neither level,False
+RX A greetings and sign-offs,topic balance B1,-0.195,-0.042,False,False,passes at neither level,False
+RX A greetings and sign-offs,topic balance B2,0.272,0.042,False,False,passes at neither level,True
+RX A greetings and sign-offs,topic balance B3,0.147,0.083,False,False,passes at neither level,False
+RX A greetings and sign-offs,topic balance B4,-0.075,0.042,False,False,passes at neither level,False
+RX A greetings and sign-offs,topic balance B5,-0.314,-0.025,False,False,passes at neither level,True
+RX B reported speech,RX C forms of address,-0.007,0.024,False,False,passes at neither level,False
+RX B reported speech,RX D time expressions,0.023,0.052,False,False,passes at neither level,False
+RX B reported speech,RX E hedges and boosters,-0.178,0.045,False,False,passes at neither level,False
+RX B reported speech,RX F asks,0.144,0.051,False,False,passes at neither level,False
+RX B reported speech,RX G named beings and places,-0.009,0.022,False,False,passes at neither level,False
+RX B reported speech,RX H numerals,0.02,0.056,False,False,passes at neither level,False
+RX B reported speech,RX I questions,0.159,0.167,False,True,passes at one level,False
+RX B reported speech,RX J framing cues,-0.064,0.057,False,False,passes at neither level,False
+RX B reported speech,topic balance B1,-0.381,-0.101,False,False,passes at neither level,True
+RX B reported speech,topic balance B2,0.029,-0.023,False,False,passes at neither level,False
+RX B reported speech,topic balance B3,0.328,0.09,False,False,passes at neither level,True
+RX B reported speech,topic balance B4,-0.285,-0.158,False,True,passes at one level,False
+RX B reported speech,topic balance B5,-0.136,-0.046,False,False,passes at neither level,False
+RX C forms of address,RX D time expressions,0.188,0.02,False,False,passes at neither level,False
+RX C forms of address,RX E hedges and boosters,0.077,0.013,False,False,passes at neither level,False
+RX C forms of address,RX F asks,0.073,0.056,False,False,passes at neither level,False
+RX C forms of address,RX G named beings and places,0.341,0.108,False,False,passes at neither level,True
+RX C forms of address,RX H numerals,-0.03,0.028,False,False,passes at neither level,False
+RX C forms of address,RX I questions,-0.1,0.023,False,False,passes at neither level,False
+RX C forms of address,RX J framing cues,0.469,0.107,True,False,passes at one level,True
+RX C forms of address,topic balance B1,0.246,0.138,False,True,passes at one level,False
+RX C forms of address,topic balance B2,0.192,0.095,False,False,passes at neither level,False
+RX C forms of address,topic balance B3,-0.167,-0.01,False,False,passes at neither level,False
+RX C forms of address,topic balance B4,0.286,0.049,False,False,passes at neither level,True
+RX C forms of address,topic balance B5,-0.149,-0.099,False,False,passes at neither level,False
+RX D time expressions,RX E hedges and boosters,-0.05,0.074,False,False,passes at neither level,False
+RX D time expressions,RX F asks,0.374,0.086,False,False,passes at neither level,True
+RX D time expressions,RX G named beings and places,0.105,0.033,False,False,passes at neither level,False
+RX D time expressions,RX H numerals,0.567,0.304,True,True,passes at both levels,True
+RX D time expressions,RX I questions,-0.257,-0.039,False,False,passes at neither level,True
+RX D time expressions,RX J framing cues,0.061,-0.003,False,False,passes at neither level,False
+RX D time expressions,topic balance B1,0.109,0.05,False,False,passes at neither level,False
+RX D time expressions,topic balance B2,0.574,0.177,True,True,passes at both levels,True
+RX D time expressions,topic balance B3,0.325,0.168,False,True,passes at one level,False
+RX D time expressions,topic balance B4,-0.219,-0.056,False,False,passes at neither level,False
+RX D time expressions,topic balance B5,-0.307,-0.148,False,True,passes at one level,False
+RX E hedges and boosters,RX F asks,0.162,0.017,False,False,passes at neither level,False
+RX E hedges and boosters,RX G named beings and places,-0.008,-0.004,False,False,passes at neither level,False
+RX E hedges and boosters,RX H numerals,-0.109,0.002,False,False,passes at neither level,False
+RX E hedges and boosters,RX I questions,-0.041,0.034,False,False,passes at neither level,False
+RX E hedges and boosters,RX J framing cues,0.133,-0.013,False,False,passes at neither level,False
+RX E hedges and boosters,topic balance B1,0.007,-0.105,False,False,passes at neither level,False
+RX E hedges and boosters,topic balance B2,-0.159,-0.037,False,False,passes at neither level,False
+RX E hedges and boosters,topic balance B3,-0.226,0.005,False,False,passes at neither level,True
+RX E hedges and boosters,topic balance B4,-0.053,-0.077,False,False,passes at neither level,False
+RX E hedges and boosters,topic balance B5,-0.086,-0.047,False,False,passes at neither level,False
+RX F asks,RX G named beings and places,-0.062,-0.045,False,False,passes at neither level,False
+RX F asks,RX H numerals,0.333,0.115,False,False,passes at neither level,True
+RX F asks,RX I questions,-0.239,-0.015,False,False,passes at neither level,True
+RX F asks,RX J framing cues,0.177,0.005,False,False,passes at neither level,False
+RX F asks,topic balance B1,-0.296,-0.11,False,False,passes at neither level,False
+RX F asks,topic balance B2,0.169,-0.021,False,False,passes at neither level,False
+RX F asks,topic balance B3,0.124,0.154,False,True,passes at one level,False
+RX F asks,topic balance B4,-0.128,-0.076,False,False,passes at neither level,False
+RX F asks,topic balance B5,-0.368,-0.151,False,True,passes at one level,True
+RX G named beings and places,RX H numerals,0.093,-0.01,False,False,passes at neither level,False
+RX G named beings and places,RX I questions,-0.207,0.013,False,False,passes at neither level,True
+RX G named beings and places,RX J framing cues,0.003,0.163,False,True,passes at one level,False
+RX G named beings and places,topic balance B1,0.41,0.261,False,True,passes at one level,False
+RX G named beings and places,topic balance B2,0.297,-0.004,False,False,passes at neither level,True
+RX G named beings and places,topic balance B3,0.114,0.032,False,False,passes at neither level,False
+RX G named beings and places,topic balance B4,0.14,0.126,False,True,passes at one level,False
+RX G named beings and places,topic balance B5,-0.209,-0.036,False,False,passes at neither level,False
+RX H numerals,RX I questions,0.05,0.026,False,False,passes at neither level,False
+RX H numerals,RX J framing cues,-0.077,0.038,False,False,passes at neither level,False
+RX H numerals,topic balance B1,-0.142,-0.047,False,False,passes at neither level,False
+RX H numerals,topic balance B2,0.289,0.169,False,True,passes at one level,False
+RX H numerals,topic balance B3,0.42,0.214,False,True,passes at one level,True
+RX H numerals,topic balance B4,-0.403,-0.075,False,False,passes at neither level,True
+RX H numerals,topic balance B5,-0.358,-0.172,False,True,passes at one level,False
+RX I questions,RX J framing cues,-0.109,0.107,False,False,passes at neither level,True
+RX I questions,topic balance B1,-0.178,-0.06,False,False,passes at neither level,False
+RX I questions,topic balance B2,-0.429,-0.136,True,True,passes at both levels,True
+RX I questions,topic balance B3,0.049,0.001,False,False,passes at neither level,False
+RX I questions,topic balance B4,-0.188,-0.138,False,True,passes at one level,False
+RX I questions,topic balance B5,0.015,0.01,False,False,passes at neither level,False
+RX J framing cues,topic balance B1,0.127,0.059,False,False,passes at neither level,False
+RX J framing cues,topic balance B2,0.181,0.069,False,False,passes at neither level,False
+RX J framing cues,topic balance B3,-0.118,0.04,False,False,passes at neither level,False
+RX J framing cues,topic balance B4,0.292,0.053,False,False,passes at neither level,True
+RX J framing cues,topic balance B5,0.188,0.106,False,False,passes at neither level,False
+topic balance B1,topic balance B2,0.127,0.107,False,False,passes at neither level,False
+topic balance B1,topic balance B3,-0.3,-0.153,False,True,passes at one level,False
+topic balance B1,topic balance B4,0.345,0.04,False,False,passes at neither level,True
+topic balance B1,topic balance B5,0.095,0.002,False,False,passes at neither level,False
+topic balance B2,topic balance B3,0.3,0.094,False,False,passes at neither level,True
+topic balance B2,topic balance B4,-0.121,0.031,False,False,passes at neither level,False
+topic balance B2,topic balance B5,-0.098,0.05,False,False,passes at neither level,False
+topic balance B3,topic balance B4,-0.537,-0.239,True,True,passes at both levels,True
+topic balance B3,topic balance B5,-0.164,-0.097,False,False,passes at neither level,False
+topic balance B4,topic balance B5,0.241,0.082,False,False,passes at neither level,False

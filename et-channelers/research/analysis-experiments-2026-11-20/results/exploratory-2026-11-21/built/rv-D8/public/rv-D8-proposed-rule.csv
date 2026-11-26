@@ -1,0 +1,12 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22; text as built 2026-11-21 01:16 UTC; taken unchanged from the build's plain-text copy (rv-D8-proposed-rule.txt), which a release does not copy (D56).
+# Base: a proposal for future external calls (no data). Interval level: none.
+# Written by f01_edits.py (SHA-256 de3cdb4462a5fec5cdf3f49589e657901718c270b075bf45aaf2e3d7d3f45793) at 2026-11-26T00:57:31Z (release pass 2's fix step) from the build's plain-text copy, which build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) wrote at 2026-11-25T21:48:11Z; this line added by f33_edits.py (SHA-256 442d541d26f9e5167d980d3c61e23db5248293947ea568ce2b20d4a5a1ff37d4) in the second fix step.
+item,rule
+1,"Before a window is sent, drop every unit that the voice map (run locally or by the small model on seen creators only) labels V4 (another participant's turn), and every unit of a recording whose claimant is guest_or_client or several_people, unless the hypothesis needs it and the owner approves that instrument in writing."
+2,Recordings whose format is audience_session or conversation are sent only as the creator's own units (V1-V3 of the host or sole speaker).
+3,"Health, belief and personal-circumstance statements of clients and audience members are never sent, even when they sit inside a creator's unit: a local pattern list (illness, diagnosis, medication, bereavement, a named private person) blanks such units first, and the count of blanked units is logged."
+4,"The ledger logs, per request, the recording hash and the number of words sent, so that the inventory above can be exact."
+5,"Zero data retention is requested from the vendor before any further transcript is sent; until it is granted, Section 8 says that inputs may be kept up to 30 days in abuse-monitoring logs."
+6,Batch input and output files are deleted after collection and the deletion is logged (a files_deleted row per job); the open self-test batch is closed and its file deleted.
+note,Model-coded labels decide what is withheld; their errors are reported as such (the pilot share above is model-coded and has no human check).

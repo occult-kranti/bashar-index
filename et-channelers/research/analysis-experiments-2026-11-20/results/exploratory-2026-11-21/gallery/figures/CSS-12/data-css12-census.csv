@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-12 (place S; the L part): share of a seen creator's recordings with any term of the class. Source: package CSS, public file css12-census.csv (rows 'share of the creator's recordings with any term', whole recordings; rerun of record of 2026-11-22, lead's decision D35; analysis step rerun in the release fix pass).
+# Base: 71 seen creators; 1,284 recordings transcribed by the English-only recognizer (whole recordings). creator_equal_mean with its 90% creator-bootstrap percentile interval (2,000 draws); quantiles over creators as printed by the package (LAB's rule; an empty quantile is not printed there; no quantile in a row whose count of creators with a non-zero value is withheld or banded, lead's decision D70). recordings_with_any: recordings with any term (a recording count).
+# Terms: E11's two closed term lists (written by package E before any E11 count; names of beings and lineage-specific terms left out) and RX's frozen pattern for numbered dimensions or densities; cue counts with no precision check. A description of vocabulary, not of belief, intent or harm. The directive part (health, money, preparedness directives) was not run.
+class,creators,recordings_with_any,creator_equal_mean,ci90_low,ci90_high,p10,p25,p50,p75,p90
+consciousness-shift vocabulary,71,769,0.594,0.537,0.645,,,,,
+numbered dimensions or densities,71,315,0.242,0.201,0.286,0.0,0.054,0.214,0.39,0.526
+secret-control vocabulary,71,128,0.102,0.074,0.13,0.0,0.0,0.053,0.154,0.353
+both E11 lists in one recording,71,104,0.082,0.06,0.108,,,,,

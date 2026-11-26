@@ -140,7 +140,8 @@ $r$: \AnchorLargerModelCreators{} creators, rough.}
 are public only as three classes in two groups (seen; not seen), with no single text kind and no group total. The
 classes are the project's own earlier recognizer text, platform automatic captions, and untimed publisher transcripts of
 undeclared origin (fewer than 5 creators). An anchor against possibly human-made texts of hold-out and other creators was allowed
-after the analysis freeze and is not yet produced (Appendix~\ref{app:protocol}).
+after the analysis freeze; it was not run, because fewer than 5 creators in each group have a reference that could be
+made by people, so the recognizer was not run either (BR-b-H in the exploratory release; Appendix~\ref{app:outputs}).
 
 \paragraph{Caption row and its strata.} With filter version 2 the caption row's creator mean is
 \AnchorCaptionFilteredPct\%. Table~\ref{tab:wer-strata} splits the row into halves by length (\AnchorCaptionShortPct\%
@@ -148,8 +149,9 @@ and \AnchorCaptionLongPct\%) and by recognizer confidence (\AnchorCaptionLowConf
 thirds hold fewer than 5 creators. These strata were added after the reporting plan (addendum 1) and are rough.
 
 \paragraph{The normaliser.} Both texts pass through a normaliser that lower-cases, drops fillers and expands
-contractions, so the anchor cannot see errors of case, fillers or contractions. Names are not scored, and years and
-numbers are not yet scored (Appendix~\ref{app:protocol}). Version 2 of the normaliser was chosen after the first result.
+contractions, so the anchor cannot see errors of case, fillers or contractions. Names are not scored; years and numbers
+are scored apart, on the same pairs, by BR-y in the exploratory release (Appendix~\ref{app:outputs}). Version 2 of the
+normaliser was chosen after the first result.
 On 21 November, version 1 gave the first tables at \AnchorFirstTablesStamp, a confusion check followed at
 \AnchorConfusionStamp, and version 2 was made at \AnchorNormaliserFixedStamp; a later edit changed only the trimming
 rule. Both versions were hashed at \AnchorHashStamp, after the first rates, so the plan's rule to hash the normaliser
@@ -382,7 +384,9 @@ pooled (0.5 added per cell), Mantel--Haenszel (MH) within creator and conditiona
 creator-bootstrap intervals, and the creators with variation in the outcome (Cr.). Bottom: standardized mean differences
 of recordings with other text (O) and of recordings with no text (M) against transcribed recordings (T), with 90\%
 creator-bootstrap intervals; E1 and E3 are levels of date evidence. Event counts and group sizes are not printed: beside
-the census counts some would give a cell of fewer than 5 by difference.}
+the census counts some would give a cell of fewer than 5 by difference. For the same reason the creators of ``no text
+of any kind'' are not printed (n.p.): beside the printed creator counts of its two parts they would give the creators
+with both by difference.}
 \label{tab:rank-odds}
 \end{table*}
 
@@ -424,7 +428,7 @@ anchor's normaliser drops fillers. Random injection understates a systematic los
 between-creator comparisons of word length, MATTR and filled pauses are not supported at the measured machine
 disagreement for creators in the upper tail. Pronoun, contraction, question-mark and numeral rates, pace and log words
 keep their structure under error that differs between creators. The MATTR window is 500 words for the ICC, 1,000 in the
-tolerance and 100 in the bridge (``variety''). Tolerance, not accuracy.
+tolerance and 100 in the bridge (``variety''). Tolerance, not a measure of correctness.
 
 % Generated ICC figure; referred to from Section 4.5.
 \begin{figure}[tp]
@@ -468,7 +472,7 @@ pooled correlation of mean segment log-probability with pace, split at two level
 \caption{Error tolerance of word measures. \CapTolerance{} Injected word error (0--20\%) against each measure's
 creator-equal cohort mean, with the bridge's edit profile (solid) and a uniform profile (dashed); grey: 10th--90th
 percentile over creators; dotted: $\pm$0.2 between-creator SD. Errors are injected at random over words at the bridge's
-edit rates, which understates a systematic loss of fillers and contractions. Tolerance, not accuracy.}
+edit rates, which understates a systematic loss of fillers and contractions. Tolerance, not a measure of correctness.}
 \label{fig:tolerance}
 \end{figure*}
 
@@ -584,8 +588,8 @@ not checked by a person.
 recordings of \LOneCreators{} development creators, read by the small model and by the middle model. A claimed voice is
 the main kind of \LOneClaimedMainPct\% of recordings (creator-weighted; 95\% \LOneClaimedMainLo--\LOneClaimedMainHi).
 About \LOneNoClaimedCreators{} of the \LOneCreators{} development creators (the count moves by fewer than 5 between
-model runs) have no sampled recording with a claimed voice in a quarter of its words. The census on all seen recordings is not yet produced
-(Appendix~\ref{app:protocol}).
+model runs) have no sampled recording with a claimed voice in a quarter of its words. The census on all seen recordings
+is LAB-K in the exploratory release, with this interim census beside it on comparable rows (Appendix~\ref{app:outputs}).
 
 \paragraph{Pseudo-words.} Table~\ref{tab:nonlanguage} checks the pseudo-word flag of Section~\ref{sec:pipeline}, which
 was fixed on development creators before any reading. A model read flagged and unflagged 30-s windows as coherent
@@ -635,7 +639,7 @@ creators (one per creator): flip shares of voice labels (words; 1 $-$ Jaccard fo
 named) between the two transcripts, against run-to-run flips on one transcript, with creator-bootstrap 90\% intervals.
 Voice labels: V0 cannot tell, V1 own person, V2 embodied source, V3 relayed source, V4 other participant; asks: K1 pay
 or enrol, K3 platform engagement, K4 off-platform move. The instruments are those of that run, before their later
-revisions. Stability, not accuracy.}
+revisions. Stability, not a measure of correctness.}
 \label{tab:labelflips}
 \end{table}
 

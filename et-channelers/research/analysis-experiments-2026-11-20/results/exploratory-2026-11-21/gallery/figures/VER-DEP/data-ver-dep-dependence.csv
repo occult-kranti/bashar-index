@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): VER/public/ver-dep.csv
+# Interval level: 90% (creator bootstrap; voice sample weighted to its sampling frame)
+# VER-DEP: dependence of readers' errors. Voice sample: the 200 units of the VER-3R sample (HUMAN sample of the 23 seen check creators), read by the small, middle and large (gpt-6-sol) OpenAI models and a reader of another vendor (Anthropic), weighted to the sampling frame. Constructed items: KA known-answer items (true errors on constructed text, an upper bound for the corpus). Asks: seen recordings with a description and RX and PT coverage, three groups.
+# Model-coded; not checked by a person; dependence figures are heuristics, never accuracy. nominal_k = the number of readers (drawn as an open diamond in panel C).
+panel,row,instrument,sample,measure,estimate,low_90,high_90,nominal_k
+A,"asks: three groups (model labels, transcript rule, page rule)",asks at recording level (pay or enrol),"seen recordings with a description, RX and PT coverage",all-same share: the three groups give the same code,0.371,0.303,0.437,
+B,voice sample: departures from the others' majority (heuristic),"voice (claimed, own, other)",HUMAN sample (VER-3R),mean phi of departures from the other readers' majority (heuristic),0.431,0.248,0.635,
+B,"voice label: small and middle model, constructed items","voice label, claimed against own (revision 3 arms; words)",KA constructed items (known answers),phi of the two models' errors (true errors on constructed text),0.512,0.435,0.595,
+B,"checkability parts: small and middle model, constructed items",checkability: five parts (KA confidence arm items),KA constructed items (known answers),phi of the two models' errors (true errors on constructed text),0.549,0.446,0.643,
+C,voice sample: four readers (heuristic),"voice (claimed, own, other)",HUMAN sample (VER-3R),"effective votes of four readers, k / (1 + (k - 1) phi) (heuristic)",1.745,1.377,2.293,4
+C,"voice label: two models, constructed items","voice label, claimed against own (revision 3 arms; words)",KA constructed items (known answers),"effective votes of the two models, 2 / (1 + phi)",1.322,1.255,1.394,2
+C,"checkability parts: two models, constructed items",checkability: five parts (KA confidence arm items),KA constructed items (known answers),"effective votes of the two models, 2 / (1 + phi)",1.291,1.217,1.388,2

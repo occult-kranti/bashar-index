@@ -1,0 +1,41 @@
+# KA known-answer battery: share of planted answers recovered, percent, 90% clustered bootstrap (creators; titles: made-up lists), 2,000 draws.
+# Model-coded labels on constructed texts from seen development creators; not checked by a person; upper bounds for the corpus.
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+measure,series,share_pct,boot90_low_pct,boot90_high_pct,status
+Claimed voice found inside an embodied frame (K1E),small model,94.19,90.39,97.44,plotted
+Claimed voice found inside an embodied frame (K1E),middle model,,,,not published (misses from fewer than 5 creators)
+Claimed voice found inside a relayed frame (K1R),small model,89.17,82.34,95.09,plotted
+Claimed voice found inside a relayed frame (K1R),middle model,92.52,87.95,96.18,plotted
+"Own voice found at the return, embodied frame",small model,,,,not published (misses from fewer than 5 creators)
+"Own voice found at the return, embodied frame",middle model,,,,not published (misses from fewer than 5 creators)
+"Own voice found at the return, relayed frame",small model,,,,not published (misses from fewer than 5 creators)
+"Own voice found at the return, relayed frame",middle model,92.4,85.83,97.53,plotted
+Own voice after a farewell with no return (X2),small model,88.35,76.43,97.09,plotted
+Own voice after a farewell with no return (X2),middle model,83.03,69.01,95.5,plotted
+Relayed voice kept after an uncued change of subject (X4),small model,,,,not published (misses from fewer than 5 creators)
+Relayed voice kept after an uncued change of subject (X4),middle model,100.0,100.0,100.0,plotted
+Ask with no own reference kept in the claimed voice (K4V),small model,,,,not published (misses from fewer than 5 creators)
+Ask with no own reference kept in the claimed voice (K4V),middle model,100.0,100.0,100.0,plotted
+Interview between people labelled as interview (CV6),small model,,,,not published (misses from fewer than 5 creators)
+Interview between people labelled as interview (CV6),middle model,,,,not published (misses from fewer than 5 creators)
+Source in a question session labelled claimed (CVQ),small model,,,,not published (misses from fewer than 5 creators)
+Source in a question session labelled claimed (CVQ),middle model,,,,not published (misses from fewer than 5 creators)
+Questioner labelled as questioner (CVQ),small model,,,,not published (misses from fewer than 5 creators)
+Questioner labelled as questioner (CVQ),middle model,100.0,100.0,100.0,plotted
+Planted asks kept as asks by each model's check,small model,98.0,96.86,99.03,plotted
+Planted asks kept as asks by each model's check,middle model,,,,not published (misses from fewer than 5 creators)
+"Planted forecasts found (small model, two wordings)",small model,98.45,97.3,99.47,plotted
+Plain forecasts kept as forecasts by the critic,small model,,,,not published (misses from fewer than 5 creators)
+Plain forecasts kept as forecasts by the critic,middle model,,,,not published (misses from fewer than 5 creators)
+"Relayed forecasts kept by the critic, before its revision",small model,60.42,52.43,68.63,plotted
+"Relayed forecasts kept by the critic, before its revision",middle model,80.21,70.97,88.64,plotted
+"Relayed forecasts kept by the critic, after its revision",small model,73.96,65.31,81.72,plotted
+"Relayed forecasts kept by the critic, after its revision",middle model,83.33,75.61,90.43,plotted
+Time window coded correctly,small model,,,,not published (misses from fewer than 5 creators)
+Time window coded correctly,middle model,,,,not published (misses from fewer than 5 creators)
+Observable outcome coded correctly,small model,89.18,86.84,91.29,plotted
+Observable outcome coded correctly,middle model,87.89,85.98,89.95,plotted
+Primary sentence code exact,small model,100.0,100.0,100.0,plotted
+Primary sentence code exact,middle model,100.0,100.0,100.0,plotted
+Title presentation code exact (made-up titles),small model,98.75,97.5,99.58,plotted
+Title presentation code exact (made-up titles),middle model,99.58,98.75,100.0,plotted

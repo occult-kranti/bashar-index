@@ -1,0 +1,25 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# E3 position curves, seen creators only (61 creators, 558 recordings; H3's recordings and bins, English-only model, artefact filter v1, 180 s trimmed at each end, ten tenths of the remaining running time).
+# Simultaneous 90% sup-t band over the ten tenths of each curve (plan section 4), from the same 9,999 two-stage resamples (creators, then recordings within each drawn creator) as e3-position-curves.csv; the pointwise 90% interval is printed beside it. The hold-out curves have no simultaneous band (a deviation from plan section 4); no tenth is read on its own.
+# Recognizer output, not checked by a person; the tempo curve rests on word times that the recognizer bridge found model-dependent. Code added after the exploratory reporting plan (second wave, 2026-11-22; D4). Written 2026-11-22T02:58:22Z.
+tenth,group,measure,value,simultaneous90_low,simultaneous90_high,pointwise90_low,pointwise90_high,note
+1,seen,articulation rate relative to the recording's trimmed mean,0.9990,0.9824,1.0157,0.9884,1.0101,sup-t critical value 2.53
+2,seen,articulation rate relative to the recording's trimmed mean,0.9964,0.9813,1.0116,0.9865,1.0062,sup-t critical value 2.53
+3,seen,articulation rate relative to the recording's trimmed mean,1.0062,0.9909,1.0215,0.9968,1.0166,sup-t critical value 2.53
+4,seen,articulation rate relative to the recording's trimmed mean,1.0021,0.9851,1.0191,0.9912,1.0134,sup-t critical value 2.53
+5,seen,articulation rate relative to the recording's trimmed mean,1.0003,0.9851,1.0155,0.9906,1.0103,sup-t critical value 2.53
+6,seen,articulation rate relative to the recording's trimmed mean,1.0021,0.9877,1.0164,0.9927,1.0113,sup-t critical value 2.53
+7,seen,articulation rate relative to the recording's trimmed mean,0.9983,0.9824,1.0142,0.9878,1.0084,sup-t critical value 2.53
+8,seen,articulation rate relative to the recording's trimmed mean,0.9981,0.9832,1.0130,0.9883,1.0076,sup-t critical value 2.53
+9,seen,articulation rate relative to the recording's trimmed mean,0.9999,0.9837,1.0160,0.9893,1.0102,sup-t critical value 2.53
+10,seen,articulation rate relative to the recording's trimmed mean,1.0038,0.9838,1.0237,0.9904,1.0165,sup-t critical value 2.53
+1,seen,"second-person forms per 1,000 words",43.02,35.15,50.90,37.69,48.84,sup-t critical value 2.30
+2,seen,"second-person forms per 1,000 words",44.81,36.91,52.71,39.34,50.59,sup-t critical value 2.30
+3,seen,"second-person forms per 1,000 words",46.11,38.23,53.99,40.65,51.86,sup-t critical value 2.30
+4,seen,"second-person forms per 1,000 words",46.26,38.37,54.15,40.68,52.09,sup-t critical value 2.30
+5,seen,"second-person forms per 1,000 words",46.32,38.77,53.87,40.96,51.84,sup-t critical value 2.30
+6,seen,"second-person forms per 1,000 words",48.69,41.21,56.18,43.44,54.18,sup-t critical value 2.30
+7,seen,"second-person forms per 1,000 words",48.46,40.94,55.97,43.09,53.92,sup-t critical value 2.30
+8,seen,"second-person forms per 1,000 words",49.72,42.06,57.39,44.36,55.28,sup-t critical value 2.30
+9,seen,"second-person forms per 1,000 words",51.84,43.66,60.02,46.08,57.78,sup-t critical value 2.30
+10,seen,"second-person forms per 1,000 words",53.04,46.01,60.06,48.06,58.14,sup-t critical value 2.30

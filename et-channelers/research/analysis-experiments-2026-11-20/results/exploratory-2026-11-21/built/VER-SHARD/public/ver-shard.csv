@@ -1,0 +1,103 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Constructed-text recovery is not a measure of correctness on the corpus. Exploratory, before freeze 1 (registry A2).
+# Base: development creators (seen creators). S: KA's 27 constructed windows of 20 creators, 405 target units (310 planted codes), 15 units per call (current), 5 (smaller) or 1 (reference); FC: 387 of KA's 388 planted forecast statements (39 creators), five parts each (1,934 part decisions), five parts per call (FC5, current) or one (FC1, smaller); TIME: 1,200 stored TIME hits of development creators (creator count not published: a creator count 1 to 4 from a nested count), 10 (current) or 3 (smaller) hits per call. Three runs of the small model per arm.
+# Interval level: 90% creator-bootstrap intervals (2,000 draws, KA's statistics), VER-SHARD's own.
+# Rule fixed before any call (protocol 4.11; critique O9): the smaller shard wins if its cost is at most 1.5 times the current and recovery rises by 0.03 or stability by 0.02 with a 90% interval excluding zero, unless a veto fires. Where planted truths were not re-read in this review, run-to-run disagreements give a lower bound on the creators behind misses; a recovery share is printed only where that bound reaches 5 or there are no misses. Shares of rare codes on unplanted units are not part of the plan row's public form.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:02:05Z (UTC, from the clock) by lv_vershard.py (sha256 cd4858e75b0916bb49ac515a059c4c53a34bdb70306fef465e889799e22962c4) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), release review B-LV (plan P10).
+# Edited on 2026-11-26 in release pass 2's third fix step (fix4, f52_edits.py, SHA-256 647ed82d76e723fa1c806a4d9c1215509c75f867f69b7963b3f2adaf35654556), for privacy and consistency only: the arms are named by their size (units or hits per call) instead of shard codes shaped like creator codes (lead's decision D62). No value changed.
+instrument,arm,figure,n,value,interval_90,note
+S,15 units per call,"stability: mean agreement of the three run pairs, primary code",405,0.974,"[0.964, 0.984]",
+S,15 units per call,"all three runs the same, primary code",405,0.961,"[0.945, 0.975]",
+S,15 units per call,Fleiss' kappa over the three runs,405,0.964,,
+S,15 units per call,"stability, code group",405,0.984,"[0.976, 0.992]",
+S,15 units per call,recovery of planted codes (primary code),310,1.000,"[1.000, 1.000]",no misses
+S,15 units per call,recovery of planted codes (code group),310,1.000,,no misses
+S,15 units per call,usable decisions,,1.000,,
+S,5 units per call,"stability: mean agreement of the three run pairs, primary code",405,0.979,"[0.963, 0.994]",
+S,5 units per call,"all three runs the same, primary code",405,0.970,"[0.948, 0.991]",
+S,5 units per call,Fleiss' kappa over the three runs,405,0.971,,
+S,5 units per call,"stability, code group",405,0.984,"[0.975, 0.994]",
+S,5 units per call,recovery of planted codes (primary code),310,1.000,"[1.000, 1.000]",no misses
+S,5 units per call,recovery of planted codes (code group),310,1.000,,no misses
+S,5 units per call,usable decisions,,1.000,,
+S,1 unit per call,"stability: mean agreement of the three run pairs, primary code",405,0.962,"[0.944, 0.980]",
+S,1 unit per call,"all three runs the same, primary code",405,0.946,"[0.919, 0.972]",
+S,1 unit per call,Fleiss' kappa over the three runs,405,0.948,,
+S,1 unit per call,"stability, code group",405,0.967,"[0.951, 0.983]",
+S,1 unit per call,recovery of planted codes (primary code),310,1.000,"[1.000, 1.000]",no misses
+S,1 unit per call,recovery of planted codes (code group),310,1.000,,no misses
+S,1 unit per call,usable decisions,,1.000,,
+S,5 units per call minus 15 units per call,stability difference (90% creator bootstrap),405,0.005,"[-0.011, 0.021]",
+S,5 units per call minus 15 units per call,recovery difference,310,0.000,"[0.000, 0.000]",no misses in either arm
+S,1 unit per call minus 5 units per call (reference),"stability difference, reference row (90% creator bootstrap)",405,-0.017,"[-0.029, -0.003]",
+S,1 unit per call minus 15 units per call (reference),"stability difference, reference row (90% creator bootstrap)",405,-0.011,"[-0.029, 0.005]",
+FC,FC5,"recovery of planted parts (value YES = planted part), mean over three runs",1934,0.941,"[0.933, 0.947]",misses from 5 or more creators (lower bound)
+FC,FC5,"stability: mean agreement of the three run pairs, part value",1934,0.969,"[0.963, 0.975]",
+FC,FC5,all three runs the same,1934,0.954,"[0.945, 0.963]",
+FC,FC5,Fleiss' kappa over the three runs,1934,0.938,,
+FC,FC5,share of part decisions CANNOT_TELL,1934,0.004,"[0.002, 0.006]",
+FC,FC5,share of part decisions YES,1934,0.485,"[0.462, 0.508]",
+FC,FC5,recovery by part: place,387,0.904,,misses from 5 or more creators (lower bound)
+FC,FC5,recovery by part: named actor,387,0.945,,misses from 5 or more creators (lower bound)
+FC,FC5,recovery by part: observable outcome,386,0.902,,misses from 5 or more creators (lower bound)
+FC,FC5,recovery by part: time window or quantity (pooled in this review; weighted by part decisions),774,0.976,,misses from 5 or more creators (lower bound)
+FC,FC1,"recovery of planted parts (value YES = planted part), mean over three runs",1934,0.945,"[0.938, 0.952]",misses from 5 or more creators (lower bound)
+FC,FC1,"stability: mean agreement of the three run pairs, part value",1934,0.968,"[0.962, 0.974]",
+FC,FC1,all three runs the same,1934,0.953,"[0.944, 0.962]",
+FC,FC1,Fleiss' kappa over the three runs,1934,0.936,,
+FC,FC1,share of part decisions CANNOT_TELL,1934,0.004,"[0.003, 0.005]",
+FC,FC1,share of part decisions YES,1934,0.479,"[0.457, 0.502]",
+FC,FC1,recovery by part: place,387,0.876,,misses from 5 or more creators (lower bound)
+FC,FC1,recovery by part: named actor,387,0.959,,misses from 5 or more creators (lower bound)
+FC,FC1,recovery by part: observable outcome,386,0.917,,misses from 5 or more creators (lower bound)
+FC,FC1,recovery by part: time window or quantity (pooled in this review; weighted by part decisions),774,0.987,,misses from 5 or more creators (lower bound)
+FC,FC1 minus FC5,recovery difference (90% creator bootstrap),1934,0.004,"[-0.001, 0.010]",
+FC,FC1 minus FC5,stability difference (90% creator bootstrap),1934,-0.001,"[-0.011, 0.008]",
+TIME,10 hits per call,"stability: mean agreement of the three run pairs, role",1200,0.819,"[0.799, 0.840]",
+TIME,10 hits per call,"all three runs the same, role",1200,0.741,"[0.713, 0.771]",
+TIME,10 hits per call,"Fleiss' kappa over the three runs, role",1200,0.771,,
+TIME,10 hits per call,"stability, role and kind",1200,0.799,"[0.780, 0.821]",
+TIME,10 hits per call,"stability, forecast or not",1200,0.941,"[0.930, 0.953]",
+TIME,10 hits per call,share of hit answers inconsistent with the codebook,1200,not published (fewer than 5 creators),,
+TIME,10 hits per call,share of role answers: biography,,0.168,,
+TIME,10 hits per call,share of role answers: calendar sky,,0.276,,
+TIME,10 hits per call,share of role answers: deep time,,0.006,,
+TIME,10 hits per call,share of role answers: forecast,,0.152,,
+TIME,10 hits per call,share of role answers: logistics,,0.224,,
+TIME,10 hits per call,share of role answers: other,,0.173,,
+TIME,10 hits per call,usable decisions,,not published (misses from fewer than 5 creators),,
+TIME,3 hits per call,"stability: mean agreement of the three run pairs, role",1200,0.823,"[0.805, 0.842]",
+TIME,3 hits per call,"all three runs the same, role",1200,0.743,"[0.717, 0.770]",
+TIME,3 hits per call,"Fleiss' kappa over the three runs, role",1200,0.777,,
+TIME,3 hits per call,"stability, role and kind",1200,0.802,"[0.783, 0.823]",
+TIME,3 hits per call,"stability, forecast or not",1200,0.947,"[0.937, 0.958]",
+TIME,3 hits per call,share of hit answers inconsistent with the codebook,1200,0.000,,
+TIME,3 hits per call,share of role answers: biography,,0.165,,
+TIME,3 hits per call,share of role answers: calendar sky,,0.270,,
+TIME,3 hits per call,share of role answers: deep time,,0.007,,
+TIME,3 hits per call,share of role answers: forecast,,0.146,,
+TIME,3 hits per call,share of role answers: logistics,,0.234,,
+TIME,3 hits per call,share of role answers: other,,0.179,,
+TIME,3 hits per call,usable decisions,,1.000,,
+TIME,3 hits per call minus 10 hits per call,stability difference (90% creator bootstrap),1200,0.004,"[-0.009, 0.020]",
+TIME,3 hits per call minus 10 hits per call,stability role and kind difference (90% creator bootstrap),1200,0.003,"[-0.012, 0.019]",
+TIME,3 hits per call minus 10 hits per call,stability forecast vs not difference (90% creator bootstrap),1200,0.007,"[-0.002, 0.015]",
+TIME,stored runs,"side row: TIME's frozen full and repeat runs, role agreement (one pair of runs)",1200,0.834,"[0.816, 0.853]",
+FC,FC5,usable decisions (answered and valid after the one repeat),,not published (misses from fewer than 5 creators),,
+FC,FC1,usable decisions (answered and valid after the one repeat),,not published (misses from fewer than 5 creators),,
+S,15 units per call,exact quotations,1215,not published (misses from fewer than 5 creators),,
+S,5 units per call,exact quotations,1215,not published (misses from fewer than 5 creators),,
+S,1 unit per call,exact quotations,1215,not published (misses from fewer than 5 creators),,
+FC,FC5,exact quotations,2840,not published (misses from fewer than 5 creators),,
+FC,FC1,exact quotations,2810,1.000,,
+S,rule,the rule's outcome (protocol 4.11; critique O9),,primary reading: 15 units per call stays or wins; literal protocol text: 15 units per call; O9 strict: 15 units per call; cost ratio smaller over current 1.073 (without the cache-write allowance 1.107); recovery trigger: no; stability trigger: no; vetoes: none,,
+FC,rule,the rule's outcome (protocol 4.11; critique O9),,primary reading: FC5 stays or wins; literal protocol text: FC5; O9 strict: FC5; cost ratio smaller over current 2.497 (without the cache-write allowance 2.303); recovery trigger: no; stability trigger: no; vetoes: none,,
+TIME,rule,the rule's outcome (protocol 4.11; critique O9),,primary reading: 10 hits per call stays or wins; literal protocol text: 10 hits per call; O9 strict: 10 hits per call; cost ratio smaller over current 1.129 (without the cache-write allowance 1.226); recovery trigger: no; stability trigger: no; vetoes: none,,
+S,15 units per call,cost: USD per run with the cache-write allowance (USD per run without it),81,0.0157 (0.0113),,operational; no creator value
+S,5 units per call,cost: USD per run with the cache-write allowance (USD per run without it),243,0.0169 (0.0125),,operational; no creator value
+S,1 unit per call,cost: USD per run with the cache-write allowance (USD per run without it),1222,0.0229 (0.0185),,operational; no creator value
+FC,FC5,cost: USD per run with the cache-write allowance (USD per run without it),1167,0.0284 (0.0257),,operational; no creator value
+FC,FC1,cost: USD per run with the cache-write allowance (USD per run without it),5821,0.0710 (0.0592),,operational; no creator value
+TIME,10 hits per call,cost: USD per run with the cache-write allowance (USD per run without it),360,0.0524 (0.0297),,operational; no creator value
+TIME,3 hits per call,cost: USD per run with the cache-write allowance (USD per run without it),1201,0.0591 (0.0364),,operational; no creator value

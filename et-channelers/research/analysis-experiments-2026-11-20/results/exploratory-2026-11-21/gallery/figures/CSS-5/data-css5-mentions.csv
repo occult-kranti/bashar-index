@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-5 (place S): mention methods beside the title method. Source: package CSS, public file css5-source-types.csv (rows 'recording edges' and 'NE pilot windows'; the talk-mention rows print creator counts only and are not drawn).
+# creator_equal_share: mean over the 71 seen creators of the share of the creator's transcribed recordings (edges) or pilot windows (NE) with a source of the type, with its 90% creator-bootstrap percentile interval (2,000 draws). Edges: word list of the title instrument's family table in the first or last running words (cue count, no precision check; common words such as 'god', 'source', 'spirit' are among the forms). NE: 200 seen pilot windows, small-model finder of record, model-coded (window kappa 0.71 against the middle-model finder on named sources); not checked by a person. Mentions are not claims.
+method,type,creator_equal_share,ci90_low,ci90_high,share_of
+recording edges,"Christ, holy figures, deities, God, Source or higher self",0.355,0.306,0.412,share of a creator's transcribed recordings
+recording edges,"other families, pooled (deceased humans; guides, spirit and other)",0.203,0.17,0.239,share of a creator's transcribed recordings
+recording edges,star peoples and other extraterrestrials,0.201,0.161,0.244,share of a creator's transcribed recordings
+recording edges,angels and archangels,0.069,0.036,0.107,share of a creator's transcribed recordings
+recording edges,"extraterrestrial federations, commands and councils",0.067,0.033,0.106,share of a creator's transcribed recordings
+recording edges,"nature, elemental and planetary beings",0.03,0.018,0.041,share of a creator's transcribed recordings
+recording edges,ascended masters and legendary sages,0.019,0.011,0.028,share of a creator's transcribed recordings
+NE pilot windows,a named source the word list does not type,0.254,0.2,0.31,share of a creator's pilot windows
+NE pilot windows,"Christ, holy figures, deities, God, Source or higher self",0.094,0.054,0.136,share of a creator's pilot windows
+NE pilot windows,star peoples and other extraterrestrials,0.089,0.049,0.134,share of a creator's pilot windows
+NE pilot windows,"extraterrestrial federations, commands and councils",0.049,0.023,0.08,share of a creator's pilot windows
+NE pilot windows,angels and archangels,0.047,0.019,0.085,share of a creator's pilot windows
+NE pilot windows,"other families, pooled (ascended masters and sages; nature and planetary beings; guides, spirit and other)",0.04,0.019,0.061,share of a creator's pilot windows

@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-5 (place S): where a seen creator's claimed voice lies, by the source family its recordings' titles name (E11's lineage rule at the recording level). Source: package CSS, public file css5-claimed-voice-by-source-group.csv (rerun of record of 2026-11-22; lead's decision D35).
+# creator_equal_share: per creator with claimed-voice words in the view, the share of those words in the group of recordings; mean over those creators with its 90% creator-bootstrap percentile interval (2,000 draws). The four groups add up to 1 per creator. The overlapping row (titles naming a human, Source or higher-self family) is not drawn.
+# Voice: model-coded voice labels (frozen voice instrument, revision 3; rule B; claimed voice = embodied and relayed voice), verified by a third model of the same vendor, a reader of another vendor and known-answer texts (agreement, not a measure of correctness); titles model-coded; not checked by a person.
+view,group_of_recordings,creator_equal_share,ci90_low,ci90_high
+"middle model, middle-model subset (primary); 58 creators",no source family named,0.738,0.65,0.821
+"middle model, middle-model subset (primary); 58 creators","star peoples, no angelic or devotional figure",0.112,0.057,0.175
+"middle model, middle-model subset (primary); 58 creators",other source families only,0.087,0.034,0.15
+"middle model, middle-model subset (primary); 58 creators",angelic or devotional figures (with or without star peoples; pooled),0.063,0.024,0.108
+"small model, all seen recordings (beside); 65 creators",no source family named,0.7,0.627,0.771
+"small model, all seen recordings (beside); 65 creators","star peoples, no angelic or devotional figure",0.145,0.091,0.204
+"small model, all seen recordings (beside); 65 creators",other source families only,0.095,0.053,0.144
+"small model, all seen recordings (beside); 65 creators",angelic or devotional figures (with or without star peoples; pooled),0.06,0.031,0.094

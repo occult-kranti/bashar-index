@@ -1,0 +1,33 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Model-read: two models cannot tell glossolalia from misrecognised speech without audio. Exploratory, paper review (registry A2/A7).
+# Base: the seen creators' 30-s windows of 8 or more tokens (71 creators, 1,284 recordings, 62,624 eligible windows; artefact filter v2). The flag rule (out-of-vocabulary share over theta = 1/6 and the window's mean word probability under its creator's 10th percentile) was fixed on development-creator windows only; the vocabulary and each creator's 10th percentile use all 71 seen creators. Reads: 200 flagged windows (creator round-robin, 56 creators) and 200 unflagged windows (71 creators), each read by the small and the middle model.
+# Interval level: none for counts; the minutes estimates carry rv-L3's 95% creator-bootstrap intervals.
+# Flagged minutes: 30-s windows, 0.5 minute each. Quantiles over creators are printed only where 5 or more creators lie at or above them and 5 or more non-zero values at or below them.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:02:04Z (UTC, from the clock) by lv_l3.py (sha256 02ef43fe37998e593d1bcea720001821f527a2e92c6bc58eabdfd1ad323501c7) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), release review B-LV (plan P10).
+figure,level,value,note
+flagged minutes per creator: creators per bin,0 min,15,
+flagged minutes per creator: creators per bin,0.5-1 min,21,
+flagged minutes per creator: creators per bin,1.5-2 min,10,
+flagged minutes per creator: creators per bin,2.5-5 min,15,
+flagged minutes per creator: creators per bin,over 5 min,10,
+flagged minutes per creator: median,,1.0,
+flagged minutes per creator: 90th percentile,,9.0,
+creators with any flagged window,,56 of 71,
+recordings with any flagged window,,205 of 1284,
+"flagged minutes, all creators",,287,
+share of tokens in flagged windows,,0.0059,
+windows: all,,62959,
+windows: eligible,,62624,
+windows: flagged,,574,
+windows: oov condition only,,1240,
+windows: probability condition only,,6284,
+windows: flagged development,,324,
+"flagged windows held by the creators with the most flagged windows (top 3, 5, 10)",,"not published (a maximum, minimum or top list of creators)",the binned view is in rv-l3-precision-by-creator-load.csv
+estimated non-language minutes of the 287 flagged minutes (small model),,168,"95% [78, 213]"
+estimated non-language minutes of the 287 flagged minutes (middle model),,148,"95% [59, 198]"
+unflagged windows read as non-language (either model),,0 of 200,"weighted upper 95% bound 0.025 of 62,050 windows (Kish effective reads 147); recall not established (lower bound 0.16, middle model)"
+"Cohen's kappa, small against middle model, four read classes (400 reads)",,0.82,
+"Cohen's kappa, small against middle model, flagged reads only (200)",,0.79,
+evidence quotations found exactly in the window,,400 of 400 (each model),
+cross-table of the flag against the voice pilot's non-language and lyrics labels (41 recordings),,not published (the creators behind its cells could not be counted from the build's files),

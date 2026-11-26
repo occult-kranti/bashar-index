@@ -1,0 +1,13 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: the voice-map pilot: 73 recordings of seen creators
+# Interval level: 95% creator bootstrap (2,000 draws)
+# Model-coded (voice-map pilot labels), not checked by a person; pooled over words. Applies to the pilot sample only; the share in all text sent is extrapolated, not measured.
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:11Z.
+quantity,value,lo95,hi95
+"share of pilot words in another participant's turn (V4: host, interviewer, guest, audience member, client)",0.067,0.014,0.151
+"share of pilot words spoken by a third party (V4, plus claimed voice whose claimant is a guest, client or several people)",0.141,0.045,0.241
+"pilot recordings whose claimed voice is a guest's, a client's or several people's",8,,
+pilot recordings (seen creators),73,,
+creators in the pilot,all but fewer than 5 of 71 seen creators,,
+label files read,26,,

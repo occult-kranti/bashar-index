@@ -1,0 +1,7 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D2-auc.csv (package rv-D2)
+# Interval level: 95% band of the 999-shuffle reference
+# Exactly the numbers drawn in fig-auc. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:16Z.
+model,cv_auc,shuffle_lo95,shuffle_hi95,p_shuffle
+A: inventory and date fields known before the run,0.69,0.30,0.67,0.022
+A + language decisions,0.84,0.32,0.66,0.001

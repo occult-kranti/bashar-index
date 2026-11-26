@@ -1,0 +1,24 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# DC slopes: per creator, Theil-Sen slope per 30 days of each measure (creator-SD units) with a 90% Sen interval; creators with 8+ dated recordings (version B) spanning 28+ days. Shares in percent.
+# shuffled = dates permuted among each creator's own recordings, 999 draws. Shares resting on fewer than 5 creators are not given. p = one-sided permutation p of the share; p_holm = Holm step-down over the 19 measures (family-wise companion; the permutation-maximum band was not built). above_q95 = 1: drawn filled. No cohort mean slope.
+# Inside the weeks a creator covers; upload date, not date of speaking; not a trend of the field.
+measure,label,creators,observed_share_pct,shuffled_mean_pct,shuffled_q95_pct,p,p_holm,above_q95
+log_words,recording length (log words),60,30.0,10.3,16.7,0.001,0.019,1
+words_per_min,words per speech minute,60,20.0,10.2,16.7,0.018,0.306,1
+word_length,mean word length,60,16.7,10.2,16.7,0.083,0.996,0
+mattr1000,"vocabulary variety (MATTR, 1,000 words)",52,17.3,9.8,17.3,0.068,0.884,0
+contraction_rate,"contractions per 1,000 words",60,8.3,9.9,16.7,0.711,1.0,0
+fs_rate,"first-person singular per 1,000",60,23.3,9.9,16.7,0.003,0.054,1
+fp_rate,"first-person plural per 1,000",60,13.3,9.7,16.7,0.223,1.0,0
+sp_rate,"second person per 1,000",60,11.7,10.1,16.7,0.408,1.0,0
+qmark_rate,"question marks per 1,000",60,15.0,8.0,13.3,0.05,0.75,1
+rx_A_frames,RX A frames,60,10.0,4.6,10.0,0.053,0.75,0
+rx_B_reporting,RX B reporting,60,fewer than 5 creators,1.7,5.0,,,
+rx_C_address,RX C address,60,10.0,5.7,11.7,0.128,1.0,0
+rx_D_time,RX D time,60,10.0,6.6,11.7,0.208,1.0,0
+rx_E_stance,RX E stance,60,20.0,10.2,16.7,0.018,0.306,1
+rx_F_asks,RX F asks,60,fewer than 5 creators,4.3,8.3,,,
+rx_G_names_v0,RX G names (v0),60,8.3,7.2,13.3,0.441,1.0,0
+rx_H_numerals,RX H numerals,60,10.0,8.5,15.0,0.41,1.0,0
+rx_I_questions,RX I questions,60,10.0,7.9,15.0,0.338,1.0,0
+rx_J_framing_cues,RX J framing cues,60,fewer than 5 creators,0.2,1.7,,,

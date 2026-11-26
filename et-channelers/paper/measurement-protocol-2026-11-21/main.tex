@@ -43,6 +43,10 @@
 % Anonymous submission (privacy review P30, third round): no pdfTeX banner, file names or embedded figure info
 % dictionaries in the PDF; build.sh sets the document dates in UTC.
 \pdfsuppressptexinfo=-1
+% Release pass 2, fix step (2026-11-26; rule 6, D30): no dates and no time-based trailer id in the PDF; build.sh then
+% removes the document information dictionary (Producer, Creator) from main.pdf.
+\pdfinfoomitdate=1
+\pdftrailerid{}
 
 \setcounter{secnumdepth}{2} % numbered sections, as in the paper the style was taken from
 

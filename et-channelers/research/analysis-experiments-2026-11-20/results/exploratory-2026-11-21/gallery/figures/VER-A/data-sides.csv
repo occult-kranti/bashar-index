@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded; cross-read by a third model of the same vendor (gpt-6-sol, blind, guided steps); agreement, not a measure of correctness; not checked by a person.
+# Base: disputed words of set W's 21 recordings with scored regions (one recording per development creator; seen creators). Interval level: 90% creator bootstrap.
+# Source: public table ver-a-sides-on-disputed-words.csv (rows 'all disputed words').
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+third_reader,share_word_weighted,lo90,hi90
+sides with the small model,0.341,0.086,0.563
+sides with the middle model,0.489,0.251,0.808
+sides with neither,0.170,0.075,0.265

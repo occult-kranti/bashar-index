@@ -1,0 +1,109 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: the request ledger up to 2026-11-21T01:16:24Z
+# Interval level: none (counts)
+# Run tags name instruments and runs, never creators.
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:11Z.
+run_tag,phase,category,first_utc,last_utc,requests,input_tokens,cached_tokens,output_tokens,web_searches,usd,est_words_sent
+(none),setup,unclassified,2026-11-20T19:46:44Z,2026-11-20T23:24:01Z,0,170,0,48,0,0.0004,100
+p2-asks-g,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:17:10Z,2026-11-21T00:17:51Z,118,410009,159713,35759,0,0.0714,187700
+p2-asks-g-rep1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:19:03Z,2026-11-21T00:19:54Z,121,411213,252342,35959,0,0.0604,119200
+p2-asks-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:17:10Z,2026-11-21T01:04:06Z,159,486898,220184,73768,0,0.1469,200000
+p2-g-A-luna,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:33:11Z,2026-11-21T00:33:32Z,87,587119,378401,53108,0,0.0512,156500
+p2-g-A-luna-rep1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:33:59Z,2026-11-21T00:34:18Z,87,587166,551764,50924,0,0.0345,26600
+p2-g-A-luna-rep2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:33:43Z,2026-11-21T00:34:06Z,92,619391,527537,55209,0,0.0421,68900
+p2-g-A-terra,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:18:36Z,2026-11-21T00:18:36Z,77,512364,265275,14586,0,0.3333,185300
+p2-g-A-terra-ownmap,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:27:31Z,2026-11-21T00:27:31Z,77,511437,319249,15181,0,0.2841,144100
+p2-g-A-terra-rep1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:34:10Z,2026-11-21T00:34:10Z,77,512364,424921,16102,0,0.1892,65600
+p2-g-B-luna,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:19:17Z,2026-11-21T00:19:32Z,78,519616,268987,60531,0,0.0580,188000
+p2-g-B-luna-T0,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:28:47Z,2026-11-21T00:28:47Z,77,506741,274596,59778,0,0.0559,174100
+p2-g-B-luna-T2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:29:22Z,2026-11-21T00:29:35Z,79,528533,295359,64492,0,0.0585,174900
+p2-g-B-luna-T4,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:33:55Z,2026-11-21T00:33:55Z,77,512095,353087,60437,0,0.0497,119300
+p2-g-B-luna-T5,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:34:26Z,2026-11-21T00:34:26Z,77,498233,272349,60879,0,0.0558,169400
+p2-g-B-luna-hide,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:27:55Z,2026-11-21T00:27:55Z,77,511805,272349,57811,0,0.0556,179600
+p2-g-B-luna-nofilter,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:28:20Z,2026-11-21T00:28:20Z,77,511325,305586,62830,0,0.0550,154300
+p2-g-B-luna-rep1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:25:46Z,2026-11-21T00:25:57Z,78,519163,380144,59775,0,0.0476,104300
+p2-g-B-luna-rep2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:26:39Z,2026-11-21T00:26:52Z,78,519059,461426,59980,0,0.0404,43200
+p2-g-B-luna-shift1250,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:34:49Z,2026-11-21T00:35:00Z,77,500503,272349,58293,0,0.0547,171100
+p2-g-C-luna,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:33:25Z,2026-11-21T00:33:47Z,82,570198,322365,68571,0,0.0623,185900
+p2-g-C-terra,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:33:19Z,2026-11-21T00:33:19Z,77,529766,285777,21622,0,0.3664,183000
+p2-g-map,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:16:52Z,2026-11-21T00:17:20Z,55,437462,304540,52339,0,0.0425,99700
+p2-g-map-nofilter,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:16:51Z,2026-11-21T00:17:05Z,55,435156,251330,44351,0,0.0431,137900
+p2-g-map-terra,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:16:55Z,2026-11-21T00:16:55Z,52,407445,182750,18094,0,0.3243,168500
+p2-w-A-luna,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:21:22Z,2026-11-21T00:21:36Z,68,459757,254936,35446,0,0.0408,153600
+p2-w-A-terra,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:20:04Z,2026-11-21T00:20:04Z,61,407406,215757,19496,0,0.2999,143700
+p2-w-B-luna,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:22:12Z,2026-11-21T00:22:12Z,61,407406,215757,55422,0,0.0490,143700
+p2-w-C-luna,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:22:47Z,2026-11-21T00:23:11Z,73,512496,300317,69709,0,0.0591,159100
+p2-w-C-terra,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:21:02Z,2026-11-21T00:21:02Z,61,421192,229543,29616,0,0.3512,143700
+p2-w-map,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:16:45Z,2026-11-21T00:17:05Z,41,343367,158168,41427,0,0.0408,138900
+pilot-fa-c,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:00:12Z,2026-11-20T23:00:45Z,154,611259,79950,90041,0,0.0990,398500
+pilot-fa-g,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:08:55Z,2026-11-21T01:00:13Z,373,1453575,469292,186664,0,0.4527,738200
+pilot-fa-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:46:24Z,2026-11-20T22:08:21Z,253,983805,147708,236869,0,0.2274,627100
+pilot-fb-c,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:00:48Z,2026-11-20T23:23:46Z,1001,1397947,1136983,67469,0,0.1781,195700
+pilot-fb-g,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:09:06Z,2026-11-21T01:01:45Z,2246,3153583,2526721,152904,0,0.7750,470100
+pilot-fb-r6-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T22:41:28Z,2026-11-20T22:41:51Z,201,276671,218015,13472,0,0.0148,44000
+pilot-fb-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:47:59Z,2026-11-20T22:41:25Z,2026,2816918,2267855,164422,0,0.3226,411800
+pilot-fc-c-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:01:32Z,2026-11-20T23:24:16Z,235,324066,294385,19919,0,0.0343,22300
+pilot-fc-g-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:10:15Z,2026-11-21T00:59:07Z,1435,2029103,1661567,128629,0,1.2389,275700
+pilot-fc-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:50:19Z,2026-11-20T22:27:02Z,1431,1756651,1603778,136228,0,0.1687,114700
+pilot-fc-w-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T22:39:11Z,2026-11-20T22:40:22Z,694,987637,906683,60845,0,0.0946,60700
+pilot-fd-c,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:19:26Z,2026-11-21T00:06:34Z,276,289522,0,9726,0,0.0670,217100
+pilot-fd-c-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:05:48Z,2026-11-21T00:06:09Z,123,243430,228690,4315,0,0.0059,11100
+pilot-fd-g-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:10:43Z,2026-11-21T00:58:05Z,1149,2281122,2177020,40544,0,0.1621,78100
+pilot-fd-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:51:07Z,2026-11-20T22:07:33Z,930,862143,30778,57281,0,0.1968,623500
+pilot-fe-c,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:19:30Z,2026-11-21T00:06:42Z,153,168477,0,10865,0,0.0223,126400
+pilot-fe-c-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:06:12Z,2026-11-21T00:06:12Z,76,144001,129278,4558,0,0.0050,11000
+pilot-fe-g-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:10:51Z,2026-11-21T00:58:52Z,736,1402507,1298086,43328,0,0.1512,78300
+pilot-fe-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:52:49Z,2026-11-20T22:26:54Z,577,630616,42862,62310,0,0.1453,440800
+pilot-s-c,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:09:18Z,2026-11-21T00:06:45Z,1423,1502585,25278,55909,0,0.2436,1108000
+pilot-s-c-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:06:49Z,2026-11-21T00:24:23Z,1572,2902489,2741156,62741,0,0.1499,121000
+pilot-s-g-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:57:06Z,2026-11-21T00:58:05Z,687,1269356,1182817,27624,0,0.0343,64900
+pilot-s-pk-c,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:28:06Z,2026-11-20T23:28:11Z,35,121747,0,26509,0,0.0254,91300
+pilot-s-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:56:42Z,2026-11-20T22:04:12Z,940,991826,62498,39188,0,0.1922,697000
+pilot-t-c-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:15:49Z,2026-11-21T00:18:38Z,110,336306,283148,148766,0,0.4155,39900
+pilot-t-g-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:57:07Z,2026-11-21T00:57:49Z,29,88368,75600,45039,0,0.2338,9600
+pilot-t-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:57:00Z,2026-11-20T22:15:56Z,63,191651,135370,91888,0,0.1899,42200
+pilot-t-w-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T22:43:49Z,2026-11-21T00:08:20Z,178,551628,453702,267832,0,0.6760,73400
+pilot-ta-c,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:19:32Z,2026-11-21T00:19:32Z,60,226036,0,11509,0,0.5672,169500
+pilot-ta-g,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:00:21Z,2026-11-21T01:04:05Z,172,649019,0,33564,0,1.6337,486800
+pilot-ta-probe,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:11:46Z,2026-11-21T00:14:34Z,20,17195,0,865,0,0.0430,12900
+pilot-ta-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:09:50Z,2026-11-21T00:10:11Z,173,656691,0,34197,0,1.6554,492500
+pilot-w,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-20T21:07:53Z,2026-11-20T21:14:50Z,278,1463422,578506,198963,0,0.5871,663700
+probe-cache,setup,no corpus data (tests),2026-11-20T22:31:11Z,2026-11-20T22:31:13Z,24,81792,67640,288,0,0.0022,10600
+probe-effort,setup,no corpus data (tests),2026-11-20T21:04:27Z,2026-11-20T21:04:30Z,4,82,0,24,0,0.0001,100
+r2-DIR,experiments,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:18:23Z,2026-11-21T00:27:51Z,2178,5392264,3742899,144340,0,0.6325,1237000
+r2-DISC,experiments,public channel metadata and web search results (discovery of further channels),2026-11-20T23:27:27Z,2026-11-21T01:16:24Z,9913,34470480,30597546,1411376,0,7.2274,2904700
+r2-KA,experiments,constructed known-answer texts (built for the test; may reuse corpus phrasing),2026-11-20T23:47:03Z,2026-11-21T01:16:18Z,11776,36850168,23488375,3315955,0,7.2361,10021300
+r2-NAMES,experiments,name forms extracted from seen transcripts,2026-11-20T23:53:24Z,2026-11-20T23:56:15Z,294,1445494,448630,124375,0,0.9031,747600
+r2-NE,experiments,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:06:12Z,2026-11-21T00:13:04Z,488,2246166,947415,151239,0,1.0604,974100
+r2-PT,experiments,"page text of seen recordings (titles, descriptions)",2026-11-21T00:03:07Z,2026-11-21T01:00:01Z,13233,23561650,22926889,560229,0,0.7121,476100
+r2-REV-L1,experiments,transcript windows of seen creators (paper-review items),2026-11-21T00:29:21Z,2026-11-21T00:32:00Z,984,3354696,1722725,228311,0,0.8614,1224000
+r2-REV-L2-E1,experiments,transcript windows of seen creators (paper-review items),2026-11-21T00:32:05Z,2026-11-21T00:32:47Z,161,827800,407289,64521,0,0.0991,315400
+r2-REV-L2-E2,experiments,transcript windows of seen creators (paper-review items),2026-11-21T00:33:02Z,2026-11-21T00:33:58Z,164,835754,612221,66435,0,0.0806,167600
+r2-REV-L2-L1,experiments,transcript windows of seen creators (paper-review items),2026-11-21T00:34:15Z,2026-11-21T00:35:03Z,162,825769,393565,69285,0,0.1052,324200
+r2-REV-L3,experiments,transcript windows of seen creators (paper-review items),2026-11-21T00:36:57Z,2026-11-21T00:37:05Z,80,96200,0,22600,0,0.1073,72200
+r2-RXP,experiments,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:20:48Z,2026-11-21T00:28:12Z,882,2013602,1160778,69333,0,0.8073,639600
+r2-TC,experiments,"transcript windows of seen creators (units, no time stamps)",2026-11-20T23:53:08Z,2026-11-21T00:11:16Z,1991,12222790,7930813,252589,0,2.3576,3219000
+r2-TIME,experiments,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:14:47Z,2026-11-21T00:24:24Z,1969,5841075,3356153,408203,0,0.6609,1863700
+r2-TL-P-b1,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:43:05Z,2026-11-21T00:44:08Z,371,769736,203190,40660,0,0.0790,424900
+r2-TL-P-b2,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:44:17Z,2026-11-21T00:44:49Z,82,170267,0,9015,0,0.2153,127700
+r2-TL-P-b3,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T01:02:53Z,2026-11-21T01:03:43Z,192,107970,0,7266,0,0.0430,81000
+r2-TL-P-b4,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:46:50Z,2026-11-21T00:50:44Z,48,383102,63658,12039,0,0.2209,239600
+r2-TL-P-b5,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:53:58Z,2026-11-21T00:59:04Z,25,512968,113801,10930,0,0.2252,299400
+r2-TL-P-res,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:42:16Z,2026-11-21T00:59:04Z,0,0,0,0,114,1.1400,0
+r2-TL-P-ws,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:42:16Z,2026-11-21T00:42:24Z,2,37868,0,737,0,0.0182,28400
+r2-VER-A-C,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:47:16Z,2026-11-21T00:47:50Z,21,105367,67857,12351,0,0.2121,28100
+r2-VER-A-G,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:40:23Z,2026-11-21T00:46:44Z,126,585251,343686,65909,0,1.2110,181200
+r2-VER-A-S,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:46:45Z,2026-11-21T00:47:08Z,26,92030,82199,13641,0,0.1725,7400
+r2-VER-A-T,experiments,"transcript statements of seen creators, with web searches for verification",2026-11-21T00:47:55Z,2026-11-21T00:48:15Z,6,29395,21858,2615,0,0.0456,5700
+rel-test,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T00:04:02Z,2026-11-21T00:28:50Z,1805,5246911,4090389,330507,0,0.3218,867400
+selftest-now,setup,no corpus data (tests),2026-11-20T20:59:31Z,2026-11-20T20:59:31Z,2,83,0,24,0,0.0000,100
+selftest-parallel,setup,no corpus data (tests),2026-11-20T21:38:04Z,2026-11-20T21:53:52Z,160,7040,0,1920,0,0.0017,5300
+smoke-fa-seen,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:10:31Z,2026-11-21T01:10:35Z,8,29088,4264,1328,0,0.0032,18600
+smoke-fb-seen,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:10:39Z,2026-11-21T01:10:39Z,21,30513,23436,1443,0,0.0017,5300
+smoke-fc-seen-check-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:12:37Z,2026-11-21T01:12:37Z,1,1571,0,125,0,0.0044,1200
+smoke-fc-seen-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:10:41Z,2026-11-21T01:10:43Z,2,2642,2548,168,0,0.0006,100
+smoke-fd-seen-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:10:44Z,2026-11-21T01:10:44Z,1,1929,1890,34,0,0.0000,0
+smoke-s-seen-r1,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:11:36Z,2026-11-21T01:11:36Z,60,112545,103260,2401,0,0.0032,7000
+smoke-t-seen-r2,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:12:01Z,2026-11-21T01:12:13Z,4,12574,8674,6472,0,0.0199,2900
+smoke-ta-seen,labelling,"transcript windows of seen creators (units, no time stamps)",2026-11-21T01:12:33Z,2026-11-21T01:12:33Z,11,43353,0,2433,0,0.1110,32500

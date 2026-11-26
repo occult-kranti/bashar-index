@@ -1,0 +1,18 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file NLP/public/nlp-r10-self-presentation.csv (sha256 131da14a419046c6).
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap draws, as printed by the package (rows that repeat a LAB-S row print LAB-S's cells).
+# H5's three Q2 assignments as description with LAB-S's word weights over all seen recordings; not H5's estimator (no sides, no points, no test). The Q2-merged practice share equals the as-registered one and is not repeated in the source.
+# The creators column is copied from the package file as printed. Sentence codes and voice labels (with their self-naming cue field) model-coded, not checked by a person; the voice label marks one cue per span, so every share is a lower bound on self-presentation.
+quantity,q2_assignment,cue_adjacent_units,mean,lo95,hi95,creators
+world-claim share of coded words,as registered (Q2 on neither side),cue-adjacent units kept,0.234,0.198,0.273,all but fewer than 5 of 71
+world-claim share of coded words,as registered (Q2 on neither side),cue-adjacent units left out,0.234,0.199,0.273,all but fewer than 5 of 71
+world-claim share of coded words,Q2 merged with Q1,cue-adjacent units kept,0.372,0.335,0.41,all but fewer than 5 of 71
+world-claim share of coded words,Q2 merged with Q1,cue-adjacent units left out,0.372,0.333,0.412,all but fewer than 5 of 71
+world-claim share of coded words,Q2 excluded,cue-adjacent units kept,0.269,0.229,0.309,all but fewer than 5 of 71
+world-claim share of coded words,Q2 excluded,cue-adjacent units left out,0.269,0.227,0.31,all but fewer than 5 of 71
+world-claim share of world-claim plus practice words,as registered (Q2 on neither side),cue-adjacent units kept,0.425,0.373,0.481,all but fewer than 5 of 71
+world-claim share of world-claim plus practice words,as registered (Q2 on neither side),cue-adjacent units left out,0.425,0.373,0.479,all but fewer than 5 of 71
+world-claim share of world-claim plus practice words,Q2 merged with Q1,cue-adjacent units kept,0.547,0.499,0.593,all but fewer than 5 of 71
+world-claim share of world-claim plus practice words,Q2 merged with Q1,cue-adjacent units left out,0.547,0.5,0.592,all but fewer than 5 of 71
+world-claim share of world-claim plus practice words,Q2 excluded,cue-adjacent units kept,0.43,0.374,0.483,all but fewer than 5 of 71
+world-claim share of world-claim plus practice words,Q2 excluded,cue-adjacent units left out,0.43,0.376,0.485,all but fewer than 5 of 71

@@ -7,7 +7,7 @@ The first round of registered tests (H1, H2, H4, H5, H6 and H9) ran on the hold-
 code and constants fixed by freeze 2 (16:10 UTC). Holm runs over all ten hypotheses (m = 10, family-wise 0.05);
 every Holm-adjusted p is 1 and no step passed. Every label behind these tests was made by language models from
 frozen prompts and no person checked it, so every verdict is model-coded; agreement between models is agreement,
-not accuracy. The first-round rows below give the verdicts as the public results file states them. That file,
+not a measure of correctness. The first-round rows below give the verdicts as the public results file states them. That file,
 [`first-round-2026-11-21.md`](first-round-2026-11-21.md) (machine-readable twin `first-round-2026-11-21.json`,
 republished as fixes were made; its header gives the time), holds both versions of every amended test, the reliability gates on R-hold, the
 verification of the labels and the robustness rows.
@@ -24,6 +24,18 @@ verification of the labels and the robustness rows.
 | H8 | The H3 contrast is larger than in sermons and wellness talks | **dropped by the owner 2026-11-20** (A9) | | | its contrast is H3's, shown to be biased; the comparison set was never collected; counts as run with p = 1 |
 | H9 | Same family of beings: shared subject matter, not shared style | **run in the first round, 2026-11-21** (model-coded) | not published (the result is not determinable) | not determinable in both versions (amended: too few eligible creators (fewer than 5 of 8); registered: the family-label permutation cannot reach the first Holm step (eligible creators: fewer than 5; the number of distinct labelings is not published)) | eligible creators fewer than 5, minimum 8; Holm-adjusted p 1; uninformative; see the first-round file |
 | H10 | Passed dates are returned to less often | not run in the first round | | | not run in the first round (decision of 2026-11-21 04:55 (m)): like H7, it has data only on a replication wave, and none exists; enters Holm at p = 1 |
+
+## Exploratory round (2026-11-21 to 22)
+
+The exploratory round ran after the registered tests had run and been published: it began at 2026-11-21 23:17 UTC,
+under the registered [exploratory reporting plan](../exploratory-reporting-plan.md) and its addenda 1 to 3, with code
+written after freeze 2. Its release, [`exploratory-2026-11-21/README.md`](exploratory-2026-11-21/README.md), gives the
+status of every output the plan lists (172 outputs: 111 reported, 1 superseded, 60 not run), the public tables of the
+round's packages and of the outputs built before it, the round's hold-out contact log and deviation table, and a
+gallery of figures ([`exploratory-2026-11-21/gallery/index.html`](exploratory-2026-11-21/gallery/index.html)).
+Everything in it is exploratory (registry A2); not a test of H1-H10. It holds no test verdict and changes none of the
+verdicts above. Its hold-out outputs are printed beside the seen creators' values and never pooled with them, and its
+labels are model-coded and not checked by a person.
 
 ## H3 in full
 
@@ -44,12 +56,15 @@ was read; the code is [`../code/h3_position.py`](../code/h3_position.py). Files:
 | U without the trim (reported, not tested) | 0.348 (output of the frozen procedure; see the note below) | 0.427 |
 
 **The hold-out and the positional rule.** Under the owner's rule of 20 November 2026, displays of speech by
-position in the recording showed the seen creators only until freeze 2 (2026-11-21, 16:10 UTC); no positional
-estimate on the hold-out other than H3's registered output has been published since. The two hold-out numbers
+position in the recording showed the seen creators only until freeze 2 (2026-11-21, 16:10 UTC); until the
+exploratory round's release, no positional estimate on the hold-out other than H3's registered output was published. The two hold-out numbers
 above are the output of H3's frozen procedure, which was registered to report the untrimmed contrast beside the test; they
 are kept here and in the paper as that output, and the findings dashboard shows only the registered test for the
-hold-out. Whether the registered H3 output is exempt from the positional rule is for the owner to confirm; until
-then no other positional estimate on the hold-out is published.
+hold-out. The rule ran until freeze 2 by its own terms (corrections C10) and lapsed there, and the exploratory
+reporting plan registers hold-out positional outputs for after freeze 2. They are published in the exploratory
+round's release ([`exploratory-2026-11-21/`](exploratory-2026-11-21/README.md)): rv-D3-H (time outside recognized
+speech by position), H3-X (H3 at the creator level) and E3-H (pace and address by position), each beside the seen
+creators and never pooled with them (lead's decision D40, 2026-11-22; addendum 3 item 8).
 
 **What the registered rule says.** Supported: the shift test passes the strictest Holm threshold (0.005) and
 the estimate is above the smallest effect of interest (0.10).

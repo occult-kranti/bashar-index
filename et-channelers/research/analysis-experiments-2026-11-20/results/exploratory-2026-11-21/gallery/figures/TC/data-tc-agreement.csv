@@ -1,0 +1,35 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# TC stage 1: positive specific agreement per code (between models; between two small-model runs), creator-bootstrap 90% intervals; G3 omitted (fewer than 5 creators)
+# A cell whose misses (windows the two readings code differently) come from 1 to 4 creators, or whose code one reading finds in windows of fewer than 5 creators, is not published (status columns); gate verdicts stand
+code,label,kind,effective_creators,psa_models,psa_models_p05,psa_models_p95,psa_models_status,psa_runs,psa_runs_p05,psa_runs_p95,psa_runs_status,passes_frozen_gate_reading_A
+S01,S01 Emotions and inner life,single code,43.8,0.811,0.751,0.865,published,0.826,0.772,0.873,published,False
+S02,S02 Reassurance and encouragement,single code,27.0,0.432,0.312,0.541,published,0.667,0.559,0.761,published,False
+S03,S03 Personal growth and life purpose,single code,43.5,0.72,0.647,0.782,published,0.824,0.771,0.872,published,False
+S04,S04 Relationships and love,single code,30.1,0.738,0.641,0.821,published,0.784,0.701,0.864,published,False
+S05,"S05 Money, work and abundance",single code,13.2,0.333,0.125,0.5,published,0.811,0.667,0.909,published,False
+S06,"S06 Health, body and healing",single code,29.5,0.695,0.585,0.785,published,0.8,0.718,0.867,published,False
+S07,S07 Awakening and ascension,single code,41.6,0.567,0.467,0.648,published,0.844,0.787,0.891,published,False
+S08,"S08 Intuition, psychic perception and guidance",single code,26.5,0.769,0.682,0.842,published,0.779,0.69,0.851,published,False
+S09,"S09 Energy, frequency and vibration",single code,34.0,0.73,0.655,0.795,published,0.853,0.797,0.899,published,True
+S10,"S10 Nature of reality, consciousness and time",single code,43.6,0.583,0.47,0.675,published,0.853,0.81,0.889,published,False
+S11,S11 Manifestation and creating reality,single code,26.7,0.744,0.648,0.821,published,0.8,0.701,0.875,published,False
+S12,"S12 The soul, death and past lives",single code,25.7,0.691,0.6,0.773,published,0.787,0.689,0.872,published,False
+S13,S13 Star beings and other worlds,single code,36.3,0.574,0.461,0.667,published,0.927,0.887,0.961,published,False
+S14,"S14 Contact, sightings and disclosure",single code,6.9,0.593,0.353,0.762,published,0.8,0.667,0.9,published,False
+S15,"S15 Angels, masters and spirit helpers",single code,16.0,0.5,0.36,0.625,published,0.708,0.579,0.806,published,False
+S16,"S16 God, religion and scripture",single code,11.6,0.783,0.612,0.897,published,0.829,0.686,0.926,published,False
+S17,S17 Ancient history and lost civilisations,single code,8.7,,,,not published (fewer than 5 creators),,,,not published (misses from fewer than 5 creators),False
+S18,"S18 Hidden power, control and secrecy",single code,17.6,0.7,0.585,0.8,published,0.812,0.697,0.909,published,False
+S19,"S19 World events, society and politics",single code,18.7,0.516,0.387,0.608,published,0.771,0.678,0.844,published,False
+S20,"S20 Earth, nature and environment",single code,9.6,0.552,0.387,0.714,published,0.684,0.519,0.8,published,False
+S21,"S21 Sky events, astrology and cosmic cycles",single code,15.8,0.868,0.766,0.938,published,0.793,0.641,0.901,published,False
+S22,S22 Technology and artificial intelligence,single code,8.5,0.667,0.364,0.847,published,,,,not published (misses from fewer than 5 creators),False
+S23,S23 Personal life story,single code,28.7,0.58,0.481,0.66,published,0.69,0.587,0.771,published,False
+G1,G1 Guided practice,single code,27.6,0.779,0.674,0.87,published,0.889,0.832,0.931,published,True
+G2,G2 Questions and answers,single code,21.9,0.455,0.357,0.548,published,0.756,0.645,0.842,published,False
+G4,G4 Announcements and logistics,single code,30.5,0.526,0.415,0.624,published,0.729,0.619,0.825,published,False
+M1,M1 merged: personal and inner life,merged group,63.2,0.841,0.811,0.87,published,0.922,0.901,0.941,published,True
+M2,M2 merged: spiritual development and perception,merged group,54.5,0.73,0.674,0.777,published,0.864,0.826,0.898,published,True
+M3,"M3 merged: reality, energy and the soul",merged group,53.3,0.657,0.589,0.726,published,0.842,0.795,0.881,published,False
+M4,"M4 merged: beings, contact and religion",merged group,45.9,0.772,0.706,0.831,published,0.915,0.879,0.947,published,True
+M5,"M5 merged: world, earth and sky",merged group,38.9,0.784,0.724,0.835,published,0.871,0.82,0.909,published,True

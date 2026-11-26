@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R2 dot-plot data (place M): projected eligible hold-out creators per hypothesis (median and 90% simulation range), the registered 'not run' minimum, and the smallest number of creators at which an exact sign-flip can pass 0.005 (8 one-sided, 9 two-sided).
+# Projections, not counts of creators (see rv-r2-calibration-eligibility.csv). H3 is the realised hold-out count (17, published). Interval level: 90% simulation range.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+hypothesis,projected_median,projected_90_low,projected_90_high,registered_minimum,smallest_n_first_holm
+H1,5.0,2.0,10.0,12.0,8.0
+H2,16.0,13.0,18.0,8.0,9.0
+H3,17.0,17.0,17.0,,8.0
+H4,3.0,0.0,7.0,12.0,8.0
+H5,11.0,6.0,15.0,12.0,8.0
+H6,5.0,1.0,9.0,12.0,8.0

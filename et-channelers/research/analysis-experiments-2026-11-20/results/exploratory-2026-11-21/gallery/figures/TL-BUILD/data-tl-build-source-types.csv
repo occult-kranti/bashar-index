@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-build-source-types.csv (TL package, public folder).
+# Interval level: none (weighted point shares and descriptive percentiles).
+title_announced_source_type,share_bounded_weighted,horizon_days_p25,horizon_days_p50,horizon_days_p75
+Non-human entity,0.238,13.0,24.0,138.0
+"Named source, type not fixed by the family table",0.228,70.5,276.0,913.0
+No source named in the title,0.275,11.0,69.0,365.0
+"Other (pooled: deceased person, higher self, more than one type)",0.384,29.0,108.5,348.0
+All kept statements (reference),0.269,12.0,68.5,358.5

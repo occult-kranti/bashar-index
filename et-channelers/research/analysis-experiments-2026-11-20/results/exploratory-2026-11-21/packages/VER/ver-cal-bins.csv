@@ -1,0 +1,24 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# VER-CAL: stated and consistency-based confidence against known answers (protocol 4.12).
+# Constructed known-answer items of the KA battery: forecast, sentence-code and voice items planted into windows of seen development creators; the title arm is 12 constructed lists of template titles under made-up creators (KA title-items rule). No hold-out or other-group file.
+# Agreement with the constructed answer (protocol 4.12; KA calls it accuracy) is an upper bound for the corpus, not a measure of correctness on the corpus; model-coded; not checked by a person.
+# Units: what one row of the arm counts (see the unit column; for voice, speech units weighted by their words). Clusters: the creators (or, for titles, the constructed lists) that the intervals and the small-cell rule count.
+# ECE: expected calibration error over 10 equal bins of confidence (KA's definition); Brier: mean squared difference of confidence and the 0/1 agreement with the answer; 90% intervals from 2,000 cluster bootstrap draws.
+# Reliability bins merged until every bin holds 5 or more clusters and both its wrong and its right answers come from 0 or 5 or more clusters.
+# Use (protocol 4.12): confidence may only order review queues; it is not a gate and not evidence that a label is right.
+source,model,instrument,confidence_bin,units,mean_confidence,agreement_with_answer,status
+stated confidence (KA confidence arm),small,forecast critic: class,0-100,150,0.976,0.92,printed (one bin: no finer bins pass the merge rule)
+stated confidence (KA confidence arm),small,checkability: five parts,0-90 (upper end open),18,0.827,0.667,printed
+stated confidence (KA confidence arm),small,checkability: five parts,90-100,582,0.981,0.943,printed
+stated confidence (KA confidence arm),small,commitment code,0-100,120,0.976,1.0,printed (one bin: no finer bins pass the merge rule)
+stated confidence (KA confidence arm),small,sentence codes: primary code,0-100,100,0.981,1.0,printed (one bin: no finer bins pass the merge rule)
+stated confidence (KA confidence arm),small,titles: presentation,0-100,240,0.962,,agreement withheld (dominance rule)
+stated confidence (KA confidence arm),middle,forecast critic: class,0-100,150,0.97,,agreement withheld (dominance rule)
+stated confidence (KA confidence arm),middle,checkability: five parts,0-100,600,0.983,0.943,printed (one bin: no finer bins pass the merge rule)
+stated confidence (KA confidence arm),middle,commitment code,0-100,120,0.992,1.0,printed (one bin: no finer bins pass the merge rule)
+stated confidence (KA confidence arm),middle,sentence codes: primary code,0-100,100,0.993,1.0,printed (one bin: no finer bins pass the merge rule)
+stated confidence (KA confidence arm),middle,titles: presentation,0-100,240,0.976,,agreement withheld (dominance rule)
+consistency over two runs (KA repeat arms),small,"voice: claimed against own (KA paired-runs units), words",runs split (1/2),649,0.5,0.438,printed
+consistency over two runs (KA repeat arms),small,"voice: claimed against own (KA paired-runs units), words",runs agree (1),1725,1.0,0.913,printed
+consistency over two runs (KA repeat arms),middle,"voice: claimed against own (KA paired-runs units), words",0-100,2374,0.961,0.743,printed (one bin: no finer bins pass the merge rule)
+consistency over two runs (KA repeat arms),small,S_primary (two runs),0-100,80,1.0,1.0,printed (one bin: no finer bins pass the merge rule)

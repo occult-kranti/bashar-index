@@ -1,0 +1,28 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:31:14Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# META-H / META-169. Groups: seen (71 creators), hold-out (23 creators, all languages), other (the creators in neither group); never pooled. Snapshot captured 2026-11-16 to 2026-11-20 UTC; the cloud-only objects were captured with the same run and read from the archive drive once, read-only, after freeze 2 (registry 2026-11-21 03:08), each checked against the inventory's SHA-256.
+# Creator counts that would sit 1 to 4 from a nested public count are printed as a band; cells of fewer than 5 creators are withheld.
+# Per creator: median over its recordings (subscribers: median over its files of the channel's count); then over creators the 10th, 50th and 90th percentiles, rounded to two significant figures, and the mean of log10 with a 90% t interval. Quantiles are printed only for groups of 10 or more creators (with fewer, a percentile is one channel's count or the mean of two); the mean of log10 is printed for groups of 5 or more. One snapshot; ages differ by group.
+# Edited on 2026-11-26 in release pass 2's fourth fix step (fix5, f71_d67_quantiles.py, SHA-256 d1242dd9f19465a7f4ee24f76ae5fbe88475b752b354f0044dc963d2487c86fa), for privacy only (lead's decision D67): in the 6 rows whose creator count is printed as a band ('5 or more', 'all but fewer than 5 of 23'), the 10th, 50th and 90th percentiles are not printed (blank), because a percentile's position among the sorted creator values can give the count back. The means of log10, their intervals and every other cell are unchanged.
+group,source,measure,status,creators,p10,median,p90,mean_log10,log10_t90_low,log10_t90_high
+seen,local files,views per recording (creator median),shown,5 or more,,,,3.2293,3.0623,3.3963
+seen,local files,likes per recording (creator median),shown,5 or more,,,,2.055,1.8901,2.2199
+seen,local files,comments per recording (creator median),shown,5 or more,,,,1.2316,1.0974,1.3658
+seen,local files,channel subscribers,shown,5 or more,,,,4.1998,4.0426,4.3569
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",views per recording (creator median),same as local files: no added cloud object carries the count,,,,,,,
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",likes per recording (creator median),same as local files: no added cloud object carries the count,,,,,,,
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",comments per recording (creator median),same as local files: no added cloud object carries the count,,,,,,,
+seen,"local files plus cloud-only objects (META-169, read after freeze 2)",channel subscribers,same as local files: no added cloud object carries the count,,,,,,,
+holdout,local files,views per recording (creator median),shown,23,700.0,6700.0,22000.0,3.555,3.2728,3.8372
+holdout,local files,likes per recording (creator median),shown,all but fewer than 5 of 23,,,,2.3731,2.064,2.6821
+holdout,local files,comments per recording (creator median),shown,all but fewer than 5 of 23,,,,1.4842,1.2661,1.7023
+holdout,local files,channel subscribers,shown,23,6500.0,32000.0,240000.0,4.4556,4.1013,4.8099
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",views per recording (creator median),withheld: the added cloud objects that carry the count rest on fewer than 5 creators,,,,,,,
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",likes per recording (creator median),withheld: the added cloud objects that carry the count rest on fewer than 5 creators,,,,,,,
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",comments per recording (creator median),withheld: the added cloud objects that carry the count rest on fewer than 5 creators,,,,,,,
+holdout,"local files plus cloud-only objects (META-169, read after freeze 2)",channel subscribers,withheld: the added cloud objects that carry the count rest on fewer than 5 creators,,,,,,,
+other,local files,views per recording (creator median),shown; quantiles withheld: fewer than 10 creators,5 or more,,,,3.7461,2.8289,4.6634
+other,local files,likes per recording (creator median),shown; quantiles withheld: fewer than 10 creators,5 or more,,,,2.6093,1.6547,3.5639
+other,local files,comments per recording (creator median),shown; quantiles withheld: fewer than 10 creators,5 or more,,,,1.7401,0.8531,2.6272
+other,local files,channel subscribers,shown; quantiles withheld: fewer than 10 creators,5 or more,,,,4.6634,3.9766,5.3502

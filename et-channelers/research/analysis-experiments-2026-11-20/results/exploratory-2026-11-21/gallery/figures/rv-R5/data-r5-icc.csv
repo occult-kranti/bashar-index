@@ -1,0 +1,21 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r5-icc. Source public file: rv-r5-icc.csv (package rv-R5).
+# Interval level: 95% creator-resampling bootstrap (drawn; used in the text); 95% parametric bootstrap (grey, comparison only)
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+panel,measure,label,scale,icc_raw,icc_raw_cb95_low,icc_raw_cb95_high,icc_raw_pb95_low,icc_raw_pb95_high,icc_adjusted,icc_adj_cb95_low,icc_adj_cb95_high,icc_filter_off
+speaker,rep5,Repeated five-word share,logit of share,0.3678,0.2551,0.464,0.2781,0.4474,0.3425,0.2393,0.439,0.3672
+speaker,sp,"Second person per 1,000 words",NB latent log-rate,0.4309,0.3376,0.5005,0.3226,0.5085,0.424,0.3343,0.5023,0.431
+speaker,seg_q,Segments ending in '?' (per segment),logit of share,0.4427,0.3401,0.5348,0.3501,0.5262,0.4317,0.3202,0.5228,0.4395
+speaker,log_len,Length (log minutes),log minutes,0.4492,0.3288,0.5607,0.3535,0.531,0.4307,0.3049,0.5512,0.4492
+speaker,fs,"First-person singular per 1,000 words",NB latent log-rate,0.5331,0.3958,0.6492,0.419,0.6044,0.5292,0.361,0.6429,0.5326
+speaker,nonspeech,Share of time without speech (detector),logit of share,0.5521,0.4054,0.6722,0.4507,0.6274,0.5672,0.4078,0.6845,0.5521
+speaker,pace,Words per minute of speech,identity (words/min),0.5779,0.4676,0.6609,0.4805,0.6536,0.6158,0.5119,0.7005,0.5885
+speaker,mattr500,Lexical variety (MATTR-500),identity (ratio),0.5861,0.4716,0.6889,0.4853,0.6652,0.5891,0.4673,0.6907,0.5828
+speaker,qmarks,"Question marks per 1,000 words (per word)",NB latent log-rate,0.6211,0.4919,0.7103,0.5076,0.6972,0.6034,0.4567,0.7129,0.6173
+speaker,ct,"Contractions (H4 list) per 1,000 words",NB latent log-rate,0.7208,0.5712,0.7728,0.6266,0.7781,0.7182,0.5961,0.7682,0.7178
+recognizer,logp_word,"Mean ln word probability, per word (not Table 7's measure)",identity (nats),0.2117,0.063,0.5331,0.1438,0.275,0.2942,0.1349,0.5748,0.2185
+recognizer,logp_seg,"Mean ln word probability, averaged per segment (not Table 7's measure)",identity (nats),0.2674,0.0826,0.5597,0.1851,0.3444,0.3784,0.1466,0.5943,0.2747
+recognizer,wps,Words per recognizer segment (log),log words,0.2778,0.1627,0.3883,0.1946,0.3556,0.3017,0.2083,0.4033,0.2805
+recognizer,seg_avg_logprob,"Mean segment log-probability (recognizer avg_logprob, duration-weighted; Table 7's measure)",identity (nats),0.4021,0.1492,0.6323,0.3075,0.4856,0.4484,0.2065,0.6428,0.4015
+recognizer,pauseshare,Share of time in pauses >= 0.3 s,logit of share,0.4847,0.3191,0.6222,0.385,0.5698,0.4978,0.347,0.6188,0.4745
+recognizer,fl,"Filled pauses per 1,000 words",NB latent log-rate,0.6485,0.5032,0.7454,0.5298,0.7318,0.6175,0.4747,0.728,0.6537

@@ -1,0 +1,29 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# PT-H: web addresses in descriptions classed by PT's fixed domain lookup; source HOLD2/PT-H-link-classes.csv (package HOLD2, public).
+# Interval level: 90% t interval over creators, clipped to [0, 1] by the package. 'any other website' = any domain outside the lookup.
+# The package's 'any link' row is not drawn (the classes are its parts); the other group is not drawn.
+link_class,group,creators,recordings,creator_mean_share,t90_low,t90_high,status
+any other website,seen,all but fewer than 5 of 71,1228,0.8119,0.7498,0.8739,shown
+social media,seen,all but fewer than 5 of 71,1228,0.3222,0.2349,0.4094,shown
+same platform,seen,all but fewer than 5 of 71,1228,0.2423,0.1751,0.3095,shown
+shop,seen,all but fewer than 5 of 71,1228,0.2267,0.148,0.3053,shown
+payment,seen,all but fewer than 5 of 71,1228,0.1658,0.0937,0.2378,shown
+course,seen,all but fewer than 5 of 71,1228,0.0737,0.0308,0.1165,shown
+newsletter,seen,all but fewer than 5 of 71,1228,0.0652,0.0217,0.1088,shown
+booking,seen,all but fewer than 5 of 71,1228,0.0337,0.0051,0.0624,shown
+link aggregator,seen,all but fewer than 5 of 71,1228,0.065,0.018,0.1121,shown
+link shortener,seen,all but fewer than 5 of 71,1228,0.0554,0.0198,0.091,shown
+event,seen,all but fewer than 5 of 71,1228,,,,withheld: fewer than 5 creators with a hit
+time-stamp list in the description,seen,all but fewer than 5 of 71,1228,0.1653,0.1033,0.2273,shown
+any other website,hold-out,23,415,0.706,0.5689,0.8431,shown
+social media,hold-out,23,415,0.3399,0.1793,0.5005,shown
+same platform,hold-out,23,415,0.3086,0.1704,0.4468,shown
+shop,hold-out,23,415,0.1452,0.0322,0.2581,shown
+payment,hold-out,23,415,0.1989,0.0689,0.3288,shown
+course,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+newsletter,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+booking,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+link aggregator,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+link shortener,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+event,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+time-stamp list in the description,hold-out,23,415,0.1101,0.01,0.2101,shown

@@ -1,0 +1,28 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# Each measure's Spearman correlation with log words. Between: creator means, 71 seen creators. Within (primary): ranks inside each creator; creators with 5+
+# recordings in the text base.
+# 90% creator-bootstrap intervals (2,000 draws). Family-wise thresholds (permutation maximum over 276 pairs, 999 draws): between 0.429, within 0.12.
+measure,r_between,between_lo,between_hi,between_passes_familywise,r_within,within_lo,within_hi,within_passes_familywise
+words per speech minute,0.241,0.025,0.44,False,0.257,0.196,0.317,True
+mean word length,-0.269,-0.437,-0.08,False,-0.228,-0.293,-0.165,True
+"MATTR (1,000 words)",0.191,0.017,0.358,False,-0.016,-0.084,0.053,False
+contractions,0.234,0.04,0.411,False,0.271,0.2,0.343,True
+first-person singular,0.307,0.11,0.468,False,0.19,0.129,0.248,True
+first-person plural,0.301,0.108,0.473,False,0.045,-0.014,0.106,False
+second person,-0.396,-0.535,-0.221,False,-0.021,-0.081,0.039,False
+question marks,0.238,0.025,0.444,False,0.206,0.149,0.265,True
+RX A frames,-0.012,-0.226,0.195,False,-0.178,-0.263,-0.089,True
+RX B reporting,0.376,0.188,0.541,False,0.268,0.215,0.324,True
+RX C address,-0.109,-0.328,0.103,False,0.012,-0.057,0.085,False
+RX D time,0.041,-0.161,0.238,False,0.003,-0.061,0.068,False
+RX E stance,-0.078,-0.271,0.128,False,0.091,0.027,0.151,False
+RX F asks,0.208,-0.007,0.406,False,-0.074,-0.155,0.004,False
+RX G names,-0.059,-0.239,0.134,False,0.073,0.001,0.144,False
+RX H numerals,0.069,-0.124,0.265,False,0.126,0.065,0.186,True
+RX I questions,0.266,0.05,0.466,False,0.207,0.15,0.265,True
+RX J framing cues,0.137,-0.071,0.334,False,0.06,-0.013,0.136,False
+topic balance B1,-0.127,-0.307,0.07,False,-0.057,-0.124,0.006,False
+topic balance B2,0.054,-0.136,0.242,False,-0.072,-0.132,-0.012,False
+topic balance B3,0.384,0.197,0.542,False,0.055,-0.009,0.119,False
+topic balance B4,-0.231,-0.407,-0.044,False,-0.15,-0.214,-0.086,True
+topic balance B5,-0.081,-0.273,0.134,False,-0.034,-0.09,0.026,False

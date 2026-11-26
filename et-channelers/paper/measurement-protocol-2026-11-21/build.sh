@@ -3,12 +3,19 @@
 #   bash build.sh             typeset only (findings/ and floats/ as they are)
 #   bash build.sh --numbers   first regenerate findings/ and floats/ with the private builder, then typeset
 # The private builder and the paper check read private files; they run only where the private folder exists, with the
-# guarded analysis venv (one process, no worker pool, no API call). Override the defaults with ET_PY and ET_WORK.
+# guarded analysis venv (one process, no worker pool, no API call). ET_PY names the guarded venv's Python and ET_WORK the
+# private work folder (release pass 2, fix step, 2026-11-26: this public file names neither path).
 set -u
 cd "$(dirname "$0")"
 HERE="$(pwd)"
-PY="${ET_PY:-$HERE/../../../../analysis-venv/Scripts/python.exe}"
-WORK="${ET_WORK:-$HERE/../../../../../et-channelers-private/provisioning/claude-cohort-asr-20261120-v1/paper-measurement-2026-11-21/work}"
+PY="${ET_PY:-}"
+WORK="${ET_WORK:-}"
+if [ -z "$PY" ]; then
+  echo "set ET_PY to the guarded analysis venv's Python (it also removes the PDF's document information)"; exit 1
+fi
+if [ "${1:-}" = "--numbers" ] && [ -z "$WORK" ]; then
+  echo "set ET_WORK to the private work folder to regenerate findings/ and floats/"; exit 1
+fi
 
 # MiKTeX on this machine (pdflatex, bibtex) when it is not on the PATH already.
 if ! command -v pdflatex > /dev/null 2>&1 && [ -n "${LOCALAPPDATA:-}" ]; then
@@ -31,6 +38,29 @@ bibtex main > bibtex.log 2>&1
 pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1
 pdflatex -interaction=nonstopmode main.tex > /dev/null 2>&1
 pdflatex -interaction=nonstopmode main.tex > build.log 2>&1
+
+# Release pass 2, fix step (2026-11-26; rule 6, D30): main.pdf carries no document information dictionary. main.tex
+# omits the dates and the trailer id; the Producer and Creator keys are removed here (pages and text unchanged).
+if [ -f "$PY" ]; then
+  "$PY" -I - main.pdf <<'PYEOF'
+import os
+import sys
+from pypdf import PdfReader, PdfWriter
+path = sys.argv[1]
+reader = PdfReader(path)
+pages = len(reader.pages)
+writer = PdfWriter(clone_from=reader)
+writer.metadata = None
+with open(path + ".tmp", "wb") as handle:
+    writer.write(handle)
+check = PdfReader(path + ".tmp")
+assert check.metadata is None and len(check.pages) == pages, "stripped PDF differs"
+os.replace(path + ".tmp", path)
+print("main.pdf: document information removed (%d pages)" % pages)
+PYEOF
+else
+  echo "main.pdf: document information NOT removed (the analysis venv's Python was not found)"
+fi
 
 echo "--- errors, undefined references, citations and macros, float and box problems (last pass) ---"
 grep -n -E '^!|Undefined control sequence|undefined|Float too large|Overfull' build.log

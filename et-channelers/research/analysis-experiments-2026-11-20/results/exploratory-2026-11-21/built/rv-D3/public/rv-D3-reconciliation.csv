@@ -1,0 +1,7 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: 1,293 seen transcripts of 71 creators
+# Interval level: none (quantiles of the per-recording difference; Spearman correlation)
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:11Z.
+quantity,p10,p25,median,p75,p90,spearman_rho,transcripts,creators
+"segment-gap share minus detector share, per recording",-0.024,0.016,0.035,0.052,0.069,0.89,1293,71

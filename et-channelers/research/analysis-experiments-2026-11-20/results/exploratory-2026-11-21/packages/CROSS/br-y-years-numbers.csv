@@ -1,0 +1,27 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-y (plan 6.7): years and numbers in the run's recognizer text (raw variant) against other texts of the same seen recordings. Part c: BR-b pairs, every row an agreement of two machines, not an error rate. Part a: years of the page text recalled in the transcript. Pooled share of items matched with a Clopper-Pearson 95% interval; creator-equal share beside it.
+# Normalised match uses the WER anchor's normaliser wa-norm-v2, chosen after the result (fixed 2026-11-21 03:31 UTC after a confusion check; addendum 2 item 8), and its exact alignment; an item matches when every word of its spoken form is aligned to the same word.
+# Exact match: the same digit string (part c: in the recognizer's raw text; part a: in the transcript after RX's normalisation layer rx-norm-v1, which rejoins split digits).
+# A row is printed only where matches come from 5 or more creators and misses from none or 5 or more creators; a normalised row is withheld where it differs from the exact row on the same items in 1 to 4 creators (the exact row is the primary). Counts of creators follow the nested-count rule, also against BR-b's published creators per reference class, which hold every row of the class.
+# No row is an error rate: BR-b reports the word error rates of these pairs; the overall-agreement rows of an earlier version were withdrawn (2026-11-22) so that only BR-b's rates stand.
+# Item rules and marker method: added after the exploratory reporting plan (fixed in the script before its first run; the beside-row rule and the withdrawal of the overall-agreement rows were made on verification, 2026-11-22).
+# Code br_y.py sha256 2ef4ace0b5a2515ff27b3d3ce80ab9e4fb9aeecbb6fb6a61c618d1c4823e7306; written 2026-11-22T01:14:24Z.
+# Edited on 2026-11-22 by the release pass (plotting group X-VERCROSS, verifier_fix_apply.py, sha256 46f7112745568a34) after the release verifier's report: a count of left-out pairs that rests on fewer than 5 recordings is printed as 'fewer than 5'; nothing else changed.
+part,source,recordings,items,match,creators_with_items,items_n,matched,share_matched,exact_95,creator_equal_share,status,note
+c (BR-b pairs),platform automatic captions,11,years written in digits in the reference,exact,fewer than 5,,,,,,fewer than 5 creators,
+c (BR-b pairs),platform automatic captions,11,years written in digits in the reference,normalised,fewer than 5,,,,,,fewer than 5 creators,pairs left out (marked text normalised differently): 0
+c (BR-b pairs),platform automatic captions,11,numbers written in digits in the reference,exact,all but fewer than 5 of 11,,,,,,not released: misses from fewer than 5 creators,
+c (BR-b pairs),platform automatic captions,11,numbers written in digits in the reference,normalised,all but fewer than 5 of 11,,,,,,not released: misses from fewer than 5 creators,pairs left out (marked text normalised differently): 0
+c (BR-b pairs),publisher transcripts of undeclared origin,,,,,,,,,,fewer than 5 creators,
+c (BR-b pairs),"project's earlier speech-to-text, same recognizer and settings (reproducibility)",48,years written in digits in the reference,exact,16,,,,,,not released: misses from fewer than 5 creators,
+c (BR-b pairs),"project's earlier speech-to-text, same recognizer and settings (reproducibility)",48,years written in digits in the reference,normalised,all but fewer than 5 of 16,,,,,,not released: misses from fewer than 5 creators,pairs left out (marked text normalised differently): fewer than 5
+c (BR-b pairs),"project's earlier speech-to-text, same recognizer and settings (reproducibility)",48,numbers written in digits in the reference,exact,24,270,270,1.0000,0.986 to 1.000,1.0000,reported,
+c (BR-b pairs),"project's earlier speech-to-text, same recognizer and settings (reproducibility)",48,numbers written in digits in the reference,normalised,24,270,270,1.0000,0.986 to 1.000,1.0000,reported,pairs left out (marked text normalised differently): 0
+c (BR-b pairs),"project's earlier speech-to-text, larger multilingual model",5,years written in digits in the reference,exact,fewer than 5,,,,,,fewer than 5 creators,
+c (BR-b pairs),"project's earlier speech-to-text, larger multilingual model",5,years written in digits in the reference,normalised,fewer than 5,,,,,,fewer than 5 creators,pairs left out (marked text normalised differently): 0
+c (BR-b pairs),"project's earlier speech-to-text, larger multilingual model",5,numbers written in digits in the reference,exact,fewer than 5,,,,,,fewer than 5 creators,
+c (BR-b pairs),"project's earlier speech-to-text, larger multilingual model",5,numbers written in digits in the reference,normalised,fewer than 5,,,,,,fewer than 5 creators,pairs left out (marked text normalised differently): 0
+a (page text),"years written in the page text (title, description, chapters, tags)",409,"years in the page text, found in the transcript",exact,57,505,159,0.3149,0.275 to 0.357,0.3314,reported,
+a (page text),"years written in the page text (title, description, chapters, tags)",409,"years in the page text, found in the transcript",normalised,57,,,,,,not released beside the exact row: the two rows differ in fewer than 5 creators,
+a (page text),numbers other than years in the page text,,,,,,,,,,"not run: page-text numbers are mostly time codes, prices, links and counts that are not spoken; no rule to tell spoken numbers was fixed",
+c (BR-b pairs),references made or edited by people,,,,,,,,,,"not run: no seen recording has a reference text known to be made by people (addendum 1, item 2)",

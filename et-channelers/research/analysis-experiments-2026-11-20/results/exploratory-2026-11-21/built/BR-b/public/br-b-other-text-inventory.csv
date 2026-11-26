@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-b (plan 6.7): the recordings set aside before the run because English text of another kind exists, by text class and group (addendum 2 item 3). A recording with two classes counts in both.
+# Base: counts of recordings and creators from the run's inventory (ledger fields only: no text, title, label or receipt of a hold-out or other-group recording was read for this table). Only classes that match rows of the anchor table are counted, in two groups; no single text kind and no group total is printed.
+# Interval level: none (counts).
+# Source: BR-b's run of 2026-11-21, public form by the release review (2026-11-22).
+# Written by br_public.py (release review, plan P10, 2026-11-22; revised after the release verification), SHA-256 a03e56ab5f6ff37c3ab1cefacba8f4ad51975a9d0aa71042bf49c0dd6170da66; cells checked by verify_br.py, SHA-256 592d9b7da6d4e9df228494036e5a0a48b3514fcd130679a80202986f4eb31efd.
+text_class,group,recordings,creators,note
+project's earlier speech-to-text of the same recording,seen,53,5 or more,the anchor table shows the seen recordings as two rows by recognizer model; the creators of the union are not counted
+project's earlier speech-to-text of the same recording,"not seen (hold-out, other group and the creator in no creator set)",51,23,recognizer model not read (hold-out rule)
+captions: platform caption tracks and publisher captions,seen,11,11,all automatic captions (the platform-caption row of the anchor table)
+captions: platform caption tracks and publisher captions,"not seen (hold-out, other group and the creator in no creator set)",65,12,"maker classed from receipt fields only, under BR-b-H (BR-b-H: not run, D33)"
+untimed publisher transcripts of undeclared origin,seen,not published,fewer than 5 creators,"not published (fewer than 5 creators in each group; the class total is public, so both groups are withheld)"
+untimed publisher transcripts of undeclared origin,"not seen (hold-out, other group and the creator in no creator set)",not published,fewer than 5 creators,"not published (fewer than 5 creators in each group; the class total is public, so both groups are withheld)"

@@ -1,0 +1,12 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# Seen creators only: the text-analysis base of the date items (DC, SD, CM, COR). Shares pooled over recordings; census counts, no interval. Possible days of an
+# estimated window are counted inclusively after narrowing by rank order and the neighbours' confirmed days (version B).
+# exact = E1; stamp = E2 (a local metadata time stamp inside the estimated window); narrow and wide = E3 split at 14 possible days. Every part rests on 5 or more
+# creators.
+# Source: the gallery's public file figures/DATES/data-date-evidence.csv (build of 2026-11-22 03:33 UTC), base rows only. The rows for all selected recordings of
+# the seen creators are left out: beside the all-creator date counts they gave the other groups' counts by subtraction.
+whole,whole_label,part,part_label,recordings,recordings_in_whole,share
+base,"Text-analysis base (DC, SD, CM, COR)",exact,exact day in the published dates file,922,1176,0.784
+base,"Text-analysis base (DC, SD, CM, COR)",stamp,day confirmed by a local time stamp,113,1176,0.0961
+base,"Text-analysis base (DC, SD, CM, COR)",narrow,estimated: window of 14 possible days or fewer,65,1176,0.0553
+base,"Text-analysis base (DC, SD, CM, COR)",wide,estimated: window wider than 14 days,76,1176,0.0646

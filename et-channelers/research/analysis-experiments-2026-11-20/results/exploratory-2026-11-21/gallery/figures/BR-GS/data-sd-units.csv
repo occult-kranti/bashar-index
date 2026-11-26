@@ -1,0 +1,28 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-GS: mean change of each measure when the decoding grid moves by 15 s, in between-creator SD units.
+# Source public file: BR-GS/public/br-gs-sd-units.csv. Base: 40 seen recordings of 40 creators.
+# Interval level: 95% percentile intervals from 2,000 resamples of the recordings (pointwise; no family-wise control).
+# Drawn by plot_br.py (group B-BR), SHA-256 47a09ba3f3dbd224e2d4a4063353b70f9d72809bf090aa058eee039e5f151433.
+measure,family,change_sd_units,lo95,hi95,recordings,creators
+"Thanks-phrase segments per hour of speech (all, before the filter)",thanks,-0.4,-0.88,0.08,40,40
+Isolated segments (5 s without speech on both sides) per hour of speech,isolated,0.04,-0.02,0.15,40,40
+Pauses of 0.3 to 1 s per minute of speech (BR),pause,-0.12,-0.3,0.03,40,40
+Pauses of 1 s or more per minute of speech (BR),pause,0.01,-0.05,0.07,40,40
+Share of running time in pauses of 0.3 s or more (BR),pause,-0.02,-0.07,0.03,40,40
+Pauses of 0.3 s or more per 100 words (RH),pause,-0.08,-0.19,0.03,40,40
+Pauses of 1 s or more per 100 words (RH primary),pause,0.01,-0.05,0.08,40,40
+Pauses of 2 s or more per 100 words (RH primary),pause,0.03,-0.05,0.14,40,40
+Pauses of 2 s or more per minute of speech (RH delivery plane),pause,0.02,-0.05,0.13,40,40
+"Median pause of 0.3 s or more, seconds (RH)",pause,0.0,-0.06,0.05,40,40
+Share of running time in pauses of 2 s or more (RH),pause,0.0,-0.04,0.04,40,40
+Pause share inside the speaking span (E4),pause,-0.02,-0.07,0.03,40,40
+"Recognized words per minute of the span without pauses of 0.3 s or more (E4; a recognizer-output measure, not a direct measure of speaking)",pause,-0.02,-0.09,0.05,40,40
+"Recognized words per minute of speech (a recognizer-output measure, not a direct measure of speaking)",word,0.0,-0.03,0.01,40,40
+"First-person singular per 1,000 words",word,0.0,-0.03,0.03,40,40
+"First-person plural per 1,000 words",word,0.0,-0.02,0.02,40,40
+"Second person per 1,000 words",word,0.01,-0.01,0.03,40,40
+"Contracted forms per 1,000 words",word,0.04,-0.01,0.1,40,40
+"Filled pauses per 1,000 words",word,0.23,-0.07,0.69,40,40
+Share of distinct words in 100-word windows,word,0.0,-0.03,0.02,40,40
+Mean word length (letters),word,0.02,-0.01,0.07,40,40
+Mean word length (seconds),word,0.02,-0.06,0.09,40,40

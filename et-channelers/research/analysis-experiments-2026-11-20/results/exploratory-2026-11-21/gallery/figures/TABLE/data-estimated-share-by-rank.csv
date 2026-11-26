@@ -1,0 +1,14 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# All 101 creators, publication dates only (not a hold-out contact); no group split.
+# share_estimated = recordings without a confirmed day / selected recordings in the band, pooled over recordings.
+# Version A: the published dates file's exact days (E1); version B adds days confirmed by a local metadata time stamp inside the estimated window (E2).
+# Interval: 90% creator-bootstrap percentile interval, 2,000 draws, seed 20261122. Every cell rests on 5 or more creators with an estimated day.
+rank_band,version,recordings_in_band,recordings_estimated,share_estimated,ci90_low,ci90_high
+01-05,A,502,174,0.3466,0.2829,0.4108
+01-05,B,502,79,0.1574,0.1168,0.2004
+06-10,A,499,90,0.1804,0.129,0.2343
+06-10,B,499,49,0.0982,0.0596,0.1389
+11-15,A,493,67,0.1359,0.0943,0.1822
+11-15,B,493,61,0.1237,0.0813,0.1713
+16-20,A,482,66,0.1369,0.0996,0.1776
+16-20,B,482,66,0.1369,0.0996,0.1776

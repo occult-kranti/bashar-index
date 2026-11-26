@@ -1,0 +1,11 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r2-projected-eligible. Source public file: rv-r2-projected-eligible.csv (package rv-R2).
+# Interval level: 90% simulation range of the projection
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+hypothesis,projected_median,projected_90_low,projected_90_high,registered_minimum,smallest_n_first_holm
+H1,5.0,2.0,10.0,12.0,8.0
+H2,16.0,13.0,18.0,8.0,9.0
+H3,17.0,17.0,17.0,,8.0
+H4,3.0,0.0,7.0,12.0,8.0
+H5,11.0,6.0,15.0,12.0,8.0
+H6,5.0,1.0,9.0,12.0,8.0

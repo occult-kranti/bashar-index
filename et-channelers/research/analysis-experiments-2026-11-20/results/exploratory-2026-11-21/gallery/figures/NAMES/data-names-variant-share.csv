@@ -1,0 +1,20 @@
+# Exploratory (registry A2); not a test of H1-H10.
+type,families,variant_share_bin,families_in_bin,share_of_families,type_mentions_in_variants
+beings,33,one spelling only,16,0.4848,0.0589
+beings,33,under 10%,2,0.0606,0.0589
+beings,33,10% to 30%,0,0.0,0.0589
+beings,33,30% to 60%,0,0.0,0.0589
+beings,33,60% or more,2,0.0606,0.0589
+beings,33,variant or canonical part from 1 to 4 creators (pooled),13,0.3939,0.0589
+collectives,16,one spelling only,6,0.375,0.2913
+collectives,16,under 10%,1,0.0625,0.2913
+collectives,16,10% to 30%,0,0.0,0.2913
+collectives,16,30% to 60%,3,0.1875,0.2913
+collectives,16,60% or more,2,0.125,0.2913
+collectives,16,variant or canonical part from 1 to 4 creators (pooled),4,0.25,0.2913
+places,107,one spelling only,92,0.8598,0.1467
+places,107,under 10%,1,0.0093,0.1467
+places,107,10% to 30%,0,0.0,0.1467
+places,107,30% to 60%,1,0.0093,0.1467
+places,107,60% or more,7,0.0654,0.1467
+places,107,variant or canonical part from 1 to 4 creators (pooled),6,0.0561,0.1467

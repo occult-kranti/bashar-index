@@ -1,0 +1,62 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Cross-read by two OpenAI models; no human or external reference. Exploratory, before freeze 1 (registry A2); planted items are constructed text placed in development-creator transcripts: an upper bound, not a measure of correctness on the corpus.
+# Base: development creators (seen creators). FB: 400 items of 34 recordings of 31 creators; FD: 200 items of 33 recordings of forecast-class creators (creator count not published: a creator count 1 to 4 from a nested count); ASK: 150 items of 45 recordings of 32 creators; 100 items of each read by the middle model; planted items: FB 100, FD 100, ASK 140 (creator counts not printed: they nest within counts printed for VER-SHARD). Forms: G, the published free-text guided form; T, the typed form (the current instrument).
+# Interval level: 90% two-stage cluster-bootstrap intervals (creator, then recording; 2,000 draws), VER-GC's own.
+# Rule fixed before any call (protocol 4.2): G replaces T only if agreement rises by 0.05, stability is no worse (1-point tolerance), invalid answers stay under 2% and planted recovery is no worse; otherwise T stays and G is multiverse row M9. A G figure whose difference from the printed T figure rests on 1 to 4 creators is not published (pairs rule); the label distributions per class are not part of the plan row's public form and are not printed.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:02:05Z (UTC, from the clock) by lv_vergc.py (sha256 4279aa918d380223ef6ee445263eeab38edbc9ec200bb6f640d21c2fbb88c292) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), release review B-LV (plan P10).
+instrument,what,form,figure,n,value
+FB,forecast class F0 to F9,G,"two-model agreement (small against middle model), primary label: kappa",100,0.524
+FB,forecast class F0 to F9,G,"two-model agreement, primary label: share of items the same",100,0.650
+FB,forecast class F0 to F9,G,"two-model agreement, F1 (world-future statement) or not: kappa",100,0.409
+FB,forecast class F0 to F9,G,stability (two small-model runs): share of items with the same primary label,400,0.833
+FB,forecast class F0 to F9,G,invalid first answers (share of all calls of the form),1000,not published (fewer than 5 creators)
+FB,forecast class F0 to F9,G,"planted recovery (small model), constructed items in development-creator transcripts",100,not published (differs from a printed figure in fewer than 5 creators)
+FB,forecast class F0 to F9,T,"two-model agreement (small against middle model), primary label: kappa",100,0.498
+FB,forecast class F0 to F9,T,"two-model agreement, primary label: share of items the same",100,0.620
+FB,forecast class F0 to F9,T,"two-model agreement, F1 (world-future statement) or not: kappa",100,0.372
+FB,forecast class F0 to F9,T,stability (two small-model runs): share of items with the same primary label,400,0.882
+FB,forecast class F0 to F9,T,invalid first answers (share of all calls of the form),1000,not published (fewer than 5 creators)
+FB,forecast class F0 to F9,T,"planted recovery (small model), constructed items in development-creator transcripts",100,0.930
+FB,forecast class F0 to F9,G minus T,"two-model agreement kappa, same items (90% interval)",100,"0.026 [-0.082, 0.128]"
+FB,forecast class F0 to F9,G minus T,"stability, same items (90% interval)",400,"-0.050 [-0.089, -0.012]"
+FB,forecast class F0 to F9,G minus T,"planted recovery (small model), paired (90% interval)",100,not published (the discordant planted items come from fewer than 5 creators)
+FB,forecast class F0 to F9,G against T,"small model run 1, G against T: kappa",400,0.672
+FB,forecast class F0 to F9,rule,the rule's outcome (protocol 4.2),,T (typed fields) stays; G is multiverse row M9 (agreement rises by 0.05: no; stability no worse: no; invalid under 2pct: not published (its figure is not published); planted recovery no worse: not published (its figure is not published)); critique O9 reading: T would stay
+FD,forecast commitment (five-way),G,"two-model agreement (small against middle model), primary label: kappa",100,0.723
+FD,forecast commitment (five-way),G,"two-model agreement, primary label: share of items the same",100,0.900
+FD,forecast commitment (five-way),G,"two-model agreement, committed or not: kappa",100,not published (items coded differently come from fewer than 5 creators)
+FD,forecast commitment (five-way),G,stability (two small-model runs): share of items with the same primary label,200,0.940
+FD,forecast commitment (five-way),G,invalid first answers (share of all calls of the form),600,0.000
+FD,forecast commitment (five-way),G,"planted recovery (small model), constructed items in development-creator transcripts",100,1.000
+FD,forecast commitment (five-way),T,"two-model agreement (small against middle model), primary label: kappa",100,0.663
+FD,forecast commitment (five-way),T,"two-model agreement, primary label: share of items the same",100,0.880
+FD,forecast commitment (five-way),T,"two-model agreement, committed or not: kappa",100,not published (positive code from fewer than 5 creators in a reading)
+FD,forecast commitment (five-way),T,stability (two small-model runs): share of items with the same primary label,200,0.970
+FD,forecast commitment (five-way),T,invalid first answers (share of all calls of the form),600,not published (fewer than 5 creators)
+FD,forecast commitment (five-way),T,"planted recovery (small model), constructed items in development-creator transcripts",100,1.000
+FD,forecast commitment (five-way),G minus T,"two-model agreement kappa, same items (90% interval)",100,"0.060 [-0.069, 0.198]"
+FD,forecast commitment (five-way),G minus T,"stability, same items (90% interval)",200,"-0.030 [-0.072, 0.009]"
+FD,forecast commitment (five-way),G minus T,"planted recovery (small model), paired (90% interval)",100,"0.000 [0.000, 0.000]"
+FD,forecast commitment (five-way),G against T,"small model run 1, G against T: kappa",200,0.745
+FD,forecast commitment (five-way),rule,the rule's outcome (protocol 4.2),,T (typed fields) stays; G is multiverse row M9 (agreement rises by 0.05: yes; stability no worse: no; invalid under 2pct: yes; planted recovery no worse: yes); critique O9 reading: T would stay
+ASK,ask check (range reading),G,"two-model agreement (small against middle model), primary label: kappa",100,0.695
+ASK,ask check (range reading),G,"two-model agreement, primary label: share of items the same",100,0.770
+ASK,ask check (range reading),G,"two-model agreement, ask, not an ask, or unclear (verdict): kappa",100,0.335
+ASK,ask check (range reading),G,stability (two small-model runs): share of items with the same primary label,150,0.813
+ASK,ask check (range reading),G,invalid first answers (share of all calls of the form),447,0.000
+ASK,ask check (range reading),G,"planted recovery (small model), constructed items in development-creator transcripts",140,0.957
+ASK,ask check (range reading),G,"planted recovery (middle model), constructed items in development-creator transcripts",140,not published (misses from fewer than 5 creators)
+ASK,ask check (range reading),T,"two-model agreement (small against middle model), primary label: kappa",100,0.711
+ASK,ask check (range reading),T,"two-model agreement, primary label: share of items the same",100,0.780
+ASK,ask check (range reading),T,"two-model agreement, ask, not an ask, or unclear (verdict): kappa",100,0.314
+ASK,ask check (range reading),T,stability (two small-model runs): share of items with the same primary label,150,0.800
+ASK,ask check (range reading),T,invalid first answers (share of all calls of the form),447,0.000
+ASK,ask check (range reading),T,"planted recovery (small model), constructed items in development-creator transcripts",140,not published (misses from fewer than 5 creators)
+ASK,ask check (range reading),T,"planted recovery (middle model), constructed items in development-creator transcripts",140,not published (misses from fewer than 5 creators)
+ASK,ask check (range reading),G minus T,"two-model agreement kappa, same items (90% interval)",100,"-0.016 [-0.114, 0.082]"
+ASK,ask check (range reading),G minus T,"stability, same items (90% interval)",150,"0.013 [-0.046, 0.071]"
+ASK,ask check (range reading),G minus T,"planted recovery (small model), paired (90% interval)",140,not published (the discordant planted items come from fewer than 5 creators)
+ASK,ask check (range reading),G minus T,"planted recovery (middle model), paired (90% interval)",140,not published (the discordant planted items come from fewer than 5 creators)
+ASK,ask check (range reading),G against T,"small model run 1, G against T: kappa",150,0.726
+ASK,ask check (range reading),rule,the rule's outcome (protocol 4.2),,T (typed fields) stays; G is multiverse row M9 (agreement rises by 0.05: no; stability no worse: yes; invalid under 2pct: yes; planted recovery no worse: not published (its figure is not published)); critique O9 reading: T would stay

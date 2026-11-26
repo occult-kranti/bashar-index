@@ -1,0 +1,17 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Source public file: rv-D3-classes-by-position.csv (package rv-D3)
+# Interval level: 95% creator-bootstrap intervals
+# Exactly the numbers drawn in fig-classes. Written by plot_D.py (SHA-256 ab68d497db1726d7fd12edfbec30e72b71efe5b208be0886822e8c014fa44caf) at 2026-11-25T21:48:18Z.
+class,position,creator_equal_share,lo95,hi95
+gap under 3 s,whole recording,0.066,0.062,0.071
+gap under 3 s,first 60 s,0.075,0.067,0.083
+gap under 3 s,rest,0.065,0.061,0.069
+gap under 3 s,last 60 s,0.071,0.064,0.079
+gap 3 to 30 s,whole recording,0.039,0.029,0.050
+gap 3 to 30 s,first 60 s,0.065,0.049,0.083
+gap 3 to 30 s,rest,0.030,0.022,0.041
+gap 3 to 30 s,last 60 s,0.119,0.097,0.142
+stretch of 30 s or more,whole recording,0.044,0.020,0.075
+stretch of 30 s or more,first 60 s,0.046,0.019,0.081
+stretch of 30 s or more,rest,0.042,0.017,0.075
+stretch of 30 s or more,last 60 s,0.085,0.044,0.128

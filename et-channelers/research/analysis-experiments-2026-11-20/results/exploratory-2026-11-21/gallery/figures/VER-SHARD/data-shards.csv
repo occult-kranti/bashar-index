@@ -1,0 +1,12 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded (small model, three runs per arm); not checked by a person; constructed-text recovery is not a measure of correctness on the corpus. Development creators only (seen creators).
+# Base: S 405 target units of 20 creators; FC 1,934 part decisions of 387 of KA's 388 planted statements (39 creators); TIME 1,200 hits of development creators (creator count not published: a creator count 1 to 4 from a nested count). Interval level: 90% creator bootstrap.
+# Source: public table ver-shard.csv.
+# Drawn 2026-11-26T03:42:55Z (UTC, from the clock) by lv_figs.py (sha256 fcb91f033ce4c970a224830b81292ccac367244691911e9e389c98c933b4b0ad) from public tables only.
+instrument,arm,size,stability,lo90,hi90
+sentence codes,15 units per call,current size,0.974,0.964,0.984
+forecast checkability parts,FC5,current size,0.969,0.963,0.975
+TIME roles,10 hits per call,current size,0.819,0.799,0.84
+sentence codes,5 units per call,smaller shard,0.979,0.963,0.994
+forecast checkability parts,FC1,smaller shard,0.968,0.962,0.974
+TIME roles,3 hits per call,smaller shard,0.823,0.805,0.842

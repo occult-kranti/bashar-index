@@ -1,0 +1,13 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Model-coded (voice and asks instruments, snapshot of 2026-11-20 19:34/19:45); stability across recognizers, not a measure of correctness; not checked by a person.
+# Base: 25 bridge pairs of 25 development creators (seen creators). Interval level: 90% creator bootstrap.
+# Source: public table rv-l2-label-flips.csv (rows with a printed difference; asks under the primary event rule).
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+row,difference_between_minus_run_to_run,lo90,hi90
+voice: all labels,-0.025,-0.083,0.021
+voice: claimed voice (V2 or V3),-0.057,-0.144,0.022
+voice: claimed or not (all words),-0.021,-0.059,0.01
+voice: V1 own person,-0.019,-0.074,0.022
+voice: V2 embodied source,-0.095,-0.23,0.005
+voice: V4 other participant,0.132,-0.062,0.168
+asks: any ask,0.099,0.01,0.188

@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-b strata of the platform-caption row (raw, wa-norm-v2 chosen after the result); agreement of two machines, not an error rate.
+# Source public files: BR-b/public/br-b-strata.csv (halves) and BR-b/public/br-b-anchor-rows.csv (whole row).
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap resamples. Values in % of reference words.
+# Length halves added after the exploratory reporting plan (addendum 1, 2026-11-21 05:30 UTC): they replace the plan's length thirds, each of which holds fewer than 5 creators.
+# Drawn by plot_br.py (group B-BR), SHA-256 47a09ba3f3dbd224e2d4a4063353b70f9d72809bf090aa058eee039e5f151433.
+row,recordings,creators,creator_mean_pct,lo95_pct,hi95_pct
+All caption recordings,11,11,3.76,2.55,5.17
+Shorter half by length,6,6,3.2,1.94,4.7
+Longer half by length,5,5,4.44,2.48,6.93

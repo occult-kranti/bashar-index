@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R1 figure (a) data: seen creators' mean U at the registered 180-s trim, registered (raw) and recentred: creators below zero and at or above zero.
+# Public form (release review's fix pass of 2026-11-22): the build's five bins per series differed between the two series in 1 to 4 creators in four of five bins (pairs rule, addendum 2 item 9); merged by plan section 3's rule until the two series' bins differ by 0 or 5 or more creators, which leaves two bins. The shape of each distribution is printed as percentiles over creators in rv-r1-u-percentiles.csv. Base: 61 seen creators, 558 recordings (filter v2). Interval level: none (counts of creators).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+series,bin,bin_low,bin_high,creators
+registered (raw) U,below 0,,0,25
+registered (raw) U,0 or above,0,,36
+recentred U,below 0,,0,20
+recentred U,0 or above,0,,41

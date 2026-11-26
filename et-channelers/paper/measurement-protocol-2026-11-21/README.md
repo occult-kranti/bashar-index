@@ -52,7 +52,7 @@ sentences and the three results tables of Appendix B, for any outcome.
 | `aaai25.sty`, `aaai25.bst` | AAAI 2025 author kit, copied unchanged from the old draft (SHA-256 in the header of `main.tex`) | copied |
 | `sections/*.tex` | Title, abstract, Sections 1 to 9 (since the rewrite; 1 to 10 before it), ethics statement, Appendices A to C | writers A, B, C; revised in the review round; rewritten in the PaperOrchestra-style rewrite |
 | `findings/numbers.tex` | Every number the paper uses, as a macro, one per line, with its source file and field in a comment. Only macros the paper uses are written; withheld macros never are | GENERATED |
-| `findings/pending.tex` | One macro per placeholder; each expands to `\pending{...}` | GENERATED |
+| `findings/pending.tex` | One macro per placeholder; each expands to `\pending{...}` until its source exists (since release pass 2 of 2026-11-25, all twelve are filled from the exploratory release; last section) | GENERATED |
 | `findings/results.tex` | The first-round result macros (`\Res...`), from the public results file; `\pending{...}` while it does not exist | GENERATED |
 | `floats/tab_*.tex`, `floats/fig_*.pdf` (and `.png`) | Tabulars (the writers add float, caption, label) and figures | GENERATED |
 | `floats/caption-notes.tex` | Base, unit and pooling of each figure, as macros | GENERATED |
@@ -62,10 +62,10 @@ sentences and the three results tables of Appendix B, for any outcome.
 | `refs-orchestra.bib` | 82 entries added by the rewrite's literature merge step, checked against Crossref, arXiv, DataCite, PMLR and OpenLibrary records; on the bibliography line of `main.tex` | literature merge step of the rewrite |
 | `build.sh` | Build script (below) | integrator |
 
-Kept in the private work folder `paper-measurement-2026-11-21/work` of the run, because they read or hold private
+Kept in the private work folder of the run, because they read or hold private
 values (privacy review, item 6): the builder `build_numbers.py`, the paper check `check_paper.py` and its report, the
 build record `build-record.json` (every computed macro with its source hashes, withheld ones included), `provenance.csv`,
-and, in `work/planning/`, the outline, the fix lists (`fix-list.md`, `-A`, `-B`, `-C` and `fix-list-review-2.md`, `-3`, `-4`) and the
+and, in its planning subfolder, the outline, the fix lists (`fix-list.md`, `-A`, `-B`, `-C` and `fix-list-review-2.md`, `-3`, `-4`) and the
 writers' macro requests. Never edit a GENERATED file by hand: change the builder and rebuild.
 
 ## 3. How to build
@@ -79,7 +79,9 @@ bash build.sh             # typeset only: four pdflatex passes and bibtex; print
 bash build.sh --numbers   # first regenerate findings/ and floats/ with the private builder, then typeset
 ```
 
-`ET_PY` and `ET_WORK` override the default paths of the venv's Python and of the private work folder. Plain LaTeX also
+`ET_PY` must name the guarded analysis venv's Python (it also removes the PDF's document information) and `ET_WORK` the
+private work folder, for `--numbers` and the paper check (since release pass 2's fix step, 2026-11-26, the public files
+name neither path). Plain LaTeX also
 works: `pdflatex main; bibtex main; pdflatex main; pdflatex main`.
 
 Results only: `build_numbers.py --results-only` rewrites `findings/results.tex` and `floats/tab_results*.tex` alone from
@@ -118,6 +120,8 @@ files included, against 237 name strings, 1,976 ids and 1,393 seen titles) found
 ## 4. What waits for the first-round results and freeze 2
 
 Every placeholder prints as **[pending: ...]** and is filled only by a later build from its source, never by hand.
+(Since release pass 2 of 2026-11-25 none is left: the results filled the first row and the exploratory release the
+others, including the status table at report time; see the section "Release of the exploratory round (2026-11-22)".)
 
 | Waits for | Placeholders |
 |---|---|
@@ -152,7 +156,7 @@ with captions unchanged.
 ## 6. Second review round (2026-11-21, 07:36 to 08:40 UTC)
 
 Applied from the methods review and the privacy-and-consistency review (both received truncated; every visible item
-was handled). Generator first, then text. The item-by-item answer is `work/planning/fix-list-review-2.md` (private).
+was handled). Generator first, then text. The item-by-item answer is in a private planning file.
 
 - **Eligibility (methods 1).** Both of CAL's bounds in the abstract, Section 7, Table 5 and Figure 13, with CAL power at
   each; the text says the 02:50 announcement rests on the lower, creator-property bound, why (the cautious bound; the
@@ -222,7 +226,7 @@ was handled). Generator first, then text. The item-by-item answer is `work/plann
 ## 8. Third review round (2026-11-21, 11:10 to 12:00 UTC)
 
 Every item of the first-pass reviews after the point where the second round's copy was cut off (methods review from
-item 10 (c), privacy and consistency review from item 7) is answered in the private `work/planning/fix-list-review-3.md`,
+item 10 (c), privacy and consistency review from item 7) is answered in a private planning file,
 with the sentence that answers it. In brief:
 
 - **Length.** Main text from the title to the conclusion now ends on page 8; the ethics statement follows on page 9.
@@ -255,7 +259,7 @@ A new methods review (12 items, the last received cut off) and a new privacy rev
 third draft. Generator first, then text; every visible item was applied, two in another form than proposed (the
 bridge as verdicts only, not on all registered pairs; the rank figure in two classes per rank, not in rank bins whose
 creator counts the counts-only source cannot show). The item-by-item answer is
-`work/planning/fix-list-review-4.md` (private); the state before the round is in `work/backup-before-review-4/`.
+a private planning file of the work folder; the state before the round is in a private backup of the work folder.
 
 - **Methods.** Section 8 states what A10's guard covers (changes of estimator, reference, minimum, interval or
   centring) and names the looser and mixed deviations outside it; a class "mixed" holds the HR release rule of 03:21
@@ -286,7 +290,7 @@ creator counts the counts-only source cannot show). The item-by-item answer is
 ## 10. Results round (2026-11-21, 19:16 to 20:15 UTC)
 
 Brought up to the registry of 18:41 UTC and wired to the public results file. Generator first, then text; the state
-before the round is in the private `work/backup-before-results-round/`.
+before the round is in a private backup of the work folder.
 
 - **Registry after 13:05.** Addendum 2 (13:05) fills its placeholder. Freeze 1, amendment 1 (16:06; the production
   driver's feature step, every other hash unchanged; the freeze table, Table 26, holds both records), freeze 2 (16:10) with its constants
@@ -383,8 +387,9 @@ The final verification left five items to the lead (registry row of 2026-11-22 0
   speech. Those files are hashed records and are not edited. The paper
   keeps the bound and its privacy rule now names this exception (Section 3.1).
 - **Entrance-cue read precision.** These rows are agreement figures under the rule of 21 November, 22:33 UTC, so the
-  items read off target must also come from no creator or from 5 or more. The development row (one off-target item,
-  hence one creator) is withheld. The check row's off-target items come from 5 or more creators (counted by script from
+  items read off target must also come from no creator or from 5 or more. The development row (its off-target items
+  come from fewer than 5 creators) is withheld (wording changed in release pass 2, 2026-11-25, so that this file states
+  no single-creator fact). The check row's off-target items come from 5 or more creators (counted by script from
   the private sample file, counts only) and stay. The anchors table's source comment no longer describes the withheld
   value.
 - **Commits, hash prefixes and script names.** They stay in this public draft. It sits in the project's own public
@@ -401,3 +406,193 @@ The final verification left five items to the lead (registry row of 2026-11-22 0
   phrase.
 - **History.** The rewrite replaces the measurement paper in place. The draft it replaces stays in the history of the
   main branch (pull request 102).
+
+## Release of the exploratory round (2026-11-22)
+
+Release pass 2 of the exploratory round, done on 2026-11-25 from 22:14 to 22:58 UTC (clock: `date -u`), brought the
+paper up to date with the round's release (`research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/`)
+under the lead's decisions D1 to D56 of 2026-11-22. Everything the round produced is exploratory (registry A2) and none
+of it is a test of H1 to H10; no verdict changed. No model or API was called, nothing was downloaded, nothing was
+committed or pushed, and no file holding measured values of hold-out or other-group creators was opened: the only
+hold-out output named here (H3-X) is given as a pointer, and BR-b-H's status comes from the round's status table. Every
+number still comes through the generated macros of `findings/*.tex`; none was typed by hand.
+
+### Builder (`build_numbers.py`, private work folder)
+
+The builder was backed up first, with the paper folder's generated files, the build record and the sections as of the
+last commit (a private backup of the work folder). Builder SHA-256 before: `ecd5165f...`; after: `2c908322...`. It now
+reads, besides its earlier sources, the round's status table, the packages' public files, the public form of VER-3R
+and the pass-2 agreement recount (all in the round's private folder). Since release pass 2's fix step (2026-11-26) the
+source comments of the public files name a source only where it is public (this folder, the research folder); every
+other source reads "a private file of the run (named in the private build record)", and the generated files say
+"GENERATED by the private builder build_numbers.py".
+
+1. **The twelve placeholders of `findings/pending.tex`** (task item 1). Each macro keeps its name and is now a phrase
+   generated from the release, with its source and field in the line's comment. Headline figures from the packages'
+   public tables, all creator-balanced means over the seen creators with 95% creator-bootstrap intervals (model-coded,
+   not checked by a person): `\PendLabV` (claimed-voice share of words, middle model on its subset), `\PendLabA` (share
+   of recordings with an ask to pay or enrol), `\PendLabF` (share of read forecast candidates that are world-future
+   statements), `\PendLabS` (world-claim share of coded words), `\PendLabT` (share of titles presenting the recording
+   as a source's message; codes kept as records after failed gates), `\PendLabK` (share of recordings whose main kind is
+   a claimed voice). `\PendBrY`: the same recognizer's earlier text against the run's on digit-written numbers, and page
+   years found in the transcript, each with its Clopper-Pearson 95% interval (agreement of two machines, not an error
+   rate). `\PendTlBuild`: the median horizon of closed time windows, pooled over statements. Pointers ("reported in the
+   exploratory release (`results/exploratory-2026-11-21`, <id>)"): `\PendVerDep`, because its all-same share is an
+   agreement figure that the pass-2 recount did not cover (withheld from the paper, fail closed), and `\PendHThreeX`,
+   because its figures would need a hold-out file (the phrase adds D1: beside the seen estimate, never pooled, no
+   verdict). Not run, with the status table's reason: `\PendVerAdjG` (needs model calls; no money left under the hard
+   stop) and `\PendBrbH` (D33's wording). The flag "made after a hold-out contact on <date>" of the status table is
+   carried where it stands (VER-DEP, BR-b-H, TL-BUILD), as plan section 5 rule 3 requires.
+2. **New macros** for the text: `\ExpRelease` (the release folder), `\ExpOutputs`, `\ExpReported`, `\ExpNotRun` (the
+   status table's output rows: 172, of which 111 reported, 60 not run, 1 superseded), `\ExpMainReported` and
+   `\ExpMainNotRun` (the round's outputs whose place includes the main text, read from the status table: a package and
+   M in the place), `\RecountStamp` (the recount's date), `\NDevRoundRows` and `\NContactParts` (items 6 and 7).
+3. **`tab_outputs`** (task item 2): the row `\pending{status table at report time}` is replaced by the status at report
+   time from the round's status table (reported, not run, superseded), with a heading row naming the release.
+4. **Agreement recount (D21, D48, D53; task item 3).** Every gate A and B row of `tab_gates`/`tab_gates_b` is mapped to
+   its recount entries (one per printed value; an unmapped row would be withheld and fail a check). Shares whose misses
+   come from 1 to 4 creators now read "--", the measure saying "not published (misses from fewer than 5 creators)":
+   voice B pooled; asks A find; asks B find on final asks; forecasts A chain run 1; forecasts B FC run 3; sentence codes
+   A runs 1 and 3; titles B middle, small and final. Asks B "check small on its ask items" is withheld as "not published
+   (its misses were not recounted by creator)" (32 misses the stored records do not attribute). Verdicts stay (D53). In
+   `tab_ka`/`tab_ka_b` every share cell is looked up in the recount (the README's "embodied/relayed exact among claimed"
+   rows are the recount's "frame exact among claimed"); 31 cells now read "not published (misses from fewer than 5
+   creators)" and two "not published (fewer than 5 creators with a non-zero value)" (non-asks kept), each as the recount
+   lists them; the spill, K2 and twin rows are differences between cells and stay; the made-up title lists stay (D29).
+   The known-answer macros follow the same recount, and the failing ones (`\KaCvSixMiddle`, `\KaKfourVSmallRevThree`,
+   `\KaCvSixSmallRevThree`, `\KaXFourSmallRevThree`, the ranges `\KaMiddleRevThreeLo`/`Hi` and `\KaFcPartsLo`/`Hi`,
+   `\KaNonAsks`) are no longer used or written. `tab_status_labels`: the middle model's range on the revision-3 arms, the
+   non-asks rate and the known-answer forecast-part range read as not published. The frame-only relay figure of 02:55
+   (`\VoiceFrameOnlyKappa`, `\VoiceFrameOnlyLower`) was not recounted in pass 2 and is withheld (fail closed); its
+   verdict (it fails) stays in the text. The table notes state the rule for A and B shares and KA cells.
+5. **Cross-vendor table** (recount section 5): every row is mapped to VER-3R's public form in the release, and each cell
+   that form withholds reads "n.p." with its reason in a closing row (middle run 2 against the other vendor; the units
+   and unweighted kappa of the three-model-majority rows; the row without the V0 units; the two-class row; the embodied
+   contrast's agreement share; the embodied contrast against the third model). A check confirms that every kappa still
+   printed equals the public form's.
+6. **D49.** `tab_rank_odds` no longer prints the creators of "no text of any kind" (beside the printed creator counts of
+   its two parts it gives the creators with both by difference); note and caption say so. The paper's sources were
+   searched for BR-GS's thanks-row percentiles and for seen other-text totals: none is printed (the grid-shift table
+   prints no percentile over recordings, and the seen other-text totals are suppressed macros that no file uses), so
+   nothing else changed.
+7. **Deviation table.** The registry's deviation table now also holds the exploratory round's 173 rows (entered on
+   2026-11-25). They concern the round's outputs, which are published in the release and not in this paper (D54), and
+   the registry holds them (D55), so `tab_deviations` gives them as one summary row, the last (count, span, kinds of
+   change, a pointer), classed exploratory; reprinting them would add about eleven pages of rows about outputs this paper
+   does not report. A dated row of another kind would be printed on its own with its own date (none exists); the old
+   reader had prefixed such rows with "11-21".
+8. **Contact table.** The registry's contact log now holds the round's contacts too. Plan section 5 rule 3 asks for every
+   unplanned contact in the paper's limitations, so all are printed: their dates (22 to 25 November) are written like the
+   others, and the table is cut into as many page-sized parts as needed (seven), parts 2 and on written with their
+   floats and short captions to `floats/tab_contacts_more.tex`, which the section inputs after part 1. No file is
+   deleted when the number of parts falls; a check reports a stale part instead.
+9. **Layout and files.** The KA tables' measure column is 0.25 of the text width (was 0.27), so that the recount's
+   longest wording fits. The PNG copies of the figures no longer carry a "Software" text chunk (dpi only, release rule 6);
+   the PDF figures already carried no document information.
+
+### Sections
+
+- `appendix-protocol.tex` (B.10, task item 2): the first paragraph now says that the exploratory round ran after the
+  registered tests on code written after freeze 2 and that its outputs are published in the release (`\ExpRelease`),
+  with the status table's counts and the contact flag; the plan's separate rows for deceased persons and a higher self
+  are pooled into "other" in the release (fewer than 5 creators each). The second paragraph names the twelve outputs
+  with their macros, as exploratory, model-coded where they use labels and not tests. The `tab:outputs` caption names the
+  release's status table. Also: the known-answer paragraph no longer prints the withheld figures and states the rule;
+  the frame-only relay sentence; the captions of `tab:gates`, `tab:gates-b`, `tab:ka`, `tab:ka-b`, `tab:crossvendor`,
+  `tab:hthree` (H3-X is in the release, beside the seen rows), `tab:deviations` (the summary row) and `tab:contacts`
+  (the round's contacts, part 1 of `\NContactParts`, and the input of the continuation floats); the "Wording of
+  verification" paragraph (D11's "region recovery on constructed texts", the voice-arm range withheld, the results
+  file's correction); the deviation paragraph; the contacts paragraph (the round's contacts, logged, some late under
+  D6). The header comment notes the pass.
+- `tests.tex` (D54): a paragraph "Exploratory outputs" at the end of 6.3 points to the round's outputs with a main-text
+  place, by id (`\ExpMainReported`; not run: `\ExpMainNotRun`), says they are exploratory, model-coded where they use
+  labels, not tests, and hold-out beside seen, never pooled, and records the less prominent place as a deviation. The H3
+  paragraph's "its creator-level rerun is not yet produced" now names H3-X. The main text still ends on page 8.
+- `measurement.tex`, `protocol.tex`, `appendix-measurement.tex`: the statements that outputs were "not yet produced" or
+  "not yet scored" now say what the release holds (BR-b-H not run, with its reason; BR-y; LAB-K beside the interim
+  census); the rank-odds caption (D49).
+- `deviations.tex`: the round "ran" (not "runs") on code written after the analysis freeze; the deviation count says the
+  round's rows are one row. `limitations.tex`: the contacts after the tests include the round's logged runs, reads and
+  searches.
+- This README: this section; in section 13 the wording of the withheld development row now states no single-creator
+  fact (the paper check had listed it as a risky phrase).
+
+### Build state (2026-11-25, 22:56 UTC)
+
+`bash build.sh --numbers`: builder 184 checks passed, 0 failed; no LaTeX error, no undefined reference, citation or
+macro, no float too large; the same nine table cells as before run up to 3.7 pt over their column. 74 pages (68
+before): the main text and ethics statement still end on page 8 and the references start on page 9; Appendix A pages
+12 to 32 as before; Appendix B pages 33 to 72 (33 to 66 before), the six added pages being the contact table's seven
+parts; Appendix C pages 73 to 74. The PDF's dates are written in UTC (`SOURCE_DATE_EPOCH`, ending in `Z`, no time-zone
+offset) and its document information has the same keys as before. Paper check (`check_paper.py`): no undefined macro, no
+missing citation, no privacy-name, code or id hit, no unused or withheld macro in `numbers.tex`, no nested creator-count
+pair, no placeholder in the PDF. Sources as read (SHA-256 prefixes): status table `e168e169...`, recount `37fe341f...`,
+registry `01f9c2c5...`, public results file `a15293b1...`; the full list is in the private build record.
+
+### Open for the lead
+
+- The page count rises by six because the contact log now holds the round's contacts; printing them follows plan
+  section 5 rule 3. The deviation table gives the round's rows as one summary row (item 7), a reading of D54 and D55 that
+  the lead may want to confirm.
+- Not recounted in pass 2 and left as printed: the model-read precisions of RXP and of the digit dates (status tables),
+  GRID's positional precision bound of the thanks rule (the recount left it to the lead under D21; withheld since
+  the third fix step, D58) and the entrance-cue check row (it passed the lead's count of 2026-11-22, 01:51 UTC).
+  Settled in release pass 2's fix steps (2026-11-26): see the sections below.
+- The R-hold gate figures in `findings/results.tex` (gates C and D only; no gate A or B share is printed) come from
+  the public results file and were not recounted (R-hold was not read).
+- The paper prints the all-creator count of the project's own earlier recognizer text (`\NOwnEarlierAsr`), a single
+  text kind, while addendum 2 item 3 prints no single text kind for the other-text inventory; no cell of fewer than 5
+  follows from it in the paper.
+- Outside the paper: the TL package's public files (13 CSV headers and `README-TL.md`) still print the 00:30 place kappa
+  that the recount fails.
+- The status table and the registry were being edited by other agents of the pass while this build ran; rebuild if they
+  change.
+
+## Release pass 2, fix step (2026-11-26)
+
+Made after the release pass's verifiers and release scans (UTC from the clock). Exploratory; nothing here is a test.
+
+- **Builder.** Source comments of the public files name no private root (above). The deviation table prints the 00:30
+  decision's place kappa and the titles' presentation kappa as not published in every row, as the first-round file
+  does since the recount (they fail it); the build check says so.
+- **Sections.** Appendix B.10 states the interval of each placeholder output as it is: creator-balanced means with 95%
+  creator-bootstrap intervals for LAB-V to LAB-K, pooled item shares with exact (Clopper-Pearson) 95% intervals for BR-y,
+  and a pooled median for TL-BUILD.
+- **Contacts.** Nine contact rows of the exploratory round that ran on 2026-11-21 between 23:41 and 23:59 UTC were dated
+  2026-11-22 in the registry; they are corrected there, so the contact table's parts are now in true time order.
+- **PDF.** `main.tex` omits the PDF's dates and trailer id, and `build.sh` removes the document information dictionary
+  (Producer, Creator) after the last pass, so `main.pdf` carries no document information (rule 6, D30).
+- **Build state (2026-11-26, 01:13 UTC).** `bash build.sh --numbers`: builder 186 checks passed, 0 failed; no LaTeX
+  error and no undefined reference, citation or macro; the same nine table cells run up to 3.7 pt over their column.
+  75 pages (74 before): the main text and the ethics statement still end on page 8 and the references start on
+  page 9. `main.pdf` has no document information dictionary and no trailer id. Paper check: no undefined macro, no
+  missing citation, no privacy-name, code or id hit, no nested creator-count pair, no placeholder in the PDF.
+- **Open for the lead.** The R-hold gate A and B shares come from the public first-round file and were never recounted
+  by creator (an R-hold recount is a hold-out contact). This paper does not print them (`findings/results.tex` carries
+  gates C and D only); the release's GATES table and LAB-H print them as not published; only the published first-round
+  file still prints them, and the registry's decision row of 2026-11-21 19:30 quotes voice gate A (owner's items). The
+  frame-only relay kappa (registry 02:55) is withheld in this paper ("not published, as not recounted by creator");
+  its recount is still open. GRID's positional precision bound and nlp-R13's Chapman recalls near 1 wait for the
+  lead's reading of D21. (Corrected in release pass 2's second fix step, 2026-11-26.)
+
+## Release pass 2, third fix step (2026-11-26)
+
+Made after the second fix step's verifiers, under the lead's decisions D57 to D66 (UTC from the clock). Exploratory;
+nothing here is a test.
+
+- **Settled since the build state of 2026-11-25, 22:56 UTC** (its 'Open for the lead' list): RXP's model-read
+  precisions and the entrance-cue check row were recounted by creator in release pass 2's first fix step (recount
+  record); TL's public files withhold the 00:30 place kappa since that step; GRID's positional precision bound is
+  withheld (below); the R-hold gate figures of `findings/results.tex` are gates C and D only, and the published
+  first-round file now withholds gates A and B too (dated correction, D59). The deviation table's summary row and the
+  page count were accepted by the lead (D64).
+- **Frame-only relay kappa (D60).** Its sample, the gate sample G, holds seen creators only (41 recordings, all of
+  seen creators). Recounted by creator, it passes the rule for agreement figures, so Appendix B prints it again
+  (`\VoiceFrameOnlyKappa`, `\VoiceFrameOnlyLower`).
+- **GRID's positional precision (D58).** The bound from window-phase counts, its point and interval read "not
+  published (misses not recounted by creator)" in `tab:status` and `tab:artefacts`, and Section 4 no longer prints
+  them (the `ThanksPrecision` macros are withheld by the builder).
+- **Wording (D61).** The sections and the rows of `tab:deviations` read "agreement, not a measure of correctness";
+  the registry's committed rows are quoted in that form, their sources kept.
+- **Deviation rows (D64).** The registry's deviation table holds the release pass's rows 174 to 176 (the fix steps),
+  so the round's summary row counts them.

@@ -1,0 +1,23 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# META part (b): 71 seen creators, 1,411 selected recordings. creator_balanced_share = mean over creators of the share of the creator's selected recordings with
+# the field; recordings without a local metadata file count as lacking every page and audience field.
+# Page and audience fields come from the captured page metadata and are bounded by capture (row 'page metadata captured locally'). Every captured page carries a
+# view count and a publication time stamp to the second, so those two fields equal the capture row and are not listed again. Duration is not listed (census
+# information in TABLE-1).
+# Interval: 90% creator-bootstrap percentile interval, 2,000 draws, seed 20261122. pooled_share is printed for reference and is not plotted. Every field rests on
+# 5 or more creators with the field and 5 or more creators lacking it on at least one recording.
+group,field,creator_balanced_share,ci90_low,ci90_high,pooled_share_of_1411_recordings
+capture and run,page metadata captured locally,0.871,0.829,0.908,0.87
+capture and run,confirmed publication day (version B),0.879,0.837,0.916,0.878
+capture and run,transcript in the run,0.916,0.898,0.932,0.916
+audience,like count,0.807,0.749,0.861,0.806
+audience,comment count,0.773,0.716,0.824,0.772
+audience,view count and aged 30+ days at capture,0.649,0.587,0.711,0.647
+page,description (non-empty),0.856,0.813,0.894,0.856
+page,link in the description,0.733,0.674,0.791,0.736
+page,automatic captions listed,0.559,0.499,0.617,0.558
+page,tags,0.543,0.465,0.623,0.545
+page,chapters (any),0.416,0.359,0.471,0.417
+page,manual subtitles listed,0.141,0.09,0.196,0.142
+page,chapters written by the creator (time-stamp list),0.139,0.088,0.189,0.14
+page,'most replayed' graph,0.009,0.004,0.016,0.009

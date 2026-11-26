@@ -1,0 +1,8 @@
+# Exploratory (registry A2); not a test of H1-H10.
+mask,mask_id,listed_name_mentions_left_share,listed_zero_by_construction,own_intro_left_share,own_intro_zero_by_construction,folder_token_left_share,folder_zero_by_construction,ordinary_or_calendar_words_removed_share,ordinary_zero_by_construction
+capital-letter mask,T2_capital_letter,0.3147,False,0.0623,False,0.2724,False,0.188,False
+dispersion rule v0,D0_dispersion_v0,0.6979,False,0.1926,False,0.2061,False,0.054,False
+names list (v1),L_list,0.0,True,0.6204,False,0.8682,False,0.0,True
+names list + dispersion (v1),LD_list_dispersion,0.0,True,0.1558,False,0.2086,False,0.0,True
+names list + own-name rule,U_list_own_v0,0.0,True,0.0,True,0.0,True,not published (fewer than 5 creators with a non-zero value),False
+mask v2: list + own-name rule + dispersion,UD_list_own_v0_dispersion,0.0,True,0.0,True,0.0,True,not published (fewer than 5 creators with a non-zero value),False

@@ -1,0 +1,19 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-12 (place S, review figure 12a): share of a creator's recordings with any term, by the creator's source profile (CSS-5; model-coded titles). Source: package CSS, public file css12-by-source-profile.csv (rerun of record of 2026-11-22, lead's decision D35; analysis step rerun in the release fix pass).
+# Creator-equal means with 90% creator-bootstrap percentile intervals (2,000 draws); pointwise intervals, no family-wise control; whole recordings of the English-only recognizer. Each class is printed with every row of one profile level (the five profiles; the angelic or devotional profile joined with 'both'; any family against none), the first level at which every row meets the small-cell and pairs rules (the package's ladder, fixed for privacy only); every class covers the 71 seen creators. 'Both lists in one recording' is not printed by profile (no level fits).
+# Terms: E11's two closed term lists (written by package E before any E11 count; names of beings and lineage-specific terms left out) and RX's frozen pattern for numbered dimensions or densities; cue counts with no precision check. Titles: model-coded, not checked by a person. Vocabulary, not belief, intent or harm.
+class,source_profile,creators,creator_equal_mean,ci90_low,ci90_high
+consciousness-shift vocabulary,star peoples only,18,0.622,0.519,0.722
+consciousness-shift vocabulary,angelic or devotional figures only,9,0.641,0.5,0.761
+consciousness-shift vocabulary,both star peoples and angelic or devotional figures,10,0.716,0.598,0.825
+consciousness-shift vocabulary,other source families only,6,0.722,0.596,0.857
+consciousness-shift vocabulary,no source family named,28,0.489,0.4,0.583
+numbered dimensions or densities,star peoples only,18,0.208,0.14,0.281
+numbered dimensions or densities,angelic or devotional figures only,9,0.283,0.142,0.441
+numbered dimensions or densities,both star peoples and angelic or devotional figures,10,0.404,0.299,0.512
+numbered dimensions or densities,other source families only,6,0.267,0.167,0.366
+numbered dimensions or densities,no source family named,28,0.189,0.13,0.249
+secret-control vocabulary,star peoples only,18,0.13,0.061,0.206
+secret-control vocabulary,"angelic or devotional figures, with or without star peoples (joined)",19,0.095,0.055,0.14
+secret-control vocabulary,other source families only,6,0.152,0.064,0.249
+secret-control vocabulary,no source family named,28,0.077,0.043,0.116

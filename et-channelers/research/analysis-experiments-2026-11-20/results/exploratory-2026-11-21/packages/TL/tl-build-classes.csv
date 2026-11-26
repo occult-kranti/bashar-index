@@ -1,0 +1,21 @@
+# Exploratory (registry A2); not a test of H1-H10. Added after the exploratory reporting plan only where marked.
+# TL-BUILD. Classes of closed windows (window units: frame-only windows once per recording, frame and window). Absolute and relative as in protocol TL-NORM 3 (an event-table day without a year counts as absolute there; the pilot's code required a year; the two differ on a small group of windows that is not printed apart, under the difference rule of the public outputs). The last rows compare the program window with the model's own window per expression (FE's comparison code), over bounded statements.
+# Chosen after the result (first run 2026-11-21 23:35 UTC), for the public-output difference rule only: the event-table-day class row of the first run was folded into the absolute row; the first-run version is not printed because it broke that rule.
+# Model-coded (first-round forecast labels of the seen creators): world-future class F1 by the small model with a middle-model second reading (gate D passes on the seen gate sample on its lower bound, 0.643 [0.503]; on the hold-out reliability sample R-hold the F1 class fails gate D, kappa 0.507 [90% 0.169, 0.792]; its stability gate C passes, 0.903); time expressions by the small model (FE) with windows computed by code from its typed fields (known-answer year items: flags right on 30 constructed items); checkability parts by the middle model, kept as the record by the owner's decision (registry 00:30) although they fail their gates: on the development pilot the two-model gate failed for time window (kappa 0.55) and place (not published: fewer than 5 creators) against the floor 0.60; on R-hold, gate D (two models) passes for time window (0.805, lower 90% bound 0.647) and fails for place (0.306), named actor (0.419) and observable outcome (0.328; its stability gate C 0.826), quantity not published (fewer than 5 creators); a third model re-read 300 seen check statements: kappa time window 0.70, place not published (fewer than 5 creators), named actor 0.69, observable outcome 0.79, quantity not published (fewer than 5 creators) (agreement, not a measure of correctness); commitment by the small model (R-hold gate C 0.913, gate D 0.756). Not checked by a person.
+# What is dated and for when, and whether an outcome would be observable; never whether a prediction came true.
+# Creator counts: 'fewer than 5' means 1 to 4; 'all but fewer than 5 of 71' means 67 to 70 of the 71 seen creators; a range such as 55-59 is a band shown where an exact count could fix a difference of 1 to 4 creators against a nested printed count (rule revised after the release review, 2026-11-22).
+class,window_units,statements,share_of_units,creators
+"absolute (an explicit year, or an event-table day without a year: protocol TL-NORM 3)",373,780,0.347,49
+"relative (no year, not an event-table day)",701,1359,0.653,55-59
+window from the statement or its context,796,796,0.741,55-59
+window from the period of the talk alone (FRAME),278,1343,0.259,48
+window of 92 days or less,506,912,0.471,50
+window wider than 3 years (broad),127,320,0.118,25-29
+window equal to one calendar year,145,267,0.135,30-34
+all closed windows,1074,2139,1.0,59
+program against model window: both_unresolved (statements with such an expression),,83,,25-29
+program against model window: disjoint (statements with such an expression),,80,,23
+program against model window: model_only (statements with such an expression),,165,,30-34
+program against model window: overlap (statements with such an expression),,547,,46
+program against model window: program_only (statements with such an expression),,209,,25-29
+program against model window: same (statements with such an expression),,1460,,60-64

@@ -1,0 +1,27 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/cal-f-eligibility.csv
+# Interval level: 90% creator bootstrap for the projections; the seen share is a count over 71, no interval
+# CAL-f: seen share eligible (count of seen creators over the 71 seen creators) beside the projection of the share of hold-out creators with English recordings that would be eligible (CAL round 2 part e4 with seen labels in place of the W pilot), with eligibility a property of the creator or of each recording. Projection from run-ledger durations and languages (not a hold-out contact); made after the hold-out eligibility was published, so a post hoc check and not a forecast. Hold-out and seen figures are printed beside each other and never pooled (D1).
+# A seen count printed only as 'all but fewer than 5 of N' (H1) is drawn at N/71 as a leftward mark: its share column is empty and drawn_at gives the mark's position, an upper bound that is not H1's share. drawn_at is the x position of every drawn mark. H6's projection with both voices and T >= 1 (recording bound only) and H5 (no projection) are not drawn. Model-coded first-round labels (voice, asks, forecasts, titles and sentence codes; their verification lines are in the package file); not checked by a person.
+labels,rule,series,share,low_90,high_90,drawn_at,status
+small,H4,seen share eligible (of 71),0.62,,,0.62,count/71
+small,H4,"projection, eligibility a property of the creator",0.22,0.06,0.39,0.22,printed
+small,H4,"projection, eligibility a property of each recording",1.0,0.89,1.0,1.0,printed
+small,H6,seen share eligible (of 71),0.676,,,0.676,count/71
+small,H6,"projection, eligibility a property of the creator",0.22,0.06,0.44,0.22,printed
+small,H6,"projection, eligibility a property of each recording",1.0,0.89,1.0,1.0,printed
+small,H1,seen share eligible (of 71),,,,0.676,"not printed: the count is printed only as 'all but fewer than 5 of 48', so the share lies below 48/71; the leftward mark is drawn at 48/71 (a bound, not H1's share)"
+small,H1,"projection, eligibility a property of the creator",0.22,0.06,0.39,0.22,printed
+small,H1,"projection, eligibility a property of each recording",0.94,0.83,1.0,0.94,printed
+small,H2,seen share eligible (of 71),0.789,,,0.789,count/71
+small,H2,"projection, eligibility a property of the creator",0.56,0.33,0.72,0.56,printed
+small,H2,"projection, eligibility a property of each recording",1.0,0.94,1.0,1.0,printed
+middle,H4,seen share eligible (of 71),0.282,,,0.282,count/71
+middle,H4,"projection, eligibility a property of the creator",0.22,0.06,0.39,0.22,printed
+middle,H4,"projection, eligibility a property of each recording",1.0,0.83,1.0,1.0,printed
+middle,H6,seen share eligible (of 71),0.31,,,0.31,count/71
+middle,H6,"projection, eligibility a property of the creator",0.22,0.06,0.39,0.22,printed
+middle,H6,"projection, eligibility a property of each recording",0.94,0.83,1.0,0.94,printed
+middle,H1,seen share eligible (of 71),,,,0.31,"not printed: the count is printed only as 'all but fewer than 5 of 22', so the share lies below 22/71; the leftward mark is drawn at 22/71 (a bound, not H1's share)"
+middle,H1,"projection, eligibility a property of the creator",0.17,0.06,0.33,0.17,printed
+middle,H1,"projection, eligibility a property of each recording",0.94,0.78,1.0,0.94,printed

@@ -1,0 +1,9 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-1-receding-horizons.csv (TL package, public folder).
+# Interval level: 90% creator-bootstrap interval (2,000 draws) for the pooled slope; 95% band of the within-channel permutation reference (9,999 draws).
+row,eligible_channels,window_units,pooled_slope_b,interval_90_low,interval_90_high,permutation_band_95_low,permutation_band_95_high,status
+"Primary: protocol rule, confirmed upload days",10-14,239,1.006,0.382,1.497,-1.072,0.618,estimated
+Row: confirmed and estimated upload days,15-19,262,0.976,-2.286,1.474,-1.397,0.765,estimated
+"Row: confirmed upload days, year-flagged statements out",10-14,171,1.259,0.856,2.379,-1.45,0.979,estimated
+"Row: pilot rule, confirmed upload days",fewer than 5,,,,,,,fewer than 5 eligible channels: not estimated
+Row: estimated upload days only,fewer than 5,,,,,,,fewer than 5 eligible channels: not estimated

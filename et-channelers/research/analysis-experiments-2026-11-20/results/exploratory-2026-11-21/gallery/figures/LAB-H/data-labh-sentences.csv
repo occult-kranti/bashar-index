@@ -1,0 +1,11 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# LAB-H: sentence codes grouped as in H5 (LAB-S); source HOLD/lab-h-descriptions.csv (package HOLD, public).
+# Interval level: 90% t interval over creators of creator-balanced means, clipped to [0, 1] by the package.
+# Model-coded labels, not checked by a person; agreement figures are agreement, not a measure of correctness. Hold-out beside seen, never pooled.
+figure,row,series,creators,mean,t90_low,t90_high,note
+LAB-H-fig-6,claim about the world,seen,all but fewer than 5 of 71,0.218,0.188,0.248,
+LAB-H-fig-6,practice and feeling,seen,all but fewer than 5 of 71,0.341,0.303,0.379,
+LAB-H-fig-6,neither,seen,all but fewer than 5 of 71,0.441,0.407,0.476,
+LAB-H-fig-6,claim about the world,hold-out,18,0.323,0.233,0.413,
+LAB-H-fig-6,practice and feeling,hold-out,18,0.287,0.236,0.338,
+LAB-H-fig-6,neither,hold-out,18,0.39,0.333,0.447,

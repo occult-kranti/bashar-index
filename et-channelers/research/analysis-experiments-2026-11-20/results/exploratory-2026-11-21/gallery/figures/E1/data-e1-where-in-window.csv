@@ -1,0 +1,7 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source: package ER, public table e1-descriptives.csv (results/exploratory-2026-11-21/ER/e1-descriptives.csv after the release review).
+# Interval level: 90% percentile intervals from the primary's 9,999 two-stage resamples (creators, then recordings).
+# E1 descriptions added after the exploratory reporting plan: where in the 30-s decoding window a thanks-phrase segment starts; the primary's windows (both tempo halves; 71 seen creators); pooled over windows; recognizer output, segments counted before the artefact filter; not checked by a person.
+where_the_segment_starts,chance_per_window,ci90_low,ci90_high
+In the window's last 3 s (27 to 30 s),0.0231,0.02093,0.02536
+In a given 3-s stretch of the first 27 s (nine stretches pooled),0.00038,0.00027,0.0005

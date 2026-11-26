@@ -1,0 +1,16 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# Seen creators only (71). Recordings kept at each step from selection to the text-analysis base, and the recordings lost between steps.
+# The first loss (not transcribed) is split by reason; reasons resting on fewer than 5 creators are pooled into 'other reasons'. Most of it is by design:
+# recordings that already had English text were not transcribed.
+# Census counts from the run table; every loss and every part rests on 5 or more creators. Audio hours use the best known duration and are not plotted.
+kind,step,label,recordings,share_of_selected,audio_hours_best_duration,all_71_seen_creators_present
+step,selected,Selected: newest 20 regular uploads,1411,1.0,590.7,True
+step,transcribed,Transcribed (distinct audio),1293,0.9164,549.6,True
+step,english_only,"English transcript, English-only recognizer",1284,0.91,547.6,True
+step,base_300_words,300+ words after the artefact filter (text-analysis base),1176,0.8335,535.0,True
+loss,loss,not transcribed or audio shared with another listed recording,118,,,
+loss,loss,transcribed by the multilingual recognizer,9,,,
+loss,loss,under 300 words,108,,,
+loss part,loss 1 by reason,existing English text (left out by design),77,,,
+loss part,loss 1 by reason,audio missing,28,,,
+loss part,loss 1 by reason,"other reasons (eligible editions not transcribed, audio shared with another listed recording, language review)",13,,,

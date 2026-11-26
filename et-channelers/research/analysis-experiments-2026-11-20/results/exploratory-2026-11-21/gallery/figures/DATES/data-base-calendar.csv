@@ -1,0 +1,14 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# Text-analysis base of the date items: 1,176 recordings of the 71 seen creators (English-only recognizer, 300+ words).
+# Confirmed day = version B (dates file day or a local time stamp inside the window). Estimated recordings are placed at the midpoint of the narrowed window B: a
+# placement for counting only, not a date.
+# August to November 2026: 696 of 1,176 recordings (59%); confirmed days only: 590 of 1,035 (57%).
+# No start year is printed for the first period. Periods merged so that every non-empty cell holds 5 or more creators: up to Apr 2026, May-Jul. Periods differ in
+# length: the first is open at its start and pools all earlier years, May-Jul covers three months, the rest one month each.
+period,label,recordings_confirmed_day,recordings_estimated_placed,recordings_total
+up to 2026-04,up to Apr 2026,318,15,333
+2026-05 to 2026-07,May-Jul,127,20,147
+2026-08,Aug,102,15,117
+2026-09,Sep,141,20,161
+2026-10,Oct,206,42,248
+2026-11,Nov,141,29,170

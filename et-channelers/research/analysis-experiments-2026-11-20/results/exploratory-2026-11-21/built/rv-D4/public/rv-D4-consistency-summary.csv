@@ -1,0 +1,15 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# rv-D4: the consistency test's public form (lead's decisions D17 and D39): its release-time runs over every release file, the README, the paper's sources and PDF text, the results README and addendum 3. Version 1 is the test as built (2026-11-21); version 2, added after the exploratory reporting plan, maps the renamed measure and extends the test to the release. run1: 2026-11-25, 23:39 to 23:41 UTC; final: the run after release pass 2's fifth fix step (fix6) (2026-11-26, from 06:42 UTC).
+# Interval level: none (counts of checks). The build's Table U, Table D and provenance list are inputs of the test and stay in the item's private record.
+# Written by f96_rvd4_rvd7.py (SHA-256 1f3a98c089c190334e90e22c1ead9ec3068a558744712e1f0371f64ee98e21fb) at 2026-11-26T06:51:12Z.
+part,check,run1,final,note
+"version 1 (as built, d4_consistency.py)",run at release time,KeyError: 'Share of hours without speech',KeyError: 'Share of hours without speech',stops on the run report's renamed measure ('share of hours without speech'); version 2 maps it (D39)
+"version 2 (added after the plan, D39): release extension",checks,564,564,
+"version 2 (added after the plan, D39): release extension",numbers,1439,1439,
+"version 2 (added after the plan, D39): release extension",numbers_matched,1319,1321,each printed number found in its own source file; the others are derived figures or counts printed in other public files
+"version 2 (added after the plan, D39): release extension",items_with_unmatched_numbers,59,58,
+"version 2 (added after the plan, D39): release extension",count_checks,30,30,
+"version 2 (added after the plan, D39): release extension",count_checks_failing,0,0,"status counts, README counts, the paper's macros and placeholders"
+"version 2 (added after the plan, D39): release extension",readme_rows_headline_equal,134,134,
+"version 2 (added after the plan, D39): release extension",readme_rows_headline_differs,38,38,the README's not-run rows append the reason to the headline
+version 2: version 1's 20 quantities,"same / differs, explained / STALE / FAIL",,5 / 3 / 7 / 5,"the FAIL rows (artefact filter applied to the reported numbers?; H3 verdict as shown; H8 status; outcome: recordings with text of another kind; hold-out creators with English transcripts) compare the old cohort draft with the old site checkout, files that are not part of this release (pre-existing)"

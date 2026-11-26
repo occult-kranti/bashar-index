@@ -1,0 +1,22 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:19:18Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# TM-H: the frozen topic model of TM (NMF K = 16 on sublinear TF-IDF, model sha256 26af3da1c2402dc7; vocabulary and IDF of the seen windows) applied unchanged to 300-word windows of English recordings of 300 or more words (artefact filter v2), seen 71 creators and the 18 English hold-out creators; seen and hold-out side by side, never pooled. Topics are vocabulary clusters, never beliefs; labels by the analyst from seen top words, neutral for style topics and for topics whose top creator holds 0.20 or more of the topic's creator weight (registry 2026-11-21 03:08), the rule applied on each group's own weights; labels join by topic number, so a topic neutral in either group is neutral in both.
+# Difference of creator-equal topic shares, hold-out minus seen, with a pointwise 90% interval (creators resampled within each group, 2,000 draws). Family-wise band (plan section 4): the per-topic Welch statistic over creators is recomputed under 999 permutations of the group labels over the 89 creators; the 95th percentile of the maximum absolute statistic over the 16 topics is the threshold. Only topics beyond it are described as standing out. About 2 of 16 pointwise 90% intervals would exclude zero by chance alone. The hold-out is the tail of an English-first run and is not exchangeable with the seen creators, so the band is a reading aid for this display, not a test of a hypothesis.
+topic,label,kind,creators_seen,creators_holdout,difference_holdout_minus_seen,ci90_low,ci90_high,welch_t,familywise_abs_t_threshold,beyond_familywise_band,pointwise_interval_excludes_zero
+1,"soul, higher self",subject,71,18,-0.0011,-0.018,0.0147,-0.1041,3.3121,False,False
+2,"personal story, past",segment,71,18,0.0081,-0.0172,0.0338,0.5087,3.3121,False,False
+3,"energy shifts, change",subject,71,18,-0.023,-0.0422,-0.0037,-1.8538,3.3121,False,True
+4,"guided breathing, body",segment,71,18,-0.0031,-0.0238,0.0158,-0.2594,3.3121,False,False
+5,"planet, humanity, star beings",subject,71,18,0.0462,0.0167,0.0758,2.5469,3.3121,False,True
+6,"religion, Christian faith",subject,71,18,-0.0018,-0.0173,0.013,-0.1869,3.3121,False,False
+7,"channel logistics, links",segment,71,18,-0.0195,-0.0359,-0.0033,-1.9596,3.3121,False,True
+8,"style register, topic 8",style,71,18,-0.0095,-0.03,0.0083,-0.8295,3.3121,False,False
+9,"style register, topic 9",style,71,18,0.006,-0.0111,0.0248,0.5457,3.3121,False,False
+10,"fear, truth, choice",subject,71,18,0.0045,-0.0157,0.0281,0.3258,3.3121,False,False
+11,"divine love, compassion",subject,71,18,0.0013,-0.0186,0.0231,0.0978,3.3121,False,False
+12,"session reports, sightings",segment,71,18,0.0099,-0.0049,0.0224,1.1736,3.3121,False,False
+13,"style register, topic 13",style,71,18,-0.0009205,-0.0183,0.0164,-0.0843,3.3121,False,False
+14,topic 14 (neutral label),subject,71,18,-0.0006582,-0.024,0.0212,-0.0472,3.3121,False,False
+15,questions to guides,segment,71,18,-0.0118,-0.0217,-0.0018,-1.8805,3.3121,False,True
+16,"style register, topic 16",style,71,18,-0.0046,-0.0231,0.0104,-0.4502,3.3121,False,False

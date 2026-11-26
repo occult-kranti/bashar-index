@@ -1,0 +1,63 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. A method pilot of the prediction timeline. Methodological agnosticism (registry 2026-11-21 02:50): it reports what was predicted, for when, and whether an outcome would be observable, never whether a prediction came true; no prediction text, no source name and no verdict on a real statement is printed. Exploratory (registry A2), status B (pilot).
+# Base: set W's forecast pilot, 37 recordings of development creators (seen creators); 172 statements with a bounded time expression, of 21 creators, each given a card by a model.
+# Interval level: none (counts, quartiles and shares, as built).
+# Categories with fewer than 5 creators are pooled into 'other' (plan section 3); quartiles are printed only where 5 or more creators lie at or below and at or above them; the total of kept statements is not printed because the statements outside the timeline rows were not recounted by creator.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:02:05Z (UTC, from the clock) by lv_tlp.py (sha256 e9c4a4ea9f52f9dd0e6d3c5f427577a181e9dc2f6bb5c6fdbaf093630814f4bb) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), release review B-LV (plan P10).
+section,figure,level,value,note
+cards (172 bounded statements of 21 creators),class of record (R0 reasons; no card was coded resolvable),R0_VAGUE,60,
+cards (172 bounded statements of 21 creators),class of record (R0 reasons; no card was coded resolvable),R0_UNOBSERVABLE,48,
+cards (172 bounded statements of 21 creators),class of record (R0 reasons; no card was coded resolvable),R0_NO_WINDOW,37,
+cards (172 bounded statements of 21 creators),class of record (R0 reasons; no card was coded resolvable),R0_CANNOT_FAIL,18,
+cards (172 bounded statements of 21 creators),class of record (R0 reasons; no card was coded resolvable),other (2 pooled),9,
+cards,event type (model-coded),INNER_ENERGETIC,60,
+cards,event type (model-coded),OTHER,38,
+cards,event type (model-coded),NONHUMAN_BEINGS_PUBLIC,18,
+cards,event type (model-coded),other (7 pooled),56,
+cards,flag (model-coded),absence verifiable,not published (fewer than 5 creators),
+cards,flag (model-coded),cannot fail,32,
+cards,flag (model-coded),recurring,17,
+cards,flag (model-coded),withdrawn by wording,11,
+cards,the card writer's own class,,not published (fewer than 5 creators in its resolvable cell; the class of record above carries the classes),
+"card writer, run to run (172 cards)",share of cards with the same value,cannot fail,0.884,
+"card writer, run to run (172 cards)",share of cards with the same value,event type,0.930,
+"card writer, run to run (172 cards)",share of cards with the same value,polarity,not published (items coded differently come from fewer than 5 creators),
+"card writer, run to run (172 cards)",share of cards with the same value,recurring,0.965,
+"card writer, run to run (172 cards)",share of cards with the same value,resolvable,0.773,
+"card writer, run to run (172 cards)",share of cards with the same value,withdrawn by wording,not published (items coded differently come from fewer than 5 creators),
+"card writer, run to run (172 cards)","kappa, resolvable",,not published (positive code from fewer than 5 creators in a reading),
+"card writer, second model on a seeded half (81 cards)",agreement and the card-writer gate,,not published (the resolvable code comes from fewer than 5 creators in each reading),not a part of the plan row's public form
+hindsight index (VG-9),verdict,,not measurable (fewer than 30 cards whose input holds a year),the index itself is not published (fewer than 5 creators)
+cards,privacy filter on card fields (a transcript 7-gram in a field rejects the card),cards rejected,not published (the rejected cards' creators could not be counted from the kept cards),
+cards,valid cards,,172 of 172,
+timeline rows (172 bounded statements of 21 creators),lane,closed,135,
+timeline rows (172 bounded statements of 21 creators),lane,open,26,
+timeline rows (172 bounded statements of 21 creators),lane,other (3 pooled),11,
+timeline rows,"status at the check date (2026-11-20) of the closed windows (pending, too recent, matured)",,not published (the too-recent and matured cards come from fewer than 5 creators; the closed lane above is not split),
+horizons (closed windows),days from the upload day to the window's end (closed windows),135 statements,q1 28; median 91; q3 281,the minimum and maximum are not printed
+horizons (closed windows),lead: days from the upload day to the window's start,135 statements,q1 0; median 0; q3 13,the minimum and maximum are not printed
+horizons (closed windows),window width in days,135 statements,q1 31; median 181; q3 365,the minimum and maximum are not printed
+horizons (closed windows),share of closed windows ending within a year of the upload day,,0.778,
+horizons (closed windows),closed windows of 92 days or less; windows over 3 years; by upload-date evidence,,not published (not recounted in this review from the rows),
+analysis 7.1 (receding horizons),result,,not run: no eligible channel (set W has 1 or 2 recordings per channel),the pilot's rule (5 absolute statements with windows of 92 days or less over 180 days of uploads)
+analysis 7.2 (convergence),dry run,,7 channels; 20 narrow window units; 41 cross-channel pairs at Jaccard 0.5,dry run only: below the minimum of 30 narrow windows from 10 channels
+clusters of cards (embedding similarity),threshold 0.75,,"1 cluster spanning 3 or more channels, holding 84 of 172 cards; 3458 candidate pairs (3090 across channels)",a single large cluster: the threshold does not separate events
+clusters of cards,pair checks at 0.75,,150 pairs checked by the small model; same event: not published (fewer than 5 creators); merged pairs: not published (fewer than 5 creators),
+clusters of cards (embedding similarity),threshold 0.85,,"1 cluster spanning 3 or more channels, holding 83 of 172 cards; 748 candidate pairs (566 across channels)",a single large cluster: the threshold does not separate events
+clusters of cards,pair checks at 0.85,,150 pairs checked by the small model; same event: not published (fewer than 5 creators); merged pairs: not published (fewer than 5 creators),
+clusters: calibration pairs (20 per kind),median similarity,,paraphrase 0.958; different event same type 0.815; different type 0.774,shares at each threshold are not published except where every pair lies above it
+clusters: calibration pairs,share at or above 0.75,"paraphrase / different event, same type",1.00 / 1.00,
+resolver known-answer items (constructed from public event records; they belong to no creator),items,,10 items; 8 sent to the resolver; event type tested: earthquakes (one public catalogue only),"an upper bound, not a validation; records inside the resolvers' training period"
+resolver known-answer items,gate outcome,,fail: resolver to be revised before C4; matches: 1 of 8,"model verdicts before the code rules matched 7; rules v2, written after seeing these answers (post hoc, not a gate result): 7"
+resolver known-answer items,card class by constructed kind,,non_occurrence: RESOLVABLE 3; occurrence: RESOLVABLE 5; vague: R0_CANNOT_FAIL 1; vague: R0_VAGUE 1,
+"diagnostic cards (matured cards the card writer called not resolvable, sent to the resolver before the 02:50 decision)",count,,fewer than 5 creators,"no verdict on a real statement is reported (addendum 1, item 7)"
+eligibility for resolution (protocol),matured cards,,not published (fewer than 5 creators),"eligible cards: 0, so the protocol's resolution did not run (and TL-RES is not run for the study)"
+"year checks, cutoff strata, evidence checks, the capture-date dry run",,,"not published (small counts resting on fewer than 5 creators, or a year other than 2026)",
+cost (operational; no creator value),USD by step,step b1,0.0932,
+cost (operational; no creator value),USD by step,step b2,0.2579,
+cost (operational; no creator value),USD by step,step b3,0.0510,
+cost (operational; no creator value),USD by step,step b4,1.0108,
+cost (operational; no creator value),USD by step,step b5,0.5694,
+cost (operational; no creator value),USD by step,step ws,0.0397,
+cost (operational; no creator value),"USD committed, all steps",,2.022,the search-fee row is a conservative count (see the build's note)

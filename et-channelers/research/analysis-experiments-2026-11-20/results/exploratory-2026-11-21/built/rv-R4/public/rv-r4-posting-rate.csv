@@ -1,0 +1,16 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R4 (place S): between-creator comparisons with log10 posting rate (uploads per 30 days over the newest-20 window) as a covariate: OLS slope of the creator mean (median for pace) per decade of posting rate with a 90% creator-bootstrap interval, R^2, the slope in units of the headline's margin; the pace ICC with the covariate as a creator-level fixed effect.
+# Base: 71 seen creators. Interval level: 90% creator bootstrap.
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+headline,creators,slope_per_decade_posting_rate,boot90_low,boot90_high,r2,slope_over_margin,icc_unadjusted,icc_adjusted_log_posting_rate
+pace_median,71.0,-3.87222,-11.98121,2.80478,0.01133,-0.77444,,
+nonspeech,71.0,0.01912,-0.02164,0.06815,0.00807,0.76468,,
+end_coverage_15s,71.0,0.10589,-0.00289,0.18792,0.03449,2.11781,,
+thanks_late,71.0,-0.01525,-0.13321,0.08877,0.00106,-0.30495,,
+term_soul,71.0,0.05288,-0.06517,0.18317,0.00875,1.05761,,
+term_frequency_vibration,71.0,-0.03923,-0.16364,0.06993,0.00489,-0.78455,,
+term_breath,71.0,0.04514,-0.06234,0.14561,0.00681,0.90271,,
+term_ascension,71.0,-0.08686,-0.21276,0.01854,0.02747,-1.7372,,
+term_extraterrestrial,71.0,-0.01669,-0.08652,0.04824,0.00214,-0.33385,,
+pace_icc,71.0,,,,,,0.57789,0.58138

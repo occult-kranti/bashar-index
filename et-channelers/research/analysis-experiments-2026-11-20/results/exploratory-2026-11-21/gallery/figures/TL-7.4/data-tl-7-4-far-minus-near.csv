@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source public file: tl-7-4-specificity-by-horizon.csv (TL package, public folder).
+# Interval level: 90% t interval on creator means (pointwise; no family-wise control).
+set,eligible_creators,statements,outcome,far_minus_near,interval_90_low,interval_90_high,result
+All closed windows,23,1392,Place,,,,not released: YES codes in one band from fewer than 5 creators
+All closed windows,23,1392,Named actor,0.011,-0.039,0.061,estimated
+All closed windows,23,1392,Observable outcome,0.037,-0.028,0.102,estimated
+All closed windows,23,1392,Quantity,-0.004,-0.046,0.037,estimated
+All closed windows,23,1392,Commitment,-0.023,-0.112,0.067,estimated
+Windows not from the period of the talk alone,15-19,483,Place,,,,not released: YES codes in one band from fewer than 5 creators
+Windows not from the period of the talk alone,15-19,483,Named actor,,,,not released: YES codes in one band from fewer than 5 creators
+Windows not from the period of the talk alone,15-19,483,Observable outcome,0.001,-0.076,0.078,estimated
+Windows not from the period of the talk alone,15-19,483,Quantity,-0.002,-0.055,0.051,estimated
+Windows not from the period of the talk alone,15-19,483,Commitment,-0.02,-0.155,0.115,estimated

@@ -1,0 +1,23 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# PT-H part (a): frozen PT patterns on the description field of each group's page text; source HOLD2/PT-H-family-shares.csv (package HOLD2, public).
+# Interval level: 90% t interval over creators, clipped to [0, 1] by the package. Cue counts; precision model-read on seen hits only (model-coded, not checked by a person).
+# The other group is not drawn (see the figure record). Chapters, tags and title fields are in the package table.
+family,group,creators,recordings,creator_mean_share,t90_low,t90_high,status
+payment,seen,all but fewer than 5 of 71,1228,0.2139,0.1355,0.2922,shown
+booking,seen,all but fewer than 5 of 71,1228,0.2523,0.1777,0.3269,shown
+course or class,seen,all but fewer than 5 of 71,1228,0.3592,0.2854,0.433,shown
+event,seen,all but fewer than 5 of 71,1228,0.393,0.3211,0.4649,shown
+shop,seen,all but fewer than 5 of 71,1228,0.2596,0.1853,0.3339,shown
+newsletter,seen,all but fewer than 5 of 71,1228,0.1379,0.0751,0.2007,shown
+other platform,seen,all but fewer than 5 of 71,1228,0.4127,0.325,0.5003,shown
+disclaimer,seen,all but fewer than 5 of 71,1228,0.142,0.0781,0.2059,shown
+"platform engagement (like, subscribe)",seen,all but fewer than 5 of 71,1228,0.3335,0.2527,0.4143,shown
+payment,hold-out,23,415,0.2639,0.1183,0.4094,shown
+booking,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+course or class,hold-out,23,415,0.3535,0.2074,0.4996,shown
+event,hold-out,23,415,0.3819,0.2496,0.5143,shown
+shop,hold-out,23,415,0.2336,0.1101,0.3572,shown
+newsletter,hold-out,23,415,,,,withheld: fewer than 5 creators with a hit
+other platform,hold-out,23,415,0.4796,0.3091,0.65,shown
+disclaimer,hold-out,23,415,0.0945,0.0139,0.1751,shown
+"platform engagement (like, subscribe)",hold-out,23,415,0.3407,0.1775,0.5039,shown

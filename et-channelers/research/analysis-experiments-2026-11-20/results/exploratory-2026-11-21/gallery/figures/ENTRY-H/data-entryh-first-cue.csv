@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# ENTRY-H: the first entrance cue on the hold-out beside the seen creators (E4 how common, E1 where, E4 person); source HOLD/entry-h.csv (package HOLD, public).
+# Interval level: per row (column 'interval'): E4 shares and person 90% t interval over creators; E1 90% creator-bootstrap interval.
+# Cue counts; the version-1 model check on seen creators is model-coded, not checked by a person. Version 2 cells withheld by the package's pair rule are marked.
+quantity,group,version,creators,value,ci90_low,ci90_high,interval,status
+share of recordings with a first entrance cue,seen,v1,71,0.086,0.054,0.118,90% t interval over creators,
+share of recordings with a first entrance cue,seen,v2,71,0.076,0.044,0.107,90% t interval over creators,
+share of recordings with a first entrance cue,hold-out,v1,18,0.068,0.023,0.113,90% t interval over creators,
+share of recordings with a first entrance cue,hold-out,v2,18,,,,90% t interval over creators,hold-out: not released (differs from version 1 in 1 to 4 creators)
+median position of the first cue (share of running time),seen,v1,31,0.145,0.081,0.292,90% creator-bootstrap interval,
+median position of the first cue (share of running time),seen,v2,25,0.112,0.046,0.166,90% creator-bootstrap interval,
+median position of the first cue (share of running time),hold-out,v1,9,0.566,0.126,0.792,90% creator-bootstrap interval,
+median position of the first cue (share of running time),hold-out,v2,5 or more,,,,90% creator-bootstrap interval,hold-out: not released (differs from version 1 in 1 to 4 creators)
+share of first cues in the first person singular ('I'),seen,v1,31,0.632,0.498,0.765,90% t interval over creators with a cue,
+share of first cues in the first person singular ('I'),seen,v2,25,0.506,0.346,0.667,90% t interval over creators with a cue,
+share of first cues in the first person singular ('I'),hold-out,v1,9,0.5,0.19,0.81,90% t interval over creators with a cue,
+share of first cues in the first person singular ('I'),hold-out,v2,5 or more,,,,90% t interval over creators with a cue,hold-out: not released

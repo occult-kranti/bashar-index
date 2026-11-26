@@ -1,0 +1,8 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R1 figure (a) data: distribution over creators of the seen creators' mean U at the registered 180-s trim, registered (raw) and recentred (each recording's U minus its mean over the ten circular shifts): creator-equal mean with its 90% t interval, the 10th, 25th, 50th, 75th and 90th percentiles over creators (no minimum or maximum, plan section 3), and the creators above zero.
+# Added in the release review's fix pass of 2026-11-22 (after the exploratory reporting plan) in place of the build's histogram bins (see rv-r1-u-histogram.csv); computed from the build's seen creator values (seen creators only). Base: 61 seen creators, 558 recordings (filter v2). Interval level: 90% t interval on creator means (mean); percentiles over creators (no interval).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+series,creators,mean,t90_low,t90_high,p10,p25,p50,p75,p90,creators_above_zero
+registered (raw) U,61,0.019,-0.121,0.16,-0.56,-0.19,0.1,0.25,0.45,36 of 61
+recentred U,61,0.083,-0.046,0.211,-0.46,-0.06,0.15,0.31,0.51,41 of 61

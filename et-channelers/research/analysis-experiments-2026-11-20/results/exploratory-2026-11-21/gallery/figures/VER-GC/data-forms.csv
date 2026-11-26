@@ -1,0 +1,18 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded; cross-read by two OpenAI models; no human or external reference. Development creators only (seen creators); before freeze 1.
+# Base: FB 400 items (100 read by both models) of 31 creators; FD 200 (100) of forecast-class creators (creator count not published: a creator count 1 to 4 from a nested count); ASK 150 (100) of 32 creators. Interval level: none for these points (VER-GC printed intervals for the differences only; see the public table).
+# Source: public table ver-gc-forms.csv.
+# Drawn 2026-11-22T07:08:25Z (UTC, from the clock) by lv_figs.py (sha256 b4b8f71c0187e84cf80aed6cf37434023da12d98f734b30655ffbf3ad1cd551f) from public tables only.
+instrument,form,figure,value
+forecast class,T,"two-model agreement, kappa",0.498
+forecast commitment,T,"two-model agreement, kappa",0.663
+ask check,T,"two-model agreement, kappa",0.711
+forecast class,G,"two-model agreement, kappa",0.524
+forecast commitment,G,"two-model agreement, kappa",0.723
+ask check,G,"two-model agreement, kappa",0.695
+forecast class,T,"stability, share of items the same",0.882
+forecast commitment,T,"stability, share of items the same",0.97
+ask check,T,"stability, share of items the same",0.8
+forecast class,G,"stability, share of items the same",0.833
+forecast commitment,G,"stability, share of items the same",0.94
+ask check,G,"stability, share of items the same",0.813

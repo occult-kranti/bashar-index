@@ -1,0 +1,31 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Exploratory pilot, before freeze 1.
+# Base: the disputed words of set W's 21 recordings with scored regions (development creators, seen). Word-weighted shares; 'recordings' counts the recordings (= creators) behind a row.
+# Interval level: none (point shares, as built).
+# Per-label rows: among the disputed words a reader gave label X, the share the third reader also coded X; printed only for labels on 5 or more recordings whose matches and misses each come from 0 or 5 or more recordings.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:04:21Z (UTC, from the clock) by lv_vera.py (sha256 9bf3361489f16f559f2fbc9af80af6a91709c3fd2d070085c9abd095e0addf89) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), span_audit.py (sha256 29643538c5bb18f8dcaa327496eb4aa21c69bd1ac6a20fb9cea7951ff952d3f1), release review B-LV (plan P10).
+figure,level,recordings,share_word_weighted
+third reader gives the small model's label,V1,14,0.161
+third reader gives the small model's label,V2,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the small model's label,V3,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the small model's label,V4,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the small model's label,V5,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the small model's label,V6,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the middle model's label,V0,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the middle model's label,V1,13,0.580
+third reader gives the middle model's label,V2,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the middle model's label,V3,9,0.619
+third reader gives the middle model's label,V4,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the middle model's label,V5,not published (fewer than 5 creators),not published (fewer than 5 creators)
+third reader gives the middle model's label,V6,not published (fewer than 5 creators),not published (fewer than 5 creators)
+"round-2 readers on the disputed words (revised codebook, current units; another process made them)",round-2 readers agree with each other,21,0.566
+"round-2 readers on the disputed words (revised codebook, current units; another process made them)","round-2 readers agree, and the third reader gives their label",21,0.503
+"round-2 readers on the disputed words (revised codebook, current units; another process made them)",round-2 readers still split,21,0.434
+"round-2 readers on the disputed words (revised codebook, current units; another process made them)",round-2 consensus is the small model's round-1 label,21,0.318
+"round-2 readers on the disputed words (revised codebook, current units; another process made them)",round-2 consensus is the middle model's round-1 label,21,"not published (differs from a printed figure, or follows from a sum or difference of printed figures, in fewer than 5 creators)"
+"round-2 readers on the disputed words (revised codebook, current units; another process made them)",round-2 consensus is neither round-1 label,21,not published (fewer than 5 creators)
+"agreement with the designer-coded reference spans (a language model, vendor not recorded; descriptive only), disputed words",small model,not published (fewer than 5 creators),not published (fewer than 5 creators)
+"agreement with the designer-coded reference spans (a language model, vendor not recorded; descriptive only), disputed words",middle model,not published (misses from fewer than 5 creators),not published (misses from fewer than 5 creators)
+"agreement with the designer-coded reference spans (a language model, vendor not recorded; descriptive only), disputed words",third reader,13,0.631
+agreement with the reference spans by reference label; on all labelled words,,not published (cells by label rest on fewer than 5 creators; the all-labelled-words rows need the transcript pipeline to be recounted),

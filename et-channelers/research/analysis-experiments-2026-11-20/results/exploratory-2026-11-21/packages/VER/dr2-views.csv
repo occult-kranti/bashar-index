@@ -1,0 +1,22 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# DR-2: second reading by another model (registry 2026-11-21 02:50; registry row of 04:55). Model-coded: the record and a second model of the same vendor (OpenAI) read the same units; agreement between two models is reliability, not validity; not checked by a person. Gate sample G (seen creators, check and development creators alike; not the 23 check creators of VER-3R) only; no hold-out or other-group file.
+# S (sentence codes): record gpt-6-luna (small), second gpt-6.1-terra (middle), same prompt and effort. FC (checkability parts of coded forecast statements; the plan's 'forecast candidates'): record gpt-6.1-terra (middle), second gpt-6-sol (large) at effort low.
+# S: 400 units of 34 recordings of 32 creators; FC: 300 coded statements of 27 recordings (27 creators, one recording each). Read 2026-11-21 03:15-03:21 UTC.
+# Intervals 90% (5th and 95th percentiles of 2,000 two-stage bootstrap draws: creators, then recordings).
+# Small cells: codes of fewer than 5 creators are pooled; a figure is printed only if no count resting on fewer than 5 creators can be solved from it and the other printed figures, including those of the registry (disclosure check; ver.md).
+instrument,view,units,share_equal_90,kappa_90,kappa_design_weighted,status,note
+S,"H5 group (Q2 in neither, the registered grouping)",400,"0.865 [0.835, 0.895]","0.786 [0.735, 0.832]",0.786,printed,
+S,"H5 group, Q2 assigned to world claim",400,"0.830 [0.797, 0.861]","0.745 [0.696, 0.790]",0.744,printed,
+S,"H5 group, Q2 assigned to practice and feeling",400,"0.838 [0.804, 0.868]","0.749 [0.694, 0.794]",0.748,printed,
+S,primary code (12 values),400,"0.725 [0.682, 0.766]","0.684 [0.634, 0.727]",0.682,printed,
+FC,"time window, 3 values",300,"0.883 [0.775, 0.979]","0.703 [0.554, 0.920]",0.698,printed,"its disagreements are concentrated in very few creators (registry 04:55), so this kappa rests mostly on them"
+FC,"time window, YES or not",300,,,,not printed: the 3-valued view of this part is printed (one view per part),
+FC,"place, 3 values",300,,,,withheld: the units the readings code differently come from fewer than 5 creators,
+FC,"place, YES or not",300,,,,withheld: the units the readings code differently come from fewer than 5 creators,
+FC,"named actor, 3 values",300,"0.960 [0.942, 0.981]","0.687 [0.553, 0.765]",0.689,printed,
+FC,"named actor, YES or not",300,,,,not printed: the 3-valued view of this part is printed (one view per part),
+FC,"observable outcome, 3 values",300,"0.963 [0.948, 0.981]","0.787 [0.741, 0.858]",0.786,printed,
+FC,"observable outcome, YES or not",300,,,,not printed: the 3-valued view of this part is printed (one view per part),
+FC,"quantity, 3 values",300,,,,withheld: its YES codes come from fewer than 5 creators in a reading,
+FC,"quantity, YES or not",300,,,,withheld: its YES codes come from fewer than 5 creators in a reading,
+FC,number of YES parts (0 to 5),300,"0.800 [0.708, 0.886]","0.619 [0.479, 0.758]",0.614,printed,

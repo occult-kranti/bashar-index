@@ -1,0 +1,10 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# SD part (b), confirmed version B, seen creators. Anchor-matched contrast, near = within 3 UTC days, far = 14-60 days; mean over partners, anchors, then creators; 90% t interval over creators. Every row rests on the same creators and the same anchor recordings (creator count not printed: nested-count rule).
+# G = dates permuted among each creator's own recordings; L = dates permuted inside 28-day blocks (keeps drift over weeks); 999 draws each; ranges are mean +/- 1.96 SD. Last row post hoc (not pre-specified).
+# UTC dates; upload date, not date of speaking. Never read as contact, coordination, copying or influence.
+row,estimate,t90_low,t90_high,G_low,G_high,L_low,L_high,anchor_recordings
+"calendar words only (positive control, read first)",0.01573,0.00911,0.02234,-0.00712,0.00684,0.00595,0.01559,908
+"full vocabulary, names masked (primary)",0.00101,-0.00094,0.00296,-0.0031,0.00313,-0.00116,0.0016,908
+"full vocabulary, names not masked",0.00097,-0.001,0.00293,-0.00319,0.00299,-0.00113,0.00154,908
+event-word proxy v0,0.00756,0.0046,0.01052,-0.00345,0.00338,0.0024,0.00751,908
+event-word proxy without its calendar words (post hoc),0.00036,-0.00035,0.00107,-0.00147,0.00154,-0.0008,0.00115,908

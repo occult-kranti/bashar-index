@@ -1,0 +1,13 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Exploratory replication on hold-out creators, run after the registered tests (registry 2026-11-21 23:17) on code written after freeze 2 (a deviation from the plan's 'code frozen in the freeze-2 record'); hold-out-only estimates beside seen estimates, never pooled, never a confirmation.
+# package HOLD2; written 2026-11-22T01:34:03Z; {"python": "3.12.9", "numpy": "2.5.0", "scipy": "1.18.0", "pandas": "3.0.3", "sklearn": "1.9.0", "matplotlib": "3.11.1"}
+# RX-H position: each creator's rate in the first and in the last tenth of running time divided by its own rate (1 = no change), mean over creators with 5 or more hits of the sub-pattern, 90% creator-bootstrap percentile intervals (2,000 draws). Pointwise intervals; no family-wise control.
+# Cue counts; same base as RX-H-pattern-rates.csv.
+# Release fix of 2026-11-22 (2026-11-22T06:14:18Z) by the plotting group X-HOLD's apply_release_fixes.py (sha256 a5c389b3f05b1084; dominance.py d96371e790ec2245), after the verifier's report, for privacy only (it hides values and chooses none): the seen A3 first-tenth cell is withheld: from its printed mean, bootstrap interval and creator count, one creator would hold half or more of the summed creator values (dominance; a bootstrap interval gives the spread approximately, and the wider half is used).
+group,name,status,creators_5plus_hits,first_tenth_relative_rate,first_lo90,first_hi90,last_tenth_relative_rate,last_lo90,last_hi90
+seen,A1_own_name_intro,shown,23,8.0631,6.8587,9.331,1.0104,0.3068,1.8596
+seen,A2_greeting,shown,43,8.1854,7.4081,9.0196,0.5667,0.2311,1.0363
+seen,A3_person_signoff,shown; first tenth withheld: dominated by fewer than 5 creators,34,,,,9.8034,9.1484,10.4267
+holdout,A1_own_name_intro,withheld: fewer than 5 creators with 5 or more hits,,,,,,,
+holdout,A2_greeting,shown,5 or more,6.6162,4.7682,8.3788,1.6067,0.4813,3.1671
+holdout,A3_person_signoff,shown,5 or more,0.0,0.0,0.0,10.4902,9.4841,11.383

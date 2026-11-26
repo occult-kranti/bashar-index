@@ -1,0 +1,15 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file NLP/public/nlp-r11-hedge-kinds.csv (sha256 181b146549d4770b).
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap draws, as printed by the package.
+# Section 4 of the source: the model's hedge code by sentence marker; each share is within the statements of its group (weighted 1 / inclusion probability).
+# The creators column is copied from the package file as printed. Forecast statements, their commitment codes and source markers are model-coded, not checked by a person; RX markers are cue counts of fixed wording patterns (model-read precision on seen hits: lexical hedge 0.84, modal hedge 0.67, perception report 0.633; Wilson 95% intervals in the source file).
+section,row,mean,lo95,hi95,creators,status
+4,no lexical or modal hedge,0.076,0.061,0.092,all but fewer than 5 of 71,printed
+4,a lexical hedge only,0.619,0.554,0.677,withheld (within 4 of another printed count),printed
+4,a modal hedge only,0.696,0.63,0.757,54,printed
+4,both,0.816,0.687,0.918,withheld (within 4 of another printed count),printed
+4,an evidential term,0.745,0.614,0.874,withheld (within 4 of another printed count),printed
+4,a perception report,0.355,0.119,0.628,withheld (within 4 of another printed count),printed
+4,sentence with an evidential term,,,,withheld (within 4 of another printed count),not published (fewer than 5 creators with a non-zero value)
+4,sentence with a perception report,0.487,0.256,0.727,withheld (within 4 of another printed count),printed
+4,share with no RX hedge or perception marker,0.419,0.359,0.476,withheld (within 4 of another printed count),printed

@@ -1,0 +1,23 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file NLP/public/nlp-r11-hedge-kinds.csv (sha256 181b146549d4770b).
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap draws, as printed by the package (rows that repeat a LAB-F row print LAB-F's cells).
+# Sections of the source: 1, lexical against modal hedges (RX E1, E2); 2, kinds of marker (E1 split by its terms, written by the package; B3); 3, the commitment model's own fields; 5, committed share under the paper review's mappings (from the sentence's markers, an approximation). The four shares of the hedge-kind partition are withheld by the package and are not drawn.
+# The creators column is copied from the package file as printed. Forecast statements, their commitment codes and source markers are model-coded, not checked by a person; RX markers are cue counts of fixed wording patterns (model-read precision on seen hits: lexical hedge 0.84, modal hedge 0.67, perception report 0.633; Wilson 95% intervals in the source file).
+section,row,mean,lo95,hi95,creators,status
+1,neither a lexical nor a modal hedge,0.856,0.829,0.883,all but fewer than 5 of 71,printed
+1,a lexical hedge only,0.082,0.065,0.102,all but fewer than 5 of 71,printed
+1,"a modal hedge only (may, might, could)",0.052,0.04,0.067,all but fewer than 5 of 71,printed
+1,both a lexical and a modal hedge,0.009,0.006,0.013,all but fewer than 5 of 71,printed
+1,the forecast chain's closed hedge list,0.164,0.139,0.19,all but fewer than 5 of 71,printed
+2,lexical epistemic hedge,0.085,0.066,0.106,all but fewer than 5 of 71,printed
+2,"evidential term (I feel like, I sense)",0.007,0.003,0.011,all but fewer than 5 of 71,printed
+2,devotional formula,,,,all but fewer than 5 of 71,not published (fewer than 5 creators with a non-zero value)
+2,perception report,0.003,0.001,0.007,all but fewer than 5 of 71,printed
+3,hedge YES,0.163,0.135,0.193,all but fewer than 5 of 71,printed
+3,a condition,0.079,0.066,0.094,all but fewer than 5 of 71,printed
+3,source marker: perception,0.022,0.015,0.028,all but fewer than 5 of 71,printed
+3,source marker: relay (a source says it),0.045,0.032,0.06,all but fewer than 5 of 71,printed
+3,source marker: other grounds,0.001,0.0,0.002,all but fewer than 5 of 71,printed
+5,as coded,0.771,0.74,0.8,all but fewer than 5 of 71,printed
+5,evidential-only hedges counted as committed,0.775,0.746,0.804,all but fewer than 5 of 71,printed
+5,devotional-only too,,,,all but fewer than 5 of 71,not repeated: the same as the row above in every creator

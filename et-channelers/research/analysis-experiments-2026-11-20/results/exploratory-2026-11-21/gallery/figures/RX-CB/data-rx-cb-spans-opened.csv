@@ -1,0 +1,10 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/rx-cb-spans-opened.csv
+# Interval level: 90% creator bootstrap (observed share); 95% range of 999 circular shifts (reference)
+# RX-CB: share of claimed-voice spans (starting inside the recording) with an opening cue (J1, J2a, J2b) or an opening placebo-list hit (P1, P2) within 30 s of the span start, creator-balanced, against 999 circular shifts of the hits. Middle = middle-model subset (primary); small = small model of record. Seen creators only.
+# Cue counts (RX cue reader v1; the model-read precision of the J sub-patterns is below the count gate, so hits are cue counts). Voice boundaries are model-coded (kappa 0.79 against the readers' majority on the VER-3R sample (third model of the same vendor); kappa 0.91 with a reader of another vendor, VG-6); not checked by a person. The middle-model placebo row is not released (fewer than 5 creators with a span opened).
+labels,list,creators_with_spans,creators_with_a_span_opened,share_opened,low_90,high_90,shift_mean,shift_95_low,shift_95_high,status
+middle,"opening cues (J1, J2a, J2b)",53,8,0.0695,0.0256,0.1245,0.0216,0.0,0.0489,reported
+middle,"opening placebo lists (P1, P2)",,,,,,,,,not released: fewer than 5 creators with a span opened
+small,"opening cues (J1, J2a, J2b)",65,21,0.0682,0.0365,0.1039,0.0112,0.0055,0.019,reported
+small,"opening placebo lists (P1, P2)",65,8,0.0084,0.0034,0.0146,0.0053,0.0016,0.0115,reported

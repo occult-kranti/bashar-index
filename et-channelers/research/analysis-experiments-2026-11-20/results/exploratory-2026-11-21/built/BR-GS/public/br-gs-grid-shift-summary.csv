@@ -1,0 +1,47 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# BR-GS (plan 6.7): how the recognizer's words and the seam measures move when the decoding grid is shifted. Shares are 0 to 1; onset densities are relative to the recording's mean density; a 'seam' is a window boundary.
+# Base: 40 seen recordings, one per creator (40 creators), re-decoded with the 30-s window grid moved by 15 s; 10 of them also re-decoded on the run's own grid as controls.
+# Word alignment uses the normaliser wa-norm-v2 (chosen after the result); measures are on the recognizer's words, not checked by a person.
+# Interval level: 95% percentile intervals from 2,000 resamples of the recordings (one per creator), a seed per row. A value that is 0 for every recording is printed as 0 (interval 0 to 0). Values rounded once, from unrounded values.
+# Every printed value rests on 5 or more recordings (creators) with a non-zero value, or is 0 for all; no two printed rows differ in fewer than 5 recordings.
+# Source: BR-GS's run of 2026-11-21 on seen creators, public form by the release review (2026-11-22).
+# Written by br_public.py (release review, plan P10, 2026-11-22; revised after the release verification), SHA-256 a03e56ab5f6ff37c3ab1cefacba8f4ad51975a9d0aa71042bf49c0dd6170da66; cells checked by verify_br.py, SHA-256 592d9b7da6d4e9df228494036e5a0a48b3514fcd130679a80202986f4eb31efd.
+measure,value,lo95,hi95,recordings,creators,note
+"changed share of recognized words, shifted vs run grid (mean over recordings)",0.0371,0.0287,0.0490,40,40,
+"changed share of recognized words, shifted vs run grid (word-pooled)",0.0416,0.0308,0.0538,40,40,
+"substitutions share, shifted vs run grid (word-pooled)",0.0166,0.0106,0.0243,40,40,
+"deletions share, shifted vs run grid (word-pooled)",0.0138,0.0101,0.0181,40,40,
+"insertions share, shifted vs run grid (word-pooled)",0.0112,0.0092,0.0135,40,40,
+share of edits within 1 s of a run-grid seam (uniform expectation 0.0667),0.2014,0.1747,0.2429,40,40,
+share of edits within 1 s of a shifted-grid seam (uniform expectation 0.0667),0.1864,0.1589,0.2299,40,40,
+"changed share of recognized words, run grid decoded again vs transcript of record (word-pooled)",0.0000,0.0000,0.0000,10,10,control: same run grid decoded again; 10 recordings
+"changed share, shifted minus control, same recordings (mean of differences)",0.0484,0.0236,0.0862,10,10,control: same run grid decoded again; 10 recordings
+"changed share of recognized words, shifted vs run grid, records made by the same worker version (word-pooled)",0.0428,0.0314,0.0564,31,31,transcripts of record made by the worker version used for the re-decode
+onset density in the first 0.25 s of windows / mean density: run-grid decode on its own grid,1.9178,1.8374,2.0103,40,40,
+onset density in the last 0.25 s of windows / mean density: run-grid decode on its own grid,0.6042,0.5422,0.6562,40,40,
+share of seams inside a pause of 0.3 s or more: run-grid decode on its own grid,0.3524,0.2997,0.4090,40,40,
+share of seams inside a word: run-grid decode on its own grid,0.0000,0.0000,0.0000,40,40,
+share of seams in a gap under 0.3 s: run-grid decode on its own grid,0.6476,0.5933,0.7008,40,40,
+share of the time within 1 s of a seam inside pauses of 0.3 s or more: run-grid decode on its own grid,0.2078,0.1685,0.2562,40,40,
+onset density in the first 0.25 s of windows / mean density: shifted decode on its own grid,1.9715,1.8849,2.0602,40,40,
+onset density in the last 0.25 s of windows / mean density: shifted decode on its own grid,0.5909,0.5473,0.6361,40,40,
+share of seams inside a pause of 0.3 s or more: shifted decode on its own grid,0.3561,0.3013,0.4194,40,40,
+share of seams inside a word: shifted decode on its own grid,0.0000,0.0000,0.0000,40,40,
+share of seams in a gap under 0.3 s: shifted decode on its own grid,0.6439,0.5812,0.6973,40,40,
+share of the time within 1 s of a seam inside pauses of 0.3 s or more: shifted decode on its own grid,0.2208,0.1776,0.2723,40,40,
+onset density in the first 0.25 s of windows / mean density: run-grid decode on the shifted grid (placebo),1.0404,1.0005,1.0834,40,40,
+onset density in the last 0.25 s of windows / mean density: run-grid decode on the shifted grid (placebo),0.9417,0.9005,0.9863,40,40,
+share of seams inside a pause of 0.3 s or more: run-grid decode on the shifted grid (placebo),0.2227,0.1827,0.2693,40,40,
+share of seams inside a word: run-grid decode on the shifted grid (placebo),0.7214,0.6800,0.7579,40,40,
+share of seams in a gap under 0.3 s: run-grid decode on the shifted grid (placebo),0.0559,0.0429,0.0687,40,40,
+share of the time within 1 s of a seam inside pauses of 0.3 s or more: run-grid decode on the shifted grid (placebo),0.2237,0.1818,0.2688,40,40,
+onset density in the first 0.25 s of windows / mean density: shifted decode on the run grid (placebo),1.0094,0.9577,1.0623,40,40,
+onset density in the last 0.25 s of windows / mean density: shifted decode on the run grid (placebo),0.9566,0.9084,1.0005,40,40,
+share of seams inside a pause of 0.3 s or more: shifted decode on the run grid (placebo),0.2247,0.1828,0.2718,40,40,
+share of seams inside a word: shifted decode on the run grid (placebo),0.7122,0.6652,0.7535,40,40,
+share of seams in a gap under 0.3 s: shifted decode on the run grid (placebo),0.0631,0.0441,0.0871,40,40,
+share of the time within 1 s of a seam inside pauses of 0.3 s or more: shifted decode on the run grid (placebo),0.2141,0.1757,0.2568,40,40,
+"whole-recording pause share, run-grid decode",0.2031,0.1719,0.2392,40,40,
+"whole-recording pause share, shifted decode",0.2017,0.1676,0.2419,40,40,
+"whole-recording pause share, shifted minus run grid (mean of differences)",-0.0014,-0.0058,0.0030,40,40,
+"words, shifted minus run grid, relative (mean of ratios minus 1)",-0.0018,-0.0049,0.0004,40,40,

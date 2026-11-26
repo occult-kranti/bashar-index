@@ -1,0 +1,72 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): CROSS/public/mtmm-matrix.csv
+# Interval level: none drawn (the 90% creator-bootstrap intervals, 2,000 draws, of every cell are in the source file)
+# MTMM: Spearman rho across seen creators of every pair of the 12 measures (3 constructs x 4 methods; subject not run). Each measure is one share per seen creator (definitions in the source file). Pairs with a measure read on the page description rest on all but fewer than 5 of the 71 seen creators, the others on 71.
+# kind: convergent (same construct, different methods), heterotrait-monomethod or heterotrait-heteromethod; shared_input: whether the two measures read the same input. Model cells are model-coded and not checked by a person; rule cells are cue counts; agreement between methods, never accuracy.
+measure_a,measure_b,kind,shared_input,spearman_rho
+voice|small,voice|middle,"convergent (same construct, different methods)",same input (transcript; same transcript units),0.8501
+voice|small,voice|rule,"convergent (same construct, different methods)",same input (transcript),0.558
+voice|middle,voice|rule,"convergent (same construct, different methods)",same input (transcript),0.4827
+voice|small,voice|page,"convergent (same construct, different methods)",different inputs,0.6595
+voice|middle,voice|page,"convergent (same construct, different methods)",different inputs,0.5736
+voice|rule,voice|page,"convergent (same construct, different methods)",different inputs,0.381
+voice|small,source family|small,heterotrait-monomethod,different inputs,0.4297
+voice|middle,source family|small,heterotrait-heteromethod,different inputs,0.2732
+voice|rule,source family|small,heterotrait-heteromethod,different inputs,0.3944
+voice|page,source family|small,heterotrait-heteromethod,same input (title),0.5251
+voice|small,source family|middle,heterotrait-heteromethod,different inputs,0.4191
+voice|middle,source family|middle,heterotrait-monomethod,different inputs,0.3196
+voice|rule,source family|middle,heterotrait-heteromethod,different inputs,0.3788
+voice|page,source family|middle,heterotrait-heteromethod,same input (title; the same middle-model title reading where the title was not adjudicated),0.5757
+source family|small,source family|middle,"convergent (same construct, different methods)",same input (title),0.9353
+voice|small,source family|rule,heterotrait-heteromethod,same input (transcript),0.3372
+voice|middle,source family|rule,heterotrait-heteromethod,same input (transcript),0.2545
+voice|rule,source family|rule,heterotrait-monomethod,same input (transcript),0.2999
+voice|page,source family|rule,heterotrait-heteromethod,different inputs,0.2186
+source family|small,source family|rule,"convergent (same construct, different methods)",different inputs,0.4434
+source family|middle,source family|rule,"convergent (same construct, different methods)",different inputs,0.3992
+voice|small,source family|page,heterotrait-heteromethod,different inputs,0.3706
+voice|middle,source family|page,heterotrait-heteromethod,different inputs,0.2323
+voice|rule,source family|page,heterotrait-heteromethod,different inputs,0.2971
+voice|page,source family|page,heterotrait-monomethod,same input (title),0.4481
+source family|small,source family|page,"convergent (same construct, different methods)",same input (title),0.8407
+source family|middle,source family|page,"convergent (same construct, different methods)",same input (title),0.7818
+source family|rule,source family|page,"convergent (same construct, different methods)",different inputs,0.5842
+voice|small,asks|small,heterotrait-monomethod,same input (transcript),0.2699
+voice|middle,asks|small,heterotrait-heteromethod,same input (transcript),0.2745
+voice|rule,asks|small,heterotrait-heteromethod,same input (transcript),0.2895
+voice|page,asks|small,heterotrait-heteromethod,different inputs,0.1174
+source family|small,asks|small,heterotrait-monomethod,different inputs,0.0036
+source family|middle,asks|small,heterotrait-heteromethod,different inputs,0.0284
+source family|rule,asks|small,heterotrait-heteromethod,same input (transcript),0.3806
+source family|page,asks|small,heterotrait-heteromethod,different inputs,-0.015
+voice|small,asks|middle,heterotrait-heteromethod,same input (transcript),0.2233
+voice|middle,asks|middle,heterotrait-monomethod,same input (transcript),0.2223
+voice|rule,asks|middle,heterotrait-heteromethod,same input (transcript),0.2389
+voice|page,asks|middle,heterotrait-heteromethod,different inputs,0.0681
+source family|small,asks|middle,heterotrait-heteromethod,different inputs,-0.0362
+source family|middle,asks|middle,heterotrait-monomethod,different inputs,-0.0195
+source family|rule,asks|middle,heterotrait-heteromethod,same input (transcript),0.3259
+source family|page,asks|middle,heterotrait-heteromethod,different inputs,-0.0799
+asks|small,asks|middle,"convergent (same construct, different methods)",same input (transcript; same candidates of the small finder),0.9644
+voice|small,asks|rule,heterotrait-heteromethod,same input (transcript),-0.0571
+voice|middle,asks|rule,heterotrait-heteromethod,same input (transcript),-0.0502
+voice|rule,asks|rule,heterotrait-monomethod,same input (transcript),0.0815
+voice|page,asks|rule,heterotrait-heteromethod,different inputs,-0.1285
+source family|small,asks|rule,heterotrait-heteromethod,different inputs,-0.2272
+source family|middle,asks|rule,heterotrait-heteromethod,different inputs,-0.2149
+source family|rule,asks|rule,heterotrait-monomethod,same input (transcript),0.1111
+source family|page,asks|rule,heterotrait-heteromethod,different inputs,-0.324
+asks|small,asks|rule,"convergent (same construct, different methods)",same input (transcript),0.5019
+asks|middle,asks|rule,"convergent (same construct, different methods)",same input (transcript),0.5542
+voice|small,asks|page,heterotrait-heteromethod,different inputs,-0.0048
+voice|middle,asks|page,heterotrait-heteromethod,different inputs,0.1291
+voice|rule,asks|page,heterotrait-heteromethod,different inputs,-0.0764
+voice|page,asks|page,heterotrait-monomethod,different inputs,0.0986
+source family|small,asks|page,heterotrait-heteromethod,different inputs,-0.1554
+source family|middle,asks|page,heterotrait-heteromethod,different inputs,-0.0968
+source family|rule,asks|page,heterotrait-heteromethod,different inputs,-0.0418
+source family|page,asks|page,heterotrait-monomethod,different inputs,-0.0955
+asks|small,asks|page,"convergent (same construct, different methods)",different inputs,0.3364
+asks|middle,asks|page,"convergent (same construct, different methods)",different inputs,0.3174
+asks|rule,asks|page,"convergent (same construct, different methods)",different inputs,0.1098

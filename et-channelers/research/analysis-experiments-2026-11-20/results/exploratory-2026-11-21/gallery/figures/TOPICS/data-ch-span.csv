@@ -1,0 +1,82 @@
+# Exploratory (registry A2); not a test of H1-H10.
+measure,measure_id,date_panel,spearman_with_log_span,ci90_low,ci90_high,interval_excludes_0
+recording length (log words),log_words,confirmed panel A (exact days of the dates file),-0.117,-0.316,0.093,False
+recording length (log words),log_words,confirmed panel B (plus days confirmed by local time stamps),-0.065,-0.276,0.15,False
+pace (words per speech minute),pace_wpm,confirmed panel A (exact days of the dates file),-0.126,-0.317,0.077,False
+pace (words per speech minute),pace_wpm,confirmed panel B (plus days confirmed by local time stamps),-0.064,-0.26,0.132,False
+word length (letters),word_length,confirmed panel A (exact days of the dates file),0.235,0.042,0.417,True
+word length (letters),word_length,confirmed panel B (plus days confirmed by local time stamps),0.135,-0.075,0.334,False
+vocabulary variety (MATTR),mattr1000,confirmed panel A (exact days of the dates file),0.117,-0.089,0.307,False
+vocabulary variety (MATTR),mattr1000,confirmed panel B (plus days confirmed by local time stamps),0.078,-0.125,0.275,False
+contractions,contraction_rate,confirmed panel A (exact days of the dates file),-0.037,-0.231,0.154,False
+contractions,contraction_rate,confirmed panel B (plus days confirmed by local time stamps),0.002,-0.216,0.207,False
+first-person singular,first_singular_rate,confirmed panel A (exact days of the dates file),-0.25,-0.43,-0.054,True
+first-person singular,first_singular_rate,confirmed panel B (plus days confirmed by local time stamps),-0.112,-0.305,0.099,False
+first-person plural,first_plural_rate,confirmed panel A (exact days of the dates file),0.033,-0.187,0.246,False
+first-person plural,first_plural_rate,confirmed panel B (plus days confirmed by local time stamps),0.093,-0.117,0.299,False
+second person,second_person_rate,confirmed panel A (exact days of the dates file),-0.074,-0.284,0.144,False
+second person,second_person_rate,confirmed panel B (plus days confirmed by local time stamps),-0.07,-0.272,0.141,False
+question marks,question_rate,confirmed panel A (exact days of the dates file),0.003,-0.206,0.212,False
+question marks,question_rate,confirmed panel B (plus days confirmed by local time stamps),0.12,-0.089,0.321,False
+RX A greetings and sign-offs,rx_A_frames,confirmed panel A (exact days of the dates file),0.079,-0.12,0.273,False
+RX A greetings and sign-offs,rx_A_frames,confirmed panel B (plus days confirmed by local time stamps),0.046,-0.164,0.256,False
+RX B reported speech,rx_B_reporting,confirmed panel A (exact days of the dates file),-0.017,-0.202,0.172,False
+RX B reported speech,rx_B_reporting,confirmed panel B (plus days confirmed by local time stamps),0.003,-0.196,0.198,False
+RX C forms of address,rx_C_address,confirmed panel A (exact days of the dates file),0.194,-0.009,0.378,False
+RX C forms of address,rx_C_address,confirmed panel B (plus days confirmed by local time stamps),0.107,-0.106,0.308,False
+RX D time expressions,rx_D_time,confirmed panel A (exact days of the dates file),0.178,-0.029,0.363,False
+RX D time expressions,rx_D_time,confirmed panel B (plus days confirmed by local time stamps),0.12,-0.082,0.313,False
+RX E hedges and boosters,rx_E_stance,confirmed panel A (exact days of the dates file),-0.216,-0.401,-0.027,True
+RX E hedges and boosters,rx_E_stance,confirmed panel B (plus days confirmed by local time stamps),-0.253,-0.446,-0.06,True
+RX F asks,rx_F_asks,confirmed panel A (exact days of the dates file),-0.127,-0.335,0.084,False
+RX F asks,rx_F_asks,confirmed panel B (plus days confirmed by local time stamps),-0.102,-0.32,0.118,False
+RX G named beings and places,rx_G_names_v0,confirmed panel A (exact days of the dates file),0.063,-0.146,0.259,False
+RX G named beings and places,rx_G_names_v0,confirmed panel B (plus days confirmed by local time stamps),0.001,-0.197,0.2,False
+RX H numerals,rx_H_numerals,confirmed panel A (exact days of the dates file),0.073,-0.146,0.271,False
+RX H numerals,rx_H_numerals,confirmed panel B (plus days confirmed by local time stamps),0.081,-0.147,0.285,False
+RX I questions,rx_I_questions,confirmed panel A (exact days of the dates file),0.014,-0.187,0.219,False
+RX I questions,rx_I_questions,confirmed panel B (plus days confirmed by local time stamps),0.135,-0.064,0.325,False
+RX J framing cues,rx_J_framing_cues,confirmed panel A (exact days of the dates file),-0.078,-0.298,0.155,False
+RX J framing cues,rx_J_framing_cues,confirmed panel B (plus days confirmed by local time stamps),-0.124,-0.348,0.118,False
+topic 1,tm_01,confirmed panel A (exact days of the dates file),0.06,-0.162,0.27,False
+topic 1,tm_01,confirmed panel B (plus days confirmed by local time stamps),0.017,-0.206,0.234,False
+topic 2,tm_02,confirmed panel A (exact days of the dates file),-0.001,-0.222,0.218,False
+topic 2,tm_02,confirmed panel B (plus days confirmed by local time stamps),0.083,-0.142,0.305,False
+topic 3,tm_03,confirmed panel A (exact days of the dates file),0.136,-0.051,0.316,False
+topic 3,tm_03,confirmed panel B (plus days confirmed by local time stamps),0.062,-0.141,0.244,False
+topic 4,tm_04,confirmed panel A (exact days of the dates file),-0.009,-0.218,0.209,False
+topic 4,tm_04,confirmed panel B (plus days confirmed by local time stamps),0.041,-0.166,0.251,False
+topic 5,tm_05,confirmed panel A (exact days of the dates file),0.249,0.045,0.44,True
+topic 5,tm_05,confirmed panel B (plus days confirmed by local time stamps),0.227,0.028,0.407,True
+topic 6,tm_06,confirmed panel A (exact days of the dates file),0.049,-0.161,0.251,False
+topic 6,tm_06,confirmed panel B (plus days confirmed by local time stamps),0.106,-0.106,0.303,False
+topic 7,tm_07,confirmed panel A (exact days of the dates file),0.059,-0.15,0.256,False
+topic 7,tm_07,confirmed panel B (plus days confirmed by local time stamps),0.093,-0.108,0.296,False
+topic 8,tm_08,confirmed panel A (exact days of the dates file),-0.027,-0.248,0.182,False
+topic 8,tm_08,confirmed panel B (plus days confirmed by local time stamps),0.002,-0.225,0.218,False
+topic 9,tm_09,confirmed panel A (exact days of the dates file),0.022,-0.19,0.225,False
+topic 9,tm_09,confirmed panel B (plus days confirmed by local time stamps),-0.002,-0.209,0.201,False
+topic 10,tm_10,confirmed panel A (exact days of the dates file),0.138,-0.052,0.316,False
+topic 10,tm_10,confirmed panel B (plus days confirmed by local time stamps),0.169,-0.016,0.339,False
+topic 11,tm_11,confirmed panel A (exact days of the dates file),-0.042,-0.229,0.152,False
+topic 11,tm_11,confirmed panel B (plus days confirmed by local time stamps),-0.002,-0.195,0.192,False
+topic 12,tm_12,confirmed panel A (exact days of the dates file),-0.058,-0.277,0.154,False
+topic 12,tm_12,confirmed panel B (plus days confirmed by local time stamps),-0.099,-0.316,0.123,False
+topic 13,tm_13,confirmed panel A (exact days of the dates file),0.032,-0.158,0.225,False
+topic 13,tm_13,confirmed panel B (plus days confirmed by local time stamps),0.04,-0.153,0.231,False
+topic 14,tm_14,confirmed panel A (exact days of the dates file),0.087,-0.128,0.292,False
+topic 14,tm_14,confirmed panel B (plus days confirmed by local time stamps),0.095,-0.115,0.297,False
+topic 15,tm_15,confirmed panel A (exact days of the dates file),-0.213,-0.41,-0.003,True
+topic 15,tm_15,confirmed panel B (plus days confirmed by local time stamps),-0.082,-0.292,0.13,False
+topic 16,tm_16,confirmed panel A (exact days of the dates file),0.059,-0.152,0.249,False
+topic 16,tm_16,confirmed panel B (plus days confirmed by local time stamps),0.04,-0.163,0.232,False
+topic balance B1,tm_B1,confirmed panel A (exact days of the dates file),0.195,-0.003,0.389,False
+topic balance B1,tm_B1,confirmed panel B (plus days confirmed by local time stamps),0.113,-0.096,0.321,False
+topic balance B2,tm_B2,confirmed panel A (exact days of the dates file),0.178,-0.02,0.36,False
+topic balance B2,tm_B2,confirmed panel B (plus days confirmed by local time stamps),0.096,-0.098,0.274,False
+topic balance B3,tm_B3,confirmed panel A (exact days of the dates file),-0.081,-0.277,0.119,False
+topic balance B3,tm_B3,confirmed panel B (plus days confirmed by local time stamps),-0.021,-0.221,0.182,False
+topic balance B4,tm_B4,confirmed panel A (exact days of the dates file),0.042,-0.169,0.244,False
+topic balance B4,tm_B4,confirmed panel B (plus days confirmed by local time stamps),0.077,-0.132,0.279,False
+topic balance B5,tm_B5,confirmed panel A (exact days of the dates file),-0.013,-0.239,0.213,False
+topic balance B5,tm_B5,confirmed panel B (plus days confirmed by local time stamps),0.01,-0.217,0.23,False

@@ -1,0 +1,18 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R5 (place S): creator pace (words per speech minute), raw creator means and empirical-Bayes (shrunken) means from the Gaussian REML fit, in bins merged until every bin holds 5 or more creators; the end bins are open (outer edges not printed). No creator is shown.
+# Public form (release review's fix pass of 2026-11-22): the build's bins 150-160 and 160-170 are merged into 150-170 in both series, because shrinkage moves every creator toward the mean by a near-constant factor, so raw and shrunken bins that differ would bound the pace of the creators that change bin (pairs rule, addendum 2 item 9). After the merge both series hold the same number of creators in every bin.
+# Base: 71 seen creators, 1,211 recordings. Grand mean 148.5; deconvolved between-creator SD 16.8; within-creator SD 14.3; SD of raw creator means 17.5, of shrunken means 16.4; median shrinkage factor 0.96 (10th to 90th percentile over creators 0.950 to 0.965).
+# 10th, 25th, 50th, 75th and 90th percentiles over creators: raw 123.8, 138.8, 148.4, 159.0, 171.9; shrunken 125.5, 139.2, 148.4, 158.6, 170.9. Interval level: none (counts of creators and percentiles).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+series,bin,bin_low,bin_high,creators
+raw creator means,< 130,,130.0,11
+raw creator means,130 to 140,130.0,140.0,8
+raw creator means,140 to 150,140.0,150.0,20
+raw creator means,150 to 170,150.0,170.0,23
+raw creator means,>= 170,170.0,,9
+empirical-Bayes (shrunken) creator means,< 130,,130.0,11
+empirical-Bayes (shrunken) creator means,130 to 140,130.0,140.0,8
+empirical-Bayes (shrunken) creator means,140 to 150,140.0,150.0,20
+empirical-Bayes (shrunken) creator means,150 to 170,150.0,170.0,23
+empirical-Bayes (shrunken) creator means,>= 170,170.0,,9

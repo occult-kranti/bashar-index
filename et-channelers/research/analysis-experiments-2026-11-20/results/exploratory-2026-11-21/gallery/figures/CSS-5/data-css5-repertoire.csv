@@ -1,0 +1,8 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# CSS-5 (place S, review figure 5a): seen creators by the number of source types (R1 to R8, before pooling) named in their titles presented as carrying a source's words (P1; title code of record). Source: package CSS, public file css5-repertoire.csv. Bins merged by the plan's rule (every bin 5 or more creators); the '3 or more' bin joins 3 and 4 or more (privacy only, the package's choice). The bins add up to the 71 seen creators.
+# Titles: model-coded title codes (frozen title instrument; the middle model is the record; source family passed its gate on the gate sample and failed on the hold-out reliability sample on its lower bound; kept as records by the owner's decision); not checked by a person. No interval is drawn (counts).
+kinds_of_source_named,creators
+0,28
+1,17
+2,14
+3 or more,12

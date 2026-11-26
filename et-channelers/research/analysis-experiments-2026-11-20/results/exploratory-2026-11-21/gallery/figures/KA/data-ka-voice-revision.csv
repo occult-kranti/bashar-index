@@ -1,0 +1,16 @@
+# KA voice arms: known-answer recovery, revision 3 minus revision 2, paired on the same items, percentage points, 90% creator-clustered bootstrap (2,000 draws).
+# Model-coded labels on constructed texts from seen development creators; not checked by a person.
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+arm,series,difference_pp,boot90_low_pp,boot90_high_pp,status
+Embodied frame (K1E),small model,16.54,8.43,25.34,plotted
+Embodied frame (K1E),middle model,-0.11,-1.75,1.72,plotted
+Relayed frame (K1R),small model,13.86,6.39,22.06,plotted
+Relayed frame (K1R),middle model,4.84,0.34,9.81,plotted
+Ask or offer inside a frame (K4V),small model,17.99,11.74,24.28,plotted
+Ask or offer inside a frame (K4V),middle model,0.52,-3.85,5.61,plotted
+Farewell with no return (X2),small model,4.85,-0.5,10.94,plotted
+Farewell with no return (X2),middle model,3.81,0.94,8.18,plotted
+Uncued change of subject (X4),small model,,,,withheld: fewer than 5 creators with a non-zero value
+Uncued change of subject (X4),middle model,,,,withheld: fewer than 5 creators with a non-zero value
+Question session (CVQ),small model,3.06,-9.92,14.52,plotted
+Question session (CVQ),middle model,,,,withheld: fewer than 5 creators with a non-zero value

@@ -1,0 +1,25 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Source (public file): VER/public/dr2-views.csv; VER/public/dr2-codes.csv
+# Interval level: 90% (5th and 95th percentiles of 2,000 two-stage bootstrap draws: creators, then recordings)
+# DR-2: kappa of the record against a second model of the same vendor (OpenAI) on gate sample G of seen creators. Sentence codes (S): record small model, second middle model; 400 units of 34 recordings of 32 creators. Checkability (FC): record middle model, second large model at effort low; 300 coded statements of 27 recordings of 27 creators.
+# Model-coded; agreement between two models (reliability, not validity), not a measure of correctness; not checked by a person. Pooled-code intervals are the package's own bootstrap; the others are the driver's.
+# Withheld views are listed without numbers. Pointwise intervals; no family-wise control.
+panel,instrument,row,kappa,kappa_90_low,kappa_90_high,units,status
+A,S,"H5 group (Q2 in neither, the registered grouping)",0.786,0.735,0.832,400,printed
+A,S,"H5 group, Q2 assigned to world claim",0.745,0.696,0.79,400,printed
+A,S,"H5 group, Q2 assigned to practice and feeling",0.749,0.694,0.794,400,printed
+A,S,primary code (12 values),0.684,0.634,0.727,400,printed
+A,FC,"time window, 3 values",0.703,0.554,0.92,300,printed
+A,FC,place (both views),,,,300,withheld: disagreements from fewer than 5 creators
+A,FC,"named actor, 3 values",0.687,0.553,0.765,300,printed
+A,FC,"observable outcome, 3 values",0.787,0.741,0.858,300,printed
+A,FC,quantity (both views),,,,300,withheld: YES codes from fewer than 5 creators
+A,FC,number of YES parts (0 to 5),0.619,0.479,0.758,300,printed
+B,S,Q1 world claim,0.836,0.765,0.895,,printed
+B,S,Q3 fact about the human person,0.474,0.311,0.606,,printed
+B,S,Q4 instruction,0.714,0.637,0.783,,printed
+B,S,Q5 feelings,0.613,0.469,0.731,,printed
+B,S,Q7 the speaker's life,0.713,0.596,0.804,,printed
+B,S,Q8 the listener's circumstances,0.693,0.516,0.802,,printed
+B,S,"other codes, pooled (Q0, Q2, Q6, Q9, QN, QX)",0.623,0.523,0.709,,printed (pooled codes)
+B,FC,"0 parts against 1 to 3 parts (one split; the package prints it as '0 parts' and as '1 to 3 parts, pooled')",0.679,0.505,0.847,,printed

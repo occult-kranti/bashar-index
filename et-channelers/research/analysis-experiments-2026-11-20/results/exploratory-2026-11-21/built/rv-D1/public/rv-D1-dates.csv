@@ -1,0 +1,16 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Public form made at the release review (plan P10), 2026-11-22, from the item's build outputs (built 2026-11-21 on seen creators and on run-level counts of all creators; not re-run).
+# Base: all 1,976 selected recordings of the 101 creators
+# Interval level: none (census counts)
+# Dates are upload dates in UTC, not dates of speaking. Every selected recording has a row in the project's published date table; the identifiers that begin with a hyphen drop out of a join that does not strip the apostrophe (the earlier sentence that 36 recordings have no date row was wrong). Counts of these identifiers by group: not published (fewer than 5 creators in a group).
+# Written by build_tables_D.py (SHA-256 d38dc81e39a5d9606ca78aae9138138e1a429de11a2082f3e3de533467d1bb92) at 2026-11-25T21:48:10Z.
+quantity,value
+recordings with an exact upload day in the project's date table,1579
+recordings with an upload interval estimated from the age the platform displayed,397
+"of these, intervals confirmed to the day by a publication time stamp in the recording's own metadata",142
+recordings with a confirmed upload day,1721
+recordings that keep an interval,255
+creators of the recordings that keep an interval,67
+median width of the intervals kept (days),32
+intervals kept that are wider than a year,9
+"identifiers that begin with a hyphen, written with a leading apostrophe in the date table",36

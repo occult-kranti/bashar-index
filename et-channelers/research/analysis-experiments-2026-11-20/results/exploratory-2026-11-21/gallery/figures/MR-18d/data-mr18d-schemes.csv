@@ -1,0 +1,17 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file MR/public/mr-18d-permutation-null.csv (sha256 8cb0fa2be28d4aa6); package file MR/public/mr-18d-post-hoc-diagnostic.csv (sha256 7bdb37400f2d5dbe).
+# Interval level: none drawn; mc_se is the Monte Carlo standard error of the null mean where the source prints it. Post hoc diagnostic, chosen after MR-18d's result (plan P4): the unit-level shuffles and H4's constructed counts were chosen after MR-18d's first permutation table (2026-11-22 02:29:40 UTC) and first written at 02:42:31 UTC; H1's two constructed rows were added after the correctness review (code last changed at 04:10:57 UTC); run of record 04:17:04 to 04:18:44 UTC. Rows marked constructed run the permutation on constructed values, not data.
+# Voice labels (and, for H6, ask labels) model-coded, not checked by a person. Seen creators only; English-only recognizer model.
+statistic,scheme,draws,null_mean,mc_se,tolerance,flag,values,source_file
+H1: pooled log rate ratio (log scale),block permutation on the data (registered),999,-0.0212,0.0006,0.005,not centred (recentring would be needed),data,MR/public/mr-18d-permutation-null.csv
+H1: pooled log rate ratio (log scale),"block permutation, constructed rates with no label or position effect",99,0.0005,0.0008,0.005,centred,"constructed values, not data",MR/public/mr-18d-post-hoc-diagnostic.csv
+H1: pooled log rate ratio (log scale),"block permutation, constructed constant label effect, no position effect",99,-0.0147,0.0007,0.005,not centred (recentring would be needed),"constructed values, not data",MR/public/mr-18d-post-hoc-diagnostic.csv
+H4: pooled standardised drop (SD units),block permutation on the data (registered),999,0.4778,0.0042,0.05,not centred (recentring would be needed),data,MR/public/mr-18d-permutation-null.csv
+H4: pooled standardised drop (SD units),unit-level shuffle within recording,199,0.0074,0.0041,0.05,centred,data,MR/public/mr-18d-post-hoc-diagnostic.csv
+H4: pooled standardised drop (SD units),"block permutation, constructed contraction counts",99,-0.0221,,0.05,centred,"constructed values, not data",MR/public/mr-18d-post-hoc-diagnostic.csv
+H6: log Mantel-Haenszel rate ratio,block permutation on the data (registered),999,-0.3921,0.0049,0.0693,not centred (recentring would be needed),data,MR/public/mr-18d-permutation-null.csv
+H6: log Mantel-Haenszel rate ratio,unit-level shuffle within recording,199,0.0621,0.0079,0.0693,centred,data,MR/public/mr-18d-post-hoc-diagnostic.csv
+H6: mean OE,block permutation on the data (registered),999,-0.1004,0.0016,0.0125,not centred (recentring would be needed),data,MR/public/mr-18d-permutation-null.csv
+H6: mean OE,unit-level shuffle within recording,199,0.0093,0.0027,0.0125,centred,data,MR/public/mr-18d-post-hoc-diagnostic.csv
+H6: mean half-count log rate ratio,block permutation on the data (registered),999,-0.3524,0.0036,0.0693,not centred (recentring would be needed),data,MR/public/mr-18d-permutation-null.csv
+H6: mean half-count log rate ratio,unit-level shuffle within recording,199,-0.0301,0.0063,0.0693,centred,data,MR/public/mr-18d-post-hoc-diagnostic.csv

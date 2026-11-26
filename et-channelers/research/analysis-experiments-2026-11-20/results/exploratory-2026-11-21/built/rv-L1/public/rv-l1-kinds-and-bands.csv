@@ -1,0 +1,39 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# Model-coded by language models under instruments frozen at the time; not checked by a person (A8). Agreement between models or readers is agreement, never accuracy. Interim; development creators only; an earlier voice instrument (snapshot of 2026-11-20 19:45); superseded as the census by LAB-K, which prints rv-L1's presence rows, main-kind row and creator count beside it (LAB/lab-k-beside-rv-l1.csv); this file holds the rest of rv-L1.
+# Base: a probability sample of 96 recordings of the 48 development creators (seen creators), two per creator, one from the shorter and one from the longer half of each creator's recordings; whole transcripts read in 2,500-word windows. Shares are creator-weighted: each creator counts once, within-creator Horvitz-Thompson weights from the length strata; weighted by recordings or by speech hours.
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap draws (rv-L1's own); pooled rows computed in this review carry their own 95% interval (2,000 creator draws, seed 20261122).
+# kind: the main kind of a recording (word-weighted plurality over its windows); claimed-voice band: the word-weighted mean of the band midpoints of its windows, banded again. Rows of the middle model or of speech hours whose difference from a printed row rests on 1 to 4 creators are not published; where that would leave a single withheld kind recoverable from its table, the withheld kinds are pooled.
+# Small cells: no cell rests on fewer than 5 creators; a statistic only where 5 or more creators carry a non-zero value; agreement figures only where the positive code comes from 5 or more creators in each reading and the items coded differently come from 0 or 5 or more creators (registry 2026-11-21 22:33; 2026-11-22 00:13); a share near 100% whose misses come from 1 to 4 creators is not published (D21); of two figures whose difference rests on 1 to 4 creators one is not published (addendum 2, item 9); nested creator counts never differ by 1 to 4; no minimum, maximum or top list. These rules hide values; they choose no estimate.
+# Written 2026-11-22T07:02:03Z (UTC, from the clock) by lv_l1.py (sha256 f8b666b02c9ddc6766fa93f3b9c7f33c08c841d16b662df861b37a025e3c0c48) with lvcommon.py (sha256 a630f290ccd1296164877c931d17b3d7e288edd2da41e14ba103435812dc5791), closure.py (sha256 6f86c8f0c66a8f0ad3d0c7c67df5d00715de4bd88a2562393a8a91163c549422), release review B-LV (plan P10).
+table,model,weight,category,recordings,share,interval_95,note
+kind,small model (modal kind of five runs; median band),recordings,channelled (embodied) voice,25,0.262,"[0.167, 0.366]",
+kind,small model (modal kind of five runs; median band),recordings,relayed message,11,0.115,"[0.042, 0.209]",
+kind,small model (modal kind of five runs; median band),recordings,interview or podcast,14,0.148,"[0.074, 0.231]",
+kind,small model (modal kind of five runs; median band),recordings,guided meditation or practice,10,0.102,"[0.040, 0.176]",
+kind,small model (modal kind of five runs; median band),recordings,own-voice talk,31,0.323,"[0.221, 0.427]",
+kind,small model (modal kind of five runs; median band),recordings,advert or other,5,0.051,"[0.011, 0.093]",
+kind,middle model (one run),recordings,channelled (embodied) voice,"not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)","not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)",,
+kind,middle model (one run),recordings,relayed message,"not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)","not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)",,
+kind,middle model (one run),recordings,interview or podcast,13,0.138,"[0.064, 0.220]",
+kind,middle model (one run),recordings,guided meditation or practice,"not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)","not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)",,
+kind,middle model (one run),recordings,own-voice talk,"not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)","not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)",,
+kind,middle model (one run),recordings,advert or other,"not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)","not published (differs from a printed figure, or from a sum or difference of printed figures, in fewer than 5 creators)",,
+kind,middle model (one run),recordings,guided meditation or practice or own-voice talk or advert or other (pooled in this review),48,0.497,"[0.402, 0.592]","interval computed in this review (2,000 creator draws)"
+claimed-voice band,small model (modal kind of five runs; median band),recordings,0%,26,0.266,"[0.163, 0.371]",
+claimed-voice band,small model (modal kind of five runs; median band),recordings,under 10%,20,0.211,"[0.128, 0.303]",
+claimed-voice band,small model (modal kind of five runs; median band),recordings,10% to under 25%,7,0.073,"[0.021, 0.134]",
+claimed-voice band,small model (modal kind of five runs; median band),recordings,25% to under 50%,12,0.126,"[0.062, 0.195]",
+claimed-voice band,small model (modal kind of five runs; median band),recordings,50% or more,31,0.325,"[0.219, 0.432]",
+claimed-voice band,middle model (one run),recordings,0%,37,0.382,"[0.267, 0.496]",
+claimed-voice band,middle model (one run),recordings,under 10%,11,0.117,"[0.044, 0.197]",
+claimed-voice band,middle model (one run),recordings,10% to under 25%,8,0.083,"[0.021, 0.156]",
+claimed-voice band,middle model (one run),recordings,25% to under 50%,10,0.106,"[0.042, 0.181]",
+claimed-voice band,middle model (one run),recordings,50% or more,30,0.312,"[0.218, 0.417]",
+kind,small model (modal kind of five runs; median band),speech hours,claimed voice: channelled or relayed (one row),,0.396,"[0.274, 0.524]",
+kind,small model (modal kind of five runs; median band),speech hours,interview or podcast,,0.208,"[0.108, 0.316]",
+kind,small model (modal kind of five runs; median band),speech hours,guided meditation or practice,,0.105,"[0.038, 0.187]",
+kind,small model (modal kind of five runs; median band),speech hours,own-voice talk,,0.285,"[0.181, 0.400]",
+kind,small model (modal kind of five runs; median band),speech hours,advert or other,,0.006,"[0.001, 0.012]",
+kind,middle model (one run),speech hours,claimed voice: channelled or relayed (one row),,0.388,"[0.274, 0.502]",
+kind,middle model (one run),speech hours,interview or podcast,,0.183,"[0.087, 0.284]",
+kind,middle model (one run),speech hours,"guided meditation or practice or own-voice talk or advert or other (pooled in this review; point sum, no interval)",,0.429,,

@@ -1,0 +1,185 @@
+# Exploratory, paper review (registry A2/A7); not a test of H1-H10.
+# Exactly the numbers drawn in fig-r4-span-bins. Source public file: rv-r4-span-bins.csv (package rv-R4) and rv-r4-span-loess.csv.
+# Interval level: 90% t over the creators of a bin; 90% creator bootstrap for the LOESS (500 draws)
+# Written by plot_br.py (SHA-256 508ba8842ae67764c346607de4d61f9d6db723e9a32a001d1e17862a9b6222ea) at 2026-11-22T06:40:56Z.
+headline,kind,bin,span_days_band_rounded,log10_span,value,low90,high90
+pace_median,bin,1.0,< 52 days,1.48417,144.47392,133.37819,155.56965
+pace_median,bin,2.0,52 days to 95 days,1.88102,147.17987,138.30884,156.05091
+pace_median,bin,3.0,95 days to 130 days,2.05837,147.23393,136.81531,157.65255
+pace_median,bin,4.0,130 days to 200 days,2.1936,147.20978,133.69827,160.72128
+pace_median,bin,5.0,200 days to 350 days,2.3944,148.5275,142.56425,154.49076
+pace_median,bin,6.0,350 days to 570 days,2.66999,158.8912,146.54795,171.23445
+pace_median,bin,7.0,>= 570 days,3.03259,145.368,133.71755,157.01845
+pace_median,loess,,,1.64,147.21802,139.69025,152.26571
+pace_median,loess,,,1.68,147.48758,140.79669,151.94274
+pace_median,loess,,,1.72,147.74464,141.69977,151.67015
+pace_median,loess,,,1.76,147.90327,142.30836,151.55653
+pace_median,loess,,,1.8,147.84349,142.98529,151.55257
+pace_median,loess,,,1.84,147.58541,143.22861,151.47968
+pace_median,loess,,,1.88,147.40007,143.2548,151.40567
+pace_median,loess,,,1.92,147.18085,142.91741,151.43303
+pace_median,loess,,,1.96,146.93355,142.46668,151.80909
+pace_median,loess,,,2.0,146.7937,142.02936,151.76832
+pace_median,loess,,,2.04,146.66968,141.57136,152.18367
+pace_median,loess,,,2.08,146.65501,141.41267,152.57408
+pace_median,loess,,,2.12,147.12663,141.70496,152.85686
+pace_median,loess,,,2.16,147.55328,141.86952,153.39552
+pace_median,loess,,,2.2,148.18978,142.20212,153.6594
+pace_median,loess,,,2.24,148.76514,142.72074,154.28712
+pace_median,loess,,,2.28,149.43801,143.24316,154.89566
+pace_median,loess,,,2.32,150.19104,143.99777,155.45333
+pace_median,loess,,,2.36,151.06777,144.74546,156.651
+pace_median,loess,,,2.4,151.29485,144.81313,157.04874
+pace_median,loess,,,2.44,150.84492,144.57938,157.17257
+pace_median,loess,,,2.48,150.65294,144.56771,157.21356
+pace_median,loess,,,2.52,150.59417,144.36656,157.20812
+pace_median,loess,,,2.56,150.58726,143.94943,157.49654
+pace_median,loess,,,2.6,150.52712,143.69752,157.59268
+pace_median,loess,,,2.64,150.41506,143.04268,158.08522
+pace_median,loess,,,2.68,150.30161,142.41294,158.43244
+pace_median,loess,,,2.72,150.17621,141.81325,158.86485
+pace_median,loess,,,2.76,149.98953,141.08098,159.22542
+nonspeech,bin,1.0,< 52 days,1.48417,0.1186,0.05416,0.18304
+nonspeech,bin,2.0,52 days to 95 days,1.88102,0.19373,0.09618,0.29129
+nonspeech,bin,3.0,95 days to 130 days,2.05837,0.10046,0.04173,0.15919
+nonspeech,bin,4.0,130 days to 200 days,2.1936,0.09678,0.04521,0.14834
+nonspeech,bin,5.0,200 days to 350 days,2.3944,0.11075,0.0589,0.1626
+nonspeech,bin,6.0,350 days to 570 days,2.66999,0.08107,0.03416,0.12797
+nonspeech,bin,7.0,>= 570 days,3.03259,0.12541,0.07955,0.17126
+nonspeech,loess,,,1.64,0.11488,0.06557,0.18105
+nonspeech,loess,,,1.68,0.11745,0.06827,0.17516
+nonspeech,loess,,,1.72,0.11969,0.07112,0.17089
+nonspeech,loess,,,1.76,0.12052,0.07416,0.16487
+nonspeech,loess,,,1.8,0.11877,0.07621,0.1581
+nonspeech,loess,,,1.84,0.11632,0.07783,0.15041
+nonspeech,loess,,,1.88,0.11378,0.07779,0.14442
+nonspeech,loess,,,1.92,0.11154,0.07904,0.13935
+nonspeech,loess,,,1.96,0.10953,0.07838,0.13599
+nonspeech,loess,,,2.0,0.10716,0.078,0.13256
+nonspeech,loess,,,2.04,0.10502,0.07733,0.13019
+nonspeech,loess,,,2.08,0.10327,0.07532,0.12679
+nonspeech,loess,,,2.12,0.10121,0.07367,0.123
+nonspeech,loess,,,2.16,0.0993,0.07217,0.12286
+nonspeech,loess,,,2.2,0.09778,0.07023,0.12205
+nonspeech,loess,,,2.24,0.09604,0.06701,0.12113
+nonspeech,loess,,,2.28,0.09468,0.06403,0.12106
+nonspeech,loess,,,2.32,0.09362,0.06247,0.12095
+nonspeech,loess,,,2.36,0.09295,0.06004,0.12038
+nonspeech,loess,,,2.4,0.09095,0.06052,0.11996
+nonspeech,loess,,,2.44,0.08838,0.06022,0.11597
+nonspeech,loess,,,2.48,0.08701,0.06115,0.1146
+nonspeech,loess,,,2.52,0.08667,0.06098,0.11418
+nonspeech,loess,,,2.56,0.08775,0.06203,0.11443
+nonspeech,loess,,,2.6,0.08986,0.06407,0.11686
+nonspeech,loess,,,2.64,0.09246,0.06567,0.11896
+nonspeech,loess,,,2.68,0.095,0.06692,0.1237
+nonspeech,loess,,,2.72,0.0971,0.06909,0.12762
+nonspeech,loess,,,2.76,0.09883,0.06982,0.13081
+end_coverage_15s,bin,1.0,< 52 days,1.48417,0.70646,0.61661,0.79631
+end_coverage_15s,bin,2.0,52 days to 95 days,1.88102,0.41829,0.24668,0.58989
+end_coverage_15s,bin,3.0,95 days to 130 days,2.05837,0.37109,0.17003,0.57215
+end_coverage_15s,bin,4.0,130 days to 200 days,2.1936,0.41617,0.22579,0.60655
+end_coverage_15s,bin,5.0,200 days to 350 days,2.3944,0.5544,0.40729,0.70152
+end_coverage_15s,bin,6.0,350 days to 570 days,2.66999,0.50698,0.32158,0.69238
+end_coverage_15s,bin,7.0,>= 570 days,3.03259,0.42597,0.29499,0.55695
+end_coverage_15s,loess,,,1.64,0.59326,0.51038,0.6545
+end_coverage_15s,loess,,,1.68,0.57012,0.48915,0.63536
+end_coverage_15s,loess,,,1.72,0.5467,0.46545,0.6198
+end_coverage_15s,loess,,,1.76,0.52315,0.44082,0.60497
+end_coverage_15s,loess,,,1.8,0.50019,0.41621,0.58883
+end_coverage_15s,loess,,,1.84,0.48521,0.38745,0.5757
+end_coverage_15s,loess,,,1.88,0.47129,0.36143,0.56786
+end_coverage_15s,loess,,,1.92,0.45456,0.34103,0.55766
+end_coverage_15s,loess,,,1.96,0.44012,0.32237,0.55226
+end_coverage_15s,loess,,,2.0,0.43151,0.31455,0.54558
+end_coverage_15s,loess,,,2.04,0.42386,0.30527,0.54765
+end_coverage_15s,loess,,,2.08,0.42118,0.318,0.55072
+end_coverage_15s,loess,,,2.12,0.43424,0.32462,0.55435
+end_coverage_15s,loess,,,2.16,0.44405,0.34055,0.55916
+end_coverage_15s,loess,,,2.2,0.45816,0.36192,0.56832
+end_coverage_15s,loess,,,2.24,0.47286,0.37577,0.57178
+end_coverage_15s,loess,,,2.28,0.4895,0.39556,0.58301
+end_coverage_15s,loess,,,2.32,0.50686,0.41546,0.60191
+end_coverage_15s,loess,,,2.36,0.52963,0.42828,0.6185
+end_coverage_15s,loess,,,2.4,0.53494,0.43595,0.62576
+end_coverage_15s,loess,,,2.44,0.53394,0.44337,0.62802
+end_coverage_15s,loess,,,2.48,0.53866,0.44982,0.63009
+end_coverage_15s,loess,,,2.52,0.54178,0.45124,0.63308
+end_coverage_15s,loess,,,2.56,0.54192,0.45108,0.64099
+end_coverage_15s,loess,,,2.6,0.5392,0.44916,0.64138
+end_coverage_15s,loess,,,2.64,0.53347,0.43611,0.6419
+end_coverage_15s,loess,,,2.68,0.52595,0.42053,0.63839
+end_coverage_15s,loess,,,2.72,0.51839,0.40377,0.63218
+end_coverage_15s,loess,,,2.76,0.50727,0.38455,0.62195
+thanks_late,bin,1.0,< 52 days,1.48417,0.37011,0.22654,0.51369
+thanks_late,bin,2.0,52 days to 95 days,1.88102,0.44097,0.30801,0.57393
+thanks_late,bin,3.0,95 days to 130 days,2.05837,0.59539,0.50698,0.6838
+thanks_late,bin,4.0,130 days to 200 days,2.1936,0.55224,0.45756,0.64691
+thanks_late,bin,5.0,200 days to 350 days,2.3944,0.58755,0.41705,0.75805
+thanks_late,bin,6.0,350 days to 570 days,2.66999,0.50874,0.34612,0.67137
+thanks_late,bin,7.0,>= 570 days,3.03259,0.41484,0.29028,0.53939
+thanks_late,loess,,,1.64,0.38768,0.29349,0.49694
+thanks_late,loess,,,1.68,0.39718,0.31196,0.49845
+thanks_late,loess,,,1.72,0.407,0.32467,0.49912
+thanks_late,loess,,,1.76,0.41832,0.34181,0.50664
+thanks_late,loess,,,1.8,0.43248,0.36257,0.5114
+thanks_late,loess,,,1.84,0.44844,0.37894,0.52003
+thanks_late,loess,,,1.88,0.46428,0.4022,0.52367
+thanks_late,loess,,,1.92,0.4796,0.42186,0.53054
+thanks_late,loess,,,1.96,0.49528,0.44052,0.54557
+thanks_late,loess,,,2.0,0.51174,0.45887,0.55889
+thanks_late,loess,,,2.04,0.52799,0.47665,0.57085
+thanks_late,loess,,,2.08,0.54306,0.49217,0.58508
+thanks_late,loess,,,2.12,0.55269,0.50542,0.5985
+thanks_late,loess,,,2.16,0.56193,0.51031,0.61167
+thanks_late,loess,,,2.2,0.56596,0.50602,0.62639
+thanks_late,loess,,,2.24,0.57038,0.50098,0.63834
+thanks_late,loess,,,2.28,0.57118,0.49321,0.65132
+thanks_late,loess,,,2.32,0.56932,0.48477,0.65751
+thanks_late,loess,,,2.36,0.56652,0.4795,0.66053
+thanks_late,loess,,,2.4,0.56384,0.47463,0.65555
+thanks_late,loess,,,2.44,0.55905,0.47647,0.65215
+thanks_late,loess,,,2.48,0.55143,0.47349,0.64703
+thanks_late,loess,,,2.52,0.54066,0.46011,0.63688
+thanks_late,loess,,,2.56,0.52868,0.44402,0.62741
+thanks_late,loess,,,2.6,0.51678,0.43272,0.62005
+thanks_late,loess,,,2.64,0.50563,0.42342,0.61155
+thanks_late,loess,,,2.68,0.49574,0.41131,0.60141
+thanks_late,loess,,,2.72,0.4861,0.39821,0.59445
+thanks_late,loess,,,2.76,0.47944,0.38981,0.58479
+term_extraterrestrial,bin,1.0,< 52 days,1.48417,0.12041,0.00073,0.2401
+term_extraterrestrial,bin,2.0,52 days to 95 days,1.88102,0.08853,0.02786,0.14921
+term_extraterrestrial,bin,3.0,95 days to 130 days,2.05837,0.16988,0.01604,0.32373
+term_extraterrestrial,bin,4.0,130 days to 200 days,2.1936,0.16026,0.05766,0.26286
+term_extraterrestrial,bin,5.0,200 days to 350 days,2.3944,0.20125,0.08577,0.31674
+term_extraterrestrial,bin,6.0,350 days to 570 days,2.66999,0.17446,0.08317,0.26574
+term_extraterrestrial,bin,7.0,>= 570 days,3.03259,0.14126,0.05291,0.22961
+term_extraterrestrial,loess,,,1.64,0.07624,0.03925,0.13288
+term_extraterrestrial,loess,,,1.68,0.07795,0.04141,0.12992
+term_extraterrestrial,loess,,,1.72,0.07916,0.04273,0.12805
+term_extraterrestrial,loess,,,1.76,0.07923,0.0439,0.12506
+term_extraterrestrial,loess,,,1.8,0.0779,0.04363,0.11697
+term_extraterrestrial,loess,,,1.84,0.07916,0.04548,0.11773
+term_extraterrestrial,loess,,,1.88,0.0806,0.04658,0.1166
+term_extraterrestrial,loess,,,1.92,0.08201,0.04742,0.11844
+term_extraterrestrial,loess,,,1.96,0.08441,0.04937,0.11932
+term_extraterrestrial,loess,,,2.0,0.08718,0.05124,0.12415
+term_extraterrestrial,loess,,,2.04,0.08962,0.05546,0.12727
+term_extraterrestrial,loess,,,2.08,0.09221,0.05836,0.13049
+term_extraterrestrial,loess,,,2.12,0.09838,0.06418,0.13545
+term_extraterrestrial,loess,,,2.16,0.10384,0.06856,0.14166
+term_extraterrestrial,loess,,,2.2,0.11097,0.07429,0.14865
+term_extraterrestrial,loess,,,2.24,0.1189,0.08132,0.15903
+term_extraterrestrial,loess,,,2.28,0.12705,0.08844,0.16535
+term_extraterrestrial,loess,,,2.32,0.13389,0.09467,0.17319
+term_extraterrestrial,loess,,,2.36,0.14056,0.09952,0.18019
+term_extraterrestrial,loess,,,2.4,0.14177,0.1029,0.18182
+term_extraterrestrial,loess,,,2.44,0.14163,0.10386,0.18296
+term_extraterrestrial,loess,,,2.48,0.14228,0.10427,0.18293
+term_extraterrestrial,loess,,,2.52,0.14195,0.10494,0.18696
+term_extraterrestrial,loess,,,2.56,0.14081,0.1027,0.1913
+term_extraterrestrial,loess,,,2.6,0.13936,0.09971,0.19189
+term_extraterrestrial,loess,,,2.64,0.13762,0.09754,0.195
+term_extraterrestrial,loess,,,2.68,0.1358,0.09583,0.1969
+term_extraterrestrial,loess,,,2.72,0.13411,0.09341,0.19672
+term_extraterrestrial,loess,,,2.76,0.13204,0.09229,0.19606

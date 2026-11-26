@@ -1,0 +1,14 @@
+# Exploratory (registry A2); not a test of H1-H10. Added after the exploratory reporting plan only where marked.
+# TL-BUILD. Bounded statements by status at the check date 2026-11-21 (H10's 30-day cut). 'Observable outcome coded YES' is the FC part (middle model); it is not the TL-SPEC card's resolvable class (not run: needs model calls). That part fails gate D on R-hold (0.328 against the floor 0.60) and is kept as the record only by the owner's decision (registry 00:30), so its column is a model-coded description resting on a reading that two models do not share. Categories with fewer than 5 creators pooled: none.
+# Model-coded (first-round forecast labels of the seen creators): world-future class F1 by the small model with a middle-model second reading (gate D passes on the seen gate sample on its lower bound, 0.643 [0.503]; on the hold-out reliability sample R-hold the F1 class fails gate D, kappa 0.507 [90% 0.169, 0.792]; its stability gate C passes, 0.903); time expressions by the small model (FE) with windows computed by code from its typed fields (known-answer year items: flags right on 30 constructed items); checkability parts by the middle model, kept as the record by the owner's decision (registry 00:30) although they fail their gates: on the development pilot the two-model gate failed for time window (kappa 0.55) and place (not published: fewer than 5 creators) against the floor 0.60; on R-hold, gate D (two models) passes for time window (0.805, lower 90% bound 0.647) and fails for place (0.306), named actor (0.419) and observable outcome (0.328; its stability gate C 0.826), quantity not published (fewer than 5 creators); a third model re-read 300 seen check statements: kappa time window 0.70, place not published (fewer than 5 creators), named actor 0.69, observable outcome 0.79, quantity not published (fewer than 5 creators) (agreement, not a measure of correctness); commitment by the small model (R-hold gate C 0.913, gate D 0.756). Not checked by a person.
+# What is dated and for when, and whether an outcome would be observable; never whether a prediction came true.
+# Matured windows are not resolved (TL-RES: not run, methodological agnosticism, registry 2026-11-21 02:50).
+# Creator counts: 'fewer than 5' means 1 to 4; 'all but fewer than 5 of 71' means 67 to 70 of the 71 seen creators; a range such as 55-59 is a band shown where an exact count could fix a difference of 1 to 4 creators against a nested printed count (rule revised after the release review, 2026-11-22).
+status,window_units,statements,statements_with_observable_outcome_coded_yes,creators
+pending (window ends on or after the check date),569,1202,173,50
+too recent (ended less than 30 days before),75,150,17,20-24
+matured (ended 30 days or more before),430,787,77,44
+open window (start only),39,52,fewer than 5 creators,10-14
+no window by the program,232,232,16,35-39
+contradictory,38,44,0,15-19
+implausible year,11,15,fewer than 5 creators,5-9

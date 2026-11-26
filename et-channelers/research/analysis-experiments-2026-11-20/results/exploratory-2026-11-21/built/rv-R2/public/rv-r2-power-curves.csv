@@ -1,0 +1,280 @@
+# Exploratory (registry A2); not a test of H1-H10.
+# The columns 'creators' and 'n' hold simulated projections of eligible creators, not counts of creators (D51; Edited on 2026-11-26 in release pass 2's fix step (fix2, f01_edits.py; its SHA-256 is in the round's records), for privacy and consistency only).
+# Release review (plan P10) of a paper-review build item (built 2026-11-21 on seen creators; label 'Exploratory, paper review (registry A2/A7); not a test of H1-H10'); reported as built, in the public form of plan section 3.
+# rv-R2 (place S): power of a creator sign-flip at the first Holm step (0.005) against the true effect in units of the smallest effect of interest (SESOI). CAL rows: empirical-shape simulation on seen analogues at 8, 12 and 17 creators (H1-H5) and CAL's planted simulation (H6); normal rows: one-sample z with the analogue SD at the projected median number of creators (H1-H4 only; zero where the smallest attainable p exceeds 0.005).
+# Interval level: Monte Carlo rates (no interval).
+# Written by write_public_r.py (SHA-256 9b65ed230b015acf4d3b5aeacd96f0451d471ea66b30394cfc66515069ad404b) at 2026-11-22T06:40:52Z.
+hypothesis,source,creators,delta,delta_over_sesoi,power
+H1,CAL empirical shape,8.0,0.03073,0.60255,0.017
+H1,CAL empirical shape,8.0,0.05122,1.00431,0.166
+H1,CAL empirical shape,8.0,0.07171,1.40608,0.371
+H1,CAL empirical shape,8.0,0.0922,1.80784,0.607
+H1,CAL empirical shape,8.0,0.11268,2.20941,0.696
+H1,CAL empirical shape,8.0,0.13317,2.61118,0.779
+H1,CAL empirical shape,8.0,0.1639,3.21373,0.878
+H1,CAL empirical shape,8.0,0.20488,4.01725,0.899
+H1,CAL empirical shape,8.0,0.2561,5.02157,0.897
+H1,CAL empirical shape,12.0,0.03073,0.60255,0.082
+H1,CAL empirical shape,12.0,0.05122,1.00431,0.368
+H1,CAL empirical shape,12.0,0.07171,1.40608,0.671
+H1,CAL empirical shape,12.0,0.0922,1.80784,0.811
+H1,CAL empirical shape,12.0,0.11268,2.20941,0.815
+H1,CAL empirical shape,12.0,0.13317,2.61118,0.875
+H1,CAL empirical shape,12.0,0.1639,3.21373,0.979
+H1,CAL empirical shape,12.0,0.20488,4.01725,0.994
+H1,CAL empirical shape,12.0,0.2561,5.02157,1.0
+H1,CAL empirical shape,17.0,0.03073,0.60255,0.145
+H1,CAL empirical shape,17.0,0.05122,1.00431,0.511
+H1,CAL empirical shape,17.0,0.07171,1.40608,0.747
+H1,CAL empirical shape,17.0,0.0922,1.80784,0.839
+H1,CAL empirical shape,17.0,0.11268,2.20941,0.961
+H1,CAL empirical shape,17.0,0.13317,2.61118,0.985
+H1,CAL empirical shape,17.0,0.1639,3.21373,0.999
+H1,CAL empirical shape,17.0,0.20488,4.01725,1.0
+H1,CAL empirical shape,17.0,0.2561,5.02157,1.0
+H1,normal model at projected median,5.0,0.00255,0.05,0.0
+H1,normal model at projected median,5.0,0.00774,0.15172,0.0
+H1,normal model at projected median,5.0,0.01293,0.25345,0.0
+H1,normal model at projected median,5.0,0.01811,0.35517,0.0
+H1,normal model at projected median,5.0,0.0233,0.4569,0.0
+H1,normal model at projected median,5.0,0.02849,0.55862,0.0
+H1,normal model at projected median,5.0,0.03368,0.66034,0.0
+H1,normal model at projected median,5.0,0.03887,0.76207,0.0
+H1,normal model at projected median,5.0,0.04405,0.86379,0.0
+H1,normal model at projected median,5.0,0.04924,0.96552,0.0
+H1,normal model at projected median,5.0,0.05443,1.06724,0.0
+H1,normal model at projected median,5.0,0.05962,1.16897,0.0
+H1,normal model at projected median,5.0,0.06481,1.27069,0.0
+H1,normal model at projected median,5.0,0.06999,1.37241,0.0
+H1,normal model at projected median,5.0,0.07518,1.47414,0.0
+H1,normal model at projected median,5.0,0.08037,1.57586,0.0
+H1,normal model at projected median,5.0,0.08556,1.67759,0.0
+H1,normal model at projected median,5.0,0.09074,1.77931,0.0
+H1,normal model at projected median,5.0,0.09593,1.88103,0.0
+H1,normal model at projected median,5.0,0.10112,1.98276,0.0
+H1,normal model at projected median,5.0,0.10631,2.08448,0.0
+H1,normal model at projected median,5.0,0.1115,2.18621,0.0
+H1,normal model at projected median,5.0,0.11668,2.28793,0.0
+H1,normal model at projected median,5.0,0.12187,2.38966,0.0
+H1,normal model at projected median,5.0,0.12706,2.49138,0.0
+H1,normal model at projected median,5.0,0.13225,2.5931,0.0
+H1,normal model at projected median,5.0,0.13744,2.69483,0.0
+H1,normal model at projected median,5.0,0.14262,2.79655,0.0
+H1,normal model at projected median,5.0,0.14781,2.89828,0.0
+H1,normal model at projected median,5.0,0.153,3.0,0.0
+H2,CAL empirical shape,8.0,0.03902,0.3902,0.0
+H2,CAL empirical shape,8.0,0.06503,0.6503,0.0
+H2,CAL empirical shape,8.0,0.09105,0.9105,0.0
+H2,CAL empirical shape,8.0,0.11706,1.1706,0.0
+H2,CAL empirical shape,8.0,0.14307,1.4307,0.0
+H2,CAL empirical shape,8.0,0.16908,1.6908,0.0
+H2,CAL empirical shape,8.0,0.2081,2.081,0.0
+H2,CAL empirical shape,8.0,0.26013,2.6013,0.0
+H2,CAL empirical shape,8.0,0.32516,3.2516,0.0
+H2,CAL empirical shape,12.0,0.03902,0.3902,0.027
+H2,CAL empirical shape,12.0,0.06503,0.6503,0.085
+H2,CAL empirical shape,12.0,0.09105,0.9105,0.224
+H2,CAL empirical shape,12.0,0.11706,1.1706,0.407
+H2,CAL empirical shape,12.0,0.14307,1.4307,0.612
+H2,CAL empirical shape,12.0,0.16908,1.6908,0.775
+H2,CAL empirical shape,12.0,0.2081,2.081,0.897
+H2,CAL empirical shape,12.0,0.26013,2.6013,0.981
+H2,CAL empirical shape,12.0,0.32516,3.2516,0.998
+H2,CAL empirical shape,17.0,0.03902,0.3902,0.052
+H2,CAL empirical shape,17.0,0.06503,0.6503,0.177
+H2,CAL empirical shape,17.0,0.09105,0.9105,0.423
+H2,CAL empirical shape,17.0,0.11706,1.1706,0.676
+H2,CAL empirical shape,17.0,0.14307,1.4307,0.835
+H2,CAL empirical shape,17.0,0.16908,1.6908,0.938
+H2,CAL empirical shape,17.0,0.2081,2.081,0.993
+H2,CAL empirical shape,17.0,0.26013,2.6013,1.0
+H2,CAL empirical shape,17.0,0.32516,3.2516,1.0
+H2,normal model at projected median,16.0,0.005,0.05,0.00399
+H2,normal model at projected median,16.0,0.01517,0.15172,0.00963
+H2,normal model at projected median,16.0,0.02534,0.25345,0.0213
+H2,normal model at projected median,16.0,0.03552,0.35517,0.04319
+H2,normal model at projected median,16.0,0.04569,0.4569,0.08046
+H2,normal model at projected median,16.0,0.05586,0.55862,0.13805
+H2,normal model at projected median,16.0,0.06603,0.66034,0.21879
+H2,normal model at projected median,16.0,0.07621,0.76207,0.32151
+H2,normal model at projected median,16.0,0.08638,0.86379,0.44013
+H2,normal model at projected median,16.0,0.09655,0.96552,0.56442
+H2,normal model at projected median,16.0,0.10672,1.06724,0.68261
+H2,normal model at projected median,16.0,0.1169,1.16897,0.78461
+H2,normal model at projected median,16.0,0.12707,1.27069,0.86448
+H2,normal model at projected median,16.0,0.13724,1.37241,0.92125
+H2,normal model at projected median,16.0,0.14741,1.47414,0.95786
+H2,normal model at projected median,16.0,0.15759,1.57586,0.97928
+H2,normal model at projected median,16.0,0.16776,1.67759,0.99066
+H2,normal model at projected median,16.0,0.17793,1.77931,0.99615
+H2,normal model at projected median,16.0,0.1881,1.88103,0.99855
+H2,normal model at projected median,16.0,0.19828,1.98276,0.9995
+H2,normal model at projected median,16.0,0.20845,2.08448,0.99984
+H2,normal model at projected median,16.0,0.21862,2.18621,0.99996
+H2,normal model at projected median,16.0,0.22879,2.28793,0.99999
+H2,normal model at projected median,16.0,0.23897,2.38966,1.0
+H2,normal model at projected median,16.0,0.24914,2.49138,1.0
+H2,normal model at projected median,16.0,0.25931,2.5931,1.0
+H2,normal model at projected median,16.0,0.26948,2.69483,1.0
+H2,normal model at projected median,16.0,0.27966,2.79655,1.0
+H2,normal model at projected median,16.0,0.28983,2.89828,1.0
+H2,normal model at projected median,16.0,0.3,3.0,1.0
+H3,CAL empirical shape,8.0,0.17971,1.7971,0.145
+H3,CAL empirical shape,8.0,0.29952,2.9952,0.216
+H3,CAL empirical shape,8.0,0.41933,4.1933,0.222
+H3,CAL empirical shape,8.0,0.53914,5.3914,0.359
+H3,CAL empirical shape,8.0,0.65894,6.5894,0.678
+H3,CAL empirical shape,8.0,0.77875,7.7875,0.674
+H3,CAL empirical shape,8.0,0.95846,9.5846,0.661
+H3,CAL empirical shape,8.0,1.19808,11.9808,0.672
+H3,CAL empirical shape,8.0,1.4976,14.976,0.659
+H3,CAL empirical shape,12.0,0.17971,1.7971,0.187
+H3,CAL empirical shape,12.0,0.29952,2.9952,0.39
+H3,CAL empirical shape,12.0,0.41933,4.1933,0.539
+H3,CAL empirical shape,12.0,0.53914,5.3914,0.591
+H3,CAL empirical shape,12.0,0.65894,6.5894,0.699
+H3,CAL empirical shape,12.0,0.77875,7.7875,0.774
+H3,CAL empirical shape,12.0,0.95846,9.5846,0.905
+H3,CAL empirical shape,12.0,1.19808,11.9808,0.974
+H3,CAL empirical shape,12.0,1.4976,14.976,0.999
+H3,CAL empirical shape,17.0,0.17971,1.7971,0.241
+H3,CAL empirical shape,17.0,0.29952,2.9952,0.402
+H3,CAL empirical shape,17.0,0.41933,4.1933,0.575
+H3,CAL empirical shape,17.0,0.53914,5.3914,0.745
+H3,CAL empirical shape,17.0,0.65894,6.5894,0.865
+H3,CAL empirical shape,17.0,0.77875,7.7875,0.937
+H3,CAL empirical shape,17.0,0.95846,9.5846,0.985
+H3,CAL empirical shape,17.0,1.19808,11.9808,0.999
+H3,CAL empirical shape,17.0,1.4976,14.976,1.0
+H3,normal model at projected median,17.0,0.005,0.05,0.00552
+H3,normal model at projected median,17.0,0.01517,0.15172,0.00673
+H3,normal model at projected median,17.0,0.02534,0.25345,0.00817
+H3,normal model at projected median,17.0,0.03552,0.35517,0.00987
+H3,normal model at projected median,17.0,0.04569,0.4569,0.01187
+H3,normal model at projected median,17.0,0.05586,0.55862,0.01421
+H3,normal model at projected median,17.0,0.06603,0.66034,0.01695
+H3,normal model at projected median,17.0,0.07621,0.76207,0.02012
+H3,normal model at projected median,17.0,0.08638,0.86379,0.02378
+H3,normal model at projected median,17.0,0.09655,0.96552,0.02798
+H3,normal model at projected median,17.0,0.10672,1.06724,0.03279
+H3,normal model at projected median,17.0,0.1169,1.16897,0.03826
+H3,normal model at projected median,17.0,0.12707,1.27069,0.04445
+H3,normal model at projected median,17.0,0.13724,1.37241,0.05142
+H3,normal model at projected median,17.0,0.14741,1.47414,0.05924
+H3,normal model at projected median,17.0,0.15759,1.57586,0.06796
+H3,normal model at projected median,17.0,0.16776,1.67759,0.07763
+H3,normal model at projected median,17.0,0.17793,1.77931,0.08832
+H3,normal model at projected median,17.0,0.1881,1.88103,0.10007
+H3,normal model at projected median,17.0,0.19828,1.98276,0.11292
+H3,normal model at projected median,17.0,0.20845,2.08448,0.12691
+H3,normal model at projected median,17.0,0.21862,2.18621,0.14206
+H3,normal model at projected median,17.0,0.22879,2.28793,0.15839
+H3,normal model at projected median,17.0,0.23897,2.38966,0.17591
+H3,normal model at projected median,17.0,0.24914,2.49138,0.19461
+H3,normal model at projected median,17.0,0.25931,2.5931,0.21446
+H3,normal model at projected median,17.0,0.26948,2.69483,0.23545
+H3,normal model at projected median,17.0,0.27966,2.79655,0.25752
+H3,normal model at projected median,17.0,0.28983,2.89828,0.28062
+H3,normal model at projected median,17.0,0.3,3.0,0.30469
+H4,CAL empirical shape,8.0,0.12229,0.24458,0.113
+H4,CAL empirical shape,8.0,0.20382,0.40764,0.192
+H4,CAL empirical shape,8.0,0.28534,0.57068,0.195
+H4,CAL empirical shape,8.0,0.36687,0.73374,0.234
+H4,CAL empirical shape,8.0,0.4484,0.8968,0.292
+H4,CAL empirical shape,8.0,0.52993,1.05986,0.359
+H4,CAL empirical shape,8.0,0.65222,1.30444,0.473
+H4,CAL empirical shape,8.0,0.81527,1.63054,0.619
+H4,CAL empirical shape,8.0,1.01909,2.03818,0.788
+H4,CAL empirical shape,12.0,0.12229,0.24458,0.097
+H4,CAL empirical shape,12.0,0.20382,0.40764,0.229
+H4,CAL empirical shape,12.0,0.28534,0.57068,0.357
+H4,CAL empirical shape,12.0,0.36687,0.73374,0.481
+H4,CAL empirical shape,12.0,0.4484,0.8968,0.625
+H4,CAL empirical shape,12.0,0.52993,1.05986,0.797
+H4,CAL empirical shape,12.0,0.65222,1.30444,0.921
+H4,CAL empirical shape,12.0,0.81527,1.63054,0.989
+H4,CAL empirical shape,12.0,1.01909,2.03818,1.0
+H4,CAL empirical shape,17.0,0.12229,0.24458,0.144
+H4,CAL empirical shape,17.0,0.20382,0.40764,0.293
+H4,CAL empirical shape,17.0,0.28534,0.57068,0.493
+H4,CAL empirical shape,17.0,0.36687,0.73374,0.709
+H4,CAL empirical shape,17.0,0.4484,0.8968,0.871
+H4,CAL empirical shape,17.0,0.52993,1.05986,0.95
+H4,CAL empirical shape,17.0,0.65222,1.30444,0.995
+H4,CAL empirical shape,17.0,0.81527,1.63054,1.0
+H4,CAL empirical shape,17.0,1.01909,2.03818,1.0
+H4,normal model at projected median,3.0,0.025,0.05,0.0
+H4,normal model at projected median,3.0,0.07586,0.15172,0.0
+H4,normal model at projected median,3.0,0.12672,0.25345,0.0
+H4,normal model at projected median,3.0,0.17759,0.35517,0.0
+H4,normal model at projected median,3.0,0.22845,0.4569,0.0
+H4,normal model at projected median,3.0,0.27931,0.55862,0.0
+H4,normal model at projected median,3.0,0.33017,0.66034,0.0
+H4,normal model at projected median,3.0,0.38103,0.76207,0.0
+H4,normal model at projected median,3.0,0.4319,0.86379,0.0
+H4,normal model at projected median,3.0,0.48276,0.96552,0.0
+H4,normal model at projected median,3.0,0.53362,1.06724,0.0
+H4,normal model at projected median,3.0,0.58448,1.16897,0.0
+H4,normal model at projected median,3.0,0.63534,1.27069,0.0
+H4,normal model at projected median,3.0,0.68621,1.37241,0.0
+H4,normal model at projected median,3.0,0.73707,1.47414,0.0
+H4,normal model at projected median,3.0,0.78793,1.57586,0.0
+H4,normal model at projected median,3.0,0.83879,1.67759,0.0
+H4,normal model at projected median,3.0,0.88966,1.77931,0.0
+H4,normal model at projected median,3.0,0.94052,1.88103,0.0
+H4,normal model at projected median,3.0,0.99138,1.98276,0.0
+H4,normal model at projected median,3.0,1.04224,2.08448,0.0
+H4,normal model at projected median,3.0,1.0931,2.18621,0.0
+H4,normal model at projected median,3.0,1.14397,2.28793,0.0
+H4,normal model at projected median,3.0,1.19483,2.38966,0.0
+H4,normal model at projected median,3.0,1.24569,2.49138,0.0
+H4,normal model at projected median,3.0,1.29655,2.5931,0.0
+H4,normal model at projected median,3.0,1.34741,2.69483,0.0
+H4,normal model at projected median,3.0,1.39828,2.79655,0.0
+H4,normal model at projected median,3.0,1.44914,2.89828,0.0
+H4,normal model at projected median,3.0,1.5,3.0,0.0
+H5,CAL empirical shape,8.0,0.19364,0.4841,0.014
+H5,CAL empirical shape,8.0,0.32273,0.80682,0.043
+H5,CAL empirical shape,8.0,0.45182,1.12955,0.072
+H5,CAL empirical shape,8.0,0.58092,1.4523,0.189
+H5,CAL empirical shape,8.0,0.71001,1.77502,0.441
+H5,CAL empirical shape,8.0,0.8391,2.09775,0.725
+H5,CAL empirical shape,8.0,1.03274,2.58185,0.729
+H5,CAL empirical shape,8.0,1.29093,3.22732,0.85
+H5,CAL empirical shape,8.0,1.61366,4.03415,1.0
+H5,CAL empirical shape,12.0,0.19364,0.4841,0.029
+H5,CAL empirical shape,12.0,0.32273,0.80682,0.113
+H5,CAL empirical shape,12.0,0.45182,1.12955,0.28
+H5,CAL empirical shape,12.0,0.58092,1.4523,0.548
+H5,CAL empirical shape,12.0,0.71001,1.77502,0.783
+H5,CAL empirical shape,12.0,0.8391,2.09775,0.934
+H5,CAL empirical shape,12.0,1.03274,2.58185,0.997
+H5,CAL empirical shape,12.0,1.29093,3.22732,1.0
+H5,CAL empirical shape,12.0,1.61366,4.03415,1.0
+H5,CAL empirical shape,17.0,0.19364,0.4841,0.057
+H5,CAL empirical shape,17.0,0.32273,0.80682,0.213
+H5,CAL empirical shape,17.0,0.45182,1.12955,0.535
+H5,CAL empirical shape,17.0,0.58092,1.4523,0.821
+H5,CAL empirical shape,17.0,0.71001,1.77502,0.965
+H5,CAL empirical shape,17.0,0.8391,2.09775,0.997
+H5,CAL empirical shape,17.0,1.03274,2.58185,1.0
+H5,CAL empirical shape,17.0,1.29093,3.22732,1.0
+H5,CAL empirical shape,17.0,1.61366,4.03415,1.0
+H6,CAL G planted simulation (rate ratio grid),9.0,-0.69315,1.0,0.0475
+H6,CAL G planted simulation (rate ratio grid),9.0,-1.04982,1.51457,0.0938
+H6,CAL G planted simulation (rate ratio grid),9.0,-1.38629,2.0,0.16
+H6,CAL G planted simulation (rate ratio grid),9.0,-1.89712,2.73697,0.1925
+H6,CAL G planted simulation (rate ratio grid),9.0,-2.52573,3.64386,0.2288
+H6,CAL G planted simulation (rate ratio grid),9.0,-3.21888,4.64386,0.265
+H6,CAL G planted simulation (rate ratio grid),12.0,-0.69315,1.0,0.1125
+H6,CAL G planted simulation (rate ratio grid),12.0,-1.04982,1.51457,0.2438
+H6,CAL G planted simulation (rate ratio grid),12.0,-1.38629,2.0,0.3725
+H6,CAL G planted simulation (rate ratio grid),12.0,-1.89712,2.73697,0.5638
+H6,CAL G planted simulation (rate ratio grid),12.0,-2.52573,3.64386,0.7062
+H6,CAL G planted simulation (rate ratio grid),12.0,-3.21888,4.64386,0.755
+H6,CAL G planted simulation (rate ratio grid),17.0,-0.69315,1.0,0.1825
+H6,CAL G planted simulation (rate ratio grid),17.0,-1.04982,1.51457,0.46
+H6,CAL G planted simulation (rate ratio grid),17.0,-1.38629,2.0,0.6575
+H6,CAL G planted simulation (rate ratio grid),17.0,-1.89712,2.73697,0.8438
+H6,CAL G planted simulation (rate ratio grid),17.0,-2.52573,3.64386,0.95
+H6,CAL G planted simulation (rate ratio grid),17.0,-3.21888,4.64386,0.985

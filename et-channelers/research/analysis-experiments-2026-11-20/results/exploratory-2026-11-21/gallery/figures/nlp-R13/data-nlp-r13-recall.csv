@@ -1,0 +1,22 @@
+# Exploratory (registry A2); not a test of H1-H10; added after the exploratory reporting plan (second wave, lead's decision D4); seen creators only.
+# Source (public files only): package file NLP/public/nlp-r13-capture-recapture.csv (sha256 0bb05ffb5f4ebf3c).
+# Interval level: 95% percentile intervals from 2,000 creator-bootstrap draws (creators resampled, their counts fixed), as printed by the package.
+# Asks of record (lead's decision D34 of 2026-11-22): Chapman's estimator as registered is the primary row; the check added more asks of record that neither draw found (observed missed) than Chapman's estimate allows (estimated missed), so the observed misses contradict it. The observed upper bound was chosen after the result (plan P4; lead's decision D34); time of the choice (UTC, 2026-11-22) not recorded to the minute: in the package's code by 03:24:49 and printed by the run of record of 03:26:16 (the superseded first build of 02:46 to 02:47 was not kept, so whether it already printed the bound is not known).
+# Recall here is the estimated recall of the union from the overlap of the two finders' items (capture-recapture) under a closed-population and independence assumption, not a measure of correctness. The creators column is copied from the package file as printed. Finders and labels are model-coded, not checked by a person.
+finders,row,quantity,recall,lo95,hi95,estimated_missed_by_both,observed_missed_by_both,creators
+forecast finder,"candidates, all recordings (primary)",Chapman recall of the union,0.91,0.897,0.923,4523,,71
+forecast finder,candidates with a time marker,Chapman recall of the union,0.944,0.926,0.958,328,,all but fewer than 5 of 71
+forecast finder,candidates without a time marker,Chapman recall of the union,0.905,0.891,0.918,4249,,71
+forecast finder,candidates with a closed-list hedge,Chapman recall of the union,0.925,0.91,0.937,526,,all but fewer than 5 of 71
+forecast finder,candidates without a hedge marker,Chapman recall of the union,0.908,0.893,0.92,4007,,71
+forecast finder,"candidates, creator-stratified Chapman",Chapman recall of the union,0.903,0.89,0.915,4941,,71
+forecast finder,F1 statements of record (weighted),Chapman recall of the union,0.991,0.989,0.993,89.0,,all but fewer than 5 of 71
+forecast finder,F1 statements with a time marker,Chapman recall of the union,0.997,0.994,0.998,2.5,,withheld (within 4 of another printed count)
+forecast finder,F1 statements without a time marker,Chapman recall of the union,0.99,0.988,0.992,87.8,,all but fewer than 5 of 71
+forecast finder,F1 statements with a hedge marker,Chapman recall of the union,0.991,0.989,0.993,14.6,,all but fewer than 5 of 71
+forecast finder,F1 statements without a hedge marker,Chapman recall of the union,0.991,0.989,0.992,74.3,,all but fewer than 5 of 71
+asks find,"candidates as filed, all recordings",Chapman recall of the union,0.866,0.844,0.888,773,,withheld (within 4 of another printed count)
+asks find,"candidates as filed, every call answered",Chapman recall of the union,0.867,0.845,0.889,750,,withheld (within 4 of another printed count)
+asks find,candidates merged (overlap rule),Chapman recall of the union,0.973,0.966,0.979,105,,withheld (within 4 of another printed count)
+asks find,"asks of record: Chapman, as registered (primary)",Chapman recall of the union,0.991,0.988,0.993,27,148,65
+asks find,asks of record: upper bound (chosen after the result),observed upper bound found / (found + observed missed); chosen after the result,0.951,0.939,0.962,,148,65

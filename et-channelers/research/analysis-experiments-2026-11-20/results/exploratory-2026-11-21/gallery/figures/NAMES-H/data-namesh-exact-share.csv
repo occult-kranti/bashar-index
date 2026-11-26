@@ -1,0 +1,59 @@
+# Exploratory (registry A2); not a test of H1-H10. Hold-out beside seen, never pooled.
+# NAMES-H: exact-spelling share of name families on hold-out transcripts beside seen; source HOLD2/NAMES-H-family-table.csv (package HOLD2, public).
+# Interval level: none (a share of mentions). A released split rests on 5 or more creators on each side (package rule); families with fewer than 5 hold-out creators are pooled.
+# Forms and families of the NAMES store v2 are model-coded on seen creators (not checked by a person); hold-out forms were never read by a model.
+family,group,mentions_with_variants,exact_share,status
+3i/atlas,hold-out,20,0.0,shown
+3i/atlas,seen,46,0.0,shown
+sirian,hold-out,63,0.3175,shown
+sirian,seen,371,0.372,shown
+lyran,hold-out,28,0.4643,shown
+lyran,seen,230,0.3957,shown
+arcturian,hold-out,159,0.805,shown
+arcturian,seen,586,0.6468,shown
+galactic federation,hold-out,428,1.0,shown
+galactic federation,seen,225,,split withheld by the package
+mars,hold-out,87,1.0,shown
+mars,seen,62,1.0,shown
+japan,hold-out,49,1.0,shown
+japan,seen,39,1.0,shown
+jupiter,hold-out,45,1.0,shown
+jupiter,seen,53,1.0,shown
+egypt,hold-out,40,1.0,shown
+egypt,seen,201,1.0,shown
+venus,hold-out,39,1.0,shown
+venus,seen,114,1.0,shown
+sedona,hold-out,39,1.0,shown
+sedona,seen,99,1.0,shown
+archangel michael,hold-out,30,1.0,shown
+archangel michael,seen,115,1.0,shown
+europe,hold-out,24,1.0,shown
+europe,seen,110,1.0,shown
+galactics,hold-out,22,1.0,shown
+galactics,seen,19,1.0,shown
+australia,hold-out,18,1.0,shown
+australia,seen,87,1.0,shown
+india,hold-out,17,1.0,shown
+india,seen,162,1.0,shown
+phoenix,hold-out,14,1.0,shown
+phoenix,seen,14,1.0,shown
+america,hold-out,13,1.0,shown
+america,seen,79,1.0,shown
+arizona,hold-out,13,1.0,shown
+arizona,seen,52,1.0,shown
+africa,hold-out,13,1.0,shown
+africa,seen,76,1.0,shown
+mexico,hold-out,11,1.0,shown
+mexico,seen,82,1.0,shown
+california,hold-out,11,1.0,shown
+california,seen,162,1.0,shown
+giza,hold-out,11,1.0,shown
+giza,seen,39,1.0,shown
+germany,hold-out,9,1.0,shown
+germany,seen,28,1.0,shown
+new york city,hold-out,7,1.0,shown
+new york city,seen,43,1.0,shown
+mary,hold-out,7,1.0,shown
+mary,seen,484,1.0,shown
+all other families (pooled),hold-out,1258,0.868,shown
+all other families (pooled),seen,3514,0.8287,shown

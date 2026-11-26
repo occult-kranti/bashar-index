@@ -1,0 +1,44 @@
+# Exploratory, panel round 2 (registry A2/A7); not a test of H1-H10.
+# CH part (a): one-way share of variance between creators (ICC) of each recording-level measure; 90% creator-bootstrap interval (2,000 draws). 1,176 recordings (English-only recognizer, 300 or more words) of 71 seen creators; MATTR uses recordings of 1,000+ words only.
+# RX rates are cue counts (pattern hits, precision not gated). Topics: NMF K = 16, analyst-written labels not checked by a person; style topics, and topic 14 as in TM-H, carry neutral labels (D62). Intervals per measure, no tests.
+family,measure,label,icc,boot90_low,boot90_high,recordings
+Word measures,log_words,log words,0.432,0.331,0.519,1176
+Word measures,pace_wpm,words per speech minute,0.579,0.484,0.651,1176
+Word measures,word_length,mean word length (letters),0.581,0.483,0.651,1176
+Word measures,mattr1000,"MATTR (1,000-word window)",0.659,0.545,0.747,958
+Word measures,contraction_rate,"contractions per 1,000 words",0.616,0.515,0.688,1176
+Word measures,first_singular_rate,"first-person singular per 1,000",0.289,0.197,0.397,1176
+Word measures,first_plural_rate,"first-person plural per 1,000",0.388,0.259,0.481,1176
+Word measures,second_person_rate,"second person per 1,000",0.425,0.352,0.491,1176
+Word measures,question_rate,"question marks per 1,000",0.296,0.229,0.36,1176
+RX pattern families (cue counts),rx_A_frames,RX A frames,0.332,0.198,0.413,1176
+RX pattern families (cue counts),rx_B_reporting,RX B reporting,0.35,0.151,0.512,1176
+RX pattern families (cue counts),rx_C_address,RX C address,0.408,0.221,0.565,1176
+RX pattern families (cue counts),rx_D_time,RX D time,0.264,0.151,0.399,1176
+RX pattern families (cue counts),rx_E_stance,RX E stance,0.299,0.19,0.385,1176
+RX pattern families (cue counts),rx_F_asks,RX F asks,0.384,0.206,0.458,1176
+RX pattern families (cue counts),rx_G_names_v0,RX G names v0,0.442,0.241,0.557,1176
+RX pattern families (cue counts),rx_H_numerals,RX H numerals,0.232,0.158,0.334,1176
+RX pattern families (cue counts),rx_I_questions,RX I questions,0.313,0.248,0.374,1176
+RX pattern families (cue counts),rx_J_framing_cues,RX J framing cues,0.344,0.178,0.44,1176
+Topics (recurring vocabulary clusters),tm_01,"topic 1: soul, higher self",0.414,0.279,0.53,1176
+Topics (recurring vocabulary clusters),tm_02,"topic 2: personal story, past",0.452,0.342,0.543,1176
+Topics (recurring vocabulary clusters),tm_03,"topic 3: energy shifts, change",0.567,0.375,0.677,1176
+Topics (recurring vocabulary clusters),tm_04,"topic 4: guided breathing, body",0.388,0.159,0.495,1176
+Topics (recurring vocabulary clusters),tm_05,"topic 5: planet, humanity, star beings",0.436,0.342,0.517,1176
+Topics (recurring vocabulary clusters),tm_06,"topic 6: religion, Christian faith",0.639,0.207,0.818,1176
+Topics (recurring vocabulary clusters),tm_07,"topic 7: channel logistics, links",0.528,0.26,0.712,1176
+Topics (recurring vocabulary clusters),tm_08,topic 8 (style),0.842,0.348,0.918,1176
+Topics (recurring vocabulary clusters),tm_09,topic 9 (style),0.529,0.353,0.662,1176
+Topics (recurring vocabulary clusters),tm_10,"topic 10: fear, truth, choice",0.64,0.365,0.753,1176
+Topics (recurring vocabulary clusters),tm_11,"topic 11: divine love, compassion",0.354,0.255,0.449,1176
+Topics (recurring vocabulary clusters),tm_12,"topic 12: session reports, sightings",0.772,0.23,0.895,1176
+Topics (recurring vocabulary clusters),tm_13,topic 13 (style),0.731,0.341,0.783,1176
+Topics (recurring vocabulary clusters),tm_14,topic 14 (neutral label),0.663,0.32,0.761,1176
+Topics (recurring vocabulary clusters),tm_15,topic 15: questions to guides,0.434,0.279,0.543,1176
+Topics (recurring vocabulary clusters),tm_16,topic 16 (style),0.885,0.248,0.946,1176
+Topic balances (fixed log-ratio contrasts),tm_B1,B1: subject vs segment and style,0.401,0.307,0.473,1176
+Topic balances (fixed log-ratio contrasts),tm_B2,B2: cosmic and energetic vs inner and devotional subjects,0.424,0.353,0.485,1176
+Topic balances (fixed log-ratio contrasts),tm_B3,B3: segments vs styles,0.381,0.301,0.45,1176
+Topic balances (fixed log-ratio contrasts),tm_B4,B4: message styles vs conversational style,0.493,0.395,0.57,1176
+Topic balances (fixed log-ratio contrasts),tm_B5,"B5: practice and questions vs story, logistics and reports",0.366,0.274,0.444,1176
