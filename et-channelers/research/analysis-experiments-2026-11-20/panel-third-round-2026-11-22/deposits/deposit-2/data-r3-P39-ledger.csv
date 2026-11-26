@@ -1,0 +1,23 @@
+# Exploratory, third-round panel, step 0 (r3-P39); not a test of H1-H10. Model-coded candidates with rule-based classes, not checked by a person.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Ledger SHA-256 d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a; frozen 2026-11-26T01:45:31Z.
+# Panel A: closed-window statements of the frozen ledger (2,139 statements of 59 seen creators); creator-balanced share = mean over creators of each creator's share; 'weighted' weights statements by 1 / inclusion probability (LAB-F's convention), 'unweighted' counts them equally. Every bin rests on 5 or more creators with a non-zero share; creator counts per bin are not printed (nested-count rule).
+# Classes and flags: rule-based on the statement text (coder SHA-256 in ledger-manifest.json), not checked by a person; NX is the coder's residual class (bounded, not energetic, no observable public predicate or nothing specific enough).
+# Panel B: TL-7.9's public due calendar (packages/TL/tl-7-9-due-calendar.csv), periods after 2027 pooled into one open bin; statements and window units as published; when outcomes would become observable, never whether they occur.
+panel,bin,creator_balanced_share_weighted,creator_balanced_share_unweighted,rests_on_5_or_more_creators,statements,window_units,channels
+A: resolvability class,R,0.0082,0.0083,yes,,,
+A: resolvability class,M,0.0028,0.0028,yes,,,
+A: resolvability class,NE,0.1432,0.1434,yes,,,
+A: resolvability class,NX,0.8457,0.8455,yes,,,
+A: flag C,C,0.0553,0.0547,yes,,,
+A: flag C,no flag C,0.9447,0.9453,yes,,,
+A: flag D,D (date refusal),0.0,0.0,all creators at zero,,,
+B: due calendar,2026-12,,,yes (TL-7.9),115,51,15-19
+B: due calendar,2027-01,,,yes (TL-7.9),336,156,25-29
+B: due calendar,2027-02 to 03,,,yes (TL-7.9),18,14,5-9
+B: due calendar,2027-04,,,yes (TL-7.9),24,14,5-9
+B: due calendar,2027-05 to 06,,,yes (TL-7.9),29,16,5-9
+B: due calendar,2027-07,,,yes (TL-7.9),46,14,5-9
+B: due calendar,2027-08 to 09,,,yes (TL-7.9),19,11,5-9
+B: due calendar,2027-10 to 12,,,yes (TL-7.9),47,7,5-9
+B: due calendar,after 2027 (open bin),,,yes (TL-7.9),568,286,"pooled periods, each 5 or more channels; no union count"

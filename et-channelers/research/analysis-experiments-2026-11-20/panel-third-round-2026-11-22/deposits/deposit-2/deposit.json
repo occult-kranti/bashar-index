@@ -1,0 +1,172 @@
+{
+ "title": "Step 0 of the third-round programme: deposit list",
+ "written_utc": "2026-11-26T01:57:20Z",
+ "written_by": "the step-0 agent (a model agent working for the project lead; not a person)",
+ "status": "Exploratory; not a test of H1-H10. Labels are model-coded and not checked by a person; step-0 text fields are rule-based and not checked by a person.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "rulings": "Lead's rulings of 2026-11-26: 1 (the ledger hash, first and alone, by a public commit to the registry; GitHub's merge time is the external time stamp) and 2 (the r3-P29 deposit with r3-P30, r3-P31, r3-P34 and r4-P33, citing the ledger hash). No class-a run starts before the second commit is merged.",
+ "deposit_1_ledger_hash_alone": {
+  "file": "ledger.private.jsonl",
+  "visibility": "private (never published; only this hash)",
+  "sha256": "d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a",
+  "freeze_utc": "2026-11-26T01:45:31Z",
+  "entry": "r3-P39 / r4-P22"
+ },
+ "deposit_2_cites_ledger_hash": {
+  "cites_ledger_sha256": "d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a",
+  "times_utc": {
+   "split_draw": "2026-11-26T01:49:43Z",
+   "public_files_written": "2026-11-26T01:56:43Z (register, card, cells, novelty ledger); split-policy.md 2026-11-26T01:55:20Z"
+  },
+  "files": [
+   {
+    "file": "ledger-manifest.json",
+    "visibility": "public",
+    "entry": "r3-P39 / r4-P22",
+    "sha256": "fff40453c059254de70ab0d22be86eabae610af12aacf2deea4cda015c7b6de6",
+    "description": "Manifest of the frozen ledger: row counts, creator count under the nested-count rule, field list, coder SHA-256s, placebo seed, freeze time"
+   },
+   {
+    "file": "fig-r3-P39-ledger.png",
+    "visibility": "public",
+    "entry": "r3-P39",
+    "sha256": "3957d8bafb6f9e61f9aac3baa2e7f4e022253b36f64d855c2266b4445ab262aa",
+    "description": "Figure: closed-window statements by rule-based resolvability class and flag C (creator-balanced) beside TL-7.9's due calendar with the freeze date (200 dpi)"
+   },
+   {
+    "file": "fig-r3-P39-ledger.pdf",
+    "visibility": "public",
+    "entry": "r3-P39",
+    "sha256": "9bce035b736886a2cd988ce12e84b70072b615f3607ff1f928b0263da4231114",
+    "description": "The same figure as PDF, without document information"
+   },
+   {
+    "file": "data-r3-P39-ledger.csv",
+    "visibility": "public",
+    "entry": "r3-P39",
+    "sha256": "9d9188f61597e5cd89eba757b98b67173dd6f9d3cf175db5073301bce64fcf93",
+    "description": "The figure's data"
+   },
+   {
+    "file": "margins-register.md",
+    "visibility": "public",
+    "entry": "r3-P29",
+    "sha256": "78c22cb975fab19c36f38bee0d53919d691447e9c90bd2af49e5134059c389a7",
+    "description": "Margins, readings and multiplicity register: one row per class-a entry's primary"
+   },
+   {
+    "file": "margins-register.csv",
+    "visibility": "public",
+    "entry": "r3-P29",
+    "sha256": "753397e64e1407463d75ff3cf831daa370f2919e13963d3236576474ef2434f7",
+    "description": "The register's machine-readable twin"
+   },
+   {
+    "file": "calibration-method-card.md",
+    "visibility": "public",
+    "entry": "r3-P30",
+    "sha256": "a8bac7543b3ad25fa361d4eb3f04cc1e4e5e5d688c87e9e5d9915ba68fd22653",
+    "description": "Method card of the calibration battery, as written in the programme"
+   },
+   {
+    "file": "split-policy.md",
+    "visibility": "public",
+    "entry": "r3-P31",
+    "sha256": "efdcfae32314efc75273cac8cf44cfc20ce34bc9aef7c2f7fd4cf479b943d3e7",
+    "description": "Split policy: tiers, seed, strata, counts of 5 or more"
+   },
+   {
+    "file": "split.private.json",
+    "visibility": "private",
+    "entry": "r3-P31",
+    "sha256": "85848e4cb78327c52163d254a16447b90581fd6e1a696c959237fc7d0ef077f2",
+    "description": "The seeded, stratified draw of the seen non-development creators (membership)"
+   },
+   {
+    "file": "account-prediction-cells.md",
+    "visibility": "public",
+    "entry": "r3-P34 / r4-P31",
+    "sha256": "e6de6bd395a339080c3f3c43d5f36e8d1d89e002950e3cd5903c3bf7563af322",
+    "description": "Account-prediction cells with silence shares"
+   },
+   {
+    "file": "account-prediction-cells.csv",
+    "visibility": "public",
+    "entry": "r3-P34 / r4-P31",
+    "sha256": "5c6b741dde0f726ca04832d30dbb753f26127def7089abb7c6391928e36c5fa6",
+    "description": "The matrix of accounts by pending entries"
+   },
+   {
+    "file": "novelty-ledger.md",
+    "visibility": "public",
+    "entry": "r4-P33",
+    "sha256": "605f382993e08c4bef04e3662a3692f0262e65b03bb97e2a5ee3956cdaa995ab",
+    "description": "One sentence per design cluster of programme 3.1, with verdicts (a log; ruling 12 holds printing)"
+   },
+   {
+    "file": "code/rule_coder.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P39",
+    "sha256": "4fe41740974b88f76358a99bb970bab2c1847b2ca9e907c2e1be518c575aef71",
+    "description": "Rule-based text coder of the ledger (word lists written blind to the corpus)"
+   },
+   {
+    "file": "code/test_rule_coder.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P39",
+    "sha256": "5598a1d46a7fe7f26d24b3e5d91d1375832134a280248305466b12ca52a847b5",
+    "description": "Checks of the coder on constructed sentences only"
+   },
+   {
+    "file": "code/recognizer_fields.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P39",
+    "sha256": "3bd8033e89ab3c5b0d20398cec3e8b14a4937984c59f6d52a950935ab1f73a0c",
+    "description": "Recognizer-quality fields for date tokens"
+   },
+   {
+    "file": "code/build_ledger.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P39",
+    "sha256": "004235539db98ecda1a39edfba9d6c07b5b47dbd56f32e631819035276005b27",
+    "description": "Builds and freezes the ledger; draws the placebo statements"
+   },
+   {
+    "file": "code/plot_ledger.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P39",
+    "sha256": "6e07a31880220146d123b99377c97fbf2653e4664d94d8d2bae027499f600157",
+    "description": "Draws the r3-P39 figure"
+   },
+   {
+    "file": "code/style.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P39",
+    "sha256": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+    "description": "Copy of plots-2026-11-22/CHANGE/CH/code/style.py, not edited"
+   },
+   {
+    "file": "code/draw_split.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P31",
+    "sha256": "72281e90a8d21bff3ae2cefe6634b8c4ce8ef3cdd84b19584f2b4f95b1d7a300",
+    "description": "The split draw"
+   },
+   {
+    "file": "code/build_public.py",
+    "visibility": "private (hash deposited)",
+    "entry": "r3-P29, r3-P30, r3-P34, r4-P33",
+    "sha256": "fc4e55466ead6f764a832ef917c209df881a22589d485c57c2e2f8d2c5a81d36",
+    "description": "Writes the register, card, cells and novelty ledger"
+   },
+   {
+    "file": "code/write_deposit.py",
+    "visibility": "private (hash deposited)",
+    "entry": "deposit",
+    "sha256": "ba5937f8ff68227ab37a70d879a3f3e699e2f0dada84ec69c4c581b585863762",
+    "description": "Writes this file"
+   }
+  ]
+ },
+ "verify": "sha256sum <file> in step0/ of the private run folder; the public files are published in full with the programme (ruling 2); private files keep only their hashes public."
+}
