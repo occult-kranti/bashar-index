@@ -3,7 +3,8 @@
 `index.html` shows the finished transcription run of 20 November 2026, the time without speech, the languages,
 the ten registered hypotheses with their registered tests (first round: from the public results file),
 the 28 designed experiments, the exploratory release with its headline figures, the third-round panel's programme
-(its deposits, r3-P35's corrections and the published entries of steps 1 to 5), and the first, provisional findings.
+(its deposits, its corrections and the published entries of steps 1 to 5 and of the audio pass, with the audio addendum),
+and the first, provisional findings.
 It reads the CSV files in `data/` in the browser; d3 7.9.0 is loaded from cdnjs, as on the prediction page.
 
 Rules: counts, distributions and cohort-level estimates only. No file, chart or table has a row, mark or label
@@ -45,7 +46,7 @@ registered tests.
 The same tab compares the two recognizer models on 36 recordings transcribed by both, and links to the corrected
 first-round results file (corrections of 25 and 26 November 2026; no verdict changes).
 The tab "Exploratory round" shows the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10)
-from its public files only, read from the repository's main branch (9c8ac62): the
+from its public files only, read from the repository's main branch (d0d078c): the
 outputs by status and by plan section (the status table's rows, counted; counts of outputs, never of creators), links to
 the release, its status table and its gallery, the third-round panel's programme, rulings and step-0 deposits, and a
 small set of headline figures picked by a printed rule: every released gallery figure whose place includes both M (the paper's main text) and W (this dashboard), read from the gallery's manifest.json, in the gallery's order. The figures in `figures/` are
@@ -54,7 +55,7 @@ rest on a method that the calibration entry (CAL) did not test for its estimate 
 was chosen after the results were seen (the lead's step-1 decision 27a); r3-P33 prints a selection rule (S1 to S12)
 for the release's headline descriptions and audits them.
 The tab "Third-round panel" shows the panel programme from its public files on main
-(9c8ac62): step 0's deposits 1 and 2; step 1, published,
+(d0d078c): step 0's deposits 1 and 2; step 1, published,
 as a table of its 17 entries with each entry's question and its reading
 in the entry's own words, copied from the step-1 index (no entry is picked as a headline, and nothing the index withholds
 is added; square brackets mark the page's own words where the index uses a word the page does not); r3-P20's registered
@@ -62,13 +63,16 @@ prediction with its SHA-256; deposits 3 and 4, step 2's instruments, written bef
 that need no run (PR #117); steps 2 to 5, published (PRs #115 and #118), as tables of their entries
 (12, 5, 5 and 6) with each
 entry's tier where its index has a tier column, its question and its reading in its own words, copied from each step's
-index in the index's order (no entry is picked as a headline, and nothing an index withholds is added); and the entries
-that read the audio, which run: their outputs are published after independent privacy checks, and no number of them is
-printed. Every item links to its folder on GitHub.
+index in the index's order (no entry is picked as a headline, and nothing an index withholds is added); r3-P57's
+correction (PR #120); and the 7 entries that read the audio with the audio addendum's 8 parts,
+published (PR #121): the entries in the order of the common README's tier table, each with its tier letter, its question
+and its reading in its own words (its "In words" line, or the line an entry that A8 blocks prints first), and the
+addendum's parts as its table prints them (status, and the reading in only these words). Every item links to its folder
+on GitHub.
 Every view carries the sentence: "No measure in this study can tell whether a non-human source speaks; every measure
 describes the speech in these recordings and how the creators present it."
 The budget card shows the spend committed for model calls, read from the spend ledger when the page was built
-(2026-11-26T18:26:11Z), against the owner's hard stop, with the warning level.
+(2026-11-26T20:50:44Z), against the owner's hard stop, with the warning level.
 
 The page and its data are built outside the repository from the run's private records, by the same script
-that feeds the hosted copy of this dashboard. Built 2026-11-26T18:26:11Z.
+that feeds the hosted copy of this dashboard. Built 2026-11-26T20:50:44Z.
