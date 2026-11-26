@@ -1,0 +1,885 @@
+% sections/appendix-panel.tex -- Appendix C, the third-round panel's programme (label app:panel3). New file of 2026-11-26
+%   (paper update with the programme's results, phase 1: only what is public on main, plus the novelty wordings that
+%   passed the bibliography check of ruling 13 and decision 96.2). Written by the paper-update agent (a model agent
+%   working for the lead); clock: date -u 16:45 UTC.
+% Phase 2 (2026-11-26, from 18:20 UTC; written by the phase-2 paper-update agent, a model agent working for the lead):
+%   C.5 (steps 2 to 5) and C.6 (the slot for the audio entries, which the lead fills) are added; C.7 (novelty) records
+%   the phase-2 check of four round-4 works and the published attack record; the step-1 notes carry decision 100; the
+%   N04 citations use one key per work (refs-new.bib); the captions of the programme tables end with \LabelValidity.
+% Phase 3 (2026-11-26, from 20:50 UTC; the phase-2 paper-update agent, under the lead's decision 108): C.6 holds the
+%   audio entries and the audio addendum (two tables, tab:panel3-audio and tab:panel3-audio-add), from main's public
+%   files only: audio/common/README.md, the seven entries' READMEs, audio/addendum/README.md (its column "Reading (only
+%   these words)") and the parts' READMEs, and the two public prespecification hash records; at origin/main d0d078c.
+%   C.8 gains a paragraph on the audio entries (decisions 106.3 and 106.4). No original prespecification hash is printed.
+% Sources, public on main under research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/: programme.md
+%   (sections 0 to 3), lead-rulings-2026-11-26.md, deposits/deposit-1-forecast-ledger.md, deposits/deposit-2/ (README,
+%   lead-margins-and-readings-2026-11-26.md, margins-register.md, split-policy.md), deposits/deposit-3/ (README,
+%   hashes.md), deposits/deposit-4/ (README, hashes.md), step1/README.md (the table's readings, verbatim, and the lead's
+%   step-1 decisions), and the registry rows of 2026-11-26 (01:15 to 12:47). Phase 2: step2/README.md to
+%   step5/README.md (the step indexes: each entry's question, tier and reading, copied from the index tables, and the
+%   lead's decisions in their public wording) and the entries' READMEs, at origin/main 9c8ac62; nothing private.
+%   The novelty wordings (C.7) are the final wordings of the second attack pass (ruling 12), as accepted by the lead
+%   (decision 96): claims, qualifiers and counts copied verbatim, closest-work lists cut to the second pass's newly named
+%   works that passed; N05, N08, N09 and N18 as deposited in programme.md 3.1. Their attack record (attack ledger,
+%   verdicts, both bibliography checks) is published with this paper update in the panel folder (ruling12-attack/,
+%   decision 102), so the search counts of the wordings can be traced there.
+% NUMBERS. No number is computed here: every numeral is copied from the files above, never recomputed. Hash prefixes and
+%   commit ids are those the deposits and the registry print; the pull-request numbers and merge times of steps 2 to 5
+%   are those the pull requests record (their merge commits are on main). Counts of creators are those printed on main
+%   (deposit 2's split policy and the
+%   step indexes); none is 1 to 4 away from another printed count of a nested group. Values a step file does not print
+%   are not printed here, and nothing more is said about them.
+% Privacy: no creator, channel, title, id or quotation of corpus text; members are named by role, never by id (one
+%   reading of r3-P43 names "a domain member" where the index names the member's id); the entries' privacy rules are
+%   stated in general terms only.
+% New labels: app:panel3, app:panel3-design, app:panel3-deposits, app:panel3-readings, app:panel3-step1,
+%   app:panel3-novelty, app:panel3-limits, tab:panel3-deposits, tab:panel3-step1, tab:panel3-step1b; phase 2:
+%   app:panel3-steps25, app:panel3-audio, tab:panel3-step2, tab:panel3-step2b, tab:panel3-step34, tab:panel3-step5; phase 3:
+%   tab:panel3-audio, tab:panel3-audio-add.
+% Citations: refs-programme.bib (the works newly named in the second attack pass that passed the bibliography check),
+%   schroeder1984influence, lemery2002revealing, budescu1981corrections, mishra2026definitions (refs-new.bib, one key
+%   per work), and klimo1987channeling, brown1997channeling (refs-orchestra.bib).
+
+\section{The third-round panel's programme}
+\label{app:panel3}
+
+This appendix is the record behind Section~\ref{sec:panel3}: the panel and its programme (\ref{app:panel3-design}),
+the deposits (\ref{app:panel3-deposits}), margins, readings, intervals, tiers and multiplicity
+(\ref{app:panel3-readings}), step~1's results (\ref{app:panel3-step1}), the results of steps~2 to~5
+(\ref{app:panel3-steps25}), the audio entries (\ref{app:panel3-audio}), the novelty wordings
+(\ref{app:panel3-novelty}) and the limitations (\ref{app:panel3-limits}). The files are public in the research folder
+(\texttt{panel-third-round-2026-11-22/}). Everything here is exploratory and not a test of H1--H10. It rests on the seen
+creators only; labels are model-coded and not checked by a person, and their comparisons are agreement, never accuracy.
+No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these
+recordings and how the creators present it. Times are UTC on 26 November 2026.
+
+\subsection{Panel, proposals and classes}
+\label{app:panel3-design}
+
+\paragraph{The panel.} Twelve model agents played roles: six method members (a statistician, a computational linguist,
+a computational social scientist, a measurement methodologist, a speech and audio researcher and a researcher of
+annotation with language models), three domain and emic members (two historians and a reader of conspiracy culture, an
+emic reader and not a practitioner) and three denialists (a materialist skeptic, a methodological denialist and a
+sociological debunker). None is a person and none speaks for any community. A practitioner, an ethics member and a
+sociologist of religion were not seated. The lead moderated; a moderator's assistant, also a model agent, wrote each
+round's synthesis.
+
+\paragraph{Four rounds.} Proposals; positions and concessions; final positions with a ranked top ten, vetoes and plot
+requests; and novelty, with literature searches and attacks. Round~3's pooled list (r3-P01 to r3-P73) and round~4's
+(r4-P01 to r4-P33) give 106 pooled proposals. Ranked by Borda count, six entries were in eleven or twelve of the twelve
+top tens and hold about four fifths of all points: the forecast-ledger freeze, the margins and readings register, the
+recognizer error by voice, input stability under grid shift, position-matched contrasts, and the labeller's prior on
+asks. Rankings were correlated, so rank sums overstate agreement. Two entries were vetoed and set aside: speaker
+embeddings, speaker counts and a synthetic-voice screen (biometric processing of people who did not consent; the veto
+extends to any per-creator proxy), and feedback contingency in readings for audience members (third parties who did not consent).
+
+\paragraph{Classes and order of work.} Each entry's class is that of its primary part: (a)~do now, no-cost work on the
+seen creators with stored fields and local computation, 88 entries (49 needing nothing more, 39 waiting for a ruling or
+a stored fact); (b)~register for a future confirmation wave, 9 (a wave of the same roster tests persistence only;
+confirmation needs fresh creators); (c)~unfunded primary part, 4; (d)~set aside, 5. The order of work is: step~0, the
+deposits; step~1, instrument checks with frozen code; step~2, lexicon preconditions before any lexicon count; steps~3
+to~5, descriptions of forecasts and time, of economy, audience and sampling, and of the claimed voice as speech; step~6,
+design for any future collection. The lead adopted the programme with 13 rulings under the owner's delegation: among
+them, the ledger hash is deposited alone, before any other deposit; listening by a person stays closed until an ethics or exemption
+determination exists; word lists are written blind from the literature; a second attack pass precedes any novelty
+sentence; and the latest-50+ recordings of the same roster are descriptive material, on which no class-b hypothesis is
+tested.
+
+\subsection{Deposits}
+\label{app:panel3-deposits}
+
+Each deposit is a public commit; its merge time is the external time stamp (Table~\ref{tab:panel3-deposits}). Private
+files are deposited by hash only. No class-a entry ran before deposit~2 was merged, no lexicon count before deposit~3,
+and no count of the passed-year entries before deposit~4.
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}p{0.06\textwidth}p{0.46\textwidth}p{0.22\textwidth}p{0.18\textwidth}@{}}
+\toprule
+Deposit & What it fixes & SHA-256 (prefix) & Public time stamp \\
+\midrule
+1 & The frozen forecast ledger (private; frozen 01:45:31Z): forward-statement candidates of the seen creators with
+window, resolvability class, qualifier, contact class and placebo fields; model-coded candidates, rule-based fields &
+ledger \texttt{d2e8e3fd3229\ldots} & merged 02:00:22Z \\
+2 & Cites deposit~1. The margins and readings register, the lead's default margins and readings, the calibration
+method card, the split policy, the account-prediction cells, the novelty ledger (a log), the ledger plot; the programme
+hashed with it & \texttt{deposit.json} \texttt{b7254729db8b\ldots}; programme \texttt{7f34500c7fa9\ldots}; split
+(private) \texttt{85848e4cb783\ldots} & merged 02:11:31Z \\
+3 & Cites deposits~1 and~2. The sense and collision register (hashed at 09:37:22Z, before any list existed), 15 word lists written blind
+from the literature, the blind cross-review's dated addenda, and the prespecification of the lexicon checks; no count
+made & \texttt{hashes.md} \texttt{e12fb42545f7\ldots} & assembled 11:02:33Z; merged by pull request 112 \\
+4 & Cites deposits~1 to~3. Year roles for the passed-year entries: prophesied target years, two control families with
+Holm across them, matched ordinary years, biographical reference rows; no count made & \texttt{year-roles.csv}
+\texttt{90fd5fc8ba22\ldots} & written 12:47:20Z; merged by pull request 114 \\
+\midrule
+Step 1 & r3-P20's registered reliability prediction, published with step~1 before any wave; tested only on a
+fresh-creator wave & \texttt{f5f88d86e2a5\ldots} & hashed 07:03:23Z; merged by pull request 113 \\
+\bottomrule
+\end{tabular}
+\caption{Deposits of the third-round programme (26 November 2026, UTC). Hash prefixes as the deposits print them; the
+full values are in each deposit's hash file. The ledger, the split's membership and the deposited code stay private.}
+\label{tab:panel3-deposits}
+\end{table*}
+
+\subsection{Margins, readings, intervals, tiers and multiplicity}
+\label{app:panel3-readings}
+
+\paragraph{Margins.} The programme stated no smallest effect for its primaries, so the lead fixed default margins by
+measure type before any class-a run (deposit~2): a ratio outside 0.80 to 1.25; a difference in shares of 5 percentage
+points; a standardised difference of 0.20 between-creator SD; an AUC 0.10 away from 0.50; a correlation or agreement
+coefficient of 0.10; a count of creators or recordings is described only. An entry's own margin holds where it states
+one. The floor rule: no reading is looser than ``the near 90\% creator-interval bound lies beyond half the smallest
+effect''; reading A also needs every named control row in the same direction; estimators or references that disagree
+give undetermined.
+
+\paragraph{Readings.} Reading A (``beyond structure''): the interval lies wholly beyond the margin, in the entry's named
+direction, under every admissible reference. Reading B (``accounted for''): the reference-adjusted interval lies wholly
+inside the margin under every admissible reference. Undetermined: anything else, including disagreeing references and
+a reference that does not hold its size at the count. Not computed: fewer than 5 eligible creators. Descriptions and
+acts carry no reading, and several entries use their own words for A and B. A reading is a description, never a test of
+H1--H10: readings, not findings.
+
+\paragraph{Intervals and tiers.} Intervals are 90\%, by the method that r3-P30's calibration battery selects for the
+design class at the entry's creator count (the row of the largest simulated count at or below it); where r3-P30 did not
+simulate a design class, the t interval on creator means is used and the reading carries the words ``interval method
+not calibrated by r3-P30 for this design class''. The split policy (r3-P31) assigns tiers before any outcome is read:
+lists written blind from the literature run once on all non-development seen creators (L); data-tuned rules with 20 or
+more outcome-blind eligible creators are built on an exploration half and run once on a sealed half (S); 10 to 19 use
+two-fold cross-fitting (X); fewer are descriptions only (D). The registry's 48 development creators, already exposed to
+prompt tuning, form the tuning pool and are never in the sealed half; the 23 non-development seen creators were drawn
+once into halves of 11 and 12. The known leak is printed: every member and the lead had seen the exploratory round's
+aggregates, so the sealed half guards only against tuning done after the deposit.
+
+\paragraph{Multiplicity.} No family-wise adjustment is applied to exploratory readings. The programme has 56 distinct
+primaries. If every true effect sat at half its margin, about 2.8 readings of A would be expected by chance at the
+deposited one-sided 5\%, and up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's
+simulations, not any outcome). This is a disclosure, not family-wise control. A reading A is never called a finding.
+
+\subsection{Step 1: instrument checks on the seen creators}
+\label{app:panel3-step1}
+
+Step~1 ran on 26 November 2026, after deposit~2 was merged, as 17 entry folders: r3-P30 (the run of step~0's
+calibration card) and 16 entries covering all 23 step-1 programme ids, seven round-4 proposals carried inside their
+round-3 partners. Each entry was written by a model agent working for the lead. No model or API call was made, nothing
+was spent, and no entry made a hold-out or other-group contact. Tables~\ref{tab:panel3-step1}
+and~\ref{tab:panel3-step1b} give each entry's question, shortened, and its reading verbatim, in the entry's own words.
+The entries follow the release's privacy rules: counts near published counts are banded; a value that could narrow a
+banded count is not printed; and a reading that rests only on such values is not printed either. A summary that covers
+withheld rows says that some rows' readings are not printed for privacy. Step~1's own H1 rows have banded counts, and
+their readings are not printed for privacy; every small-model row of H1's rate contrast printed in the exploratory
+release lies inside deposit~2's ratio margin (addendum~4, item~7; Section~\ref{sec:tests}).
+
+Notes carried by the lead's step-1 decisions. Pauses couple with punctuation less in the claimed voice (r3-P02); this
+is a described fact, not a reading, and it qualifies any pause or punctuation contrast by voice. The exploratory
+round's headline descriptions were ``chosen after the results were seen; no selection rule was printed''; r3-P33 prints
+a rule (S1 to S12) and audits them. Wherever the titles' failed gates are cited: the gate sample and the hold-out
+reliability sample drew harder titles than the rest of the seen roster (r3-P20); outside them, presentation agreement
+was higher. Near-bound tipping stands beside r3-P33's cascade as described rows, not readings. Readings on intervals
+r3-P30 did not calibrate keep the words that say so. Every null the programme reports carries its detectable size.
+Since r3-P35's corrections, r3-P33's E5 rows print E5's creator counts in band form, with a dated correction; no
+estimate, interval or reading changed (the lead's step-3 decision~100, printed in the step-1 index).
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}p{0.08\textwidth}p{0.30\textwidth}p{0.56\textwidth}@{}}
+\toprule
+Entry & Question (shortened) & Reading, in the entry's own words \\
+\midrule
+r3-P30 (r4-P10's residual) & Which 90\% interval should each class-a entry use at its creator count and design, and
+how often do the register's fixed procedures fire at given true effects? & Not applicable: a method card's run (an act);
+it picks interval methods and reads no contrast. Where no method holds, an entry's reading is at most undetermined. \\
+r3-P01 (r4-P01) & Do the recognizer's unstable tokens (low confidence, filter removals, seam share, transport across
+decodes) fall differently in the claimed voice than in the creator's own voice? & No row whose reading is printed reads
+``differential instability detected''. On the stored fields, confidence, filter removals and transport read ``no
+differential instability detected among Whisper-family decodes; shared normalisation untested''; the seam share and
+both second-decode bases are undetermined. Some rows' readings are not printed for privacy. \\
+r3-P02 (r4-P02) & Does the 30-s decoding grid leave marks in what the voice labeller reads: do claimed-voice boundaries
+lock to the decoder's seams, is punctuation near seams a mark of the grid, and does that differ by voice? & Primary I
+(seam lock): undetermined, its two estimators disagree; its entries row lies beyond the margin, opposite to the named
+direction; some rows' readings are not printed for privacy. Primary II (punctuation near seams): undetermined; the
+grid-shift row lies beyond the margin and is printed as a described row. \\
+r3-P03 & Is the claimed-against-own contraction contrast told apart from the register and cues the labeller sees
+(label circularity)? & ``Told apart from register in these data (on these checks only)''; some rows' readings are not
+printed for privacy. The register-only locator's AUC, well above chance, prints beside it. \\
+r3-P04 (r4-P09) & How much of each seen claimed-minus-own contrast (H1, H4, H6) comes from where the voices sit and how
+long their spans are, and does any contrast remain beyond that? & H1: undetermined. H4: ``no reference holds size at
+this count''. H6: not printed: it rests only on rows whose count is banded. Some rows' readings are not printed for
+privacy. \\
+r3-P05 (r4-P05, no-cost part) & Once position in the recording is held fixed, are pay-or-enrol asks still rarer in the
+claimed voice, and which placement explains it: the closing slot, the host's footing, or a separation specific to
+commerce? & Pay-or-enrol asks under tenth strata: A (``fewer claimed asks than position predicts, beyond the margin'').
+Which placement: undetermined. \\
+r3-P06 (r4-P04, no-cost part) & Do the stored voice labels put pay-or-enrol ask units into short own-voice islands
+inside claimed speech more often than comparable units (an association the codebook could induce)? & Island
+concentration: undetermined; the gate did not fire. The deictic arm is a secondary, described row. \\
+r3-P07 & What happens to time outside recognized speech, and to five text and recognizer features, in the minute
+around a claimed-voice entry and exit, beyond what position-matched shifted boundaries show? & A description (no
+reading A or B): a local excess of time outside recognized speech next to claimed-voice boundaries, beyond
+position-matched shifted sentence-unit boundaries; in solo recordings, placebo and seam-excluded rows whose descriptions
+are printed agree. Some rows' values and descriptions are not printed for privacy. \\
+r3-P19 & How much of the variance of one reading of one recording comes from the labelling process (a generalizability
+and decision study of consistency)? & Label-process share against 0.10: A for checkability time window, checkability
+observable outcome and titles presentation P1; undetermined for the voice shares and pay-or-enrol asks; sentence codes
+not computed. Interval method not calibrated by r3-P30 for this design class. \\
+\bottomrule
+\end{tabular}
+\caption{Step~1 of the third-round programme, part 1 of 2: entry (with the round-4 proposals it carries), question
+and reading. Exploratory; not a test of H1--H10; seen creators only. Readings A, B and undetermined are defined in
+Appendix~\ref{app:panel3-readings}; readings, not findings. Copied from the step-1 index of the research folder.
+\LabelValidity}
+\label{tab:panel3-step1}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}p{0.08\textwidth}p{0.30\textwidth}p{0.56\textwidth}@{}}
+\toprule
+Entry & Question (shortened) & Reading, in the entry's own words \\
+\midrule
+r3-P20 & Why did agreement measured on the gate sample not transport to the rest of the seen recordings (gate ladder,
+disagreement model)? & Transport gap against 0.10: B for voice claimed / own / other, pay-or-enrol asks and
+checkability observable outcome; A for titles presentation (higher outside the gate sample); the other rows
+undetermined. Interval method not calibrated by r3-P30 for this design class. The gate sample and the hold-out
+reliability sample drew harder titles than the rest of the seen roster; outside them, presentation agreement was
+higher. \\
+r3-P21 & Did the model aliases resolve to one snapshot throughout, and did the batch and standard interfaces code
+alike? & A tabulation, no reading: every stored returned string is the bare alias, so whether an alias resolved to one
+snapshot cannot be told from stored runs; whether the interfaces coded alike is not computable from stored runs. \\
+r3-P23 & How complete are the finders under a three-source capture-recapture model, against nlp-R13's figures? &
+Forecast F1 statements: ``optimistic by at least the margin''. Forecast candidates: the same by rule, with the printed
+caveat that the only admissible model's estimate is not credible as a recall. Asks: no admissible three-source model
+(any class); described only (K1). Interval method not calibrated by r3-P30 for this design class. \\
+r3-P26 (r4-P06) & Once each method's inputs are written down, which pairs of methods share no input, and do those
+pairs still agree (MTMM over input-disjoint pairs)? & Asks: undetermined (one input-disjoint pair). Voice, source
+family, and time window, hedging and condition: ``no input-disjoint pair''. Subject and the acoustic column: not
+computable. \\
+r3-P27 & Do seen descriptions shrink from the development creators, on whom the prompts were developed, to the check
+creators (a tuning leak)? & Undetermined on every row (voice agreement, H1, H4, H6). Group estimates and shrinkage
+factors on H1, H4 and H6 are not printed (decision 50). A difference between the groups is a shrinkage factor for seen
+priors, not proof of tuning. \\
+r3-P28 & One annotation protocol for any new field, and a priced funding ladder for the arms that need money. & An act
+(writing; no margin, no reading): it funds nothing. 3.30 USD of headroom remain under the 130 USD hard stop; the person
+check (about 750 to 1,200 USD) is the only arm that would buy an accuracy word. \\
+r3-P32 (r4-P11) & How wide are prediction intervals for a new creator under an error-aware hierarchical model, and
+what share of wrong boundary units would tip each controlled contrast? & Part 1: on every controlled row whose
+prediction interval for a new creator is printed, it crosses the smallest effect (interval class not calibrated by
+r3-P30). Part 2, every row: ``robust to at least the disagreement already measured; shared errors untested''.
+Near-bound tipping (described, not read): the near bounds of H4 position-matched (about 0.07) and of H6's two
+transplant rows (below 0.01) tip inside the disagreement already measured, while their means do not reach a margin on
+the grid. \\
+r3-P33 & How were the exploratory round's headline descriptions chosen, and how robust and informative are they? &
+Selection: ``chosen after the results were seen''; r3-P33 prints a rule (S1 to S12) and audits them. Cascade: H4 A on 2
+of the 3 rows whose reading is printed; the H1 and H6 cascade readings are not printed: they rest only on rows whose
+count is banded. Of 15 classed seen contrasts: 2 not printed (their counts are banded); of the other 13, 5 beyond the
+margin, 1 trivial, 2 equivalent, 3 non-zero with size undetermined, 2 uninformative. Near-bound tipping (r3-P32,
+described) stands beside the transplant rows. \\
+\bottomrule
+\end{tabular}
+\caption{Step~1 of the third-round programme, part 2 of 2 (continued from Table~\ref{tab:panel3-step1}). ``Decision''
+numbers are the lead's step-1 decisions, printed in the step-1 index. Exploratory; not a test of H1--H10; seen
+creators only. \LabelValidity}
+\label{tab:panel3-step1b}
+\end{table*}
+
+\subsection{Steps 2 to 5: lexicon checks and descriptions}
+\label{app:panel3-steps25}
+
+Steps~2 to~5 ran on 26 November 2026 on the seen creators, each entry written by a model agent working for the lead.
+Step~2 (12 entry folders) ran after deposit~3 was merged (11:14:53Z): r3-P42's lexicon checks without a reader, and 11
+descriptions that count with the deposited lists through one shared matcher, hashed before any corpus text was read.
+Every step-2 entry ran once, with no split, on the 23 non-development seen creators (tier~L), and every count is a cue
+count: sense not resolved, precision unknown, until a reader is funded. Steps~3 to~5 cover forecasts and time (five
+entry folders), the platform and the audience (five) and voice, register and footing (six), with each entry's tier
+assigned before any outcome was read (Appendix~\ref{app:panel3-readings}). Step~2 was published by pull request~115
+(merged 16:03:29Z) and steps~3 to~5 together by pull request~118 (merged 18:00:20Z), each after independent privacy
+checks. No entry records a model or API call or any spend, and no entry made a hold-out or other-group contact.
+Tables~\ref{tab:panel3-step2} to~\ref{tab:panel3-step5} give each entry's question and its reading as the step indexes
+print them, in the entry's own words. Rows that a step file does not compute or does not print read so here too.
+
+Reading words. Rows read against matched placebos, pseudo-strata or a null use the band's words (``no excess over
+matched placebos'', ``outside the placebo band'', ``no stratigraphic structure beyond placebos''). Where no direction
+was deposited, a margin row reads ``beyond the margin'', ``within the margin (B)'' or ``undetermined'', never A; no
+reading A occurs in step~2. A class needs 3 or more terms, each used by 5 or more of the 23 creators; most classes fail
+that rule on 23 creators and print ``not computed (too few terms or creators)''. Terms that a glossary of antisemitic
+tropes documents are set aside from every count until r3-P54, and the classes they empty print ``not computed until
+r3-P54 (waits for the owner's ethics act)''. Associations at capture are not causal.
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}p{0.55\textwidth}@{}}
+\toprule
+Entry (carries) & Question & Reading, in the entry's own words \\
+\midrule
+r3-P42 & Can the deposited lists fail as structure without a reader: matched placebos and pseudo-strata, term influence,
+differential functioning by voice and profile, precision bands, the ledger coder's shared forms, and collisions between
+lists? & ``Most classes cannot be computed on 23 creators'': 15 of 67 classes are computed, 49 read ``not computed (too
+few terms)'' and 3 ``not computed until r3-P54''. Of the 75 statistic rows of the computed classes, 43 sit inside their
+bands (``those classes fail as structure on those statistics''), and 10 are not printed (privacy rule) or not
+computable; one row holds through every check (L01 S14's concentration). L01's composition test: ``no stratigraphic
+structure beyond placebos''; L06: ``no excess over matched placebos''; L09: outside both bands but ``undetermined
+(term-dependent)'' (``we''). \\
+r3-P43 (r4-P26) & Does the speech of these creators draw on vocabularies first current in different periods, together
+and by voice (co-presence of historically dated vocabularies)? & Composition test (shared primary): ``no stratigraphic
+structure beyond placebos'' (9 of 12 parts thin); survival strip: ``no dated order beyond the null'';
+claimed-minus-own composition: every printed part ``undetermined''; r4-P26: ``no excess co-presence over placebos'', and
+the recording-level contrast is ``undetermined''. No balance prediction can be scored on tier~L; a domain member's R11
+condition does not hold (R11 is a thin part; a cue count). \\
+r3-P44 (r4-P27, its r3-P44 part) & Do the dated strata co-occur in the same creators beyond a fixed-margin null, overall
+and by audience and economy stratum, and does the fusion thesis hold? & 15 layer pairs are computed; ``none lies outside
+both the fixed-margin null and the placebo band'', overall or in any stratum. The decisive pair P000: ``not computed
+until r3-P54 (waits for the owner's ethics act)''; ``the registered predictions \ldots{} are not scored''. \\
+r3-P45 & Is the density-scale share (density against dimension vocabulary) a title-free lineage marker? & ``Primary: not
+computed'' (``no counted density term after the set-asides of addendum 2c''); the two-author test is not run. The
+dimension side alone, carried from r3-P42, is ``undetermined (term-dependent)''. \\
+r3-P46 & Do source names act as title templates, so that CSS-5's profiles and MTMM's source-family convergence agree
+partly by construction? & Name classes and template status: ``not computed (too few terms or creators)''; the entry
+``cannot answer its own question on tier L''. MTMM's source-family cells on tier~L are described (the pair reading the
+same input agrees more than the pairs that cross from titles to transcripts). \\
+r3-P48 (r3-P49, r4-P18, r3-P50) & The control register v2 (r3-P48); is control talk concentrated over creators beyond
+matched placebos (r3-P49); is vocabulary placed differently in page text than in speech (r3-P50)? & r3-P48: ``Nothing
+can be computed'' (every sub-register too thin; CR-A not computed until r3-P54); ``No prediction is scored.'' r3-P49
+(primary, the pooled control set, as prespecified): ``excess over matched placebos'' (phi 3.25 against a band of 0.10 to
+1.13), holding under every check; it cannot be split by sub-register. Under r3-P42's convention, printed beside it as a
+sensitivity row (decision~69): ``not computed''. r3-P50: shift vocabulary ``page denser than speech'' on the band but
+``undetermined (term-dependent)''; control vocabulary ``undetermined at unknown precision''. \\
+\bottomrule
+\end{tabular}
+\caption{Step~2 of the third-round programme, part 1 of 2: r3-P42's lexicon checks and the lexicon descriptions r3-P43 to r3-P48,
+all on tier~L (the 23 non-development seen creators, run once). Every count is a cue count: sense not resolved,
+precision unknown. ``Decision'' numbers are the lead's step-2 decisions, printed in the step-2 index; where the index names
+a panel member by identifier, the member's role is given. Exploratory; not a
+test of H1--H10; seen creators only; readings, not findings. Copied from the step-2 index of the research folder.
+\LabelValidity}
+\label{tab:panel3-step2}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}p{0.29\textwidth}p{0.55\textwidth}@{}}
+\toprule
+Entry (carries) & Question & Reading, in the entry's own words \\
+\midrule
+r3-P51 (r4-P28) & Are named actors and contested content placed differently in the claimed voice than in the
+creator's own voice? & ``Every class is too thin.'' The model-free named-actor proxy, claimed over own: $-$0.70 (90\%
+$-$1.21 to $-$0.19), ``undetermined''; position-matched $-$0.50 ($-$1.05 to 0.05), ``undetermined''. \\
+r4-P29 & Is the adversary's threat resolved by inner means or by an outside agent (a lexical proxy and recall bound),
+and does that differ by voice and economy type? & ``Neither resolution class can be counted'' (``not computed (too few
+terms or creators)''); the crossing with economy type ``cannot run on tier L''. \\
+r3-P52 (r4-P12) & Do claimed-voice recordings carry more first-person plural than the same creators' own-voice talks,
+at recording level (no span label selecting the units)? & The shift is 0.07 (90\% $-$0.09 to 0.19): ``undetermined'';
+the spread over creators: ``undetermined''. ``At recording level, without span labels selecting the units, no such
+shift is told apart from noise or placebos on these creators.'' \\
+r3-P53 (r4-P30) & Which modes of mediation do creators describe for their practice, and where does the frozen voice
+code file those self-descriptions? & ``Two of eight modes can be counted'' (relay; higher self or Source). ``The voice
+code files both kinds of self-description on both sides''; no correct filing is defined, so no misfiling rate is
+read. \\
+r3-P55 & Is endorsement of the creator's work placed in the claimed voice at matched positions (co-occurrence as a
+lower bound)? & ``The primary is not computed'' (it needs a class that is thin by design); endorsement by voice is not
+printed (fewer than 5 creators carry it); the own-voice no-price share is not printed (privacy rule). \\
+r3-P56 & Does the asks instrument recall the gentlest wording of payment and asks to pass a message on (a recall
+probe), and how do dissemination phrases sit against pay asks by voice? & The idiom is thin (``not computed''); the
+dissemination recall probe is not printed (fewer than 5 creators). Per hour, claimed over own: the dissemination and
+pay-ask contrasts and their difference are ``not printed (privacy rule)'' (decision~86). \\
+\bottomrule
+\end{tabular}
+\caption{Step~2 of the third-round programme, part 2 of 2 (continued from Table~\ref{tab:panel3-step2}): the other
+lexicon descriptions, on tier~L. Intervals are 90\%. Exploratory; not a test of H1--H10; seen creators only; readings,
+not findings. Copied from the step-2 index of the research folder. \LabelValidity}
+\label{tab:panel3-step2b}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}p{0.47\textwidth}@{}}
+\toprule
+Entry (carries) & Tier & Question & Reading, in the entry's own words \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Step~3: forecasts and time}} \\
+r3-P36 (r4-P21) & D (pooled panel); L (rule-typed panels, r4-P21's typing) & A calendar null tested where it can fail;
+which calendar the dated windows keep & ``explicit absolute windows: mean channel slope $-$5.17, 90\% t interval
+$-$17.80 to 7.46, inside the permutation band; undetermined (capped by r3-P30, class F\_slope); the calendar null cannot
+be distinguished from a calendar habit here'' \\
+r3-P37 (r4-P20; r4-P21's anchor-class half) & S (sealed half read once); word-anchored row L & Which calendar the
+forecast format keeps; two clocks (sky anchors against the weekday habit) & ``off-habit share of sky-or-festival
+anchored uploads minus other uploads, E1 0.086 (90\% $-$0.068 to 0.240), E2 0.097 ($-$0.069 to 0.263):
+undetermined'' \\
+r4-P23 & L & The contact class in the frozen ledger & ``bounded share, contact minus world event, $-$0.037 (90\% t
+$-$0.125 to 0.051): undetermined'' \\
+r3-P38 (r4-P24) & L & Qualifier clauses at speaking time (cosmological hedges v2) & ``no family reads A''; time
+qualifiers, probability and open-future wording and energetic predicates ``undetermined (term-dependent)''; certainty
+and completion wording ``undetermined''; collective-choice conditionals and prevention wording ``not computed (too few
+terms or creators)'' \\
+r3-P40 (r4-P25) & L & Passed prophesied years against control years & ``none: every cue family and the pooled set are
+thin on tier L; no stacked cue share or contrast is computed''; class~3 ``not computed (the deposited class-3 rule
+yields no controls on this roster)''; ``the memory timeline is drawn'' \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Step~4: the platform and the audience}} \\
+r3-P57 (r4-P32) & X & Sample-to-offer congruence & ask half: ``undetermined (MH odds ratio 0.42, 90\% 0.10 to 1.34;
+creator strata 0.64, 0.20 to 1.52)''; congruence half: ``not computed (too few terms or creators)'' \\
+r3-P58 & X & Does the audience reward the claimed voice inside a channel? & every row ``undetermined'' against the
+0.10 margin; the claimed-voice share of words with views is cited only as ``outside the permutation-maximum band but
+undetermined against the 0.10 margin (association at capture)'' \\
+r3-P65 & S & Survivorship and attrition (the gap bound) & sealed half B: ``no excess over the posting model (0.02;
+band $-$0.31 to 0.36)'' \\
+r3-P60 & L & Where audiences are sent off the platform, and suppression talk & destinations ``described (a link is a
+link, not a verdict)''; both suppression halves ``not computed (too few terms or creators)'' \\
+r3-P61 & L & Persuasion and monetisation devices, priced or unpriced (a pilot) & ``a pilot with no reading of its own; 3
+of 15 classes computed'' \\
+\bottomrule
+\end{tabular}
+\caption{Steps~3 and~4 of the third-round programme: entry, tier (deposit~2's split policy, assigned before any outcome
+was read), question and reading. Intervals are 90\%. Readings follow deposit~2's margins; a reading is never called a
+finding, and associations at capture are not causal. Exploratory; not a test of H1--H10; seen creators only. Copied from
+the step-3 and step-4 indexes of the research folder. \LabelValidity}
+\label{tab:panel3-step34}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}p{0.43\textwidth}@{}}
+\toprule
+Entry (carries) & Tier & Question & Reading, in the entry's own words \\
+\midrule
+r3-P14 & X (the 11 voice-eligible creators); attribution L & Read aloud, recited or spontaneous? The text part &
+``undetermined (score S, within-phrase pause share W and repairs R all undetermined)'' \\
+r3-P15 (r4-P13) & unsplit (all 71 seen creators) & Person or register? A distance ladder & ``undetermined (P1 same
+recording, person-free: interval reaches inside the margin under both standardisations; P2 standardisations disagree; P3
+beyond the margin, nearer the creator's own voice)'' \\
+r3-P16 & L (mode groups); shift on the 11 & Who shifts? Register shift by self-described mode & ``undetermined (shift
+over the 11 capped by r3-P30); by self-described mode not computed (too few terms or creators)'' \\
+r3-P17 & unsplit (all 71 seen creators) & A calm-register control, text rows & ``articulation rate: not informative at
+this size (undetermined); long-pause share: the claimed voice differs from own-voice guided practice'' \\
+r3-P18 & X (the 11 voice-eligible creators) & A transparent footing locator and a disagreement diagnostic &
+``agreement by shared design (kappa 0.28 full, 0.17 pronoun-blind); uncued share 0.69; the adjudication rows not
+computed or not printed'' \\
+r4-P14 & X by count (the 11); a rule without a tuned part & Archaic agreement in the transcripts & ``not computed:
+fewer than 5 creators carry any archaic form'' \\
+\bottomrule
+\end{tabular}
+\caption{Step~5 of the third-round programme (voice, register and footing; recognizer text only, no audio): entry,
+tier, question and reading. Readings follow deposit~2's margins; a reading is never called a finding. Agreement between
+coders is agreement, never accuracy. Exploratory; not a test of H1--H10; seen creators only. Copied from the step-5
+index of the research folder. \LabelValidity}
+\label{tab:panel3-step5}
+\end{table*}
+
+\paragraph{Notes carried by the lead's decisions.} They are printed, in their public wording, in the step indexes. A
+decision's number is given here only where a published file prints it; otherwise the note cites the step index that
+prints the decision.
+Step~2: that most classes are too thin on 23 creators is itself a result, and a run on the tuning pool (48 creators)
+would be a new registration with its own deposit before any count (decision~65). For r3-P49 and r3-P50 the hashed
+prespecification binds: the pooled control set is primary, and r3-P42's convention prints beside it as a sensitivity row
+(decision~69). A contrast between voice sides, and every value read from one, prints only where each side is carried by
+5 or more of the voice-eligible creators (decision~86).
+
+Steps~3 to~5. r3-P38's four family rows and r3-P17's two long-pause rows stay printed: their t intervals were fixed in
+the prespecifications, not chosen by the count (decision~71; for r3-P17, the lead's decision in the step-5 index). Fixed 90\% t intervals in place of r3-P30's
+count-chosen methods are accepted: they were fixed before any outcome and are flagged ``not calibrated by r3-P30'' where
+no class fits; where the fixed t interval over-covers, it is conservative (decision~82). r3-P15's claimed-claimed rows
+keep their intervals, since across the possible counts of their band r3-P30's table chooses the same method for every
+design class (decision~101). The class-3 rule that the lead deposited (deposit~4) yields no controls on this roster:
+controls are possible only where a creator's uploads lie 2 or more calendar years apart. This is a defect of the lead's
+deposited rule, found on application; r3-P40's class~3 prints as ``not computed (the deposited class-3 rule yields no
+controls on this roster)'', and a corrected rule would need a new deposit before any count (decision~73). Thin tier-L
+results print as not computed, and a count on more creators would be a new registration (the lead's decision in the
+step-3 index). r3-P37's tier
+stays S as run, since changing it after the result is not allowed (decision~83), and its word-anchored row uses the
+frozen rule coder's event-anchor pattern, a stated departure (decision~85). Slopes read ``undetermined'' until a
+calibrated precision-weighted slope method exists (decision~84). r3-P58's claimed-voice share with views is cited only in
+the form of Table~\ref{tab:panel3-step34} and never as a finding (decision~80). r3-P57's congruence half and other rows
+that cannot be computed on the 23 wait for a registration on a larger tier (decision~77), and r3-P65's tab shares by
+audience band run in a later batch (decision~76). Under tier~X the tuning pool sits on the fitting side in both folds
+and is never read, and fold-level counts are not printed (the lead's decision in the step-5 index). The 11 voice-eligible creators print as the band
+``10 to 19'' in the prespecifications' tier tables and exactly in the outputs; tier~X on 11 creators leaves most step-5
+rows capped or thin, and a run that includes the tuning pool would be a new registration (the lead's decisions in the
+step-5 index).
+Fix passes after the independent checks changed no number (decisions~99, 103 and~104): rows that were not computed and
+rows that are not printed carry one label, ``not computed or not printed''; where two printed creator groups nest within
+1 to 4 of each other, no statistic of the same measure is printed on both, and the smaller group's count is never
+printed exactly beside the larger's (decision~103). A corrected class-3 rule, the precision-weighted slope class, N20's
+decomposition and the larger-tier runs go on the fourth panel's agenda. Every step index states the multiplicity
+disclosure of Appendix~\ref{app:panel3-readings}.
+
+% Phase 2: the step tables of C.4 and C.5 are flushed here, so that they stand before the audio slot and the novelty
+% wordings rather than among them (a second \clearpage, so that the text after it does not start in a column the
+% float flush has cut short).
+\clearpage\clearpage
+
+\subsection{Audio entries}
+\label{app:panel3-audio}
+
+The programme's seven audio entries (r3-P12, r3-P08, r3-P11, r3-P09, r4-P03, r4-P15 and r4-P16) ran on 26 November 2026
+under the lead's ruling~4 (Tier~0 and Tier~1 audio of seen recordings; Tier~2 closed), in one acoustic pass over the seen
+recordings' stored audio. The audio addendum then served, from the pass's stored per-recording summaries alone, the
+registered parts that had waited for audio (the lead's decision~106.4); it read, copied and decoded no audio. Both were
+published together by pull request~121 (merged 20:41:45Z) after independent checks; their fix passes (decisions~109
+to~114) left values not printed (privacy rule), merged or reworded, with no number changed. Each entry was written by a
+model agent working for the lead. No person listened, no model or API call was made, and no GPU work was needed.
+Tables~\ref{tab:panel3-audio} and~\ref{tab:panel3-audio-add} give each entry's and each part's question and reading, in
+their own words.
+
+\paragraph{The instrument.} Tier~0 features: level, digital silence, acoustic pauses, syllable nuclei, syllabic
+modulation, spectral flatness, bandwidth, background spectrum, a reverberation proxy and rule-based classes of frames
+outside recognized speech. Tier~1 features: F0 in semitones relative to the recording's own median (the median itself is
+never stored), intensity variability and spectral tilt over voiced frames. Nothing of Tier~2: no absolute pitch, formant,
+embedding, speaker count or synthetic-voice score. Every sample outside admitted time is set to zero before any feature is
+computed, and conversation and multi-presenter recordings are not copied, so no third party's voice is processed.
+Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or
+a source.
+
+\paragraph{Battery, gate and A8.} A known-answer battery on constructed audio binds the readings; its recovery is an
+upper bound. Its criterion~1 is not met for the rate slope (about 0.45, as the audio folder's common README prints it),
+so acoustic rate rows never read ``within the margin (B)''; criterion~3 is not met for pitch range, so pitch-range rows
+read neither way; and a composite profile reads a direction only if every feature in it may (the battery caps of
+decision~106.3). The splice census sees changes of background spectrum only: session joins, music-bed onsets and
+spectral changes, not same-session cuts or gain steps. A recording enters a delivery row when its speech-to-background
+ratio is 25~dB or more. An entry or part whose primary has fewer than 12 eligible creators after this gate prints ``not
+measurable acoustically in this corpus'' and, under decision~109.1 (a rule that does not depend on the data), no
+estimate, interval or reading row and no figure (A8). A8 blocks r3-P09 and r4-P15, which stay without a reading in this
+round; a run with the tuning pool added would be a new registration, on the fourth panel's agenda (decision~106.2).
+
+\paragraph{Departure from the split policy's wording (decision~106.1).} Deposit~2's split policy builds a data-tuned rule
+on exploration half~A and runs it once on sealed half~B (tier~S), or cross-fits it over the two halves (tier~X). Here
+every data-tuned part (the instrument's development test, r3-P12's condition adjustment, the standardisation units,
+r4-P03's threshold, r4-P15's feature scales, battery criteria 4, 5 and~7, and in the addendum r3-P15's scalings and
+r3-P13's exploration) is fitted on the tuning pool~T only, never on either half, and each reading is made once on all
+eligible creators. Reason: T sits on the exploration side and is never read for a split reading, so fitting on T alone
+keeps both halves out of every fit. Limitation: half~B is no longer sealed for the acoustic measures described here.
+Tiers print as letters only (decision~111).
+
+\paragraph{The two prespecifications.} The seven entries share one prespecification, hashed at 15:27:51Z, before the
+pass and before any outcome. The addendum's prespecification was hashed at 18:39:23Z, before any outcome of its parts was
+computed and before any acoustic value, the background gate's included, was read for them. Both are published as
+redacted copies with public hash records: in the entries' copy, outcome-free counts print as tier letters only
+(decisions~111 and~112); in the addendum's copy, the citation of the entries' prespecification hash and a phrase quoting
+an estimate the audio entries do not print are replaced, and the standing rule is worded generically (decisions~113 and~114). The originals stay private and
+unchanged, and their hashes are kept privately (step-1 decision~49, item~i); the hash records keep the hashing times and
+the hashes of the code fixed with each prespecification.
+
+\paragraph{Notes carried by the lead's decisions.} Under decision~109, creator counts print as ``all 23'', as bands or not
+at all, every withheld cell reads one label, ``not printed (privacy rule)'', and the departure above is printed with its
+reason and its limitation in every entry. Under decision~114, r3-P15's reference rungs print no interval (a fixed rule),
+and every addendum CSV header and contact log carries the half-B limitation. The re-decode of the seen recordings on a
+shifted 30-s grid over the whole roster (r3-P02's grid rows; r3-P01's family~C beyond its stored bases) is a
+re-transcription of the seen recordings and is not run: the lead reads the owner's instruction of 26 November as covering
+it, it goes to the owner and to the fourth panel's agenda, and r3-P01 and r3-P02 stand as published on their stored
+bases (decision~106.4). Predictions deposited for the addendum's parts are silent, except r3-P16's, under which no account
+is retired whatever the result; nothing is scored.
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.07\textwidth}>{\raggedright\arraybackslash}p{0.10\textwidth}>{\raggedright\arraybackslash}p{0.22\textwidth}p{0.53\textwidth}@{}}
+\toprule
+Entry & Tier & Question & Reading, in the entry's own words \\
+\midrule
+r3-P12 & S & how much ``speaker'' variance is the channel? Each delivery measure's creator share of variance, raw and
+condition-adjusted. & A description, with no reading words: ``with the covariates measured here, most of the
+between-creator variance in these delivery measures is not explained by recording condition; F0 range is the exception,
+part of whose creator share goes with condition. The covariates are not exhaustive (microphone, room and processing are
+only partly visible), so `not explained by measured condition' is not `speaker'.'' Covariates only: never printed per
+creator and never a synthetic-voice screen. \\
+r3-P08 & X & ``one contrast, five instruments'': the claimed-over-own rate ratio under the run recognizer, the larger
+recognizer, the shifted grid, the acoustic nucleus rate and recognized syllables per nucleus. & Primary (I4, acoustic
+nucleus speech rate): ``undetermined (battery criterion 1 (rate slope) not met)''. I1, the run recognizer: ``within the
+margin (B)'' (agreement between voices on the recognizer's rate, never accuracy). I2 (larger recognizer) and I3 (shifted
+grid): ``not computed (too few terms or creators)''. I5 and every other row: undetermined. ``Neither the recognizer nor
+the acoustic instrument shows a claimed-over-own rate difference beyond the deposited margin; the recognizer's contrast
+lies within it; the acoustic contrast cannot be read as `within' because the instrument compresses rate changes. No
+pitch or intensity row is readable.'' \\
+r3-P11 & S & what fills time outside recognized speech, and the 30~s before onsets. & A description: ``most time
+outside recognized speech is near-floor silence or unclassified sound; the rule-based classes that would mark toning,
+instruments or breaths are rare (breath-like frames about 1\% throughout), and before claimed-voice onsets the toning and
+instrument classes are not printed (privacy rule).'' \\
+r3-P09 & X; cue-opened column D: not computed & do voice boundaries sit on changes in delivery or production? &
+``Not measurable acoustically in this corpus (fewer than 12 eligible creators after the background gate: A8).'' Every
+estimate, interval and reading row: ``not printed (A8: fewer than 12 eligible creators after the background gate)''; no
+figure. \\
+r4-P03 & X & audits the premise ``same speaker, same microphone, same recording'' behind r4-P01, r4-P13 and r4-P15;
+becomes an exclusion rule. & Boundaries minus matched edges: ``undetermined'' against the 0.05 margin. ``Voice
+boundaries do not show a detectable excess of background change over matched edges at this size; the premise `same
+recording environment' is neither confirmed nor refuted, and the census cannot speak to cuts made within one session.''
+The exclusion rule was applied: boundaries with a detected change left r3-P09's and r4-P15's delivery rows. \\
+r4-P15 & X & delivery at self-attributed switches, read against matched edges and the creator's own range. & ``Not
+measurable acoustically in this corpus (fewer than 12 eligible creators after the background gate: A8).'' Every
+estimate, interval and reading row: ``not printed (A8: fewer than 12 eligible creators after the background gate)''; no
+figure. \\
+r4-P16 & X & the non-speech layer before claimed-voice onsets; breathing that precedes any long utterance is the
+control (N14). & Breath-like share, claimed minus length-matched own-voice onsets: ``within the margin (B)''; claimed
+minus position-matched points: ``within the margin (B)''. Caveat: ``breath-like frames are about 1\% of the time outside
+recognized speech here, far below the 0.05 margin, so a difference inside the margin is close to built in by the base
+rate; the breath class is rule-based and was not tested on the battery; and the 30 s before own-voice onsets hold much
+excluded time (about a third: they often follow other participants or material), which limits that comparison''.
+Part~(b), text work, is not run in this batch. \\
+\bottomrule
+\end{tabular}
+\caption{The audio entries of the third-round programme (Tier~0 and Tier~1): entry, tier (by count, outcome-free,
+printed as its letter only), question and reading. A8: fewer than 12 eligible creators after the background gate.
+Acoustic features describe the sound of these recordings, never a speaker's state or a source; recovery was checked on
+constructed audio only; no person listened. Readings follow deposit~2's margins under the battery's caps; a reading is
+never called a finding. Exploratory; not a test of H1--H10; seen creators only. Copied from the entries' READMEs in the
+audio folder of the research folder. \LabelValidity}
+\label{tab:panel3-audio}
+\end{table*}
+
+\begin{table*}[tp]
+\centering
+\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}p{0.43\textwidth}@{}}
+\toprule
+Part & Question & Status & Reading (only these words) \\
+\midrule
+r3-P01 / r4-P01, part~E & recognized syllables per acoustic nucleus, by self-presented voice & computed on all seen
+creators (unsplit); 40 to 49 creators & \textbf{undetermined}: recognized syllables per acoustic nucleus are lower in
+the claimed voice within recordings (beyond r3-P01's margin), but not at matched acoustic tempo; ``no differential
+deletion'' cannot be read (battery slope); shared normalisation stays untested \\
+r3-P17, acoustic primary & the calm-register control on acoustic delivery & not measurable acoustically in this corpus
+(A8) & every row not printed (A8) \\
+r3-P15 / r4-P13, acoustic rungs & person or register? The distance ladder on delivery & computed on all seen creators
+(unsplit); 30 or more per rung & \textbf{undetermined} (the composite cannot read a direction under the battery caps);
+described: delivery stays nearer the creator's own voice than other creators' claimed voices \\
+r3-P13, exploration & the seen exploration: a label-free acoustic hypothesis (card b2) & tuning pool T only; not
+measurable acoustically in this corpus (A8) & every row not printed (A8); the registration condition is not met in this
+round \\
+r4-P06, acoustic column & the acoustic column of the input-disjoint MTMM read & outcome-free, on r3-P26's map &
+\textbf{no input-disjoint pair} (voice); source family and asks not computable \\
+r3-P14, acoustic part & read aloud, recited or spontaneous? & not run & not run (needs a further audio pass; the
+read-like score is not computed per creator under the audio prespecification) \\
+r3-P16, delivery rows & who shifts, by self-described mode? & not computed & not computed (too few terms or creators) \\
+GPU re-decode & r3-P02's grid rows and r3-P01's family~C over the whole seen roster & not run & not run
+(decision~106.4) \\
+\bottomrule
+\end{tabular}
+\caption{The audio addendum of the third-round programme (decision~106.4): part, question, status and reading, as the
+addendum's index prints them in its column ``Reading (only these words)''; questions from the parts' README titles.
+Computed from the audio pass's stored per-recording summaries; no audio was read. A8: fewer than 12 eligible creators
+after the background gate. Readings follow deposit~2's margins (r3-P01's part~E uses r3-P01's own margin) under the
+battery's caps; a reading is never called a finding. Exploratory; not a test of H1--H10; seen creators only. Copied from
+the addendum's index and the parts' READMEs in the research folder. \LabelValidity}
+\label{tab:panel3-audio-add}
+\end{table*}
+
+% Phase 3: the audio tables are flushed here, before the novelty wordings (two \clearpage, as above).
+\clearpage\clearpage
+
+\subsection{Novelty wordings}
+\label{app:panel3-novelty}
+
+\paragraph{The rule.} No output says ``first'', ``novel'' or ``unique research question''. Each claim carries its search
+count and its closest prior work, ends ``Not found means only that.'', and is struck, never reworded upward, when
+covering work is found; where the method exists, it says ``the method is theirs; only the target is this corpus's''.
+Model agents searched free scholarly indexes; the indexes reach the humanities, monographs and non-English scholarship
+poorly, and paywalled indexes (ATLA, PsycINFO, MLA, Scopus, Web of Science) were not reached, so a ``not found'' is
+weakest for the humanities claims (N10, N12, N22 to N30).
+
+\paragraph{Two attack passes and a bibliography check.} In round~4 the members' claims were attacked and pooled into 31
+surviving wordings (N01 to N31), one claim was withdrawn and one awaited an attacker (programme, Section~3). Claims with
+a single verdict, and the sociological debunker's own, were attacked again by one methods attacker (ruling~12), in the
+deposited order: done before, trivial, not showable by these data, otherwise survives. None was refuted; where a part
+the wording claimed was found done before, the wording was narrowed and names the method as theirs. The lead accepted
+the verdicts (decision~96). A count ``$Y + k = Z$'' adds the second pass's counted searches $k$ to round~4's attacker
+searches $Y$; member counts are unchanged. Before any wording prints, every work the second pass newly named was checked
+for existence, findability and whether it says what the wording claims (ruling~13); a wording prints only if every newly
+named work it cites passed. The closest works named in round~4 are listed with each wording in the programme's
+Section~3.1 (\texttt{programme.md}, hashed with deposit~2) and are checked with the attackers' prior work under
+ruling~13; they are not repeated here. Four of
+them, left unresolved by that check, held the wordings N04, N20, N21 and N24 until they passed the same check (the lead's
+decision~102): an incorporation-bias chapter on diagnostic research (N04; its abstract read, with two authors where
+round~4 wrote ``et al.''), a constant-horizon study of machine-intelligence predictions (N20), the spiritualization
+thesis (N24) and a retrospective, person-checked audit of published psychic predictions (N21; grey literature). All four
+passed, so N04, N20 and N21 print as below. N24 stays held: its final wording also names two works added in the second
+pass that are in neither bibliography check, one of them an unnamed collection of press reports, which fails by the
+check's rule (decision~116). The attack record (the search ledger, the verdicts and both bibliography
+checks) is published with this update in the panel folder (\texttt{ruling12-attack/}), so that every search count of a
+wording can be traced.
+
+\paragraph{Not printed.} N02 and N03 are pipeline checks and get no novelty sentence; they are reported as checks
+(r3-P02). Held, because a work newly named in their final wording did not pass the check or is not in it: N01, N11,
+N14, N15, N16, N17, N23, N24, N25, N29, N31 and the pending wording of r4-P32. They wait for the lead's decision.
+
+\paragraph{Printed wordings.} Final form: each claim, its qualifiers and its closing sentence as the second pass worded
+them, with its updated search count. Its closest-work list is cut to the works that the second pass's final wording
+names and that passed the check, introduced as ``Closest, from the second pass''; the round-4 works are in the
+programme's Section~3.1. ``Round~4 form'' marks wordings with
+four round-4 attackers that the second pass did not re-attack, printed as deposited.
+
+{\footnotesize
+\begin{description}
+\setlength{\itemsep}{1pt}
+\item[N04.] A test for incorporation bias between a model voice label and a model ask label coded by one reader was
+not found in 16 member searches (summed) or in 8 + 13 = 21 attacker searches. The test uses a one-sided, no-cost
+island footprint; an unfunded reversed known-answer arm (the same offer voiced by the source); a name-swap arm for
+widely published sources; and a corpus where that assignment is itself the outcome reported. Closest, from the
+second pass: incorporation bias and criterion contamination
+\cite{schroeder1984influence,lemery2002revealing,budescu1981corrections}; coupling between criteria scored by
+one model judge, probed with targeted synthetic items \cite{p12singh2026radar,p12hu2024llm}; codebook
+conceptualization errors that bias downstream estimates \cite{p12halterman2025protest}; definition swaps and
+counterfactual audits of model annotators \cite{mishra2026definitions,p12he2026better}; content priors in speaker
+attribution \cite{p12lee2026hear,p12liu2026voice}; memory shortcuts \cite{p12wang2026text}; a book-memorisation check
+on model quotation attribution \cite{p12michel2025evaluating}. The method is theirs; only the target is this corpus's.
+Not found means only that.
+\item[N05 (round~4 form).] Measure-centric source maps applied to computational methods of one footing construct, with
+convergence counted only over input-disjoint pairs, were not found in 7 member searches (8 attacker searches). ``No
+input-disjoint pair'' is a permitted result. Not found means only that.
+\item[N06.] A 2 $\times$ 2 design crossing model-version drift (an anchor sample re-read under the frozen alias and any
+successor) with transport to new material from the same speakers and to fresh speakers, under a reliability prediction
+hashed before labelling, was not found in 5 member searches or in 2 + 7 = 9 attacker searches. Closest, from the
+second pass: pre-registered audits of version shift and drift of model raters on fixed items
+\cite{p12sunkavalli2026llm,p12wiese2026human}; model pre-registration before a prospective sample \cite{p12gu2026natural}.
+A design; every arm needs a new collection and model calls. Not found means only that.
+\item[N07.] Window-shifted placebo statements and constructed known-outcome items, fixed before the windows of naturally
+occurring public forecasts mature, used as an admissibility gate for model resolvers, were not found in 5 member
+searches or in 2 + 7 = 9 attacker searches. Closest, from the second pass: target-against-decoy readings in research
+on mediums \cite{p12freire2022testing,p12tressoldi2025someone}; known-answer calibration of a model judge's
+false-positive rate before it scores a large set \cite{p12feng2026noisy}; correlated errors of reference-free judge
+panels, measured on a labelled probe under a pre-specified rule with a negative control \cite{p12zhou2026juryprobe};
+leniency of model judges \cite{p12vaugrante2026much}. The decoy design and the known-answer calibration of model judges
+are theirs; only the window-shifted placebos of natural forecasts and the timing are this corpus's. Not found means
+only that.
+\item[N08 (round~4 form).] An application of in-space placebo and structure-transplant designs to two self-designated
+speaking modes was not found in 5 member searches (9 attacker searches); the method is not new. Not found means only
+that.
+\item[N09 (round~4 form).] A fragility analysis restricted to voice-boundary units, set against the measured
+inter-model disagreement, was not found in 4 member searches (9 attacker searches); the concept is not new. Reading:
+``robust to at least the disagreement already measured; shared errors untested''. Not found means only that.
+\item[N10.] A recording-level, many-speaker count of plural self-reference in claimed-voice recordings against the same
+speakers' own-voice talks, with no span label selecting the units, was not found in 13 member searches (summed) or in
+9 + 9 = 18 attacker searches. Closest, from the second pass: LIWC on mediums' written reports
+\cite{p12beischel2017quantitative}; a scripture's plural narrator \cite{p12mutter2022iltifat}; I-to-we diffusion in an
+online collective \cite{p12sepahpourfard2024identity}; the I-to-we ratio in leaders' spontaneous speeches
+\cite{p12magyari2022hungarian}; a qualitative reading of designation and deixis in religious trance
+\cite{p12silva2026mesmo}. Inclusive and exclusive ``we'' are counted apart. The spread over speakers is read as
+noise-corrected heterogeneity (``concentrated'', ``spread'', ``undetermined''), not as ``koine'' or ``lineage''. Not
+found means only that.
+\item[N12.] A creator-level description of the agreement pattern of archaic pronoun and verb forms, as they appear in
+the transcripts of claimed-voice speech across many speakers, was not found in 4 member searches or in 2 + 8 = 10
+attacker searches. Closest, from the second pass: the grammar of one revealed text \cite{p12carmack2018book}; an
+essay on modern religious use of archaic pronouns, with tallies from one revealed text \cite{p12terry2014thou}. Only
+presence and the transcribed pattern can be read. Not found means only that.
+\item[N13.] Within-speaker acoustic contrasts between a performer's own narrating voice and the voices the performer
+gives to others, in published recordings over many speakers, exist for audiobooks
+\cite{p12pethe2025prosody,p12michel2026computational}. Applied to self-attributed voice switches, against matched
+non-boundary edges and the creator's own range across recordings, on voiced-frame features and only at boundaries that
+pass a splice and music-bed census, it was not found in 6 member searches or in 3 + 7 = 10 attacker searches. Closest,
+from the second pass: an impersonator's voices \cite{p12revis2013vocal}; voices in dissociative identity
+\cite{p12sawaguchi2018approach}; the same chanters' ritual chant against their speech \cite{p12nwosu2026owl}. The
+narrator-against-character contrast is theirs; only the self-attributed target and the matched-edge, own-range and
+production references are this corpus's. Not found means only that.
+\item[N18 (round~4 form).] A prospective, outcome-free, within-creator comparison at equal age of availability changes
+in recordings whose stated window has passed, from a ledger frozen before maturity, was not found in 5 member searches
+or in 10 attacker searches. Not found means only that.
+\item[N19.] Whether uploads anchored by date alone to sky or festival events (a hashed event table, no title words)
+leave each creator's weekday habit more often than its other uploads, was not found in 12 member searches (summed) or
+in 9 + 6 = 15 attacker searches. The design splits added from shifted uploads, fixes a lead-lag rule for ritual against
+search timing in advance, and reads off-habit against a null that redraws event dates. Closest, from the second
+pass: weekly and calendar rhythms of online activity \cite{p12alshehhi2017investigate,p12alshehhi2019arabia}; search interest
+rising ahead of religious holidays and concentrated at an eclipse \cite{p12dewi2026google,p12javed2026eclipse};
+religious time online \cite{p12thomas2019sacred}; when-to-post \cite{p12spasojevic2015when}; creators aiming at search
+\cite{p12hodl2023content}. Not found means only that.
+\item[N20.] A within-speaker, many-speaker description of lead stability in serial spoken date-setting, typed by form
+and function (TimeML's anchoring, applied) and modelled by calendar unit, was not found in 21 member searches or in
+21 + 3 = 24 attacker searches. Without event links the slope describes lead stability, not re-dating. Not found means
+only that.
+\item[N21.] A ledger of model-coded dated statements from many speakers' naturally occurring public recordings, hashed
+with an external time stamp before the windows mature, with a resolvability class fixed from text alone and
+window-shifted and swapped placebo statements of the same speakers, was not found in 16 member searches (summed) beyond
+the registry's 20, or in 4 + 15 = 19 attacker searches. Its parts exist apart: a platform's daily external time stamp of
+many forecasters' standing forecasts on posed questions (Metaculus, grey literature); one forecaster's own forecasts
+hashed and anchored before their windows, with unfalsifiable calls held out of the score \cite{p12jyotish2026sealed};
+placebo prophecies judged blind against history in one historical corpus \cite{p12kriger2026how} (preprint);
+recommendations taken from many creators' videos and scored after the outcomes
+\cite{p12galarnyk2025videoconviction,p12lalwani2026stock}; forecasts archived before their data as a
+pre-registration \cite{p12white2019developing}. Closest, from the second pass, also: predictions mined from social
+media \cite{p12uzzaman2012twitterpaul}. What remains is the combination: a third party's freeze of statements taken from
+many speakers' recordings and coded by a model, before their windows mature, with a resolvability class fixed from text
+alone and placebo statements drawn from the same speakers. The scoring is not new, and nor is the timing alone. Not
+found means only that.
+\item[N22.] Inside a ledger frozen before maturity, a within-creator comparison of how often contact-event and
+world-event statements are bounded in time, with energetic predicates and date refusals kept out of scoring, was not
+found in 9 member searches or in 1 + 6 = 7 attacker searches. Closest, from the second pass: qualitative accounts of
+movements turning from a dated physical event to a spiritual one \cite{p12aveni2016apocalyptic,p12wojcik2021ufo}. The
+contact-cue strata must not themselves carry unboundedness. Not found means only that.
+\item[N26.] A fixed-margin co-use test of the adversarial and federation vocabularies, across and within channelling
+creators and stratified by audience size and economy type, was not found in 6 member searches or in 2 + 7 = 9 attacker
+searches. Whether UFO themes and reptilian or global-control themes travel together has been asked of Telegram
+conspiracy communities, through invitation links and topic overlap, with no null model and no split by the aliens'
+valence \cite{p12silva2024ufo}. Only the fixed-margin null, the split by valence and the channelling creators are this
+corpus's. Closest, from the second pass, also: the turn to malevolent aliens \cite{p12partridge2004alien}; QAnon
+influencers' content \cite{p12conner2023qanon}; authority and monetisation cues co-occurring in health videos
+\cite{p12zarei2025visual}. Not found means only that.
+\item[N27.] A within-speaker comparison of disclosure talk between the claimed and the own voice, separating
+institutional from consciousness-based disclosure, position-matched and read against a three-way prediction table
+(meaning, news-hook and attribution-shield accounts), was not found in 5 member searches or in 3 + 5 = 8 attacker
+searches. Closest, from the second pass: a thematic analysis of prospectively collected channelled sessions, with no
+split by voice \cite{p12wahbeh2026qualitative}; reactions to a 2023 hearing \cite{p12lomas2025unidentified}. Not found
+means only that.
+\item[N28.] A within-creator contrast of control vocabulary and named actors between the claimed and the own voice, in
+position-matched body text across many creators and read against a three-way prediction table, was not found in 8
+member searches or in 3 + 7 = 10 attacker searches. Closest, from the second pass: spirits as political actors in
+spirit writing \cite{p12huwelmeier2019spirit}; mediums' simultaneous claiming and disowning of responsibility
+\cite{p12tomlinson2025voice}; appeals to prophetic authority in election talk \cite{p12coker2021godsplaining};
+conspiracy and monetisation cues co-occurring in videos \cite{p12zarei2025visual}. Not found means only that.
+\item[N30.] A description, on seen creators, of where a frozen voice code files self-described modes of mediation (full
+trance, conscious or blended, dictation, relay, received text read aloud) was not found in 5 member searches or in
+2 + 7 = 9 attacker searches. Closest, from the second pass: Klimo's typology (chapter~6 of
+\citealt{klimo1987channeling}); an ethnographic contrast of trance and conscious channellers' performances
+\cite{brown1997channeling}; mediums' self-described consciousness recorded as a study variable
+\cite{p12spindolarodrigues2022cognitive}; Spiritualist taxonomies read as media theory \cite{p12vanreenen2026spiritualist}.
+Not found means only that.
+\end{description}
+}
+
+\subsection{Limitations of the programme}
+\label{app:panel3-limits}
+
+\paragraph{Preconditions from the attacks.} They limit the entries already run and bind any later registration (the
+lead's decision after the second attack pass). Seam lock (N02, r3-P02): if the labeller's input carried decoder segment breaks or time stamps,
+lock to the seams is built in, and the reading must say ``built in'', not ``found''. The grid-shift placebo (N03): a
+shift moves both the window phase and the earlier text a decoder conditions on, so it isolates phase-locked marks only
+where that text is held fixed or neither decode uses it. Window-shifted placebo
+statements (N07) need a covariate for predicates that recur, because a shifted recurring prediction is often fulfilled
+by base rate. Plural self-reference (N10) counts inclusive and exclusive ``we'' apart, since a lecturing register raises
+the plural for any speaker. Qualifier clauses (N23) are counted only for families disjoint from the forecast detector's
+cues. Control years (N24) are matched on topic, not only on anniversary demand. Dated vocabularies (N25) are read
+against a register-matched placebo, since the claimed voice is the more formal register. A comparison with declared
+characters (N15) fixes the declared kinds of character voice, and a reading per kind, before any collection.
+
+\paragraph{Leads not opened.} Some works may already cover parts of the novelty wordings and were not read for the
+claim (decision~96, item~9): reports of educational automated-scoring monitoring, which may cross engine versions with
+new cohorts (N06); historical reports of heavy breathing at trance onset (N14); hashed
+forecasts of an eruption-forecasting experiment and an on-chain commit-reveal arena for model forecasts (N21); and a
+study of disclosure discourse on unidentified anomalous phenomena (N27). The ruling-12 record (\texttt{ruling12-attack/})
+names them. They are not counted as searches, and none is cited as support.
+
+\paragraph{Step 1.} The frozen instruments are identified only by alias and no item was coded under both interfaces, so
+whether an alias resolved to one snapshot, and whether the interfaces coded alike, cannot be computed from stored runs;
+only an anchor re-read (unfunded) could tell. r3-P30's choice rule can flip between neighbouring interval methods
+within Monte Carlo error. The centring tolerance of the position references cannot be resolved by the plasmode at this
+creator count. Punctuation-stripped labels are not stored at unit level among the seen instruments, so a
+punctuation-free relabel stays unfunded.
+
+\paragraph{Steps 2 to 5.} The lexicon counts are cue counts: sense is not resolved and precision is unknown until a
+reader is funded. The tiers are small (23 creators for tier~L, 11 voice-eligible creators for tier~X), so many rows are
+not computed or are capped; a run on more creators would be a new registration. Step~5 reads recognizer text only, not
+audio. Deletions and the regular-upload tab bound every audience and economy reading: those readings describe a
+platform-surviving roster's newest regular uploads, and associations at capture are not causal.
+
+\paragraph{Audio entries.} Recovery was checked on constructed audio only, an upper bound, and no person listened. The
+acoustic rate instrument does not meet its battery's slope criterion (criterion~1), so no acoustic rate row can read
+``within the margin'', and pitch-range rows read neither way (decision~106.3); the splice census cannot see same-session
+cuts or gain steps. Two entries and two addendum parts are not measurable acoustically in this corpus (A8). The re-decode
+of the seen recordings on a shifted grid over the whole roster was not run (decision~106.4). Half~B is no longer sealed
+for the acoustic measures (decision~106.1). The measured condition covariates are not exhaustive, so ``not explained by
+measured condition'' is not ``speaker''.
+
+\paragraph{The process.} Every member, attacker and search helper is a model agent of one family; their agreement is
+agreement among agents, not a check by people. Members could read only public files, and the round-4 attacks covered
+the claims unevenly. No person listened to any recording, and none will before an ethics or exemption determination
+exists.
