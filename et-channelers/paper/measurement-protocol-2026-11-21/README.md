@@ -51,7 +51,7 @@ sentences and the three results tables of Appendix B, for any outcome.
 |---|---|---|
 | `main.tex` | Integrator file: preamble, macro files, section order, bibliography, appendices. No prose. | integrator |
 | `aaai25.sty`, `aaai25.bst` | AAAI 2025 author kit, copied unchanged from the old draft (SHA-256 in the header of `main.tex`) | copied |
-| `sections/*.tex` | Title, abstract, Sections 1 to 9 (since the rewrite; 1 to 10 before it), ethics statement, Appendices A to C | writers A, B, C; revised in the review round; rewritten in the PaperOrchestra-style rewrite |
+| `sections/*.tex` | Title, abstract, Sections 1 to 10 (since the programme update of 2026-11-26; 1 to 9 after the rewrite, 1 to 10 before it), ethics statement, Appendices A to D | writers A, B, C; revised in the review round; rewritten in the PaperOrchestra-style rewrite |
 | `findings/numbers.tex` | Every number the paper uses, as a macro, one per line, with its source file and field in a comment. Only macros the paper uses are written; withheld macros never are | GENERATED |
 | `findings/pending.tex` | One macro per placeholder; each expands to `\pending{...}` until its source exists (since release pass 2 of 2026-11-25, all twelve are filled from the exploratory release; last section) | GENERATED |
 | `findings/results.tex` | The first-round result macros (`\Res...`), from the public results file; `\pending{...}` while it does not exist | GENERATED |
@@ -61,6 +61,7 @@ sentences and the three results tables of Appendix B, for any outcome.
 | `refs.bib` | References verified in the old draft's reference work (Crossref or arXiv metadata) | writers A, C |
 | `refs-new.bib` | Entries verified later: since 2026-11-26 (r3-P35, ruling 13), Wang and colleagues 2024 (cited in Appendix B's seam sentence) and the prior work the third-round panel's attackers and members named, each checked against its record and by key; uncited until a novelty sentence needs them | lead |
 | `refs-orchestra.bib` | 82 entries added by the rewrite's literature merge step, checked against Crossref, arXiv, DataCite, PMLR and OpenLibrary records; on the bibliography line of `main.tex` | literature merge step of the rewrite |
+| `refs-programme.bib` | The works newly named in the third-round panel's second novelty-attack pass that passed the bibliography check (ruling 13), cited by Appendix C's novelty wordings, and the two audiobook works of Section 2 (54 entries since decision 116) | paper-update agents, 2026-11-26 |
 | `build.sh` | Build script (below) | integrator |
 
 Kept in the private work folder of the run, because they read or hold private
@@ -644,3 +645,59 @@ column. 75 pages, as before: the main text ends on page 8 with the conclusion, t
 references start on page 9. `main.pdf` carries no document information dictionary. Paper check (`check_paper.py`): no
 undefined macro, no missing citation, no privacy-name, code or id hit, no nested creator-count pair, no placeholder in
 the PDF. The build logs are not kept in the repository (`*.log` is ignored).
+
+## Third-round programme results (2026-11-26)
+
+Made under the lead's decisions 96 and 102 (UTC from the clock). Exploratory; nothing here is a test of H1 to H10. No
+number macro, generated file or builder changed: every edit is in `main.tex`, `sections/*.tex` and the `.bib` files, and
+every numeral the new text prints is copied from a public file of the research folder, with the source named.
+
+- **Section map.** Section 8 is the third-round panel's programme (`sections/programme.tex`); limitations, conclusion and
+  ethics statement follow as Sections 9 and 10. Appendix C is the programme's record (`sections/appendix-panel.tex`):
+  C.1 the panel, C.2 the deposits, C.3 margins, readings, intervals, tiers and multiplicity, C.4 step 1, C.5 steps 2 to
+  5, C.6 the audio entries and the audio addendum (since phase 3), C.7 the novelty wordings, C.8 limitations.
+  Appendix D is the paper checklist.
+- **Phase 1 (16:40 to 16:55 UTC).** Section 8, Appendix C with step 1 and the novelty wordings whose newly named works
+  passed the bibliography check, `refs-programme.bib`, and the programme paragraph of Section 9.
+- **Phase 2 (18:05 to 18:38 UTC).** Steps 2 to 5 in Appendix C (four tables: each entry's question, tier and reading as
+  the step indexes print them, and the lead's decisions that bear on a reading, in their public wording) and one
+  pointer sentence in Section 8; the slot for the audio entries; the audiobook works on narrator against character
+  voices beside Wahbeh and colleagues 2019 in Section 2 (decision 96.4); the bibliography check of four round-4 works
+  behind the wordings N04, N20, N21 and N24 (all four passed; N04, N20 and N21 stay printed, and N24 is held since
+  decision 116 because two works its final wording added in the second pass were in neither check; the check is
+  `ruling12-attack/bibliography-check-phase2.md` in the panel folder of the research folder); one key per work (four
+  works that `refs-new.bib` already held are cited by its keys, and their `p12` entries left `refs-programme.bib`; no
+  other work sits under two keys); the captions of the programme tables end with `\LabelValidity`; and the ruling-12
+  attack record (search ledger, verdicts, both bibliography checks) is published with the paper in the panel folder
+  (`ruling12-attack/`, decision 102), after an identifier scan with 0 hits.
+- **Build state (phase 2, 18:38 UTC; superseded by phase 3 below).** `bash build.sh` (typeset only): 90 pages (85 after phase 1); no LaTeX error, no undefined reference, citation or macro,
+  no float too large for its page; the same nine table cells as before run up to 3.7 pt over their column. The main
+  text and the conclusion end on page 9, as after phase 1 (the programme section moved them past page 8); the ethics
+  statement and the references start on page 9. Paper check (`check_paper.py`): no undefined macro, no privacy-name, code
+  or id hit, no nested creator-count pair, no risky phrase, no placeholder in the PDF; its citation list does not yet
+  read `refs-programme.bib`, so it lists that file's keys as missing, while BibTeX resolves every citation.
+
+- **Phase 3 (20:45 to 20:52 UTC, the lead's decision 108).** After the lead rebased the worktree on main with the audio
+  entries and the audio addendum published (pull request 121): C.6 gives the seven audio entries and the addendum's
+  parts in two tables (each one's question, tier or status, and reading as main's audio READMEs print them; entries under
+  A8 print no estimate) with the instrument, the battery caps, the gate, the departure from the split policy's wording
+  and its half-B limitation (decision 106.1), the two redacted prespecifications as main describes them (no original
+  hash is printed) and decisions 109 to 114 in their public wording; Section 8 points to C.6; Section 9 and C.8 state that
+  the acoustic rate instrument does not meet its battery's slope criterion (decision 106.3) and that the shifted-grid
+  re-decode of the whole roster was not run (decision 106.4). The private paper check now reads `refs-programme.bib` too
+  (`check_paper.py`, SHA-256 `d4cdbcf7...` before, `c7c69ba7...` after) and finds no missing citation.
+- **Build state (phase 3).** `bash build.sh` (typeset only): 93 pages; no LaTeX error, no undefined reference, citation
+  or macro, no float too large for its page; the same nine table cells as before run up to 3.7 pt over their column. The
+  main text and the conclusion end on page 9 and the ethics statement fills the rest of it; the references start on
+  page 10. Paper check: no missing citation, no undefined macro, no privacy-name, code or id hit, no nested creator-count
+  pair, no risky phrase, no placeholder in the PDF.
+- **Decision 116 (2026-11-26, 21:05 to 21:30 UTC; after the paper's independent check; no number changed).** N24 is
+  held (its final wording names two second-pass works that neither bibliography check covered, one of them unnamed):
+  it leaves the printed wordings of C.7 and joins the held list, its two cited works leave `refs-programme.bib`, and the
+  staged ruling-12 record carries dated notes (both check files; `hash-record.md` refreshed). Section 8 restores
+  r3-P01's qualifier "no row whose reading is printed ..." and the not-printed sentences of r3-P01 and r3-P02. Decision
+  numbers that no published file prints are replaced by a pointer to the step index that prints the decision. The
+  round-4 closest works are pointed to `programme.md` section 3.1 (hashed with deposit 2), with a dated note in the
+  staged ruling-12 README. C.4's H1 sentence follows addendum 4, item 7; r4-P16's caveat is quoted in full; the
+  closest-work lists open with "Closest, from the second pass"; the two unopened leads are described without
+  author-year and pointed to the ruling-12 record.
