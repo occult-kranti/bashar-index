@@ -1,0 +1,100 @@
+# Exploratory; not a test of H1-H10. Every label behind these entries is model-coded and not checked by a person; every step-0 field computed from text is rule-based and not checked by a person.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P34 / r4-P31 account-prediction cells written 2026-11-26T01:56:43Z (UTC, from date -u) by the step-0 agent (a model agent; not a person); they cite the frozen ledger's SHA-256 d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a.
+# Accounts as the programme lists them (r3-P34): performance, inherited genre, business (the market account), platform format, milieu norm, and contact through a filter (stated by non-holders). Rows: every pending class-a entry (step 0 and the text entries r3-P28 and r3-P35 left out), the class-b cards, the class-c primaries and the closed-designs row.
+# A cell holds the predicted direction the programme states for that account and entry; 'silent' means the programme states none. No prediction is added. The accounts' writers are to fill cells before each entry runs (r3-P34); every account, the market account included, must forbid cells (N31).
+entry,performance,inherited genre,business (market),platform format,milieu norm,contact through a filter (stated by non-holders),source_or_note
+r3-P01,silent,silent,silent,silent,silent,silent,
+r3-P02,silent,silent,silent,silent,silent,silent,
+r3-P03,silent,silent,silent,silent,silent,silent,
+r3-P04,silent,silent,silent,silent,silent,silent,
+r3-P05,silent,silent,silent,silent,silent,silent,programme: 'the expected direction is also a documented convention of host-read advertising (N16's prior work)'; not attributed to an account
+r3-P06,silent,silent,silent,silent,silent,silent,
+r3-P07,silent,silent,silent,silent,silent,silent,
+r3-P08,silent,silent,silent,silent,silent,silent,
+r3-P09,silent,silent,silent,silent,silent,silent,
+r3-P11,silent,silent,silent,silent,silent,silent,
+r3-P12,silent,silent,silent,silent,silent,silent,
+r3-P14,silent,silent,silent,silent,silent,silent,
+r3-P15,silent,silent,silent,silent,silent,silent,
+r3-P16,same as every other account (direction not stated),same as every other account (direction not stated),same as every other account (direction not stated),same as every other account (direction not stated),same as every other account (direction not stated),same as every other account (direction not stated),"programme r3-P16: 'every account predicts the same dose, so it retires none (D23)'"
+r3-P17,silent,silent,silent,silent,silent,silent,programme: occult's reading (a reading by a non-holder) that many guided meditations are led in a claimed voice; not attributed to an account
+r3-P18,silent,silent,silent,silent,silent,silent,
+r3-P19,silent,silent,silent,silent,silent,silent,
+r3-P20,silent,silent,silent,silent,silent,silent,
+r3-P21,silent,silent,silent,silent,silent,silent,
+r3-P23,silent,silent,silent,silent,silent,silent,
+r3-P24,silent,silent,silent,silent,silent,silent,
+r3-P26,silent,silent,silent,silent,silent,silent,
+r3-P27,silent,silent,silent,silent,silent,silent,
+r3-P32,silent,silent,silent,silent,silent,silent,
+r3-P33,silent,silent,silent,silent,silent,silent,
+r3-P36,silent,silent,silent,silent,silent,silent,
+r3-P37,silent,silent,silent,silent,silent,silent,
+r3-P38,silent,silent,silent,silent,silent,silent,
+r3-P40,silent,silent,silent,silent,silent,silent,
+r3-P41,silent,silent,silent,silent,silent,silent,
+r3-P42,silent,silent,silent,silent,silent,silent,
+r3-P43,silent,silent,silent,silent,silent,silent,
+r3-P44,silent,silent,silent,silent,silent,silent,programme: opposed predictions of members (et: at or below chance; occult and emic: at or above chance in the 2020s); not attributed to an account
+r3-P45,silent,silent,silent,silent,silent,silent,
+r3-P46,silent,silent,silent,silent,silent,silent,
+r3-P48,silent,silent,silent,silent,silent,silent,
+r3-P49,silent,silent,silent,silent,silent,silent,
+r3-P50,silent,silent,silent,silent,silent,silent,
+r3-P51,silent,silent,silent,silent,silent,silent,"programme: 'a three-way prediction table (meaning, news hook, attribution shield) names the cells each account forbids'; the table is not in the programme"
+r3-P52,silent,silent,silent,silent,silent,silent,programme: 'a taught or copied format' is a third reading; not attributed to an account
+r3-P53,silent,silent,silent,silent,silent,silent,
+r3-P55,silent,silent,silent,silent,silent,silent,
+r3-P56,silent,silent,silent,silent,silent,silent,
+r3-P57,silent,silent,"as b6, read on seen creators as a description",silent,silent,silent,programme r3-P57: 'den-soc's funnel reading'; b6 states the prediction
+r3-P58,silent,silent,silent,silent,silent,silent,
+r3-P60,silent,silent,silent,silent,silent,silent,
+r3-P61,silent,silent,silent,silent,silent,silent,
+r3-P62,silent,silent,silent,silent,silent,silent,
+r3-P64,silent,silent,silent,silent,silent,silent,
+r3-P65,silent,silent,silent,silent,silent,silent,
+r3-P66,silent,silent,silent,silent,silent,silent,
+r3-P69,silent,silent,silent,silent,silent,silent,
+r3-P70,silent,silent,silent,silent,silent,silent,
+r4-P01,silent,silent,silent,silent,silent,silent,
+r4-P02,silent,silent,silent,silent,silent,silent,
+r4-P03,silent,silent,silent,silent,silent,silent,
+r4-P04,silent,silent,silent,silent,silent,silent,
+r4-P05,silent,silent,silent,silent,silent,silent,as r3-P05
+r4-P06,silent,silent,silent,silent,silent,silent,
+r4-P09,silent,silent,silent,silent,silent,silent,
+r4-P11,silent,silent,silent,silent,silent,silent,
+r4-P12,silent,silent,silent,silent,silent,silent,
+r4-P13,silent,silent,silent,silent,silent,silent,
+r4-P14,silent,silent,silent,silent,silent,silent,
+r4-P15,silent,silent,silent,silent,silent,silent,
+r4-P16,silent,silent,silent,silent,silent,silent,
+r4-P18,silent,silent,silent,silent,silent,silent,
+r4-P20,silent,silent,silent,silent,silent,silent,
+r4-P21,silent,silent,silent,silent,silent,silent,
+r4-P23,silent,silent,silent,flat: contact and world-event statements bounded alike,silent,silent,programme r4-P23: 'the rival the corpus supports so far is that the format sets the window (N22)'; mapped to the platform-format account by the step-0 agent
+r4-P24,silent,silent,silent,silent,silent,silent,
+r4-P25,silent,silent,silent,silent,silent,silent,
+r4-P26,silent,silent,silent,silent,silent,silent,
+r4-P27,silent,silent,silent,silent,silent,silent,as r3-P44
+r4-P28,silent,silent,silent,silent,silent,silent,as r3-P51
+r4-P29,silent,silent,silent,silent,silent,silent,programme: 'crossing with the economy types is the cheapest test that could refute the market reading (N29)'; the direction is not stated
+r4-P30,silent,silent,silent,silent,silent,silent,
+r4-P32,silent,silent,silent,silent,silent,silent,carried by r3-P57 (see that row)
+rider: r4-P20 on later uploads (2.2),silent,silent,silent,forbids: sky anchors at least as common as civil ones with uploads clustered on the sky event,silent,silent,programme 2.2 riders: den-soc drops 'platform-timed' in that case
+b1 (r3-P68),silent,silent,silent,silent,silent,silent,"the registered directions of H1, H4 and H6 (the registry's, not an account's)"
+b2 (r3-P13),silent,silent,silent,silent,silent,silent,
+b3 (r3-P72),silent,silent,silent,printed beside as a null: dated statements of periodical recordings are not returned to after their window,silent,silent,programme b3: the serial-format null; mapped to the platform-format account by the step-0 agent
+b4 (r3-P20 / r4-P07),silent,silent,silent,silent,silent,silent,
+b5 (r3-P67 / r4-P17),silent,silent,silent,silent,silent,silent,"den-meth's and den-mat's results and wordings (members', not accounts')"
+b6 (r3-P57 / r4-P32),silent,silent,"claimed-voice recordings carry a pay-or-enrol ask at least as often as the same creator's own-voice talks, and their offers are more often the client service they demonstrate; forbids an odds-ratio upper bound below 0.8 with no congruence",silent,silent,silent,programme b6 (den-soc's prediction; r3-P57 calls it den-soc's funnel reading)
+b7 (r4-P19),silent,silent,silent,no excess of removal by the author at equal age,silent,silent,programme b7: 'the serial-format reading predicts no excess'; mapped to the platform-format account by the step-0 agent
+b8 (r4-P23 / r4-P24),silent,silent,silent,silent,silent,silent,
+b9 (r3-P47),silent,silent,silent,silent,silent,silent,
+b10 (r3-P71),silent,silent,silent,silent,silent,silent,
+c: r3-P22,silent,silent,silent,silent,silent,silent,
+c: r3-P25,silent,silent,silent,silent,silent,silent,
+c: r3-P54,silent,silent,silent,silent,silent,silent,
+c: r4-P08,silent,silent,silent,silent,silent,silent,
+"closed designs (sealed targets, blind judges, decoys)",silent,silent,silent,silent,silent,silent,"programme r3-P34: 'a closed-designs row (sealed targets, blind judges, decoys) is silent in every column'"
