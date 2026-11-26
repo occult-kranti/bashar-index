@@ -1,0 +1,24 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P48 (the control register v2), with r3-P49 / r4-P18 (concentration of control talk) and r3-P50 / r4-P18 (page text against speech, worded as placement, never routing), run as one package; deposit 3's lists, step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Terms that a glossary of antisemitic tropes documents are set aside from every count until r3-P54; CR-A (a hidden controlling group) prints 'not computed until r3-P54 (waits for the owner's ethics act)' and no residual is built.
+# C2 term-influence strip of the r3-P49 sets: each named term's share of the set's creator-balanced count and phi without it. Terms are named only from the deposited lists and only when 5 or more creators use them; the others are pooled where together 5 or more creators use them (decision 86). The pooled share is a sum of shares.
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: the pooled row states its carriers' rule; no number changed.
+# Made 2026-11-26T15:02:54Z by code/publish_p48.py.
+entry,set,term,creators_using,share_of_count,phi_without_term,reading_without_term,influential
+r3-P49,control,greys (beings),5 or more,0.085,3.16,outside the band (above),no
+r3-P49,control,anunnaki,5 or more,0.289,2.971,outside the band (above),no
+r3-P49,control,the matrix,5 or more,0.161,4.31,outside the band (above),no
+r3-P49,control,dark forces,5 or more,0.127,3.358,outside the band (above),no
+r3-P49,control,demons,5 or more,0.105,3.245,outside the band (above),no
+r3-P49,control,terms used by fewer than 5 creators each (pooled; not named; together used by 5 or more creators),fewer than 5 each,0.233,,,
+r3-P49,shift,ascension,5 or more,0.583,0.526,no excess over matched placebos,carries more than half
+r3-P49,shift,new earth,5 or more,0.179,0.556,no excess over matched placebos,no
+r3-P49,shift,shift in consciousness,5 or more,0.026,0.51,no excess over matched placebos,no
+r3-P49,shift,awakening (collective),5 or more,0.107,0.601,no excess over matched placebos,no
+r3-P49,shift,golden age (shift),5 or more,0.018,0.518,no excess over matched placebos,no
+r3-P49,shift,raise vibration,5 or more,0.04,0.511,no excess over matched placebos,no
+r3-P49,shift,higher consciousness,5 or more,0.046,0.499,no excess over matched placebos,no

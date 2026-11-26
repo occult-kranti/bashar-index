@@ -1,0 +1,17 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); voice labels and title codes are model-coded and not checked by a person; agreement between instruments is agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P43: the claimed-minus-own composition over creators (prespec 2.6), on the 11 voice-eligible creators: per creator, clr coordinates (zero counts replaced by 0.5) of the claimed-voice and of the own-voice part counts, and their difference; the mean over the 11 with a 90% t interval on creator means (r3-P30 class H at 11 creators).
+# Parts: the composition parts that pass the thin rule, and one pooled part of the thin ones. Adjusted: each creator's difference minus its mean over r3-P42's 200 matched-placebo draws. Margin 0.223 (deposit 2); no direction was named in advance.
+# Sensitivity: grades A and B only (A5) and without the forms shared with the ledger's rule coder (A1); C2: leaving any one row out.
+# A part's row prints only where the privacy rule allows; among its conditions, each voice side (its claimed-voice and its own-voice counts) is carried by 5 or more of the 11 voice-eligible creators, checked from the private data (decision 86). Otherwise the row reads 'not printed (privacy rule)'.
+# Changed 2026-11-26T15:34:10Z (UTC, from date -u) by the lead's step-2 decision 95: one more row is not printed (privacy rule); no number changed.
+# Changed 2026-11-26T15:49:39Z (UTC, from date -u) by the lead's step-2 decision 97: wording of this header only; no number changed.
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: some values are not printed (privacy rule); no number changed.
+# Privacy: every printed value rests on 5 or more creators who carry it, otherwise 'not printed'; no per-creator row or point; terms named only from the deposited lists and only where 5 or more creators use them; group sizes, group means and co-use counts are not printed; counts near printed counts are banded.
+# Made 2026-11-26T15:50:03Z by code/publish_p4346.py.
+part,status,estimate,low_90,high_90,adjusted,adjusted_low_90,adjusted_high_90,reading,a5_and_a1,c2
+R1,computed,-0.628,-1.265,0.009,-0.595,-1.204,0.014,undetermined,same reading; same reading,no single row decides
+RNT,not printed (privacy rule),,,,,,,,,
+R2,not printed (privacy rule),,,,,,,,,
+"thin composition parts, pooled",not printed (privacy rule),,,,,,,,,

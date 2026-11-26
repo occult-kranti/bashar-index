@@ -1,0 +1,48 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P48 (the control register v2), with r3-P49 / r4-P18 (concentration of control talk) and r3-P50 / r4-P18 (page text against speech, worded as placement, never routing), run as one package; deposit 3's lists, step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Terms that a glossary of antisemitic tropes documents are set aside from every count until r3-P54; CR-A (a hidden controlling group) prints 'not computed until r3-P54 (waits for the owner's ethics act)' and no residual is built.
+# Placement, never routing: page text (titles and descriptions of the same recordings, web and e-mail addresses removed) against transcribed speech. Statistic: log(creator-balanced page rate / creator-balanced speech rate) minus the median of the same for r3-P42's 200 matched placebo sets of the list (their page counts from page n-grams); band: the central 90% of the real log ratio minus each placebo log ratio.
+# Reading against the margin 0.223 (log 1.25), the equivalence band: 'page denser than speech' (the band wholly above +0.223; the third direction registered by N17), 'speech denser than page' (wholly below -0.223), 'within the margin (B)' (wholly inside), else 'undetermined'. No direction is deposited, so no reading A. Then C2, C4, A1 (L05, L06) and A4 as in data-r3-P49-concentration.csv; the reading column is the final one.
+# Thirds by control-talk rate: the 23 creators ranked by their control-set speech rate, cut by rule into a lowest, middle and highest third; each third's count is printed as a band. A side (page or speech) carried by fewer than 5 creators prints 'not printed (fewer than 5 creators carry the estimate)'.
+# L12's link-bound placebo row (commerce placebos drawn from page lines that hold a link) is computed only where L12's row is; titles' word-class matching was not built separately.
+# Made 2026-11-26T13:16:32Z by code/publish_p48.py.
+entry,set,group,creators,status,log_ratio_page_over_speech_unadjusted,estimate_placebo_adjusted,band_5,band_95,band_reading,c2_term_influence,c4_reading,a1_reading,a4_reading,reading
+r3-P50 / r4-P18,"control (L05 pooled, CR-A left out)",all creators,23,computed,1.03,1.399,0.083,3.122,undetermined,no single term decides,undetermined at unknown precision,not printed (fewer than 5 creators carry it),not printed (fewer than 5 creators carry it),undetermined at unknown precision
+r3-P50 / r4-P18,SHIFT (L06),all creators,23,computed,2.602,3.283,1.785,4.894,page denser than speech,undetermined (term-dependent),same reading at every precision value,page denser than speech,page denser than speech,undetermined (term-dependent)
+r3-P50 / r4-P18,DISSEM (L12),all creators,23,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,IDIOM (L12),all creators,23,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-PLATFORM (L13),all creators,23,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-HIDDEN (L13),all creators,23,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,"control (L05 pooled, CR-A left out)",lowest third by control-talk rate,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,SHIFT (L06),lowest third by control-talk rate,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,DISSEM (L12),lowest third by control-talk rate,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,IDIOM (L12),lowest third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-PLATFORM (L13),lowest third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-HIDDEN (L13),lowest third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,"control (L05 pooled, CR-A left out)",middle third by control-talk rate,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,SHIFT (L06),middle third by control-talk rate,5 to 9,computed,2.366,2.947,1.027,4.534,page denser than speech,undetermined (term-dependent),same reading at every precision value,not computed (band undefined),page denser than speech,undetermined (term-dependent)
+r3-P50 / r4-P18,DISSEM (L12),middle third by control-talk rate,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,IDIOM (L12),middle third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-PLATFORM (L13),middle third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-HIDDEN (L13),middle third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,"control (L05 pooled, CR-A left out)",highest third by control-talk rate,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,SHIFT (L06),highest third by control-talk rate,5 to 9,computed,2.802,3.293,1.273,4.978,page denser than speech,undetermined (term-dependent),same reading at every precision value,not printed (fewer than 5 creators carry it),not printed (fewer than 5 creators carry it),undetermined (term-dependent)
+r3-P50 / r4-P18,DISSEM (L12),highest third by control-talk rate,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,,,,,,
+r3-P50 / r4-P18,IDIOM (L12),highest third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-PLATFORM (L13),highest third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,SUPP-HIDDEN (L13),highest third by control-talk rate,5 to 9,not computed (too few terms or creators),,,,,,,,,,
+r3-P50 / r4-P18,DEST-ALTVID (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-AUDIO (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-EMAIL (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-LINKHUB (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-MEMB (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-MSG (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-SELF (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-SERVICE (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-SHOP (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-SOCIAL (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,
+r3-P50 / r4-P18,DEST-UNRESOLVED (L13 link class),all creators,23,not applicable (links occur on the page only; speech cannot be clicked),,,,,,,,,,

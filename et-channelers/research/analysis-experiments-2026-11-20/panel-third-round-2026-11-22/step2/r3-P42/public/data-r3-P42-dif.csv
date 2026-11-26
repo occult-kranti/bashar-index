@@ -1,0 +1,44 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); model-coded voice labels, not checked by a person.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P42: lexicon checks without a reader (deposit 3's hashed prespecification, read with addendum 2d); run once on the 23 non-development seen creators (split policy, tier L).
+# Privacy: every printed value rests on 5 or more creators; counts near printed counts are not printed; terms are named only from the deposited lists and only when 5 or more creators use them; bands are fixed-method bands (placebo, pseudo-strata, permutation, curveball, creator bootstrap), never an interval chosen by the creator count.
+# C3 differential functioning: a term's share of its class's creator-balanced count in the claimed voice minus its share in the own voice (11 voice-eligible creators), or in one profile group minus the other (audience band; economy type). Placebo-term spread: central 90% of the same difference for the term's matched placebo inside its placebo set (200 draws). Flagged when the term's 90% creator-bootstrap interval (B = 1,000) lies wholly outside that spread. Terms used by 5 or more creators only. A voice contrast (and every value read from one) prints only where each voice side is carried by 5 or more of the 11 voice-eligible creators, checked from the private data (decision 86).
+# Made 2026-11-26T14:54:06Z by code/publish_p42.py.
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: some values are not printed (privacy rule); no number changed.
+list,class_or_layer,term,comparison,share_difference,placebo_term_spread_5,placebo_term_spread_95,reading
+L01,S02,mediumship,audience,0.127,-0.373,0.345,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S02,spirit guide,audience,0.229,-0.265,0.313,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,chakra,audience,0.247,-0.181,0.2,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,kundalini,audience,-0.003,-0.1,0.12,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,karma,audience,-0.052,-0.076,0.087,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,reincarnation,audience,-0.006,-0.09,0.073,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,astral,audience,-0.016,-0.083,0.075,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,akashic,economy,-0.052,-0.05,0.034,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,chakra,economy,-0.087,-0.204,0.184,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S03,karma,economy,0.087,-0.079,0.106,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,vibration (spiritual),voice,0.18,-0.338,0.31,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,manifesting,audience,0.089,-0.247,0.281,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,abundance,audience,-0.414,-0.241,0.215,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,vibration (spiritual),audience,0.316,-0.263,0.236,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,manifesting,economy,0.076,-0.278,0.245,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,abundance,economy,-0.537,-0.303,0.237,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,affirmation,economy,-0.093,-0.236,0.255,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S04,vibration (spiritual),economy,0.529,-0.316,0.235,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S06,ufo,economy,0.273,-0.332,0.331,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S06,extraterrestrial,economy,0.014,-0.392,0.341,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S14,jesus,audience,0.032,-0.199,0.229,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S14,archangel (generic),audience,-0.161,-0.215,0.229,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S14,jesus,economy,0.093,-0.225,0.223,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S14,christ,economy,-0.001,-0.235,0.206,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L01,S14,mother earth,economy,0.152,-0.163,0.117,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L03,DIM,dimension (ordinal),audience,-0.219,-0.205,0.226,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L03,DIM,numeral-D,audience,0.219,-0.226,0.205,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L03,DIM,dimension (ordinal),economy,-0.032,-0.215,0.25,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L06,SHIFT,ascension,voice,-0.152,-0.482,0.507,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L06,SHIFT,ascension,audience,0.025,-0.292,0.247,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L06,SHIFT,new earth,audience,0.075,-0.162,0.172,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L06,SHIFT,awakening (collective),audience,-0.074,-0.166,0.196,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L06,SHIFT,raise vibration,audience,0.007,-0.199,0.179,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L06,SHIFT,ascension,economy,0.04,-0.353,0.32,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)
+L06,SHIFT,new earth,economy,-0.182,-0.204,0.173,not flagged (its 90% creator-bootstrap interval overlaps the placebo-term spread)

@@ -1,0 +1,23 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P52 / r4-P12: plural self-reference at recording level (ling's primary: claimed-voice recordings against the same creator's own-voice talks, so no span label selects the units); deposit 3's L09; step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Claimed-voice recordings: inside the frozen primary voice definition, with 300 or more claimed-voice words. Own-voice talks: recordings with no claimed-voice unit under the record model's labels, not a conversation or multi-presenter format. Every token of a recording counts, outside units holding a self-naming or address frame. The first person in claimed-voice recordings is 'presented as the source's'. Voice and map labels are model-coded.
+# Reading words (no direction deposited): 'beyond the margin (plural higher / lower in claimed-voice recordings)', 'within the margin (B)', 'undetermined'. Bands are fixed methods: matched function-word placebos and own-voice noise. The members' readings of the spread (a shared genre style; a mark of particular lineages) are kept out of these rows.
+# Interval methods are r3-P30's choice for the design class at the row's count. The display uses two halves of the eligible creators, sized by rule, in place of a fixed-width histogram (see the README).
+# Made 2026-11-26T13:15:04Z by code/publish_p52.py.
+entry,row,creators,status,method,estimate,low_90,high_90,reading,note
+r3-P52 / r4-P12,eligible creators (printed first),12,computed,,,,,,"creators with at least one claimed-voice recording and one own-voice talk, each class with 1,000 or more tokens outside frame units"
+r3-P52 / r4-P12,primary: within-creator shift of the first-person-plural share (claimed-voice recordings minus own-voice talks),12,computed,Hodges-Lehmann with the exact signed-rank interval (r3-P30 class B at this count; holds),0.073,-0.089,0.188,undetermined,margin 0.05; no direction deposited
+r3-P52 / r4-P12,creator mean of the shift,12,computed,creator-balanced mean,0.061,,,,
+r3-P52 / r4-P12,"function-word placebo band (r3-P42's L09 draws, counted per recording)",12,computed,central 90% of the creator mean,0.061,-0.102,0.107,no excess over function-word placebos,
+r3-P52 / r4-P12,"own-voice noise band (own-voice talks split in halves, 200 splits)",12,computed,central 90% of the creator mean,0.061,-0.112,0.106,no excess over own-voice noise,
+r3-P52 / r4-P12,noise-corrected between-creator SD of the shift (tau),12,computed,"creator bootstrap, B = 1,000, percentile",0.154,0.0,0.214,undetermined,hashed thresholds: concentrated if the lower bound is 0.05 or more; spread if the upper bound is below 0.05; 'a taught or copied format' is a third reading this statistic cannot tell apart from the other two
+r3-P52 / r4-P12,C2: leave one form out,12,computed,,,,,no single form decides,
+r3-P52 / r4-P12,C4: precision values,12,computed,,,,,same reading at every precision value,
+r3-P52 / r4-P12,sensitivity: claimed-voice recordings with 1 or more claimed word,12,computed,Hodges-Lehmann with the exact signed-rank interval (r3-P30 class B at this count),0.053,-0.074,0.179,undetermined,
+r3-P52 / r4-P12,display: lower half of the eligible creators by shift (a rule-sized half),6,computed,mean shift of the half,-0.138,,,,
+r3-P52 / r4-P12,display: upper half of the eligible creators by shift (a rule-sized half),6,computed,mean shift of the half,0.259,,,,
+r3-P52 / r4-P12,reading,12,computed,,,,,undetermined,

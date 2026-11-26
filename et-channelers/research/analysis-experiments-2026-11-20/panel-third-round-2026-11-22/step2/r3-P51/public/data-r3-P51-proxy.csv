@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P51 / r4-P28: named actors and contested content, by voice (description only); deposit 3's L07 and L05, step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# The model-free named-actor proxy (register row T190): runs of two or more capitalised, not sentence-initial tokens (the recognizer's capitalisation), minus runs holding a listed source name. It is a pattern, not a list of persons: no run, name or person is printed or stored outside the private folder, and it also catches place and organisation names. It is not a list class, so the thin rule does not apply.
+# Voice contrast on the voice-eligible creators (1,000 or more tokens on each side). Position-matched: own-voice runs re-weighted within creator to the claimed voice's distribution over tenths of the recording, on tenths where both voices speak. 90% interval by r3-P30's choice for design class H at the row's count; margin 0.223 (log 1.25); no direction is deposited, so the words are 'beyond the margin (claimed higher / own higher)', 'within the margin (B)' or 'undetermined'. The middle model labelled too few of these creators' recordings in full.
+# Interval methods are r3-P30's choice for the design class at the row's count.
+# Made 2026-11-26T13:15:00Z by code/publish_p51.py.
+entry,row,creators,status,statistic,interval_method,estimate,low_90,high_90,reading
+r3-P51 / r4-P28,all speech (both voices and unlabelled units),23,computed,"creator-balanced rate of proxy runs per 10,000 tokens",,30.902,,,
+r3-P51 / r4-P28,"voice contrast, record model (label of record), unmatched",11,computed,creator mean of log((claimed runs + 0.5) / claimed tokens) - log((own runs + 0.5) / own tokens),t interval on creator means (r3-P30 class H at this count; holds),-0.704,-1.214,-0.194,undetermined
+r3-P51 / r4-P28,"voice contrast, record model (label of record), position-matched",11,computed,creator mean of log((claimed runs + 0.5) / claimed tokens) - log((own runs + 0.5) / own tokens),t interval on creator means (r3-P30 class H at this count; holds),-0.504,-1.053,0.045,undetermined
+r3-P51 / r4-P28,"voice contrast, middle model",fewer than 5,not computed (too few terms or creators),,,,,,

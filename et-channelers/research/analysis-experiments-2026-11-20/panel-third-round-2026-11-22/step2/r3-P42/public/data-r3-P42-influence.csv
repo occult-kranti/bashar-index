@@ -1,0 +1,43 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); model-coded voice labels, not checked by a person.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P42: lexicon checks without a reader (deposit 3's hashed prespecification, read with addendum 2d); run once on the 23 non-development seen creators (split policy, tier L).
+# Privacy: every printed value rests on 5 or more creators; counts near printed counts are not printed; terms are named only from the deposited lists and only when 5 or more creators use them; bands are fixed-method bands (placebo, pseudo-strata, permutation, curveball, creator bootstrap), never an interval chosen by the creator count.
+# C2 term-influence strips, voice contrast: each term's share of the class's creator-balanced count and the estimate with the term left out (its matched placebo left out of every draw). A term is named only if 5 or more creators use it (decision 51 L6); the rest are pooled where together 5 or more creators use them, and otherwise merged with one named term into a remainder whose share is not printed (decision 86). 'why' names the influence rule a term meets. A voice contrast (and every value read from one) prints only where each voice side is carried by 5 or more of the 11 voice-eligible creators, checked from the private data (decision 86).
+# Made 2026-11-26T14:54:06Z by code/publish_p42.py.
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: some values are not printed (privacy rule); no number changed.
+list,class_or_layer,term,statistic,full_estimate,share_of_count,estimate_without_term,reading_without_term,why
+L01,S02,mediumship,voice,-1.835,0.452,,not printed (fewer than 5 creators carry the estimate),its removal changes the reading; one of its forms decides
+L01,S02,spirit guide,voice,-1.835,0.301,,not printed (fewer than 5 creators carry the estimate),no
+L01,S02,spirit world,voice,-1.835,0.174,-1.835,outside the band (below),no
+L01,S02,aura,voice,-1.835,0.074,-1.785,outside the band (below),no
+L01,S03,akashic,voice,0.186,0.09,0.204,no excess over matched placebos,no
+L01,S03,lemuria,voice,0.186,0.066,0.161,no excess over matched placebos,no
+L01,S03,atlantis,voice,0.186,0.113,-0.088,no excess over matched placebos,no
+L01,S03,chakra,voice,0.186,0.442,0.325,no excess over matched placebos,its removal crosses the margin
+L01,S03,kundalini,voice,0.186,0.038,0.647,no excess over matched placebos,its removal crosses the margin
+L01,S03,karma,voice,0.186,0.116,-0.131,no excess over matched placebos,no
+L01,S03,astral,voice,0.186,0.064,0.203,no excess over matched placebos,no
+L01,S03,etheric,voice,0.186,0.042,0.186,no excess over matched placebos,no
+L01,S03,"remainder: the terms not named in this class's rows, together",voice,0.186,not printed (privacy rule),,,
+L01,S04,law of attraction,voice,0.25,0.015,0.238,no excess over matched placebos,no
+L01,S04,manifesting,voice,0.25,0.048,0.138,no excess over matched placebos,its removal crosses the margin; one of its forms decides
+L01,S04,abundance,voice,0.25,0.511,0.29,no excess over matched placebos,carries more than half
+L01,S04,affirmation,voice,0.25,0.077,0.551,no excess over matched placebos,no
+L01,S04,vibration (spiritual),voice,0.25,0.349,,not printed (fewer than 5 creators carry the estimate),its removal crosses the margin; one of its forms decides
+L01,S14,jesus,voice,-0.872,0.247,-0.491,no excess over matched placebos,no
+L01,S14,christ,voice,-0.872,0.074,-0.665,no excess over matched placebos,no
+L01,S14,yeshua,voice,-0.872,0.024,,not printed (fewer than 5 creators carry the estimate),no
+L01,S14,archangel michael,voice,-0.872,0.184,,not printed (fewer than 5 creators carry the estimate),its removal changes the reading
+L01,S14,metatron,voice,-0.872,0.025,-0.797,no excess over matched placebos,no
+L01,S14,archangel (generic),voice,-0.872,0.325,-0.846,no excess over matched placebos,no
+L01,S14,mother earth,voice,-0.872,0.084,,not printed (fewer than 5 creators carry the estimate),no
+L01,S14,"other terms (fewer than 5 creators each, pooled; together used by 5 or more creators)",voice,-0.872,0.036,,,
+L06,SHIFT,ascension,voice,-0.071,0.583,0.376,no excess over matched placebos,carries more than half; its removal crosses the margin
+L06,SHIFT,new earth,voice,-0.071,0.179,-0.209,no excess over matched placebos,no
+L06,SHIFT,shift in consciousness,voice,-0.071,0.026,-0.068,no excess over matched placebos,no
+L06,SHIFT,awakening (collective),voice,-0.071,0.107,-0.071,no excess over matched placebos,no
+L06,SHIFT,golden age (shift),voice,-0.071,0.018,-0.071,no excess over matched placebos,no
+L06,SHIFT,raise vibration,voice,-0.071,0.04,0.001,no excess over matched placebos,no
+L06,SHIFT,higher consciousness,voice,-0.071,0.046,-0.18,no excess over matched placebos,no
+L10,MODE-RELAY,relay (mode),voice,0.43,1.0,,not printed (fewer than 5 creators carry the estimate),carries more than half; its removal changes the reading; its removal crosses the margin; one of its forms decides

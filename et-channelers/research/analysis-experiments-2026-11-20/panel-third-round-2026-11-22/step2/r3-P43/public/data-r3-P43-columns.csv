@@ -1,0 +1,27 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); voice labels and title codes are model-coded and not checked by a person; agreement between instruments is agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P43: creator-balanced stacked columns (prespec 2.3): the mean over a column's creators of each creator's rate per 10,000 tokens. Columns: all speech (the 23 creators); claimed voice and own voice (the 11 voice-eligible creators).
+# Composition parts by occult's codes (R1 to R11 with RNT); the beside columns are printed beside the composition, never inside it. et's seven groups are an exploratory display (decision 57 item 5), all speech only.
+# 'not printed': fewer than 5 creators of that column carry the segment.
+# Privacy: every printed value rests on 5 or more creators who carry it, otherwise 'not printed'; no per-creator row or point; terms named only from the deposited lists and only where 5 or more creators use them; group sizes, group means and co-use counts are not printed; counts near printed counts are banded.
+# Made 2026-11-26T13:00:23Z by code/publish_p4346.py.
+segment,kind,status,all_speech_rate_per_10000,claimed_voice_rate_per_10000,own_voice_rate_per_10000
+R1,composition part,computed,1.9,0.81,4.85
+RNT,composition part,computed,6.73,1.16,not printed
+R2,composition part,computed,1.36,not printed,not printed
+"thin composition parts, pooled",composition (pooled thin parts),computed,7.23,10.16,14.41
+end-time vocabulary (S01),beside the composition,not computed (too few terms or creators),,,
+devotional names (S14),beside the composition,computed,6.91,1.97,4.7
+baseline (et's R0),beside the composition,computed,7.44,10.91,6.6
+imported F1: post-2016 political fusion (S10b),beside the composition,not computed (too few terms or creators),,,
+contested column,beside the composition,computed,6.27,9.43,10.46
+imported F2: anti-Masonic and secret-society vocabulary (S12),beside the composition,not computed until r3-P54 (waits for the owner's ethics act),,,
+UFO-conspiracy fusion of the 1990s (S15),beside the composition,not computed until r3-P54 (waits for the owner's ethics act),,,
+et's G1,et's seven groups (exploratory display),computed,4.04,,
+et's G2,et's seven groups (exploratory display),not computed (too few terms or creators),,,
+et's G3,et's seven groups (exploratory display),not computed (too few terms or creators),,,
+et's G4,et's seven groups (exploratory display),not computed (too few terms or creators),,,
+et's G5,et's seven groups (exploratory display),not computed (too few terms or creators),,,
+et's G6,et's seven groups (exploratory display),not computed (too few terms or creators),,,
+et's G7,et's seven groups (exploratory display),not computed (too few terms or creators),,,

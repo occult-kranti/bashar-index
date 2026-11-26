@@ -1,0 +1,40 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader); model-coded voice labels, not checked by a person.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P42: lexicon checks without a reader (deposit 3's hashed prespecification, read with addendum 2d); run once on the 23 non-development seen creators (split policy, tier L).
+# Privacy: every printed value rests on 5 or more creators; counts near printed counts are not printed; terms are named only from the deposited lists and only when 5 or more creators use them; bands are fixed-method bands (placebo, pseudo-strata, permutation, curveball, creator bootstrap), never an interval chosen by the creator count.
+# L01 (r3-P43): the shared primary composition test over the 12 occult codes (crosswalk a2d; set-aside terms removed); zero counts replaced at 0.5 (sensitivity 0.1); groups on CSS-5's ladder (each 5 or more creators; group sizes not printed); labels permuted within quintile blocks of total tokens (1,999). Bands: placebo (each row replaced by its matched placebo, 200) and pseudo-strata (rows' part labels permuted, 200). Balances: two named families with Holm within each; directions from r3-P48-predictions.md; profile tests need 5 or more creators in each title-profile group. Survival strip against a date-permutation null (200) and the placebo band; the rank correlation itself is not printed (privacy rule) (decision 86). Grades (A5) and name variants (A6) as sensitivity rows. A voice contrast (and every value read from one) prints only where each voice side is carried by 5 or more of the 11 voice-eligible creators, checked from the private data (decision 86).
+# Made 2026-11-26T15:48:44Z by code/publish_p42.py.
+# Changed 2026-11-26T14:54:05Z (UTC, from date -u) by the lead's step-2 decision 86: some values are not printed (privacy rule); no number changed.
+# Changed 2026-11-26T15:34:10Z (UTC, from date -u) by the lead's step-2 decision 95: some values are not printed (privacy rule); no number changed.
+# Changed 2026-11-26T15:48:29Z (UTC, from date -u) by the lead's step-2 decision 97: every withheld row of this file reads one label, 'not printed (privacy rule)'; no number changed.
+check,row,status,statistic,p_permutation,placebo_band_5,placebo_band_95,second_band_5,second_band_95,reading,note
+"composition test (PERMANOVA, Aitchison)",primary (12 parts),computed (any source family named against none),1.64,0.167,0.424,1.992,1.158,2.817,no stratigraphic structure beyond placebos,"dispersion check F 2.431, p 0.131"
+"composition test (PERMANOVA, Aitchison)",New Thought beside (RNT out; et's placement),computed (any source family named against none),1.291,0.403,,,,,sensitivity row (no bands),"dispersion check F 3.478, p 0.12"
+"composition test (PERMANOVA, Aitchison)",zero replacement at 0.1,computed (any source family named against none),1.68,0.131,,,,,sensitivity row (no bands),"dispersion check F 1.362, p 0.206"
+"composition test (PERMANOVA, Aitchison)",thin parts dropped,computed (any source family named against none),1.996,0.091,,,,,sensitivity row (no bands),"dispersion check F 0.013, p 0.912"
+"composition test (PERMANOVA, Aitchison)",grades A and B only (A5),computed (any source family named against none),0.536,0.765,0.355,1.957,0.486,1.327,no stratigraphic structure beyond placebos; same reading,
+"composition test (PERMANOVA, Aitchison)",with name variants (A6),computed (any source family named against none),1.909,0.065,,,,,sensitivity row (no bands),
+"composition test (PERMANOVA, Aitchison)",without coder-shared forms (A1),computed (any source family named against none),1.057,0.461,,,,,sensitivity row (no bands),
+thin parts (fewer than 3 rows used by 5 or more creators),"R3, R4, R5, R6, R7, R8, R9, R10a, R11",not computed (too few terms),,,,,,,,
+balance (title test),occult B1: before contact against after contact,not computed (fewer than 5 creators in a profile group),,,,,,,,"higher in devotional, angelic and master profiles than in star profiles"
+balance (voice test),occult B1: before contact against after contact,computed,-0.289,0.542,,,,,secondary (not adjusted),"higher in devotional, angelic and master profiles than in star profiles"
+balance (title test),occult B2: contact and star against Theosophical and ascended-master,not computed (fewer than 5 creators in a profile group),,,,,,,,higher in star profiles
+balance (voice test),occult B2: contact and star against Theosophical and ascended-master,not computed (fewer than 5 creators),,,,,,,,higher in star profiles
+balance,occult B3: after 2012 against the 2012 calendar,not computed (too few terms),,,,,,,,no direction across profiles; by voice lower in the claimed voice than in the own voice
+balance,et B1: age,not computed (too few terms),,,,,,,,"toward the newer layers for star profiles, toward G1 for angelic and devotional profiles"
+balance,et B2: the contact lineage,not computed (too few terms),,,,,,,,toward G4 in every profile
+balance,et B3: ufological against esoteric,not computed (too few terms),,,,,,,,as B1; partly built in (profile-defining terms left out)
+"survival strip (Spearman, entry year against share of creators using the layer)",5 computed dated layers,computed,,,-0.668,0.406,-0.763,0.789,no dated order beyond the null,"the rank correlation itself is not printed (privacy rule); bands: placebo (columns 6-7), date permutation (columns 8-9)"
+A5 grades: voice contrast on grade A and B rows,S02,not printed (privacy rule),,,,,,,,
+A5 grades: voice contrast on grade A and B rows,S03,computed,0.498,,-0.88,0.885,,,same reading,no excess over matched placebos
+A5 grades: voice contrast on grade A and B rows,S04,computed,0.524,,-2.177,2.083,,,same reading,no excess over matched placebos
+A5 grades: voice contrast on grade A and B rows,S06,not printed (privacy rule),,,,,,,,
+A5 grades: voice contrast on grade A and B rows,S13,no row left at grades A and B,,,,,,,undetermined (grade),
+A5 grades: voice contrast on grade A and B rows,S14,no row left at grades A and B,,,,,,,undetermined (grade),
+A6 name variants: voice contrast,S02,not printed (privacy rule),,,,,,,,
+A6 name variants: voice contrast,S03,computed,0.168,,,,,,same reading,variants add 5.32 of the layer's creator-balanced count
+A6 name variants: voice contrast,S04,not printed (privacy rule),,,,,,,,
+A6 name variants: voice contrast,S06,not printed (privacy rule),,,,,,,,
+A6 name variants: voice contrast,S13,not printed (privacy rule),,,,,,,,
+A6 name variants: voice contrast,S14,computed,-0.799,,,,,,same reading,variants add 0.03 of the layer's creator-balanced count

@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r4-P29: two ways of defanging the adversary, a lexical proxy and recall bound (deposit 3's L08, base from L05); step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Terms that a glossary of antisemitic tropes documents are set aside, and the base is formed after the set-aside (decision 54 item 2). The base's creator count is printed in the form r3-P42 used for the same set.
+# A class is computed only if 3 or more of its expanded forms are each used, inside base units, by 5 or more of the 23 creators (addendum 2d's thin rule). Both resolution classes are thin, so no share, voice difference or economy row is computed. A lexical proxy is a recall bound: a small or absent count is never read as absence of the talk.
+# Made 2026-11-26T13:15:02Z by code/publish_p29.py.
+entry,row,what_it_is,creators,status,statistic
+r4-P29,base,units holding an L05 adversary-being or hidden-group hit of a term not set aside,held by 5 or more creators,computed,the base after the set-aside (decision 54 item 2)
+r4-P29,RES-INNER,the threat resolved by inner means,,not computed (too few terms or creators),"share of the class's hits inside base units, against placebo phrases"
+r4-P29,RES-INNER,the threat resolved by inner means,,not computed (too few terms or creators),within-creator claimed-minus-own difference inside base units
+r4-P29,RES-INNER,the threat resolved by inner means,,not computed (too few terms or creators),share by economy type (cells of 5 or more creators)
+r4-P29,RES-OUTSIDE,the threat resolved by an outside agent,,not computed (too few terms or creators),"share of the class's hits inside base units, against placebo phrases"
+r4-P29,RES-OUTSIDE,the threat resolved by an outside agent,,not computed (too few terms or creators),within-creator claimed-minus-own difference inside base units
+r4-P29,RES-OUTSIDE,the threat resolved by an outside agent,,not computed (too few terms or creators),share by economy type (cells of 5 or more creators)
+r4-P29,market reading,crossing with the economy types,,not computed (too few terms or creators),no direction deposited: the economy row is a description

@@ -1,0 +1,4 @@
+# Step 2's published files keep their exact bytes (line endings included): the SHA-256 in each entry's status.json
+# (published_copy.published_sha256) are hashes of these bytes. Hashes printed in the READMEs, the prespecification
+# hash records and the run-record hash records are those of the private files as written.
+* -text

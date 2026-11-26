@@ -1,0 +1,30 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P56: the insider commerce idiom and dissemination asks (a recall probe of LAB-A); deposit 3's L12 and the frozen asks labels; step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Asks are the frozen asks instrument's final asks (label of record), each placed on a voice side by the majority of its words (r3-P05's rule); dissemination asks are not a class of that codebook (sharing is pooled into the platform class), so the probe asks whether units holding a dissemination phrase were coded as an ask at all. Offers and asks are described as the creators make them. Absence is uninformative (a recall probe).
+# Per hour: summed durations of the units on each voice side, on voice-eligible creators' recordings inside the voice definition with asks labels and unit times. Contrasts: per creator log((claimed + 0.5) / claimed hours) - log((own + 0.5) / own hours); with 0.5 added a creator with no hit on either side contributes the log ratio of hours, which the difference row cancels. Margin 0.223 (log 1.25); no direction deposited. C2 (leave one form out) and C4 (precision values) on the DISSEM rows.
+# Interval methods are r3-P30's choice for the design class at the row's count.
+# A contrast prints only where each voice side is carried by 5 or more of the 11 voice-eligible creators, checked from the private data (decision 86); the difference row only where both contrasts do.
+# Made 2026-11-26T15:35:55Z by code/publish_p56.py.
+# Changed 2026-11-26T13:31:54Z (UTC, from date -u) by the lead's step-2 decision 69 item 5 (the difference row's wording), and 2026-11-26T14:54:05Z (UTC) by decision 86: the per-hour contrasts and the difference row are not printed (privacy rule); and 2026-11-26T15:34:10Z (UTC) by decision 95: the A4 row is not printed (privacy rule); no number changed.
+entry,row,what,creators,status,statistic,estimate,low_90,high_90,reading
+r3-P56,class status,"IDIOM (payment worded as exchange, gift or support)",,not computed (too few terms or creators),,,,,
+r3-P56,class status,DISSEM (asks to pass a message on),,computed,,,,,
+r3-P56,recall probe,"IDIOM-hit units coded as asks, per voice",,not computed (too few terms or creators),,,,,
+r3-P56,recall probe,DISSEM-hit units (claimed voice) coded as an ask of any class,,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,recall probe,DISSEM-hit units (claimed voice) coded as a platform ask (K3),,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,recall probe,DISSEM-hit units (own voice) coded as an ask of any class,5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,recall probe,DISSEM-hit units (own voice) coded as a platform ask (K3),5 to 9,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,recall probe,DISSEM-hit units (any voice side) coded as an ask of any class,18,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,recall probe,DISSEM-hit units (any voice side) coded as a platform ask (K3),18,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,rate,"DISSEM hits per hour, claimed voice (creator-balanced)",11,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,rate,"DISSEM hits per hour, own voice (creator-balanced)",11,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,rate,"pay-or-enrol asks (K1) per hour, claimed voice (creator-balanced)",11,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,rate,"pay-or-enrol asks (K1) per hour, own voice (creator-balanced)",11,computed,creator-balanced rate per hour,9.443,,,
+r3-P56,contrast,"DISSEM, claimed over own (per hour): creator mean of per-creator log rate ratios (0.5 added)",11,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,contrast,"K1, claimed over own (per hour): creator mean of per-creator log rate ratios (0.5 added)",11,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,contrast,DISSEM ratio minus K1 ratio: creator mean of per-creator log rate ratios (0.5 added),11,not printed (fewer than 5 creators carry the estimate),,,,,
+r3-P56,A4 with L11,share of DISSEM's count on tokens that also count on L11,23,not printed (privacy rule),,,,,

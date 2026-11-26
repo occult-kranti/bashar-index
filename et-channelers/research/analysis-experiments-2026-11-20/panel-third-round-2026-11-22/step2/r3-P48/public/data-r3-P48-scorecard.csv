@@ -1,0 +1,23 @@
+# Exploratory; not a test of H1-H10.
+# Every count is a cue count: sense not resolved, precision unknown (no reader). Voice and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P48 (the control register v2), with r3-P49 / r4-P18 (concentration of control talk) and r3-P50 / r4-P18 (page text against speech, worded as placement, never routing), run as one package; deposit 3's lists, step-2 prespecification hashed 2026-11-26T12:46:51Z.
+# Run once on the 23 non-development seen creators (deposit 2's split, tier L), with no split; voice contrasts on the 11 voice-eligible creators (1,000 or more tokens on each voice side; r3-P42's set) unless a row says otherwise.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; terms are named only from the deposited lists and only where 5 or more creators use them; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Terms that a glossary of antisemitic tropes documents are set aside from every count until r3-P54; CR-A (a hidden controlling group) prints 'not computed until r3-P54 (waits for the owner's ethics act)' and no residual is built.
+# One row per deposited prediction of r3-P48 (et's A-window estimand, its negative control and its fusion rule) and one row per sub-register of L05 under meas's four scorecard rules. A sub-register is computed only if 3 or more of its expanded forms are each used by 5 or more of the 23 creators (addendum 2d's thin rule); every sub-register is thin, so no rate distribution, contrast or mark is printed. A row on fewer than 5 creators would print 'fewer than 5 creators'.
+# emic's precision ranges (deposited) are design inputs of column survives_emic_precision_ranges (C4); with no row computed they are not applied.
+# occult's and et's B1 to B3 and occult's F columns are r3-P43's and are not scored here.
+# Made 2026-11-26T13:16:32Z by code/publish_p48.py.
+entry,source_or_rule,row,status,statistic,estimate,placebo_band_5,placebo_band_95,margin_words,survives_emic_precision_ranges,note
+r3-P48,"et (round 3, deposited in r3-P48-predictions.md)","A-window estimand (risk ratio, smallest effect 1.5)",not computed until r3-P54 (waits for the owner's ethics act),,,,,,,the valence-A family is set aside (decision 51 L1); F windows are not described alone
+r3-P48,"et (round 3, deposited in r3-P48-predictions.md)",negative control (shift vocabulary in the same windows),not computed until r3-P54 (waits for the owner's ethics act),,,,,,,the valence-A family is set aside (decision 51 L1); F windows are not described alone
+r3-P48,"et (round 3, deposited in r3-P48-predictions.md)",fusion against no difference (absolute A and F window rates),not computed until r3-P54 (waits for the owner's ethics act),,,,,,,the valence-A family is set aside (decision 51 L1); F windows are not described alone
+r3-P48,meas's scorecard rule (no direction deposited),"ADV-NEG (adversary beings, negative valence)",not computed (too few terms or creators),,,,,,,
+r3-P48,meas's scorecard rule (no direction deposited),"ADV-AMB (adversary beings, ambivalent valence)",not computed (too few terms or creators),,,,,,,
+r3-P48,meas's scorecard rule (no direction deposited),BRIDGE (polarity cosmology (bridge)),not computed (too few terms or creators),,,,,,,
+r3-P48,meas's scorecard rule (no direction deposited),CR-A (a hidden controlling group),not computed until r3-P54 (waits for the owner's ethics act),,,,,,,
+r3-P48,meas's scorecard rule (no direction deposited),CR-B (an institution named as controlling),not computed (too few terms or creators),,,,,,,
+r3-P48,meas's scorecard rule (no direction deposited),CR-C (a technology or programme of control),not computed (too few terms or creators),,,,,,,
+r3-P48,meas's scorecard rule (no direction deposited),CR-D (an ontological or spiritual control system),not computed (too few terms or creators),,,,,,,
+r3-P48,meas's scorecard rule (no direction deposited),CR-E (the population described as controlled),not computed (too few terms or creators),,,,,,,
