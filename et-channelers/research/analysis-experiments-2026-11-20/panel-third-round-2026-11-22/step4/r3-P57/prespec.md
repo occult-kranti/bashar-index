@@ -1,5 +1,9 @@
 # r3-P57 / r4-P32: sample-to-offer congruence (prespecification)
 
+> Published redacted (2026-11-26T18:45:18Z, the lead's decision 107): one phrase that described a value another entry does not
+> print is replaced by "not printed: privacy rule". The hash in `prespec-hash-record.md` is that of the original,
+> which stays private and unchanged.
+
 Written 2026-11-26 (UTC, from `date -u`; the hash time is in `prespec-hash-record.md`) by the step-4 agent, a model agent
 working for the project lead (not a person), before any outcome of this entry was computed. Shared rules:
 `../common/prespec-shared.md` (cited by SHA-256 in the hash record). r4-P32 is carried here (programme 2.5).
@@ -71,5 +75,5 @@ talks (with the bootstrap interval of each difference beside them); a paired bar
 
 Against LAB-A (spoken pay-or-enrol asks in about four in ten of a creator's recordings, all seen recordings), r3-P05
 (pay-or-enrol asks rarer in the claimed voice than position predicts: a span-level result, which this recording-level
-description does not contradict if claimed-voice recordings carry own-voice asks) and r3-P56 (pay asks per hour lower in
-the claimed voice). Differences of unit are stated, not reconciled after the fact.
+description does not contradict if claimed-voice recordings carry own-voice asks) and r3-P56 (its per-hour contrast is not
+printed: privacy rule). Differences of unit are stated, not reconciled after the fact.

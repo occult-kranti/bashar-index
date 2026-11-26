@@ -44,7 +44,7 @@
  },
  "private_results": "kept in the entry's private folder (not published)",
  "files_sha256": {
-  "README.md": "438ef0b95047f078cae8f3dcf27c6dad4d2196a8d7240fd6a707974503c3aae9",
+  "README.md": "63e560d840b3cdaee1c08a35d9737b2aa525104c792b21341e15b64643acb0b3",
   "code/p57.py": "1361fab6b2072a448a16e3c231d0a7d5b0634e8be6d8e463ed43e1f2d592a17b",
   "code/publish_p57.py": "ec55cdcf96ee75934ae3a1d70db2d9b388339c4ebb00b8140e93706083ee293f",
   "contacts.md": "166758e77502d2a713b34f78ddc104ffd2b5a1ef00ec2ed97ca1265a9f923dca",
@@ -61,10 +61,10 @@
   "staged_utc": "2026-11-26T17:44:31Z",
   "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
   "published_sha256": {
-   "README.md": "438ef0b95047f078cae8f3dcf27c6dad4d2196a8d7240fd6a707974503c3aae9",
+   "README.md": "63e560d840b3cdaee1c08a35d9737b2aa525104c792b21341e15b64643acb0b3",
    "contacts.md": "166758e77502d2a713b34f78ddc104ffd2b5a1ef00ec2ed97ca1265a9f923dca",
-   "prespec-hash-record.md": "a5d63b639b42b5da9518b3e4941f3d29ad052122ebae156289e7808d29e84735",
-   "prespec.md": "f029fb7177022715b2d3ef07b62d19876bacc7d765ef3f8ce7c4d7d6b1b1f1c8",
+   "prespec-hash-record.md": "5929b1efa9a44bcc14a73142834ce9ad2a6b29c2e4ea777d586864363a4bbb1d",
+   "prespec.md": "d2977bcc3f36382923d01799b9e38de3f6ef72427c04caf66c315591c24d3df2",
    "public/data-r3-P57-primaries.csv": "ced4db1a0087a48fc87eab6f6b71b87a060514c1b7d2b2c1937181c2aa4bffd0",
    "public/data-r3-P57-shares.csv": "d9ed687b0021769e30996de170544f350ff575120b64979ea42cc5dcc1b937a7",
    "public/fig-r3-P57-asks.pdf": "f5ded9631c1db1b1bcc681031f3e28a7f66f14ce4e9fd857b7cfba2770827af4",
@@ -72,5 +72,6 @@
   },
   "changed_for_publication": [],
   "not_published": "code/, private/"
- }
+ },
+ "note_2026-11-26_decision_107": "2026-11-26T18:45:18Z (UTC, from date -u): a sentence of the README and a phrase of the published prespecification that described a value another entry does not print now say it is not printed (privacy rule); the published prespec.md is a redacted copy (its recorded hash is the original's, kept private); published hashes refreshed: README.md, prespec.md, prespec-hash-record.md. No number or reading changed."
 }
