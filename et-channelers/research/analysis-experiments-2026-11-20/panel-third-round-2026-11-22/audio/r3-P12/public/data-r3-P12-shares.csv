@@ -1,0 +1,20 @@
+# Exploratory; not a test of H1-H10. Seen creators only; readings on the 23 non-development creators (deposit 2's split policy).
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P12; prespecification audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Each delivery measure is computed per recording over its own-voice clean interiors (own-solo definition; 60 s or more); creators with 2 or more such recordings.
+# creator_share: one-way random-effects ANOVA estimator of the between-creator share of variance (truncated at 0); adjusted: the same on residuals of a least-squares fit on the condition covariates (sbr, p10, log_roll, hf_med, ds_share, clip_share, reverb, codec_aac, codec_opus, log_bitrate), fitted on the development creators' recordings only and applied unchanged; r2: the covariates' share of variance on these recordings.
+# Intervals: creator-cluster bootstrap, 2,000 draws, 90% percentile (fixed in the prespecification; interval class not calibrated by r3-P30). A description: no reading words.
+# Covariates only: never printed per creator; never a synthetic-voice screen.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T19:51:04Z by code/analyse_p12.py.
+measure,measure_text,creators,creator_share_raw,raw_lo90,raw_hi90,creator_share_adjusted,adjusted_lo90,adjusted_hi90,raw_minus_adjusted,diff_lo90,diff_hi90,covariates_r2
+speech_rate,acoustic speech rate (log nuclei per second),15 or more of the 23,0.449,0.297,0.612,0.514,0.327,0.666,-0.065,-0.173,0.096,0.038
+art_rate,acoustic articulation rate (log),15 or more of the 23,0.419,0.197,0.616,0.417,0.263,0.526,0.002,-0.144,0.186,0.264
+long_pause_share,long-pause share,15 or more of the 23,0.58,0.197,0.696,0.494,0.194,0.69,0.086,-0.093,0.179,0.428
+f0_range,F0 range (semitones; Tier 1),15 or more of the 23,0.622,0.41,0.796,0.519,0.325,0.681,0.103,0.011,0.204,0.339
+int_var,intensity variability (dB; Tier 1),15 or more of the 23,0.247,0.072,0.443,0.266,0.093,0.446,-0.019,-0.092,0.072,-0.017
+rec_rate,recognizer speech rate (log recognized syllables per second),15 or more of the 23,0.479,0.278,0.617,0.565,0.283,0.708,-0.086,-0.188,0.101,-0.075
+rec_p,recognizer word probability (mean),15 or more of the 23,0.181,0.099,0.447,0.233,0.14,0.428,-0.052,-0.095,0.021,-0.188

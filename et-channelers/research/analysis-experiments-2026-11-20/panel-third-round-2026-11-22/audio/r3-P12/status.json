@@ -1,0 +1,25 @@
+{
+ "entry": "r3-P12",
+ "title": "A recording-condition census, covariates only",
+ "class": "a.2 (lead's ruling 4: Tier 0 and Tier 1 audio)",
+ "status": "done",
+ "tier_by_count": "S",
+ "pool": "the 23 non-development creators (deposit 2); data-tuned parts fitted on the development creators only",
+ "prespecification": "audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i)",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "files_sha256": {
+  "code/analyse_p12.py": "757aff24491da0453845af732406c25dcefe3c08562c8299f0110c5c0477efb7",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "a55b467486e5690203e62c75c0ab7d7feda3d2b302d2205892729092c157b661",
+  "public/data-r3-P12-gate.csv": "0a1e499165ab0002b28c7d7d6dbf3377086aa3b71abb705146f473395fbb9b8e",
+  "public/data-r3-P12-shares.csv": "00ef2e07479ae01c66f52574613f66de11253f3831725c816e8f89918bc93988",
+  "public/fig-r3-P12-census.pdf": "ef20d8f77a67cd064247ced423cf4c7977044bb6c313be416d5aad764aa11a26",
+  "public/fig-r3-P12-census.png": "9f76366be502eaa68dccb7d6f9e7099068ceecc160b8be976d7d82cf924d33c8",
+  "README.md": "86be47094dfa36156b20a56f0c5b018ba5ab584a3995b209bd2e6721d38118d3"
+ },
+ "written_utc": "2026-11-26T20:15:32Z",
+ "note_2026-11-26_decision_109": "2026-11-26T19:28:21Z (UTC, from the clock): files changed by the lead's decision 109 (after the independent privacy check of the seven audio entries; no number changed: values withheld, merged, re-banded or reworded; figure redrawn by the entry's code); every recorded hash refreshed.",
+ "note_2026-11-26_decision_111": "2026-11-26T19:37:45Z (UTC, from the clock): the lead's decision 111: the tier by count prints as its letter only (the outcome-free band is not printed); the prespecification is published as the redacted copy audio/prespec.public.md, with its hash record as audio/prespec-hash-record.public.md; the recorded hash is that of the original, which stays private and unchanged; every recorded hash refreshed.",
+ "note_2026-11-26_decision_112": "2026-11-26T19:49:16Z (UTC, from the clock): the lead's decision 112: the original prespecification's hash is no longer printed in any published file (CSV headers, status files, the public hash record); every recorded hash refreshed."
+}

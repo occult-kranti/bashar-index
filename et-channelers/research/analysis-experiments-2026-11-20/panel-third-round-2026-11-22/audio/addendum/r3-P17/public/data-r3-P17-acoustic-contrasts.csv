@@ -1,0 +1,23 @@
+# Exploratory; not a test of H1-H10. Seen creators only.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P17 (audio addendum, the lead's decision 106.4); prespecification audio/addendum/prespec.public.md (published redacted); hashed at 18:39:23Z (UTC), before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# r3-P17's acoustic primary (calm-register control): per creator and group, pooled over the group's gated clean interiors (SBR 25 dB or more; 10 s dropped inside each span end); a creator enters a group with 300 or more words in it (r3-P17's rule) and 60 s or more of gated clean interior. Acoustic articulation rate: nuclei per second of phonation time; acoustic long-pause share: acoustic pauses of 1 s or more over interior time.
+# Unsplit (deposit 2's split policy names r3-P17): all seen creators. Departure from the split policy's wording, accepted as the lead's decision 106.1: data-tuned parts are fitted on the tuning pool T only (here r3-P15's feature scalings and r3-P13's exploration), not built on exploration half A, and each reading is made once on all eligible creators (r3-P01, r3-P15 and r3-P17 are unsplit by the policy itself). Reason: T sits on the exploration side and is never read for a split reading, so fitting on T alone keeps both halves out of every fit (decision 88's reading). Limitation: half B is no longer sealed for the acoustic measures described here.
+# interval: 90% t interval on creator means, fixed in the prespecification (interval class not calibrated by r3-P30); for the rate rows r3-P30's class G chooses the same method at 12 or more creators.
+# Margins (deposit 2): |log ratio| 0.223 for rate; 0.05 for the long-pause share. Rate rows never read 'within the margin (B)' (battery criterion 1's slope).
+# Text rows (recognizer word times) are r3-P17's published rows; they are not recomputed here.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Decision 109 item 1: this part's primary (C3) has fewer than 12 eligible creators after the background gate, so every estimate, interval and reading row reads 'not printed (A8: fewer than 12 eligible creators after the background gate)' and no figure is published.
+# Made 2026-11-26T20:14:01Z by code/publish_p17a.py.
+row,row_text,measure,status
+C3,C3 claimed voice against own-voice guided practice (primary),acoustic articulation rate,not printed (A8: fewer than 12 eligible creators after the background gate)
+C3,C3 claimed voice against own-voice guided practice (primary),acoustic long-pause share,not printed (A8: fewer than 12 eligible creators after the background gate)
+C2,C2 own-voice guided practice against own-voice talks,acoustic articulation rate,not printed (A8: fewer than 12 eligible creators after the background gate)
+C2,C2 own-voice guided practice against own-voice talks,acoustic long-pause share,not printed (A8: fewer than 12 eligible creators after the background gate)
+C1,C1 claimed voice against own-voice talks,acoustic articulation rate,not printed (A8: fewer than 12 eligible creators after the background gate)
+C1,C1 claimed voice against own-voice talks,acoustic long-pause share,not printed (A8: fewer than 12 eligible creators after the background gate)
+C4,C4 claimed-voice against own-voice guided practice,acoustic articulation rate,not computed (too few terms or creators)
+C4,C4 claimed-voice against own-voice guided practice,acoustic long-pause share,not computed (too few terms or creators)

@@ -1,0 +1,25 @@
+# Exploratory; not a test of H1-H10. Seen creators only.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P01 (audio addendum, the lead's decision 106.4); prespecification audio/addendum/prespec.public.md (published redacted); hashed at 18:39:23Z (UTC), before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Part E of r3-P01 / r4-P01: per recording holding both voices (primary definition; gated, SBR 25 dB or more; 60 s or more of clean interior on each side), log((recognized syllables + 0.5) / (acoustic nuclei + 0.5)) claimed minus own; creator value: precision-weighted mean over recordings. Recognized syllables: words of the run recognizer of record whose midpoint lies in the interiors.
+# Unsplit (deposit 2's split policy names r3-P01): all seen creators. Departure from the split policy's wording, accepted as the lead's decision 106.1: data-tuned parts are fitted on the tuning pool T only (here r3-P15's feature scalings and r3-P13's exploration), not built on exploration half A, and each reading is made once on all eligible creators (r3-P01, r3-P15 and r3-P17 are unsplit by the policy itself). Reason: T sits on the exploration side and is never read for a split reading, so fitting on T alone keeps both halves out of every fit (decision 88's reading). Limitation: half B is no longer sealed for the acoustic measures described here.
+# Interval: 90%, r3-P30's choice for design class A_log_ratio at the row's count (random-effects methods on creators with 2 or more recordings, variance floored at the Poisson sampling variance); the count prints as a band inside which r3-P30's choice is one method. Sensitivity (not the reading): the t interval on creator means.
+# Margin 0.0222 (r3-P01's hashed tolerance-arm margin: all words, log ratio of syllable rate). Words: 'beyond the margin (claimed voice lower)' (fewer recognized syllables per nucleus), '(claimed voice higher)', 'undetermined'; 'within the margin (B)' is not available (battery criterion 1's rate slope is not met). 'Beyond' also needs E2 on the same side.
+# The nucleus detector compresses rate differences (battery slope about 0.45), so a rate difference between voices moves E toward the recognizer's rate contrast even without deletion.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T20:13:57Z by code/publish_p01e.py.
+row,value
+eligible creators (E1; gated),40 to 49
+A8 (12 or more eligible creators after the background gate),met
+"battery criterion 1, rate slope 0.9 to 1.1",not met (about 0.45)
+"battery criterion 3, rate",met
+E1 words before the conditions,beyond the margin (claimed voice lower)
+E2 (matched acoustic tempo) words before the conditions,undetermined
+reading of part E,undetermined (the matched-tempo estimator does not agree)
+family C over the whole seen roster (GPU re-decode),"not run (decision 106.4: a re-transcription of the seen recordings, read as covered by the owner's instruction of 26 November; to the owner and the fourth panel's agenda)"
+a recognizer of another family,not run (package ruling)
+a person's word reference,"not run (class c, inside r3-P25)"
+predictions deposited (deposit 2's cells for r3-P01 and r4-P01),silent: nothing is scored

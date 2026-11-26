@@ -1,0 +1,23 @@
+{
+ "entry": "r3-P09",
+ "title": "Do voice boundaries sit on changes in delivery or production?",
+ "class": "a.2 (lead's ruling 4: Tier 0 and Tier 1 audio)",
+ "status": "done",
+ "tier_by_count": "X",
+ "pool": "the 23 non-development creators (deposit 2); data-tuned parts fitted on the development creators only",
+ "prespecification": "audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i)",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "files_sha256": {
+  "code/analyse_p09.py": "d50374c2338c2640bed59510cbab1dc7bcfca19034308d551dc0ec0661c65535",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "86691be9e2a04e473831840a7b537e8ddd4f430d5381b41de53cb583614e0f60",
+  "public/data-r3-P09-boundaries.csv": "5b6222af852717c7c1a63e03840c61d52350961b48958701c54cb1fa43a51a46",
+  "public/data-r3-P09-reading.csv": "3c12d8ceb20723c0c6ffa25e5ac9fcefd66b57060ce09bb78665463d6f9aa311",
+  "README.md": "50d0a28ef864178b0fdb097ce350724c195924c3749577cd45d70adf54f14f64"
+ },
+ "written_utc": "2026-11-26T20:15:32Z",
+ "note_2026-11-26_decision_109": "2026-11-26T19:28:21Z (UTC, from the clock): files changed by the lead's decision 109 (after the independent privacy check of the seven audio entries; no number changed: values withheld, merged, re-banded or reworded; figure not published (A8)); every recorded hash refreshed.",
+ "note_2026-11-26_decision_111": "2026-11-26T19:37:45Z (UTC, from the clock): the lead's decision 111: the tier by count prints as its letter only (the outcome-free band is not printed); the prespecification is published as the redacted copy audio/prespec.public.md, with its hash record as audio/prespec-hash-record.public.md; the recorded hash is that of the original, which stays private and unchanged; every recorded hash refreshed.",
+ "note_2026-11-26_decision_112": "2026-11-26T19:49:16Z (UTC, from the clock): the lead's decision 112: the original prespecification's hash is no longer printed in any published file (CSV headers, status files, the public hash record); every recorded hash refreshed."
+}

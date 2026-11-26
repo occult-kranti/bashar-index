@@ -1,0 +1,13 @@
+# Exploratory; not a test of H1-H10. Seen creators only.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P02 (audio addendum, the lead's decision 106.4); prespecification audio/addendum/prespec.public.md (published redacted); hashed at 18:39:23Z (UTC), before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Parts not run or not computed, decided in the prespecification (section 7) before any outcome; no data was read for them.
+# Departure from the split policy's wording, accepted as the lead's decision 106.1: data-tuned parts are fitted on the tuning pool T only (here r3-P15's feature scalings and r3-P13's exploration), not built on exploration half A, and each reading is made once on all eligible creators (r3-P01, r3-P15 and r3-P17 are unsplit by the policy itself). Reason: T sits on the exploration side and is never read for a split reading, so fitting on T alone keeps both halves out of every fit (decision 88's reading). Limitation: half B is no longer sealed for the acoustic measures described here.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T20:13:54Z by code/../../common/code/not_run.py.
+part,status,reason
+r3-P02's grid rows over the whole seen roster (the shifted-grid re-decode),not run (decision 106.4),"the GPU re-decode is a re-transcription of the seen recordings, read as covered by the owner's instruction of 26 November ('no need to transcribe further, complete 20+ analysis first'); to the owner and the fourth panel's agenda"
+r3-P01's family C over the whole seen roster,not run (decision 106.4),the same re-decode

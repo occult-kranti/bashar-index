@@ -1,0 +1,38 @@
+# Exploratory; not a test of H1-H10. Seen creators only.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P15 (audio addendum, the lead's decision 106.4); prespecification audio/addendum/prespec.public.md (published redacted); hashed at 18:39:23Z (UTC), before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# r3-P15's acoustic rungs: the distance ladder on a scale-free delivery profile (articulation rate (log), F0 range (semitones relative to the recording), intensity variability (within-chunk SD of voiced-frame level), long-pause share; no timbre). Parts of exactly 120 s of gated clean interior (12 chunks of 10 s, 20 draws); Euclidean distance over the features in two scalings fitted on the tuning pool T only: S1 the between-creator SD, S2 the own voice's recording-to-recording SD.
+# Contrasts as r3-P15: P1 = CO - OO, P1b = CC - OO, P2 = CO_x - OO_x, P3 = CX - CO_p, P3b = OX - OO_p, each in units of the between-creator SD of the reference distance; margin 0.20. Primary: P1, P2, P3 on the composite profile; a row reads a direction only if S1 and S2 agree.
+# Unsplit (deposit 2's split policy names r3-P15): all seen creators. Departure from the split policy's wording, accepted as the lead's decision 106.1: data-tuned parts are fitted on the tuning pool T only (here r3-P15's feature scalings and r3-P13's exploration), not built on exploration half A, and each reading is made once on all eligible creators (r3-P01, r3-P15 and r3-P17 are unsplit by the policy itself). Reason: T sits on the exploration side and is never read for a split reading, so fitting on T alone keeps both halves out of every fit (decision 88's reading). Limitation: half B is no longer sealed for the acoustic measures described here.
+# The reference rungs of the standardised contrasts (OO, OO_x, CO_p, OO_p) print no interval, a fixed rule (the lead's decision 114): their interval cells read 'not printed (privacy rule)'.
+# Interval: 90%, r3-P30's choice for C_standardised at the row's count: the t interval on creator means, the same at every simulated count from 30 up; counts print as '30 or more'; a row under 30 reads 'not computed or not printed'.
+# Battery caps: the composite contains rate (criterion 1's slope not met) and F0 range (criterion 3 not met), so it reads at most undetermined in either direction; per-feature rows carry their own feature's cap (articulation rate: never B; F0 range: neither way; intensity variability and long-pause share: none).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Described rows: composite rung distances (creator means of the mean distance over 20 draws), in scaled units; t intervals on creator means (none for the reference rungs).
+# Made 2026-11-26T20:14:03Z by code/publish_p15a.py.
+rung,rung_text,scaling,creators,mean_distance,lo90,hi90,status
+OO,"own-own, same recording (noise band)",S1,30 or more,1.51,not printed (privacy rule),not printed (privacy rule),described
+OO,"own-own, same recording (noise band)",S2,30 or more,1.98,not printed (privacy rule),not printed (privacy rule),described
+CC,"claimed-claimed, same recording",S1,30 or more,1.12,0.9,1.33,described
+CC,"claimed-claimed, same recording",S2,30 or more,1.48,1.23,1.72,described
+CO,"claimed-own, same recording",S1,30 or more,1.83,1.44,2.23,described
+CO,"claimed-own, same recording",S2,30 or more,2.33,1.88,2.79,described
+OOonly,"own-own, same recording (own-only row)",S1,30 or more,1.5,1.27,1.72,described
+OOonly,"own-own, same recording (own-only row)",S2,30 or more,1.98,1.7,2.26,described
+CConly,"claimed-claimed, same recording (claimed-only row)",S1,30 or more,1.18,1.01,1.36,described
+CConly,"claimed-claimed, same recording (claimed-only row)",S2,30 or more,1.63,1.39,1.87,described
+OOx,own-own across recordings,S1,30 or more,2.13,not printed (privacy rule),not printed (privacy rule),described
+OOx,own-own across recordings,S2,30 or more,2.72,not printed (privacy rule),not printed (privacy rule),described
+COx,claimed-own across recordings,S1,30 or more,2.17,1.86,2.48,described
+COx,claimed-own across recordings,S2,30 or more,2.84,2.48,3.19,described
+OOp,"own-own, pooled halves",S1,30 or more,1.6,not printed (privacy rule),not printed (privacy rule),described
+OOp,"own-own, pooled halves",S2,30 or more,2.06,not printed (privacy rule),not printed (privacy rule),described
+COp,"claimed-own, pooled halves",S1,30 or more,1.96,not printed (privacy rule),not printed (privacy rule),described
+COp,"claimed-own, pooled halves",S2,30 or more,2.53,not printed (privacy rule),not printed (privacy rule),described
+CX,claimed against other creators' claimed,S1,30 or more,3.02,2.79,3.24,described
+CX,claimed against other creators' claimed,S2,30 or more,3.89,3.66,4.13,described
+OX,own against other creators' own,S1,30 or more,3.03,2.8,3.26,described
+OX,own against other creators' own,S2,30 or more,3.98,3.7,4.26,described

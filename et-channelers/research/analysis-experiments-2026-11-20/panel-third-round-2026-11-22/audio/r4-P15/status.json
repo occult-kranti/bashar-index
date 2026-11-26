@@ -1,0 +1,24 @@
+{
+ "entry": "r4-P15",
+ "title": "Delivery at self-attributed voice switches",
+ "class": "a.2 (lead's ruling 4: Tier 0 and Tier 1 audio)",
+ "status": "done",
+ "tier_by_count": "X",
+ "pool": "the 23 non-development creators (deposit 2); data-tuned parts fitted on the development creators only",
+ "prespecification": "audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i)",
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "files_sha256": {
+  "code/analyse_p15.py": "e7fca3e190eaa73424a71414a28217b0fb9e7a125304037403d995a1a970da5b",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "746a87f1ac5953501afce8e5fdf7843263897267865b5c6ea3846075bc3b4a26",
+  "public/data-r4-P15-ladder.csv": "ceba5c91e8c437efbdbd092a55c4542801356587cbee7fc9e1c778bd4c4dc295",
+  "public/data-r4-P15-reading.csv": "ce31dfd4ef0aacb19ae6f9779b37e1a3bb9cef97eb4477bb60056bf60c37c623",
+  "public/data-r4-P15-switch-curves.csv": "d92dfa8126768b02cc924edcc7d73e92226a5266ea183393881fc0a47670eefa",
+  "README.md": "0974b5b8c2980bcbfb8f36481f2ca5f8031601e7d96004e553463eac1960af1d"
+ },
+ "written_utc": "2026-11-26T20:15:32Z",
+ "note_2026-11-26_decision_109": "2026-11-26T19:28:21Z (UTC, from the clock): files changed by the lead's decision 109 (after the independent privacy check of the seven audio entries; no number changed: values withheld, merged, re-banded or reworded; figure not published (A8)); every recorded hash refreshed.",
+ "note_2026-11-26_decision_111": "2026-11-26T19:37:45Z (UTC, from the clock): the lead's decision 111: the tier by count prints as its letter only (the outcome-free band is not printed); the prespecification is published as the redacted copy audio/prespec.public.md, with its hash record as audio/prespec-hash-record.public.md; the recorded hash is that of the original, which stays private and unchanged; every recorded hash refreshed.",
+ "note_2026-11-26_decision_112": "2026-11-26T19:49:16Z (UTC, from the clock): the lead's decision 112: the original prespecification's hash is no longer printed in any published file (CSV headers, status files, the public hash record); every recorded hash refreshed."
+}

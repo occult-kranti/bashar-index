@@ -1,0 +1,24 @@
+# Exploratory; not a test of H1-H10. Seen creators only; readings on the 23 non-development creators (deposit 2's split policy).
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# Acoustic features describe the sound of these recordings (delivery and recording conditions), never a speaker's state or a source; recovery was checked on constructed audio only (an upper bound); no person listened.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator or per recording; no audio, waveform or spectrogram of any recording; no names, ids, titles or quotations; values that could narrow a banded count are not printed.
+# Multiplicity: 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance. A reading is never a finding.
+# Entry r3-P08; prespecification audio/prespec.public.md (published redacted); hashed at 15:27:51Z (UTC), before the pass and before any outcome; the hash is kept privately (step-1 decision 49 item i).
+# Per creator: clean interiors (10 s dropped inside each span end; primary definition; excluded formats out) of recordings passing the background gate, pooled by side across the creator's recordings; eligible with 60 s or more on each side. Contrasts are claimed over own (log ratio) or claimed minus own.
+# interval: 90% t interval on creator means, fixed in the prespecification (interval class not calibrated by r3-P30); margins from deposit 2 (log 0.223; 0.05 for shares; 0.20 SD for standardised rows).
+# Words: 'beyond the margin (<side>)', 'within the margin (B)', 'undetermined'; rows on fewer than 5 creators: 'not computed (too few terms or creators)'. Battery caps and A8 apply to the primary's reading (file data-r3-P08-reading.csv).
+# Eligible non-development creators after the gate: 12 or more.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Made 2026-11-26T19:49:46Z by code/analyse_p08.py.
+row,row_text,scale,creators,estimate,lo90,hi90,margin,words
+I4,"I4 acoustic nucleus speech rate (primary, A1)",log ratio,12 or more,-0.002,-0.063,0.059,0.223,undetermined (battery criterion 1 (rate slope) not met)
+I1,I1 run recognizer: recognized syllables per second,log ratio,12 or more,-0.045,-0.121,0.031,0.223,within the margin (B)
+I2,I2 larger recognizer (rv-R3 bridge recordings only),log ratio,fewer than 5,,,,0.223,not computed (too few terms or creators)
+I3,I3 shifted grid (BR-GS recordings only),log ratio,fewer than 5,,,,0.223,not computed (too few terms or creators)
+I5,"I5 recognized syllables per nucleus (A4, deletion)",log ratio,12 or more,-0.043,-0.098,0.011,0.223,undetermined (battery criterion 1 (rate slope) not met)
+art,acoustic articulation rate,log ratio,12 or more,0.016,-0.016,0.048,0.223,undetermined (battery criterion 1 (rate slope) not met)
+lps,"long-pause share (shared channel, A2; never convergence)",difference,12 or more,0.009,-0.034,0.053,0.05,undetermined
+f0,"F0 range (Tier 1, A3; two-sided)","standardised difference (between-creator SD of own-voice F0 range, from T)",12 or more,0.096,-0.459,0.651,0.2,undetermined
+iv,intensity variability (Tier 1),"standardised difference (between-creator SD, from T)",12 or more,0.375,-0.257,1.006,0.2,undetermined
+same,same-recording row: I4 within recordings holding both voices,log ratio,12 or more,0.013,-0.079,0.105,0.223,undetermined (battery criterion 1 (rate slope) not met)
+nc,negative control: own voice in the first 60 s against own-voice interiors after it (I4),log ratio,12 or more,0.042,-0.072,0.157,0.223,undetermined (battery criterion 1 (rate slope) not met)
