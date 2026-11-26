@@ -4,16 +4,18 @@
 # E5: silent against filled hesitation by voice, within creator (claimed-voice rate minus own-voice rate); seen creators; model-coded voice labels (voice revision 3), not checked by a person; description only.
 # Pauses: gaps between words inside a span, GRID's capped seam rule. Fillers: um, uh, uhm, umm, er, erm, ah, hmm, mm, mhm. The 'no seam rule' rows and the levels by voice are in the source table, not drawn.
 # 12 cells: pointwise intervals; no family-wise control. Of the 24 intervals at 90%, about 2 (about 1 of the 12 of each kind) would exclude zero by chance alone if there were no difference; the intervals are correlated.
+# Corrected on 2026-11-26 by collect/code/r3p35/r3p35_e5.py (sha256 90ee27e517827fff) and collect/code/r3p35/d73_e5_middle.py (sha256 3403fe5d75e29445) under the lead's decisions D72 and D73 and the third-round programme's r3-P35 (ruling 13): E5's creator counts under H1's span rule are printed in band form; one share is no longer printed; no estimate, interval or verdict changed. The figure was redrawn by its plotting group's code, changed only in the count labels and in a title that leads with the absence of a shown difference (r3-P35).
+# Reworded on 2026-11-26 by collect/code/r3p35/d74_wording.py (sha256 b7cffc48a2f72c4d) under the lead's decision D74: the line above states the correction in general terms; no number changed.
 measure,row_group,creators,claimed_minus_own,t90_low,t90_high,boot90_low,boot90_high
-Pauses of 2 s or more per 100 words,"Middle-model subset, H1's span rule (primary)",20,0.402,-0.1206,0.9246,-0.0322,0.9133
+Pauses of 2 s or more per 100 words,"Middle-model subset, H1's span rule (primary)",all but fewer than 5 of 22,0.402,-0.1206,0.9246,-0.0322,0.9133
 Pauses of 2 s or more per 100 words,"Middle-model subset, all spans",28,0.1938,-0.3262,0.7138,-0.2892,0.6863
-Pauses of 2 s or more per 100 words,"Small model, H1's span rule",44,0.2038,-0.0997,0.5073,-0.0607,0.5145
+Pauses of 2 s or more per 100 words,"Small model, H1's span rule",all but fewer than 5 of 48,0.2038,-0.0997,0.5073,-0.0607,0.5145
 Pauses of 2 s or more per 100 words,"Small model, all spans",56,0.0801,-0.2131,0.3734,-0.2041,0.3649
-Pauses of 1 s or more per 100 words,"Middle-model subset, H1's span rule (primary)",20,0.9063,-0.0323,1.8449,0.0953,1.8131
+Pauses of 1 s or more per 100 words,"Middle-model subset, H1's span rule (primary)",all but fewer than 5 of 22,0.9063,-0.0323,1.8449,0.0953,1.8131
 Pauses of 1 s or more per 100 words,"Middle-model subset, all spans",28,0.7321,-0.0985,1.5628,-0.0516,1.5339
-Pauses of 1 s or more per 100 words,"Small model, H1's span rule",44,0.415,-0.0754,0.9054,-0.0207,0.9176
+Pauses of 1 s or more per 100 words,"Small model, H1's span rule",all but fewer than 5 of 48,0.415,-0.0754,0.9054,-0.0207,0.9176
 Pauses of 1 s or more per 100 words,"Small model, all spans",56,0.348,-0.128,0.8239,-0.1115,0.8129
-"Filler words per 1,000 words","Middle-model subset, H1's span rule (primary)",20,-0.5735,-1.6041,0.4572,-1.4868,0.3826
+"Filler words per 1,000 words","Middle-model subset, H1's span rule (primary)",all but fewer than 5 of 22,-0.5735,-1.6041,0.4572,-1.4868,0.3826
 "Filler words per 1,000 words","Middle-model subset, all spans",28,-0.2309,-0.8415,0.3796,-0.8316,0.3457
-"Filler words per 1,000 words","Small model, H1's span rule",44,-0.1338,-0.5455,0.2778,-0.513,0.2903
+"Filler words per 1,000 words","Small model, H1's span rule",all but fewer than 5 of 48,-0.1338,-0.5455,0.2778,-0.513,0.2903
 "Filler words per 1,000 words","Small model, all spans",56,-0.1804,-0.5123,0.1515,-0.4761,0.1558

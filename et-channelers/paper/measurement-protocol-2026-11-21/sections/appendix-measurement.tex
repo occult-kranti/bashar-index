@@ -521,7 +521,7 @@ values that came from all creators, hold-out included, are not printed.
 ($t$ on creator means for means of creator values; creator bootstrap otherwise), creators (Cr.) and recordings (Rec.),
 on the closed run. Census counts are in recordings and, like durations and languages, cover all creators; every number
 from text, segments or the voice detector covers the \NSeen{} seen creators; ``all'' means every transcript of the run.
-A percentile in a tail of fewer than 5 creators is not printed.}
+A percentile in a tail of fewer than 5 creators is not printed. The headlines were chosen after the results were seen; Table~\ref{tab:sensitivity} holds each against a margin fixed before its run.}
 \label{tab:headlines}
 \end{table*}
 
@@ -598,11 +598,12 @@ language or non-language. The lexical measures hardly change when the flagged wi
 \paragraph{Labels across recognizers.} Table~\ref{tab:labelflips} asks how much the choice of recognizer moves
 model-coded labels. On bridge recordings of development creators, it sets the share of labels that flip between the two
 recognizers' transcripts against the share that flips between two runs on one transcript. For voice labels, every 90\%
-interval of the difference includes zero or lies below it. For asks to pay or enrol, labels flip more between
+interval of the difference includes zero or lies below it; no detectable size was computed, so this is not read
+as the absence of an effect. For asks to pay or enrol, labels flip more between
 transcripts than between runs.
 
 \paragraph{Entrance cues.} Table~\ref{tab:entry} reports the entrance experiment, a set of text patterns for the point
-at which a claimed source first speaks, under its first frozen version (the version of record). On check creators
+at which a creator first speaks as a claimed source, under its first frozen version (the version of record). On check creators
 \EntryReadOn{} of \EntryRead{} cues were on target, as read once by a model agent; the counts are cue counts and upper
 bounds.
 
@@ -613,8 +614,9 @@ bounds.
 \caption{Interim census of recording kinds and claimed-voice bands on \LOneRecordings{} recordings of \LOneCreators{}
 development creators: counts ($n$) and creator-weighted shares of recordings with 95\% creator-bootstrap intervals,
 under the small model (S, the modal kind of five runs) and the middle model (M), with their specific agreement (Agr.)
-and run-to-run stability (Stab.). Model-coded, not checked by a person; development creators only; interim. It replaces
-a count from a purposive reading.}
+and run-to-run stability (Stab.). Model-coded, not checked by a person; development creators only; interim, from the voice instrument as it stood
+before the instrument freeze. It replaces
+a count from a purposive reading. \LabelValidity}
 \label{tab:kinds}
 \end{table}
 
@@ -626,7 +628,7 @@ a count from a purposive reading.}
 that a model read as coherent language or as non-language, for all seen, development and check creators, weighted to all
 windows of each stratum, with 95\% creator-bootstrap intervals; below, lexical measures with and without the flagged
 windows (creator means). Model-read, not checked by a person: without audio a reader cannot tell glossolalia from
-misrecognised speech or another language.}
+misrecognised speech or another language. \LabelValidity}
 \label{tab:nonlanguage}
 \end{table}
 
@@ -639,7 +641,7 @@ creators (one per creator): flip shares of voice labels (words; 1 $-$ Jaccard fo
 named) between the two transcripts, against run-to-run flips on one transcript, with creator-bootstrap 90\% intervals.
 Voice labels: V0 cannot tell, V1 own person, V2 embodied source, V3 relayed source, V4 other participant; asks: K1 pay
 or enrol, K3 platform engagement, K4 off-platform move. The instruments are those of that run, before their later
-revisions. Stability, not a measure of correctness.}
+revisions. Stability, not a measure of correctness. \LabelValidity}
 \label{tab:labelflips}
 \end{table}
 
@@ -647,11 +649,11 @@ revisions. Stability, not a measure of correctness.}
 \centering
 \small
 \input{floats/tab_entry.tex}
-\caption{Entrance cues (text patterns for the point at which a claimed source first speaks), version 1, frozen before the
+\caption{Entrance cues (text patterns for the point at which a creator first speaks as a claimed source), version 1, frozen before the
 check reading and the version of record: read precision with Wilson 95\% intervals (n.p.: not printed); creators by
 share of their recordings with a first-entrance cue, in bins of 5 or more creators; the creator-balanced share of
 recordings with a cue and the grammatical person of the cue, with 90\% creator-then-recording intervals; version 2,
 revised after a model check, as a revision row of counts. On check creators \EntryReadOn{} of \EntryRead{} cues were on
-target, as read once by a model agent and not checked by a person. Cue counts and upper bounds.}
+target, as read once by a model agent and not checked by a person. Cue counts and upper bounds. \LabelValidity}
 \label{tab:entry}
 \end{table}

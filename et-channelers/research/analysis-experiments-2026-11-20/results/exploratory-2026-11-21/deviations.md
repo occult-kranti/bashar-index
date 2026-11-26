@@ -237,6 +237,7 @@ items.
 | BR-y | The caption, undeclared, larger-model and reproducibility year rows; the normalised page-year row | Fewer than 5 creators, or misses from fewer than 5 creators; the normalised row differs from the exact row in fewer than 5 creators |
 | NE-F (its 30% file) | The record row (middle-model voice subset, small finder) | Not-named windows from fewer than 5 creators |
 | E5 | The share of creators with the prepared-oratory profile, in the primary | Fewer than 5 creators |
+| E5 | The share of creators with the prepared-oratory profile, in the small model's rows under H1's span rule (2026-11-26) | No longer printed (D72, D73; dated correction in the README) |
 | E6 | The small-model claimed-voice-only rows | Their creators differ from the both-voices group in fewer than 5 |
 | E8 | The source-family rows, and the "other families" row | Fewer than 5 creators, or a difference from another printed group in fewer than 5 |
 | E11 | The row without councils lacking a star name | It moves fewer than 5 creators |

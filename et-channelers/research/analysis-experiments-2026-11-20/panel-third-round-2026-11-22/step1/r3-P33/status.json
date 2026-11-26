@@ -48,7 +48,7 @@
   "interval_rule": "r3-P30 interval-choice.csv sha256 fcfe22cfba84b8b5eedd059ff605afb0055761b88c4c4d96e708d24400a6e1f6",
   "privacy_scan": "zsolve.py, qscan_all2.py, quant.py and quant2.py (copied from the release's pass-2 scans, pointed at public/): 0 rows to fix; identifier scan (r3-P01's pubrules.scan_identifiers): 0 files; PNG 200 dpi without text chunks; PDF without document information",
   "code_sha256": {
-    "code/p33_run.py": "f8f3db6d3268ee7cb759740eda0ab1fb4da1f02818df830e78a62d9b765911b1",
+    "code/p33_run.py": "b377935639c7bb751ba50ec7126c82bd88dafee2b7f761251e49a53a0e1c38ff",
     "code/qscan_all2.py": "469f5ea3d8e948d30a580b37e673386fb66eca6af81ca66336669cf9f3b72485",
     "code/quant.py": "f407f6c2c176573c52cc96a2384e53fe5d3b88fda48626f5684edc3ec70bd7ae",
     "code/quant2.py": "cbe32031db04b4813c523e367393314957097a4d4686222d5ebf0218f9f4d75f",
@@ -57,8 +57,8 @@
     "code/zsolve.py": "631a69afd26ff6f3b87acc7360fe0cee452d70ff74ac2d9571c0e97cb1956bde"
   },
   "public_sha256": {
-    "public/data-r3-P33-cascade.csv": "3030af312c67aa6b344a713eb578f4380f73598733eb10fabebdbbe90f0fcbf4",
-    "public/data-r3-P33-informativeness.csv": "94654da16121501659bf29cbd918fa28da38fb1fe81847c600c3a2a581643b2b",
+    "public/data-r3-P33-cascade.csv": "4b72b20747f6a4aa3e043c94a19dac25370a57d4412b98836ec4aaa85f1b4aa1",
+    "public/data-r3-P33-informativeness.csv": "1250a3085540d5177bf357a963067cd990846da00c82000c23235cfbfb6fe90b",
     "public/fig-r3-P33-cascade.pdf": "69252b40b42f8415f0735873fe66cae030c70271a9334726d69cda7f241ce4eb",
     "public/fig-r3-P33-cascade.png": "9c6dc712da7cd024f3aa10c1789e78e1071622ea44987d86dfa8e68e73e3ffc3",
     "public/fig-r3-P33-informativeness.pdf": "6c1f573b5e8adb849905dd9a1cd9cb84675c7aabbfae87677d63d55ae05dd43d",
@@ -68,7 +68,7 @@
     "public/r3-P33-selection-rule.csv": "2b08494b698306538474097bf9387a4855d679f5fa4c0b292a92a96c06679008"
   },
   "prespec_file_sha256": "b67a0ab79e627078c3e732bf709c4aff6525a3d7230845f8cf464421571c6539",
-  "readme_sha256": "6328f2cacaf1866c39a1f6633beeeb0580679c80a27087efc9210cfbdcbd806a",
+  "readme_sha256": "2ae1688ec40e446d180f7965aba75f2e34bf24051b8748418dda1dd13606ec84",
   "contacts_sha256": "2ad9b5a0d5fca74bfc0a385b3ef1ff5813b7c2339474ee2e017845c58de84df7",
   "note_2026-11-26_decision_44": "2026-11-26T08:39:01Z (UTC, from date -u): the references to the release README's '17 most informative descriptions' now read \"the 17 'most informative descriptions' of a draft of the release README (not published; the published README carries no such list)\" (README, the comment lines of data-r3-P33-informativeness.csv and r3-P33-selection-rule.csv, and the subtitle of fig-r3-P33-informativeness), the lead's step-1 decision 44; p33_run.py rerun (python -I -B) at 08:38:09Z to 08:38:33Z; every other public file came out byte-identical; no number changed; hashes of p33_run.py, the four changed files and README.md refreshed (README was 30ee82626a4bd4f16c4e7318129e1cca6028c3d27de6e842a1ea522a55db2038).",
   "note_2026-11-26_decision_49": "2026-11-26T09:22:54Z (UTC, from date -u): files changed by the lead's step-1 decision 49 (no number changed); their recorded hashes refreshed: README.md, code/p33_run.py, public/data-r3-P33-cascade.csv",
@@ -77,15 +77,17 @@
   "note_2026-11-26_decision_56": "2026-11-26T10:53:54Z (UTC, from date -u): files changed by the lead's step-1 decision 56 (no number changed); their recorded hashes refreshed: README.md, code/p33_run.py, public/data-r3-P33-cascade.csv, public/fig-r3-P33-cascade.pdf, public/fig-r3-P33-cascade.png, public/r3-P33-cascade-readings.csv",
   "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/p33_run.py, public/data-r3-P33-cascade.csv, public/data-r3-P33-informativeness.csv, public/fig-r3-P33-cascade.pdf, public/fig-r3-P33-cascade.png, public/fig-r3-P33-informativeness.pdf, public/fig-r3-P33-informativeness.png, public/r3-P33-cascade-readings.csv",
   "note_2026-11-26_decision_63": "2026-11-26T12:07:28Z (UTC, from date -u): files changed by the lead's step-1 decision 63 (no number changed); their recorded hashes refreshed: README.md, code/p33_run.py, public/fig-r3-P33-cascade.pdf, public/fig-r3-P33-cascade.png, public/r3-P33-cascade-readings.csv",
+  "note_2026-11-26_decision_100": "2026-11-26T16:07:56Z (UTC, from date -u): files changed by the lead's decision D73 and step-3 decision 100 (with r3-P35's corrections of the exploratory release): E5's creator counts in the cascade and informativeness tables and the README's detectable-size sentence take the band form, as the corrected release prints them; a dated line in both CSVs and a Corrections note in the README; p33_run.py rerun (python -I -B), every other public file byte-identical; no estimate, interval or reading changed; their recorded hashes refreshed: README.md, code/p33_run.py, public/data-r3-P33-cascade.csv, public/data-r3-P33-informativeness.csv",
+  "note_2026-11-26_decision_D74": "2026-11-26T16:37:12Z (UTC, from date -u): files changed by the lead's decision D74 (wording only): the dated correction lines of the two CSVs and the README's Corrections note state the correction in general terms; p33_run.py rerun (python -I -B), every other public file byte-identical; no number changed; their recorded hashes refreshed: README.md, code/p33_run.py, public/data-r3-P33-cascade.csv, public/data-r3-P33-informativeness.csv",
   "published_copy": {
     "staged_utc": "2026-11-26T12:18:25Z",
     "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
     "published_sha256": {
-      "README.md": "6328f2cacaf1866c39a1f6633beeeb0580679c80a27087efc9210cfbdcbd806a",
+      "README.md": "2ae1688ec40e446d180f7965aba75f2e34bf24051b8748418dda1dd13606ec84",
       "contacts.md": "7376f51d99bd92254897ae02632529dc1493502ade3e69a58270e2d0c3a996ba",
       "prespec.md": "b67a0ab79e627078c3e732bf709c4aff6525a3d7230845f8cf464421571c6539",
-      "public/data-r3-P33-cascade.csv": "3030af312c67aa6b344a713eb578f4380f73598733eb10fabebdbbe90f0fcbf4",
-      "public/data-r3-P33-informativeness.csv": "94654da16121501659bf29cbd918fa28da38fb1fe81847c600c3a2a581643b2b",
+      "public/data-r3-P33-cascade.csv": "4b72b20747f6a4aa3e043c94a19dac25370a57d4412b98836ec4aaa85f1b4aa1",
+      "public/data-r3-P33-informativeness.csv": "1250a3085540d5177bf357a963067cd990846da00c82000c23235cfbfb6fe90b",
       "public/fig-r3-P33-cascade.pdf": "69252b40b42f8415f0735873fe66cae030c70271a9334726d69cda7f241ce4eb",
       "public/fig-r3-P33-cascade.png": "9c6dc712da7cd024f3aa10c1789e78e1071622ea44987d86dfa8e68e73e3ffc3",
       "public/fig-r3-P33-informativeness.pdf": "6c1f573b5e8adb849905dd9a1cd9cb84675c7aabbfae87677d63d55ae05dd43d",
@@ -99,6 +101,8 @@
     ],
     "added_for_publication": [
       "contacts.md: label line and/or agnosticism sentence (decision 47)"
-    ]
+    ],
+    "refreshed_2026-11-26_decision_100": "2026-11-26T16:07:56Z: published_sha256 refreshed for README.md and the two changed CSVs (copied unchanged from the private files)",
+    "refreshed_2026-11-26_decision_D74": "2026-11-26T16:37:12Z: published_sha256 refreshed for README.md and the two changed CSVs (copied unchanged from the private files; D74)"
   }
 }

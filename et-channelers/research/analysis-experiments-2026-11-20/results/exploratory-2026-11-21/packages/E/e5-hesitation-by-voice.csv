@@ -9,24 +9,26 @@
 # Wording edited on 2026-11-22 by FIX1/code/fix1_apply.py (sha256 19199f9b5b8a47e2) under the lead's release-review decisions (registry 2026-11-22 02:09): the known-answer region figure is named 'region recovery on constructed texts', and the same-vendor third model's kappa is labelled 'the VER-3R sample (third model of the same vendor)'; no number, count, row or column changed, only wording (this line reworded on 2026-11-22 by FIX1/code/fix1_apply2.py, sha256 9ba939ada52da07d).
 # Edited again on 2026-11-22 by FIX1/code/fix1_apply2.py (sha256 9ba939ada52da07d) under the lead's decision D21 (lead-decisions-2026-11-22.md; the rule of registry 2026-11-21 22:33) and decision D18 (interval levels), after the release-review verifiers' report and a recount of the known-answer figures by FIX1/code/fix1_ka_recount.py (counts of creators only): the middle model's known-answer claimed recall on embodied passages is printed as not published (its misses come from fewer than 5 creators) and its claimed precision as 0.995 instead of the rounded 1.00; the 90% level of the region and VG-6 intervals is stated; no count, row or column changed.
 # Edited on 2026-11-25 in release pass 2 by collect/code/pass2/p2_d47_e_wording.py under the lead's decision D47 (with D11): the negative phrase of the title-instrument line now reads 'not a measure of correctness on it'; no number, count, row or column changed.
+# Corrected on 2026-11-26 by collect/code/r3p35/r3p35_e5.py (sha256 90ee27e517827fff) and collect/code/r3p35/d73_e5_middle.py (sha256 3403fe5d75e29445) under the lead's decisions D72 and D73 and the third-round programme's r3-P35 (ruling 13): E5's creator counts under H1's span rule are printed in band form; one share is no longer printed; no estimate, interval or verdict changed.
+# Reworded on 2026-11-26 by collect/code/r3p35/d74_wording.py (sha256 b7cffc48a2f72c4d) under the lead's decision D74: the line above states the correction in general terms; no number changed.
 row,measure,group,creators,estimate,t90_low,t90_high,boot90_low,boot90_high,note
-"primary: middle-model subset, H1's span rule",creators with both voices under the row's rule,,20,,,,,,"30 recordings; 56,996 claimed-voice and 46,265 own-voice words"
-"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (seam rule),claimed voice,20,0.8094,0.2824,1.3364,0.3811,1.3348,
-"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (seam rule),own voice,20,0.4074,0.2636,0.5511,0.2779,0.5499,
-"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (seam rule),"within creator, claimed minus own",20,0.402,-0.1206,0.9246,-0.0322,0.9133,
-"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (seam rule),claimed voice,20,2.439,1.5078,3.3702,1.679,3.3703,
-"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (seam rule),own voice,20,1.5327,1.1292,1.9362,1.1557,1.9093,
-"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (seam rule),"within creator, claimed minus own",20,0.9063,-0.0323,1.8449,0.0953,1.8131,
-"primary: middle-model subset, H1's span rule","filler words per 1,000 words",claimed voice,20,1.0041,0.2361,1.7721,0.339,1.7809,
-"primary: middle-model subset, H1's span rule","filler words per 1,000 words",own voice,20,1.5775,0.5695,2.5855,0.731,2.5609,
-"primary: middle-model subset, H1's span rule","filler words per 1,000 words","within creator, claimed minus own",20,-0.5735,-1.6041,0.4572,-1.4868,0.3826,
-"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),claimed voice,20,0.846,0.3011,1.3908,0.4002,1.3897,
-"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),own voice,20,0.4477,0.2795,0.6158,0.2983,0.6135,
-"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),"within creator, claimed minus own",20,0.3983,-0.148,0.9445,-0.0605,0.9309,
-"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),claimed voice,20,2.5214,1.5579,3.485,1.7267,3.484,
-"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),own voice,20,1.616,1.1908,2.0412,1.2249,2.0088,
-"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),"within creator, claimed minus own",20,0.9054,-0.0637,1.8745,0.0579,1.8354,
-"primary: middle-model subset, H1's span rule",share of creators whose claimed voice has more long pauses and fewer fillers than their own voice,creators,20,,,,,,not printed: it rests on fewer than 5 creators
+"primary: middle-model subset, H1's span rule",creators with both voices under the row's rule,,all but fewer than 5 of 22,,,,,,"30 recordings; 56,996 claimed-voice and 46,265 own-voice words"
+"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (seam rule),claimed voice,all but fewer than 5 of 22,0.8094,0.2824,1.3364,0.3811,1.3348,
+"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (seam rule),own voice,all but fewer than 5 of 22,0.4074,0.2636,0.5511,0.2779,0.5499,
+"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (seam rule),"within creator, claimed minus own",all but fewer than 5 of 22,0.402,-0.1206,0.9246,-0.0322,0.9133,
+"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (seam rule),claimed voice,all but fewer than 5 of 22,2.439,1.5078,3.3702,1.679,3.3703,
+"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (seam rule),own voice,all but fewer than 5 of 22,1.5327,1.1292,1.9362,1.1557,1.9093,
+"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (seam rule),"within creator, claimed minus own",all but fewer than 5 of 22,0.9063,-0.0323,1.8449,0.0953,1.8131,
+"primary: middle-model subset, H1's span rule","filler words per 1,000 words",claimed voice,all but fewer than 5 of 22,1.0041,0.2361,1.7721,0.339,1.7809,
+"primary: middle-model subset, H1's span rule","filler words per 1,000 words",own voice,all but fewer than 5 of 22,1.5775,0.5695,2.5855,0.731,2.5609,
+"primary: middle-model subset, H1's span rule","filler words per 1,000 words","within creator, claimed minus own",all but fewer than 5 of 22,-0.5735,-1.6041,0.4572,-1.4868,0.3826,
+"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),claimed voice,all but fewer than 5 of 22,0.846,0.3011,1.3908,0.4002,1.3897,
+"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),own voice,all but fewer than 5 of 22,0.4477,0.2795,0.6158,0.2983,0.6135,
+"primary: middle-model subset, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),"within creator, claimed minus own",all but fewer than 5 of 22,0.3983,-0.148,0.9445,-0.0605,0.9309,
+"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),claimed voice,all but fewer than 5 of 22,2.5214,1.5579,3.485,1.7267,3.484,
+"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),own voice,all but fewer than 5 of 22,1.616,1.1908,2.0412,1.2249,2.0088,
+"primary: middle-model subset, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),"within creator, claimed minus own",all but fewer than 5 of 22,0.9054,-0.0637,1.8745,0.0579,1.8354,
+"primary: middle-model subset, H1's span rule",share of creators whose claimed voice has more long pauses and fewer fillers than their own voice,creators,all but fewer than 5 of 22,,,,,,not printed: it rests on fewer than 5 creators
 "row: middle-model subset, all spans, 300 words per voice and creator",creators with both voices under the row's rule,,28,,,,,,"105,752 claimed-voice and 73,924 own-voice words (all spans; recordings not counted for this row)"
 "row: middle-model subset, all spans, 300 words per voice and creator",pauses of 2 s or more per 100 words (seam rule),claimed voice,28,0.7764,0.3619,1.191,0.4338,1.2148,
 "row: middle-model subset, all spans, 300 words per voice and creator",pauses of 2 s or more per 100 words (seam rule),own voice,28,0.5827,0.2495,0.9158,0.3191,0.9217,
@@ -44,23 +46,23 @@ row,measure,group,creators,estimate,t90_low,t90_high,boot90_low,boot90_high,note
 "row: middle-model subset, all spans, 300 words per voice and creator",pauses of 1 s or more per 100 words (no seam rule),own voice,28,1.8967,1.3165,2.4769,1.3975,2.4763,
 "row: middle-model subset, all spans, 300 words per voice and creator",pauses of 1 s or more per 100 words (no seam rule),"within creator, claimed minus own",28,0.6993,-0.1609,1.5595,-0.1034,1.5125,
 "row: middle-model subset, all spans, 300 words per voice and creator",share of creators whose claimed voice has more long pauses and fewer fillers than their own voice,creators,28,0.214,,,,,count of such creators: 6
-"row: small model, H1's span rule",creators with both voices under the row's rule,,44,,,,,,"240 recordings; 480,990 claimed-voice and 337,323 own-voice words"
-"row: small model, H1's span rule",pauses of 2 s or more per 100 words (seam rule),claimed voice,44,0.8414,0.4328,1.25,0.4798,1.28,
-"row: small model, H1's span rule",pauses of 2 s or more per 100 words (seam rule),own voice,44,0.6376,0.3147,0.9605,0.366,0.9689,
-"row: small model, H1's span rule",pauses of 2 s or more per 100 words (seam rule),"within creator, claimed minus own",44,0.2038,-0.0997,0.5073,-0.0607,0.5145,
-"row: small model, H1's span rule",pauses of 1 s or more per 100 words (seam rule),claimed voice,44,2.4031,1.796,3.0103,1.8355,3.0128,
-"row: small model, H1's span rule",pauses of 1 s or more per 100 words (seam rule),own voice,44,1.9881,1.5281,2.4482,1.5522,2.4389,
-"row: small model, H1's span rule",pauses of 1 s or more per 100 words (seam rule),"within creator, claimed minus own",44,0.415,-0.0754,0.9054,-0.0207,0.9176,
-"row: small model, H1's span rule","filler words per 1,000 words",claimed voice,44,0.8102,0.2984,1.3219,0.3489,1.3491,
-"row: small model, H1's span rule","filler words per 1,000 words",own voice,44,0.944,0.509,1.379,0.5713,1.3946,
-"row: small model, H1's span rule","filler words per 1,000 words","within creator, claimed minus own",44,-0.1338,-0.5455,0.2778,-0.513,0.2903,
-"row: small model, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),claimed voice,44,0.8495,0.4437,1.2553,0.4882,1.2816,
-"row: small model, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),own voice,44,0.6573,0.3304,0.9842,0.3804,0.9916,
-"row: small model, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),"within creator, claimed minus own",44,0.1923,-0.1218,0.5063,-0.0845,0.5117,
-"row: small model, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),claimed voice,44,2.5039,1.8817,3.1262,1.9203,3.1254,
-"row: small model, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),own voice,44,2.0576,1.5827,2.5325,1.6074,2.5227,
-"row: small model, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),"within creator, claimed minus own",44,0.4463,-0.0707,0.9634,-0.0153,0.9764,
-"row: small model, H1's span rule",share of creators whose claimed voice has more long pauses and fewer fillers than their own voice,creators,44,0.159,,,,,count of such creators: 7
+"row: small model, H1's span rule",creators with both voices under the row's rule,,all but fewer than 5 of 48,,,,,,"240 recordings; 480,990 claimed-voice and 337,323 own-voice words"
+"row: small model, H1's span rule",pauses of 2 s or more per 100 words (seam rule),claimed voice,all but fewer than 5 of 48,0.8414,0.4328,1.25,0.4798,1.28,
+"row: small model, H1's span rule",pauses of 2 s or more per 100 words (seam rule),own voice,all but fewer than 5 of 48,0.6376,0.3147,0.9605,0.366,0.9689,
+"row: small model, H1's span rule",pauses of 2 s or more per 100 words (seam rule),"within creator, claimed minus own",all but fewer than 5 of 48,0.2038,-0.0997,0.5073,-0.0607,0.5145,
+"row: small model, H1's span rule",pauses of 1 s or more per 100 words (seam rule),claimed voice,all but fewer than 5 of 48,2.4031,1.796,3.0103,1.8355,3.0128,
+"row: small model, H1's span rule",pauses of 1 s or more per 100 words (seam rule),own voice,all but fewer than 5 of 48,1.9881,1.5281,2.4482,1.5522,2.4389,
+"row: small model, H1's span rule",pauses of 1 s or more per 100 words (seam rule),"within creator, claimed minus own",all but fewer than 5 of 48,0.415,-0.0754,0.9054,-0.0207,0.9176,
+"row: small model, H1's span rule","filler words per 1,000 words",claimed voice,all but fewer than 5 of 48,0.8102,0.2984,1.3219,0.3489,1.3491,
+"row: small model, H1's span rule","filler words per 1,000 words",own voice,all but fewer than 5 of 48,0.944,0.509,1.379,0.5713,1.3946,
+"row: small model, H1's span rule","filler words per 1,000 words","within creator, claimed minus own",all but fewer than 5 of 48,-0.1338,-0.5455,0.2778,-0.513,0.2903,
+"row: small model, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),claimed voice,all but fewer than 5 of 48,0.8495,0.4437,1.2553,0.4882,1.2816,
+"row: small model, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),own voice,all but fewer than 5 of 48,0.6573,0.3304,0.9842,0.3804,0.9916,
+"row: small model, H1's span rule",pauses of 2 s or more per 100 words (no seam rule),"within creator, claimed minus own",all but fewer than 5 of 48,0.1923,-0.1218,0.5063,-0.0845,0.5117,
+"row: small model, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),claimed voice,all but fewer than 5 of 48,2.5039,1.8817,3.1262,1.9203,3.1254,
+"row: small model, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),own voice,all but fewer than 5 of 48,2.0576,1.5827,2.5325,1.6074,2.5227,
+"row: small model, H1's span rule",pauses of 1 s or more per 100 words (no seam rule),"within creator, claimed minus own",all but fewer than 5 of 48,0.4463,-0.0707,0.9634,-0.0153,0.9764,
+"row: small model, H1's span rule",share of creators whose claimed voice has more long pauses and fewer fillers than their own voice,creators,all but fewer than 5 of 48,,,,,,"count of such creators: 7; the share is no longer printed (D72)"
 "row: small model, all spans, 300 words per voice and creator",creators with both voices under the row's rule,,56,,,,,,"958,908 claimed-voice and 1,001,154 own-voice words (all spans; recordings not counted for this row)"
 "row: small model, all spans, 300 words per voice and creator",pauses of 2 s or more per 100 words (seam rule),claimed voice,56,0.8857,0.5458,1.2257,0.5882,1.2523,
 "row: small model, all spans, 300 words per voice and creator",pauses of 2 s or more per 100 words (seam rule),own voice,56,0.8056,0.5483,1.0628,0.5857,1.0719,

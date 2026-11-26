@@ -1,3 +1,470 @@
 % refs-new.bib: entries verified by the lead against Crossref or arXiv metadata (outline section 3; rule R16).
-% Empty until the lead verifies an entry. The canonical works the review names (fix list M26) wait here; they are
-% not cited in the text until their entries are verified.
+% 2026-11-26 (third-round programme, r3-P35, under the lead's ruling 13): the prior work that the round-4 attackers and
+% members named (den-meth's attack, section 5 item 4; den-meth's novelty table; emic's closing list) is added here, each
+% entry checked against its record (Crossref, arXiv or OpenLibrary; the comment above each entry names the record) and
+% by key against refs.bib and refs-orchestra.bib (no key exists there). They are not cited until a novelty sentence
+% that needs them prints (ruling 13: added before any novelty sentence prints). One entry the check could not match
+% to the memo's description, two substitutes and the works not resolved are listed in the comments.
+% Wang and colleagues 2024 joins N5(a) (addendum 4, item 5) and is cited in Appendix B's seam sentence.
+
+% verified against arXiv 2406.10052 (INTERSPEECH 2024, 4483-4487; doi 10.21437/Interspeech.2024-1814) | words truncated
+% at chunk boundaries in streaming Whisper decoding (N5(a))
+@inproceedings{wang2024simulwhisper,
+  author = {Wang, Haoyu and Hu, Guoqiang and Lin, Guodong and Zhang, Wei-Qiang and Li, Jian},
+  title = {{Simul-Whisper: Attention-Guided Streaming Whisper with Truncation Detection}},
+  booktitle = {Proceedings of Interspeech 2024},
+  pages = {4483--4487},
+  year = {2024},
+  doi = {10.21437/Interspeech.2024-1814},
+  url = {https://doi.org/10.21437/Interspeech.2024-1814}
+}
+
+% ---------------------------------------------------------------------------------------------------------------
+% The attackers' and members' prior work (round 4), each checked against the record named in its comment.
+% armstrong2015how stands in for the 2012 proceedings version, and pustejovsky2005temporal for the TimeML specification
+% documents, which have no catalogue record.
+% ---------------------------------------------------------------------------------------------------------------
+
+% attack-den-meth | verified against Crossref 10.1007/978-3-319-09668-1_2 | Armstrong and Sotala's book-chapter version (2015) of the "AI is always 15 to 25 years away" prediction dataset (stat-n1); the 2012 proceedings version has no record, see the end of this file
+@incollection{armstrong2015how,
+  author = {Armstrong, Stuart and Sotala, Kaj},
+  title = {{How We're Predicting AI -- or Failing to}},
+  booktitle = {Beyond Artificial Intelligence},
+  series = {Topics in Intelligent Engineering and Informatics},
+  publisher = {Springer International Publishing},
+  pages = {11--29},
+  year = {2015},
+  doi = {10.1007/978-3-319-09668-1_2},
+  url = {https://doi.org/10.1007/978-3-319-09668-1_2}
+}
+
+% attack-den-meth | verified against arXiv 2106.05792 | real conversation structures re-spliced with other speakers' audio to separate voice from structure effects in diarization error (stat-n2)
+@article{seyfarth2021speakerconversation,
+  author = {Seyfarth, Scott and Srinivasan, Sundararajan and Kirchhoff, Katrin},
+  title = {{Speaker-conversation factorial designs for diarization error analysis}},
+  journal = {arXiv preprint arXiv:2106.05792},
+  year = {2021},
+  eprint = {2106.05792},
+  archivePrefix = {arXiv},
+  primaryClass = {eess.AS},
+  url = {https://arxiv.org/abs/2106.05792},
+  note = {Interspeech 2021; arXiv version cited},
+  venuesource = {arXiv comment field}
+}
+
+% attack-den-meth | verified against arXiv 2611.23174 | coding agents on zero-effect simulated data report significance too often; reset-and-replay correction (stat-n3)
+@article{gunsilius2026inference,
+  author = {Gunsilius, Florian and Van Dijcke, David and W{\"u}thrich, Kaspar},
+  title = {{Inference after coding agents}},
+  journal = {arXiv preprint arXiv:2611.23174},
+  year = {2026},
+  eprint = {2611.23174},
+  archivePrefix = {arXiv},
+  primaryClass = {stat.ME},
+  url = {https://arxiv.org/abs/2611.23174}
+}
+
+% attack-den-meth | verified against Crossref 10.1016/j.jclinepi.2013.10.019 | the fragility index: number of outcome flips that overturns a trial result, set against loss to follow-up (stat-n4)
+@article{walsh2014statistical,
+  author = {Walsh, Michael and Srinathan, Sadeesh K. and McAuley, Daniel F. and Mrkobrada, Marko and Levine, Oren and Ribic, Christine and Molnar, Amber O. and Dattani, Neil D. and Burke, Andrew and Guyatt, Gordon and Thabane, Lehana and Walter, Stephen D. and Pogue, Janice and Devereaux, P. J.},
+  title = {{The statistical significance of randomized controlled trial results is frequently fragile: a case for a Fragility Index}},
+  journal = {Journal of Clinical Epidemiology},
+  volume = {67},
+  number = {6},
+  pages = {622--628},
+  year = {2014},
+  doi = {10.1016/j.jclinepi.2013.10.019},
+  url = {https://doi.org/10.1016/j.jclinepi.2013.10.019}
+}
+
+% attack-den-meth | verified against arXiv 2408.14262 | recognizer error rises with the number of dialect features per utterance (ling-n1's dose relation)
+@article{chang2024selfsupervised,
+  author = {Chang, Kalvin and Chou, Yi-Hui and Shi, Jiatong and Chen, Hsuan-Ming and Holliday, Nicole and Scharenborg, Odette and Mortensen, David R.},
+  title = {{Self-supervised Speech Representations Still Struggle with African American Vernacular English}},
+  journal = {arXiv preprint arXiv:2408.14262},
+  year = {2024},
+  eprint = {2408.14262},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL},
+  url = {https://arxiv.org/abs/2408.14262},
+  note = {INTERSPEECH 2024; arXiv version cited},
+  venuesource = {arXiv comment field}
+}
+
+% attack-den-meth | verified against OpenLibrary OL5264227W (ISBN 0198128568) | Burrows's founding study of whether one author's characters are distinguishable by their frequent words (ling-n3)
+@book{burrows1987computation,
+  author = {Burrows, J. F.},
+  title = {{Computation into Criticism: A Study of Jane Austen's Novels and an Experiment in Method}},
+  publisher = {Clarendon Press},
+  address = {Oxford},
+  year = {1987},
+  isbn = {0198128568},
+  url = {https://openlibrary.org/works/OL5264227W}
+}
+
+% attack-den-meth | verified against Crossref 10.1007/s10579-005-7882-7 | the journal description of TimeML (TIMEX3, temporalFunction, anchorTimeID); stands in for "the TimeML specification", whose 1.1 and 1.2.1 documents have no DOI (ling-n4)
+@article{pustejovsky2005temporal,
+  author = {Pustejovsky, James and Knippen, Robert and Littman, Jessica and Saur{\'\i}, Roser},
+  title = {{Temporal and Event Information in Natural Language Text}},
+  journal = {Language Resources and Evaluation},
+  volume = {39},
+  number = {2--3},
+  pages = {123--164},
+  year = {2005},
+  doi = {10.1007/s10579-005-7882-7},
+  url = {https://doi.org/10.1007/s10579-005-7882-7}
+}
+
+% attack-den-meth | verified against arXiv 2404.02803 | difference in differences: a crowd note attached to a post raises the chance its author deletes it (css-n3)
+@article{renault2024collaboratively,
+  author = {Renault, Thomas and Restrepo Amariles, David and Troussel, Aurore},
+  title = {{Collaboratively adding context to social media posts reduces the sharing of false news}},
+  journal = {arXiv preprint arXiv:2404.02803},
+  year = {2024},
+  eprint = {2404.02803},
+  archivePrefix = {arXiv},
+  primaryClass = {econ.GN},
+  url = {https://arxiv.org/abs/2404.02803}
+}
+
+% attack-den-meth | verified against Crossref 10.1016/j.cub.2018.10.016 | school and social calendars shift weekly and daily activity rhythms on Twitter ("social jet lag") (css-n4)
+@article{leypunskiy2018geographically,
+  author = {Leypunskiy, Eugene and K{\i}c{\i}man, Emre and Shah, Mili and Walch, Olivia J. and Rzhetsky, Andrey and Dinner, Aaron R. and Rust, Michael J.},
+  title = {{Geographically Resolved Rhythms in Twitter Use Reveal Social Pressures on Daily Activity Patterns}},
+  journal = {Current Biology},
+  volume = {28},
+  number = {23},
+  pages = {3763--3775.e5},
+  year = {2018},
+  doi = {10.1016/j.cub.2018.10.016},
+  url = {https://doi.org/10.1016/j.cub.2018.10.016}
+}
+
+% attack-den-meth | verified against Crossref 10.1037/h0046016 | the multitrait-multimethod matrix; shared method variance raises the validity diagonal (meas-n2)
+@article{campbell1959convergent,
+  author = {Campbell, Donald T. and Fiske, Donald W.},
+  title = {{Convergent and discriminant validation by the multitrait-multimethod matrix}},
+  journal = {Psychological Bulletin},
+  volume = {56},
+  number = {2},
+  pages = {81--105},
+  year = {1959},
+  doi = {10.1037/h0046016},
+  url = {https://doi.org/10.1037/h0046016}
+}
+
+% attack-den-meth | verified against Crossref 10.1111/apa.17076 | "disguised" incorporation bias: part of one test's outcome built into the other's (meas-n3). Memo says 2023 (online year); key uses the print year 2024 per the project rule
+@article{lynoe2024disguised,
+  author = {Lyn{\o}e, Niels and Eriksson, Anders},
+  title = {{Disguised incorporation bias and meta-analysis of diagnostic accuracy studies}},
+  journal = {Acta Paediatrica},
+  volume = {113},
+  number = {3},
+  pages = {503--505},
+  year = {2024},
+  doi = {10.1111/apa.17076},
+  url = {https://doi.org/10.1111/apa.17076}
+}
+
+% attack-den-meth | verified against Crossref 10.1037/0022-3514.46.4.853 | item-overlap (criterion contamination) between life-event and illness scales, tested by removing overlapping items (meas-n3)
+@article{schroeder1984influence,
+  author = {Schroeder, David H. and Costa, Paul T.},
+  title = {{Influence of life event stress on physical illness: Substantive effects or methodological flaws?}},
+  journal = {Journal of Personality and Social Psychology},
+  volume = {46},
+  number = {4},
+  pages = {853--863},
+  year = {1984},
+  doi = {10.1037/0022-3514.46.4.853},
+  url = {https://doi.org/10.1037/0022-3514.46.4.853}
+}
+
+% attack-den-meth | verified against Crossref 10.1111/j.1467-8624.1998.tb06141.x | temperament and symptom scales with overlapping items; association re-tested after removing them (meas-n3)
+@article{lengua1998temperament,
+  author = {Lengua, Liliana J. and West, Stephen G. and Sandler, Irwin N.},
+  title = {{Temperament as a Predictor of Symptomatology in Children: Addressing Contamination of Measures}},
+  journal = {Child Development},
+  volume = {69},
+  number = {1},
+  pages = {164--181},
+  year = {1998},
+  doi = {10.1111/j.1467-8624.1998.tb06141.x},
+  url = {https://doi.org/10.1111/j.1467-8624.1998.tb06141.x}
+}
+
+% attack-den-meth | verified against Crossref 10.1111/1467-8624.00444 | removing confounded items between temperament and behaviour-problem measures (meas-n3)
+@article{lemery2002revealing,
+  author = {Lemery, Kathryn S. and Essex, Marilyn J. and Smider, Nancy A.},
+  title = {{Revealing the Relation between Temperament and Behavior Problem Symptoms by Eliminating Measurement Confounding: Expert Ratings and Factor Analyses}},
+  journal = {Child Development},
+  volume = {73},
+  number = {3},
+  pages = {867--882},
+  year = {2002},
+  doi = {10.1111/1467-8624.00444},
+  url = {https://doi.org/10.1111/1467-8624.00444}
+}
+
+% attack-den-meth | verified against Crossref 10.1207/s15327906mbr1604_4 | corrections for spurious correlation between scales that share items (meas-n2, meas-n3). Crossref title casing "Mmpi" written as MMPI
+@article{budescu1981corrections,
+  author = {Budescu, David V. and Rodgers, Joseph Lee},
+  title = {{Corrections For Spurious Influences On Correlations Between MMPI Scales}},
+  journal = {Multivariate Behavioral Research},
+  volume = {16},
+  number = {4},
+  pages = {483--497},
+  year = {1981},
+  doi = {10.1207/s15327906mbr1604_4},
+  url = {https://doi.org/10.1207/s15327906mbr1604_4}
+}
+
+% den-meth | verified against Crossref 10.1371/journal.pone.0343216 | mediums' trance against waking writing (texts and qEEG), with a control group simulating mediumistic writing (N2)
+@article{pinto2026brain,
+  author = {Pinto, Kleber Monteiro and Toutain, Thaise G. L. de O. and Saba, Hugo and Bastos Jr, Marco Aur{\'e}lio Vinhosa and do Ros{\'a}rio, Raphael Silva and Pl{\'a}cido, J{\'e}ssica and Loureiro, Na{\'\i}ma and Fernandes, Val{\'e}ria C. and Vivas Miranda, Jos{\'e} Garcia},
+  title = {{Brain activity and the production of written text during mediumistic trance: A controlled EEG study}},
+  journal = {PLOS One},
+  volume = {21},
+  number = {2},
+  pages = {e0343216},
+  year = {2026},
+  doi = {10.1371/journal.pone.0343216},
+  url = {https://doi.org/10.1371/journal.pone.0343216}
+}
+
+% den-meth | verified against Crossref 10.1093/llc/fqad012 | one poet's heteronyms behave like separate authors under Delta (N2; P52). Two authors; the memo's "et al." is loose
+@article{skorinkin2023hacking,
+  author = {Skorinkin, Daniil and Orekhov, Boris},
+  title = {{Hacking stylometry with multiple voices: Imaginary writers can override authorial signal in Delta}},
+  journal = {Digital Scholarship in the Humanities},
+  volume = {38},
+  number = {3},
+  pages = {1247--1266},
+  year = {2023},
+  doi = {10.1093/llc/fqad012},
+  url = {https://doi.org/10.1093/llc/fqad012}
+}
+
+% den-meth | verified against Crossref 10.1162/tacl.a.54 (arXiv 2507.08660) | speaker attribution on recognizer transcripts is as good as or better than on human transcripts; recognizer errors carry the speaker (N2)
+@article{aggazzotti2025impact,
+  author = {Aggazzotti, Cristina and Wiesner, Matthew and Smith, Elizabeth Allyn and Andrews, Nicholas},
+  title = {{The Impact of Automatic Speech Transcription on Speaker Attribution}},
+  journal = {Transactions of the Association for Computational Linguistics},
+  volume = {13},
+  pages = {1578--1596},
+  year = {2025},
+  doi = {10.1162/tacl.a.54},
+  url = {https://doi.org/10.1162/tacl.a.54}
+}
+
+% den-meth | verified against arXiv 2311.07564 (published version Crossref 10.1162/tacl_a_00678) | the group's 2023 paper: authorship-attribution models on speech transcripts. Same key and form as the entry in cohort-draft-2026-11-20/refs-reserve.bib
+@article{aggazzotti2023authorship,
+  author = {Aggazzotti, Cristina and Andrews, Nicholas and Smith, Elizabeth Allyn},
+  title = {{Can Authorship Attribution Models Distinguish Speakers in Speech Transcripts?}},
+  journal = {arXiv preprint arXiv:2311.07564},
+  year = {2023},
+  eprint = {2311.07564},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL},
+  url = {https://arxiv.org/abs/2311.07564},
+  note = {Transactions of the Association for Computational Linguistics 12:875--891, 2024, doi:10.1162/tacl\_a\_00678; arXiv version cited},
+  venuesource = {Crossref works/DOI 10.1162/tacl_a_00678}
+}
+
+% den-meth | verified against arXiv 2611.13339 | definition sensitivity of LLM annotation measured against a paraphrase floor (LAB-A / P06)
+@article{mamaev2026measuring,
+  author = {Mamaev, Bogdan and Wang, Qizhou and Leckie, Christopher and Vergani, Matteo},
+  title = {{Measuring Definition Sensitivity in LLM Annotation of Social Science Concepts}},
+  journal = {arXiv preprint arXiv:2611.13339},
+  year = {2026},
+  eprint = {2611.13339},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL},
+  url = {https://arxiv.org/abs/2611.13339},
+  note = {NeurIPS 2026 Workshop TAE: Can We Trust AI Evaluation?; arXiv version cited},
+  venuesource = {arXiv comment field}
+}
+
+% den-meth | verified against arXiv 2611.09457 | counterfactual audit that reassigns definitions among labels: do definitions, label names or demonstrations govern LLM annotation (LAB-A / P06)
+@article{mishra2026definitions,
+  author = {Mishra, Viraj and Gupta, Shubham and Gupta, Dhruv and Tai, Yuehong Cassandra and Li, Qunhua},
+  title = {{Definitions, Label Names, or Demonstrations? Auditing What Governs LLM Annotation}},
+  journal = {arXiv preprint arXiv:2611.09457},
+  year = {2026},
+  eprint = {2611.09457},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  url = {https://arxiv.org/abs/2611.09457}
+}
+
+% den-meth | verified against arXiv 2601.22444 | language-model agents generate forecasting questions and resolve them later (N3, the ledger's resolution arm)
+@article{bosse2026automating,
+  author = {Bosse, Nikos I. and M{\"u}hlbacher, Peter and Wildman, Jack and Phillips, Lawrence and Schwarz, Dan},
+  title = {{Automating Forecasting Question Generation and Resolution for AI Evaluation}},
+  journal = {arXiv preprint arXiv:2601.22444},
+  year = {2026},
+  eprint = {2601.22444},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.LG},
+  url = {https://arxiv.org/abs/2601.22444}
+}
+
+% den-meth | verified against Crossref 10.1044/2024_jslhr-24-00045 | read against conversational recognizer accuracy within the same (disordered-speech) speakers, against human reference (N2/E2)
+@article{tobin2024automatic,
+  author = {Tobin, Jimmy and Nelson, Phillip and MacDonald, Bob and Heywood, Rus and Cave, Richard and Seaver, Katie and Desjardins, Antoine and Jiang, Pan-Pan and Green, Jordan R.},
+  title = {{Automatic Speech Recognition of Conversational Speech in Individuals With Disordered Speech}},
+  journal = {Journal of Speech, Language, and Hearing Research},
+  volume = {67},
+  number = {11},
+  pages = {4176--4185},
+  year = {2024},
+  doi = {10.1044/2024_jslhr-24-00045},
+  url = {https://doi.org/10.1044/2024_jslhr-24-00045}
+}
+
+% den-meth | verified against Crossref 10.1515/cllt-2022-0040 | stylometric distinctions track register (N2; P45)
+@article{grieve2023register,
+  author = {Grieve, Jack},
+  title = {{Register variation explains stylometric authorship analysis}},
+  journal = {Corpus Linguistics and Linguistic Theory},
+  volume = {19},
+  number = {1},
+  pages = {47--77},
+  year = {2023},
+  doi = {10.1515/cllt-2022-0040},
+  url = {https://doi.org/10.1515/cllt-2022-0040}
+}
+
+% emic | verified against Crossref 10.2307/3712356 | a messianic movement after its leader's death read as Melton's spiritualization (emic-n2). Crossref gives the first page only
+@article{dein2001what,
+  author = {Dein, Simon},
+  title = {{What Really Happens When Prophecy Fails: The Case of Lubavitch}},
+  journal = {Sociology of Religion},
+  volume = {62},
+  number = {3},
+  pages = {383},
+  year = {2001},
+  doi = {10.2307/3712356},
+  url = {https://doi.org/10.2307/3712356}
+}
+
+% emic | verified against Crossref 10.1525/nr.2015.19.2.83 | material analysis of conspiracist millennial prophecy (Alex Jones; seed banks, preppers) (emic-n2). Crossref holds no subtitle
+@article{robertson2015silver,
+  author = {Robertson, David G.},
+  title = {{Silver Bullets and Seed Banks}},
+  journal = {Nova Religio},
+  volume = {19},
+  number = {2},
+  pages = {83--99},
+  year = {2015},
+  doi = {10.1525/nr.2015.19.2.83},
+  url = {https://doi.org/10.1525/nr.2015.19.2.83}
+}
+
+% emic | verified against Crossref 10.1525/nr.2015.19.2.30 | New Age 2012 millennialism and conspiracy narratives cross-fertilise in the cultic milieu (emic-n4)
+@article{whitesides2015millennialism,
+  author = {Whitesides, Kevin A.},
+  title = {{2012 Millennialism Becomes Conspiracist Teleology}},
+  journal = {Nova Religio},
+  volume = {19},
+  number = {2},
+  pages = {30--48},
+  year = {2015},
+  doi = {10.1525/nr.2015.19.2.30},
+  url = {https://doi.org/10.1525/nr.2015.19.2.30}
+}
+
+% emic | verified against Crossref 10.3389/fpsyg.2017.00861 | interview-based typology of conspiracist worldviews, including optimistic belief in future change (emic-n4)
+@article{franks2017beyond,
+  author = {Franks, Bradley and Bangerter, Adrian and Bauer, Martin W. and Hall, Matthew and Noort, Mark C.},
+  title = {{Beyond ``Monologicality''? Exploring Conspiracist Worldviews}},
+  journal = {Frontiers in Psychology},
+  volume = {8},
+  pages = {861},
+  year = {2017},
+  doi = {10.3389/fpsyg.2017.00861},
+  url = {https://doi.org/10.3389/fpsyg.2017.00861}
+}
+
+% emic | verified against Crossref 10.1371/journal.pone.0318988 | implicit antisemitic terms in two QAnon subreddits used by far more users than explicit ones, partly to avoid moderation (emic-n3)
+@article{weinberg2025hidden,
+  author = {Weinberg, Dana B. and Levy, Meyer D. and Edwards, April and Kopstein, Jeffrey S. and Frey, David and Antonaros, Peter and Baci, Nikola and Cohen, Noah D. and Fernandez, Javier A. and Ni, Yunis},
+  title = {{Hidden in plain sight: antisemitic content in QAnon subreddits}},
+  journal = {PLOS ONE},
+  volume = {20},
+  number = {3},
+  pages = {e0318988},
+  year = {2025},
+  doi = {10.1371/journal.pone.0318988},
+  url = {https://doi.org/10.1371/journal.pone.0318988}
+}
+
+% emic | verified against Crossref 10.1126/science.aau2706 | exposure to and sharing of fake-news sources is extremely concentrated among few accounts (emic-n3)
+@article{grinberg2019fake,
+  author = {Grinberg, Nir and Joseph, Kenneth and Friedland, Lisa and Swire-Thompson, Briony and Lazer, David},
+  title = {{Fake news on Twitter during the 2016 U.S. presidential election}},
+  journal = {Science},
+  volume = {363},
+  number = {6425},
+  pages = {374--378},
+  year = {2019},
+  doi = {10.1126/science.aau2706},
+  url = {https://doi.org/10.1126/science.aau2706}
+}
+
+% emic | verified against arXiv 2605.06619 | algospeak: the trade-off between legible meaning and detection avoidance, on constructed items (emic-n3)
+@article{fillies2026algospeak,
+  author = {Fillies, Jan and Robertson, Ronald E. and Hancock, Jeffrey},
+  title = {{Algospeak, Hiding in the Open: The Trade-off Between Legible Meaning and Detection Avoidance}},
+  journal = {arXiv preprint arXiv:2605.06619},
+  year = {2026},
+  eprint = {2605.06619},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL},
+  url = {https://arxiv.org/abs/2605.06619}
+}
+
+% emic | verified against Crossref 10.1177/1466138109339044 | ethnography of spirits as informants and political actors in possession ceremonies (emic-n1)
+@article{bubandt2009interview,
+  author = {Bubandt, Nils},
+  title = {{Interview with an ancestor: Spirits as informants and the politics of possession in North Maluku}},
+  journal = {Ethnography},
+  volume = {10},
+  number = {3},
+  pages = {291--316},
+  year = {2009},
+  doi = {10.1177/1466138109339044},
+  url = {https://doi.org/10.1177/1466138109339044}
+}
+
+% emic | verified against Crossref 10.1558/ijsnr.36716 | survey of self-identified Neopagans: conspiracy mentality and paranormal belief predicting conspiracy beliefs (emic-n4)
+@article{dyrendal2018role,
+  author = {Dyrendal, Asbj{\o}rn and Kennair, Leif and Lewis, James},
+  title = {{Role of Conspiracy Mentality and Paranormal Beliefs in Predicting Conspiracy Beliefs Among Neopagans}},
+  journal = {International Journal for the Study of New Religions},
+  volume = {8},
+  number = {1},
+  pages = {73--97},
+  year = {2018},
+  doi = {10.1558/ijsnr.36716},
+  url = {https://doi.org/10.1558/ijsnr.36716}
+}
+
+% Not added: wickramaarachchi2023identifying (Crossref 10.1109/icac60630.2023.10417565, a study of Sinhala video audio):
+%   the record's year (2023) and the absence of an abstract leave the memo's description (2024; title against audio)
+%   unconfirmed.
+
+% Unresolved (no entry written)
+% ---------------------------------------------------------------------------------------------------------------
+% attack-den-meth | Armstrong and Sotala 2012 ("Beyond AI: Artificial Dreams" proceedings, Pilsen) | no Crossref or OpenLibrary
+%   record; only the 2015 Springer chapter (armstrong2015how above) is verifiable.
+% attack-den-meth | "the TimeML specification" (TimeML 1.1 specification, 1.2.1 guidelines) | grey documents without a DOI;
+%   pustejovsky2005temporal above is the verified journal description of TimeML.
+% attack-den-meth | Carpenter et al. 2023 (incorporation bias) | not identified with confidence: the only 2023 Carpenter record on
+%   diagnostic bias in Crossref is a two-author book chapter, Carpenter and Pines, "Understanding Bias in Diagnostic
+%   Research", Evidence-Based Emergency Care (Wiley), pp. 73-92, doi:10.1002/9781119616870.ch6 -- confirm before adding.
+% den-meth | the prediction audit (Australian Skeptics' "Great Australian Psychic Prediction Project") | grey literature, no
+%   DOI, Crossref or OpenLibrary record; cite as a web source if at all.
+% emic | Melton 1985 (the spiritualization article; title as usually cited, not confirmed here) | no Crossref record;
+%   the memo saw it only through Dein 2001.
+% emic | Robertson 2014 (Edinburgh PhD thesis, prevention theodicy) | no Crossref or DataCite record (the Edinburgh archive
+%   uses handles, not DOIs); title not confirmed.

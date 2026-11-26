@@ -75,8 +75,8 @@ their units (TL-7.1's slope, E5's pauses and fillers, DC's seen comparator, five
 TL-7.1, DC and two small-model CSS-12 rows exclude zero; the rest include it.
 
 **Detectable sizes** (80% power, one-sided 5%, from the printed interval), printed beside every contrast not beyond its
-margin: for example E5's long pauses 1.42 per 100 words and fillers 1.56 per 1,000 words (middle-model subset, 20
-creators); E6 0.041 (below its 5-point margin, so its equivalence is informative); E9 2.57 shared runs per pair (6
+margin: for example E5's long pauses 1.42 per 100 words and fillers 1.56 per 1,000 words (middle-model subset, all but fewer than 5 of
+22 creators); E6 0.041 (below its 5-point margin, so its equivalence is informative); E9 2.57 shared runs per pair (6
 creators), so E9's null says little; PT-cd's platform asks 0.116; E1's creator-equal ratio 1.42.
 
 **Not classed** (`r3-P33-not-classed.csv`): levels (LAB-V, LAB-K, LAB-A, TL-BUILD, TL-7.7, nlp-R10, nlp-R11, nlp-R13,
@@ -146,3 +146,10 @@ PDFs without document information.
 > recordings and how the creators present it.
 
 Note (the lead's step-1 decision 49(h), 2026-11-26T09:22:54Z): the SHA-256 values printed here are those of the private files as written; the SHA-256 of each published file is in status.json, `published_copy.published_sha256`.
+
+## Corrections
+
+- 2026-11-26 (the lead's decisions D73 and D74 and step-3 decision 100, made with r3-P35's corrections of the
+  exploratory release): E5's creator counts in this entry (the cascade's E5 rows, the informativeness table's E5
+  rows and the detectable-size sentence above) are printed in band form, as the corrected release prints them. No
+  estimate, interval, detectable size or reading changes; the recorded hashes in `status.json` are refreshed.

@@ -22,7 +22,8 @@ per-creator value, and no count of fewer than 5 creators.
 ## 1. What the paper is
 
 A measurement-and-protocol paper (registry decision of 2026-11-21, 02:50 UTC). Its subject is what a Whisper-family
-pipeline does to the audio of recordings published by creators selected by the authors as channelling mediums:
+pipeline does to the audio of recordings published by creators the authors selected because they describe their
+practice as channelling (wording of r3-P35, 2026-11-26; the earlier wording, "channelling mediums", presupposes mediation):
 
 - the agreement anchors (no reference made by people exists for the seen creators; platform captions, the project's
   earlier recognizer text and a larger model's earlier text are machine-to-machine agreement, not error rates);
@@ -58,7 +59,7 @@ sentences and the three results tables of Appendix B, for any outcome.
 | `floats/caption-notes.tex` | Base, unit and pooling of each figure, as macros | GENERATED |
 | `floats/tab_results*.tex` | Results table (Appendix B since the rewrite; main text before it), both versions under the guard (two parts), robustness rows, Holm table | GENERATED |
 | `refs.bib` | References verified in the old draft's reference work (Crossref or arXiv metadata) | writers A, C |
-| `refs-new.bib` | Entries verified later by the lead; empty | lead |
+| `refs-new.bib` | Entries verified later: since 2026-11-26 (r3-P35, ruling 13), Wang and colleagues 2024 (cited in Appendix B's seam sentence) and the prior work the third-round panel's attackers and members named, each checked against its record and by key; uncited until a novelty sentence needs them | lead |
 | `refs-orchestra.bib` | 82 entries added by the rewrite's literature merge step, checked against Crossref, arXiv, DataCite, PMLR and OpenLibrary records; on the bibliography line of `main.tex` | literature merge step of the rewrite |
 | `build.sh` | Build script (below) | integrator |
 
@@ -596,3 +597,50 @@ nothing here is a test.
   the registry's committed rows are quoted in that form, their sources kept.
 - **Deviation rows (D64).** The registry's deviation table holds the release pass's rows 174 to 176 (the fix steps),
   so the round's summary row counts them.
+
+## Third-round programme, r3-P35 corrections (2026-11-26)
+
+Made under the lead's ruling 13 of 2026-11-26 (the working paper draft is corrected directly), the lead's decision D72
+and the lead's step-1 decisions 27a, 28, 29 and 36 (UTC from the clock). Exploratory; nothing here is a test. No number
+macro, generated file or builder changed: every edit is in `main.tex`, `sections/*.tex` and `refs-new.bib`.
+
+- **Related work.** Wahbeh and colleagues' 2019 voice analysis is named (`\citet`), as its abstract states it: voice
+  recordings of one story read while channelling differed from those read while not, while the other physiology did
+  not.
+- **Seam sentence** (Appendix B, searches). Words truncated at chunk boundaries are reported (Wang and colleagues 2024,
+  added to `refs-new.bib` and cited), and an informal, uncited practitioner report proposes that a short final window
+  prompts a closing courtesy phrase.
+- **Wording neutral in both directions.** The agnosticism sentence in the form the panel agreed (abstract,
+  introduction and Appendix B.10); creator-centred voice definitions (Section 5.2 and Appendix B: the
+  first-person and the reported claimed voice, with the instrument codes kept); "channelling mediums" replaced in the
+  abstract, the introduction and the selection sentence; "family of sources" for the title code; the entrance-cue
+  wording.
+- **Validity-status line.** `\LabelValidity` (defined in `main.tex`) ends every caption that rests on model-coded
+  labels (`tab:hypotheses`, four tables of Appendix A, fourteen floats of Appendix B; the cross-vendor table carries
+  the line in a shorter form so that the float fits its page). `tab:programme` (medians of projections) does not
+  carry it. Since D74 the line no longer says "under frozen instruments": captions on pilot or pre-freeze labels
+  say so in their own words (`tab:labelflips`, `fig:eligibility`, `tab:kinds`, the revision-2 rows of `tab:ka` and
+  `tab:ka-b`, `tab:external`).
+- **Titles' failed gates** (step-1 decision 36): the sentence is added where the paper cites them (Section 5.2, twice,
+  the owner's exception and the R-hold paragraph in Appendix B, `tab:gates-b`, B.10's titles line).
+- **LAB-A's caption fact:** added to B.10's asks line and to `tab:ka`'s caption.
+- **Selection of headlines** (decision 27a): B.10 says the twelve outputs were placeholders of the outline before their
+  results existed and that each printed row is the release's headline row, chosen after the results were seen;
+  `tab:headlines` says its headlines were chosen after the results were seen.
+- **H1's rate** (decision 28): Section 6 (exploratory outputs) and B.10 say that every small-model row of H1's seen
+  rate contrast printed in the release lies inside deposit 2's ratio margin (0.80 to 1.25), much wider than H1's
+  smallest effect.
+- **Nulls** (decision 29): B.10 prints E9's null with its detectable size (r3-P33), and the label-flip paragraph says
+  that no detectable size was computed for its voice rows.
+- **Bibliography.** The prior work named by the round-4 attackers and members is in `refs-new.bib` (33 entries for the
+  attackers' prior work plus Wang 2024 (cited), each checked against its Crossref, arXiv or OpenLibrary record, none already in `refs.bib` or `refs-orchestra.bib`); one
+  candidate and six works that could not be confirmed are listed in its comments. None is cited yet.
+
+### Build state (2026-11-26, 16:38 UTC, rebuilt after the lead's decision D74)
+
+`bash build.sh` (typeset only; `findings/` and `floats/` as they were): no LaTeX error, no undefined reference,
+citation or macro, no float too large for its page; the same nine table cells as before run up to 3.7 pt over their
+column. 75 pages, as before: the main text ends on page 8 with the conclusion, the ethics statement starts there and the
+references start on page 9. `main.pdf` carries no document information dictionary. Paper check (`check_paper.py`): no
+undefined macro, no missing citation, no privacy-name, code or id hit, no nested creator-count pair, no placeholder in
+the PDF. The build logs are not kept in the repository (`*.log` is ignored).

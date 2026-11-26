@@ -273,3 +273,6 @@ Taken after the staging report, before publication:
 - **64.** No number changes. r3-P05 and r3-P06 state the class of their mean-score intervals in their data-file headers
   and READMEs: r3-P30 class E_rank_correlation, whose choice is the t interval on creator means at every simulated
   count, so these intervals carry no count information.
+- **D73, D74 and step-3 decision 100** (2026-11-26, with r3-P35's corrections of the exploratory release). r3-P33's
+  E5 rows print E5's creator counts in band form, with a dated correction in its README and data files and its
+  recorded hashes refreshed in its `status.json`; no estimate, interval or reading changes.
