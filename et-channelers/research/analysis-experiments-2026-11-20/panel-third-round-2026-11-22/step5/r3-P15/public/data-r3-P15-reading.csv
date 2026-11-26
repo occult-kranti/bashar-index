@@ -1,0 +1,16 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P15 / r4-P13: person or register? A distance ladder of function-word profiles (parts of 200 usable tokens, 20 rarefaction draws; distance = 1 - cosine); prespecification hashed 2026-11-26T14:11:38Z.
+# Unsplit (deposit 2's split policy names r3-P15): all 71 seen creators, small model (label of record), primary voice definition; units outside H1's excluded formats except the pooled rung (E2's own rule).
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# The entry's reading follows the rule fixed in prespec.md section 4; a primary reads beyond or within the margin only where the z-scored and the unstandardised person-free rows agree.
+# Predictions deposited: none (deposit 2's cells for r3-P15 and r4-P13 are silent).
+# Made 2026-11-26T14:25:03Z by code/publish_p15.py.
+primary,creators,reading
+P1 same recording (person-free; both standardisations),41,undetermined
+P2 across recordings (person-free; both standardisations),53,undetermined (the two standardisations disagree)
+"P3 persona or register, pooled (person-free; both standardisations)",54,beyond the margin (nearer the creator's own voice)
+"P4, P4b decode rung",5 to 9,not printed: the row's count is banded
+the entry's reading (prespec section 4),,undetermined

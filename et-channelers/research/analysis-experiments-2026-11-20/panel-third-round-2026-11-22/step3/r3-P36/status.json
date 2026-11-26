@@ -1,0 +1,81 @@
+{
+ "id": "r3-P36",
+ "carries": [
+  "r4-P21 (the typing and the decomposition by calendar unit; its anchor-class half is in r3-P37)"
+ ],
+ "class": "a.1",
+ "step": 3,
+ "status": "done (exploratory)",
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Model-coded statement candidates (LAB-F, TL-BUILD) and rule-based fields of the frozen ledger, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tier": "pooled panel tier D (fewer than 10 of the 23 non-development creators eligible; described on every eligible seen channel); rule-typed panels and r4-P21's typing tier L (the 23 non-development creators)",
+ "prespec_hashed_utc": "2026-11-26T14:11:40Z",
+ "reading": "explicit absolute windows (tier D, all but fewer than 5 of TL-7.1's primary channels): mean channel slope -5.17, 90% t interval -17.80 to 7.46, inside the permutation band; undetermined (capped by r3-P30, class F_slope); the calendar null cannot be distinguished from a calendar habit here",
+ "predictions_scored": "none deposited (deposit 2's cells silent)",
+ "not_computed": [
+  "control row and tier-L slope panels: pooled, calendar unit year, calendar unit month, doubly absolute (not computed or not printed)",
+  "r4-P21's form-and-function cells (a pooled cell rests on fewer than 5 creators)",
+  "channel-span bins (privacy)"
+ ],
+ "inputs_sha256": {
+  "forecast ledger (deposit 1)": "d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a",
+  "split draw (deposit 2)": "85848e4cb78327c52163d254a16447b90581fd6e1a696c959237fc7d0ef077f2",
+  "rule coder (deposit 2)": "4fe41740974b88f76358a99bb970bab2c1847b2ca9e907c2e1be518c575aef71"
+ },
+ "contacts": "none (contacts.md)",
+ "model_or_api_calls": 0,
+ "spend_usd": 0,
+ "privacy": {
+  "rules": "the lead's common rules for steps 3 to 5; step 1's pubrules Register for counts; fixed interval methods (decision 62 does not apply)",
+  "solvers": "../ft-common/scan-record.md: 0 rows pinned or narrowed by any route; identifier scan 0 files; no PNG text chunks; no PDF document information"
+ },
+ "departures": "README.md, section Departures",
+ "shared_code_sha256": {
+  "ftload.py": "a6d0b9c2ec01348683bf2aab33139f855fa661b4ef983efa3c869b95ba6fa4c9",
+  "ftpub.py": "6337bdfc2e84ec2d8a5397d73896bb686bac2c71f7859ed470da8c0492cb3c14",
+  "pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "eligibility.py": "d31d2f489f52ec6c3f8d6ded6dcf27bfdf3820f57c9a3d48b9ff99da2e83763c",
+  "scan_step3.py": "5db5338465b394ec1eb5eacb7a38837c98c8c1572b5ff6584371eff68274df6d",
+  "write_status.py": "b2c9b3ef7210d95e60c03ebbc4f040a40bc4e11390c17a0837977c755e624550"
+ },
+ "files_sha256": {
+  "public/data-r3-P36-explicit-count.csv": "9e2263fc80acb39ed1318e964cf007d7779c922785ce76ad6e5bb2da02f3bed9",
+  "public/data-r3-P36-slopes.csv": "dada83123483abc68482cea773746b567340587b86e2a2d2f2c3006ea838d9cc",
+  "public/data-r4-P21-typing.csv": "1adb88481240e4ba7e7d2fbc378bf4f5c19cc8c02d3c4e61437206b2f304fdc8",
+  "public/fig-r3-P36-slopes.png": "bf9a0b5d93b1b3b8fc63e14563040e548bc1ec0440b448358628af2c0ac9d689",
+  "public/fig-r3-P36-slopes.pdf": "f5990a47e306b930ec8bc46c53f3248eceae0a2d9b9713066625c8ebab52de21",
+  "public/fig-r4-P21-typing.png": "33069523d7ef235c75b35027ca3ace31e87a0a414e6d23a4497faa93471956a1",
+  "public/fig-r4-P21-typing.pdf": "3701f11350b842e184cfe1ff275655484e816bfd881be969f081ae1f60292258",
+  "code/p36_run.py": "5d09333b4d14087b851c1a58b49e529cd42544e3369451e6243f33b2656d5beb",
+  "README.md": "4095a87da91ae39753598f17d9bfb53d0b1f7ec160005d5bca997f1155b11d83",
+  "prespec.md": "ed5a37d4d8b516d64f53789e644afd9c5250d00bb721e101a3427b3ed7a61803",
+  "prespec-hash-record.md": "3ceb8a99d59fffef86235732311269b5fa030cce54e8a96f00150172fbce4fa9",
+  "contacts.md": "b25f7ac36fedaefcdfa0f465f94699122880012ffbe9a01c98a653c4ce452ea5"
+ },
+ "written_utc": "2026-11-26T14:31:40Z",
+ "note_2026-11-26_joint_staging_steps3to5": "2026-11-26T14:59:32Z (UTC, from date -u): files changed at the joint staging of steps 3 to 5 by the lead's decisions 72, 73, 78, 80 and the cross-step nesting check (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/p36_run.py, public/data-r3-P36-slopes.csv, public/data-r4-P21-typing.csv, public/fig-r3-P36-slopes.pdf, public/fig-r3-P36-slopes.png, public/fig-r4-P21-typing.pdf, public/fig-r4-P21-typing.png",
+ "note_2026-11-26_decision_103": "2026-11-26T17:16:20Z (UTC, from date -u): files changed by the lead's decision 103 (after the second independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/p36_run.py, public/data-r3-P36-slopes.csv, public/fig-r3-P36-slopes.pdf, public/fig-r3-P36-slopes.png",
+ "note_2026-11-26_decision_104_text": "2026-11-26T17:33:22Z (UTC, from date -u): not_computed worded as the README by the lead's decision 104 (no number changed)",
+ "note_2026-11-26_decision_104": "2026-11-26T17:33:22Z (UTC, from date -u): files changed by the lead's decision 104 (after the third independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/p36_run.py, public/data-r3-P36-slopes.csv, public/fig-r3-P36-slopes.pdf, public/fig-r3-P36-slopes.png",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "4095a87da91ae39753598f17d9bfb53d0b1f7ec160005d5bca997f1155b11d83",
+   "contacts.md": "b25f7ac36fedaefcdfa0f465f94699122880012ffbe9a01c98a653c4ce452ea5",
+   "prespec-hash-record.md": "3ceb8a99d59fffef86235732311269b5fa030cce54e8a96f00150172fbce4fa9",
+   "prespec.md": "ed5a37d4d8b516d64f53789e644afd9c5250d00bb721e101a3427b3ed7a61803",
+   "public/data-r3-P36-explicit-count.csv": "9e2263fc80acb39ed1318e964cf007d7779c922785ce76ad6e5bb2da02f3bed9",
+   "public/data-r3-P36-slopes.csv": "dada83123483abc68482cea773746b567340587b86e2a2d2f2c3006ea838d9cc",
+   "public/data-r4-P21-typing.csv": "1adb88481240e4ba7e7d2fbc378bf4f5c19cc8c02d3c4e61437206b2f304fdc8",
+   "public/fig-r3-P36-slopes.pdf": "f5990a47e306b930ec8bc46c53f3248eceae0a2d9b9713066625c8ebab52de21",
+   "public/fig-r3-P36-slopes.png": "bf9a0b5d93b1b3b8fc63e14563040e548bc1ec0440b448358628af2c0ac9d689",
+   "public/fig-r4-P21-typing.pdf": "3701f11350b842e184cfe1ff275655484e816bfd881be969f081ae1f60292258",
+   "public/fig-r4-P21-typing.png": "33069523d7ef235c75b35027ca3ace31e87a0a414e6d23a4497faa93471956a1"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/"
+ }
+}

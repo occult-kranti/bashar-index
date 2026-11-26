@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r4-P14: archaic agreement in the transcripts (presence and the transcribed pattern only; neutral wording: 'historical' and 'non-historical agreement pattern'); prespecification hashed 2026-11-26T14:11:38Z.
+# Tier X by count (the 11 voice-eligible non-development creators, r3-P42's set); the rule has no data-tuned part, so the cross-fit is the identity and the 11 are read once; small model, primary voice definition, units outside H1's excluded formats; archaic forms: step 1's closed list of 30 (r3-P01).
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# The recognizer is a grammar prior: it may regularise the very agreement at issue, so only presence and the transcribed pattern are read, never what was said (N12). Agreement rules (closed, written before any count): prespec.md section 1.
+# Interval (where printed): r3-P30's choice at 11 creators (B_share_difference; H_rare_counts). Predictions deposited: none.
+# Made 2026-11-26T14:30:51Z by code/publish_p4p14.py.
+row,statistic,creators,estimate,low90,high90,reading
+R1,"presence of any archaic form: share of the 11, claimed minus own (paired)",11,,,,not printed (fewer than 5 creators carry the estimate)
+R2,"archaic forms per 10,000 words: log ratio claimed over own (0.5 added)",11,,,,not printed (fewer than 5 creators carry the estimate)
+R3,"agreement pattern: share of non-historical among classified pairs, claimed voice",,,,,not computed (too few terms or creators)
+R5,"agreement pattern: share of non-historical among classified pairs, own voice (the control strip)",,,,,not computed (too few terms or creators)
+R4,"decode strip: archaic forms and classified pairs on rv-R3's bridge recordings of the 11, record decode and larger model",,,,,not computed (too few terms or creators)
+,another recognizer family,,,,,not run (a.2: package ruling)
+,listening check,,,,,"not run (class c, unfunded)"

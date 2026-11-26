@@ -1,0 +1,52 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 3 (forecasts and time).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P37: creator-balanced share of uploads (each eligible creator's uploads, every upload counted, equal weight per creator) by window relative to the class's anchors, against the 5th to 95th percentile band over 999 habit-preserving shuffles; daily offsets to the nearest sky-or-festival anchor on the exploration side. The sealed half prints windows only (decided before its offsets were read: daily bins on the sealed half could rest on fewer than 5). Described, never read: date-only anchors make nearness a matter of alignment, which the band measures. Word-anchored uploads (tier L; the frozen rule coder's event-anchor pattern on the ledger's statements): creators with one or more: fewer than 5; not computed (fewer than 5 creators).
+# Upload days: the labelled seen recordings' confirmed UTC days (TL-BUILD's table; estimated days have no weekday and are not used); no label enters the date-only rows. Anchors: private/anchors.csv (SHA-256 2222c21b...a6d), public calendars and published algorithms (Meeus 1998; Espenak and Meeus 2006, 2009; Hutton 1996; the Gregorian calendar). Four classes: sky, festival, civil (month starts), numerological (day equals month); et's announced-period class has no public date and is not computed. The calendar is described, never its origin.
+# Creator counts: 'fewer than 5' means 1 to 4; 'all but fewer than 5 of N' means N-4 to N-1; '5 to 9' is a band; values that could narrow a banded count are not printed.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: the description of the sealed half's daily bins is worded generally. Edited by hand; no number changed.
+side,anchor_class,window,creator_balanced_share,shuffle_band_90,against_band
+exploration side,sky or festival,lead (-7 to -1),0.586,"[0.541, 0.595]",inside the band
+exploration side,sky or festival,"ritual window (0, +1)",0.169,"[0.157, 0.199]",inside the band
+exploration side,sky or festival,after (+2 to +7),0.488,"[0.472, 0.522]",inside the band
+exploration side,sky or festival,offset -7,0.034,"[0.022, 0.038]",inside the band
+exploration side,sky or festival,offset -6,0.045,"[0.037, 0.060]",inside the band
+exploration side,sky or festival,offset -5,0.070,"[0.045, 0.069]",above the band
+exploration side,sky or festival,offset -4,0.068,"[0.053, 0.078]",inside the band
+exploration side,sky or festival,offset -3,0.072,"[0.055, 0.082]",inside the band
+exploration side,sky or festival,offset -2,0.083,"[0.063, 0.091]",inside the band
+exploration side,sky or festival,offset -1,0.088,"[0.076, 0.104]",inside the band
+exploration side,sky or festival,offset 0,0.089,"[0.077, 0.106]",inside the band
+exploration side,sky or festival,offset +1,0.079,"[0.070, 0.101]",inside the band
+exploration side,sky or festival,offset +2,0.080,"[0.066, 0.094]",inside the band
+exploration side,sky or festival,offset +3,0.072,"[0.062, 0.090]",inside the band
+exploration side,sky or festival,offset +4,0.069,"[0.053, 0.079]",inside the band
+exploration side,sky or festival,offset +5,0.046,"[0.049, 0.073]",below the band
+exploration side,sky or festival,offset +6,0.040,"[0.044, 0.068]",below the band
+exploration side,sky or festival,offset +7,0.048,"[0.032, 0.053]",inside the band
+exploration side,sky,lead (-7 to -1),0.529,"[0.486, 0.537]",inside the band
+exploration side,sky,"ritual window (0, +1)",0.141,"[0.133, 0.173]",inside the band
+exploration side,sky,after (+2 to +7),0.421,"[0.419, 0.470]",inside the band
+exploration side,festival,lead (-7 to -1),0.099,"[0.096, 0.138]",inside the band
+exploration side,festival,"ritual window (0, +1)",0.031,"[0.023, 0.041]",inside the band
+exploration side,festival,after (+2 to +7),0.101,"[0.082, 0.120]",inside the band
+exploration side,civil,lead (-7 to -1),0.213,"[0.206, 0.253]",inside the band
+exploration side,civil,"ritual window (0, +1)",0.070,"[0.053, 0.079]",inside the band
+exploration side,civil,after (+2 to +7),0.203,"[0.176, 0.219]",inside the band
+exploration side,numerological,lead (-7 to -1),0.259,"[0.206, 0.251]",above the band
+exploration side,numerological,"ritual window (0, +1)",0.054,"[0.050, 0.076]",inside the band
+exploration side,numerological,after (+2 to +7),0.192,"[0.179, 0.221]",inside the band
+sealed half B,sky or festival,lead (-7 to -1),0.595,"[0.513, 0.627]",inside the band
+sealed half B,sky or festival,"ritual window (0, +1)",0.169,"[0.120, 0.215]",inside the band
+sealed half B,sky or festival,after (+2 to +7),0.501,"[0.439, 0.555]",inside the band
+sealed half B,sky,lead (-7 to -1),0.516,"[0.458, 0.569]",inside the band
+sealed half B,sky,"ritual window (0, +1)",0.143,"[0.105, 0.194]",inside the band
+sealed half B,sky,after (+2 to +7),0.416,"[0.386, 0.504]",inside the band
+sealed half B,festival,lead (-7 to -1),0.141,"[0.070, 0.163]",inside the band
+sealed half B,festival,"ritual window (0, +1)",0.037,"[0.006, 0.047]",inside the band
+sealed half B,festival,after (+2 to +7),0.122,"[0.065, 0.154]",inside the band
+sealed half B,civil,lead (-7 to -1),0.217,"[0.163, 0.305]",inside the band
+sealed half B,civil,"ritual window (0, +1)",0.103,"[0.033, 0.104]",inside the band
+sealed half B,civil,after (+2 to +7),0.235,"[0.133, 0.267]",inside the band
+sealed half B,numerological,lead (-7 to -1),0.312,"[0.163, 0.298]",above the band
+sealed half B,numerological,"ritual window (0, +1)",0.066,"[0.034, 0.100]",inside the band
+sealed half B,numerological,after (+2 to +7),0.121,"[0.137, 0.253]",below the band

@@ -1,0 +1,71 @@
+{
+ "id": "r3-P60",
+ "title": "Where audiences are sent off the platform, and suppression talk",
+ "class": "a.2",
+ "tier": "L (23)",
+ "primaries": {
+  "destinations": "described (a link is a link, not a verdict)",
+  "suppression halves": "both not computed (too few terms or creators)"
+ },
+ "predictions": {},
+ "not_computed": [
+  "both suppression halves",
+  "paired-difference dot plot",
+  "alternative platforms against control vocabulary"
+ ],
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "made_by": "the step-4 agent, a model agent working for the project lead (not a person)",
+ "prespec_hashed_utc": "2026-11-26T14:07:09Z",
+ "common_code_sha256": {
+  "s4common.py": "a1fa19dba4a1c09eedb715f9215935d0fcbad14a796e009dd8fccc32a8e9bb86",
+  "eligibility.py": "49b2f187c61c469d93c3377754a1b8a47fcbc6c13bb0b0a187c8a803acc8f474",
+  "privacy_checks.py": "0b50da13dbe84096332b19dc098bdd67baa6908d9af5cda7d29fdb33468c1d18",
+  "write_status.py": "4e4dd2d0371cd44347649a85c1dbec96ef39d7369056eacf45c84d7c515c379e",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "prespec-shared.md": "1a108ed923035037657685923e660b329ac3666a2ee9689e2802cf6f6236c596"
+ },
+ "privacy_checks": {
+  "run_utc": "2026-11-26T14:26:47Z",
+  "identifier_hits": 0,
+  "png_text_chunks": 0,
+  "pdf_info_keys": 0,
+  "nest_check": {
+   "banded_sets_tested": 26,
+   "problems": 0
+  },
+  "decision_62": {
+   "rows_banded_with_interval": 25,
+   "count_chosen": 0
+  }
+ },
+ "private_results": "kept in the entry's private folder (not published)",
+ "files_sha256": {
+  "README.md": "341ff5a6a0a9b583052b45f467d0ef77b2fff7710f7d6e493e40bf8c2b20d38e",
+  "code/p60.py": "18b222cbc5c3d779cd3ef3ef08039f24aaa0fb27d9f8eddfa557f5f9dda7614c",
+  "code/plot_p60.py": "c03e119a2f6784ad9b8ee144946b8dbb3c975e55834a7e6643e7d980f0d81d4a",
+  "contacts.md": "9c8ed7f74af2ac589aee97a99d79b6f149c833c9bcd63c01329504e5e932f3fa",
+  "prespec-hash-record.md": "602c50d1e5512f44b5acffe55b51c21f42bb9a8bf54aead4153e416d79a4841a",
+  "prespec.md": "21fc21cd70f7220bda24af367e32aa20e245303425c60b2e3a227cda0df16404",
+  "public/data-r3-P60-rows.csv": "0512b93948858a2c74bcc6457f446347da475819c228828180f583c4848e49fb",
+  "public/fig-r3-P60-destinations.pdf": "02aec77c9921b695639bf4cc5ec41b25da8be51636a0ec8bf19263162392c6fe",
+  "public/fig-r3-P60-destinations.png": "fbfd14a082f1bf6845bc1c50d94ce87db94254752884df58b4b7c631ca9b7b32"
+ },
+ "written_utc": "2026-11-26T14:27:19Z",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/plot_p60.py, public/data-r3-P60-rows.csv, public/fig-r3-P60-destinations.pdf, public/fig-r3-P60-destinations.png",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "341ff5a6a0a9b583052b45f467d0ef77b2fff7710f7d6e493e40bf8c2b20d38e",
+   "contacts.md": "9c8ed7f74af2ac589aee97a99d79b6f149c833c9bcd63c01329504e5e932f3fa",
+   "prespec-hash-record.md": "602c50d1e5512f44b5acffe55b51c21f42bb9a8bf54aead4153e416d79a4841a",
+   "prespec.md": "21fc21cd70f7220bda24af367e32aa20e245303425c60b2e3a227cda0df16404",
+   "public/data-r3-P60-rows.csv": "0512b93948858a2c74bcc6457f446347da475819c228828180f583c4848e49fb",
+   "public/fig-r3-P60-destinations.pdf": "02aec77c9921b695639bf4cc5ec41b25da8be51636a0ec8bf19263162392c6fe",
+   "public/fig-r3-P60-destinations.png": "fbfd14a082f1bf6845bc1c50d94ce87db94254752884df58b4b7c631ca9b7b32"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/"
+ }
+}

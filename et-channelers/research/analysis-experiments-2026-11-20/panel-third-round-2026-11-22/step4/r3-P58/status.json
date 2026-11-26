@@ -1,0 +1,68 @@
+{
+ "id": "r3-P58",
+ "title": "Does the audience reward the claimed voice inside a channel?",
+ "class": "a.1",
+ "tier": "X (18 eligible)",
+ "primaries": {
+  "five rows x three outcomes": "all undetermined against the 0.10 margin; claimed-voice share with views 0.21 (0.08 to 0.35): outside the permutation-maximum band but undetermined against the 0.10 margin (association at capture)"
+ },
+ "predictions": {},
+ "not_computed": [],
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "made_by": "the step-4 agent, a model agent working for the project lead (not a person)",
+ "prespec_hashed_utc": "2026-11-26T14:07:09Z",
+ "common_code_sha256": {
+  "s4common.py": "a1fa19dba4a1c09eedb715f9215935d0fcbad14a796e009dd8fccc32a8e9bb86",
+  "eligibility.py": "49b2f187c61c469d93c3377754a1b8a47fcbc6c13bb0b0a187c8a803acc8f474",
+  "privacy_checks.py": "0b50da13dbe84096332b19dc098bdd67baa6908d9af5cda7d29fdb33468c1d18",
+  "write_status.py": "4e4dd2d0371cd44347649a85c1dbec96ef39d7369056eacf45c84d7c515c379e",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "prespec-shared.md": "1a108ed923035037657685923e660b329ac3666a2ee9689e2802cf6f6236c596"
+ },
+ "privacy_checks": {
+  "run_utc": "2026-11-26T14:26:47Z",
+  "identifier_hits": 0,
+  "png_text_chunks": 0,
+  "pdf_info_keys": 0,
+  "nest_check": {
+   "banded_sets_tested": 26,
+   "problems": 0
+  },
+  "decision_62": {
+   "rows_banded_with_interval": 25,
+   "count_chosen": 0
+  }
+ },
+ "private_results": "kept in the entry's private folder (not published)",
+ "files_sha256": {
+  "README.md": "71b51f6ff760fcb35f191d4476b7ee44c2c8217c6e6f31e1b20a3b145e46cee0",
+  "code/p58.py": "1446edc83421af331110d6f3d43eb908bf693bded598a9072c8558511f3e57d7",
+  "code/publish_p58.py": "01fa5c416901e9122c210e8cd885a8178b9ac15de7949767670cfaf645040f6f",
+  "contacts.md": "0170f96208c27f09ccefab42ba40766804ff546930acbce0d1daa93ba1c85b96",
+  "prespec-hash-record.md": "d4e30ee9564ff330d00e8deaf6a0bf49ccc22078660feafbdc25a4fbec179bac",
+  "prespec.md": "4583be965f9b5aef623d00597f0d2ac56267dc93453b01e5073921a61d184ee5",
+  "public/data-r3-P58-forest.csv": "09028044207b1be384b8f10bba1f5ee81c9190d76610dbc3c29b2c0ef89522f2",
+  "public/fig-r3-P58-forest.pdf": "123d6f08a4553f7a80a8c30b62bbe1c12422c365fafd15473c83b57da59e47fc",
+  "public/fig-r3-P58-forest.png": "debb1fb56fa97946fcc6877a24aaedf69829aac2d8fae6a02f47599ea524cadb"
+ },
+ "written_utc": "2026-11-26T14:27:19Z",
+ "note_2026-11-26_joint_staging_steps3to5": "2026-11-26T14:59:32Z (UTC, from date -u): files changed at the joint staging of steps 3 to 5 by the lead's decisions 72, 73, 78, 80 and the cross-step nesting check (no number changed); their recorded hashes refreshed: README.md",
+ "note_2026-11-26_decision_99_text": "2026-11-26T16:19:27Z (UTC, from date -u): text worded as the README by the lead's decision 99 (no number changed): primaries.five rows x three outcomes",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "71b51f6ff760fcb35f191d4476b7ee44c2c8217c6e6f31e1b20a3b145e46cee0",
+   "contacts.md": "0170f96208c27f09ccefab42ba40766804ff546930acbce0d1daa93ba1c85b96",
+   "prespec-hash-record.md": "d4e30ee9564ff330d00e8deaf6a0bf49ccc22078660feafbdc25a4fbec179bac",
+   "prespec.md": "4583be965f9b5aef623d00597f0d2ac56267dc93453b01e5073921a61d184ee5",
+   "public/data-r3-P58-forest.csv": "09028044207b1be384b8f10bba1f5ee81c9190d76610dbc3c29b2c0ef89522f2",
+   "public/fig-r3-P58-forest.pdf": "123d6f08a4553f7a80a8c30b62bbe1c12422c365fafd15473c83b57da59e47fc",
+   "public/fig-r3-P58-forest.png": "debb1fb56fa97946fcc6877a24aaedf69829aac2d8fae6a02f47599ea524cadb"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/"
+ }
+}

@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P14: read aloud, recited or spontaneous? The text part: a read-like delivery profile from lexical slots, recognizer pauses and lexical repairs; prespecification hashed 2026-11-26T14:11:38Z.
+# Tier X (deposit 2's split policy): the 11 voice-eligible non-development creators (r3-P42's set), two-fold cross-fitting on the deposited halves with T on the fitting side; small model, primary voice definition, units outside H1's excluded formats.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# Creator-balanced means by voice with 90% t intervals (described rows), and the histogram of the cross-fitted score difference (bins merged from the tails until each holds 5 or more creators).
+# Made 2026-11-26T14:28:18Z by code/publish_p14.py.
+measure,voice_or_bin,creators,mean,t90_low,t90_high
+within-phrase pause share,claimed,11,0.2998,0.1987,0.4009
+within-phrase pause share,own,11,0.366,0.2822,0.4497
+"repairs per 1,000 words",claimed,11,8.1263,1.8363,14.4163
+"repairs per 1,000 words",own,11,4.5572,2.5142,6.6003
+share of pause events in A slots,claimed,11,0.8756,0.8326,0.9185
+share of pause events in A slots,own,11,0.9055,0.871,0.94
+"score difference, claimed minus own: creators per bin (step 2's rule, width 0.5 over -3 to 3)",bin -3.0 to 0.0,6,,,
+"score difference, claimed minus own: creators per bin (step 2's rule, width 0.5 over -3 to 3)",bin 0.0 to 3.0,5,,,

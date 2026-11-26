@@ -1,0 +1,18 @@
+# Exploratory; not a test of H1-H10.
+# Voice labels are model-coded (the small model, the label of record on seen recordings) and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P17: a calm-register control, text rows (recognizer word times; the acoustic primary is not computed here: audio, later); prespecification hashed 2026-11-26T14:11:38Z.
+# Unsplit (deposit 2's split policy names r3-P17): all 71 seen creators; small model (label of record); primary voice definition for the claimed voice, own-solo definition for own voice; units outside H1's excluded formats; a creator enters a group with 300 or more words in it. The recording's main kind is model-coded (voice map).
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; no names, ids, titles or quotations of corpus text; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# Multiplicity: 56 primaries; if every true effect sat at half its margin, about 2.8 readings beyond the margin would be expected by chance at the deposited 5%, up to about 6.1 for the share, standardised, AUC and rank-correlation classes (r3-P30's readings table). A reading is never a finding.
+# Within-creator contrasts with the t interval on creator means, fixed in the prespecification (for the rate rows r3-P30's class G chooses the same method, holding, at every simulated count from 12 up; the share rows compare groups of different recordings, which no r3-P30 class describes). Margins: |log ratio| 0.223; share difference 0.05. 'first group' is the group named first in the contrast.
+# Made 2026-11-26T14:28:04Z by code/publish_p17.py.
+row,contrast,measure,scale,creators,estimate,low90,high90,margin,interval,reading
+C3,claimed voice against own-voice guided practice (primary),articulation rate,"log ratio, first over second",10 to 19,0.0707,0.019,0.1225,0.223,"t interval on creator means, fixed in advance",within the margin (B)
+C3,claimed voice against own-voice guided practice (primary),long-pause share,"difference, first minus second",10 to 19,-0.2591,-0.3477,-0.1705,0.05,"t interval on creator means, fixed in advance; interval class not calibrated by r3-P30",beyond the margin (first group lower)
+C2,own-voice guided practice against own-voice talks,articulation rate,"log ratio, first over second",20 to 29,-0.1026,-0.1514,-0.0538,0.223,"t interval on creator means, fixed in advance",within the margin (B)
+C2,own-voice guided practice against own-voice talks,long-pause share,"difference, first minus second",20 to 29,0.2714,0.2074,0.3353,0.05,"t interval on creator means, fixed in advance; interval class not calibrated by r3-P30",beyond the margin (first group higher)
+C1,claimed voice against own-voice talks,articulation rate,"log ratio, first over second",43,-0.0586,-0.0896,-0.0276,0.223,"t interval on creator means, fixed in advance",within the margin (B)
+C1,claimed voice against own-voice talks,long-pause share,"difference, first minus second",43,0.0139,-0.012,0.0399,0.05,"t interval on creator means, fixed in advance; interval class not calibrated by r3-P30",within the margin (B)
+C4,claimed-voice guided practice against own-voice guided practice,articulation rate,"log ratio, first over second",,,,,,,not computed (too few terms or creators)
+C4,claimed-voice guided practice against own-voice guided practice,long-pause share,"difference, first minus second",,,,,,,not computed (too few terms or creators)

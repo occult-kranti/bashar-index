@@ -1,0 +1,35 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts: sense not resolved, precision unknown (no reader). A pilot with no reading of its own (without a business-matched stratum the device counts have none); an instrument for the comparison set only.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P61: persuasion and monetisation devices (deposit 3's L14, addendum 2b), commercial (-C) and devotional (-D) forms side by side. Tier L: the 23 non-development seen creators, once, no split. Hits re-matched by the shared matcher on r3-P42's extract (totals equal to r3-P42's counts).
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# rate_per_10k: creator-balanced rate per 10,000 tokens in the cell (the 23 creators; a creator with no tokens in a cell left out of it). Position: tenth of running time by the unit's midpoint over the recording's summed unit durations (by unit index where durations are missing). Ladder fixed in the prespecification: tenths if every cell has 5 or more creators with a hit, else fifths, else halves, else not computed.
+# priced_share: creator-balanced share of a class's hits with a PRICE cue in the same label unit (G8; r3-P42's statistic, recomputed); not printed for any class (privacy rule), as in step 2's r3-P42 file.
+# Made 2026-11-26T14:26:23Z by code/p61.py.
+# Changed 2026-11-26T15:25:06Z (UTC, from date -u) by the lead's decision 92 item 2: priced shares of the classes not computed are not printed (privacy rule). Edited by hand; no number changed.
+# Changed 2026-11-26T16:19:27Z (UTC, from date -u) by the lead's decision 99: no class's priced share is printed (privacy rule), as in step 2's r3-P42 file. Edited by hand; no number changed.
+family,form,class,level,cell,cells,rate_per_10k,priced_share,status
+urgency,commercial,URGENCY-C,,,,,not printed (privacy rule),not computed (too few terms or creators)
+urgency,devotional,URGENCY-D,,,,,not printed (privacy rule),not computed (too few terms or creators)
+scarcity,commercial,SCARCITY-C,,,,,not printed (privacy rule),not computed (too few terms or creators)
+scarcity,devotional,SCARCITY-D,,,,,not printed (privacy rule),not computed (too few terms or creators)
+social proof,commercial,SOCIAL-C,,,,,not printed (privacy rule),not computed (too few terms or creators)
+social proof,devotional,SOCIAL-D,fifths,1,5,1.37,not printed (privacy rule),described (no reading: a pilot)
+social proof,devotional,SOCIAL-D,fifths,2,5,0.73,not printed (privacy rule),described (no reading: a pilot)
+social proof,devotional,SOCIAL-D,fifths,3,5,0.4,not printed (privacy rule),described (no reading: a pilot)
+social proof,devotional,SOCIAL-D,fifths,4,5,0.7,not printed (privacy rule),described (no reading: a pilot)
+social proof,devotional,SOCIAL-D,fifths,5,5,0.82,not printed (privacy rule),described (no reading: a pilot)
+reciprocity,commercial,RECIP-C,,,,,not printed (privacy rule),not computed (too few terms or creators)
+reciprocity,devotional,RECIP-D,,,,,not printed (privacy rule),not computed (too few terms or creators)
+commitment,commercial,COMMIT-C,,,,,not printed (privacy rule),not computed (too few terms or creators)
+commitment,devotional,COMMIT-D,,,,,not printed (privacy rule),not computed (too few terms or creators)
+authority,commercial,AUTHORITY-C,halves,1,2,0.56,not printed (privacy rule),described (no reading: a pilot)
+authority,commercial,AUTHORITY-C,halves,2,2,0.18,not printed (privacy rule),described (no reading: a pilot)
+discount,commercial,DISCOUNT-C,,,,,not printed (privacy rule),not computed (too few terms or creators)
+guarantee,commercial,GUARANTEE-C,,,,,not printed (privacy rule),not computed (too few terms or creators)
+unity,devotional,UNITY-D,,,,,not printed (privacy rule),not computed (too few terms or creators)
+price cue,commercial,PRICE,fifths,1,5,2.81,,described (no reading: a pilot)
+price cue,commercial,PRICE,fifths,2,5,1.07,,described (no reading: a pilot)
+price cue,commercial,PRICE,fifths,3,5,0.75,,described (no reading: a pilot)
+price cue,commercial,PRICE,fifths,4,5,1.14,,described (no reading: a pilot)
+price cue,commercial,PRICE,fifths,5,5,1.11,,described (no reading: a pilot)

@@ -1,0 +1,26 @@
+# Exploratory; not a test of H1-H10.
+# Entry r3-P40 / r4-P25 (third-round programme, step 3, class a.2): passed prophesied years against control years. Cue families near named years only (deposit 3's L15 through the shared matcher; 30-token window); only the first matching cue family would be printed, never a frame. No date is said to have failed.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Tier L: the 23 non-development seen creators of deposit 2's split, run once with no split. Year roles: deposit 4 (class 1: 2012 primary, 1987, 1999, 2000, 2003, 2011 secondary; class 2: family A 2001 and 2008, family B 2020, Holm across the two; class 3: ordinary years matched on creator, spoken form, voice and distance from the upload year; biographical reference rows; 1844 and 1954 described only). A year counts as passed if it lies before the upload year (TL-BUILD's upload dates). Voice labels and TIME's roles are model-coded, not checked by a person. Cue counts: sense not resolved, precision unknown.
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator value; 'fewer than 5' means 0 to 4; values that could narrow a banded count are not printed; counts near printed counts are banded.
+# Memory timeline: creator-balanced mentions per 100,000 tokens (the mean over the 23 creators of each creator's rate, all voices) of named years, by role. Listed years one row each; other passed years and years open at upload in decade bins, listed only where 5 or more creators name a year of that role in the bin. A year is passed if it lies before the recording's upload year. A token counts as a year when it is a four-digit year from 1800 to 2099 after the shared matcher's spoken-year normalisation; digits that belong to a number with a separator are left out. No creator count is printed per bar.
+# Made 2026-11-26T14:19:58Z (UTC) by code/publish_p40.py.
+# Changed 2026-11-26T17:33:22Z (UTC, from date -u) by the lead's decision 104: the header states the count form '0 to 4'. Edited by hand; no number changed.
+role,year_or_decade,status,mentions_per_100k_tokens_cb
+class 1: prophesied target year,1987,not drawn (fewer than 5 creators),
+class 1: prophesied target year,1999,not drawn (fewer than 5 creators),
+class 1: prophesied target year,2000,drawn,0.811
+class 1: prophesied target year,2003,not drawn (fewer than 5 creators),
+class 1: prophesied target year,2011,not drawn (fewer than 5 creators),
+class 1: prophesied target year,2012,drawn,1.581
+"class 2, family A: control year",2001,not drawn (fewer than 5 creators),
+"class 2, family A: control year",2008,drawn,1.347
+"class 2, family B: contested control year",2020,drawn,2.268
+literature year (described only),1844,not drawn (fewer than 5 creators),
+literature year (described only),1954,not drawn (fewer than 5 creators),
+other passed years (decade),1990s,drawn,1.102
+other passed years (decade),2000s,drawn,1.565
+other passed years (decade),2010s,drawn,4.92
+other passed years (decade),2020s,drawn,4.454
+years open at upload (decade; r3-P38's side),2020s,drawn,19.925
+years open at upload (decade; r3-P38's side),2030s,drawn,0.848

@@ -1,0 +1,25 @@
+# Exploratory; not a test of H1-H10.
+# Entry r3-P38 / r4-P24 (third-round programme, step 3, class a.2): qualifier clauses at speaking time. The deciding row is an excess over length-matched non-forecast sentences of the same recordings, not a count.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# Tier L: the 23 non-development seen creators of deposit 2's split, run once with no split. Forecast statements are LAB-F's model-coded candidates in the frozen ledger (not checked by a person), placed by deposit 4: a statement whose frozen window was still open at upload. Families are the six qualifier families of the ledger's frozen rule coder (deposit 2; rule-based, not checked by a person), named descriptively; no motive is printed, and a conditional is not presumed to be an escape (conditional prophecy is also a doctrinal form). Cue counts: sense not resolved, precision unknown.
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator value; the coder's forms are not named; values that could narrow a banded count are not printed; counts near printed counts are banded.
+# Counts of ledger statements (not of creators) unless the row says creators. Placement by deposit 4: a statement whose frozen window had ended before the upload day goes to r3-P40; one with no window is unclassed.
+# Made 2026-11-26T14:19:10Z (UTC) by code/publish_p38.py.
+what,value
+ledger statements of the 23 creators placed 'open' (r3-P38's forecast items),578
+  of which a closed window ending on or after the upload day,568
+  of which a contradictory lane with a window ending on or after the upload day,4
+  of which an open-ended window,6
+ledger statements placed 'passed' (to r3-P40),19
+dated ledger statements without a findable target (unclassed),86
+undated ledger statements (unclassed),2134
+forecast items matched (primary pool),577
+  matched within a length ratio of 1.25 (primary pool),545
+  matched by the 5 nearest (primary pool),32
+  dropped: no candidate with the same number of units,1
+  matched within a length ratio of 1.25 (control pool NF2),567
+forecast items of 1 label unit / 2 units / 3 or more units (matched),447 / 114 / 16
+mean number of matched candidates per item (primary pool),55.7
+S1: forecast items dropped (prevention match on a flagged span),0
+eligible creators (1 or more matched forecast item),all but fewer than 5 of 23
+tier L creators,23

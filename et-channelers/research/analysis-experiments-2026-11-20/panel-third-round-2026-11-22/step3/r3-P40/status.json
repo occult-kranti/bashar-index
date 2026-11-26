@@ -1,0 +1,102 @@
+{
+ "id": "r3-P40",
+ "carries": [
+  "r4-P25"
+ ],
+ "class": "a.2 (ruling 11)",
+ "step": 3,
+ "tier": "L",
+ "status": "done (exploratory)",
+ "label": "Exploratory; not a test of H1-H10. Tier L (the 23 non-development seen creators), run once with no split. Forecast statements are model-coded candidates (LAB-F), not checked by a person; coder fields are rule-based, not checked by a person; TIME's roles and voice labels are model-coded, not checked by a person; cue counts, sense not resolved, precision unknown; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec_hashed_utc": "2026-11-26T14:09:16Z",
+ "prespec": "hashed together at 2026-11-26T14:09:16Z before any outcome; the originals (prespec.md, prespec-hash-record.md) hold exact creator counts and stay private with their hashes; the public copies are prespec.public.md and prespec-hash-record.public.md (redactions marked)",
+ "reading": "none: every cue family and the pooled set are thin on tier L; no stacked cue share or contrast is computed; class 3 is not computed (the deposited class-3 rule yields no controls on this roster; under the 4-year window fewer than 5 creators); the memory timeline is drawn",
+ "predictions_scored": "none: the account-prediction cells of r3-P40 and r4-P25 are silent in every column",
+ "not_computed": [
+  "FULFIL, SPLIT, DEFER and the pooled cue set (thin)",
+  "stacked cue shares of every class and voice",
+  "contrasts D_A, D_B (Holm) and D_3 with C2, A1, A6 and band checks",
+  "class 3 (not computed: the deposited class-3 rule yields no controls on this roster; 4-year window: fewer than 5 creators)"
+ ],
+ "departures": "README.md, section Departures",
+ "mentions": {
+  "year mentions": 662,
+  "open at upload": 275
+ },
+ "inputs_sha256": {
+  "rule_coder.py (deposit 2)": "4fe41740974b88f76358a99bb970bab2c1847b2ca9e907c2e1be518c575aef71",
+  "ledger.private.jsonl (deposit 1)": "d2e8e3fd32291f3b0b0a40f5e8a54cf88819e391b6c89a536df49c80a799a80a",
+  "lexmatch.py": "2297864c74dfe2604211399438963b2b89d46896a2f83137ce9232cf10d28d28",
+  "r3-P42 p42-extract.private.pkl": "8101aba5f9b647ed718fdbbbb00a80ce11680c8b74aa296e0f1346c7de8a1215",
+  "step1 pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "step2 desc_common.py": "17e5184a498198bdbd55f3aba646e4d93820194bd34f5d59a4c73f0774d18acc",
+  "TL timeline-rows.private.json (upload dates)": "28fdfae654bd3244ef744c1e9881a050e00523267703fa4623d8b35664dfd448",
+  "deposit 4 year-roles.csv": "90fd5fc8ba2268bf73bc98fe065857833c51c399bbe04ce501e1f07684e539e9",
+  "TIME time-hits.private.pkl": "4d87b791f1cf247ee9bdf16fb64a05693f8fe91dfd48c7fea7985e9ce82c8702",
+  "TIME answers-small.private.json": "17a3da0a7e52cf6427a00cf840e1078ddd03bec12f8f95a8476c9039881e0149",
+  "RX normalise.py": "d407c805fc5ee93909ad91a20aafd76702d9e73b3cd7978a6fa9d6db6efa65dc",
+  "r3-P42 variants-a6.private.json": "acc61b07fd63b7f0ba02ee37f2a497d1551fe68fc1dd27df244b2a27b27d033d",
+  "style.py (CHANGE/CH)": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "deposit 3 hashes.md": "e12fb42545f77a36031644100af4df95f759c60cbb0f13275e45a7f7efca5c01",
+  "step 3 extract p3840-extract.private.pkl": "e36f377fd7e9ef3259fa8da16d0171d3d43c271905662c231333e8473683e6b1"
+ },
+ "shared_code_sha256": {
+  "../r3-P38/code/p3840common.py": "7c51d30de316c1b3a18c7b5ea5597998dfedc1a50d7c9581ba347a739067eb7e",
+  "../r3-P38/code/extract_p3840.py": "cec8d41abbc4218b9bbf83dd804405c99879a3986816865bacb028e78507f8f2",
+  "../r3-P38/code/write_status_p3840.py": "013bdfe7b965f37c8f17b32efbbbb4dd77a126e5929c3b0a5aebdcfcfc6aadd0",
+  "../r3-P38/code/s1_blanks_step3.py": "06e5abfe9053457dc00ac87210a81fe6a3976a62f299cfb31fa038e7fd1b0248"
+ },
+ "contacts": "none (contacts.md)",
+ "model_or_api_calls": 0,
+ "spend_usd": 0,
+ "privacy": {
+  "identifier_scan": "0 hits over both entries' public files, prespecifications, READMEs, contacts, status files and code (needles: seen creator folders, creator codes, audio hashes, video ids, page keys)",
+  "png_text_chunks": 0,
+  "pdf_document_information": "none",
+  "zsolve": "0 rows tested (no quantile columns)",
+  "qscan_all2": "0 files with quantile columns",
+  "whole_position_scan": "5 files read, 0 rows with quantiles, 0 failing rows",
+  "s1_solvers": "s1_shape, s1_bucket, s1_seen, s1_profile, s1_blanks (d62), s1_blanks_p01 read step 1's files only: unchanged results; s1_crossval and s1_p27: nothing testable; s1_carried: 0 rows testable on every CSV; s1_predk and s1_chain: not applicable to these column layouts (0 rows testable); s1_bucket_p01 cannot run (bucket.py absent, as in step 2)",
+  "s1_blanks_d62_adapter": "code/s1_blanks_step3.py: r3-P38's four printed family rows (count 'all but fewer than 5 of 23', class H) are reported as printed with a banded count, 0 band values excluded (the method is fixed in the prespecification and the same at every band value); r3-P40 prints no interval; for the lead",
+  "nest_check": "../r3-P40/code/nest_check_p3840.py: 7 printed sets tested, 0 flagged",
+  "decision_62": "r3-P38: interval method fixed in the prespecification (t on creator means, r3-P30's class-H choice at every count from 8 to 71); rows printed; flagged for the lead. r3-P40: nothing computed on any banded row"
+ },
+ "files_sha256": {
+  "code/nest_check_p3840.py": "62d6e5bdc2234a74eca62c15c66b9008e433091eabd6232e880938f7eb6b838f",
+  "code/p40.py": "c507a7195dde536039b350e15f6ac5498bf5a72af13fabeb7c05556b6f0299ed",
+  "code/publish_p40.py": "acbaafdfff9f45712ba9ef7a0f4597b6cf8d7e708cdd4a7f36536e877f7c98d8",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "4f18e21bf8a622f30d66c639a09d820fef00450f8d6370d04c95b28c41a28a93",
+  "prespec-hash-record.public.md": "70865488c4dc35261126c4bb2304f26b8b00c9253b9dd20d94401f80174c9cfa",
+  "prespec.public.md": "d610f4be826c42ce89874052e844c6b8b50364db7612df1f7ab14e4ccdf355ab",
+  "public/data-r3-P40-contrasts.csv": "d00fdf1ab9621046ec394da3a7f8184852af71c18d969305bb2a04462f7412e6",
+  "public/data-r3-P40-rows.csv": "06def6c758417aa697dec77030d21739ba9e82d92a8ccf3905f70a2847768e36",
+  "public/data-r3-P40-timeline.csv": "645096e9514c1e05efe4bd847ff53169b6b27d9a0b987933e3a661b92c6b640a",
+  "public/fig-r3-P40-years.pdf": "ffe8b05217cb4f7011432be5ab372e59b048487f6020f89aa9dc4a0898dacd59",
+  "public/fig-r3-P40-years.png": "97bdec934b0c5c56cbf6dffa02e91bfd07c8b2b6721550fde7b4a9152aa17350",
+  "README.md": "b2d096ea1e644baf68361155bb7288d9ddc9f4c58c4f37cc3f9e89c62880ae38"
+ },
+ "written_utc": "2026-11-26T14:26:17Z",
+ "note_2026-11-26_joint_staging_steps3to5": "2026-11-26T14:59:32Z (UTC, from date -u): reading and not_computed worded by the lead's decision 73 (no number changed). 2026-11-26T14:59:32Z (UTC, from date -u): files changed at the joint staging of steps 3 to 5 by the lead's decisions 72, 73, 78, 80 and the cross-step nesting check (no number changed); their recorded hashes refreshed: README.md, public/data-r3-P40-rows.csv",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r3-P40-rows.csv",
+ "note_2026-11-26_decision_104": "2026-11-26T17:33:22Z (UTC, from date -u): files changed by the lead's decision 104 (after the third independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r3-P40-contrasts.csv, public/data-r3-P40-rows.csv, public/data-r3-P40-timeline.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "b2d096ea1e644baf68361155bb7288d9ddc9f4c58c4f37cc3f9e89c62880ae38",
+   "contacts.md": "4f18e21bf8a622f30d66c639a09d820fef00450f8d6370d04c95b28c41a28a93",
+   "prespec-hash-record.public.md": "70865488c4dc35261126c4bb2304f26b8b00c9253b9dd20d94401f80174c9cfa",
+   "prespec.public.md": "d610f4be826c42ce89874052e844c6b8b50364db7612df1f7ab14e4ccdf355ab",
+   "public/data-r3-P40-contrasts.csv": "d00fdf1ab9621046ec394da3a7f8184852af71c18d969305bb2a04462f7412e6",
+   "public/data-r3-P40-rows.csv": "06def6c758417aa697dec77030d21739ba9e82d92a8ccf3905f70a2847768e36",
+   "public/data-r3-P40-timeline.csv": "645096e9514c1e05efe4bd847ff53169b6b27d9a0b987933e3a661b92c6b640a",
+   "public/fig-r3-P40-years.pdf": "ffe8b05217cb4f7011432be5ab372e59b048487f6020f89aa9dc4a0898dacd59",
+   "public/fig-r3-P40-years.png": "97bdec934b0c5c56cbf6dffa02e91bfd07c8b2b6721550fde7b4a9152aa17350"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/, prespec.md and prespec-hash-record.md (the originals; their public copies prespec.public.md and prespec-hash-record.public.md are published)",
+  "prespec_published_as": "redacted copy (prespec.public.md); the hash recorded at hashing time is kept privately"
+ }
+}

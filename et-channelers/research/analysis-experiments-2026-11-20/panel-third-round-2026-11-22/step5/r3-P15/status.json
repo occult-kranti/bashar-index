@@ -1,0 +1,90 @@
+{
+ "step": 5,
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Voice labels model-coded, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec_hashed_utc": "2026-11-26T14:11:38Z",
+ "prespec_record": "../common/prespec-hash-record.md (SHA-256 86812aee88153be495f60d2cd665fbc41033aafab6bb866d6e6edeecaab8b110)",
+ "contacts": "none (contacts.md)",
+ "model_or_api_calls": 0,
+ "spend_usd": 0,
+ "audio_read": false,
+ "inputs_sha256": {
+  "s5common.py": "2d3c79558c51a3137527777f9f512f6dbae70a02fcbb393fbe8601ebe1675eb9",
+  "s5data.py": "7c62071ab47bda8dede06228570091c1884da301eebc9e2e335b3c60098c6de8",
+  "s5pub.py": "a92aa722645fabea6af8a5993a48f18daaf8894e63c69ce4d7e0a6b5cfa479f4",
+  "extract_s5.py": "f779ca9505f7df5363ea0914ce6f41d9616f8291bc7d1cbb0f0c5b471178636c",
+  "step1 p01common.py": "6f545af4a4b442b2506fbf277d77638aef12dc8347605418b2046144adcce800",
+  "step1 pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "style.py (CHANGE/CH)": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "extract code (as run)": "f779ca9505f7df5363ea0914ce6f41d9616f8291bc7d1cbb0f0c5b471178636c"
+ },
+ "privacy": {
+  "identifier_scan": "0 files with a creator code, audio key or video id (56 files: public files, READMEs, prespecifications, contacts and status files of the step-5 folders)",
+  "png_text_chunks": 0,
+  "pdf_document_information": "none",
+  "zsolve": "0 rows tested, 0 pinned (step-5 tree)",
+  "qscan_all2": "0 files with quantile columns over hidden or banded bases",
+  "whole_position_scan": "0 tables with quantiles; 0 failing rows",
+  "s1_solvers": "s1_blanks (d62), s1_shape, s1_bucket, s1_seen, s1_profile, s1_blanks_p01, s1_crossval and s1_p27 read step 1's files only: no leak, nothing pinned; s1_predk, s1_carried and s1_chain on every step-5 CSV: 0 rows testable (their columns are r3-P32's); s1_bucket_p01 cannot run (its bucket.py is absent, as in step 2)",
+  "s5_blanks": "decision-62 state: 0 banded rows with a count-chosen method printed; shape route on fixed-method banded rows: 4 tested, 2 (r3-P17's long-pause rows) narrowed only under the assumption that their interval is r3-P30's class-B choice, which the files contradict (the method is printed as fixed in advance); reported to the lead",
+  "nest_check": "every printed banded step-5 set against step 1's register, step 2's full register and the step-5 sets: 0 left with 4 or fewer values; 0 exact counts 1 to 4 from a nested exact count",
+  "decision_62": "r3-P15's decode contrasts (P4, P4b) withheld: banded count, count-chosen method"
+ },
+ "id": "r3-P15",
+ "status": "done (exploratory)",
+ "carries": [
+  "r4-P13"
+ ],
+ "class": "a.1",
+ "tier": "unsplit (named by the split policy): all 71 seen creators",
+ "reading": "undetermined (P1 same recording, person-free: interval reaches inside the margin under both standardisations; P2 standardisations disagree; P3 beyond the margin, nearer the creator's own voice)",
+ "predictions_scored": "none deposited",
+ "not_computed": [
+  "P4, P4b decode contrasts (not printed: the row's count is banded)",
+  "topic-matched segments",
+  "transplant placebo",
+  "recitation-flagged sensitivity row",
+  "middle-model rows",
+  "acoustic rows (audio, later)"
+ ],
+ "prespec_sha256": "daacbffc59a695289c912bee2d70068b858c5a58819e2cdc07561ed900021fd3",
+ "files_sha256": {
+  "README.md": "719a14597ac63afa0d56927e76b34d5c729a8614a00b205b1c0b6d2934f39a28",
+  "code/analyse_p15.py": "c1aa24de0a97ee67af404bb8fc5e711b0dad3131444750d29681c37e4dab986e",
+  "code/publish_p15.py": "62792cffdfb16933b6059dd0ba1e6944f2c8c85bd15fe3aad897a43cf852ebc6",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "67d5fd577208f388f06ad655ba3a37c3ac0c79ccd3deb81a26fbc961a7e44969",
+  "prespec.md": "daacbffc59a695289c912bee2d70068b858c5a58819e2cdc07561ed900021fd3",
+  "public/data-r3-P15-contrasts.csv": "809f163cdf2286c620711eb775a657831fc05b7cc4182b2caf899e56570d5a85",
+  "public/data-r3-P15-ladder.csv": "0952f874fd670949649c6df850c5cebd433c082a16ca9f11c486bcb946aba52c",
+  "public/data-r3-P15-reading.csv": "af270db517196c201465766b184c8ce66a9c86b5ee1da29d91b3b604cd76baab",
+  "public/fig-r3-P15-contrasts.pdf": "9a5ee55ed68df24daeca04953d1f1852d39774818a0f823de27e84885e862fda",
+  "public/fig-r3-P15-contrasts.png": "5f200ebf9b1f95bf6ead1172b5d2ed0f06b577e046c9ab02625827db2d7dd926",
+  "public/fig-r3-P15-ladder.pdf": "0249099d2b0b6ca5b538af69c94b48f51da245c045227aa15a810a4d47a9683d",
+  "public/fig-r3-P15-ladder.png": "e6ebcd595dad38655b9c73c83c0de2d32fa8e64aeb7e4d7025ed8bce565d5f74"
+ },
+ "written_utc": "2026-11-26T14:37:14Z",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/publish_p15.py, public/data-r3-P15-ladder.csv, public/fig-r3-P15-ladder.pdf, public/fig-r3-P15-ladder.png",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "719a14597ac63afa0d56927e76b34d5c729a8614a00b205b1c0b6d2934f39a28",
+   "contacts.md": "67d5fd577208f388f06ad655ba3a37c3ac0c79ccd3deb81a26fbc961a7e44969",
+   "prespec-hash-record.md": "86812aee88153be495f60d2cd665fbc41033aafab6bb866d6e6edeecaab8b110",
+   "prespec.md": "daacbffc59a695289c912bee2d70068b858c5a58819e2cdc07561ed900021fd3",
+   "public/data-r3-P15-contrasts.csv": "809f163cdf2286c620711eb775a657831fc05b7cc4182b2caf899e56570d5a85",
+   "public/data-r3-P15-ladder.csv": "0952f874fd670949649c6df850c5cebd433c082a16ca9f11c486bcb946aba52c",
+   "public/data-r3-P15-reading.csv": "af270db517196c201465766b184c8ce66a9c86b5ee1da29d91b3b604cd76baab",
+   "public/fig-r3-P15-contrasts.pdf": "9a5ee55ed68df24daeca04953d1f1852d39774818a0f823de27e84885e862fda",
+   "public/fig-r3-P15-contrasts.png": "5f200ebf9b1f95bf6ead1172b5d2ed0f06b577e046c9ab02625827db2d7dd926",
+   "public/fig-r3-P15-ladder.pdf": "0249099d2b0b6ca5b538af69c94b48f51da245c045227aa15a810a4d47a9683d",
+   "public/fig-r3-P15-ladder.png": "e6ebcd595dad38655b9c73c83c0de2d32fa8e64aeb7e4d7025ed8bce565d5f74"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/",
+  "added_or_changed_for_publication": [
+   "prespec-hash-record.md: byte-identical copy of the step's shared prespecification hash record, which status.json cites as ../common/prespec-hash-record.md"
+  ]
+ }
+}

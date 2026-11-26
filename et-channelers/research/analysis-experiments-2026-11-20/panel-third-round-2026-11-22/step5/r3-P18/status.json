@@ -1,0 +1,86 @@
+{
+ "step": 5,
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Voice labels model-coded, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec_hashed_utc": "2026-11-26T14:11:38Z",
+ "prespec_record": "../common/prespec-hash-record.md (SHA-256 86812aee88153be495f60d2cd665fbc41033aafab6bb866d6e6edeecaab8b110)",
+ "contacts": "none (contacts.md)",
+ "model_or_api_calls": 0,
+ "spend_usd": 0,
+ "audio_read": false,
+ "inputs_sha256": {
+  "s5common.py": "2d3c79558c51a3137527777f9f512f6dbae70a02fcbb393fbe8601ebe1675eb9",
+  "s5data.py": "7c62071ab47bda8dede06228570091c1884da301eebc9e2e335b3c60098c6de8",
+  "s5pub.py": "a92aa722645fabea6af8a5993a48f18daaf8894e63c69ce4d7e0a6b5cfa479f4",
+  "extract_s5.py": "f779ca9505f7df5363ea0914ce6f41d9616f8291bc7d1cbb0f0c5b471178636c",
+  "step1 p01common.py": "6f545af4a4b442b2506fbf277d77638aef12dc8347605418b2046144adcce800",
+  "step1 pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "style.py (CHANGE/CH)": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "extract code (as run)": "f779ca9505f7df5363ea0914ce6f41d9616f8291bc7d1cbb0f0c5b471178636c"
+ },
+ "privacy": {
+  "identifier_scan": "0 files with a creator code, audio key or video id (56 files: public files, READMEs, prespecifications, contacts and status files of the step-5 folders)",
+  "png_text_chunks": 0,
+  "pdf_document_information": "none",
+  "zsolve": "0 rows tested, 0 pinned (step-5 tree)",
+  "qscan_all2": "0 files with quantile columns over hidden or banded bases",
+  "whole_position_scan": "0 tables with quantiles; 0 failing rows",
+  "s1_solvers": "s1_blanks (d62), s1_shape, s1_bucket, s1_seen, s1_profile, s1_blanks_p01, s1_crossval and s1_p27 read step 1's files only: no leak, nothing pinned; s1_predk, s1_carried and s1_chain on every step-5 CSV: 0 rows testable (their columns are r3-P32's); s1_bucket_p01 cannot run (its bucket.py is absent, as in step 2)",
+  "s5_blanks": "decision-62 state: 0 banded rows with a count-chosen method printed; shape route on fixed-method banded rows: 4 tested, 2 (r3-P17's long-pause rows) narrowed only under the assumption that their interval is r3-P30's class-B choice, which the files contradict (the method is printed as fixed in advance); reported to the lead",
+  "nest_check": "every printed banded step-5 set against step 1's register, step 2's full register and the step-5 sets: 0 left with 4 or fewer values; 0 exact counts 1 to 4 from a nested exact count",
+  "decision_62": "r3-P15's decode contrasts (P4, P4b) withheld: banded count, count-chosen method"
+ },
+ "id": "r3-P18",
+ "status": "done (exploratory)",
+ "class": "a.1",
+ "tier": "X (10 to 19: the 11 voice-eligible non-development creators), two-fold cross-fitting of the hold length",
+ "reading": "agreement by shared design (kappa 0.28 full, 0.17 pronoun-blind); uncued share 0.69; the adjudication rows not computed or not printed",
+ "predictions_scored": "none deposited",
+ "not_computed": [
+  "agreement by source type",
+  "relayed spans apart",
+  "two-coder check (class c)",
+  "RX reference cells (fewer than 5 creators carry one)",
+  "acoustic features (audio, later)"
+ ],
+ "prespec_sha256": "f21e442ef68f78117f2e53173137d330a854459fdb4b76ee55d8f71674a60e49",
+ "files_sha256": {
+  "README.md": "80890e92aab57bfc6dfc86b563f59bb8b794ab62a5f64c9d5ab741aa99d48fe1",
+  "code/analyse_p18.py": "d17a924252f9ad358ddb4caf2cc9329366d09a0e60baae0092a4f03b60dddd5f",
+  "code/publish_p18.py": "fae612de4bfb0638a56120f84bb1e652291a6feec78144e7d73ca27ce98d7c15",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "67d5fd577208f388f06ad655ba3a37c3ac0c79ccd3deb81a26fbc961a7e44969",
+  "prespec.md": "f21e442ef68f78117f2e53173137d330a854459fdb4b76ee55d8f71674a60e49",
+  "public/data-r3-P18-adjudication.csv": "c4c7348644f4317159bdce8b1bdaf5fb30436227ef0cda614d29d31ee76cc206",
+  "public/data-r3-P18-concordance.csv": "6482983d0b42683ee5c357b2f1ed5384d22e86eb09cbe9d8584272087c180ed6",
+  "public/data-r3-P18-uncued.csv": "0247aedfdb69a95d2a5684bd808f6674747c5ddd8b8b40c7f6e05eb916c7e8c0",
+  "public/fig-r3-P18-footing.pdf": "dc2bef4ae844329adba7842a0200ffbba86066443589676c85a0bab4b0bf2f8f",
+  "public/fig-r3-P18-footing.png": "fda9f7e9578168790494305681583a2e92397f87a5eee84bde6b236205b934f5"
+ },
+ "written_utc": "2026-11-26T14:37:14Z",
+ "note_2026-11-26_decision_92": "2026-11-26T15:25:06Z (UTC, from date -u): files changed by the lead's decision 92 (privacy rule; no number changed); their recorded hashes refreshed: README.md, public/data-r3-P18-adjudication.csv, public/fig-r3-P18-footing.pdf, public/fig-r3-P18-footing.png",
+ "note_2026-11-26_decision_99_text": "2026-11-26T16:19:27Z (UTC, from date -u): text worded as the README by the lead's decision 99 (no number changed): reading",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/publish_p18.py, public/data-r3-P18-adjudication.csv, public/data-r3-P18-concordance.csv, public/fig-r3-P18-footing.pdf, public/fig-r3-P18-footing.png",
+ "note_2026-11-26_decision_104": "2026-11-26T17:33:22Z (UTC, from date -u): files changed by the lead's decision 104 (after the third independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r3-P18-adjudication.csv",
+ "note_2026-11-26_decision_104_residual": "2026-11-26T17:44:30Z (UTC, from date -u): files changed by the lead's decision 104 (the residual of the fourth independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/publish_p18.py, public/data-r3-P18-adjudication.csv, public/fig-r3-P18-footing.pdf, public/fig-r3-P18-footing.png",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "80890e92aab57bfc6dfc86b563f59bb8b794ab62a5f64c9d5ab741aa99d48fe1",
+   "contacts.md": "67d5fd577208f388f06ad655ba3a37c3ac0c79ccd3deb81a26fbc961a7e44969",
+   "prespec-hash-record.md": "86812aee88153be495f60d2cd665fbc41033aafab6bb866d6e6edeecaab8b110",
+   "prespec.md": "f21e442ef68f78117f2e53173137d330a854459fdb4b76ee55d8f71674a60e49",
+   "public/data-r3-P18-adjudication.csv": "c4c7348644f4317159bdce8b1bdaf5fb30436227ef0cda614d29d31ee76cc206",
+   "public/data-r3-P18-concordance.csv": "6482983d0b42683ee5c357b2f1ed5384d22e86eb09cbe9d8584272087c180ed6",
+   "public/data-r3-P18-uncued.csv": "0247aedfdb69a95d2a5684bd808f6674747c5ddd8b8b40c7f6e05eb916c7e8c0",
+   "public/fig-r3-P18-footing.pdf": "dc2bef4ae844329adba7842a0200ffbba86066443589676c85a0bab4b0bf2f8f",
+   "public/fig-r3-P18-footing.png": "fda9f7e9578168790494305681583a2e92397f87a5eee84bde6b236205b934f5"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/",
+  "added_or_changed_for_publication": [
+   "prespec-hash-record.md: byte-identical copy of the step's shared prespecification hash record, which status.json cites as ../common/prespec-hash-record.md"
+  ]
+ }
+}

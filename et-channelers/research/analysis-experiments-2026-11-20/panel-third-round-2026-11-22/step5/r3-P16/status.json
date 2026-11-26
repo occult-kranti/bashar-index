@@ -1,0 +1,79 @@
+{
+ "step": 5,
+ "label": "Exploratory; not a test of H1-H10. Seen creators only. Voice labels model-coded, not checked by a person; agreement, never accuracy.",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "prespec_hashed_utc": "2026-11-26T14:11:38Z",
+ "prespec_record": "../common/prespec-hash-record.md (SHA-256 86812aee88153be495f60d2cd665fbc41033aafab6bb866d6e6edeecaab8b110)",
+ "contacts": "none (contacts.md)",
+ "model_or_api_calls": 0,
+ "spend_usd": 0,
+ "audio_read": false,
+ "inputs_sha256": {
+  "s5common.py": "2d3c79558c51a3137527777f9f512f6dbae70a02fcbb393fbe8601ebe1675eb9",
+  "s5data.py": "7c62071ab47bda8dede06228570091c1884da301eebc9e2e335b3c60098c6de8",
+  "s5pub.py": "a92aa722645fabea6af8a5993a48f18daaf8894e63c69ce4d7e0a6b5cfa479f4",
+  "extract_s5.py": "f779ca9505f7df5363ea0914ce6f41d9616f8291bc7d1cbb0f0c5b471178636c",
+  "step1 p01common.py": "6f545af4a4b442b2506fbf277d77638aef12dc8347605418b2046144adcce800",
+  "step1 pubrules.py": "241499756e6c5f3145e1cb077412e5be91281470f82b34a4cb965615b814255c",
+  "style.py (CHANGE/CH)": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "extract code (as run)": "f779ca9505f7df5363ea0914ce6f41d9616f8291bc7d1cbb0f0c5b471178636c",
+  "desc-extract.private.pkl (step 2)": "39ce2280d581599eb68d37e67d19f78a482ed0a1271cb1a82009a68156e3e72e",
+  "lexmatch.py": "2297864c74dfe2604211399438963b2b89d46896a2f83137ce9232cf10d28d28",
+  "desc_common.py": "17e5184a498198bdbd55f3aba646e4d93820194bd34f5d59a4c73f0774d18acc",
+  "p42-counts.private.pkl": "1cd15e57a07a56b9ad5fa35dce89e4965056b62f4b1d799ddb9271b1b5ff007e"
+ },
+ "privacy": {
+  "identifier_scan": "0 files with a creator code, audio key or video id (56 files: public files, READMEs, prespecifications, contacts and status files of the step-5 folders)",
+  "png_text_chunks": 0,
+  "pdf_document_information": "none",
+  "zsolve": "0 rows tested, 0 pinned (step-5 tree)",
+  "qscan_all2": "0 files with quantile columns over hidden or banded bases",
+  "whole_position_scan": "0 tables with quantiles; 0 failing rows",
+  "s1_solvers": "s1_blanks (d62), s1_shape, s1_bucket, s1_seen, s1_profile, s1_blanks_p01, s1_crossval and s1_p27 read step 1's files only: no leak, nothing pinned; s1_predk, s1_carried and s1_chain on every step-5 CSV: 0 rows testable (their columns are r3-P32's); s1_bucket_p01 cannot run (its bucket.py is absent, as in step 2)",
+  "s5_blanks": "decision-62 state: 0 banded rows with a count-chosen method printed; shape route on fixed-method banded rows: 4 tested, 2 (r3-P17's long-pause rows) narrowed only under the assumption that their interval is r3-P30's class-B choice, which the files contradict (the method is printed as fixed in advance); reported to the lead",
+  "nest_check": "every printed banded step-5 set against step 1's register, step 2's full register and the step-5 sets: 0 left with 4 or fewer values; 0 exact counts 1 to 4 from a nested exact count",
+  "decision_62": "r3-P15's decode contrasts (P4, P4b) withheld: banded count, count-chosen method"
+ },
+ "id": "r3-P16",
+ "status": "done (exploratory)",
+ "class": "a.2 (ruling 11)",
+ "tier": "L: mode groups on the 23 (L10 through the shared matcher); shift on the 11",
+ "reading": "undetermined (shift over the 11 capped by r3-P30); by self-described mode not computed (too few terms or creators)",
+ "predictions_scored": "deposit 2's cells (every account 'same as every other account'): no account is retired, whatever the result (D23)",
+ "not_computed": [
+  "shift by mode group (both computed modes)",
+  "six thin modes (step 2)",
+  "delivery rows (audio, later)"
+ ],
+ "prespec_sha256": "45d360736cd33823e2b7a1e778a6f985c7ce2bbd2a935c7afd96afb7cee59558",
+ "files_sha256": {
+  "README.md": "b46a550140564e1b9170c6a101ae227d2b926a5327ac5ab70c319039fd9f0a90",
+  "code/analyse_p16.py": "7440888d9785859f4235f93115f101457c6c6469fc7eba1cc710c33d2699122d",
+  "code/publish_p16.py": "de23da8772ceba1f790ad6e34eea1078ce1596f9e174e9892a6e4d952ccd2cd0",
+  "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "contacts.md": "67d5fd577208f388f06ad655ba3a37c3ac0c79ccd3deb81a26fbc961a7e44969",
+  "prespec.md": "45d360736cd33823e2b7a1e778a6f985c7ce2bbd2a935c7afd96afb7cee59558",
+  "public/data-r3-P16-shift.csv": "1ec208ea76f415be3dda3baf8ec595642b45bcc148825379ea8db994da2e102b",
+  "public/fig-r3-P16-shift.pdf": "8727440e035ce7df6ac764c3eb0683311cbc9cf5f22a464efcf07ba8ceee69c0",
+  "public/fig-r3-P16-shift.png": "b82dc260cc142e0f530e84cf3a3434f26d6c74caddfa3ace69dfef9d8fa18781"
+ },
+ "written_utc": "2026-11-26T14:37:14Z",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "b46a550140564e1b9170c6a101ae227d2b926a5327ac5ab70c319039fd9f0a90",
+   "contacts.md": "67d5fd577208f388f06ad655ba3a37c3ac0c79ccd3deb81a26fbc961a7e44969",
+   "prespec-hash-record.md": "86812aee88153be495f60d2cd665fbc41033aafab6bb866d6e6edeecaab8b110",
+   "prespec.md": "45d360736cd33823e2b7a1e778a6f985c7ce2bbd2a935c7afd96afb7cee59558",
+   "public/data-r3-P16-shift.csv": "1ec208ea76f415be3dda3baf8ec595642b45bcc148825379ea8db994da2e102b",
+   "public/fig-r3-P16-shift.pdf": "8727440e035ce7df6ac764c3eb0683311cbc9cf5f22a464efcf07ba8ceee69c0",
+   "public/fig-r3-P16-shift.png": "b82dc260cc142e0f530e84cf3a3434f26d6c74caddfa3ace69dfef9d8fa18781"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/",
+  "added_or_changed_for_publication": [
+   "prespec-hash-record.md: byte-identical copy of the step's shared prespecification hash record, which status.json cites as ../common/prespec-hash-record.md"
+  ]
+ }
+}

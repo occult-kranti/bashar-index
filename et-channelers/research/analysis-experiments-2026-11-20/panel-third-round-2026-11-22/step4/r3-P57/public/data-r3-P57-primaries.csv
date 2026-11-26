@@ -1,0 +1,26 @@
+# Exploratory; not a test of H1-H10.
+# Voice, kind and asks labels are model-coded and not checked by a person; comparisons between instruments are agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P57 / r4-P32: sample-to-offer congruence, a description on seen creators: 'a funnel, whatever its age'; 'offers, not income'; 'in this platform-surviving roster'. Tier X (eligible non-development creators: 10 to 19): two-fold cross-fitting over the deposited halves; no parameter is fitted, so the estimate is the pooled estimate of the fixed rules over the eligible creators of both folds.
+# Claimed-voice recordings: voice-map main kind 'claimed voice'; own-voice talks: main kind 'own-voice talk' (small model, production map). Asks: the frozen asks instrument's final asks, any voice, recording level. Client service: a pay-or-enrol ask whose object is a session or reading.
+# Privacy: no cell, bin or plotted group rests on fewer than 5 creators, and no row or point is per creator; values that could narrow a banded count are not printed; counts near printed counts are stated against them or banded.
+# b6's rules (deposit 2, programme b6): ask half supported when the lower 90% bound of the odds ratio lies above 0.8; den-soc's retirement condition when the upper bound lies below 0.8 with no congruence; congruence half A when the ratio's interval lies wholly above 1.25, B (den-soc's retirement rule) when inside 0.8 to 1.25; else undetermined. Estimators that disagree: undetermined.
+# Intervals: creator-cluster percentile bootstrap, 90%, B = 2,000 (fixed methods; interval class not calibrated by r3-P30). The creator-level t interval would be chosen by r3-P30 at the row's count (class G); the row's count is banded, so it is not printed (decision 62).
+# Multiplicity (deposit 2): no family-wise adjustment; 56 primaries; about 2.8 readings beyond a margin expected by chance at half-margin effects. A reading is never called a finding.
+# Made 2026-11-26T14:26:24Z by code/publish_p57.py.
+row,statistic,creators,estimate,lo90,hi90,reading
+"P1 (primary): ask half, kinds","Mantel-Haenszel odds ratio of a pay-or-enrol ask, creator x length tertile",11 and fewer than 5 more,0.416,0.099,1.343,undetermined
+"P1 (primary): ask half, kinds","Mantel-Haenszel odds ratio of a pay-or-enrol ask, creator strata only",11 and fewer than 5 more,0.637,0.203,1.522,undetermined
+"P1 (primary): ask half, kinds",b6's ask-half words (both estimators),11 and fewer than 5 more,,,,undetermined
+P1 sensitivity: share-based classes,"Mantel-Haenszel odds ratio of a pay-or-enrol ask, creator x length tertile",10 to 19,0.622,0.202,1.853,undetermined
+P1 sensitivity: share-based classes,"Mantel-Haenszel odds ratio of a pay-or-enrol ask, creator strata only",10 to 19,0.615,0.234,1.295,undetermined
+P1 sensitivity: share-based classes,b6's ask-half words (both estimators),10 to 19,,,,undetermined
+"P1 (primary): ask half, kinds",creator-level t interval on per-creator log odds ratios (r3-P30 class G),11 and fewer than 5 more,,,,not printed: the row's count is banded
+"P2 (primary): congruence half, kinds",ratio of creator-balanced client-service shares (claimed / own),fewer than 5,,,,not computed (too few terms or creators)
+P2 sensitivity: 'several' bracket,ratio of creator-balanced client-service shares (claimed / own),fewer than 5,,,,not computed (too few terms or creators)
+P2 sensitivity: either evidence (session object or booking cue),ratio of creator-balanced client-service shares (claimed / own),fewer than 5,,,,not computed (too few terms or creators)
+P2 sensitivity: share-based classes,ratio of creator-balanced client-service shares (claimed / own),5 to 9,,,,not printed (fewer than 5 creators carry the estimate)
+covariate,creator-balanced difference in mean log10 speech duration (claimed minus own),11 and fewer than 5 more,0.022,,,described
+"prediction (deposit 2's account cell, business account; b6 on seen creators)",ask half,,,,,undetermined
+"prediction (deposit 2's account cell, business account; b6 on seen creators)",congruence half,,,,,not computed (too few terms or creators)
+tier,eligible non-development creators (outcome-free: both kinds of recording with asks labels),11 and fewer than 5 more,,,,tier X (10 to 19)

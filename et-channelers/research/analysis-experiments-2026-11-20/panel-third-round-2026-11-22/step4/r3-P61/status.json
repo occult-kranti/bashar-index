@@ -1,0 +1,72 @@
+{
+ "id": "r3-P61",
+ "title": "Persuasion and monetisation devices, priced or unpriced (pilot)",
+ "class": "a.2",
+ "tier": "L (23)",
+ "primaries": {
+  "devices": "a pilot with no reading of its own; 3 of 15 classes computed"
+ },
+ "predictions": {},
+ "not_computed": [
+  "12 thin classes",
+  "the priced share of every class (not printed (privacy rule))"
+ ],
+ "label": "Exploratory; not a test of H1-H10.",
+ "agnostic": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "made_by": "the step-4 agent, a model agent working for the project lead (not a person)",
+ "prespec_hashed_utc": "2026-11-26T14:07:09Z",
+ "common_code_sha256": {
+  "s4common.py": "a1fa19dba4a1c09eedb715f9215935d0fcbad14a796e009dd8fccc32a8e9bb86",
+  "eligibility.py": "49b2f187c61c469d93c3377754a1b8a47fcbc6c13bb0b0a187c8a803acc8f474",
+  "privacy_checks.py": "0b50da13dbe84096332b19dc098bdd67baa6908d9af5cda7d29fdb33468c1d18",
+  "write_status.py": "4e4dd2d0371cd44347649a85c1dbec96ef39d7369056eacf45c84d7c515c379e",
+  "style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
+  "prespec-shared.md": "1a108ed923035037657685923e660b329ac3666a2ee9689e2802cf6f6236c596"
+ },
+ "privacy_checks": {
+  "run_utc": "2026-11-26T14:26:47Z",
+  "identifier_hits": 0,
+  "png_text_chunks": 0,
+  "pdf_info_keys": 0,
+  "nest_check": {
+   "banded_sets_tested": 26,
+   "problems": 0
+  },
+  "decision_62": {
+   "rows_banded_with_interval": 25,
+   "count_chosen": 0
+  }
+ },
+ "private_results": "kept in the entry's private folder (not published)",
+ "files_sha256": {
+  "README.md": "65aac101efaae38e532715992d0e9d7350ec90d0b136b3cb216ee15c6d196847",
+  "code/p61.py": "22b4219e94c8fcf4e8b008fda89a02de790631dcd4d0637ec6f6b917219690ed",
+  "code/plot_p61.py": "96446841801a1e641716974af2aaf2758a2cee5700fecdbd76ce5bae61cd6994",
+  "contacts.md": "92a61f0d376da11c66590111334ce1e2f097c417e6547f190e26829ee2bb8ec9",
+  "prespec-hash-record.md": "9a67b16be1b85017400aa58fb23008188faa02c35f5ecbd272102917354c9e87",
+  "prespec.md": "7bd59eb5fca0ae8a535f00b4ff96c14b463f24e3140b3f3ed7bd9e36ba30aa32",
+  "public/data-r3-P61-heatmap.csv": "937812f3c55b13d882b3d7b09a9b205e61af7bc577a873d098ef7d04191c7191",
+  "public/fig-r3-P61-devices.pdf": "bdd3ab65efcae093525870d125db51255c044cb40c425dccc7d6a3c92b47011f",
+  "public/fig-r3-P61-devices.png": "e71d26480231ab68726f28d1fa806331542fefaa2e6595a93d35c809c9d98f85"
+ },
+ "written_utc": "2026-11-26T14:27:19Z",
+ "note_2026-11-26_decision_92": "2026-11-26T15:25:06Z (UTC, from date -u): files changed by the lead's decision 92 (privacy rule; no number changed); their recorded hashes refreshed: README.md, public/data-r3-P61-heatmap.csv",
+ "note_2026-11-26_decision_99_text": "2026-11-26T16:19:27Z (UTC, from date -u): text worded as the README by the lead's decision 99 (no number changed): not_computed",
+ "note_2026-11-26_decision_99": "2026-11-26T16:19:27Z (UTC, from date -u): files changed by the lead's decision 99 (the fix pass after the independent check of steps 3 to 5; no number changed: values withheld, folded or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, code/plot_p61.py, public/data-r3-P61-heatmap.csv, public/fig-r3-P61-devices.pdf, public/fig-r3-P61-devices.png",
+ "note_2026-11-26_decision_103": "2026-11-26T17:16:20Z (UTC, from date -u): files changed by the lead's decision 103 (after the second independent check of steps 3 to 5; no number changed: values withheld or reworded; figures redrawn by each entry's own code); their recorded hashes refreshed: README.md, public/data-r3-P61-heatmap.csv",
+ "published_copy": {
+  "staged_utc": "2026-11-26T17:44:31Z",
+  "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/, and the step's shared folder, are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
+  "published_sha256": {
+   "README.md": "65aac101efaae38e532715992d0e9d7350ec90d0b136b3cb216ee15c6d196847",
+   "contacts.md": "92a61f0d376da11c66590111334ce1e2f097c417e6547f190e26829ee2bb8ec9",
+   "prespec-hash-record.md": "9a67b16be1b85017400aa58fb23008188faa02c35f5ecbd272102917354c9e87",
+   "prespec.md": "7bd59eb5fca0ae8a535f00b4ff96c14b463f24e3140b3f3ed7bd9e36ba30aa32",
+   "public/data-r3-P61-heatmap.csv": "937812f3c55b13d882b3d7b09a9b205e61af7bc577a873d098ef7d04191c7191",
+   "public/fig-r3-P61-devices.pdf": "bdd3ab65efcae093525870d125db51255c044cb40c425dccc7d6a3c92b47011f",
+   "public/fig-r3-P61-devices.png": "e71d26480231ab68726f28d1fa806331542fefaa2e6595a93d35c809c9d98f85"
+  },
+  "changed_for_publication": [],
+  "not_published": "code/, private/"
+ }
+}

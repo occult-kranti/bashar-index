@@ -1,0 +1,10 @@
+# Exploratory; not a test of H1-H10. Third-round programme, step 3 (forecasts and time).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# r3-P37 / r4-P20: eligible creators and the tier (deposit 2's split policy): 20 or more of the 23 non-development creators eligible, so tier S; the sealed half B is read once, after the exploration side was written and hashed.
+# Upload days: the labelled seen recordings' confirmed UTC days (TL-BUILD's table; estimated days have no weekday and are not used); no label enters the date-only rows. Anchors: private/anchors.csv (SHA-256 2222c21b...a6d), public calendars and published algorithms (Meeus 1998; Espenak and Meeus 2006, 2009; Hutton 1996; the Gregorian calendar). Four classes: sky, festival, civil (month starts), numerological (day equals month); et's announced-period class has no public date and is not computed. The calendar is described, never its origin.
+# Creator counts: 'fewer than 5' means 1 to 4; 'all but fewer than 5 of N' means N-4 to N-1; '5 to 9' is a band; values that could narrow a banded count are not printed.
+# Changed 2026-11-26T14:59:32Z (UTC, from date -u) at the joint staging of steps 3 to 5, by the lead's decision 78: eligible counts within the sealed half and the exploration side are not printed (privacy rule); the tier letter prints. Edited by hand (the publication script was not rerun); no number changed.
+set,creators
+non-development creators eligible (10 or more confirmed upload days; tier S needs 20 or more),all but fewer than 5 of 23
+"sealed half B, eligible",not printed (privacy rule)
+"exploration side (half A and the tuning pool), eligible",not printed (privacy rule)
