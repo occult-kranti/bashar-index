@@ -8,6 +8,8 @@ the owner's delegation; registry 2026-11-22 02:09, 05:00 and 07:15; D57 to D70 o
 [exploratory reporting plan](../../exploratory-reporting-plan.md) and its addenda
 [1](../../exploratory-reporting-plan-addendum-1.md), [2](../../exploratory-reporting-plan-addendum-2.md) and
 [3](../../exploratory-reporting-plan-addendum-3.md). The figures are in the gallery: [`gallery/index.html`](gallery/index.html).
+Dated corrections made after publication (2026-11-26: the third-round programme's r3-P35 under the lead's ruling 13,
+and D72 and D73) are listed under [Corrections](#corrections) at the end; they change no verdict.
 
 ## What the round is
 
@@ -89,7 +91,7 @@ rv-R7's abstract sentence (`built/rv-R7/public/rv-r7-abstract-sentence.csv` and 
 (`built/rv-D8/public/rv-D8-proposed-rule.csv` and `.txt`).
 
 **Model-coded labels.** Every label (voice, asks, forecasts, sentence codes, titles, recording kinds) was made by
-language models under frozen instruments. Each description says "model-coded", names the verification that exists,
+language models under frozen instruments unless an output says otherwise. Each description says "model-coded", names the verification that exists,
 with its figures, and says "not checked by a person": the owner chose no person's check (registry A8). The full
 verification lines, with intervals, are in `packages/LAB/README.md`; the gate figures are in `built/GATES/`. Relayed
 voice alone is below its reliability floor. The forecast class of record is below its floor on the hold-out reliability
@@ -238,6 +240,8 @@ statistic is not computable on them, and the file says why.
   redrawn. Means, their intervals and every count stay; each changed file carries a dated note line. The release
   scans gained the independent check's two solvers (the non-zero-count solver, in its two modes, and the
   whole-release hidden-base scan). This was the fifth fix step (fix6); its deviation row is 178.
+- **D72 and D73** (added 2026-11-26). E5's creator counts under H1's span rule are printed in band form; one share is no longer printed (dated correction below). The matter is
+  listed among the owner's items (addendum 4, item 9).
 
 ## Limits
 
@@ -424,7 +428,7 @@ E9's hold-out part (the owner's exception). The
 | E2 | Does a creator's claimed-voice profile resemble other creators' claimed voice more than the creator's own voice? | reported | S | In the few creators who qualified, a creator's claimed-voice function-word profile was closer to the same creator's own-voice profile than to other creators' claimed-voice profiles (model-coded voice, not checked by a person); with unstandardised profiles, a row chosen after the result, the difference is near zero in the middle-model subset. | packages/E/: e2-function-word-profiles.csv; gallery: E2-fig-1 |
 | E3 | Is articulation rate higher at the edges, and does second-person address rise over a recording? | reported | S | After the 180-s trims, the seen creators' recordings show no edge-against-middle difference in recognizer-timed articulation rate beyond about 1% (90% interval 0.993 to 1.007), while second-person address is higher in the last tenth than in the first. | packages/ER/: e3-edges-and-address.csv, e3-position-curves.csv, e3-position-curves-seen-simultaneous.csv, ER-README.md; gallery: E3-fig-1, E3-fig-2 |
 | E4 | Is slowing in the claimed voice carried by silence or by articulation? | not run | S | Not run: its condition, at least 5% slowing under H1, cannot be met because H1 was not determinable. | - |
-| E5 | Silent against filled hesitation by voice | reported | S | Claimed-voice spans held more long silent pauses and fewer filler words than the same creators' own-voice spans on average; the t intervals of the within-creator differences include zero, while the bootstrap interval for pauses of 1 s or more lies above zero in the primary (model-coded voice; description only). | packages/E/: e5-hesitation-by-voice.csv; gallery: E5-fig-1 |
+| E5 | Silent against filled hesitation by voice | reported | S | No difference in hesitation between the claimed voice and the same creators' own voice is shown: every t interval of the within-creator differences includes zero; the means lean towards more long silent pauses and fewer filler words in the claimed voice, and only the primary's bootstrap interval for pauses of 1 s or more lies above zero (model-coded voice; description only; detectable sizes in r3-P33; corrected 2026-11-26 under r3-P35). | packages/E/: e5-hesitation-by-voice.csv; gallery: E5-fig-1 |
 | E6 | Is the claimed voice more formulaic? | reported | S | No clear difference in formula coverage between claimed-voice and own-voice spans of the same creators (the intervals of the differences include zero; no equivalence margin was set): the claimed voice was not found to be more formulaic (model-coded voice). | packages/E/: e6-formula-coverage-by-voice.csv; gallery: E6-fig-1 |
 | E7 | Do opening and closing frames found on seen creators transfer to hold-out creators? | not run | S | Not run: its registered precondition (inventory frozen before freeze 2) was not met. | - |
 | E8 | Does a claimed source carry a tempo? | reported | S | Among the few creators with family-titled recordings, tempo and pause share varied mostly between creators, and the share of variance between source families could not be pinned down (its interval runs from zero to near one; model-coded title families). | packages/E/: e8-tempo-by-source-family.csv; gallery: E8-fig-1 |
@@ -545,3 +549,58 @@ E9's hold-out part (the owner's exception). The
 | CS | comparison set | not carried | not carried: X for this study: new data |
 | SL | selection sensitivity | carried by: rv-R4 (reported) | not carried: stage 2 (X: new data) |
 | PF | internal profile page | not carried | not carried: private by design; never a place of report |
+
+## Corrections
+
+Dated notes made after publication, in the form of the published first-round file's corrections (lead's decision D48).
+Each changes wording, adds a reading aid or withholds a value; none changes an estimate, an interval or a verdict. The
+frozen texts that the same corrections touch (the registry's frozen text, `hypotheses.md`, the freeze records) are not
+edited: their corrections are in [addendum 4](../../exploratory-reporting-plan-addendum-4.md).
+
+- **2026-11-26 (D72, D73).** E5's creator counts under H1's span rule are printed in band form; one share is no longer printed, in E5's table and in the gallery's data
+  file, figure (redrawn by its plotting group's own code, changed only in the count labels and in its title) and
+  caption. The status table names the share. No estimate or interval changes.
+- **2026-11-26 (r3-P35: E5 led by the absence of a shown difference).** E5's headline (above, in the status table and
+  in the gallery's title) now leads with the absence of a shown difference: every t interval of the within-creator
+  differences includes zero. The detectable sizes that the third-round programme's r3-P33 prints for E5's primary
+  (80% power, one-sided 5%, from the printed intervals) are about 1.4 long pauses of 1 s or more per 100 words and
+  1.6 filler words per 1,000 words, so the null says little.
+- **2026-11-26 (r3-P35: the agnosticism sentence).** Every description in this release is read with the sentence the
+  third-round panel agreed and the lead adopted: "No measure in this study can tell whether a non-human source speaks;
+  every measure describes the speech in these recordings and how the creators present it." Phrases such as "says
+  nothing about a claimed state" are read in this form.
+- **2026-11-26 (r3-P35: voice definitions centred on the creator).** The voice classes are read as definitions whose
+  subject is the creator: the first-person claimed voice (the frozen instrument's "embodied" code) is the creator
+  speaking in the first person as a named non-human source; the reported claimed voice (its "relayed" code) is the
+  creator reporting what a source is said to say; the own voice is the creator speaking as themself. A voice is
+  "presented as" a source's, never "authored by" one. The frozen instruments and their code names do not change.
+- **2026-11-26 (r3-P35: validity status of label-based captions).** Every caption, headline and table note here that
+  rests on labels (voice, asks, forecasts, sentence codes, titles, recording kinds, and the outputs built on them)
+  carries this validity status, whether or not it repeats it: model-coded; agreement between
+  models, readers or methods only, never accuracy; not checked by a person; relayed voice alone below its floor
+  everywhere; on the hold-out reliability sample, the forecast class of record and the sentence codes' stability below
+  their floors; forecast checkability and title presentation kept as records after failed gates. The gallery's index
+  carries the same line.
+- **2026-11-26 (r3-P35: LAB-A's caption fact).** LAB-A's shares of asks in a claimed voice depend on how the voice
+  codebook treats offers: the known-answer battery scores an own offer inside a claimed passage as own voice and holds
+  no arm with an offer presented in the source's voice, so it cannot show whether the labeller moves offers out of the
+  claimed voice. Until the programme's arm A runs (unfunded), LAB-A's headline is read as depending on the codebook's
+  own-offer rule, and voice may not be separable from position in a recording (H6's own registered text names the
+  own-voice frame as its mechanism; addendum 4). This applies to LAB-A's headline, tables and gallery captions.
+- **2026-11-26 (the titles' failed gates; the lead's step-1 decision 36).** Wherever this release cites the titles'
+  failed presentation gates (GATES, rv-D5, LAB-T, CAL-f's title line), read beside it: "the gate sample and the
+  hold-out reliability sample drew harder titles than the rest of the seen roster (r3-P20); outside them,
+  presentation agreement was higher".
+- **2026-11-26 (nulls and their detectable sizes; r3-P35 and step-1 decision 29).** A null is read with its detectable
+  size. E9's null (phrasing shared within title families) could detect only about 2.6 shared runs per pair on 6
+  creators (r3-P33), so it says little. r3-P33 prints a detectable size beside every seen contrast of its audit that
+  is not beyond its margin (among them E5, E6, PT-cd's platform asks, E1's creator-equal ratio and CSS-12's rows that
+  include zero). The release's other nulls about channels, groups or recognizers converging (SD's same-date
+  vocabulary, SD-H, TM-H and rv-L2's label flips) have no printed detectable size; until one is printed, none is read
+  as independence, as the absence of an effect or as a market.
+- **2026-11-26 (H1's rate against the deposited margin; the lead's step-1 decision 28).** MR-18c and nlp-R7 print the
+  claimed-minus-own difference in rate on H1's spans. Every small-model row of that contrast printed in this release
+  lies inside the third-round programme's deposited ratio margin (0.80 to 1.25; deposit 2), which is much wider than
+  H1's registered smallest effect (a log ratio of -0.05, about 5% slower): by the deposited margin, the slowing these
+  rows describe is small. Step 1's own H1 rows (r3-P04) have banded counts, and their readings are not printed for
+  privacy. Exploratory; not a test of H1.

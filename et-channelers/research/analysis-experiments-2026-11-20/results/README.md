@@ -204,3 +204,12 @@ H1's rate and H4's contraction share rest on measures that agree; the pause spli
 to one model and to pauses after the seam rule (the capped, weighted rule; registry, 2026-11-21 03:08 UTC): the
 30-second decoding grid itself makes about 3% of pauses of 0.3 to 30 seconds. The bridge says nothing about
 agreement with what was actually said: that needs transcripts made by listening, which do not exist.
+
+## Corrections
+
+- 2026-11-26: the exploratory release lists the dated corrections of the third-round programme's r3-P35 (the lead's
+  ruling 13) and of the lead's decisions D72 and D73 in its own [Corrections](exploratory-2026-11-21/README.md#corrections)
+  section; the corrections of the frozen texts (the registry's frozen text, `hypotheses.md`, the freeze records) are
+  in [addendum 4](../exploratory-reporting-plan-addendum-4.md). Every row above is read with the sentence the
+  third-round panel agreed: "No measure in this study can tell whether a non-human source speaks; every measure
+  describes the speech in these recordings and how the creators present it." No number and no verdict changes.
