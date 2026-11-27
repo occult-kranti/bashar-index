@@ -656,7 +656,7 @@ every numeral the new text prints is copied from a public file of the research f
   ethics statement follow as Sections 9 and 10. Appendix C is the programme's record (`sections/appendix-panel.tex`):
   C.1 the panel, C.2 the deposits, C.3 margins, readings, intervals, tiers and multiplicity, C.4 step 1, C.5 steps 2 to
   5, C.6 the audio entries and the audio addendum (since phase 3), C.7 the new-files round (since 2026-11-27), C.8 the
-  novelty wordings, C.9 limitations.
+  fourth panel's programme (since 2026-11-27), C.9 the novelty wordings, C.10 limitations.
   Appendix D is the paper checklist.
 - **Phase 1 (16:40 to 16:55 UTC).** Section 8, Appendix C with step 1 and the novelty wordings whose newly named works
   passed the bibliography check, `refs-programme.bib`, and the programme paragraph of Section 9.
@@ -726,3 +726,13 @@ are corrected directly, in words only: no number, reading, macro, generated file
 macro, no float too large for its page; the same nine table cells run up to 3.7 pt over their column. The main text and
 the conclusion end on page 9; the references start on page 10. Paper check: no missing citation, no undefined macro, no
 privacy-name, code or id hit, no nested creator-count pair, no risky phrase, no placeholder in the PDF.
+
+## The fourth panel's programme (2026-11-27)
+
+Made after the fourth panel's programme (pull request 127) and deposit 5a (pull request 129) were published, from main's
+public files only (`research/analysis-experiments-2026-11-20/panel-fourth-round-2026-11-27/`: `programme.md`,
+`lead-decisions.md`, deposit 5a's README and hash record). Appendix C gains a subsection on the panel (eight model-agent
+roles, three literature reviews checked under ruling 13, three moderated rounds), its five tier-A layered research
+questions in the programme's words, and its twenty entries, which are designs not yet run, with deposit 5a deposited
+before any count. Section 8 gains one pointer clause. No work is cited, so no reference was added; every numeral is
+copied from those files; no number macro, generated file or builder changed.
