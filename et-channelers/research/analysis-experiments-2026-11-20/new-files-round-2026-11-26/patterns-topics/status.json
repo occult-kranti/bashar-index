@@ -1,0 +1,23 @@
+{
+ "group": "patterns-topics",
+ "written_utc": "2026-11-27T06:32:30Z",
+ "labels": [
+  "Exploratory; not a test of H1-H10.",
+  "New recordings of seen creators: a descriptive persistence check, not a confirmation and not a fresh-creator wave.",
+  "Rule-based and recognizer-based; not checked by a person; agreement, never accuracy.",
+  "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it."
+ ],
+ "plan": "plan.md (hash kept privately; hashed 2026-11-26T22:49:35Z)",
+ "decision": "119 (the lead, 2026-11-26)",
+ "reproduction": "every published value reproduced before any new file was opened (a private record)",
+ "model_calls": 0,
+ "spend_usd": 0,
+ "holdout_or_other_contact": false,
+ "files_sha256": {
+  "public/data-patterns-topics.csv": "7907c42c62ef0b3f5659ceffda1f9fff5bf83d40bc23f05496c0197b8f351c15",
+  "public/fig-patterns-topics.pdf": "1e46feaa60ab794bb53c5876f6ecbfde001aa54886bd9e30dbc45aa075967493",
+  "public/fig-patterns-topics.png": "5aa640706ff912997b14138e3caabb37e8df4817eb37ab4f435519a82a12167b",
+  "code/css12nf.py": "90b203cfbeb847b47a0cacb62c23f957c2f43e641a3b3f392557abffd49fcb6f",
+  "code/entrynf.py": "79987092a4abd472c78092e105b2da0471b0adbf1debeed76878bcacd6aff60a"
+ }
+}

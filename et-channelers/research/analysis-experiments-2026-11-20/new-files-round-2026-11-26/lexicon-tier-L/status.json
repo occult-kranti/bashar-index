@@ -1,0 +1,22 @@
+{
+ "group": "lexicon-tier-L",
+ "written_utc": "2026-11-27T06:32:30Z",
+ "labels": [
+  "Exploratory; not a test of H1-H10.",
+  "New recordings of seen creators: a descriptive persistence check, not a confirmation and not a fresh-creator wave.",
+  "Rule-based and recognizer-based; not checked by a person; agreement, never accuracy.",
+  "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it."
+ ],
+ "plan": "plan.md (hash kept privately; hashed 2026-11-26T22:49:35Z)",
+ "decision": "119 (the lead, 2026-11-26)",
+ "reproduction": "every published value reproduced before any new file was opened (a private record)",
+ "model_calls": 0,
+ "spend_usd": 0,
+ "holdout_or_other_contact": false,
+ "files_sha256": {
+  "public/data-lexicon-tier-L.csv": "e50e74b90235498f3f2d6068d75e001d14e624414c31d1bbd50c1b5b9829ed21",
+  "public/fig-lexicon-tier-L-bands.pdf": "f16faccba1f9c02f77ffe15030751ba72a56dc92810f240cae0f69e6938d04b9",
+  "public/fig-lexicon-tier-L-bands.png": "af10c7e72a04bd0a7fc35fbdec35a58d63a0c5f3fdfa012493f3fa99e378e604",
+  "code/lexnf.py": "cda71d9a90fac9b25510c76cd5a3c247e38cad925a587cad433b83eb036f943a"
+ }
+}
