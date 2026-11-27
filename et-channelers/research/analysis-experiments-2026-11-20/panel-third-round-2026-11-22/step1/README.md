@@ -154,6 +154,7 @@ Taken by the lead under the owner's delegation on 2026-11-26, after the entries'
   registration of a fresh-creator wave as the seen prior's shrinkage. G1's difference runs against the tuning direction,
   and the README notes it beside VER-3R and GATES, which rest on check creators only. Neither is called proof of tuning
   or of its absence.
+  - **Correction (2026-11-27T09:41:55Z, the lead's decision 134).** For GATES and the gate sample G: an earlier sentence said the gate sample was drawn from the check creators; it holds a seeded draw from the seen creators and every check creator, so its agreement figures describe development and check creators alike; no number or reading changes.
 - **25.** For an interval of a design class r3-P30 did not simulate (for example a correlation across creators),
   deposit 2's fallback applies: the t interval on creator means where it fits the statistic, otherwise the entry's
   prespecified interval. A reading on such an interval carries the words "interval class not calibrated by r3-P30". This

@@ -105,3 +105,8 @@ were drawn from check creators only).
 None (`contacts.md`).
 
 Note (the lead's step-1 decision 49(h), 2026-11-26T09:22:54Z): the SHA-256 values printed here are those of the private files as written; the SHA-256 of each published file is in status.json, `published_copy.published_sha256`.
+
+## Correction by the lead's decision 134 (2026-11-27T09:41:55Z, UTC from `date -u`)
+
+The gate sample G: an earlier sentence said the gate sample was drawn from the check creators; it holds a seeded draw from the seen creators and every check creator, so its agreement figures describe development and check creators alike; no number or reading changes. The sentences above that name G among the samples "drawn from check creators only"
+should be read with this note; the cross-vendor read and the second readings are not affected by it.

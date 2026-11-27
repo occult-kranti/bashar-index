@@ -713,3 +713,16 @@ in the bands main prints, the persistence rule, the rows by reading as the round
 what was not computed and why, and that within-creator pairs stay private (decision 119.1). Section 8 gains one pointer
 sentence. Every numeral is copied from those files; the plan's original hash is printed nowhere. No number macro,
 generated file or builder changed.
+
+## The gate sample G, corrected (the lead's decision 134, 2026-11-27, 09:43 UTC)
+
+Earlier sentences said the gate sample G was drawn from the check creators. G holds a seeded draw of recordings from the
+seen creators outside the set the designers read, plus one recording of every check creator that draw did not cover, so
+it includes development and check creators, and its rows on the check creators alone report its check subset. The
+definition of groups and samples (Appendix B.1) and the two main-text sentences that repeated it (Sections 3.1 and 5.2)
+are corrected directly, in words only: no number, reading, macro, generated file or builder changed.
+
+**Build state.** `bash build.sh` (typeset only): 94 pages, as before; no LaTeX error, no undefined reference, citation or
+macro, no float too large for its page; the same nine table cells run up to 3.7 pt over their column. The main text and
+the conclusion end on page 9; the references start on page 10. Paper check: no missing citation, no undefined macro, no
+privacy-name, code or id hit, no nested creator-count pair, no risky phrase, no placeholder in the PDF.
