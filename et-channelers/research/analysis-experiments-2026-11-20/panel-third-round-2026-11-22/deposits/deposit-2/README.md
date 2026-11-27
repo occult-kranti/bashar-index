@@ -49,3 +49,37 @@ No class-a entry runs before this commit is merged. Exploratory throughout.
 
 > No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these
 > recordings and how the creators present it.
+
+## Note of 2026-11-27: each file's SHA-256 as main stores it
+
+Added 2026-11-27T10:34:24Z (UTC, from `date -u`) by a drafting agent working for the project lead (a model agent, not a
+person). A correction note only: no file of this deposit other than this README changes, and no reading or number of any
+entry changes. The hashes in the tables above stay as they were recorded.
+
+The table "Public files in this folder" gives each hash as it was taken at deposit time. Beside it, the table below gives
+the SHA-256 of the same file as main stores it (`git show 3e141f8:<path> | sha256sum`; no file of this folder has changed
+since the commit that added it). Three whole-file line-ending variants of main's bytes were checked against each recorded
+hash: the bytes as stored, every LF converted to CRLF, and every CRLF converted to LF.
+
+| File | SHA-256 as main stores it | SHA-256 recorded above | Verdict |
+|---|---|---|---|
+| `account-prediction-cells.csv` | `2efdf3fe26716f3f55a3d323d97d65f6bddec8e7a05f5a3ce9e4b7bba61bdf84` | `5c6b741dde0f726ca04832d30dbb753f26127def7089abb7c6391928e36c5fa6` | does not reconcile under any whole-file line-ending variant |
+| `account-prediction-cells.md` | `f8e360695ddf0266b7d6fc89eb2ad852137db20307d1aca0a2d1c6f84ead1c8a` | `e6de6bd395a339080c3f3c43d5f36e8d1d89e002950e3cd5903c3bf7563af322` | agrees after converting every LF to CRLF |
+| `calibration-method-card.md` | `096db5079522ce5d0a2050fe47cf87bbb2dbecef6958984caf164b878c729a57` | `a8bac7543b3ad25fa361d4eb3f04cc1e4e5e5d688c87e9e5d9915ba68fd22653` | agrees after converting every LF to CRLF |
+| `data-r3-P39-ledger.csv` | `9d85183fbd06a5eb240c8117ab046bd347675d275854e42c4d5e688f13c80016` | `9d9188f61597e5cd89eba757b98b67173dd6f9d3cf175db5073301bce64fcf93` | does not reconcile under any whole-file line-ending variant |
+| `deposit.json` | `4e2b7a578385678da96d2f1b7b504d0adb93e244a94aea6a75b959fbb9552976` | `b7254729db8b95393bf51d63452102e4542dd9f2685c46004895073f31f0520f` | agrees after converting every LF to CRLF |
+| `fig-r3-P39-ledger.pdf` | `9bce035b736886a2cd988ce12e84b70072b615f3607ff1f928b0263da4231114` | `9bce035b736886a2cd988ce12e84b70072b615f3607ff1f928b0263da4231114` | the same bytes |
+| `fig-r3-P39-ledger.png` | `3957d8bafb6f9e61f9aac3baa2e7f4e022253b36f64d855c2266b4445ab262aa` | `3957d8bafb6f9e61f9aac3baa2e7f4e022253b36f64d855c2266b4445ab262aa` | the same bytes |
+| `lead-margins-and-readings-2026-11-26.md` | `c25c8979eb272b19125a0597658295241d1d4c40a33f0a22015032f90bbf18cd` | `c25c8979eb272b19125a0597658295241d1d4c40a33f0a22015032f90bbf18cd` | the same bytes |
+| `ledger-manifest.json` | `741c4627bc934a620a955a360a7777b3a128a634b0fba350b12f357784970acb` | `fff40453c059254de70ab0d22be86eabae610af12aacf2deea4cda015c7b6de6` | agrees after converting every LF to CRLF |
+| `margins-register.csv` | `c8062b48172bd46eff9d89e3e090ec080293ded4bb592b9b518b0a943ce0d4e0` | `753397e64e1407463d75ff3cf831daa370f2919e13963d3236576474ef2434f7` | does not reconcile under any whole-file line-ending variant |
+| `margins-register.md` | `fae04fa669f7625cfd657c03fba295be6c1f7c0f290bd4aa78c08ab596d0d746` | `78c22cb975fab19c36f38bee0d53919d691447e9c90bd2af49e5134059c389a7` | agrees after converting every LF to CRLF |
+| `novelty-ledger.md` | `8ca21b8819b26c2bfb63f5e8d30f30685878ed56b9cf01be8c61d5bd9ba372e9` | `605f382993e08c4bef04e3662a3692f0262e65b03bb97e2a5ee3956cdaa995ab` | agrees after converting every LF to CRLF |
+| `split-policy.md` | `efdcfae32314efc75273cac8cf44cfc20ce34bc9aef7c2f7fd4cf479b943d3e7` | `efdcfae32314efc75273cac8cf44cfc20ce34bc9aef7c2f7fd4cf479b943d3e7` | the same bytes |
+
+- For `account-prediction-cells.csv`, `data-r3-P39-ledger.csv` and `margins-register.csv`, no whole-file line-ending
+  variant of main's bytes gives the recorded hash. Their recorded hashes were taken on the private bytes at deposit time,
+  which stay private.
+- The private files and the code listed in the two tables above are not on main; their recorded hashes stay as they are
+  and cannot be checked from main.
+- Entries that cite this deposit's public files cite main's bytes, as deposit 5a of the fourth panel does.
