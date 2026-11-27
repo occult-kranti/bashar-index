@@ -1,0 +1,37 @@
+# Exploratory; not a test of H1-H10.
+# New recordings of seen creators: a descriptive persistence check, not a confirmation and not a fresh-creator wave.
+# Rule-based and recognizer-based; not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+outputs,printed reason
+"LAB-V, LAB-A, LAB-F, LAB-S, LAB-T, LAB-K, LAB-H; TL-P, TL-BUILD, TL-7.1 to TL-7.9; TIME; NE; DIR; KA; TC; RXP; ENTRY-MC; VER-*; DR-2; GATES; CAL; CAL-f; MTMM; RX-CB; MR-18c; MR-18d; nlp-R7, R9, R10, R11, R13; E2; E5; E6; E8; E9; E11; E12; PT-cd; PT (b); CSS-5; CSS-10; CSS-12's voice rows; rv-L1 to rv-L3",not computed in this round (needs labels or an audio pass)
+"Step 1: r3-P01, r3-P02's primaries and voice or grid-shift rows, r3-P03's published contrast, r3-P04 to r3-P07, r3-P19 to r3-P21, r3-P23, r3-P26, r3-P27, r3-P32, r3-P33",not computed in this round (needs labels or an audio pass)
+"Step 2: r3-P42's voice, title-profile and economy rows and L09; the L01 composition test; r3-P43's by-voice rows and balances; r4-P26 (b); r3-P45; r3-P46; r3-P48; r3-P50; r3-P52; r3-P55; r3-P56; r4-P29",not computed in this round (needs labels or an audio pass)
+"Step 3: r3-P36 / r4-P21, r3-P38 / r4-P24, r4-P23, r3-P37's word-anchored row, r3-P40's by-voice, class-3 and biography rows; step 4: r3-P57 / r4-P32, r3-P58; step 5: r3-P14 to r3-P18, r4-P14",not computed in this round (needs labels or an audio pass)
+"Audio entries r3-P08, r3-P09, r3-P11, r3-P12, r4-P03, r4-P15, r4-P16 and the audio addendum",not computed in this round (needs labels or an audio pass)
+"BR-b, BR-y, BR-GS, rv-R3, r3-P01's family C, r3-P02's grid-shift and bridge rows",not computed in this round (needs a second decode or a reference)
+rv-R1 / H3-SEEN / H3-X,not computed: a registered hypothesis's statistic; this round tests no hypothesis
+"DC, SD, CM, META (a) rhythm, rv-R4's window and posting-rate rows, r3-P37's date-only rows, r3-P65","not computed: these read spans of dated uploads within a channel, and the new files hold about one dated later upload per creator"
+r4-P20's rider on later uploads,not scored (decision 119.6)
+COR; CH-H's Mantel views,"not computed: they need 5 or more recordings per creator, which only a minority of creators reach in the new files"
+TM-H's channel-leak NMI,not computed: it depends on how many recordings each creator contributes
+NAMES,not computed: new spelling variants would stay unadjudicated
+"META (c), r3-P58's later part",not computed: counts of uploads a few days old are not comparable at equal age
+"rv-D2-H's covariates, rv-R4's pace median, ENTRY-E1","not computed: their published values are creator quantiles, never printed over a banded count"
+ENTRY-E3,"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+E13; TABLE / rv-D1,not applicable here (a hold-out measure; replaced by the scope table)
+Secondary rows by source (later uploads; latest-50+) and the exposure-matched old references,"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G1.6 GRID (stand-alone thanks segments starting 27 to 30 s into a window),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G2.6 rv-R5 (raw ICCs of twelve recognizer and register measures),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G2.7 E3 (edge against middle articulation rate; second-person address rise),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G3.4 ENTRY-E2 (handover and greeting cues in the first tenth),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G3.5 ENTRY-T ('we' share of self-introductions by name group),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G4.3 r3-P43 (survival strip),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G4.4 r4-P26 (a) (creator-level co-presence),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G4.5 r3-P44 (15 layer pairs against the curveball null),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G4.6 r3-P42 (A4 collision cells and coder-shared shares),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+"G4.7 r3-P51 (named-actor proxy, all speech)","not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G4.8 r3-P40 (named-year timeline),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G4.9 r3-P61 (L14 device rates by position),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G5.2 META (b) (share of recordings with creator-written chapters),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G5.3 r3-P60 (destination classes from page links),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"
+G5.4 r3-P40 (years by role at upload),"not computed in this pass (its published value was not reproduced before the new files were opened, and the round's order does not allow adding it afterwards)"

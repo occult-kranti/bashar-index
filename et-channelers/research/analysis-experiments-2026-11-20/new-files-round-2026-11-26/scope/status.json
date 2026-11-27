@@ -1,0 +1,19 @@
+{
+ "group": "scope",
+ "written_utc": "2026-11-27T06:20:47Z",
+ "labels": [
+  "Exploratory; not a test of H1-H10.",
+  "New recordings of seen creators: a descriptive persistence check, not a confirmation and not a fresh-creator wave.",
+  "Rule-based and recognizer-based; not checked by a person; agreement, never accuracy.",
+  "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it."
+ ],
+ "plan": "plan.md (hash kept privately; hashed 2026-11-26T22:49:35Z)",
+ "decision": "119 (the lead, 2026-11-26)",
+ "reproduction": "every published value reproduced before any new file was opened (a private record)",
+ "model_calls": 0,
+ "spend_usd": 0,
+ "holdout_or_other_contact": false,
+ "files_sha256": {
+  "public/data-scope.csv": "26ae6b9bb803d599f1f3fc728818dce811e9707407327e188664521ace90c8b2"
+ }
+}

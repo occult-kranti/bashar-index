@@ -1,0 +1,22 @@
+{
+ "group": "pace-variance",
+ "written_utc": "2026-11-27T06:32:30Z",
+ "labels": [
+  "Exploratory; not a test of H1-H10.",
+  "New recordings of seen creators: a descriptive persistence check, not a confirmation and not a fresh-creator wave.",
+  "Rule-based and recognizer-based; not checked by a person; agreement, never accuracy.",
+  "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it."
+ ],
+ "plan": "plan.md (hash kept privately; hashed 2026-11-26T22:49:35Z)",
+ "decision": "119 (the lead, 2026-11-26)",
+ "reproduction": "every published value reproduced before any new file was opened (a private record)",
+ "model_calls": 0,
+ "spend_usd": 0,
+ "holdout_or_other_contact": false,
+ "files_sha256": {
+  "public/data-pace-variance.csv": "f9d3f274c79ed44854bb46e4d7fe1e18faa3798560f7ce38e52787a5965e22e4",
+  "public/fig-pace-variance.pdf": "2834ef19c9db9af7b529839c9a6c394281fc310529a2468935762742f847335f",
+  "public/fig-pace-variance.png": "ed911212be349c7f696c2b18f864de3446e0de10b3b25761177c74985ea1ec0d",
+  "code/r4nf.py": "72ec87d1a69872fa1e27ae9bb76c022bf2575418ccfc7a0dbdabe300679fa3af"
+ }
+}

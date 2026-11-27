@@ -1,0 +1,25 @@
+{
+ "group": "recognizer-seams",
+ "written_utc": "2026-11-27T06:32:30Z",
+ "labels": [
+  "Exploratory; not a test of H1-H10.",
+  "New recordings of seen creators: a descriptive persistence check, not a confirmation and not a fresh-creator wave.",
+  "Rule-based and recognizer-based; not checked by a person; agreement, never accuracy.",
+  "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it."
+ ],
+ "plan": "plan.md (hash kept privately; hashed 2026-11-26T22:49:35Z)",
+ "decision": "119 (the lead, 2026-11-26)",
+ "reproduction": "every published value reproduced before any new file was opened (a private record)",
+ "model_calls": 0,
+ "spend_usd": 0,
+ "holdout_or_other_contact": false,
+ "files_sha256": {
+  "public/data-recognizer-seams.csv": "5c0c972883cf847722414725b6df1de85617ec60a680642359a0b302fed210c5",
+  "public/fig-recognizer-seams.pdf": "3de62933acfb849ca136a7697bc682a8f9dde881a16fef83d6507152c96bf32b",
+  "public/fig-recognizer-seams.png": "74f2b5ff0491d6edcc47a5a09c72d75e8fa5c758852d573ae093bdef2cfc1425",
+  "code/e1nf.py": "19ab20cd4d92722b329b84d8aee1b5daf8858dc6af3d7d1107c69aaf21397f31",
+  "code/gridnf.py": "55fcebeadbd671d4d1932f2e9ba49f916d8bd722bb734b8762000ba02a193746",
+  "code/p02nf.py": "91335dda7b25349cc851bb97737d822d5458c19b6df379eb41f3f39b86aa34b9",
+  "code/r7nf.py": "88ec45b3f73106f6f677fe1c9026bf2edf5cccea0d45022513f1ee0456e3cf7f"
+ }
+}
