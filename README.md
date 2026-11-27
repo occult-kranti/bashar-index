@@ -156,7 +156,7 @@ Ownership names the workstream responsible for a change, not independent human v
 | [`data/`](data/README.md), [`src/`](src/), [`index.html`](index.html) | Bashar research data and Python builder → original reference page. | Bashar reference/data |
 | [`analysis/`](analysis/README.md), [`panel/`](panel/), [`FINAL_REPORT.md`](FINAL_REPORT.md) | Historical preregistered analysis, results and review history. | Bashar methods/review |
 | [`channeling-atlas/dist/`](channeling-atlas/dist/), [`channeling-atlas/research/`](channeling-atlas/research/) | Maintained Atlas app; frozen October data, report/paper sources, figures and release receipts. | Atlas implementation/research |
-| [`et-channelers/youtube-index/`](et-channelers/youtube-index/), [`et-channelers/dashboard/data/`](et-channelers/dashboard/data/) | Historical index and four committed dashboard CSVs. | Corpus/index |
+| [`et-channelers/youtube-index/`](et-channelers/youtube-index/), [`et-channelers/dashboard/data/`](et-channelers/dashboard/data/) | Historical index and five committed dashboard CSVs (the fifth, of 27 Nov 2026, lists the ET civilizations channellers say they channel). | Corpus/index |
 | [`et-channelers/sources/`](et-channelers/sources/README.md), [`et-channelers/plan/`](et-channelers/plan/) | Source registry, public coverage/target tables and aggregate snapshots. | Collection/provenance |
 | [`et-channelers/pipeline/`](et-channelers/pipeline/README.md) | Windows Drive lane, retained multi-lane/legacy tools and tests. | Collection/systems |
 | [`et-channelers/dashboard/`](et-channelers/dashboard/), [`dashboards/`](dashboards/README.md), [`assets/`](assets/) | Public interfaces, templates/fragments and shared navigation. | UI/publication |
@@ -179,7 +179,7 @@ Open `http://localhost:8765/dashboards/`. Most dashboards need HTTP for data req
 | Generated artifact | Entry point / constraint |
 |---|---|
 | Bashar root page | `src/build.py`; `src/topics.py` is the historical analysis generator. Both retain original machine-specific path assumptions. Port paths deliberately; do not blindly overwrite a reviewed snapshot. |
-| Channeler index | `et-channelers/pipeline/dashboard_index.py` embeds four `dashboard/data/*.csv` files into `index.template.html` → `index.html`, preserving dates and hashes. |
+| Channeler index | `et-channelers/pipeline/dashboard_index.py` embeds five `dashboard/data/*.csv` files into `index.template.html` → `index.html`, preserving dates and hashes. |
 | Collection page | `et-channelers/pipeline/dashboard_local.py` wraps `dashboard/collection/page.fragment.html` → `dashboard/collection/index.html`. |
 | Collection snapshot | `et-channelers/pipeline/ingestion_status.py` exports allowlisted private-state aggregates to `et-channelers/plan/ingestion_status.json`; [exact command](dashboards/README.md). |
 | Selected-video date timeline | `et-channelers/pipeline/dataset_timeline.py` reads the saved selection CSV, optional exact-date overlay and receipt-coverage CSV; it exports JSON, video/month CSVs and standalone HTML using a local Plotly bundle. No source request is made. |

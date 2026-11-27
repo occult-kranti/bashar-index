@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the public, standalone historical YouTube index from its four public CSVs.
+"""Build the public, standalone historical YouTube index from its five public CSVs.
 
 This does not read private manifests, contacts, recordings, or transcripts. The
 source observation dates remain visible; building the page does not refresh them.
@@ -14,7 +14,8 @@ import json
 from pathlib import Path
 
 DIRECTORY = Path(__file__).resolve().parents[1] / "dashboard"
-SOURCES = ("channels", "videos", "entities", "playlists")
+# civilizations.csv (27 Nov 2026): the ET civilizations channellers say they channel, aggregates and aliases only.
+SOURCES = ("channels", "videos", "entities", "playlists", "civilizations")
 
 
 def build(directory=DIRECTORY):
