@@ -90,7 +90,8 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 .cs-stack td.cs-wide { min-width: 22ch; }
 .cs-stack code { font-size: var(--ui-font-size-caption); overflow-wrap: anywhere; }
 .cs-steps-now { font-size: var(--ui-font-size-body); font-weight: var(--ui-font-weight-medium); }
-#card-panel-steps3-5 h3, #card-panel-audio h3 { margin-top: var(--ui-gap-md); }
+#card-panel-steps3-5 h3, #card-panel-audio h3, #card-newfiles-rows h3 { margin-top: var(--ui-gap-md); }
+#newfiles ul.cs-note { margin: 0; padding-left: 20px; display: grid; gap: var(--ui-gap-xs); max-width: 80ch; }
 /* On a narrow screen each row of a long-text table becomes a block, each cell labelled by its column. */
 @media (max-width: 640px) {
   .cs-stack thead { display: none; }
@@ -100,6 +101,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
   .cs-stack td.cs-wide { min-width: 0; }
   .cs-stack td[data-label]:not(:first-child)::before { content: attr(data-label) ": "; color: var(--color-fg-muted); font-weight: var(--ui-font-weight-medium); }
   .cs-stack td:empty { display: none; }
+  .cs-stack td.cs-r { text-align: left; }
 }
 @media print { .cs-tabs { display: none; } .cs-section { break-before: page; } .cs-tall { max-height: none; } }
 
@@ -115,7 +117,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hours" data-row="0" data-digits="1">—</b> hours, are transcribed.
       Among the creators seen before the registry freeze, <b class="cs-num" data-draw="fig" data-source="headline" data-field="percent_without_speech" data-row="0" data-digits="1" data-suffix="%">—</b> of the audio holds no speech.
       <b class="cs-num" data-draw="fig" data-source="headline" data-field="hypotheses" data-row="0">—</b> hypotheses are registered and
-      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed, and most have run as exploratory outputs, released on 26 November 2026 with a figure gallery (tab "Exploratory round"; exploratory, not a test of H1-H10). One hypothesis has been tested and withdrawn, and one was dropped before it ran. The third-round panel's steps 1 to 5 and its entries that read the audio are published (tab "Third-round panel").
+      <b class="cs-num" data-draw="fig" data-source="headline" data-field="experiments" data-row="0">—</b> experiments are designed, and most have run as exploratory outputs, released on 26 November 2026 with a figure gallery (tab "Exploratory round"; exploratory, not a test of H1-H10). One hypothesis has been tested and withdrawn, and one was dropped before it ran. The third-round panel's steps 1 to 5 and its entries that read the audio are published (tab "Third-round panel"), and so is the new-files round, a descriptive persistence check on new recordings of the seen creators (tab "New-files round").
       <span data-draw="round-lede" data-source="first_round"></span>
     </p>
     <p class="cs-banner" data-draw="round-banner" data-source="first_round" role="status"></p>
@@ -141,6 +143,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     <button class="cs-tab" type="button" data-tab="results" aria-selected="false">Tests and checks</button>
     <button class="cs-tab" type="button" data-tab="exploratory" aria-selected="false">Exploratory round</button>
     <button class="cs-tab" type="button" data-tab="panel" aria-selected="false">Third-round panel</button>
+    <button class="cs-tab" type="button" data-tab="newfiles" aria-selected="false">New-files round</button>
     <button class="cs-tab" type="button" data-tab="findings" aria-selected="false">First findings</button>
   </nav>
 
@@ -506,6 +509,78 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
     </div>
   </section>
 
+  <section class="cs-section" id="newfiles" hidden>
+    <p><b>Exploratory; not a test of H1-H10.</b> New recordings of seen creators: a descriptive persistence check, not a confirmation and not a fresh-creator wave. Rule-based and recognizer-based; not checked by a person; agreement between methods is called agreement, not a measure of correctness. Everything on this tab is copied from <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/README.md">the round's public files</a> on main (pull request <a href="https://github.com/occult-kranti/bashar-index/pull/124">#124</a>, 27 November 2026), and every group links to its folder there.</p>
+    <p class="cs-note cs-agreed">No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.</p>
+    <div class="cs-card" id="card-newfiles-what">
+      <h2>What this round is</h2>
+      <p class="cs-note">In the index README's words. The question, for each measure: do the seen creators' new recordings give a value inside a margin, fixed before any new value was read, of the value the latest-20+ release or programme printed?</p>
+      <ul class="cs-note">
+        <li><b>Data.</b> The new uploads, which are later than the latest-20 capture, and the latest-50+ batch, which is mostly older listing positions. Each recording counts once, and only seen creators enter. The bands are in <a href="https://github.com/occult-kranti/bashar-index/tree/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/scope">scope/</a>.</li>
+        <li><b>What it is not.</b> It is descriptive. It is not a confirmation, not a test of H1-H10, and not a fresh-creator wave. r3-P20's prediction is not tested here, and r4-P20's rider is not scored. A wave of the same creators tests persistence only.</li>
+        <li><b>Order of work.</b> Every published value used here was first reproduced, to its printed decimals, by the reused code from the latest-20+ inputs; the reproduction record was hashed; only then were the new transcripts opened, through an allow-list.</li>
+        <li><b>No model or API call, no spend.</b></li>
+      </ul>
+    </div>
+    <div class="cs-card" id="card-newfiles-readings">
+      <h2>Readings, in words</h2>
+      <p class="cs-note">The index README's table, checked against the five group data files. Each group's figure is on main (PNG and PDF), linked here.</p>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack" data-source="newfiles_groups" data-row-key="group">
+          <thead><tr><th data-field="group">Group</th><th class="cs-r" data-field="rows">Rows</th><th class="cs-r" data-field="persists">persists</th><th class="cs-r" data-field="shifts">shifts</th><th class="cs-r" data-field="undetermined">undetermined</th><th class="cs-r" data-field="not_computed_or_not_printed">not computed or not printed</th><th data-field="figure_png">Figure</th><th data-field="data">Data</th></tr></thead>
+          <tbody data-draw="rows-newfiles-groups"></tbody>
+        </table>
+      </div>
+      <ul class="cs-note">
+        <li><b>The pattern.</b> No row shifts. The rows that persist are those whose new interval is narrow enough to sit inside the margin: recognizer and seam measures, stance wording, some topics, three lexicon classes.</li>
+        <li><b>Why most rows are undetermined.</b> A creator here contributes about 3 or 4 new recordings, against about 17 in the latest-20+ corpus. Most new 90% intervals are therefore wider than the margins, and the rows read undetermined.</li>
+        <li><b>What the words mean.</b> "persists" is an equivalence description at one-sided 5% per bound. It is expected more often than for fresh creators, because the creators are the same (rv-R2). With no family-wise adjustment, a few "shifts" would have been unsurprising.</li>
+        <li><b>No paired rows.</b> Within-creator pairs were computed privately and are not printed (decision 119.1).</li>
+        <li><b>Not computed.</b> Every output of the release and of the programme that needs model-coded labels, an audio pass, a second decode, dated spans or quantiles is listed with its printed reason in <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/not-computed.csv">not-computed.csv</a>.</li>
+        <li><b>Privacy.</b> No per-creator row or point, and no quantile. Creator sets print only as bands. Any cell that is withheld or not computed reads one label: "not computed or not printed".</li>
+      </ul>
+    </div>
+    <div class="cs-card" id="card-newfiles-rows">
+      <h2>The rows, group by group</h2>
+      <p class="cs-note">Copied cell for cell from each group's data file, in its order: the published latest-20+ value (reproduced to its printed decimals before any new file was opened), the new recordings' value with its 90% creator interval, the persistence margin and the reading. <b>No headline is picked.</b> Each data file also gives each value's source file, the interval method and the creator-set band.</p>
+      <h3><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/recognizer-seams/README.md">recognizer-seams</a></h3>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="newfiles" data-row-key="measure">
+          <thead><tr><th data-field="id">Id</th><th data-field="measure">Measure</th><th data-field="published">Published</th><th data-field="new_value">New (90% interval)</th><th data-field="margin">Margin</th><th data-field="reading">Reading</th></tr></thead>
+          <tbody data-draw="rows-newfiles" data-group="recognizer-seams"></tbody>
+        </table>
+      </div>
+      <h3><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/pace-variance/README.md">pace-variance</a></h3>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="newfiles" data-row-key="measure">
+          <thead><tr><th data-field="id">Id</th><th data-field="measure">Measure</th><th data-field="published">Published</th><th data-field="new_value">New (90% interval)</th><th data-field="margin">Margin</th><th data-field="reading">Reading</th></tr></thead>
+          <tbody data-draw="rows-newfiles" data-group="pace-variance"></tbody>
+        </table>
+      </div>
+      <h3><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/patterns-topics/README.md">patterns-topics</a></h3>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="newfiles" data-row-key="measure">
+          <thead><tr><th data-field="id">Id</th><th data-field="measure">Measure</th><th data-field="published">Published</th><th data-field="new_value">New (90% interval)</th><th data-field="margin">Margin</th><th data-field="reading">Reading</th></tr></thead>
+          <tbody data-draw="rows-newfiles" data-group="patterns-topics"></tbody>
+        </table>
+      </div>
+      <h3><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/lexicon-tier-L/README.md">lexicon-tier-L</a></h3>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="newfiles" data-row-key="measure">
+          <thead><tr><th data-field="id">Id</th><th data-field="measure">Measure</th><th data-field="published">Published</th><th data-field="new_value">New (90% interval)</th><th data-field="margin">Margin</th><th data-field="reading">Reading</th></tr></thead>
+          <tbody data-draw="rows-newfiles" data-group="lexicon-tier-L"></tbody>
+        </table>
+      </div>
+      <h3><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/page-dates/README.md">page-dates</a></h3>
+      <div class="cs-scroll">
+        <table class="cs-table cs-stack cs-entries" data-source="newfiles" data-row-key="measure">
+          <thead><tr><th data-field="id">Id</th><th data-field="measure">Measure</th><th data-field="published">Published</th><th data-field="new_value">New (90% interval)</th><th data-field="margin">Margin</th><th data-field="reading">Reading</th></tr></thead>
+          <tbody data-draw="rows-newfiles" data-group="page-dates"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <section class="cs-section" id="findings" hidden>
     <p>These first findings come from a snapshot of 1,213 finished transcripts taken while the run was still going; the recognizer artefacts card alone counts the finished run. They are provisional: no transcript was checked by a person, and they will be recomputed on the finished run.</p>
     <div class="cs-grid">
@@ -534,12 +609,12 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
   <details id="notes">
     <summary>How to read this page</summary>
-    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover anything from a few days to many years, so nothing here is a trend. Each language other than English comes from fewer than five creators, so the languages other than English are shown only as one pooled row. No row, bin or cell describes fewer than five creators: cells with fewer than five creators are pooled, and two counts of creators of nested groups never differ by one to four. Figures on the first five tabs describe the finished run: counts of the whole run come from its ledger, and timing measures from the creators seen before the registry freeze only. The tab "Exploratory round" copies the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10). The tab "Third-round panel" copies the panel programme's public files: its deposits, its corrections, and the entries of steps 1 to 5 and of the audio pass, with the audio addendum's parts, each with its question and reading in the entry's own words (exploratory; not a test of H1-H10). The last tab describes an earlier snapshot. The hypotheses of the first round are tested on the hold-out creators with labels made by language models, which no person has checked, so every verdict is model-coded; beyond the counts of the whole run, the hold-out creators enter only the registered tests.</p>
+    <p class="cs-note">The corpus is the newest 20 public recordings of each of 101 creators who say they channel non-human beings. A creator's newest 20 can cover anything from a few days to many years, so nothing here is a trend. Each language other than English comes from fewer than five creators, so the languages other than English are shown only as one pooled row. No row, bin or cell describes fewer than five creators: cells with fewer than five creators are pooled, and two counts of creators of nested groups never differ by one to four. Figures on the first five tabs describe the finished run: counts of the whole run come from its ledger, and timing measures from the creators seen before the registry freeze only. The tab "Exploratory round" copies the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10). The tab "Third-round panel" copies the panel programme's public files: its deposits, its corrections, and the entries of steps 1 to 5 and of the audio pass, with the audio addendum's parts, each with its question and reading in the entry's own words (exploratory; not a test of H1-H10). The tab "New-files round" copies the new-files round's public files: a descriptive persistence check on new recordings of the seen creators, not a confirmation and not a test of H1-H10. The last tab describes an earlier snapshot. The hypotheses of the first round are tested on the hold-out creators with labels made by language models, which no person has checked, so every verdict is model-coded; beyond the counts of the whole run, the hold-out creators enter only the registered tests.</p>
   </details>
 
   <details id="data">
     <summary>The data behind this page</summary>
-    <p class="cs-note">Every figure, chart and table is drawn from these files. They hold counts, distributions and cohort-level estimates only; no file has a row per creator or per recording, and no row, bin or cell describes fewer than five creators (cells with fewer than five creators are pooled). Built 2026-11-26.</p>
+    <p class="cs-note">Every figure, chart and table is drawn from these files. They hold counts, distributions and cohort-level estimates only; no file has a row per creator or per recording, and no row, bin or cell describes fewer than five creators (cells with fewer than five creators are pooled). Built 2026-11-27.</p>
     <ul class="cs-files">
         <li><a href="data/summary.csv">Run summary</a> <span class="cs-note">(13 rows)</span></li>
         <li><a href="data/outcome.csv">Selected recordings by outcome</a> <span class="cs-note">(5 rows)</span></li>
@@ -558,7 +633,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="data/kinds.csv">Kinds of 34 read recordings</a> <span class="cs-note">(2 rows)</span></li>
         <li><a href="data/terms.csv">Vocabulary families</a> <span class="cs-note">(5 rows)</span></li>
         <li><a href="data/artefacts.csv">Recognizer artefacts</a> <span class="cs-note">(3 rows)</span></li>
-        <li><a href="data/status.csv">Work status</a> <span class="cs-note">(11 rows)</span></li>
+        <li><a href="data/status.csv">Work status</a> <span class="cs-note">(12 rows)</span></li>
         <li><a href="data/budget.csv">Model-call budget</a> <span class="cs-note">(4 rows)</span></li>
         <li><a href="data/results.csv">H3, tested and withdrawn</a> <span class="cs-note">(3 rows)</span></li>
         <li><a href="data/first_round.csv">Registered tests of the first round (model-coded)</a> <span class="cs-note">(6 rows)</span></li>
@@ -569,6 +644,8 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="data/panel_step1.csv">Third-round panel, step 1: the 17 entries, each question and reading in the entry's own words (from the step-1 index)</a> <span class="cs-note">(17 rows)</span></li>
         <li><a href="data/panel_steps.csv">Third-round panel, steps 2 to 5: the entries, each tier, question and reading in the entry's own words (from the step indexes)</a> <span class="cs-note">(28 rows)</span></li>
         <li><a href="data/panel_audio.csv">Third-round panel, the audio entries and the audio addendum: each tier letter, question and reading in the entry's own words; each part's status and reading (from the audio READMEs)</a> <span class="cs-note">(15 rows)</span></li>
+        <li><a href="data/newfiles.csv">New-files round: the rows of the five group data files (published value, new value with its 90% interval, margin, reading)</a> <span class="cs-note">(102 rows)</span></li>
+        <li><a href="data/newfiles_groups.csv">New-files round: readings per group (the index README's table), with links to each group's README, figure and data file</a> <span class="cs-note">(6 rows)</span></li>
     </ul>
   </details>
   <details id="methods">
@@ -585,6 +662,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
         <li><a href="../../research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/gallery/">The release's figure gallery</a> (GitHub path <a href="https://github.com/occult-kranti/bashar-index/tree/main/et-channelers/research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/gallery"><code>research/analysis-experiments-2026-11-20/results/exploratory-2026-11-21/gallery/</code></a>)</li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/exploratory-reporting-plan-addendum-3.md">Exploratory reporting plan, addendum 3 (factual corrections)</a></li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/programme.md">Third-round panel: the programme</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/lead-rulings-2026-11-26.md">the lead's rulings</a>, the indexes of <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step1/README.md">step 1</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step2/README.md">step 2</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step3/README.md">step 3</a>, <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step4/README.md">step 4</a> and <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/step5/README.md">step 5</a>, and <a href="https://github.com/occult-kranti/bashar-index/tree/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/deposits">the deposits</a> (1 and 2 of step 0; 3 and 4, step 2's instruments, before any count)</li>
+        <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/README.md">The new-files round of 27 November 2026: a descriptive persistence check on new recordings of the seen creators</a></li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/audio/common/README.md">Third-round panel: the audio entries (common README)</a> and <a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/panel-third-round-2026-11-22/audio/addendum/README.md">the audio addendum</a></li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/research/analysis-experiments-2026-11-20/exploratory-reporting-plan-addendum-4.md">Exploratory reporting plan, addendum 4: r3-P35's corrections that need no run (26 November 2026)</a></li>
         <li><a href="https://github.com/occult-kranti/bashar-index/blob/main/et-channelers/ROADMAP.md">Roadmap</a></li>
@@ -600,7 +678,7 @@ details > summary { cursor: pointer; font-weight: var(--ui-font-weight-medium); 
 
 // A small stand-in for the hosted dashboard's data layer: loads the CSV files beside the page and runs the drawings.
 const dash = (() => {
-  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "creator_quantiles", "recordings", "length_share", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "first_round", "bridge", "exploratory_status", "exploratory_figures", "panel_programme", "panel_step1", "panel_steps", "panel_audio"];
+  const ids = ["summary", "outcome", "languages", "language_basis", "creators", "creator_quantiles", "recordings", "length_share", "progress", "position", "newest20", "experiments", "hypotheses", "variance", "kinds", "terms", "artefacts", "status", "budget", "results", "first_round", "bridge", "exploratory_status", "exploratory_figures", "panel_programme", "panel_step1", "panel_steps", "panel_audio", "newfiles", "newfiles_groups"];
   const state = {}, calcs = {}, draws = {};
   const api = {
     colors: ['var(--series-1)'],
@@ -1333,6 +1411,39 @@ dash.draw('rows-panel-audio', (el) => {
     : [{ field: 'entry', label: 'Part', href: 'folder' }, { field: 'status', label: 'Status', wide: true },
       { field: 'reading', label: 'Reading, in only these words', wide: true }];
   cells(el, rows, columns);
+});
+
+// The new-files round (newfiles, newfiles_groups): rows copied from the group data files; the new value is printed with
+// its interval as the group READMEs print it, "value (low to high)", or the file's label where the row is withheld.
+const nfLink = (href, text) => { const a = document.createElement('a'); a.href = href; a.textContent = text; a.rel = 'noreferrer'; return a; };
+dash.draw('rows-newfiles-groups', (el) => {
+  const got = need(el, ['newfiles_groups']);
+  if (!got) return;
+  el.replaceChildren(...got[0].map((row) => {
+    const tr = document.createElement('tr');
+    const add = (label, content, numeric) => {
+      const td = document.createElement('td');
+      td.dataset.label = label;
+      if (numeric) td.className = 'cs-r';
+      if (content !== null && content !== undefined) td.append(...[].concat(content));
+      tr.appendChild(td);
+    };
+    add('Group', row.readme ? nfLink(row.readme, row.group) : row.group);
+    for (const [field, label] of [['rows', 'Rows'], ['persists', 'persists'], ['shifts', 'shifts'], ['undetermined', 'undetermined'],
+      ['not_computed_or_not_printed', 'not computed or not printed']]) add(label, row[field], true);
+    add('Figure', row.figure_png ? [nfLink(row.figure_png, 'PNG'), ' · ', nfLink(row.figure_pdf, 'PDF')] : null);
+    add('Data', row.data ? nfLink(row.data, row.group === 'all' ? 'not-computed.csv' : 'CSV') : null);
+    return tr;
+  }));
+});
+dash.draw('rows-newfiles', (el) => {
+  const got = need(el, ['newfiles']);
+  if (!got) return;
+  const label = 'not computed or not printed';
+  const rows = got[0].filter((row) => row.group === el.dataset.group)
+    .map((row) => Object.assign({}, row, { shown: row.new_value === label ? label : row.new_value + ' (' + row.new_low90 + ' to ' + row.new_high90 + ')' }));
+  cells(el, rows, [{ field: 'id', label: 'Id' }, { field: 'measure', label: 'Measure', wide: true }, { field: 'published', label: 'Published' },
+    { field: 'shown', label: 'New (90% interval)' }, { field: 'margin', label: 'Margin' }, { field: 'reading', label: 'Reading' }]);
 });
 
 // Tabs: sections are stored in the page; the script only shows one and remembers it in the link.
