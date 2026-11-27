@@ -1,13 +1,14 @@
-# Fourth-round expert panel: the lead's decisions 125 to 155 (public wording)
+# Fourth-round expert panel: the lead's decisions 125 to 169 (public wording)
 
 Written 2026-11-27 at 08:50:14Z, revised at 09:16:03Z under decision 132, extended at 12:09:07Z with decisions 133 to
 140 under decision 140.6, at 12:50:44Z with item 138.6 and decision 141 after the independent check, at 16:16:38Z with
 decisions 142 to 150, at 16:51:57Z with decisions 151 to 154 and at 17:28:17Z with decision 155, which also revised
-decisions 144 and 146 to 150, for deposit 5's addendum 1 (UTC, from `date -u`), by a drafting agent working for the project
-lead (a model agent, not a person), from the lead's design file for the fourth panel. Times of the decisions are those
-the lead recorded from the clock on 2026-11-27. This file gives what was decided and why; it carries no private path, no
-search log, no withheld documentary title and no name of any creator, channeller, contactee, abductee, popular
-proponent, channelled being or group. Minor process slips are recorded privately.
+decisions 144 and 146 to 150, for deposit 5's addendum 1, and at 19:52:12Z with decisions 156 to 169, for step 1 (UTC,
+from `date -u`), by a drafting agent working for the project lead (a model agent, not a person), from the lead's design
+file for the fourth panel. Times of the decisions are those the lead recorded from the clock on 2026-11-27. This file
+gives what was decided and why; it carries no private path, no search log, no withheld documentary title and no name of
+any creator, channeller, contactee, abductee, popular proponent, channelled being or group. Minor process slips are
+recorded privately.
 
 **Status.** Exploratory; not a test of H1-H10. Labels are model-coded; agreement, never accuracy.
 
@@ -538,6 +539,154 @@ path or hash. Every fix is taken before the addendum is published:
    feasibility tables on unprinted counts is made general; the hash record adds the two scripts that wrote the
    reproductions file's rows, and each reproduction unit's logs and list of written files.
 6. **Next.** The same checker rechecks the changed lines, and then the pull request follows.
+
+## Decision 156: addendum 1 is public; what runs next (17:41 UTC)
+
+1. **Published.** The recheck found addendum 1 publishable. PR #135 merged at 2026-11-27T17:40:54Z (`5f043c5`), and
+   main's bytes match all seven files. Step 0 is done, apart from two items: the correction note to r3-P42 (its own pull
+   request and check), and f4-Q03's T-B1a and f4-Q12's T-E1a, which go into those entries' prespecifications.
+2. **Next, in this order:**
+   - **(a)** the dashboards' second pass adds addendum 1: the guard results, the reproduction verdicts, the feasibility
+     tables and the card;
+   - **(b)** step 1 (the registration's section 3.3): the label-free list counts on the 48. Each entry's
+     prespecification is hashed first: f4-Q02's reruns and U6's rows, then the voice-free rows of f4-Q04, f4-Q11 and
+     f4-Q08. r3-P42's generator sorts canonically first, and the Monte Carlo spread is reported (decision 154);
+   - **(c)** r3-P30 version 2's battery, implemented to its public card and run as one background worker. The REML
+     methods read "not run (package ruling pending)".
+3. **Memory.** f4-Q10 needs the long re-decode, and f4-Q01 follows f4-Q10, so the re-decode is on step 2's path. It
+   stays paused while step 1 and the battery compute, and resumes when step 1's compute ends: beside the battery if
+   memory allows, otherwise after it.
+
+## Decision 157: the dashboards' second pass is published (18:01 UTC)
+
+The dashboards' second pass, which adds addendum 1's guard results, reproduction verdicts and feasibility tables, was
+published by PR #136, merged at 2026-11-27T18:01:44Z (`a5139b2`).
+
+## Decision 158: the owner's title-and-description search (18:02 UTC)
+
+The owner asked for a new search of public video titles and descriptions; it ran on metadata only, with no model call,
+no cookie and no credential. Its candidate channels go to the owner for review with their evidence, and none joins the
+roster without the owner's word.
+
+## Decision 159: r3-P30 version 2's battery starts (18:03 UTC)
+
+The battery's full run started at 2026-11-27T18:02:00Z as one background worker. The card's open details were fixed
+before the run, each as a dated departure in the battery's README, and the public writer and figures are hashed before
+they read any output of the full run.
+
+## Decision 160: the second search route and the civilizations list (18:11 UTC)
+
+A second agent's routes for the same search also used public metadata only, and its candidate channels were merged with
+the first agent's into one list for the owner's review; none joins the roster. The list of ET civilizations that
+channellers say they channel goes on the public channel index, as aggregates and aliases only, with no channel or person
+listed per entry.
+
+## Decision 161: the civilizations list is public (18:36 UTC)
+
+The civilizations list was published on the public channel index by PR #137, merged at 2026-11-27T18:36:26Z
+(`201644b`), as aggregates and aliases only, with no channel or person listed per entry.
+
+## Decision 162: step 1's compute is done; the lead's rulings (18:52 UTC)
+
+Each prespecification was hashed before its outputs were read.
+1. **Groups from title profiles.** r3-P43's composition test, which f4-Q11's primary, f4-Q02's rerun and U6's
+   period-pooled composition use, groups creators by a title-profile ladder that rests on model-coded title labels.
+   Decision 129.9 (decision 119.8 extended to every new registration) bars creator groups from model-coded title
+   labels. **Deposit 5's registration named r3-P43's composition test without resolving decision 129.9;** the conflict
+   came to light at count time.
+   - **The ruling:** the stricter rule governs, and choosing it weakens no registered rule. These rows print their
+     values and bands as a **description only**, with the note "its creator groups rest on model-coded title labels;
+     under decision 129.9 no reading is made". They carry no A or B reading.
+   - **Consequence:** f4-Q11's primary reads "described only (decision 129.9)". The other title-profile rows are not
+     computed in any later step.
+   - **Fixed now, before any further count:** every later entry that would group creators by model-coded title labels
+     is treated the same way, and its rows are described only.
+2. **The six draw-sensitive rows** keep the primary draw's reading, as prespecified, and the number of reseeds (of 10)
+   that agree prints beside each.
+3. **f4-Q04's placebo-year band** prints as a description only; it sits above the primary by construction.
+4. **f4-Q04's year tokens** follow r3-P40's published token rule, so that the 48 match the 23's reference.
+5. **f4-Q08.** TECHNO is thin on its agreed forms on the 48, as registered, so its "all listed forms" row prints as a
+   sensitivity row. REJECT is thin, so the stigmatized-knowledge account reads "not readable (thin)".
+6. **Memory.** The long re-decode resumes. The independent check does its reading and shell checks first and asks for a
+   pause before its Python scans.
+7. **The temporary worktree** used to read step 1 is removed after publication.
+
+## Decision 163: the owner's "parallelize, push to github, update readme, ledger handoff" (19:04 UTC)
+
+1. **The private handoff record** is brought up to date. It stays local, because it holds private paths.
+2. **GitHub.** The public READMEs and the public handoff are updated to 27 November from main's public facts only, in
+   one pull request (decision 167).
+3. **Parallel work that needs no memory** (writing only; any Python waits for a pause of the re-decode):
+   - (a) the public READMEs and handoff of item 2;
+   - (b) the prespecifications for steps 3 and 4 (f4-Q12, f4-Q09, f4-Q13, f4-Q07's slopes, f4-Q05a with its own
+     deposit, f4-Q05b and U11), each hashed before any output is read;
+   - (c) an independent text check of the r3-P42 correction note, then its pull request;
+   - (d) the paper's appendix C.9 (deposits 5a and 5 and addendum 1, with step 1 added once it is public).
+
+   These run beside the step-1 check, step 2 and the battery.
+
+## Decision 164: a shared memory window (19:12 UTC)
+
+The long re-decode was paused to free memory, and three agents (the paper, the step-1 check and step 2) share that
+window for Python, one process at a time; the re-decode resumes when all three are done.
+
+## Decision 165: the check of the r3-P42 correction note (19:16 UTC)
+
+The independent check found five text faults and no privacy fault, and it confirmed the rows, labels and cause. Every
+fix is taken:
+1. **Entries downstream.** r3-P43, r3-P44, r3-P45, r3-P48 and r3-P52 print bands from r3-P42's matched-placebo generator
+   on its stored extract, so those bands are the same single draw. The note says so, and each of those five READMEs gains
+   a dated one-line pointer to it, with its README hash in `status.json` refreshed, in the same pull request.
+2. **The cells are named row by row,** with the counts as the reproductions file gives them.
+3. **The code** is described as not published, its bytes matching the SHA-256 values in `status.json`.
+4. **The bands named** include every figure that draws them and the lists table's band columns.
+5. **The status line and the agnosticism sentence** are added, and the smaller wording fixes are taken.
+
+## Decision 166: the independent check of step 1 (19:19 UTC)
+
+The check's screens were clean and the primaries recomputed exactly. It found faults of text and table form, and every
+fix is taken before step 1 is published:
+1. **A misjoined column.** One of f4-Q04's timeline columns is re-joined by role and year, not by position, and checked
+   against its private source.
+2. **Recoverable values.** A value is left unprinted wherever the printed values of the other sets would let a reader
+   recover it.
+3. **Nested sets.** Where one set holds another plus a few creators, the estimate on the larger set is blanked.
+4. **Label-based rows move to step 2.** f4-Q04's class-3 rows match on the voice side, from model-coded labels. They move
+   to step 2 with the label note, the tuning note and the private tuning-pool guard, together with the cell that rests
+   on them. Step 1 reads "moved to step 2 (label-based; decision 166)".
+5. **Final versions.** Draft wording comes out everywhere (READMEs, status files and CSV headers); thin families print no
+   value beside "not computed"; f4-Q02's amendment states its exact hash time, before the first count; and minor wording
+   is fixed.
+6. **Next.** The fixes are applied in the current Python window, step 2's agent is told of item 4, and the same checker
+   rechecks.
+
+## Decision 167: the public READMEs and handoff are published (19:19 UTC)
+
+The public READMEs and handoff, updated to 27 November from main's public facts only, were published by PR #138, merged
+at 2026-11-27T19:18:36Z (`186c1b2`).
+
+## Decision 168: the recheck of the r3-P42 note (19:30 UTC)
+
+The recheck found two text faults, and both fixes are in the note as published by PR #139 (merged at
+2026-11-27T19:47:55Z):
+1. **Readings against the bands.** The note and its pointers say that a band from r3-P42's matched-placebo generator, or
+   a reading against one, rests on the same single draw, and that r3-P44's pairs P020 and P119 print the same placebo
+   readings as r3-P42's rows 21 and 120.
+2. **The headings cite decision 154,** which was public; decisions 156 and later publish with step 1's pull request.
+3. **Step 2's index** carries the same pointer, because it reprints bands and reading counts that rest on the draw.
+4. **The status files** take only the README-hash refresh; the README section is the dated note.
+
+## Decision 169: the check of the paper's appendix C.9 (19:34 UTC)
+
+The check found one counting fault and three over-claims; tables, privacy and labels were clean.
+1. **The count.** f4-Q05 is two cards, so the deposits register **fourteen entries in fifteen cards**: deposit 5 has
+   twelve entries in thirteen cards, and deposit 5a two entries. The paper, its caption, its README and the registry row
+   take the fix, and the dashboards' "registered entries" card takes it in their next pass.
+2. **The over-claims** are narrowed to what was done: the reproductions (R13 by hash identity) were compared with main
+   as printed, the guard's rule rebuilt the published 11 exactly, and F6 prints from f4-Q03's own prespecification
+   before its count (decision 147).
+3. **Next.** The paper is fixed and rebuilt, the same checker rechecks the changed lines, and then the pull request
+   follows.
 
 > No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these
 > recordings and how the creators present it.

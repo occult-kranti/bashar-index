@@ -1,0 +1,29 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# T-Q02-1: the twenty rerun primaries (registration 4.2): tier on the 23 (published), tier on the larger set, eligible count in its printed form, the step-1 reading on the 48, and the published 23 reading in brief (main's step-2 index). Label-based, by-voice and X+T rows wait for step 2.
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+rerun_entry,tier_23_published,tier_larger_set,eligible_48,reading_48_step1,reading_23_published
+r3-P42,"L (23, published)",L (48),48,the structure checks: 0 of 40 printed class statistics read 'outside the placebo band' after every check; the rest fail as structure or are undetermined,15 of 67 classes computed; one row held through every check (L01 S14's concentration)
+r3-P43 (r4-P26),L,L (48),48,composition test: described only (decision 129.9; its creator groups rest on model-coded title labels),pseudo-F 1.64 as published (its published reading predates decision 162)
+r3-P44 (r4-P27),L,L (48),48,29 layer pairs computed; 0 outside both bands,15 pairs computed; none outside both
+r3-P45,L,L (48),48,not computed (too few terms): no counted density term,not computed
+r3-P46,L,L (48),48,name classes and template status: computed,not computed (too few terms or creators)
+r3-P48,L,L (48) for the status; step 2 for the distributions,48,sub-registers: ADV-NEG computed,nothing can be computed
+r3-P49 (r4-P18),L,L (48),48,control set: undetermined (term-dependent),excess over matched placebos
+r3-P50 (r4-P18),L,L (48),48,"control (L05 pooled, CR-A left out): undetermined; SHIFT (L06): page denser than speech; DISSEM (L12): not computed (band undefined); IDIOM (L12): not computed (too few terms or creators); SUPP-PLATFORM (L13): not computed (too few terms or creators); SUPP-HIDDEN (L13): not computed (too few terms or creators)",shift vocabulary 'page denser than speech' on the band but undetermined (term-dependent); control: undetermined at unknown precision
+r3-P51 (r4-P28),L,step 2 (by voice),,"step 2 (reads voice, ask, forecast or TIME-role labels)",every class too thin; the proxy undetermined
+r3-P52 (r4-P12),L,step 2 (by voice),,"step 2 (reads voice, ask, forecast or TIME-role labels)",undetermined
+r3-P53 (r4-P30),L,L (48) for the modes; step 2 for the shares,48,"modes computed: MODE-RELAY, MODE-HIGHERSELF",two of eight modes can be counted
+r3-P55,L,step 2 (by voice),,"step 2 (reads voice, ask, forecast or TIME-role labels)",the primary is not computed
+r3-P56,L,L (48) for the status; step 2 for the rows,48,IDIOM: not computed (too few terms or creators); DISSEM: computed,the idiom is thin; the probe not printed
+r4-P29,L,L (48),48,resolution classes: RES-INNER not computed (too few terms); RES-OUTSIDE not computed (too few terms),neither resolution class can be counted
+r3-P38 (r4-P24),L,step 2 (forecast labels),,"step 2 (reads voice, ask, forecast or TIME-role labels)",see main's step 3
+r3-P57's congruence half (r4-P32),L,step 2 (voice and ask labels),,"step 2 (reads voice, ask, forecast or TIME-role labels)",fewer than 5 creators
+r3-P14's text part,X,step 2 (X+T),,"step 2 (reads voice, ask, forecast or TIME-role labels)",see main's step 5
+r3-P16,X,step 2 (X+T),,"step 2 (reads voice, ask, forecast or TIME-role labels)",see main's step 5
+r3-P18,X,step 2 (X+T),,"step 2 (reads voice, ask, forecast or TIME-role labels)",see main's step 5
+r4-P14,X,step 2 (X+T),,"step 2 (reads voice, ask, forecast or TIME-role labels)",see main's step 5

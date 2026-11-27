@@ -1,0 +1,32 @@
+{
+ "entry": "f4-Q08",
+ "step": "fourth panel, step 1 (registration 3.3): the label-free list counts on the 48",
+ "status": "Exploratory; not a test of H1-H10. Final version of step 1 (the lead's decision 166).",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tier": "A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.",
+ "made_utc": "2026-11-27T19:59:59Z",
+ "prespecification": {
+  "file": "private/prespec.md (kept privately)",
+  "sha256": "658600fc1ec7024eb7925990fc5f263e067c18c2645d770a67d76cfa34685f77",
+  "hashed_utc": "2026-11-27T18:22:41Z"
+ },
+ "amendments": {
+  "prespec-amendment-1.md": "9022bbd4d590928ab7d75206bb24f5d7ac284261783466cf82c5f14bb5346a11"
+ },
+ "model_or_api_calls": 0,
+ "commits": 0,
+ "hold_out_contacts": 0,
+ "files": {
+  "README.md": "1257e3e777feece1213f3b20112fe759275b23b6eec2e42e814029bdfa5291ae",
+  "contacts.md": "4086837cd777c7897cb56380a4651bf7cab32f615f410149de2a1f7f4775792b",
+  "public/data-f4-Q08-accounts.csv": "ba2a5af3aaad39b91a108a61b99ed9886442939c2a5e891f95a5771c200f1686",
+  "public/data-f4-Q08-co-use-and-residual-pair.csv": "b8ea30d2d70a38ef8ce2115802071874ed6b4721ab3f99b07c9678442fd2f32c",
+  "public/data-f4-Q08-families.csv": "a1f06fe3084226d1d6f1818f836b9be8a722afdcc76ad199897924f5e5e51453",
+  "public/data-f4-Q08-position.csv": "7e6bf317a537941c80bcd030124d958c4938a86cca8f49141c8af43d5703f1c9",
+  "public/data-f4-Q08-term-influence.csv": "3c4b53eefece9707503e948eadd1ea9c1adb5b927164a766824e778793a54315",
+  "public/fig-f4-Q08-families.pdf": "14cd7e86f08a793dbe0c060188c402476b7a0c6dfe3e014a9a6b54614dbdbda5",
+  "public/fig-f4-Q08-families.png": "d9e8045dc4e80b47a0d0e0d5435dbeefb4974596cc6e247266e1435218f624d3",
+  "public/fig-f4-Q08-position.pdf": "511f7618b804c8c0eb9808249d19b6d2a415e0f29c86c9a5fccfac65ca939d4b",
+  "public/fig-f4-Q08-position.png": "c9311eb24fd4145e8036530c458e854f974e8f18d80f8343b8c75e6c6358a23f"
+ }
+}

@@ -1,0 +1,34 @@
+{
+ "entry": "f4-Q04",
+ "step": "fourth panel, step 1 (registration 3.3): the label-free list counts on the 48",
+ "status": "Exploratory; not a test of H1-H10. Final version of step 1 (the lead's decision 166).",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tier": "A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.",
+ "made_utc": "2026-11-27T19:59:59Z",
+ "prespecification": {
+  "file": "private/prespec.md (kept privately)",
+  "sha256": "a99f641bb9600e11e4086fd89a8e454a20668c960aeb74d9ee93fcbd6a7d95a5",
+  "hashed_utc": "2026-11-27T18:22:41Z"
+ },
+ "amendments": {},
+ "model_or_api_calls": 0,
+ "commits": 0,
+ "hold_out_contacts": 0,
+ "files": {
+  "README.md": "596b9db97acfaca79cfb61117e57af5430533fc17c6f9cbd3fd1e3ca5a832646",
+  "contacts.md": "a6e43fa4b6860261c343057881afb029295d1fcd33f01637456736e8ac512234",
+  "public/data-f4-Q04-accounts.csv": "0167f843fd85f91a96f85ef0f166156a37fa5d7656ce985bdf1c0635059e5238",
+  "public/data-f4-Q04-contrasts.csv": "22be7eef74bc359e4c0cffbbe184148135266ae17e0320eff480d288210908ae",
+  "public/data-f4-Q04-cue-rows.csv": "1e0a121df711d82f6571938ec2fe2544b488db6b6aedcbc313248f005d43160c",
+  "public/data-f4-Q04-observation-windows.csv": "2f01e692820a6396c760b09746e27142f8d18eaa4086047d3cf79add284ce7db",
+  "public/data-f4-Q04-roles.csv": "4e615d555d7fa63d1a56e1891cd80c2f54e079218dc9397bacda2e611f3c4248",
+  "public/data-f4-Q04-survivorship.csv": "19bf1374d17c289485c24e0191973f80b15f5d491a425475280be22f45341687",
+  "public/data-f4-Q04-timeline.csv": "303ba997a753eed7205ea30fe4ff832bbecf9b53ccf3ec9a3e96cf540a31d538",
+  "public/fig-f4-Q04-observation-windows.pdf": "83187dc9c50ed1609d7fc1a8511233060450eb4a7b20bb3abe444287ecd49110",
+  "public/fig-f4-Q04-observation-windows.png": "3e7da80d46489dc6e1f046c14cd75587b5b7e4573d258d2bc5b3196dbd2dcb08",
+  "public/fig-f4-Q04-salience-forest.pdf": "1ee922ec2122147467d2aa15138cd2e6384e623d01719eca3890d12fd45cbb9f",
+  "public/fig-f4-Q04-salience-forest.png": "2ac055db2529d20b2986c49b75b75f0589d8bed929197300730fe2e8a0edb9ae",
+  "public/fig-f4-Q04-timeline.pdf": "3b4a455362f8aff233add1fbb90ae05c754fa4010659e026abc18fb336fbb4d4",
+  "public/fig-f4-Q04-timeline.png": "b804852f74ccaa27e3d7709724b3dc3815dc2e7250d9cb4de100a496fc873bef"
+ }
+}

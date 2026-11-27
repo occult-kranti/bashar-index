@@ -1,0 +1,131 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# r3-P44 / r4-P27 on the 48 (U6; F-Q02-4): creator-level co-use of each pair of L01 layers against the curveball null blocked by audience band (200 draws) and the matched-placebo band; 'structure' only outside both on the same side; printed as z (distance from the null mean in null SD), never the co-use count. Within each audience stratum (each holds 5 or more creators; sizes not printed): the reading only. Economy strata: step 2. The decisive pair P000: not computed until r3-P54; r3-P44's two fusion predictions: not scored. The published 23: main's r3-P42 pairs file. R1 (addendum 1): the published 23-creator bands are one draw among the draws the code can give; the readings in r3-P42's named rows are sensitive to the placebo draw.
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+pair_id,side_a,side_b,status_48,z_null_48,null_reading_48,placebo_reading_48,reading_48,reading_23_published,reading_stratum_under_10000,reading_stratum_10000_or_more
+P000,L01 strand=federation,L01 strand=adversarial,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P001,L05,L06,computed,not computed (null without spread),no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),,
+P002,L01 S01,L01 S02,not computed (too few terms),,,,,not computed (too few terms),,
+P003,L01 S01,L01 S03,not computed (too few terms),,,,,not computed (too few terms),,
+P004,L01 S01,L01 S04,not computed (too few terms),,,,,not computed (too few terms),,
+P005,L01 S01,L01 S05,not computed (too few terms),,,,,not computed (too few terms),,
+P006,L01 S01,L01 S06,not computed (too few terms),,,,,not computed (too few terms),,
+P007,L01 S01,L01 S07,not computed (too few terms),,,,,not computed (too few terms),,
+P008,L01 S01,L01 S08,not computed (too few terms),,,,,not computed (too few terms),,
+P009,L01 S01,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P010,L01 S01,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P011,L01 S01,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P012,L01 S01,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P013,L01 S01,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P014,L01 S01,L01 S13,not computed (too few terms),,,,,not computed (too few terms),,
+P015,L01 S01,L01 S14,not computed (too few terms),,,,,not computed (too few terms),,
+P016,L01 S01,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P017,L01 S02,L01 S03,computed,0.539,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P018,L01 S02,L01 S04,computed,-1.839,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P019,L01 S02,L01 S05,computed,-0.328,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P020,L01 S02,L01 S06,computed,2.081,outside the band (above),no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P021,L01 S02,L01 S07,not computed (too few terms),,,,,not computed (too few terms),,
+P022,L01 S02,L01 S08,computed,-1.915,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P023,L01 S02,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P024,L01 S02,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P025,L01 S02,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P026,L01 S02,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P027,L01 S02,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P028,L01 S02,L01 S13,computed,-2.432,outside the band (below),no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,structure (outside both)
+P029,L01 S02,L01 S14,computed,-1.732,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P030,L01 S02,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P031,L01 S03,L01 S04,computed,-0.686,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P032,L01 S03,L01 S05,computed,-2.291,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P033,L01 S03,L01 S06,computed,0.453,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P034,L01 S03,L01 S07,not computed (too few terms),,,,,not computed (too few terms),,
+P035,L01 S03,L01 S08,computed,-1.441,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P036,L01 S03,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P037,L01 S03,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P038,L01 S03,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P039,L01 S03,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P040,L01 S03,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P041,L01 S03,L01 S13,computed,0.492,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P042,L01 S03,L01 S14,computed,-1.277,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P043,L01 S03,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P044,L01 S04,L01 S05,computed,-0.644,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P045,L01 S04,L01 S06,computed,0.908,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P046,L01 S04,L01 S07,not computed (too few terms),,,,,not computed (too few terms),,
+P047,L01 S04,L01 S08,computed,0.0,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P048,L01 S04,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P049,L01 S04,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P050,L01 S04,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P051,L01 S04,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P052,L01 S04,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P053,L01 S04,L01 S13,computed,0.869,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P054,L01 S04,L01 S14,computed,0.241,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P055,L01 S04,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P056,L01 S05,L01 S06,computed,-0.151,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P057,L01 S05,L01 S07,not computed (too few terms),,,,,not computed (too few terms),,
+P058,L01 S05,L01 S08,computed,0.648,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P059,L01 S05,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P060,L01 S05,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P061,L01 S05,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P062,L01 S05,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P063,L01 S05,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P064,L01 S05,L01 S13,computed,0.726,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),structure (outside both),no structure beyond the null and placebos
+P065,L01 S05,L01 S14,computed,1.91,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P066,L01 S05,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P067,L01 S06,L01 S07,not computed (too few terms),,,,,not computed (too few terms),,
+P068,L01 S06,L01 S08,computed,-0.275,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P069,L01 S06,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P070,L01 S06,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P071,L01 S06,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P072,L01 S06,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P073,L01 S06,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P074,L01 S06,L01 S13,computed,-0.822,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P075,L01 S06,L01 S14,computed,-0.907,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P076,L01 S06,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P077,L01 S07,L01 S08,not computed (too few terms),,,,,not computed (too few terms),,
+P078,L01 S07,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P079,L01 S07,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P080,L01 S07,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P081,L01 S07,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P082,L01 S07,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P083,L01 S07,L01 S13,not computed (too few terms),,,,,not computed (too few terms),,
+P084,L01 S07,L01 S14,not computed (too few terms),,,,,not computed (too few terms),,
+P085,L01 S07,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P086,L01 S08,L01 S09,not computed (too few terms),,,,,not computed (too few terms),,
+P087,L01 S08,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P088,L01 S08,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P089,L01 S08,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P090,L01 S08,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P091,L01 S08,L01 S13,computed,-0.964,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P092,L01 S08,L01 S14,computed,1.571,no excess over the curveball null,outside the band (below),no structure beyond the null and placebos,not computed (too few terms),no structure beyond the null and placebos,no structure beyond the null and placebos
+P093,L01 S08,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P094,L01 S09,L01 S10a,not computed (too few terms),,,,,not computed (too few terms),,
+P095,L01 S09,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P096,L01 S09,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P097,L01 S09,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P098,L01 S09,L01 S13,not computed (too few terms),,,,,not computed (too few terms),,
+P099,L01 S09,L01 S14,not computed (too few terms),,,,,not computed (too few terms),,
+P100,L01 S09,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P101,L01 S10a,L01 S10b,not computed (too few terms),,,,,not computed (too few terms),,
+P102,L01 S10a,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P103,L01 S10a,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P104,L01 S10a,L01 S13,not computed (too few terms),,,,,not computed (too few terms),,
+P105,L01 S10a,L01 S14,not computed (too few terms),,,,,not computed (too few terms),,
+P106,L01 S10a,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P107,L01 S10b,L01 S11,not computed (too few terms),,,,,not computed (too few terms),,
+P108,L01 S10b,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P109,L01 S10b,L01 S13,not computed (too few terms),,,,,not computed (too few terms),,
+P110,L01 S10b,L01 S14,not computed (too few terms),,,,,not computed (too few terms),,
+P111,L01 S10b,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P112,L01 S11,L01 S12,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P113,L01 S11,L01 S13,not computed (too few terms),,,,,not computed (too few terms),,
+P114,L01 S11,L01 S14,not computed (too few terms),,,,,not computed (too few terms),,
+P115,L01 S11,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P116,L01 S12,L01 S13,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P117,L01 S12,L01 S14,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P118,L01 S12,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P119,L01 S13,L01 S14,computed,0.314,no excess over the curveball null,no excess over matched placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos,no structure beyond the null and placebos
+P120,L01 S13,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,
+P121,L01 S14,L01 S15,not computed until r3-P54 (waits for the owner's ethics act),,,,,not computed until r3-P54 (waits for the owner's ethics act),,

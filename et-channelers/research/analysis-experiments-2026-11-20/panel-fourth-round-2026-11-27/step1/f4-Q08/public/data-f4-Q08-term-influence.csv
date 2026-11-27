@@ -1,0 +1,31 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-Q08-2: per computed family, each term's leave-one-out change in the creator-balanced rate per 10,000 tokens; a term is named only where 5 or more creators use it (the list's term labels, never a corpus form).
+# Made 2026-11-27T19:35:17Z (UTC, from the clock) by the step-1 publication code.
+family,term,creators_using_48,leave_one_out_change_per_10k,family_rate_per_10k_48
+TRADITION,ancient wisdom,20 to 29 of the 48,-0.333,1.533
+TRADITION,scripture,5 to 9 of the 48,-0.035,1.533
+TRADITION,esoteric tradition,20 to 29 of the 48,-0.691,1.533
+TRADITION,passed down,20 to 29 of the 48,-0.297,1.533
+TRADITION,the ancestors and elders,10 to 19 of the 48,-0.177,1.533
+SCIENCE,quantum,30 to 39 of the 48,-0.858,6.29
+SCIENCE,physics,20 to 29 of the 48,-0.728,6.29
+SCIENCE,particles and cells,40 or more of the 48,-1.444,6.29
+SCIENCE,genetics (bare words),30 to 39 of the 48,-1.283,6.29
+SCIENCE,the brain,20 to 29 of the 48,-0.477,6.29
+SCIENCE,science (bare words),30 to 39 of the 48,-0.656,6.29
+SCIENCE,waves and resonance,20 to 29 of the 48,-0.845,6.29
+EXPERIENCE,in my experience,30 to 39 of the 48,-0.546,0.745
+EXPERIENCE,i have experienced,20 to 29 of the 48,-0.191,0.745
+EXPERIENCE,terms used by fewer than 5 creators (pooled; not shown),,,0.745
+INVOKED,studies show,5 to 9 of the 48,-0.029,0.984
+INVOKED,credentialed figures,30 to 39 of the 48,-0.865,0.984
+INVOKED,officials and insiders,5 to 9 of the 48,-0.089,0.984
+TECHNO (all listed forms),craft and ship technology,5 to 9 of the 48,-0.138,0.783
+TECHNO (all listed forms),advanced technology,20 to 29 of the 48,-0.496,0.783
+TECHNO (all listed forms),genetic upgrade and activation,10 to 19 of the 48,-0.145,0.783
+TECHNO (all listed forms),terms used by fewer than 5 creators (pooled; not shown),,,0.783

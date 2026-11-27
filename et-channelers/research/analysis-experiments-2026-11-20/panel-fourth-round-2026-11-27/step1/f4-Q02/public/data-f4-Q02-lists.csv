@@ -1,0 +1,74 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# Each deposit-3 list's own check (r3-P42's prespecification, section 5) where it reads no voice, ask or title label, on the 48; and the label-free rows of r3-P45, r3-P46, r3-P48, r3-P51, r3-P52, r3-P53, r3-P55, r3-P56 and r4-P29. Rows that read voice or asks labels are marked step 2; rows that group creators by model-coded title labels are not computed (decision 162).'Creators who describe their practice as X' (r3-P53): cue counts, sense not resolved.
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+list_entry,row,status_48,value_48,reading_48,note
+L03 / r3-P45,DIM's single-form rule,computed,0.211,not single-form,"density side (DEN): not computed (too few terms), as registered; r3-P45's primary: not computed"
+L04 / r3-P46,name class OPEN (page titles),not computed (too few terms or creators),,,
+L04 / r3-P46,name class FRANCHISE (page titles),not computed (too few terms or creators),,,
+L04 / r3-P46,template status (2 or more titles holding a counted name form),computed,creators with template status: 10 to 19 of the 48,,UNNAMED's share of P1 titles and MTMM's cells read model-coded title labels: not computed (decision 162)
+L05 / r3-P48,sub-register ADV-NEG,computed,,,"rate distributions by title profile: not computed (decision 162); by voice, and the scorecard: step 2"
+L05 / r3-P48,sub-register ADV-AMB,not computed (too few terms or creators),,,
+L05 / r3-P48,sub-register BRIDGE,not computed (too few terms or creators),,,
+L05 / r3-P48,sub-register CR-A,not computed until r3-P54 (waits for the owner's ethics act),,,
+L05 / r3-P48,sub-register CR-B,not computed (too few terms or creators),,,
+L05 / r3-P48,sub-register CR-C,not computed (too few terms or creators),,,
+L05 / r3-P48,sub-register CR-D,not computed (too few terms or creators),,,
+L05 / r3-P48,sub-register CR-E,not computed (too few terms or creators),,,
+L07 / r3-P51,disclosure split (flagged against counted share),computed,,computable,every by-voice row and the named-actor proxy: step 2
+L08 / r4-P29,"base units (units holding an L05 ADV-NEG, ADV-AMB or CR-A hit)",computed,held by 5 or more creators,,
+L08 / r4-P29,resolution share RES-INNER inside base units,not computed (too few terms),,,the voice difference and the economy crossing: step 2
+L08 / r4-P29,resolution share RES-OUTSIDE inside base units,not computed (too few terms),,,the voice difference and the economy crossing: step 2
+L09 / r3-P52,class FP-PL,computed,,,the recording-level contrast reads the voice map's kinds: step 2
+L09 / r3-P52,class FP-SG,computed,,,the recording-level contrast reads the voice map's kinds: step 2
+L10 / r3-P53,mode MODE-TRANCE,not computed (too few terms),,,
+L10 / r3-P53,mode MODE-CONSCIOUS,not computed (too few terms),,,
+L10 / r3-P53,mode MODE-DICTATION,not computed (too few terms),,,
+L10 / r3-P53,creators who describe their practice as MODE-RELAY (2 or more cue hits),computed,30 to 39 of the 48,sensitivity (1 or more hit): 40 or more of the 48,LAB-V's claimed share by group and the filing shares: step 2
+L10 / r3-P53,creators who describe their practice as MODE-HIGHERSELF (2 or more cue hits),computed,30 to 39 of the 48,sensitivity (1 or more hit): 30 to 39 of the 48,LAB-V's claimed share by group and the filing shares: step 2
+L10 / r3-P53,mode MODE-READALOUD,not computed (too few terms),,,
+L10 / r3-P53,mode MODE-RECITATION,not computed (too few terms),,,
+L10 / r3-P53,mode MODE-LIGHTLANG,not computed (too few terms),,,
+L11 / r3-P55,co-occurrence with REF-CREATOR,not computed (too few terms or creators),,,endorsement by voice: step 2
+L12 / r3-P56,class IDIOM,not computed (too few terms or creators),,,
+L12 / r3-P56,class DISSEM,computed,,,
+L12 / r3-P56,A4: DISSEM's share on tokens that also count on L11,not printed (privacy rule),,,the recall probe and the per-hour rows by voice: step 2
+L13 / r3-P60,suppression halves,not computed (too few terms),,,
+L13 / r3-P60,page links: unresolved share and funnel depth,computed,0.018,readable,
+L13 / r3-P60,link class DEST-ALTVID,not printed (privacy rule),,,
+L13 / r3-P60,link class DEST-AUDIO,not printed (privacy rule),,,
+L13 / r3-P60,link class DEST-EMAIL against host placebos,computed,0.022,outside the band (above) (band 0.006 to 0.017),
+L13 / r3-P60,link class DEST-LINKHUB,not printed (privacy rule),,,
+L13 / r3-P60,link class DEST-MEMB against host placebos,computed,0.032,outside the band (above) (band 0.007 to 0.021),
+L13 / r3-P60,link class DEST-MSG,not printed (privacy rule),,,
+L13 / r3-P60,link class DEST-SELF against host placebos,computed,0.089,outside the band (above) (band 0.006 to 0.017),
+L13 / r3-P60,link class DEST-SERVICE against host placebos,computed,0.02,no excess over host placebos (band 0.007 to 0.021),
+L13 / r3-P60,link class DEST-SHOP against host placebos,computed,0.032,outside the band (above) (band 0.006 to 0.017),
+L13 / r3-P60,link class DEST-SOCIAL against host placebos,computed,0.087,outside the band (above) (band 0.007 to 0.017),
+L13 / r3-P60,link class DEST-UNRESOLVED against host placebos,computed,0.018,outside the band (above) (band 0.007 to 0.017),
+L14 / r3-P61,priced share of AUTHORITY-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of COMMIT-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of COMMIT-D,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of DISCOUNT-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of GUARANTEE-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of RECIP-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of RECIP-D,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of SCARCITY-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of SCARCITY-D,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of SOCIAL-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of SOCIAL-D,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of UNITY-D,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of URGENCY-C,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L14 / r3-P61,priced share of URGENCY-D,not printed (privacy rule),,,"a pilot for the comparison set only; shares not printed, as on main"
+L15 / r3-P40,cue family FULFIL inside target-year windows,not computed (too few terms),,,f4-Q04 reads year roles in its own entry
+L15 / r3-P40,cue family SPLIT inside target-year windows,not computed (too few terms),,,f4-Q04 reads year roles in its own entry
+L15 / r3-P40,cue family DEFER inside target-year windows,not computed (too few terms),,,f4-Q04 reads year roles in its own entry
+A3 gate audit,L01,computed,,at or below 0.10: masked decisions stand (G5b),"shares not printed (privacy rule), as on main"
+A3 gate audit,L05,no gate decision,,,"shares not printed (privacy rule), as on main"
+A3 gate audit,L07,computed,,at or below 0.10: masked decisions stand (G5b),"shares not printed (privacy rule), as on main"
+A3 gate audit,L11,computed,,at or below 0.10: masked decisions stand (G5b),"shares not printed (privacy rule), as on main"
+A3 gate audit,L13,computed,,same readings unmasked,"shares not printed (privacy rule), as on main"

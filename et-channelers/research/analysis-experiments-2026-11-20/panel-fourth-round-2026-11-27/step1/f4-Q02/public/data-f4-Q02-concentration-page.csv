@@ -1,0 +1,51 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# r3-P49 / r4-P18 on the 48: phi of the pooled control set (L05's counted terms after every set-aside, CR-A left out) and of the shift set against 200 matched placebo sets: 'excess over matched placebos', 'no excess over matched placebos' or 'below matched placebos', with C2, C4 (emic's ranges), A1 and A4. Lorenz display: eight bins of 6 creators from the lowest rate up, with the placebo and homogeneous-Poisson bands. r3-P50 / r4-P18: the placebo-adjusted log ratio of page over speech rates per set (margin 0.223; 'page denser than speech', 'speech denser than page', 'within the margin (B)', 'undetermined'), with C2, C4, A1, A4 and the link-bound row; by control tercile (16 creators each, by rule). Placement, never routing. The 71: phi only (described), printed only where main prints the 23's phi and the 23's part does not hold 1 to 4 carriers (decision 166).
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+entry,row,status,estimate_48,band_5,band_95,c2,c4,a1,a4,reading_48,monte_carlo_spread,estimate_71_described,note
+r3-P49,"control set (L05 pooled, CR-A left out)",computed,2.879,0.329,2.329,undetermined (term-dependent),undetermined at unknown precision,outside the band (above),outside the band (above),undetermined (term-dependent),5%: 0.299 to 0.406; 95%: 1.707 to 2.848; 5 of 10 same reading,2.969,
+r3-P49 Lorenz,control set: bin edge at 6 creators,display,0.0,0.0,0.003,,,,,Poisson null band 0.042 to 0.074,,,
+r3-P49 Lorenz,control set: bin edge at 12 creators,display,0.0,0.0,0.039,,,,,Poisson null band 0.123 to 0.168,,,
+r3-P49 Lorenz,control set: bin edge at 18 creators,display,0.006,0.026,0.099,,,,,Poisson null band 0.224 to 0.276,,,
+r3-P49 Lorenz,control set: bin edge at 24 creators,display,0.024,0.079,0.189,,,,,Poisson null band 0.34 to 0.392,,,
+r3-P49 Lorenz,control set: bin edge at 30 creators,display,0.051,0.155,0.304,,,,,Poisson null band 0.471 to 0.522,,,
+r3-P49 Lorenz,control set: bin edge at 36 creators,display,0.111,0.262,0.452,,,,,Poisson null band 0.61 to 0.661,,,
+r3-P49 Lorenz,control set: bin edge at 42 creators,display,0.33,0.409,0.656,,,,,Poisson null band 0.777 to 0.817,,,
+r3-P49 Lorenz,control set: bin edge at 48 creators,display,1.0,1.0,1.0,,,,,Poisson null band 1.0 to 1.0,,,
+r3-P49,shift set (L06 SHIFT),computed,0.897,0.105,1.035,undetermined (term-dependent),undetermined at unknown precision,no excess over matched placebos,no excess over matched placebos,undetermined (term-dependent),5%: 0.09 to 0.115; 95%: 0.804 to 1.189; 10 of 10 same reading,0.735,
+r3-P49 Lorenz,shift set: bin edge at 6 creators,display,0.009,0.002,0.036,,,,,Poisson null band 0.055 to 0.083,,,
+r3-P49 Lorenz,shift set: bin edge at 12 creators,display,0.027,0.037,0.095,,,,,Poisson null band 0.148 to 0.184,,,
+r3-P49 Lorenz,shift set: bin edge at 18 creators,display,0.066,0.096,0.177,,,,,Poisson null band 0.254 to 0.296,,,
+r3-P49 Lorenz,shift set: bin edge at 24 creators,display,0.12,0.169,0.282,,,,,Poisson null band 0.372 to 0.417,,,
+r3-P49 Lorenz,shift set: bin edge at 30 creators,display,0.203,0.269,0.404,,,,,Poisson null band 0.501 to 0.545,,,
+r3-P49 Lorenz,shift set: bin edge at 36 creators,display,0.328,0.392,0.554,,,,,Poisson null band 0.641 to 0.68,,,
+r3-P49 Lorenz,shift set: bin edge at 42 creators,display,0.542,0.567,0.742,,,,,Poisson null band 0.797 to 0.829,,,
+r3-P49 Lorenz,shift set: bin edge at 48 creators,display,1.0,1.0,1.0,,,,,Poisson null band 1.0 to 1.0,,,
+r3-P50,"control (L05 pooled, CR-A left out)",computed,0.353,-1.08,1.898,no single term decides,same reading at every precision value,undetermined,undetermined,undetermined,5%: -1.354 to -0.87; 95%: 1.706 to 2.125; 10 of 10 same reading,,
+r3-P50,SHIFT (L06),computed,2.935,1.615,4.504,no single term decides,same reading at every precision value,page denser than speech,page denser than speech,page denser than speech,5%: 1.315 to 1.654; 95%: 4.21 to 4.794; 10 of 10 same reading,,
+r3-P50,DISSEM (L12),not computed (band undefined),,,,,,,,,,,
+r3-P50,IDIOM (L12),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50,SUPP-PLATFORM (L13),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50,SUPP-HIDDEN (L13),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,"tercile 1: control (L05 pooled, CR-A left out)",not printed (fewer than 5 creators carry the estimate),,,,,,,,,,,
+r3-P50 by control tercile,tercile 1: SHIFT (L06),computed,2.683,1.056,4.356,undetermined (term-dependent),same reading at every precision value,,,undetermined (term-dependent),,,
+r3-P50 by control tercile,tercile 1: DISSEM (L12),not printed (fewer than 5 creators carry the estimate),,,,,,,,,,,
+r3-P50 by control tercile,tercile 1: IDIOM (L12),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,tercile 1: SUPP-PLATFORM (L13),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,tercile 1: SUPP-HIDDEN (L13),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,"tercile 2: control (L05 pooled, CR-A left out)",not printed (fewer than 5 creators carry the estimate),,,,,,,,,,,
+r3-P50 by control tercile,tercile 2: SHIFT (L06),computed,3.091,1.562,4.802,no single term decides,same reading at every precision value,,,not separable from the ledger's coded families,,,
+r3-P50 by control tercile,tercile 2: DISSEM (L12),not printed (fewer than 5 creators carry the estimate),,,,,,,,,,,
+r3-P50 by control tercile,tercile 2: IDIOM (L12),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,tercile 2: SUPP-PLATFORM (L13),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,tercile 2: SUPP-HIDDEN (L13),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,"tercile 3: control (L05 pooled, CR-A left out)",computed,0.009,-1.741,1.82,no single term decides,same reading at every precision value,,,undetermined,,,
+r3-P50 by control tercile,tercile 3: SHIFT (L06),computed,3.088,1.407,4.475,no single term decides,same reading at every precision value,,,not separable from the ledger's coded families,,,
+r3-P50 by control tercile,tercile 3: DISSEM (L12),not printed (fewer than 5 creators carry the estimate),,,,,,,,,,,
+r3-P50 by control tercile,tercile 3: IDIOM (L12),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,tercile 3: SUPP-PLATFORM (L13),not computed (too few terms or creators),,,,,,,,,,,
+r3-P50 by control tercile,tercile 3: SUPP-HIDDEN (L13),not computed (too few terms or creators),,,,,,,,,,,

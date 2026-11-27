@@ -1,0 +1,14 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# T-Q02-2: the multiplicity disclosure (registration 2.7). T-Q02-3: the balance of the 48 against the 23 on roster vintage and audience band (addendum 1, F2): not printed (privacy rule).
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+table,row,value
+T-Q02-2,the third panel's primaries,56 (about 2.8 readings beyond a margin expected at half-margin effects)
+T-Q02-2,the fourth panel's primaries that can read beyond a margin or band (K),33
+T-Q02-2,expected readings beyond a margin at half the margin (0.05 x K),about 1.65
+T-Q02-3,roster vintage,not printed (privacy rule)
+T-Q02-3,audience band,not printed (privacy rule)

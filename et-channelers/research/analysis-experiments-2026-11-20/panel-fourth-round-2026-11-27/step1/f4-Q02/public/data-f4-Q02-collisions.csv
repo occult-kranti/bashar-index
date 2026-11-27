@@ -1,0 +1,50 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# A4 on the 48: the creator-balanced share of each list's count carried by tokens that also count on another list (cells of 5 or more contributing creators; 90% creator-bootstrap interval, 1,000 draws), the ledger coder's row, and the collision rule's reprints (shares above 0.20: both lists reprinted without the shared hits; the step-1 statistics, the audience contrast and phi, are reprinted; the published reprint used the voice contrast).
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+list,other,share,interval_5,interval_95,rule
+L01,L05,0.012,0.005,0.02,
+L01,L06,0.088,0.059,0.124,
+L01,L07,0.002,0.001,0.004,
+L01,L09,0.007,0.002,0.012,
+L01,L15,not printed (privacy rule),,,
+L05,L01,0.182,0.096,0.275,
+L06,L01,0.8,0.721,0.857,above 0.20: both reprinted without the shared hits
+L06,L08,0.056,0.033,0.091,
+L06,L09,0.023,0.011,0.04,
+L07,L01,0.027,0.009,0.049,
+L07,L05,not printed (privacy rule),,,
+L09,L01,0.0,0.0,0.001,
+L09,L06,0.0,0.0,0.0,
+L09,L08,0.0,0.0,0.0,
+L09,L10,0.002,0.001,0.004,
+L09,L11,not printed (privacy rule),,,
+L09,L12,not printed (privacy rule),,,
+L09,L14,0.001,0.001,0.002,
+L10,L09,0.208,0.106,0.284,above 0.20: both reprinted without the shared hits
+L11,L09,not printed (privacy rule),,,
+L12,L09,not printed (privacy rule),,,
+L14,L09,0.087,0.048,0.142,
+L15,L01,not printed (privacy rule),,,
+L01,the ledger coder's families (public collision table),0.383,,,
+L01-S01,the ledger coder's families (public collision table),not printed (privacy rule),,,
+L03,the ledger coder's families (public collision table),0.775,,,
+L05,the ledger coder's families (public collision table),0.212,,,
+L06,the ledger coder's families (public collision table),0.936,,,
+L07,the ledger coder's families (public collision table),0.458,,,
+L08,the ledger coder's families (public collision table),not printed (privacy rule),,,
+L09,the ledger coder's families (public collision table),not printed (privacy rule),,,
+L10,the ledger coder's families (public collision table),not printed (privacy rule),,,
+L11,the ledger coder's families (public collision table),not printed (privacy rule),,,
+L12,the ledger coder's families (public collision table),0.041,,,
+L13,the ledger coder's families (public collision table),0.099,,,
+L14,the ledger coder's families (public collision table),0.039,,,
+L15,the ledger coder's families (public collision table),not printed (privacy rule),,,
+L06,reprinted without the hits shared with L01,audience contrast -0.215 (with: 0.41); phi 0.389 (with: 0.897),,,margin side without: inside
+L01,reprinted without the hits shared with L06,audience contrast -0.342 (with: -0.254); phi 0.908 (with: 0.76),,,margin side without: beyond (-)
+L10,reprinted without the hits shared with L09,audience contrast 0.05 (with: -0.055); phi 1.046 (with: 1.242),,,margin side without: inside
+L09,reprinted without the hits shared with L10,audience contrast -0.01 (with: -0.011); phi 0.111 (with: 0.11),,,margin side without: inside

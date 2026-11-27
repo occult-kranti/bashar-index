@@ -1,0 +1,19 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-C3a and T-C3a, outcome-free, written and hashed before any contrast was computed: per year class, the creators naming one or more passed years of the class (bands of the 48; the 71 described) and the passed mentions (bands). Year mentions: r3-P40's published rule (a four-digit year from 1800 to 2099 after the shared matcher's spoken-year normalisation, spoken as digits or words; digits with a separator are not years). Passed: before the recording's upload year. Corrected class 3 and T-C3a's second part match on the voice side, a model-coded label: they are moved to step 2 (decision 166). Retrospective talk by creators still uploading: no creator here was observed when these dates passed.
+# Made 2026-11-27T19:57:40Z (UTC, from the clock) by the step-1 publication code.
+year_class,status,creators_naming_48,passed_mentions_48,creators_naming_71_described
+class 1 (primary target year 2012),computed,10 to 19 of the 48,10 to 49,20 to 29 of the 71
+class 1 (secondary target years),computed,10 to 19 of the 48,10 to 49,20 to 29 of the 71
+"class 2, family A (2001, 2008)",computed,5 to 9 of the 48,10 to 49,10 to 19 of the 71
+"class 2, family B (2020)",computed,20 to 29 of the 48,50 to 99,30 to 39 of the 71
+"reference years (1844, 1954), described only",computed,fewer than 5 of the 48,fewer than 10,fewer than 5 of the 71
+corrected class 3 (decade band),moved to step 2 (label-based; decision 166),,,
+biographical reference rows,step 2 (they read TIME's model-coded roles),,,
+"T-C3a part 2 (addendum 1, F1): every class-1 target's admissible class-3 year",moved to step 2 (label-based; decision 166),,,
+"T-C3a part 2 (addendum 1, F1): den-1's band",moved to step 2 (label-based; decision 166),,,
+"T-C3a part 2 (addendum 1, F1): et-1's 3-year band",moved to step 2 (label-based; decision 166),,,
