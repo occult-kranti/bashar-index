@@ -4,8 +4,8 @@
 the ten registered hypotheses with their registered tests (first round: from the public results file),
 the 28 designed experiments, the exploratory release with its headline figures, the third-round panel's programme
 (its deposits, its corrections and the published entries of steps 1 to 5 and of the audio pass, with the audio addendum),
-the new-files round (a descriptive persistence check on new recordings of the seen creators), and the first,
-provisional findings.
+the new-files round (a descriptive persistence check on new recordings of the seen creators), the fourth panel's
+programme, and the first, provisional findings.
 It reads the CSV files in `data/` in the browser; d3 7.9.0 is loaded from cdnjs, as on the prediction page.
 
 Rules: counts, distributions and cohort-level estimates only. No file, chart or table has a row, mark or label
@@ -47,7 +47,7 @@ registered tests.
 The same tab compares the two recognizer models on 36 recordings transcribed by both, and links to the corrected
 first-round results file (corrections of 25 and 26 November 2026; no verdict changes).
 The tab "Exploratory round" shows the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10)
-from its public files only, read from the repository's main branch (84dcf51): the
+from its public files only, read from the repository's main branch (3e141f8): the
 outputs by status and by plan section (the status table's rows, counted; counts of outputs, never of creators), links to
 the release, its status table and its gallery, the third-round panel's programme, rulings and step-0 deposits, and a
 small set of headline figures picked by a printed rule: every released gallery figure whose place includes both M (the paper's main text) and W (this dashboard), read from the gallery's manifest.json, in the gallery's order. The figures in `figures/` are
@@ -56,7 +56,7 @@ rest on a method that the calibration entry (CAL) did not test for its estimate 
 was chosen after the results were seen (the lead's step-1 decision 27a); r3-P33 prints a selection rule (S1 to S12)
 for the release's headline descriptions and audits them.
 The tab "Third-round panel" shows the panel programme from its public files on main
-(84dcf51): step 0's deposits 1 and 2; step 1, published,
+(3e141f8): step 0's deposits 1 and 2; step 1, published,
 as a table of its 17 entries with each entry's question and its reading
 in the entry's own words, copied from the step-1 index (no entry is picked as a headline, and nothing the index withholds
 is added; square brackets mark the page's own words where the index uses a word the page does not); r3-P20's registered
@@ -76,10 +76,15 @@ from its public files on main: the index README's summary in its own words, its 
 against the data files) and the 102 rows of the five group data files, cell for cell and in their
 order (published value, new value with its 90% interval, margin, reading; withheld rows keep their label "not computed or
 not printed"). Each group's figure is linked on main, not copied.
+The tab "Fourth panel" shows the fourth panel's programme of 27 November 2026 (PR #127; exploratory; not a test of
+H1-H10) from its public files on main: its 5 tier-A layered research questions with their main
+questions, its cards f4-Q01 to f4-Q20 (21 cards; f4-Q05 has two) with each card's class as printed
+and a status in the page's words (registered, not run; for f4-Q07 and f4-Q19, their registration deposited in deposit 5a,
+PR #129), and its vote table as printed.
 Every view carries the sentence: "No measure in this study can tell whether a non-human source speaks; every measure
 describes the speech in these recordings and how the creators present it."
 The budget card shows the spend committed for model calls, read from the spend ledger when the page was built
-(2026-11-27T06:57:45Z), against the owner's hard stop, with the warning level.
+(2026-11-27T10:39:11Z), against the owner's hard stop, with the warning level.
 
 The page and its data are built outside the repository from the run's private records, by the same script
-that feeds the hosted copy of this dashboard. Built 2026-11-27T06:57:45Z.
+that feeds the hosted copy of this dashboard. Built 2026-11-27T10:39:11Z.
