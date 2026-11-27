@@ -1,0 +1,50 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# r3-P43's other rows on the 48 (U6): the balances' status (their title-profile tests are not computed under decision 162 and their voice tests are step 2; et B2's level test needs its sides computed), the survival strip (read 'dated order' only outside the date-permutation and placebo bands), each dated layer's users as a band of the 48 with the placebo share band, r4-P26 (a) co-presence, the stacked columns and et's groups on all speech. The speech draws on vocabulary first current in a period, never descent.
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+row_kind,row,status,value,bands,reading_48,note
+balance,occult B1 (occult),not computed,,,,"title-profile test: decision 162 (creator groups from model-coded title labels); voice test: step 2 (reads voice, ask, forecast or TIME-role labels)"
+balance,occult B2 (occult),not computed,,,,"title-profile test: decision 162 (creator groups from model-coded title labels); voice test: step 2 (reads voice, ask, forecast or TIME-role labels)"
+balance,occult B3 (occult),not computed (too few terms or creators),,,,
+balance,et B1 (et),not computed (too few terms or creators),,,,
+balance,et B2 (et),not computed (too few terms or creators),,,,
+balance,et B3 (et),not computed (too few terms or creators),,,,
+survival strip,rank correlation of entry year with the share of the 48 using each computed dated layer,computed,7 layers,date-permutation band -0.688 to 0.698; placebo band -0.582 to -0.064 (the rank correlation itself is not printed: privacy rule),no dated order beyond the null,"Monte Carlo: placebo band 5% from -0.582 to -0.569, 95% from -0.145 to -0.053; 10 of 10 same reading"
+dated layer,S01 (first year 1830),not computed (too few terms or creators),,,,
+dated layer,S02 (first year 1848),computed,30 to 39 of the 48,placebo share band 0.688 to 0.896,,
+dated layer,S03 (first year 1875),computed,40 or more of the 48,placebo share band 0.875 to 1.0,,
+dated layer,S04 (first year 1875),computed,40 or more of the 48,placebo share band 0.938 to 1.0,,
+dated layer,S05 (first year 1934),computed,20 to 29 of the 48,placebo share band 0.521 to 0.708,,
+dated layer,S06 (first year 1947),computed,20 to 29 of the 48,placebo share band 0.625 to 0.875,,
+dated layer,S07 (first year 1966),not computed (too few terms or creators),,,,
+dated layer,S08 (first year 1971),computed,30 to 39 of the 48,placebo share band 0.728 to 0.938,,
+dated layer,S09 (first year 1975),not computed (too few terms or creators),,,,
+dated layer,S10a (first year 2005),not computed (too few terms or creators),,,,
+dated layer,S10b (first year 2017),not computed (too few terms or creators),,,,
+dated layer,S11 (first year 2001),not computed (too few terms or creators),,,,
+dated layer,S13 (first year 1934),computed,20 to 29 of the 48,placebo share band 0.458 to 0.646,,
+dated layer,S15 (first year 1990),not computed until r3-P54 (waits for the owner's ethics act),,,,
+r4-P26 (a) co-presence,mean number of parts used per creator (all 12 parts),computed,5.042,placebo band 5.02 to 5.708; pseudo-strata band 4.749 to 5.918,no excess co-presence over placebos,
+r4-P26 (a) co-presence,mean number of parts used per creator (computed parts only),computed,2.667,placebo band 2.582 to 2.918; pseudo-strata band 1.52 to 2.833,no excess co-presence over placebos,
+r4-P26 (b) recording-level contrast,claimed against own side,"step 2 (reads voice, ask, forecast or TIME-role labels)",,,,
+stacked column (all speech),R1,computed,1.3,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+stacked column (all speech),RNT,computed,1.601,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+stacked column (all speech),R2,computed,1.079,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+stacked column (all speech),R3,computed,0.908,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+stacked column (all speech),"thin composition parts, pooled",computed,4.852,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+stacked column (all speech),end-time vocabulary (S01),not computed (too few terms or creators),,,,
+stacked column (all speech),devotional names (S14),computed,7.676,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+stacked column (all speech),baseline (et's R0),computed,5.584,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+stacked column (all speech),imported F1: post-2016 political fusion (S10b),not computed (too few terms or creators),,,,
+stacked column (all speech),contested column,computed,5.469,"rate per 10,000 tokens, creator-balanced",,claimed and own voice: step 2
+et's group (display),G1,computed,3.688,"rate per 10,000 tokens, creator-balanced",,
+et's group (display),G2,not computed (too few terms or creators),,,,
+et's group (display),G3,not computed (too few terms or creators),,,,
+et's group (display),G4,not computed (too few terms or creators),,,,
+et's group (display),G5,not computed (too few terms or creators),,,,
+et's group (display),G6,not computed (too few terms or creators),,,,
+et's group (display),G7,not computed (too few terms or creators),,,,

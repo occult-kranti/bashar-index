@@ -1,0 +1,44 @@
+{
+ "entry": "f4-Q02",
+ "step": "fourth panel, step 1 (registration 3.3): the label-free list counts on the 48",
+ "status": "Exploratory; not a test of H1-H10. Final version of step 1 (the lead's decision 166).",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tier": "A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.",
+ "made_utc": "2026-11-27T19:59:59Z",
+ "prespecification": {
+  "file": "private/prespec.md (kept privately)",
+  "sha256": "8e27f306ea085a057350dfbebb94e888df01578bf539ec9122c38e2b66ae874c",
+  "hashed_utc": "2026-11-27T18:01:07Z"
+ },
+ "amendments": {
+  "prespec-amendment-1.md": "acb2ec9bca952dce090b570097a55e198d867d5656ef6a0041514f371a998f17"
+ },
+ "model_or_api_calls": 0,
+ "commits": 0,
+ "hold_out_contacts": 0,
+ "files": {
+  "README.md": "3d5d5dfbe78bb403b3de76a4d688e8aa73fad401c59966faad0ee9630a5d1a75",
+  "contacts.md": "cba118ec312797d7a216d6963ec97cef5ae0530a34a976a83597bc9260fe6cd3",
+  "public/data-f4-Q02-accounts.csv": "218810c9f349639cb5a5b901dd111674fb62ec4372137ebb56c4805068e07c77",
+  "public/data-f4-Q02-classes.csv": "5739dd060e76789e2a5e54e1bfeb065a8da14f6cdf65701e04d0108b6319cd1a",
+  "public/data-f4-Q02-collisions.csv": "99c5e18d681bdc41ce56413413182a92bcb01e06a9ce462d26039d9730edb78d",
+  "public/data-f4-Q02-composition.csv": "39c4a8355a27f3d935dac67411ebf7379944d4e96b8a3d075ebe9d605d5b163d",
+  "public/data-f4-Q02-concentration-page.csv": "5380e5cc7dd8285d350ce8fd573f2b266944598d11a476701b02e2953a46fb3d",
+  "public/data-f4-Q02-coverage.csv": "b65ce82c610cb4e0dfc12c22b4f2b9ed3a0527498c4da737d2c28f355a52d548",
+  "public/data-f4-Q02-layers.csv": "c2cfce42a30de86651688e8a6e87ba9c8bae17b2ec8c0b957de4ac52c48ace74",
+  "public/data-f4-Q02-lists.csv": "f85ca98449c60f4ff9d84be0cbe1cb001ea0edc72f38aee3f8dc13f2caf39ffd",
+  "public/data-f4-Q02-multiplicity-balance.csv": "f2b381c6c92489ab688a8dbcddbf89e6bf0e16db260437b176a1e4d0df49c157",
+  "public/data-f4-Q02-pairs.csv": "b702fe906b9d9a7de6425d167d04a8af36e00415f9313a2222ca50495e90361d",
+  "public/data-f4-Q02-reruns.csv": "04f2958447b18f55617a4bb23cae0f74eaa9cd3a32be04f1546972a4f736c4ca",
+  "public/fig-f4-Q02-coverage.pdf": "f93ba9ed95af06364263f369974061d5d2bad6537210a4d99891a662d72fd82e",
+  "public/fig-f4-Q02-coverage.png": "b1e1f6c6bb1a4d0e83011adf3567431c9bbcc3035ea7eb3c63f3f5f54d1d20a3",
+  "public/fig-f4-Q02-dated-layers.pdf": "d91d8b81655d41a5042c8553a0fe209e9f9a6d26a3ccd7a4ca2ca4616ec2e6ef",
+  "public/fig-f4-Q02-dated-layers.png": "aca5eafdf2a2e3454793bc335854d6b57eba6e0beb8138769a3ab56cc253a7f1",
+  "public/fig-f4-Q02-forest.pdf": "acbab470d577c11d91eb60fd5b272173ace087b84ebb5dd24804cf5dd4f846c7",
+  "public/fig-f4-Q02-forest.png": "d6e6c9d26e5287090a35c0b500d3eb6024ceedb042b66590efd5804eb3fb0783",
+  "public/fig-f4-Q02-pairs.pdf": "f5e7ba10913845b9bfe64ccbb54b85aa8fbf2630b35fcdc102a4a1c05b4399f5",
+  "public/fig-f4-Q02-pairs.png": "ea48f022dfc734ed7967de534bea27996aeb1c7b31703eaff00563bfd5e78c47",
+  "public/fig-f4-Q02-second-description.pdf": "2c426d06e50630dbbbc96f0a77f133158d7b322d26808ef6cf3628582477e004",
+  "public/fig-f4-Q02-second-description.png": "02d523500a7bef772c5ed4b6765296a587deb0aef04676df494601a98621529a"
+ }
+}

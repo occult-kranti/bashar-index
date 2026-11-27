@@ -1,0 +1,36 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-C4a: the band of creators with any stored upload on or before each year (upload calendars only; the 48 and the 71 described). Retrospective talk by creators still uploading: no creator here was observed when these dates passed.
+# Made 2026-11-27T19:57:40Z (UTC, from the clock) by the step-1 publication code.
+year,creators_with_an_upload_by_then_48,creators_with_an_upload_by_then_71
+2000,fewer than 5 of the 48,fewer than 5 of the 71
+2001,fewer than 5 of the 48,fewer than 5 of the 71
+2002,fewer than 5 of the 48,fewer than 5 of the 71
+2003,fewer than 5 of the 48,fewer than 5 of the 71
+2004,fewer than 5 of the 48,fewer than 5 of the 71
+2005,fewer than 5 of the 48,fewer than 5 of the 71
+2006,fewer than 5 of the 48,fewer than 5 of the 71
+2007,fewer than 5 of the 48,fewer than 5 of the 71
+2008,fewer than 5 of the 48,fewer than 5 of the 71
+2009,fewer than 5 of the 48,fewer than 5 of the 71
+2010,fewer than 5 of the 48,fewer than 5 of the 71
+2011,fewer than 5 of the 48,fewer than 5 of the 71
+2012,fewer than 5 of the 48,fewer than 5 of the 71
+2013,fewer than 5 of the 48,fewer than 5 of the 71
+2014,fewer than 5 of the 48,fewer than 5 of the 71
+2015,fewer than 5 of the 48,fewer than 5 of the 71
+2016,fewer than 5 of the 48,fewer than 5 of the 71
+2017,fewer than 5 of the 48,fewer than 5 of the 71
+2018,fewer than 5 of the 48,fewer than 5 of the 71
+2019,fewer than 5 of the 48,fewer than 5 of the 71
+2020,fewer than 5 of the 48,fewer than 5 of the 71
+2021,fewer than 5 of the 48,5 to 9 of the 71
+2022,fewer than 5 of the 48,5 to 9 of the 71
+2023,fewer than 5 of the 48,5 to 9 of the 71
+2024,5 to 9 of the 48,10 to 19 of the 71
+2025,10 to 19 of the 48,20 to 29 of the 71
+2026,all 48,all 71

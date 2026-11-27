@@ -1,0 +1,14 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-B3b, printed before any other row: per generation family, the creator-balanced share of the family's matched tokens that are flagged forms (literal platform senses, such as a recording or a broadcast of the creator's own channel), over creators with one or more matched token of the family. Flagged forms are never counted in any other row. 'channel' is never counted. The 71's shares are not printed (decision 166): main prints no 23-creator value, so the 71's share beside the 48's would give the 23's part.
+# Made 2026-11-27T19:34:25Z (UTC, from the clock) by the step-1 publication code.
+family,generation,status,flagged_share_48,flagged_share_71_described,reference_23
+G1-WIRE,wire and signal,no flagged form on the list,,,
+G2-RADIO,radio,computed,0.169,not printed (decision 166: a withheld part could be recovered from it),no published 23-creator value (the list is new in deposit 5)
+G3-RECORDING,recording and playback,computed,0.534,not printed (decision 166: a withheld part could be recovered from it),no published 23-creator value (the list is new in deposit 5)
+G4-SCREEN,screen and programme,no flagged form on the list,,,
+G5-NETWORK,computing and network,computed,0.177,not printed (decision 166: a withheld part could be recovered from it),no published 23-creator value (the list is new in deposit 5)

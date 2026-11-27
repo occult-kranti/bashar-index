@@ -1,0 +1,12 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-B2c (overall; by voice: step 2): the co-use phi of INVOKED and REJECT within 30-token windows against matched placebo pairs, computed only if both families clear the thin rule. P000r (F-B4a, T-B4a): FED-STRAND against ADV-RESIDUAL, described against the blocked curveball null and the placebo band, never scored, 'residual, not the decisive pair', computed only if both strands clear the thin rule. P000: not computed until r3-P54.
+# Made 2026-11-27T19:35:17Z (UTC, from the clock) by the step-1 publication code.
+row,status_48,reading_48,note
+F-B2c: co-use of invoked authority and rejection of authority,not computed (too few terms or creators),,REJECT is thin on the 48
+P000r: federation strand against the residual adversarial side,not computed (too few terms or creators),,"residual, not the decisive pair"
+P000: the decisive pair,not computed until r3-P54 (waits for the owner's ethics act),,

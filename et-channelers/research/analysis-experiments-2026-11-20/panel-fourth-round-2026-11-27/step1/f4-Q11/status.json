@@ -1,0 +1,36 @@
+{
+ "entry": "f4-Q11",
+ "step": "fourth panel, step 1 (registration 3.3): the label-free list counts on the 48",
+ "status": "Exploratory; not a test of H1-H10. Final version of step 1 (the lead's decision 166).",
+ "agnosticism": "No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.",
+ "tier": "A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.",
+ "made_utc": "2026-11-27T19:59:59Z",
+ "prespecification": {
+  "file": "private/prespec.md (kept privately)",
+  "sha256": "51663fc370fa538b1314f23a5cc05df31a35b8e6128b5bec11e8917cb1a07b89",
+  "hashed_utc": "2026-11-27T18:22:41Z"
+ },
+ "amendments": {
+  "prespec-amendment-1.md": "9022bbd4d590928ab7d75206bb24f5d7ac284261783466cf82c5f14bb5346a11"
+ },
+ "model_or_api_calls": 0,
+ "commits": 0,
+ "hold_out_contacts": 0,
+ "files": {
+  "README.md": "43045a1f021c54483a74df0e03e01528be2780435819c1591557594d7590465b",
+  "contacts.md": "b184b370f4329be7cb28321cc030a326793def51875a7621d3d7f9aa5c9fc41a",
+  "public/data-f4-Q11-accounts.csv": "a7d6db33e2ac2112870a7dbcc88802166ada326e8d69fb197e55407119139c7f",
+  "public/data-f4-Q11-composition.csv": "d880b3033a9342b79f162bdf9bd80936f9476983d5cb6f9f10a89c86813ba376",
+  "public/data-f4-Q11-date-table.csv": "2ee2331c08479d54994ca540d39be3a701e6165d1392b3910f342f76883748bc",
+  "public/data-f4-Q11-generations.csv": "e68ff029259120e72819bc81c0a95c20c5f1a8bb358a92d50031a39c83dbb420",
+  "public/data-f4-Q11-literal-platform.csv": "77e91a9d860f3103a300c533c5cd7d0de39db115067f5a4a911c93dee7464a6b",
+  "public/data-f4-Q11-near-act.csv": "222616ad176502c09ca4f8371150361a0fe4f4a16a700e868fef35d60338b9a5",
+  "public/data-f4-Q11-survival.csv": "ef0f4ae1b9889547ed2103f90d08dfeeba5bb3f04e7b7d461e901815a6675846",
+  "public/fig-f4-Q11-dated-families.pdf": "90233146859bdd835550e6a3f8933eae56eadf984b1105157cc123ffeb19847f",
+  "public/fig-f4-Q11-dated-families.png": "e585fa3827c3e8958c51ee555da68af51e9e5e60eb3ec2fec38d59d0e9667692",
+  "public/fig-f4-Q11-literal-platform.pdf": "58c37c3ca88a320c25493099e932a5b91786e73db9f47f6fa5e269f349738976",
+  "public/fig-f4-Q11-literal-platform.png": "8a84858ed5765b85c4985dd016abebe110baec10c5339a598e89dbfd007addcb",
+  "public/fig-f4-Q11-near-act.pdf": "f8475f13e677aadcb4655314e34865c4689a28b8356e43356d901f7c961bc7bb",
+  "public/fig-f4-Q11-near-act.png": "02815e1b5c192531b0c5f9b6b1bb4f790ede96c9e3de68dbf00c40af279dc5cf"
+ }
+}

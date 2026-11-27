@@ -1,0 +1,14 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-Q11-2: per computed family, the creator-balanced share of its counted tokens within 30 tokens of a self-described mode cue (deposit 3's L10, first pass), against matched windows of the same recordings (the same number of 61-token windows at random positions, 200 draws). Creators with one or more counted token of the family and one or more mode cue. Paired difference near minus matched: creator-balanced mean, 90% t interval (fixed; interval class not calibrated by r3-P30); share-difference margin 5 points; no direction named.
+# Made 2026-11-27T19:34:25Z (UTC, from the clock) by the step-1 publication code.
+family,generation,status,creators_48,near_share,near_5,near_95,matched_share,matched_5,matched_95,difference,difference_5,difference_95,reading
+G1-WIRE,wire and signal,computed,30 to 39 of the 48,0.093,0.036,0.149,0.026,0.017,0.035,0.067,0.014,0.12,undetermined
+G2-RADIO,radio,computed,40 or more of the 48,0.033,0.019,0.046,0.022,0.015,0.029,0.011,0.0,0.022,equal within the margin (accounted for)
+G3-RECORDING,recording and playback,computed,30 to 39 of the 48,0.044,0.002,0.087,0.015,0.007,0.022,0.03,-0.01,0.069,undetermined
+G4-SCREEN,screen and programme,not computed (too few terms or creators),,,,,,,,,,,
+G5-NETWORK,computing and network,computed,40 or more of the 48,0.04,0.017,0.062,0.023,0.014,0.033,0.016,-0.002,0.035,equal within the margin (accounted for)

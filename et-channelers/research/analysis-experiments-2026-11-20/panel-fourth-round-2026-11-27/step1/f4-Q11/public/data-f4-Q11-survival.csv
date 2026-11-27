@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-B3a: dated families only (G2 'undated', not placed). Per computed dated family: creators using it as a band of the 48 and the central 90% of the same share over the matched placebo sets. The rank correlation needs 5 or more computed dated families (r3-P42's rule): with at most four it is not computed, and the strip is described.
+# Made 2026-11-27T19:34:25Z (UTC, from the clock) by the step-1 publication code.
+family,generation,first_currency,status,creators_using_48,placebo_share_band_5,placebo_share_band_95
+G1-WIRE,wire and signal,1848,computed,30 to 39 of the 48,0.708,0.938
+G2-RADIO,radio,undated,undated (not placed),,,
+G3-RECORDING,recording and playback,1877,computed,30 to 39 of the 48,0.541,0.833
+G4-SCREEN,screen and programme,1950s,not computed (too few terms or creators),,,
+G5-NETWORK,computing and network,late 1980s,computed,40 or more of the 48,0.958,1.0
+rank test,entry date against the share of creators using the family,,not computed (fewer than 5 computed dated families),,,

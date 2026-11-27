@@ -1,0 +1,85 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-Q02-1 and T-B3b: the thin-rule status of every deposit-3 list and class on the published 23 (main, r3-P42's classes file), on the 48 (primary) and on the 71 (described only). The thin rule as addendum 2d corrects it: fewer than 3 register rows (L01's layers) or 3 expanded forms (elsewhere) used by 5 or more creators reads 'not computed (too few terms or creators)'. L04 is read on page titles, L08 inside its base units, L09 and L15 inside their units and windows. 'Thin on a second, disjoint set' is the description where a class stays thin on the 48.
+# Made 2026-11-27T19:34:44Z (UTC, from the clock) by the step-1 publication code.
+list,entry,class_or_layer,status_23_published,status_48,status_71_described,coverage
+L01,r3-P43 / r4-P26,S02,computed,computed,computed,computed on the 23 (published) and on the 48
+L01,r3-P43 / r4-P26,S03,computed,computed,computed,computed on the 23 (published) and on the 48
+L01,r3-P43 / r4-P26,S04,computed,computed,computed,computed on the 23 (published) and on the 48
+L01,r3-P43 / r4-P26,S05,not computed (too few terms or creators),computed,computed,computed on the 48 only
+L01,r3-P43 / r4-P26,S06,computed,computed,computed,computed on the 23 (published) and on the 48
+L01,r3-P43 / r4-P26,S07,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L01,r3-P43 / r4-P26,S08,not computed (too few terms or creators),computed,computed,computed on the 48 only
+L01,r3-P43 / r4-P26,S09,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L01,r3-P43 / r4-P26,S10a,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L01,r3-P43 / r4-P26,S10b,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L01,r3-P43 / r4-P26,S11,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L01,r3-P43 / r4-P26,S12,not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 on both
+L01,r3-P43 / r4-P26,S13,computed,computed,computed,computed on the 23 (published) and on the 48
+L01,r3-P43 / r4-P26,S14,computed,computed,computed,computed on the 23 (published) and on the 48
+L01,r3-P43 / r4-P26,S15,not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 on both
+L01-S01,r3-P43,S01,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L03,r3-P45,DEN,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L03,r3-P45,DIM,computed,computed,computed,computed on the 23 (published) and on the 48
+L04,r3-P46,FRANCHISE,not printed on main,not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L04,r3-P46,OPEN,not printed on main,not computed (too few terms or creators),computed,thin on both
+L05,r3-P48 / r3-P49,ADV-AMB,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L05,r3-P48 / r3-P49,ADV-NEG,not computed (too few terms or creators),computed,computed,computed on the 48 only
+L05,r3-P48 / r3-P49,BRIDGE,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L05,r3-P48 / r3-P49,CR-A,not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 (waits for the owner's ethics act),not computed until r3-P54 on both
+L05,r3-P48 / r3-P49,CR-B,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L05,r3-P48 / r3-P49,CR-C,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L05,r3-P48 / r3-P49,CR-D,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L05,r3-P48 / r3-P49,CR-E,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L06,r3-P49,SHIFT,computed,computed,computed,computed on the 23 (published) and on the 48
+L07,r3-P51 / r4-P28,CONTEST-PH,not computed (too few terms or creators),computed,computed,computed on the 48 only
+L07,r3-P51 / r4-P28,DISC-CONSC,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,DISC-INST,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,INST-CORP,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,INST-GOV,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,INST-INTL,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,INST-MEDIA,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,INST-RELIG,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,INST-SEC,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,INST-SPACE,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L07,r3-P51 / r4-P28,LEGAL,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L08,r4-P29,RES-INNER,not printed on main,not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L08,r4-P29,RES-OUTSIDE,not printed on main,not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L09,r3-P52 / r4-P12,FP-PL,not printed on main,computed,computed,computed on the 48 only
+L09,r3-P52 / r4-P12,FP-SG,not printed on main,computed,computed,computed on the 48 only
+L10,r3-P53 / r4-P30,MODE-CONSCIOUS,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L10,r3-P53 / r4-P30,MODE-DICTATION,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L10,r3-P53 / r4-P30,MODE-HIGHERSELF,computed,computed,computed,computed on the 23 (published) and on the 48
+L10,r3-P53 / r4-P30,MODE-LIGHTLANG,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L10,r3-P53 / r4-P30,MODE-READALOUD,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L10,r3-P53 / r4-P30,MODE-RECITATION,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L10,r3-P53 / r4-P30,MODE-RELAY,computed,computed,computed,computed on the 23 (published) and on the 48
+L10,r3-P53 / r4-P30,MODE-TRANCE,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L11,r3-P55,ENDORSE,computed,computed,computed,computed on the 23 (published) and on the 48
+L11,r3-P55,REF-CREATOR,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L12,r3-P56,DISSEM,computed,computed,computed,computed on the 23 (published) and on the 48
+L12,r3-P56,IDIOM,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L13,r3-P60,SUPP-HIDDEN,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L13,r3-P60,SUPP-PLATFORM,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L14,r3-P61 (a pilot),AUTHORITY-C,computed,computed,computed,computed on the 23 (published) and on the 48
+L14,r3-P61 (a pilot),COMMIT-C,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L14,r3-P61 (a pilot),COMMIT-D,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L14,r3-P61 (a pilot),DISCOUNT-C,not computed (too few terms or creators),computed,computed,computed on the 48 only
+L14,r3-P61 (a pilot),GUARANTEE-C,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L14,r3-P61 (a pilot),PRICE,computed,computed,computed,computed on the 23 (published) and on the 48
+L14,r3-P61 (a pilot),RECIP-C,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L14,r3-P61 (a pilot),RECIP-D,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L14,r3-P61 (a pilot),SCARCITY-C,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L14,r3-P61 (a pilot),SCARCITY-D,not computed (too few terms or creators),not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L14,r3-P61 (a pilot),SOCIAL-C,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L14,r3-P61 (a pilot),SOCIAL-D,computed,computed,computed,computed on the 23 (published) and on the 48
+L14,r3-P61 (a pilot),UNITY-D,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L14,r3-P61 (a pilot),URGENCY-C,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L14,r3-P61 (a pilot),URGENCY-D,not computed (too few terms or creators),not computed (too few terms or creators),computed,thin on both
+L15,r3-P40 / r4-P25,DEFER,not printed on main,not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L15,r3-P40 / r4-P25,FULFIL,not printed on main,not computed (too few terms or creators),not computed (too few terms or creators),thin on both
+L15,r3-P40 / r4-P25,SPLIT,not printed on main,not computed (too few terms or creators),not computed (too few terms or creators),thin on both

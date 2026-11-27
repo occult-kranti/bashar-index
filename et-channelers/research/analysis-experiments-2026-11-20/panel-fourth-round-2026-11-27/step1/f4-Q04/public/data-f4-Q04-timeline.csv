@@ -1,0 +1,45 @@
+# Exploratory; not a test of H1-H10.
+# Cue counts, sense not resolved, precision unknown. Model-coded labels, where any are named, are not checked by a person; agreement, never accuracy.
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+# A second description on a disjoint set: the 48 development creators (primary row); the published 23 as the published reference; the 71 described only. Never 'replication' or 'confirmed'.
+# Multiplicity: the fourth panel's primaries that can read beyond a margin or a band number K = 33; if every true effect sat at half its margin, about 0.05 x 33 = 1.65 readings beyond a margin would be expected by chance at the one-sided 5% (the third panel: 56 primaries, about 2.8).
+# Privacy: no cell, bar or plotted group rests on fewer than 5 creators; no per-creator row or point; creator counts print as bands of their set; values that could narrow a banded count are not printed; terms are named only from the deposited lists and only where 5 or more creators use them.
+# F-C3b, the memory timeline: creator-balanced passed mentions per 100,000 tokens (all voices) per listed year, and decade bins of other passed years (every passed year not listed, r3-P40's definition) and of years open at upload; 90% creator-bootstrap interval (2,000 resamples); a bar only where 5 or more creators name a year of that role in it; the published 23 from r3-P40's timeline (main); the 71 described, joined by role and year; a value is left unprinted wherever the printed values of the other sets would let a reader recover a withheld one (decision 166). Retrospective talk by creators still uploading: no creator here was observed when these dates passed.
+# Made 2026-11-27T19:57:40Z (UTC, from the clock) by the step-1 publication code.
+role,year_or_decade,status_48,rate_48,interval_5_48,interval_95_48,status_23_published,rate_23_published,rate_71_described
+class 1: prophesied target year,2012,drawn,1.253,0.56,2.158,drawn,1.581,1.359
+class 1: prophesied target year,1987,drawn,0.401,0.065,0.853,not drawn (fewer than 5 creators),,not printed (decision 166: a withheld part could be recovered from it)
+class 1: prophesied target year,1999,not drawn (fewer than 5 creators),,,,not drawn (fewer than 5 creators),,not drawn (fewer than 5 creators)
+class 1: prophesied target year,2000,drawn,0.475,0.213,0.779,drawn,0.811,0.584
+class 1: prophesied target year,2003,not drawn (fewer than 5 creators),,,,not drawn (fewer than 5 creators),,not printed (decision 166: a withheld part could be recovered from it)
+class 1: prophesied target year,2011,drawn,0.354,0.113,0.674,not drawn (fewer than 5 creators),,not printed (decision 166: a withheld part could be recovered from it)
+"class 2, family A: control year",2001,not drawn (fewer than 5 creators),,,,not drawn (fewer than 5 creators),,not printed (decision 166: a withheld part could be recovered from it)
+"class 2, family A: control year",2008,drawn,0.954,0.265,1.833,drawn,1.347,1.081
+"class 2, family B: contested control year",2020,drawn,2.294,1.355,3.406,drawn,2.268,2.286
+literature year (described only),1844,not drawn (fewer than 5 creators),,,,not drawn (fewer than 5 creators),,not drawn (fewer than 5 creators)
+literature year (described only),1954,not drawn (fewer than 5 creators),,,,not drawn (fewer than 5 creators),,not drawn (fewer than 5 creators)
+other passed years (decade),1800s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1810s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1820s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1830s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1850s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1860s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1910s,drawn,0.159,0.054,0.28,not on main,,not printed (decision 166: a withheld part could be recovered from it)
+other passed years (decade),1920s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1930s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1940s,drawn,0.501,0.06,1.17,not on main,,not printed (decision 166: a withheld part could be recovered from it)
+other passed years (decade),1950s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+other passed years (decade),1960s,not drawn (fewer than 5 creators),,,,not on main,,not printed (decision 166: a withheld part could be recovered from it)
+other passed years (decade),1970s,drawn,0.89,0.252,1.669,not on main,,not printed (decision 166: a withheld part could be recovered from it)
+other passed years (decade),1980s,drawn,0.946,0.346,1.717,not on main,,not printed (decision 166: a withheld part could be recovered from it)
+other passed years (decade),1990s,drawn,0.489,0.251,0.776,drawn,1.102,0.688
+other passed years (decade),2000s,drawn,2.623,1.587,3.775,drawn,1.565,2.281
+other passed years (decade),2010s,drawn,2.833,1.686,4.166,drawn,4.92,3.509
+other passed years (decade),2020s,drawn,1.915,1.225,2.626,drawn,4.454,2.737
+years open at upload (decade; r3-P38's side),2010s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+years open at upload (decade; r3-P38's side),2020s,drawn,10.669,6.748,15.36,drawn,19.925,13.667
+years open at upload (decade; r3-P38's side),2030s,drawn,2.96,1.46,4.69,drawn,0.848,2.276
+years open at upload (decade; r3-P38's side),2040s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+years open at upload (decade; r3-P38's side),2050s,not drawn (fewer than 5 creators),,,,not on main,,not printed (decision 166: a withheld part could be recovered from it)
+years open at upload (decade; r3-P38's side),2060s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
+years open at upload (decade; r3-P38's side),2080s,not drawn (fewer than 5 creators),,,,not on main,,not drawn (fewer than 5 creators)
