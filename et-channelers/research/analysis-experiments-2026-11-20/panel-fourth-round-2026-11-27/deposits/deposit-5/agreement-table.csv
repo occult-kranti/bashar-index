@@ -1,0 +1,15 @@
+# Exploratory; not a test of H1-H10. Fourth-round panel, deposit 5: per-list agreement between the list author and the blind second author on the families of deposit 5's new lists.
+# Agreement between two model agents, never accuracy. No form is printed: the table holds counts of forms and agreement statistics only (90% bootstrap intervals over forms).
+# No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+list,forms,families_defined,families_used,raw_agreement,differing_forms,alpha,alpha_90,ac1,ac1_90,uncertain_rows,differing_among_uncertain
+f4-Q01,439,8,8,0.968,14,0.963,"[0.947, 0.976]",0.964,"[0.948, 0.977]",49,14
+f4-Q02,57,1,1,1.000,0,not defined,not defined,not defined,not defined,5,0
+f4-Q03,11,5,1,1.000,0,not defined,not defined,1.000,"[1.000, 1.000]",2,0
+f4-Q04,76,2,2,1.000,0,1.000,"[1.000, 1.000]",1.000,"[1.000, 1.000]",2,0
+f4-Q05,89,3,3,1.000,0,1.000,"[1.000, 1.000]",1.000,"[1.000, 1.000]",2,0
+f4-Q06,460,11,11,0.998,1,0.998,"[0.993, 1.000]",0.998,"[0.993, 1.000]",25,1
+f4-Q08,468,9,9,0.989,5,0.988,"[0.978, 0.995]",0.988,"[0.978, 0.995]",40,5
+f4-Q10,9,9,1,1.000,0,not defined,not defined,1.000,"[1.000, 1.000]",2,0
+f4-Q11,160,5,5,1.000,0,1.000,"[1.000, 1.000]",1.000,"[1.000, 1.000]",13,0
+f4-Q12,407,14,14,0.963,15,0.960,"[0.944, 0.976]",0.960,"[0.944, 0.976]",32,12
+all lists,2176,67,,0.984,35,0.984,"[0.979, 0.988]",0.984,"[0.979, 0.988]",172,32
