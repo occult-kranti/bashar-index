@@ -50,7 +50,7 @@
  "shared_code_sha256": "listed in files_sha256",
  "departures": "README.md, section Departures (and ../r3-P48/README.md for the run's shared departures)",
  "files_sha256": {
-  "README.md": "bfce2a3cd8b7c586581f16056087147021c9f96156161941a2d4ae32582e8dcd",
+  "README.md": "ed835755635cbb167235a26a6beb5d95dbf595562c5354ec212c700f2da9016f",
   "code/analyse_desc.py": "3388be5ca02e4b24810ab2bf6a92488b7bd9956fa23b452c71879c9162b3f00f",
   "code/desc_common.py": "17e5184a498198bdbd55f3aba646e4d93820194bd34f5d59a4c73f0774d18acc",
   "code/extract_desc.py": "f6b309ffd57cb6f9da8061436eaa01f31bf83d2f740335609af9c8703356c947",
@@ -85,7 +85,7 @@
   "staged_utc": "2026-11-26T15:51:01Z",
   "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
   "published_sha256": {
-   "README.md": "bfce2a3cd8b7c586581f16056087147021c9f96156161941a2d4ae32582e8dcd",
+   "README.md": "ed835755635cbb167235a26a6beb5d95dbf595562c5354ec212c700f2da9016f",
    "contacts.md": "d7ac155f4592125e73b2790e0f54a54c761a3649a5caf540b1ea55859e297145",
    "prespec-hash-record.md": "5ff733b5da816ca84e1d290cf7e9fd93ccb37d2d363638583af0847e157e3d9b",
    "prespec.md": "91e15ac94af9060d85b42849e5024513fb3ec2a453eeadea2a2e716f951354a0",

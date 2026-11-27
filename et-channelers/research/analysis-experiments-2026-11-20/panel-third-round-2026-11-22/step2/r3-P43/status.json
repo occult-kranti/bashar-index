@@ -87,7 +87,7 @@
   "public/fig-r3-P43-survival.png": "c7ff382563d208cc35593fc4f54c09602effafd81f9fe528bc2e387e8d498965",
   "public/fig-r3-P43-voice.pdf": "578b715598b5bffb46fe05f38468977eba4f67a5d37fe6f9de56d1c6d81c598b",
   "public/fig-r3-P43-voice.png": "a45bc6103108aa913e55e72a56a51374b7c9ff0ae7a6f4ab6a165cbe42268841",
-  "README.md": "f55d61713d621f8486d4a88bff223686ce155482fee07052ce178b2750af05a7"
+  "README.md": "80f1d111899d706c755674bfcc6a9b61b0f1b0f4083419cf28119574b640ebda"
  },
  "note_2026-11-26_decision_70": "2026-11-26T14:07:22Z (UTC, from date -u): files changed by the lead's step-2 decision 70 (no number changed); their recorded hashes refreshed: README.md, code/publish_p4346.py, public/data-r3-P43-survival.csv, public/fig-r3-P43-survival.pdf, public/fig-r3-P43-survival.png",
  "note_2026-11-26_decision_86": "2026-11-26T15:09:31Z (UTC, from date -u): files changed by the lead's step-2 decision 86 (no number changed); their recorded hashes refreshed: README.md, code/publish_p4346.py, public/data-r3-P43-readings.csv, public/data-r3-P43-survival.csv, public/data-r3-P43-voice-composition.csv, public/fig-r3-P43-survival.pdf, public/fig-r3-P43-survival.png, public/fig-r3-P43-voice.pdf, public/fig-r3-P43-voice.png",
@@ -97,7 +97,7 @@
   "staged_utc": "2026-11-26T15:51:01Z",
   "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
   "published_sha256": {
-   "README.md": "f55d61713d621f8486d4a88bff223686ce155482fee07052ce178b2750af05a7",
+   "README.md": "80f1d111899d706c755674bfcc6a9b61b0f1b0f4083419cf28119574b640ebda",
    "contacts.md": "36947c1cdc2d6d4003a3da97d5c2ff013894fb367da0a2d8e4ab0c1d7ffdd2f1",
    "prespec-amendment-1.md": "cf4ddb46a8999b23305c5da3842e029795df1e97b0ce71a78c13d127cdf89aee",
    "prespec-hash-record.md": "6d565f1f195c5d60e2aa6eed385a2b3559cbf5307a332c96e14be253c0ab3f3d",

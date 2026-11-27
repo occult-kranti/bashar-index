@@ -214,3 +214,48 @@ solver route applies: 0 rows tested, 0 narrowed.
   decision 65).
 - The checker's `blanks.py`, run under decision 56's superseded rule, reported rows in step 1's files; decision 65
   settles it, and step 1 stands as published (decided: decision 65).
+
+## Correction by the lead's decision 154 (2026-11-27T16:46Z, UTC from `date -u`)
+
+Exploratory; not a test of H1-H10.
+
+- **What was checked.** The fourth panel's step 0 (deposit 5, addendum 1, reproduction R1;
+  [reproductions.md](../../../panel-fourth-round-2026-11-27/deposits/deposit-5/addendum-1/reproductions.md)) reran this
+  entry's code (not published; its bytes matched the SHA-256 values in `status.json`) on the same 23 creators. Every
+  observed statistic was reproduced. The matched-placebo bands were not: they came out as a different draw.
+- **The cause.** `code/extract_p42.py` collects the recordings through an unordered worker pool, so the order in which
+  the vocabulary is built depends on how the workers are scheduled (three workers in the original run, one in the
+  rerun). The seeded placebo draw indexes that order. A structure-only comparison of the private caches found the
+  vocabulary and three per-recording or vocabulary-indexed fields differing in order only, and the recording entries and
+  count tables differing in content in a way consistent with entries that refer to vocabulary positions. The bands
+  printed here are therefore one draw among the draws the code can give for the same data and seed.
+- **Readings that are sensitive to the placebo draw** (positions count data rows from 1 after the header row):
+  - `public/data-r3-P42-classes.csv`, 8 reading cells: row 1 (L01 S02's voice contrast) in `c1_reading`, `a1_reading`
+    and `reading`; row 9 (L01 S03's economy contrast) in `c1_reading`, `c4_reading`, `a1_reading` and `reading`; row 85
+    (L10 MODE-RELAY's concentration) in `c4_reading` (row 85 was added under decision 155, in
+    [the fourth panel's decisions](../../../panel-fourth-round-2026-11-27/lead-decisions.md));
+  - `public/data-r3-P42-influence.csv`, 4 cells (L01 S02's term-influence rows): rows 1 and 2 in `why`, and rows 3 and
+    4 in `reading_without_term`;
+  - `public/data-r3-P42-pairs.csv`, 2 cells: rows 21 and 120 (pairs P020 and P119) in `placebo_reading`.
+- **Bands that are one draw.** `public/data-r3-P42-classes.csv`, columns `placebo_band_5` and `placebo_band_95` (82
+  cells differed in the rerun); `public/data-r3-P42-dif.csv`, columns `placebo_term_spread_5` and
+  `placebo_term_spread_95` (67 cells); `public/data-r3-P42-l01.csv`, columns `placebo_band_5` and `placebo_band_95` (10
+  cells: rows 1, 5, 17, 19 and 20); `public/data-r3-P42-lists.csv`, rows 25 and 36 in `band_5` and `band_95` (3 cells);
+  and the bands drawn in `public/fig-r3-P42-placebo-bands.*`, `public/fig-r3-P42-structure.*` and
+  `public/fig-r3-P42-influence.*`. The section "Results in words" and the `reading` field of `status.json` summarise
+  readings and counts that include the rows above (among them L01 S02's voice contrast against its placebo band and
+  S02's term influence); they carry the same sensitivity.
+- **Not affected.** Every estimate, rate, concentration and observed statistic; the collision file
+  (`public/data-r3-P42-collisions.csv`); the pseudo-strata, permutation and curveball bands.
+- **Entries that read this entry's caches.** The entries that read this entry's stored extract and counts (r3-P43 to
+  r3-P46, r3-P48 to r3-P53, r3-P55, r3-P56 and r4-P29) reproduced from those stored files. Where they print a band from
+  this entry's matched-placebo generator, or a reading against one, that band or reading rests on the same single draw;
+  r3-P44's pairs P020 and P119 (all 23 creators) print the same placebo readings as rows 21 and 120 above.
+- **What follows.** In deposit 5, every use of this entry's matched-placebo generator puts recordings and vocabulary in
+  a canonical order before the seeded draw, and each entry's prespecification reports the bands' Monte Carlo spread over
+  a fixed number of reseeded draws; both are fixed before any count. No data file or figure is rewritten; this section
+  is added and the README's SHA-256 in `status.json` is refreshed. No number or reading printed here is changed by this
+  note.
+
+> No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these
+> recordings and how the creators present it.
