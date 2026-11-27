@@ -32,6 +32,8 @@
 % Privacy: no creator, channel, title, id or quotation of corpus text; members are named by role, never by id (one
 %   reading of r3-P43 names "a domain member" where the index names the member's id); the entries' privacy rules are
 %   stated in general terms only.
+% 2026-11-27: C.7, the new-files round (label app:newfiles, table tab:newfiles), from main's public files of the round
+%   (pull request 124); see the comment above the subsection.
 % New labels: app:panel3, app:panel3-design, app:panel3-deposits, app:panel3-readings, app:panel3-step1,
 %   app:panel3-novelty, app:panel3-limits, tab:panel3-deposits, tab:panel3-step1, tab:panel3-step1b; phase 2:
 %   app:panel3-steps25, app:panel3-audio, tab:panel3-step2, tab:panel3-step2b, tab:panel3-step34, tab:panel3-step5; phase 3:
@@ -46,7 +48,8 @@
 This appendix is the record behind Section~\ref{sec:panel3}: the panel and its programme (\ref{app:panel3-design}),
 the deposits (\ref{app:panel3-deposits}), margins, readings, intervals, tiers and multiplicity
 (\ref{app:panel3-readings}), step~1's results (\ref{app:panel3-step1}), the results of steps~2 to~5
-(\ref{app:panel3-steps25}), the audio entries (\ref{app:panel3-audio}), the novelty wordings
+(\ref{app:panel3-steps25}), the audio entries (\ref{app:panel3-audio}), the new-files round, which
+followed the programme (\ref{app:newfiles}), the novelty wordings
 (\ref{app:panel3-novelty}) and the limitations (\ref{app:panel3-limits}). The files are public in the research folder
 (\texttt{panel-third-round-2026-11-22/}). Everything here is exploratory and not a test of H1--H10. It rests on the seen
 creators only; labels are model-coded and not checked by a person, and their comparisons are agreement, never accuracy.
@@ -668,6 +671,85 @@ the addendum's index and the parts' READMEs in the research folder. \LabelValidi
 
 % Phase 3: the audio tables are flushed here, before the novelty wordings (two \clearpage, as above).
 \clearpage\clearpage
+
+% The new-files round (2026-11-27): written from main's public files only, under research/analysis-experiments-2026-11-20/
+%   new-files-round-2026-11-26/ (README.md, scope/README.md and public/data-scope.csv, not-computed.csv, plan.public.md
+%   sections 0 and 3, plan-hash-record.public.md, the five group READMEs), at origin/main 84dcf51. Every numeral is
+%   copied from those files. The plan's original hash is printed nowhere.
+\subsection{The new-files round}
+\label{app:newfiles}
+
+After the latest-20+ analysis, the owner's next step was a round on the new files, run on the transcripts that existed,
+with no further transcription (decisions~117 and~118.1). It is a descriptive persistence check on new
+recordings of the seen creators: not a confirmation, not a test of H1--H10 and not a fresh-creator wave. A wave of the
+same creators tests persistence only, and agreement is expected more often than it would be on fresh creators (rv-R2).
+r3-P20's registered prediction is not tested, and r4-P20's rider on later uploads is not scored. The round's plan was
+hashed at 2026-11-26T22:49:35Z, before any measure was computed on the new files and before any new transcript's text
+was read; it is published as a redacted copy, and its hash is kept privately. The round was computed on 27 November
+2026 by a model agent working for the lead, with no model or API call and no spend, and published by pull
+request~124. Everything is rule-based or recognizer-based, not checked by a person, and compared by agreement, never
+accuracy.
+
+\paragraph{Scope.} The new uploads, which are later than the latest-20 capture, and the latest-50+ batch, which sits
+mostly at older listing positions; each recording counts once, and only seen creators enter. Together they hold 250 to
+259 recordings of 65 or more of the 71 seen creators, about 105 to 110 hours of audio (the round's scope table, in the
+bands its plan fixed). Hold-out, other-group and unlisted recordings are dropped before any text is read and never
+opened. Language was set to English by the transcription jobs, not detected per recording. A creator enters a row with 3
+or more new recordings in the measure's base (for the tier-L lexicon rows, a non-development creator with 2 or more),
+and creator sets print as bands or not at all. Deposit~2's halves do not
+apply as a sealed check, because the new files are new recordings of the same creators; each row runs once, with no
+split.
+
+\paragraph{The persistence rule.} For each row, the published value P of the latest-20+ release or programme is fixed,
+with a margin M fixed before any new value was read: a margin the output registered itself, otherwise deposit~2's
+margin by measure type, and for rows read against a placebo, pseudo-strata or null band, the published band region;
+counts and exposure-dependent statistics are described only. The new value's 90\% creator interval, by the original
+output's own method with fixed settings, gives ``persists'' when it lies inside P's margin (or band region), ``shifts'' when it lies wholly outside, and ``undetermined'' otherwise. P's own interval does not
+enter the rule, and the comparison is not independent of P, because the new recordings come from the same creators.
+Before any new transcript was opened, every published value used was reproduced, to its printed decimals, by the
+reused code from the latest-20+ inputs, and the reproduction record was hashed; the new transcripts were then opened
+through an allow-list.
+
+\paragraph{Readings, in the round's words.} Table~\ref{tab:newfiles} gives the rows by reading as the round's index
+prints them. ``No row shifts. The rows that persist are those whose new interval is narrow enough to sit inside the
+margin: recognizer and seam measures, stance wording, some topics, three lexicon classes.'' A creator contributes about
+3 or 4 new recordings, against about 17 in the latest-20+ corpus, so most new 90\% intervals are wider than the margins
+and most rows read undetermined. ``Persists'' is an equivalence description at one-sided 5\% per bound; with no
+family-wise adjustment, a few ``shifts'' would have been unsurprising. Within-creator pairs were computed privately and
+are not printed (decision~119.1).
+
+\paragraph{Not computed.} The round lists every output it did not compute, with its printed reason: outputs that need
+model-coded labels or an audio pass (the label packages, steps~1 to~5's label-based rows, the audio entries and the
+addendum); outputs that need a second decode or a reference; the registered hypotheses' statistics (this round tests no
+hypothesis); outputs that read spans of dated uploads within a channel, since the new files hold about one dated later
+upload per creator; outputs that need 5 or more recordings per creator, depend on how many recordings each creator
+contributes, or are counts of uploads a few days old; outputs whose published values are creator quantiles; and planned
+rows whose published value was not reproduced before the new files were opened, which the round's order does not allow
+adding afterwards.
+
+\begin{table}[tp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Group & Rows & persists & shifts & undet. & n.c./n.p. \\
+\midrule
+recognizer-seams & 24 & 9 & 0 & 12 & 3 \\
+pace-variance & 14 & 4 & 0 & 10 & 0 \\
+patterns-topics & 42 & 7 & 0 & 34 & 1 \\
+lexicon-tier-L & 17 & 3 & 0 & 4 & 10 \\
+page-dates & 5 & 0 & 0 & 5 & 0 \\
+\midrule
+all & 102 & 23 & 0 & 65 & 14 \\
+\bottomrule
+\end{tabular}
+\caption{The new-files round's rows by reading, copied from the round's index, the README of its folder in the research
+folder. undet.: undetermined; n.c./n.p.: not computed or not printed. New recordings of seen creators: a descriptive
+persistence check, not a confirmation and not a fresh-creator wave. Rule-based and recognizer-based; not checked by a
+person; agreement, never accuracy. Exploratory; not a test of H1--H10.}
+\label{tab:newfiles}
+\end{table}
 
 \subsection{Novelty wordings}
 \label{app:panel3-novelty}

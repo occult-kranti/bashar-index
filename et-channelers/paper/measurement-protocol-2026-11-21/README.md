@@ -655,7 +655,8 @@ every numeral the new text prints is copied from a public file of the research f
 - **Section map.** Section 8 is the third-round panel's programme (`sections/programme.tex`); limitations, conclusion and
   ethics statement follow as Sections 9 and 10. Appendix C is the programme's record (`sections/appendix-panel.tex`):
   C.1 the panel, C.2 the deposits, C.3 margins, readings, intervals, tiers and multiplicity, C.4 step 1, C.5 steps 2 to
-  5, C.6 the audio entries and the audio addendum (since phase 3), C.7 the novelty wordings, C.8 limitations.
+  5, C.6 the audio entries and the audio addendum (since phase 3), C.7 the new-files round (since 2026-11-27), C.8 the
+  novelty wordings, C.9 limitations.
   Appendix D is the paper checklist.
 - **Phase 1 (16:40 to 16:55 UTC).** Section 8, Appendix C with step 1 and the novelty wordings whose newly named works
   passed the bibliography check, `refs-programme.bib`, and the programme paragraph of Section 9.
@@ -701,3 +702,14 @@ every numeral the new text prints is copied from a public file of the research f
   staged ruling-12 README. C.4's H1 sentence follows addendum 4, item 7; r4-P16's caveat is quoted in full; the
   closest-work lists open with "Closest, from the second pass"; the two unopened leads are described without
   author-year and pointed to the ruling-12 record.
+
+## The new-files round (2026-11-27)
+
+Made after the owner's new-files round was published (pull request 124), from main's public files only
+(`research/analysis-experiments-2026-11-20/new-files-round-2026-11-26/`: the index, the scope table, `not-computed.csv`,
+the redacted plan and its hash record, the five group READMEs). Appendix C.7 describes the round (a descriptive
+persistence check on new recordings of the seen creators, not a confirmation and not a fresh-creator wave): its scope
+in the bands main prints, the persistence rule, the rows by reading as the round's index prints them (`tab:newfiles`),
+what was not computed and why, and that within-creator pairs stay private (decision 119.1). Section 8 gains one pointer
+sentence. Every numeral is copied from those files; the plan's original hash is printed nowhere. No number macro,
+generated file or builder changed.
