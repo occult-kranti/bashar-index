@@ -3,8 +3,7 @@
 Brought to 27 November 2026, 19:13 UTC (from `date -u`), from the files on `main` up to
 [PR #137](https://github.com/occult-kranti/bashar-index/pull/137). Copy the prompt below into a new chat that has
 repository access. It names only public files. The private run state is in the owner's private archive, outside Git.
-The prompt of 20 and 21 November is superseded and kept in
-[this file's earlier version](https://github.com/occult-kranti/bashar-index/blob/2fd131302fbc8837bcdc24236e1c0ab024f00ef0/et-channelers/knowledge-transfer/CONTINUE_IN_NEW_CHAT.md).
+The prompt of 20 and 21 November is superseded; it stays in this file's git history.
 Do not paste the earlier prompt.
 [Handoff](../HANDOFF.md#current-state-27-november-2026) · [Research status](../research/analysis-experiments-2026-11-20/README.md) ·
 [Findings dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/)
