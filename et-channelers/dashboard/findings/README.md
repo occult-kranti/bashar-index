@@ -47,7 +47,7 @@ registered tests.
 The same tab compares the two recognizer models on 36 recordings transcribed by both, and links to the corrected
 first-round results file (corrections of 25 and 26 November 2026; no verdict changes).
 The tab "Exploratory round" shows the exploratory release of 26 November 2026 (exploratory; not a test of H1-H10)
-from its public files only, read from the repository's main branch (5f043c5): the
+from its public files only, read from the repository's main branch (982daf4): the
 outputs by status and by plan section (the status table's rows, counted; counts of outputs, never of creators), links to
 the release, its status table and its gallery, the third-round panel's programme, rulings and step-0 deposits, and a
 small set of headline figures picked by a printed rule: every released gallery figure whose place includes both M (the paper's main text) and W (this dashboard), read from the gallery's manifest.json, in the gallery's order. The figures in `figures/` are
@@ -56,7 +56,7 @@ rest on a method that the calibration entry (CAL) did not test for its estimate 
 was chosen after the results were seen (the lead's step-1 decision 27a); r3-P33 prints a selection rule (S1 to S12)
 for the release's headline descriptions and audits them.
 The tab "Third-round panel" shows the panel programme from its public files on main
-(5f043c5): step 0's deposits 1 and 2; step 1, published,
+(982daf4): step 0's deposits 1 and 2; step 1, published,
 as a table of its 17 entries with each entry's question and its reading
 in the entry's own words, copied from the step-1 index (no entry is picked as a headline, and nothing the index withholds
 is added; square brackets mark the page's own words where the index uses a word the page does not); r3-P20's registered
@@ -79,22 +79,27 @@ not printed"). Each group's figure is linked on main, not copied.
 The tab "Fourth panel" shows the fourth panel's programme of 27 November 2026 (PR #127; exploratory; not a test of
 H1-H10) from its public files on main: its 5 tier-A layered research questions with their main
 questions, its cards f4-Q01 to f4-Q20 (21 cards; f4-Q05 has two) with each card's class as printed
-and a status in the page's words (for the entries that deposits 5a and 5 register, the deposit and "not counted"; for
-the others, registered, not run), and its vote table as printed. From deposits 5a (PR #129) and 5 (PR #133), published
-before any count, the tab copies for each registered entry (f4-Q01 to f4-Q13 and f4-Q19) the
-deposit with its pull request, the one binding primary, its margin, its tier and its expected decidability in
-the registration's own words, with the state "registered, not counted"; the counting of K = 33 for the half-effect
+and a status in the page's words (for the entries that deposits 5a and 5 register, the deposit and "not counted" or, for
+the entries step 1 counted, "step 1's readings published"; for the others, registered, not run), and its vote table as
+printed. From deposits 5a (PR #129) and 5 (PR #133), published before any count, the tab copies for each of the 15
+registered cards (14 entries; f4-Q05 has two cards) the deposit with its pull request, the one binding primary, its
+margin, its tier and its expected decidability in the registration's own words, with its state; the counting of K = 33 for the half-effect
 disclosure (registration section 2.7); and deposit 5's per-list agreement between its list author and the blind second
 author (agreement between two model agents, not a measure of correctness; no form is printed). From deposit 5's addendum 1
 (PR #135, step 0, before any count), the tab copies decision 129.6's guard per by-voice row (pass or fail as printed), the
 reproductions R1 to R13 one line each (the values reused, and the verdict in the file's own words; no value), the
-feasibility tables F1 to F6 in their printed forms, and r3-P30 version 2's card (registered, not run). A run-status table
-gives the lead's estimates as of 27 Nov 2026, 17:41 UTC, labelled as estimates, with the GPU re-decode's state read
-from its progress file when the page was built (the file's time: 2026-11-27T16:15:46Z).
+feasibility tables F1 to F6 in their printed forms, and r3-P30 version 2's card (registered; its battery running). From
+step 1 (PR #140, the label-free list counts on the 48: f4-Q02's reruns and U6's dated layers, and the voice-free rows of
+f4-Q04, f4-Q11 and f4-Q08), the tab copies 50 rows, one per reading of the four entry READMEs: the
+estimate and its interval where printed and the reading in the README's own words, with every "not printed", "described
+only (decision 129.9)" and "moved to step 2" as printed. The tab "Third-round panel" marks r3-P42's row with its correction
+(the lead's decision 154, PR #139) and the entries that point to it. A run-status table
+gives the lead's estimates as of 27 Nov 2026, 20:28 UTC, labelled as estimates, with the GPU re-decode's state read
+from its progress file when the page was built (the file's time: 2026-11-27T20:36:47Z).
 Every view carries the sentence: "No measure in this study can tell whether a non-human source speaks; every measure
 describes the speech in these recordings and how the creators present it."
 The budget card shows the spend committed for model calls, read from the spend ledger when the page was built
-(2026-11-27T17:48:09Z), against the owner's hard stop, with the warning level.
+(2026-11-27T20:37:58Z), against the owner's hard stop, with the warning level.
 
 The page and its data are built outside the repository from the run's private records, by the same script
-that feeds the hosted copy of this dashboard. Built 2026-11-27T17:48:09Z.
+that feeds the hosted copy of this dashboard. Built 2026-11-27T20:37:59Z.
