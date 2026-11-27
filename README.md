@@ -1,5 +1,20 @@
 # Bashar Index, Channeling Atlas and ET-channeler archive
 
+## Where things stand (27 November 2026)
+
+Written 2026-11-27 at 19:12 UTC (from `date -u`), from the files on `main` up to [PR #137](https://github.com/occult-kranti/bashar-index/pull/137). The ET-channeler cohort is closed and transcribed: 1,976 selected recordings on 101 channels, 1,946 archived, 1,697 audio files transcribed. Its analysis is now in an exploratory phase: **exploratory; not a test of H1-H10**. Every label is model-coded and not checked by a person.
+
+> No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these recordings and how the creators present it.
+
+- **Published.** The exploratory release ([#110](https://github.com/occult-kranti/bashar-index/pull/110)). The third-round panel's programme, its steps 0 to 5 and its audio entries (#107 to #123). The new-files round, a descriptive persistence check on new recordings of the seen creators ([#124](https://github.com/occult-kranti/bashar-index/pull/124)). The fourth panel's programme ([#127](https://github.com/occult-kranti/bashar-index/pull/127)). Its deposits 5a ([#129](https://github.com/occult-kranti/bashar-index/pull/129)) and 5 ([#133](https://github.com/occult-kranti/bashar-index/pull/133)) and addendum 1 ([#135](https://github.com/occult-kranti/bashar-index/pull/135)), all registered before any count. The working paper's Appendices C.6 to C.8. The dashboards, brought up to addendum 1, and the channel index's new list of the ET civilizations that channellers say they channel ([#137](https://github.com/occult-kranti/bashar-index/pull/137)).
+- **New recordings, outside the frozen corpus.** 102 new uploads are archived. All 2,681 recordings of the latest-50+ batch were on Drive when its download finished on 27 November. These are descriptive material only.
+- **Under way.** The fourth panel's step 1 and the GPU re-decode.
+- **Next.** Step 1's publication, step 2, the calibration battery, the end of the GPU re-decode, steps 3 and 4, the paper's next appendix, and the forecast windows that mature in January 2027.
+
+[Research status](et-channelers/research/analysis-experiments-2026-11-20/README.md) · [Registry and decisions](et-channelers/research/analysis-experiments-2026-11-20/registry.md) · [Fourth panel](et-channelers/research/analysis-experiments-2026-11-20/panel-fourth-round-2026-11-27/programme.md) · [Working paper](et-channelers/paper/measurement-protocol-2026-11-21/README.md) · [Findings dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/) · [All dashboards](https://occult-kranti.github.io/bashar-index/dashboards/) · [Channel index](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/) · [Handoff](et-channelers/HANDOFF.md) · [New-chat handoff](et-channelers/knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
+
+The sections below are earlier dated checkpoints. They keep the observations of their own dates.
+
 ## Collection knowledge transfer
 
 **Downloads paused November 20, 2026 at 01:45 UTC.** The frozen latest-20+ selection covers 1,976 regular recordings on 101 channels. Drive has verified audio and provenance for 1,946 recordings (98.5%). Eighty channels have every available selection. Thirty recordings across 21 channels remain outstanding. Transcription of the remaining corpus, analysis and the latest fifty are pending. [Pre-analysis checkpoint](et-channelers/knowledge-transfer/pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [Copy-ready handoff](et-channelers/knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
