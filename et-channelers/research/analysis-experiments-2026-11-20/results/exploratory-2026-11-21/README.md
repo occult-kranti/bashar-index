@@ -604,3 +604,8 @@ edited: their corrections are in [addendum 4](../../exploratory-reporting-plan-a
   H1's registered smallest effect (a log ratio of -0.05, about 5% slower): by the deposited margin, the slowing these
   rows describe is small. Step 1's own H1 rows (r3-P04) have banded counts, and their readings are not printed for
   privacy. Exploratory; not a test of H1.
+- **2026-11-27 (the gate sample G; the lead's decision 134).** Two gallery captions describe the gate sample G, one as
+  "seen and check creators" and one as "seen creators; not the 23 check creators of the VER-3R sample". G holds a
+  seeded draw from the seen creators plus every check creator that draw did not cover, so it includes development and
+  check creators, and its rows on the check creators alone report its check subset. The second caption means only that
+  G is not VER-3R's sample. The gallery's generated files are not edited. No number or reading changes.

@@ -63,11 +63,12 @@
  "note_2026-11-26_decision_50": "2026-11-26T09:36:09Z (UTC, from date -u): files changed by the lead's step-1 decision 50 (no number changed); their recorded hashes refreshed: README.md, code/p27_publish.py, public/fig-r3-P27-paired-forest.pdf, public/fig-r3-P27-paired-forest.png, public/r3-P27-paired-forest.csv",
  "note_2026-11-26_decision_53": "2026-11-26T10:21:43Z (UTC, from date -u): files changed by the lead's step-1 decision 53 (no number changed); their recorded hashes refreshed: README.md, code/p27_publish.py, public/r3-P27-paired-forest.csv",
  "note_2026-11-26_decision_62": "2026-11-26T11:53:53Z (UTC, from date -u): files changed by the lead's step-1 decision 62 (no number changed); their recorded hashes refreshed: README.md, code/p27_publish.py, public/r3-P27-paired-forest.csv",
+ "note_2026-11-27_decision_134": "2026-11-27T09:41:55Z (UTC, from date -u): README.md changed by the lead's decision 134 (a dated correction note on the gate sample; no number changed); its published hash refreshed under published_copy.published_sha256",
  "published_copy": {
   "staged_utc": "2026-11-26T12:18:25Z",
   "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
   "published_sha256": {
-   "README.md": "feaaaffecd1b3e32dd6f643511d9d7936af974dcca64f3b4a59d641d5ad8f5d3",
+   "README.md": "6007f1e751d8a99c1feea1fac93b0a18d7b7ae7e14841537f933140345b7b410",
    "contacts.md": "995469f2719297951683a1f145c91acdbeb86a6fa37d4c7dbffb6506d69f30ff",
    "prespec-record.md": "eebd8937b0ac9d74d645d49741beeb7e7b61be3358cc25a8715e5a0aa0bcd1eb",
    "prespec.md": "40dc7e2f34109b299b5c87081673ed7939b61fc63fc32dac213825360739f0b1",
@@ -76,12 +77,14 @@
    "public/r3-P27-paired-forest.csv": "a60beb922f5baf835f0be1442f75e54073ef235d321681d463ade1399afe6361"
   },
   "changed_for_publication": [
+   "README.md",
    "contacts.md",
    "prespec-record.md"
   ],
   "added_for_publication": [
    "contacts.md: label line and/or agnosticism sentence (decision 47)",
-   "prespec-record.md: label line and/or agnosticism sentence (decision 47)"
+   "prespec-record.md: label line and/or agnosticism sentence (decision 47)",
+   "README.md: a dated correction note on the gate sample (the lead's decision 134, 2026-11-27T09:41:55Z)"
   ]
  }
 }

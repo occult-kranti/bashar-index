@@ -2395,6 +2395,8 @@ membership counts only and with no label content; a correction to the published 
 then no wording of G's composition is printed here, and no entry of this programme treats G's gate or agreement figures
 as describing either creator group alone.
 
+**Settled (2026-11-27T09:41:55Z, the lead's decision 134).** The lead settled G's composition from its definition in the labelling code, with no membership file opened and no label content read: an earlier sentence said the gate sample was drawn from the check creators; it holds a seeded draw from the seen creators and every check creator, so its agreement figures describe development and check creators alike; no number or reading changes. Its rows on the check creators alone report its check subset. The published files that said otherwise carry dated correction notes.
+
 ---
 ## 10. Items for the lead, settled by decision 131
 
