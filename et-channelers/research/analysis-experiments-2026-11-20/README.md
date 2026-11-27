@@ -1,5 +1,92 @@
 # Further analysis experiments: catalogue of the analysis panel, 2026-11-20
 
+**Status, 27 November 2026.** Written 2026-11-27 at 19:12 UTC (from `date -u`), from the files on `main` up to
+[PR #137](https://github.com/occult-kranti/bashar-index/pull/137). Everything after the first round is **exploratory;
+not a test of H1-H10**. Every voice, ask, forecast and title label is model-coded and not checked by a person, and every
+comparison between labels, models, instruments or agents is agreement, never accuracy.
+
+> No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these
+> recordings and how the creators present it.
+
+Published since 21 November:
+
+- **The exploratory release** ([PR #110](https://github.com/occult-kranti/bashar-index/pull/110), 26 November). The
+  registered exploratory reporting plan lists 172 outputs: 111 are reported, 60 are not run (most need model calls) and 1
+  is superseded. A gallery holds 231 figures. Two release passes, five fix steps and an independent privacy check came
+  before publication. [Release](results/exploratory-2026-11-21/README.md) ·
+  [Status table](results/exploratory-2026-11-21/status-table.csv) · [Gallery](results/exploratory-2026-11-21/gallery/index.html)
+- **The third-round panel** (PRs #107 to #123, 26 November). Twelve model-agent members worked through four
+  rounds and wrote 106 proposals. The lead adopted the programme with 13 rulings on its open points
+  ([PR #107](https://github.com/occult-kranti/bashar-index/pull/107)).
+  - Step 0 holds deposits 1 and 2: the hash of the frozen forecast ledger, then the register of margins and readings
+    (PRs #108 and #109).
+  - Step 1 checks the instruments on the seen creators, in 17 entry folders (PR #113).
+  - Deposits 3 and 4 were published before any count: step 2's sense register and word lists, and step 3's year roles
+    (PRs #112 and #114).
+  - Step 2 holds the lexicon checks and descriptions, in 12 entry folders (PR #115).
+  - r3-P35's corrections needed no run (PR #117).
+  - Steps 3, 4 and 5 cover forecasts and time, the platform and the audience, and voice, register and footing, in 5, 5
+    and 6 entry folders (PR #118). r3-P57's correction followed (PR #120).
+  - The audio pass has 7 entries and an 8-part audio addendum (PR #121).
+  - The paper gained the programme's results and the ruling-12 attack record (PR #123).
+
+  [Programme](panel-third-round-2026-11-22/programme.md) · [Rulings](panel-third-round-2026-11-22/lead-rulings-2026-11-26.md) ·
+  [Deposit 1](panel-third-round-2026-11-22/deposits/deposit-1-forecast-ledger.md) · [Deposit 2](panel-third-round-2026-11-22/deposits/deposit-2/README.md) ·
+  [Step 1](panel-third-round-2026-11-22/step1/README.md) · [Step 2](panel-third-round-2026-11-22/step2/README.md) ·
+  [Step 3](panel-third-round-2026-11-22/step3/README.md) · [Step 4](panel-third-round-2026-11-22/step4/README.md) ·
+  [Step 5](panel-third-round-2026-11-22/step5/README.md) · [Audio entries](panel-third-round-2026-11-22/audio/common/README.md) ·
+  [Audio addendum](panel-third-round-2026-11-22/audio/addendum/README.md) · [Ruling-12 record](panel-third-round-2026-11-22/ruling12-attack/README.md)
+- **The new-files round** ([PR #124](https://github.com/occult-kranti/bashar-index/pull/124), 27 November). It checks
+  whether values persist on new recordings of the seen creators: the new uploads and the latest-50+ recordings already
+  transcribed. It uses label-free measures only and makes no model call. Of its 102 rows, 23 persist, none shifts, 65
+  are undetermined and 14 are not computed or not printed. It is descriptive: not a confirmation and not a
+  fresh-creator wave. [Round](new-files-round-2026-11-26/README.md)
+- **The fourth panel** (27 November). Nothing in it has been counted yet.
+  - The programme ([PR #127](https://github.com/occult-kranti/bashar-index/pull/127)) comes from eight model-agent
+    members (not people). They read three literature and documentary reviews and deliberated in three moderated rounds.
+    It sets five tier-A layered research questions and twenty entries, f4-Q01 to f4-Q20, under the lead's decisions 125
+    to 132.
+  - Deposit 5a ([PR #129](https://github.com/occult-kranti/bashar-index/pull/129)) registers f4-Q07 (the frozen forecast
+    ledger's scorability funnel) and f4-Q19 (the forecast windows that mature in January 2027). No statement is ever
+    scored.
+  - Deposit 5 ([PR #133](https://github.com/occult-kranti/bashar-index/pull/133)) registers f4-Q01 to f4-Q06 and f4-Q08
+    to f4-Q13, each with one binding primary and its margin, under decisions 133 to 141.
+  - Addendum 1 ([PR #135](https://github.com/occult-kranti/bashar-index/pull/135)) is step 0, outcome-free, under
+    decisions 142 to 155. It holds decision 129.6's privacy guard (pass or fail for each by-voice row), the
+    reproductions R1 to R13, the feasibility tables F1 to F6 and the card for r3-P30 version 2 (the calibration
+    battery, registered and not run).
+
+  [Programme](panel-fourth-round-2026-11-27/programme.md) · [Decisions 125 to 155](panel-fourth-round-2026-11-27/lead-decisions.md) ·
+  [Deposit 5a](panel-fourth-round-2026-11-27/deposits/deposit-5a/README.md) · [Deposit 5](panel-fourth-round-2026-11-27/deposits/deposit-5/README.md) ·
+  [Addendum 1](panel-fourth-round-2026-11-27/deposits/deposit-5/addendum-1/README.md)
+- **Corrections** (27 November). How the gate sample G was drawn (decision 134, PR #128), and a dated note on the stored
+  hashes of deposit 2's files (PR #130). Neither changes a number, a reading or a registered rule.
+- **The working paper.** Appendix C.6 covers the audio entries and the audio addendum (PR #123), C.7 the new-files round
+  (PR #126) and C.8 the fourth panel's programme (PR #132). The paper is 95 pages. It is not to be submitted before an
+  ethics or exemption determination exists. [Paper](../../paper/measurement-protocol-2026-11-21/README.md)
+- **The dashboards.** The findings dashboard has tabs for the exploratory round, the third-round panel, the new-files
+  round and the fourth panel, brought up to addendum 1 (PRs #111, #116, #119, #122, #125, #131, #134 and #136). The last
+  tab has a run-status table of the lead's estimates. The channel index now lists the ET civilizations that
+  channellers say they channel (PR #137).
+  [Findings dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/) ·
+  [Its README](../../dashboard/findings/README.md) · [All dashboards](https://occult-kranti.github.io/bashar-index/dashboards/)
+
+**Under way.** The fourth panel's step 1 (label-free list counts on the 48 development creators) and the GPU re-decode.
+The findings dashboard's run-status table shows the re-decode's state.
+
+**Next, in order.**
+
+1. Step 1's publication.
+2. Step 2, the by-voice rows that pass the guard.
+3. r3-P30 version 2's calibration battery.
+4. The end of the GPU re-decode. f4-Q10's later parts and f4-Q05a's battery wait for it.
+5. Step 3 (f4-Q07, f4-Q12, f4-Q09 and f4-Q13), then step 4 (the acoustic readings, one heavy job at a time). Each
+   entry's prespecification is hashed before its outputs are read.
+6. The dashboards after each publication, and the paper's next appendix.
+7. f4-Q19's forecast windows, which mature in January 2027.
+
+The status of 21 November follows as history.
+
 **Status, 21 November 2026.** The transcription run has finished (1,697 audio files). The registry of
 hypotheses is [frozen](registry.md); H3 was tested and dropped by the owner; the bridge between the two
 recognizer models (BR, part a) has run; and the first round of registered tests (H1, H2, H4, H5, H6 and H9) ran on

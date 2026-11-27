@@ -1,5 +1,29 @@
 # Handoff, 2026-11-14: from the 2-core Codespace to the 16 GB one
 
+## Current state, 27 November 2026
+
+Written 2026-11-27 at 19:13 UTC (from `date -u`). The latest-20 download goal is closed: 1,946 of 1,976 recordings are archived and the 30 others are final failures. 1,697 audio files are transcribed. The analysis is **exploratory; not a test of H1-H10**, and every label is model-coded and not checked by a person. Since 21 November, `main` has gained:
+
+- the exploratory release;
+- the third-round panel's programme, its steps 0 to 5 and its audio entries;
+- the new-files round;
+- the fourth panel's programme, its deposits 5a and 5 and addendum 1, all before any count;
+- the working paper's Appendices C.6 to C.8;
+- the updated dashboards.
+
+The fourth panel's step 1 and the GPU re-decode are under way. The latest-50+ download has finished. Its transcription was stopped by the owner and stays stopped.
+
+Read these files for the current state:
+
+- [Repository README, "Where things stand"](../README.md#where-things-stand-27-november-2026)
+- [ET-channelers README](README.md)
+- [Research status of 27 November](research/analysis-experiments-2026-11-20/README.md), with what runs next
+- [Registry and the lead's decisions](research/analysis-experiments-2026-11-20/registry.md)
+- [Copy-ready new-chat handoff](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
+- [Findings dashboard](https://occult-kranti.github.io/bashar-index/et-channelers/dashboard/findings/)
+
+The private run state is in the owner's private archive, outside Git. The sections below are dated history. They do not authorize restarting any job.
+
 ## Windows handoff for November 20, 2026
 
 **Downloads are paused by the project owner as of November 20 at 01:45 UTC.** All 30 outstanding recordings remain in scope. Windows has a persistent collector stop marker and all previously enabled download wake-ups are disabled. Keep this state when changing chats. Full-batch transcription and analysis are pending. [Pre-analysis checkpoint](knowledge-transfer/pre-analysis-checkpoint.md) · [Private Drive backup](https://drive.google.com/drive/folders/1tHjfDYrMA-WDUKG4ajLyvHRnKP56JBdJ) · [New-chat prompt](knowledge-transfer/CONTINUE_IN_NEW_CHAT.md)
