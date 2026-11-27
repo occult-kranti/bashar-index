@@ -656,7 +656,8 @@ every numeral the new text prints is copied from a public file of the research f
   ethics statement follow as Sections 9 and 10. Appendix C is the programme's record (`sections/appendix-panel.tex`):
   C.1 the panel, C.2 the deposits, C.3 margins, readings, intervals, tiers and multiplicity, C.4 step 1, C.5 steps 2 to
   5, C.6 the audio entries and the audio addendum (since phase 3), C.7 the new-files round (since 2026-11-27), C.8 the
-  fourth panel's programme (since 2026-11-27), C.9 the novelty wordings, C.10 limitations.
+  fourth panel's programme (since 2026-11-27), C.9 the fourth panel's deposits and step 0 (since 2026-11-27, evening),
+  C.10 the novelty wordings, C.11 limitations.
   Appendix D is the paper checklist.
 - **Phase 1 (16:40 to 16:55 UTC).** Section 8, Appendix C with step 1 and the novelty wordings whose newly named works
   passed the bibliography check, `refs-programme.bib`, and the programme paragraph of Section 9.
@@ -736,3 +737,36 @@ roles, three literature reviews checked under ruling 13, three moderated rounds)
 questions in the programme's words, and its twenty entries, which are designs not yet run, with deposit 5a deposited
 before any count. Section 8 gains one pointer clause. No work is cited, so no reference was added; every numeral is
 copied from those files; no number macro, generated file or builder changed.
+
+## The fourth panel's deposits and step 0 (2026-11-27, from 19:12 UTC; the lead's decision 163)
+
+Made after deposit 5a (pull request 129), deposit 5 (pull request 133) and deposit 5's addendum 1, step 0 (pull request
+135) were published, from main's public files only (at origin/main `201644b`, under
+`research/analysis-experiments-2026-11-20/panel-fourth-round-2026-11-27/`: the three deposits' READMEs, deposit 5a's and
+deposit 5's registrations, deposit 5's stored facts and agreement table, the addendum's guard, reproductions, feasibility
+tables and r3-P30 version 2's card, and `lead-decisions.md`). Appendix C gains C.9: deposit 5a (f4-Q07 and f4-Q19, their
+primaries and margins, and f4-Q07's expected decidability); deposit 5 (the twelve entries in thirteen cards it registers,
+its three parts, the tiers and the decision 129.6 rule); the binding primaries and margins of the fifteen registered cards
+(fourteen entries) in a table; the blind lists'
+agreement between two model agents, per list in a second table, with its fixed rule and its limit; K = 33 and its 1.65;
+and addendum 1: the owner's approval of the split read, the guard's results (pass or fail only), the reproductions R1 to
+R13 (with r3-P42's placebo bands, which depend on the worker order, and the fourth panel's fix of a canonical order before
+the seeded draw), the feasibility tables F1 to F5 in their printed forms (F6 is not computed in step 0), and r3-P30
+version 2's card. Step 1 is left as
+a commented placeholder until it is public. The novelty wordings and limitations become C.10 and C.11. Section 8 gains
+one pointer clause. No work is cited, so no reference was added; the deposits register fourteen entries in fifteen
+cards (decision 169: deposit 5's twelve entries in thirteen cards, since f4-Q05 is two cards, and deposit 5a's two; the
+fifteen cards are the rows of the dashboards' `panel4_registration.csv`), and every other numeral is copied from those
+files; no fold or half value, fold size, count per stratum or list form is printed;
+no number macro, generated file or builder changed.
+- **Build state.** `bash build.sh` (typeset only): 98 pages (95 before); no LaTeX error, no undefined reference, citation
+  or macro, no float too large for its page; the same nine table cells as before run up to 3.7 pt over their column. The
+  main text and the conclusion end on page 9; the references start on page 10. Paper check: no missing citation, no
+  undefined macro, no privacy-name, code or id hit, no nested creator-count pair, no risky phrase, no placeholder in the
+  PDF.
+- **Fix pass after the independent check (from 19:36 UTC; decision 169).** The count reads fourteen entries in fifteen
+  cards (it had read fifteen entries); the reproductions say that every published chain was rerun with its published code
+  unchanged (R13 by hash identity), not that every value reproduced; the guard says that the prespecification's rule
+  rebuilt the published 11; F6 reads "not computed in step 0"; f4-Q19's return column needs later transcripts (the
+  owner's act); the card's class is named "precision-weighted"; and only f4-Q07's expected decidability is printed.
+  Rebuilt and checked again; the build state above still holds.
