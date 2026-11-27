@@ -1,11 +1,13 @@
-# Fourth-round expert panel: the lead's decisions 125 to 141 (public wording)
+# Fourth-round expert panel: the lead's decisions 125 to 155 (public wording)
 
 Written 2026-11-27 at 08:50:14Z, revised at 09:16:03Z under decision 132, extended at 12:09:07Z with decisions 133 to
-140 under decision 140.6 and at 12:50:44Z with item 138.6 and decision 141 after the independent check (UTC, from `date -u`), by a drafting
-agent working for the project lead (a model agent, not a person), from the lead's design file for the fourth panel. Times of
-the decisions are those the lead recorded from the clock on 2026-11-27. This file gives what was decided and why; it
-carries no private path, no search log, no withheld documentary title and no name of any creator, channeller, contactee,
-abductee, popular proponent, channelled being or group. Minor process slips are recorded privately.
+140 under decision 140.6, at 12:50:44Z with item 138.6 and decision 141 after the independent check, at 16:16:38Z with
+decisions 142 to 150, at 16:51:57Z with decisions 151 to 154 and at 17:28:17Z with decision 155, which also revised
+decisions 144 and 146 to 150, for deposit 5's addendum 1 (UTC, from `date -u`), by a drafting agent working for the project
+lead (a model agent, not a person), from the lead's design file for the fourth panel. Times of the decisions are those
+the lead recorded from the clock on 2026-11-27. This file gives what was decided and why; it carries no private path, no
+search log, no withheld documentary title and no name of any creator, channeller, contactee, abductee, popular
+proponent, channelled being or group. Minor process slips are recorded privately.
 
 **Status.** Exploratory; not a test of H1-H10. Labels are model-coded; agreement, never accuracy.
 
@@ -330,6 +332,212 @@ Nothing counted; the inputs are pinned to `9a38656`.
    hash record is updated.
 4. **Memory.** Memory limits on the machine kept these edits to shell tools. The independent check ran its scans after the
    long re-decode was paused.
+
+## Decision 142: the independent check of deposit 5's public set (12:49 UTC)
+
+The check found two text faults and six points to fix, and no privacy, list-form, name, identifier or hash fault.
+1. **The agreement table** gains a commented header in its public copy only: the status label, that it is agreement
+   between two model agents (never accuracy), that it prints no form, and the agnosticism sentence. The hash record records
+   its new hash and no longer calls the public copy byte-identical to the private file.
+2. **Decision 141 is published** in this file, in public wording, and the file is retitled.
+3. **The points to fix are all taken:** the registration's sentence on numbers also covers the agreement counts and values
+   it prints, K = 33 and its 1.65, the seeds, and decision and section numbers; item 138.6 is added; the stored facts name
+   "the programme's section 4.2"; the seed table names the agreement bootstrap's use of its seed; "in its printed form" is
+   added at the feasibility count of the congruence half.
+4. **Decision 135.13's wording stays:** main's registry row prints the same words.
+5. **Numerals.** One per-call batch size is dropped from the stored facts. The other instrument constants stay as design
+   constants. The agreement table's columns are counts of the set itself, none of them a creator count.
+6. **Next:** the same checker rechecks every changed line, then the pull request.
+
+## Decision 143: the recheck of deposit 5 (13:02 UTC)
+
+The recheck found the edits correct and confined to their lines, with clean screens. Its two remaining points were fixed
+by the lead: this file and the hash record call the check "the independent check", and the stored facts' header names the
+two edits made after the check, with the hash record carrying its new hash. Every hash in the hash record matched the
+files on disk.
+
+## Decision 144: deposit 5 is public; step 0 starts (13:16 UTC)
+
+1. **Published.** The same checker found the set publishable. PR #133 merged at 2026-11-27T13:13:58Z (`1461979`), and
+   main's bytes matched the checked hashes for all six files. That merge is deposit 5's public time stamp, before any
+   count.
+2. **Step 0 of the registration's section 3.3** (outcome-free, before any count) runs as three agents, whose public outputs
+   go into one dated addendum, `deposits/deposit-5/addendum-1/`, followed by one independent check and one pull request:
+   - **(A) the decision 129.6 guard.** Each by-voice row's voice-eligible rule is written into one eligibility
+     prespecification, hashed first; each row's eligible set is then computed from label-derived eligibility and
+     memberships only, and pass or fail prints per row. The agent does not read deposit 2's split record, because the
+     owner's earlier approval of that read covered the third panel's steps 3 to 5 only. A row that only half memberships
+     could settle is reported to the lead, who asks the owner. Size alone settles a row when its set differs in size from
+     a printed set by 5 or more creators.
+   - **(B) the reproductions and the feasibility tables.** Every published value an entry reuses is reproduced and hashed,
+     and the outcome-free feasibility tables are computed, each in its printed form.
+   - **(C) r3-P30 version 2's card,** written and hashed; writing only, with the simulation run later as a background job.
+3. **Memory.** The long re-decode is paused while A and B run, with one worker per job; free memory is checked before each
+   start, and a start that the memory guard holds back waits and is never given a higher ceiling. C only writes.
+
+## Decision 145: r3-P30 version 2's card (13:44 UTC)
+
+1. **The three extra classes stay,** as deposit 5's section 4.9 names them: cross-fitted standardised contrasts, paired
+   persistence and an ICC class.
+2. **REML.** Installing a package is the owner's act, so the two REML candidates print "not run (package ruling
+   pending)" and the battery does not wait for them. The question joins the owner's open question on packages and
+   downloads.
+3. **No new cap on readings.** Where version 2 finds that no method holds at a count, the registered reading rules of
+   deposits 5 and 5a stand unchanged, and the row carries the note "no interval method holds at this count in r3-P30
+   version 2". This is fixed before the battery runs.
+4. **Size.** The full set of used counts runs, as the card gives it; the band-edge counts keep any choice from revealing a
+   withheld count. That is about 6.8 million data sets at one worker, about 16 hours at least.
+5. **Timing.** The battery runs only after the card is public, and it needs more free memory than the machine has beside
+   the long re-decode. So it runs after the re-decode ends, or in a long pause of it. It blocks only f4-Q07's slopes and
+   f4-Q09.
+6. **The card's design constants are accepted** (the slope scenarios, the regime by sign, the kappa codings, the band and
+   scenario rules, and the seed `2026112771`).
+
+## Decision 146: the decision 129.6 guard (step 0, A) (13:56 UTC)
+
+The eligibility prespecification was hashed before the first set was computed, and its rule rebuilt the published 11
+exactly.
+1. **The hashed prespecification binds.** Printed groups whose memberships are stored are compared by membership,
+   whatever the measure. Printed groups whose memberships were not read are compared under the published standing rule's
+   scope: no statistic of the same measure on two groups nested within 1 to 4 of each other. The 11 keeps its stricter
+   rule. So **f4-Q03's sensitivity row on the middle model's spans fails** and reads "not printed (privacy rule)"; every
+   rung passes.
+2. **Step 1's memberships are not sought.** They were not read, and no other route to them was taken.
+   Under the standing rule's scope, the only close pair carries different registered measures, so it passes.
+3. **f4-Q12 (c)'s one-speaker set** lies within 1 to 4 of the standard voice-eligible set. Where a (c) row repeats a
+   measure read on the standard set, the standard set's row prints and the (c) row reads "not printed (privacy rule)";
+   (c) rows of other measures print. This is fixed before any count.
+4. **Narrowed sets** (a later, registered restriction of a set) are checked again by the same code before their outcome is
+   read, and a row prints only on a pass.
+5. **Two uses need deposit 2's half memberships, and so the owner's read:** f4-Q09 (vi)'s reading set, which leaves out
+   the sealed half (decision 129.7), and the X+T fold draw, stratified by deposit 2's halves (used by f4-Q02, f4-Q05b, the
+   read-aloud arm and f4-Q09 (vi)). Those rows wait for the owner's answer; every other step goes on.
+6. **The agent's departures are accepted.** A reliability study's sample was not opened, and its sets were settled from
+   the gate sample G. Audio-addendum sets with no printed statistic and no printed count were skipped.
+
+## Decision 147: step 0, B (the reproductions and the feasibility tables) (14:08 UTC)
+
+The prespecification was hashed before any computation.
+1. **Reproductions.** The published 23-creator chains that f4-Q02's reruns and f4-Q04 reuse (R1 to R11) each read deposit
+   2's split record, so the agent ran none of them and sought no other route. r3-P30's tables (R12, byte-identical to main)
+   and deposit 3's files (R13, every listed hash matching) are reproduced. The owner is asked whether code may read the
+   split record in memory for the fourth panel's registered uses, with nothing from it printed.
+2. **Fields of the 48.** The step-0 tables need metadata of the 48 (word counts, upload calendars, recording kinds,
+   gates); the registration's reproduction guard concerns list counts and outcomes. The addendum discloses which metadata
+   were read. No 48-creator list count or outcome has been read.
+3. **The balance of the 48 against the 23** (T-Q02-3) reads "not printed (privacy rule)" and is never printed in any form.
+4. **f4-Q12's template share** (T-E1a) reads "not computed (no identity rule)" in the addendum; f4-Q12's own
+   prespecification may fix a rule before its count, or the row stays not computed.
+5. **f4-Q03's name classes** (T-B1a): the family-to-class map and the claimed-voice rule are fixed in f4-Q03's
+   prespecification, and the feasibility count prints from them before f4-Q03's count.
+6. **The agent's prespecified choices are accepted:** et-1's band keeps the upload-year exclusion (the variant is
+   reported); den-1's width is taken over every stored upload year; A8 uses its opening stratum and a neighbourhood of
+   60 s on each side; r4-P03's stored threshold is used.
+7. A minor process slip is recorded privately.
+
+## Decision 148: the owner's answer on the split read (15:56 UTC)
+
+The owner was asked at about 14:09 UTC and answered: **"Allow for these uses (Recommended)"**. Code may read deposit 2's
+split record in memory for the fourth panel's registered uses only:
+- the reproductions R1 to R11 (the published chains, unchanged);
+- the X+T fold draw (seed `2026112761`, stratified as the registration's section 2.2 fixes);
+- f4-Q09 (vi)'s reading set.
+
+Nothing from the record is published; the derived folds and sets are written privately and hashed. The agents wrote the
+scripts without opening the record, and the lead reviewed and ran each one.
+
+## Decision 149: the lead ran the two split-read scripts (16:04 UTC)
+
+The scripts were reviewed first (hash checks, network blocked, the record read in memory only) and run with the long
+re-decode paused.
+- **The fold draw** ran at 16:03:32Z and exited normally. The folds file is hashed in the addendum's hash record; no fold
+  size or count per stratum is printed.
+- **f4-Q09 (vi)'s guard** ran at 16:03:39Z, exited normally and printed **pass**. Its output file is hashed in the
+  addendum's hash record. f4-Q09 (vi) now reads "pass".
+
+## Decision 150: the runner for R1 to R11 is accepted and run by the lead (16:14 UTC)
+
+The runner and its comparison were reviewed, and the code check passed.
+1. **"Unchanged code".** The published scripts' bytes are unchanged and verified against the hashes in main's status
+   files. These runtime settings count as unchanged code, and the reproductions file discloses them: the output folders are
+   pointed at a temporary working copy outside the archive; one worker runs in place of a fixed pool of three; the
+   existing private caches are read in place. An audit hook blocks writes outside the working copy, and a tripwire stops
+   the run if any archive file changes.
+2. **r3-P17 is not rerun:** no fourth-panel entry reuses it.
+3. **This file.** The addendum's public files cite decisions 147 and 148, so decisions 142 to 150 publish in public wording
+   with addendum 1.
+4. **The temporary working copy is removed** after the comparison, because it holds copies of private files.
+
+## Decision 151: the runner's tripwire fix and a safe cleanup (16:20 UTC)
+
+1. **The first run** completed one unit with every step exiting normally, then stopped on the runner's own tripwire, which
+   listed a folder that does not exist in the archive. No chain failed, and a manual check found no archive file changed.
+2. **The fix.** One line drops that folder from the tripwire's list. The change is recorded in step 0 (B)'s hash record.
+3. **The cleanup rule.** The runner works in a temporary working copy outside the archive. Links into the archive were
+   removed without touching their targets; the archive's file counts were checked before and after and were unchanged;
+   the remaining copy was deleted only after a listing showed no link left.
+4. **Rerun from the start,** with the long re-decode paused. The second start stopped early, because one unit's published
+   code checks the hashes of a shared code folder through the run root, which the working copy lacked; the runner now
+   copies that folder too. The runner's first step reruns the third panel's code check at every start, so no separate
+   recheck is needed. A third start followed. The runner's final hash is in the addendum's hash record.
+
+## Decision 152: the owner's "UPDATE ALL DASHBOARDS" (16:28 UTC)
+
+A dashboards agent adds deposits 5a and 5 to the fourth panel's tab (each entry's primary, margin, tier, decidability and
+state, the per-list agreement table and K = 33), the link to this file, the programme's state and a dated table of
+estimates with the re-decode's progress, and the finished latest-50+ download where the collection views have a place for
+it. Only public material enters: nothing from addendum 1 until it merges, after which a short second pass adds the guard
+results. The lead uploads the hosted copy and opens and merges the pull request. The long re-decode stays paused through the
+reproduction runner, the comparison and the dashboard build, then resumes.
+
+## Decision 153: the owner's request for a new search (16:36 UTC)
+
+The owner's separate request for a metadata-only title-and-description search and a descriptive list for the public channel
+index is outside the panel's outputs and outside this addendum; it carries no model call, no download and no change to the
+roster without the owner's word.
+
+## Decision 154: the R1 to R11 comparison (16:46 UTC)
+
+The runner's third start ran clean from 16:24:18Z to 16:36:51Z. Every unit exited normally, every tripwire found no archive
+file changed, and the comparison read only public files.
+1. **Reproduced:** R2, R3, R4, R5, R7, R10 and R11. Only the files' header write times differ.
+2. **R6 (r3-P40), R8 (r3-P18) and R9 (r3-P15) read "reproduced: every printed value equal".** Their differing cells are
+   exactly the cells that main later withheld or relabelled under the third panel's privacy decisions 92, 99 and 104: main
+   is empty or has text where the rerun has the values those decisions removed. The reproductions file names the positions
+   and the decisions, and prints no value.
+3. **R1 (r3-P42): the observed statistics reproduce; the matched-placebo bands do not.** A structural check, run by the lead,
+   found the cause: the order in which parallel workers return recordings sets the vocabulary order that the seeded placebo
+   draw indexes, and that order depends on scheduling. The bands are therefore one draw among the draws the code can give,
+   and the readings that rest on them change in a few named rows.
+   - **Reading:** "observed values reproduced; placebo bands depend on the worker order; the readings in the named rows are
+     sensitive to the placebo draw".
+   - **The fourth panel:** every use of r3-P42's matched-placebo generator in deposit 5 (f4-Q02's rerun, and every new family
+     under seed `2026112767`) sorts recordings and vocabulary canonically before the seeded draw, and each entry's
+     prespecification reports the bands' Monte Carlo spread over a fixed number of reseeded draws. Both are fixed before
+     any count. This fixes the realization and leaves the method unchanged.
+   - **The third panel:** a dated correction note goes to r3-P42's public README on main, in its own pull request after
+     addendum 1, with its own independent check. It names the rows whose readings are sensitive to the placebo draw and
+     prints no rerun value.
+4. **The temporary working copy outside the archive was removed** by the same rule: links into the archive were removed
+   without touching their targets, and the archive was unchanged. The reproduction outputs stay in the private archive.
+5. **Decisions 151 to 154** publish with addendum 1.
+
+## Decision 155: the independent check of addendum 1 (17:23 UTC)
+
+An independent check of addendum 1 found four text faults, and no fault of list form, name, code, identifier, private
+path or hash. Every fix is taken before the addendum is published:
+1. **No fold size is printed.** The registration's section 2.2 keeps fold values unprinted. The sizes are removed from
+   the addendum's README and hash record and from decision 149; the folds file is hashed, and that is enough.
+2. **R1's draw-sensitive reading cells lie in three rows** of r3-P42's classes table, not two: the comparison's list of
+   differing positions had stopped short. The reproductions file names the three rows, and the correction note to
+   r3-P42's README will name them too.
+3. **Decision 147.7** is restated in one general sentence.
+4. **Decisions 148 and 149** say only that the agents wrote the scripts without opening the record and that the lead
+   reviewed and ran each one.
+5. **The smaller fixes are all taken:** decision 146.2's heading takes the design's wording; a sentence of the
+   feasibility tables on unprinted counts is made general; the hash record adds the two scripts that wrote the
+   reproductions file's rows, and each reproduction unit's logs and list of written files.
+6. **Next.** The same checker rechecks the changed lines, and then the pull request follows.
 
 > No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these
 > recordings and how the creators present it.
