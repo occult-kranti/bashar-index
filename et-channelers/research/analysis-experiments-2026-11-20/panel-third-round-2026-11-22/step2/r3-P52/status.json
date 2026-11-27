@@ -52,7 +52,7 @@
  },
  "departures": "README.md, section Departures (and ../r3-P48/README.md for the run's shared departures)",
  "files_sha256": {
-  "README.md": "5feeb56399fed427c4512acb13327b4d4cf12101791cacb9214f25b269440a66",
+  "README.md": "92400c64c71b54f67f280aba635c80844a4cff31ab7862b616c1ba5d16b02f45",
   "code/p52.py": "6a57ca0ecfb22516f486a2bbe642d271ef3d474292c2c47ca4216867593ad368",
   "code/publish_p52.py": "8850ca8e53c362dc9557ed01f2cc123f39c91f8673aeca29cc0649e38930ec11",
   "code/style.py": "ab28f40911b5dc6163f9140543633a1986395d756f809123756e44129717d7d5",
@@ -69,7 +69,7 @@
   "staged_utc": "2026-11-26T15:51:01Z",
   "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
   "published_sha256": {
-   "README.md": "5feeb56399fed427c4512acb13327b4d4cf12101791cacb9214f25b269440a66",
+   "README.md": "92400c64c71b54f67f280aba635c80844a4cff31ab7862b616c1ba5d16b02f45",
    "contacts.md": "1d17b08fcf634add43eef9fb35799b3420fd1f8096b5be76658d1a89be91280b",
    "prespec-hash-record.md": "5ff733b5da816ca84e1d290cf7e9fd93ccb37d2d363638583af0847e157e3d9b",
    "prespec.md": "d89ea0f1814ce04ba1d98ab8552138288d119e45108b49512eba895d63d9f36c",

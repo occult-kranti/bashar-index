@@ -78,7 +78,7 @@
   "public/data-r3-P45-readings.csv": "493c53c18fc102e498e9b526836c94216d70da5a362f215042bb0800473cb0f2",
   "public/fig-r3-P45-status.pdf": "501fd441321858127f104c59bf5f3d0831e96c439f820769a3cf519bbe17b23f",
   "public/fig-r3-P45-status.png": "3e6cbe902cdcef8b409d0d5cdc77b3ad5be544f46f0bb8a9578bb0e39d95b7f1",
-  "README.md": "abdb09dea6b1575e290efdb80e95791ba8442c8dc490100ff05892e9f12e59ae"
+  "README.md": "9f6bd322a50f2df2d8e0d530647db5076bc7e6a77ad6a02459f09ce7dff46a6e"
  },
  "note_2026-11-26_decision_70": "2026-11-26T14:07:22Z (UTC, from date -u): files changed by the lead's step-2 decision 70 (no number changed); their recorded hashes refreshed: README.md, code/publish_p4346.py",
  "note_2026-11-26_decision_86": "2026-11-26T15:09:31Z (UTC, from date -u): files changed by the lead's step-2 decision 86 (no number changed); their recorded hashes refreshed: README.md, code/publish_p4346.py, public/data-r3-P45-readings.csv, public/fig-r3-P45-status.pdf, public/fig-r3-P45-status.png",
@@ -88,7 +88,7 @@
   "staged_utc": "2026-11-26T15:51:01Z",
   "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
   "published_sha256": {
-   "README.md": "abdb09dea6b1575e290efdb80e95791ba8442c8dc490100ff05892e9f12e59ae",
+   "README.md": "9f6bd322a50f2df2d8e0d530647db5076bc7e6a77ad6a02459f09ce7dff46a6e",
    "contacts.md": "271aff5605865e2c5982b80b3696a3425cad1bc40bb8f9199873485462de2485",
    "prespec-amendment-1.md": "cf4ddb46a8999b23305c5da3842e029795df1e97b0ce71a78c13d127cdf89aee",
    "prespec-hash-record.md": "6d565f1f195c5d60e2aa6eed385a2b3559cbf5307a332c96e14be253c0ab3f3d",

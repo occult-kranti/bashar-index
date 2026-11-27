@@ -84,3 +84,9 @@ identifier scan ran before finishing (status.json): 0 rows pinned or narrowed, 0
 
 Multiplicity (deposit 2): 56 primaries in the programme; if every true effect sat at half its margin, about 2.8 readings
 A would be expected by chance. No reading A occurs here.
+
+## Note by the lead's decision 154 (2026-11-27T16:46Z, UTC from `date -u`)
+
+The placebo readings that this entry prints against bands from r3-P42's matched-placebo generator, drawn on r3-P42's
+stored extract (it prints no band values), are one draw among the draws that generator can give: see the section
+"Correction by the lead's decision 154" of [r3-P42's README](../r3-P42/README.md).

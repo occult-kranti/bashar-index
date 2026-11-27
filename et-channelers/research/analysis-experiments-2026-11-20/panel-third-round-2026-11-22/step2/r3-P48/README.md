@@ -133,3 +133,9 @@ against step 1's stored-membership register (0 left with 4 or fewer values).
   decisions 69 and 70).
 - r3-P48's scorecard has no computable row on tier L; a run on the tuning pool would need its own registration
   (decision 65) (decided: decision 65).
+
+## Note by the lead's decision 154 (2026-11-27T16:46Z, UTC from `date -u`)
+
+The placebo bands that this entry prints from r3-P42's matched-placebo generator, drawn on r3-P42's stored extract, and
+the readings made against them, are one draw among the draws that generator can give: see the section "Correction by
+the lead's decision 154" of [r3-P42's README](../r3-P42/README.md).

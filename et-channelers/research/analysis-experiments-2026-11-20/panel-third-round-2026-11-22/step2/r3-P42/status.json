@@ -109,7 +109,7 @@
     "public/fig-r3-P42-placebo-bands.png": "b754261b188ed3d42135466462326442135717898a7418d0f9060f98ad0363a5",
     "public/fig-r3-P42-structure.pdf": "d8d458bacee6a3b5ca917323f28944c7ea8f5855d801e204b0c859394ab3918b",
     "public/fig-r3-P42-structure.png": "993e199a498979f8dc27c6b371167aa17aaf5b47af1388c25b23012b988c5605",
-    "README.md": "f158269f7449dbaea4ce8b734489799fa22bb0b942f0ce4a20891f862686bbe1",
+    "README.md": "e79b592142aea60b44f4b8979b48417e0f5981b86b3c231bd29bc0fb2d6925d1",
     "run-record-hash.md": "936dd75c2d86ca2fe8d74851d444f80fa576e1285acbb5c321f91984ae239ba7",
     "run-record.md": "6637735907f4c173b95713f0f671dc1216c7337f9896540efbc0c24b42f7f8c4"
   },
@@ -121,7 +121,7 @@
     "staged_utc": "2026-11-26T15:51:01Z",
     "note": "Every other SHA-256 in this file is the hash of the private file, as written in the private run folder (files under code/ and private/ are not published). published_sha256 gives the SHA-256 of each published file as staged; it equals the hash of the private file except where a file is listed under changed_for_publication. Bytes are published unchanged (no line-ending conversion). status.json cannot list its own hash.",
     "published_sha256": {
-      "README.md": "f158269f7449dbaea4ce8b734489799fa22bb0b942f0ce4a20891f862686bbe1",
+      "README.md": "e79b592142aea60b44f4b8979b48417e0f5981b86b3c231bd29bc0fb2d6925d1",
       "a6-variants-hash-record.md": "ca1e1aa7cd269ebe1a70f825cd146e5df6181424ec543a232f2dd515c8b50b38",
       "contacts.md": "49a2786e23fa7eb5912a3147e9e310c2a2613ef4a8b95cc06f400be34385127e",
       "public/data-r3-P42-classes.csv": "85e556b9e8bcf7c23484de8f3a19ddc634c14bd3a0e721e25a0f908dc0c94558",

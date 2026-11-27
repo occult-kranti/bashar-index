@@ -212,3 +212,9 @@ Taken by the lead under the owner's delegation on 2026-11-26, before and during 
   reads one label, "not printed (privacy rule)", whatever the reason; public wording no longer describes why a row is
   withheld; the standing rule is worded generally; and the scan set always runs the rank solver with deposit 3's lists.
   A brief confirmation by the checker follows before the pull request.
+
+## Note by the lead's decision 154 (2026-11-27T16:46Z, UTC from `date -u`)
+
+The placebo bands that this index reprints from r3-P42's matched-placebo generator (r3-P49's band among them), drawn on
+r3-P42's stored extract, and the readings and reading counts made against them, are one draw among the draws that
+generator can give: see the section "Correction by the lead's decision 154" of [r3-P42's README](r3-P42/README.md).

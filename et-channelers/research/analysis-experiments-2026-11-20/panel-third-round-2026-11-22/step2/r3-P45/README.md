@@ -65,3 +65,9 @@ rewritten by `code/publish_p4346.py`; no number changed.
 
 > No measure in this study can tell whether a non-human source speaks; every measure describes the speech in these
 > recordings and how the creators present it.
+
+## Note by the lead's decision 154 (2026-11-27T16:46Z, UTC from `date -u`)
+
+The placebo bands that this entry prints from r3-P42's matched-placebo generator, drawn on r3-P42's stored extract, and
+the readings made against them, are one draw among the draws that generator can give: see the section "Correction by
+the lead's decision 154" of [r3-P42's README](../r3-P42/README.md).
